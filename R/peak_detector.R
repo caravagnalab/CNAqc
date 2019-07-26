@@ -85,6 +85,14 @@ peak_detector = function(snvs,
     arrange(desc(x)) %>%
     filter(row_number() <= nrow(expectation))
 
+  # Handle the special case where we have less peaks that the ones we need to
+  # match. In this case we match everything to the same peak
+  if(nrow(match_xy_peaks) < nrow(expectation)) {
+    entry = match_xy_peaks[1, ]
+    missing = nrow(expectation) - nrow(match_xy_peaks)
+    for(s in 1:missing) match_xy_peaks = bind_rows(match_xy_peaks, entry)
+  }
+
   expectation = bind_cols(expectation, match_xy_peaks) %>%
     mutate(
       offset = peak - x,

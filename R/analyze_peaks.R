@@ -136,7 +136,7 @@ analyze_peaks = function(snvs,
   assembled_corrections = lapply(detections, function(w)
     w$matching)
   assembled_corrections = Reduce(bind_rows, assembled_corrections) %>%
-    mutate(score = weight * abs(offset))
+    mutate(score = weight * offset)
 
   overall_score = sum(assembled_corrections$score)
 
