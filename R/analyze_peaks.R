@@ -29,32 +29,18 @@ analyze_peaks = function(snvs,
                          matching_epsilon = 0.015,
                          ...)
 {
-  # Input data types and fortification
-  stopifnot(is_tibble(snvs) | is.data.frame(snvs))
-  stopifnot(is_tibble(cna) | is.data.frame(cna))
-  stopifnot(tumour_purity > 0 |
-              tumour_purity <= 1 | !is.na(tumour_purity))
+  input = prepare_input_data(snvs, cna, tumour_purity)
+  snvs = input$snvs
+  cna = input$cna
 
   nsnvs = nrow(snvs)
   ncna = nrow(cna)
 
-  pio::pioHdr("CNAqc - CNA Quality Check")
-  cat('\n')
-
-  snvs = fortify_mutation_calls(snvs)
-  cna = fortify_CNA_segments(cna)
-
   ncnacl = sum(cna$CCF == 1)
   ncnasbcl = sum(cna$CCF < 1)
 
-  # Mapping mutations
-  pio::pioStr("\nInput.",
-              'n =',
-              nsnvs,
-              "mutations for",
-              ncna,
-              "CNA segments (", ncnacl, "clonal, ", ncnasbcl, "subclonal)\n\n")
-  snvs = map_mutations_to_segments(snvs, cna %>% filter(CCF == 1))
+  pio::pioHdr("CNAqc - CNA Quality Check")
+  cat('\n')
 
   num_mappable = sum(!is.na(snvs$karyotype))
   perc_mappable = round(num_mappable / nsnvs * 100)
