@@ -18,9 +18,7 @@
 #' @import peakPick
 #'
 #' @examples
-analyze_peaks = function(snvs,
-                         cna,
-                         tumour_purity,
+analyze_peaks = function(x,
                          karyotypes = c('1:0', '1:1', '2:1', '2:0', '2:2'),
                          min_karyotype_size = 0.05,
                          adjust = 1,
@@ -29,29 +27,19 @@ analyze_peaks = function(snvs,
                          matching_epsilon = 0.015,
                          ...)
 {
-  input = prepare_input_data(snvs, cna, tumour_purity)
-  snvs = input$snvs
-  cna = input$cna
+  stopifnot(inherits(x, "cnaqc"))
 
-  nsnvs = nrow(snvs)
-  ncna = nrow(cna)
+  print(x)
 
-  ncnacl = sum(cna$CCF == 1)
-  ncnasbcl = sum(cna$CCF < 1)
-
-  pio::pioHdr("CNAqc - CNA Quality Check")
-  cat('\n')
-
-  num_mappable = sum(!is.na(snvs$karyotype))
-  perc_mappable = round(num_mappable / nsnvs * 100)
+  pio::pioHdr("QC analysis with peaks detection")
 
   # Karyotypes of interest, and filter for karyotype size
-  qc_snvs = snvs %>%
+  qc_snvs = x$snvs %>%
     filter(karyotype %in% karyotypes)
 
   filtered_qc_snvs = qc_snvs %>%
     group_by(karyotype) %>%
-    summarise(n = n(), n_proportion = n() / nsnvs) %>%
+    summarise(n = n(), n_proportion = n() / x$n_snvs) %>%
     arrange(desc(n)) %>%
     mutate(QC = n_proportion > min_karyotype_size)
 
@@ -60,19 +48,11 @@ analyze_peaks = function(snvs,
   filtered_qc_snvs = filtered_qc_snvs %>%
     mutate(norm_prop = ifelse(QC, n_proportion / N_total, NA))
 
-  pio::pioStr(
-    "\nMutations.",
-    'n =',
-    num_mappable,
-    "mappable",
-    paste0('(~', perc_mappable, '% of input) to'),
-    sum(filtered_qc_snvs$QC),
-    "karyotypes",
-    'with at least',
-    round(min_karyotype_size * nsnvs),
-    'mutations',
-    paste0('(', min_karyotype_size * 100, '% of n)\n\n')
-  )
+  n_k = sum(filtered_qc_snvs %>% filter(QC) %>% pull(n))
+
+  pio::pioStr("Karyotypes", paste(karyotypes, collapse = ', '))
+  pio::pioStr("Mutations in Karyotypes", n_k)
+  pio::pioStr("Minimum Karyotype size", round(min_karyotype_size * x$n_snvs))
 
   print(filtered_qc_snvs)
 

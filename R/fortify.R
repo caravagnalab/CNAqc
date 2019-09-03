@@ -1,18 +1,3 @@
-# Hello, world!
-#
-# This is an example function named 'hello'
-# which prints 'Hello, world!'.
-#
-# You can learn more about package authoring with RStudio at:
-#
-#   http://r-pkgs.had.co.nz/
-#
-# Some useful keyboard shortcuts for package authoring:
-#
-#   Install Package:           'Cmd + Shift + B'
-#   Check Package:             'Cmd + Shift + E'
-#   Test Package:              'Cmd + Shift + T'
-
 fortify_CNA_segments = function(x)
 {
   C = colnames(x)
@@ -27,7 +12,7 @@ fortify_CNA_segments = function(x)
     x$CCF = 1
 
     message(
-      "*** Missing CCF column from CNA calls, adding CCF = 1 assuming all calls to be clonal. ***"
+      "[CNAqc] Missing CCF column from CNA calls, adding CCF = 1 assuming all calls to be clonal."
     )
   }
 
@@ -60,6 +45,11 @@ fortify_mutation_calls = function(x)
 
   if (!all(required_columns %in% C))
     stop("Bad mutation format, see the manual.")
+
+  if(max(c(nchar(x$alt), nchar(x$ref))) > 1)
+  {
+    stop("Use only SNVs.")
+  }
 
   x$from = enforce_numeric(x$from)
   x$to = enforce_numeric(x$to)
