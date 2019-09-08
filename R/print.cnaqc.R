@@ -22,8 +22,16 @@ print.cnaqc = function(x, ...)
               x$n_cna,
               paste0("CNA segments (", x$n_cna_clonal, " clonal, ", x$n_cna_sbclonal, " subclonal)"))
 
-  pio::pioStr("\n   Purity ", paste0(x$purity  *100, ' cellularity'))
-
-
+  pio::pioStr("\n     Purity ", paste0(x$purity  *100, ' cellularity'))
   pio::pioStr("\n Karyotypes ", paste0(x$n_karyotype, ' (', names(x$n_karyotype), ')', collapse = '; '), '\n')
+
+  with_peaks = all(!is.null(x$peaks_analysis))
+
+  if(with_peaks)
+  {
+    pio::pioStr("\n   Peaks QC ", with_peaks, ' ~ s = ', x$peaks_analysis$score, suffix = '\n')
+    pio::pioDisp(x$peaks_analysis$matches)
+  }
+  else pio::pioStr("\n   Peaks QC ", FALSE, suffix = '\n')
+
 }

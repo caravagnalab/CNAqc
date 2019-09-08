@@ -1,0 +1,57 @@
+---
+title: "QC analysis via peaks detection"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(CNAqc)
+require(tidyverse)
+```
+
+We work with creating the same object shown in the introductory vignette. 
+
+Load a template dataset available within the CNAqc package.
+```{r echo=TRUE, results=FALSE}
+data('example_dataset_CNAqc', package = 'CNAqc')
+x = CNAqc::init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+```
+
+
+Peak detection routines can be used to determine the QC of the CNA calls. 
+A summary table is available after the computation, and is stored inside the named list `peaks_analysis`.
+```{r, fig.width=11, fig.height=3}
+x = CNAqc::analyze_peaks(x)
+print(x)
+```
+
+You can visually summarise the result of the QC analysis, which reports the peaks are matched to data.   
+```{r, fig.width=3.5, fig.height=3.5}
+plot_qc(x)
+```
+
+For every karyptype that you have tested, a plot is available for its peak detection's analysis, which shows the estimated KDE and the matched peaks.
+```{r, fig.width=11, fig.height=3}
+plot_peaks_analysis(x)
+```
+
+You can integrate plots
+```{r, fig.width=11, fig.height=7}
+cowplot::plot_grid(
+  plot_peaks_analysis(x),
+  plot_segments(x) + ylim(0, 6),
+  rel_heights = c(.8, 1),
+  nrow = 2
+)
+```
+

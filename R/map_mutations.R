@@ -5,11 +5,14 @@ map_mutations_to_segments = function(snvs, cna)
 
   snvs$karyotype = NA
 
-  pb = txtProgressBar(min = 1, max = nrow(cna), style = 3)
+  # pb = txtProgressBar(min = 1, max = nrow(cna), style = 3)
+
+  pb <- progress_estimated(nrow(cna), min_time = 2)
 
   for(i in 1:nrow(cna))
   {
-    setTxtProgressBar(pb, i)
+    # setTxtProgressBar(pb, i)
+    pb$tick()$print()
 
     mappable = which(
       snvs$chr == cna$chr[i] &
@@ -20,7 +23,7 @@ map_mutations_to_segments = function(snvs, cna)
     snvs$karyotype[mappable] = paste0(cna$Major[i], ':', cna$minor[i])
   }
 
-  close(pb)
+  # close(pb)
 
   snvs
 }

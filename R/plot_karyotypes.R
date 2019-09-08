@@ -19,15 +19,15 @@ plot_karyotypes = function(x,
     filter(chr %in% chromosomes) %>%
     rename(chr_size = length)
 
+  segments = x$cna %>%
+    filter(chr %in% chromosomes) %>%
+    mutate(
+      label = paste0(Major, ':', minor),
+      call = ifelse(CCF == 1, "Clonal", "Subclonal")
+    )
+
   if(type == 'number')
   {
-    segments = x$cna %>%
-      filter(chr %in% chromosomes) %>%
-      mutate(
-        label = paste0(Major, ':', minor),
-        call = ifelse(CCF == 1, "Clonal", "Subclonal")
-        )
-
     colors = get_karyotypes_colors(unique(segments$label))
 
     pl = ggplot(segments %>% mutate(K = ""),
@@ -45,16 +45,12 @@ plot_karyotypes = function(x,
   {
     genome_size = rev(chr_coordinates_hg19$to)[1]
 
-    segments = x$cna %>%
-      filter(
-        CCF == 1,
-        chr %in% chromosomes
-      ) %>%
+    segments = segments %>%
+      filter(CCF == 1) %>%
       mutate(
-        label = paste0(Major, ':', minor),
         percentage = (to - from)/genome_size
       ) %>%
-      group_by(label) %>%
+      group_by(label, call) %>%
       summarise(percentage = sum(percentage))
 
     colors = get_karyotypes_colors(unique(segments$label))
@@ -66,7 +62,8 @@ plot_karyotypes = function(x,
       geom_bar(stat = 'identity', alpha = 1, color = 'white', size = .1) +
       scale_fill_manual(values = colors) +
       labs(y = "Percentage", x = 'Karyotype', title = "Genome coverage") +
-      guides(fill = guide_legend(''))
+      guides(fill = guide_legend('')) +
+      facet_wrap(~call)
 
     return(pl)
   }

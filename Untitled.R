@@ -1,24 +1,32 @@
-load('~/Documents/Github/test.dbpmm/Real Data/[Used] Koerber_et_al/data/H043-W99H5K.RData')
+# load('~/Documents/Github/test.dbpmm/Real Data/[Used] Koerber_et_al/data/H043-W99H5K.RData')
+#
+ require(tidyverse)
+#
+# snvs = dataset$primary_SNV %>%
+#   rename(
+#     chr = CHROM,
+#     from = POS,
+#     ref = REF,
+#     alt = ALT
+#   ) %>%
+#   mutate(to = as.numeric(from) + nchar(alt))
+#
+# cna = dataset$primary_CNA %>%
+#   separate(col = genotype, into = c('Major', 'minor'))
 
-require(tidyverse)
+# example_dataset_CNAqc = list(snvs = snvs, cna = cna, purity = 0.89)
+# usethis::use_data(example_dataset_CNAqc)
 
-snvs = dataset$relapse_SNV %>%
-  rename(
-    chr = CHROM,
-    from = POS,
-    ref = REF,
-    alt = ALT
-  ) %>%
-  mutate(to = as.numeric(from) + nchar(alt))
+load('/Users/gcaravagna/Documents/Github/CNAqc/data/example_dataset_CNAqc.rda')
 
-cna = dataset$relapse_CNA %>%
-  separate(col = genotype, into = c('Major', 'minor'))
-
-x = CNAqc::init(snvs, cna, .58)
-
+x = CNAqc::init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
 x = CNAqc::analyze_peaks(x)
 
 CNAqc::plot_segments(x)
+
+CNAqc::plot_karyotypes(x)
+
+CNAqc::plot_peaks_analysis(x)
 
 cowplot::plot_grid(
   CNAqc::plot_counts(x),

@@ -1,0 +1,74 @@
+---
+title: "Introduction"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(CNAqc)
+require(tidyverse)
+```
+
+Load a template dataset available within the CNAqc package.
+```{r}
+data('example_dataset_CNAqc', package = 'CNAqc')
+print(example_dataset_CNAqc)
+```
+
+First, initialize the `cnaqc`object mapping mutations to chromosomes. 
+```{r}
+x = CNAqc::init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+```
+
+The summary of the object is available via the S3 `print` function.
+```{r}
+print(x)
+```
+
+
+Inspection of the segments is possible; CNA calls are mapped to the hg19 human genome coordinates.
+```{r, fig.width=9.5, fig.height=3}
+CNAqc::plot_segments(x) + ylim(0, 6)
+```
+
+And plots for the number of mutations, their VAF and depth are also available
+as following the mapping to hg19 segments.
+
+```{r, fig.width=8, fig.height=1}
+CNAqc::plot_counts(x)
+CNAqc::plot_vaf(x, N = 10000)
+CNAqc::plot_depth(x, N = 10000)
+```
+
+For CNAs, it is possible to show the segments per karyotypes, reporting either their counts, or the proportion of genome covered.
+```{r, fig.width=4, fig.height=4}
+ggpubr::ggarrange(
+  CNAqc::plot_karyotypes(x),
+  CNAqc::plot_karyotypes(x, type = 'number'),
+  common.legend = TRUE,
+  legend = 'bottom'
+)
+```
+
+A one-summary plot can be easily assembled exploiting the above functions and functions from `cowplot` or other ggplot-manipulation packages.
+
+```{r, fig.width=9.5, fig.height=5}
+cowplot::plot_grid(
+  CNAqc::plot_counts(x),
+  CNAqc::plot_vaf(x, N = 2000),
+  CNAqc::plot_depth(x, N = 2000),
+  CNAqc::plot_segments(x) + ylim(0, 6),
+  align = 'v', nrow = 4, rel_heights = c(.15, .15, .15, .8))
+```
+
+

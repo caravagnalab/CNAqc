@@ -44,7 +44,7 @@ peak_detector = function(snvs,
       size = .3,
       color = 'black'
     ) +
-    theme_minimal() +
+    my_ggplot_theme(cex = .7) +
     labs(
       title = paste0("Karyotype ", snvs$karyotype[1]),
       subtitle = paste0('w = ', round(weight, 3), ' (n = ', nrow(snvs), ')'),

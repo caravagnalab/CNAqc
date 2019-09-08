@@ -33,7 +33,6 @@ analyze_peaks = function(x,
 
   cat('\n')
   print(x)
-  cat('\n')
 
   # Karyotypes of interest, and filter for karyotype size
   qc_snvs = x$snvs %>%
@@ -53,13 +52,12 @@ analyze_peaks = function(x,
   n_k = sum(filtered_qc_snvs %>% filter(QC) %>% pull(n))
 
 
-  pio::pioTit("Analysis parameters")
+  pio::pioTit(
+    "Analysing",
+    "~ karyotypes", paste(karyotypes, collapse = ', '),
+    "~ ", n_k, 'mutations',
+    "~ min. k =", round(min_karyotype_size * x$n_snvs))
 
-  pio::pioStr("Karyotypes", paste(karyotypes, collapse = ', '), '\n')
-  pio::pioStr("Mutations in Karyotypes", n_k, '\n')
-  pio::pioStr("Minimum Karyotype size", round(min_karyotype_size * x$n_snvs), '\n')
-
-  cat("\n")
   print(filtered_qc_snvs)
 
   # Actual data and analysis
@@ -68,10 +66,22 @@ analyze_peaks = function(x,
 
   tumour_purity = x$purity
 
-  pio::pioStr("\nRunning peak detector with the following parameters\n")
-  cat("          Tumour purity =", tumour_purity, '\n')
-  cat("KDE bandwith adjustment =", adjust, "and density cutoff =", min_density, '\n')
-  cat(" peakPick peak neighlim =", neighlim, "matched with epsilon =", matching_epsilon, '\n')
+  pio::pioStr(
+    "\nPeak detector",
+    paste0(
+      'p = ', tumour_purity,
+      ' ~ KDE a = ', adjust, ' c = ', min_density,
+      ' ~ peakPick n = ', neighlim, ' epsilon = ', matching_epsilon
+    ), suffix = '\n')
+
+  e = function(){
+    ggplot() +
+      geom_blank() +
+      theme(
+        plot.background = element_rect(fill = "lightgray"),
+        panel.background = element_rect(fill = "lightgray"),
+        )
+  }
 
   detections = NULL
   for (k in karyotypes)
@@ -79,7 +89,8 @@ analyze_peaks = function(x,
     # For karyotypes that cannot be checked we create a dummy entry
     if (!(k %in% qc_karyotypes))
     {
-      detection = list(matching = NULL, plot = ggplot() + geom_blank())
+      detection = list(matching = NULL,
+                       plot = e())
     }
     else
     {
@@ -98,8 +109,6 @@ analyze_peaks = function(x,
         matching_epsilon = matching_epsilon,
         ...
       )
-
-      cat('\n', 'dfasdfadassfd')
 
     }
 
@@ -138,41 +147,44 @@ analyze_peaks = function(x,
   #     offset  = offset + sum_offsets * weight
   #   }
 
-  plot_summarised = ggplot(assembled_corrections, aes(x = peak, y = offset, color = karyotype)) +
-    geom_segment(aes(xend = peak, yend = 0)) +
-    geom_point(aes(size = weight), show.legend = FALSE) +
-    guides(color = guide_legend('')) +
-    theme_minimal() +
-    theme(
-      legend.position = 'bottom',
-      legend.key.height = unit(3, 'mm')) +
-    xlim(0, 1) +
-    labs(x = 'Peak', y = 'Offset (size as weight)') +
-    geom_hline(yintercept = overall_score, color = 'red', linetype = 'dashed') +
-    # geom_text(
-    #   aes(y = overall_score + 0.05 * overall_score),
-    #   x = .9,
-    #   color = 'red',
-    #   label = round(overall_score, 3)) +
-    labs(
-      title = "Summary matches",
-      subtitle = paste0("Score: ", round(overall_score, 3))
-    )
+  # plot_summarised = ggplot(assembled_corrections, aes(x = peak, y = offset, color = karyotype)) +
+  #   geom_segment(aes(xend = peak, yend = 0)) +
+  #   geom_point(aes(size = weight), show.legend = FALSE) +
+  #   guides(color = guide_legend('')) +
+  #   theme_minimal() +
+  #   theme(
+  #     legend.position = 'bottom',
+  #     legend.key.height = unit(3, 'mm')) +
+  #   xlim(0, 1) +
+  #   labs(x = 'Peak', y = 'Offset (size as weight)') +
+  #   geom_hline(yintercept = overall_score, color = 'red', linetype = 'dashed') +
+  #   # geom_text(
+  #   #   aes(y = overall_score + 0.05 * overall_score),
+  #   #   x = .9,
+  #   #   color = 'red',
+  #   #   label = round(overall_score, 3)) +
+  #   labs(
+  #     title = "Summary matches",
+  #     subtitle = paste0("Score: ", round(overall_score, 3))
+  #   )
+
+  plots = lapply(detections, function(w) w$plot)
+  names(plots) = karyotypes
 
   # Assemble an output image, and add information about each karyotype
-  assembled_images =
-    ggpubr::ggarrange(
-      plotlist =
-        append(list(plot_summarised), lapply(detections, function(w) w$plot)),
-      nrow = 1,
-      ncol = length(detections) + 1
-    )
+  # assembled_images =
+  #   ggpubr::ggarrange(
+  #     plotlist =
+  #       append(list(plot_summarised), lapply(detections, function(w) w$plot)),
+  #     nrow = 1,
+  #     ncol = length(detections) + 1
+  #   )
 
 
   x$peaks_analysis = list(
     score = overall_score,
     matches = assembled_corrections,
-    figure = assembled_images
+    plots = plots
   )
 
   return(x)
