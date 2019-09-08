@@ -29,9 +29,11 @@ analyze_peaks = function(x,
 {
   stopifnot(inherits(x, "cnaqc"))
 
-  print(x)
-
   pio::pioHdr("QC analysis with peaks detection")
+
+  cat('\n')
+  print(x)
+  cat('\n')
 
   # Karyotypes of interest, and filter for karyotype size
   qc_snvs = x$snvs %>%
@@ -50,15 +52,21 @@ analyze_peaks = function(x,
 
   n_k = sum(filtered_qc_snvs %>% filter(QC) %>% pull(n))
 
-  pio::pioStr("Karyotypes", paste(karyotypes, collapse = ', '))
-  pio::pioStr("Mutations in Karyotypes", n_k)
-  pio::pioStr("Minimum Karyotype size", round(min_karyotype_size * x$n_snvs))
 
+  pio::pioTit("Analysis parameters")
+
+  pio::pioStr("Karyotypes", paste(karyotypes, collapse = ', '), '\n')
+  pio::pioStr("Mutations in Karyotypes", n_k, '\n')
+  pio::pioStr("Minimum Karyotype size", round(min_karyotype_size * x$n_snvs), '\n')
+
+  cat("\n")
   print(filtered_qc_snvs)
 
   # Actual data and analysis
   qc_karyotypes = filtered_qc_snvs %>% filter(QC) %>% pull(karyotype)
   qc_snvs = qc_snvs %>% filter(karyotype %in% qc_karyotypes)
+
+  tumour_purity = x$purity
 
   pio::pioStr("\nRunning peak detector with the following parameters\n")
   cat("          Tumour purity =", tumour_purity, '\n')
@@ -80,7 +88,7 @@ analyze_peaks = function(x,
       expectation = expected_vaf_peak(AB[1], AB[2], tumour_purity)
 
       detection = peak_detector(
-        snvs = snvs %>% filter(karyotype == k),
+        snvs = qc_snvs %>% filter(karyotype == k),
         expectation,
         tumour_purity,
         filtered_qc_snvs,
@@ -90,6 +98,9 @@ analyze_peaks = function(x,
         matching_epsilon = matching_epsilon,
         ...
       )
+
+      cat('\n', 'dfasdfadassfd')
+
     }
 
     detections = append(detections, list(detection))
@@ -158,12 +169,12 @@ analyze_peaks = function(x,
     )
 
 
-  return(
-    list(
-      score = overall_score,
-      matches = assembled_corrections,
-      figure = assembled_images
-    )
+  x$peaks_analysis = list(
+    score = overall_score,
+    matches = assembled_corrections,
+    figure = assembled_images
   )
+
+  return(x)
 
 }

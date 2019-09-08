@@ -22,5 +22,8 @@ print.cnaqc = function(x, ...)
               x$n_cna,
               paste0("CNA segments (", x$n_cna_clonal, " clonal, ", x$n_cna_sbclonal, " subclonal)"))
 
-  pio::pioStr("\n Karyotypes ", paste0(x$n_karyotype, ' (', names(x$n_karyotype), ')', collapse = '; '))
+  pio::pioStr("\n   Purity ", paste0(x$purity  *100, ' cellularity'))
+
+
+  pio::pioStr("\n Karyotypes ", paste0(x$n_karyotype, ' (', names(x$n_karyotype), ')', collapse = '; '), '\n')
 }

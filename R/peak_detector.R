@@ -35,7 +35,6 @@ peak_detector = function(snvs,
 
   weight = weight/nrow(expectation)
 
-
   # Plot
   plot_data = ggplot(data = snvs, aes(VAF)) +
     geom_histogram(aes(y = ..density..), binwidth = 0.01, alpha = .3) +

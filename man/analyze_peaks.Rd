@@ -4,9 +4,9 @@
 \alias{analyze_peaks}
 \title{Analyze the peaks of this}
 \usage{
-analyze_peaks(snvs, cna, tumour_purity, karyotypes = c("1:0", "1:1",
-  "2:1", "2:0", "2:2"), min_karyotype_size = 0.05, adjust = 1,
-  min_density = 0.5, neighlim = 1, matching_epsilon = 0.015, ...)
+analyze_peaks(x, karyotypes = c("1:0", "1:1", "2:1", "2:0", "2:2"),
+  min_karyotype_size = 0.05, adjust = 1, min_density = 0.5,
+  neighlim = 1, matching_epsilon = 0.015, ...)
 }
 \arguments{
 \item{...}{}
