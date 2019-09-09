@@ -105,7 +105,7 @@ the data. This call does not subset the data, unless there are errors with respe
 
 ```{r}
 # Use SNVs, CNAs and tumour purity 
-x = CNAqc::init(
+x = init(
   example_dataset_CNAqc$snvs, 
   example_dataset_CNAqc$cna,
   example_dataset_CNAqc$purity
