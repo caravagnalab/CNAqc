@@ -10,6 +10,8 @@
 #'
 #' @return A \code{ggpubr} object for an assembled figure.
 #' @export
+#' 
+#' @import ggpubr
 #'
 #' @examples
 #' data('example_dataset_CNAqc', package = 'CNAqc')

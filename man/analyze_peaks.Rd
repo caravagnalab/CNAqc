@@ -26,7 +26,7 @@ kernel is used (\code{kernel = 'gaussian'}). Default is 5% (\code{0.05}).}
 not be used to match the expected peaks. This is used to remove low-density
 peaks due to noise and miscalled CNAs.}
 
-\item{neighlim}{Parameter for the \code{peakPick} package - see \code{?peakPick}.}
+\item{neighlim}{Parameter for the \code{peakPick} package - see ?\code{peakPick}.}
 
 \item{matching_epsilon}{Peaks at location \eqn{x} are matched in \eqn{x-e}, \eqn{x+e}
 (inclusive), where \eqn{e} is this parameter. By default (\code{0.015}) a 3% tolerance

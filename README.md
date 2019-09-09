@@ -13,16 +13,14 @@ CNAqc is a package to provide a set of metrics to assess the quality of
 Copy Number Alteration (CNA) calls.
 
 The package provides statistical measures to quantify the concordance 
-between mutation and Copy Number calls, exploiting the relation 
-between allelic imbalance in absolute CNA segments and allelic frequencies 
+between mutation and Copy Number calls, exploiting allelic imbalance in absolute CNA segments and allelic frequencies 
 of somatic mutations. Quantitative metrics and plots for data 
-exploration and quality check are available, allow a intuitive
+exploration and quality check are available, allowing for a intuitive
 assessment of the quality of calls. Quantitative measures can also be 
 used to suggest adjustemnts of the current purity estimates to increase
 the quality of CNA calls.
 
-Statistical Model
------------------
+##### Statistical model
 
 CNAqc implements a linear score where the relative size of each of a
 set of karyotypes is used to weight the offset between an estimated
@@ -31,14 +29,9 @@ by standard CNA computations accouting for normal plodiy, tumour purity
 and tumor ploidy. The peaks are determined after a KDE of the data, run
 through a dedicated peak-detection package.
 
-## Motivation
+-----
 
-With this package it is easy to visually assess the concordance of
-somatic mutation calls, and the CNA segements where they map.
-Quantitative measures can be used to suggest adjustemnts of the current
-estimates as modifications of the input purity.
-
-## Installation
+### Installation
 
 You can install the released version of CNAqc from
 [GitHub](https://github.com/) with:
@@ -50,10 +43,13 @@ devtools::install_github("caravagn/CNAqc")
 
 -----
 
-***
+##### Copyright and contacts
 
-**Author:** [Giulio Caravagna](https://sites.google.com/site/giuliocaravagna/), _Institute of Cancer Research, UK_.
+Giulio Caravagna, PhD.
 
-**Email:** [giulio.caravagna@icr.ac.uk](mailto:giulio.caravagna@icr.ac.uk)
+_Institute of Cancer Research (London), UK_.
 
-**Twitter:** [@gcaravagna](https://twitter.com/gcaravagna)
+* Personal webpage: [https://bit.ly/2kc9E6Y](https://sites.google.com/site/giuliocaravagna/), 
+* Email address: [giulio.caravagna@icr.ac.uk](mailto:giulio.caravagna@icr.ac.uk) and [gcaravagn@gmail.com](mailto:gcaravagn@gmail.com)
+* Twitter feed: [\@gcaravagna](https://twitter.com/gcaravagna)
+* Other works: [caravagn](https://github.com/caravagn)

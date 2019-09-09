@@ -29,6 +29,10 @@
 #' plotting and analyzing data.
 #'
 #' @export
+#' 
+#' @import tidyverse
+#' @import pio
+#' @import crayon
 #'
 #' @examples
 #' data('example_dataset_CNAqc', package = 'CNAqc')
@@ -49,10 +53,9 @@ init = function(snvs, cna, purity)
   na_allele = na_allele_Major | na_allele_minor
   if(length(na_allele) > 0)
   {
-    cat(crayon::red("\n[CNAqc] The following segments have Major/ minor alleles in non-numeric format or NAs\n"))
+    cat(crayon::red("\n[CNAqc] CNA calls: the following segments have Major/ minor alleles in non-numeric format or NAs, and will be removed\n"))
     pio::pioDisp(input$cna[na_allele, , drop = FALSE])
-    cat(crayon::red("These CNA segments will be removed.\n"))
-
+  
     input$cna = input$cna[!na_allele, , drop = FALSE]
   }
 
