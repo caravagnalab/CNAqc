@@ -4,5 +4,4 @@ language: r
 
 cache: packages
 
-Remotes:
-  - caravagn/pio
+r_github_packages:  caravagn/pio

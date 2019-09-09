@@ -17,7 +17,9 @@ LazyData: true
 Imports: 
     pio,
     crayon,
-    peakPick
+    peakPick,
+    ggpubr,
+    tidyverse
 Remotes: caravagn/pio
 RoxygenNote: 6.1.1
 Suggests: 
