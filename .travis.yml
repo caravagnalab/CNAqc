@@ -11,3 +11,5 @@ before_install:
   - tlmgr install parnotes
   - tlmgr install marginfix
   
+Remotes:
+  - caravagn/pio
