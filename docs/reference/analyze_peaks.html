@@ -36,6 +36,15 @@
 
 
 <meta property="og:title" content="Analyze CNA calls by peak detection. — analyze_peaks" />
+<meta property="og:description" content="This function carries out a peak-detection
+analysis based on KDE and the package peakPick
+in order to determine if the mutations that map to a
+certain karyotype have an allelic frequency that is
+consistent with the Major and minor alleles of the
+segment, and the tumour purity. A score is produced
+as a linear combination of the distance of the actual
+peak to the expected one, derived with standard equations
+for CNA analysis." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -125,6 +134,15 @@
     </div>
 
     <div class="ref-description">
+    <p>This function carries out a peak-detection
+analysis based on KDE and the package <code>peakPick</code>
+in order to determine if the mutations that map to a
+certain karyotype have an allelic frequency that is
+consistent with the Major and minor alleles of the
+segment, and the tumour purity. A score is produced
+as a linear combination of the distance of the actual
+peak to the expected one, derived with standard equations
+for CNA analysis.</p>
     </div>
 
     <pre class="usage"><span class='fu'>analyze_peaks</span>(<span class='no'>x</span>, <span class='kw'>karyotypes</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"1:0"</span>, <span class='st'>"1:1"</span>, <span class='st'>"2:1"</span>, <span class='st'>"2:0"</span>, <span class='st'>"2:2"</span>),
@@ -142,7 +160,7 @@
       <th>karyotypes</th>
       <td><p>The list of karyotypes to test. By default LOH regions (A, AA),
 diploid regions (AB), and amplification regions (AAB, AABB). These correspond to
-<code>'1:0', '1:1', '2:1', '2:0', '2:2'</code> in Major:minor notation.</p></td>
+<code>'1:0', '1:1', '2:1', '2:0', '2:2'</code> in "Major:minor" notation.</p></td>
     </tr>
     <tr>
       <th>min_karyotype_size</th>
@@ -152,25 +170,118 @@ from analysis.</p></td>
     </tr>
     <tr>
       <th>adjust</th>
-      <td><p>KDE adjust density parameter - see <code><a href='https://rdrr.io/r/stats/density.html'>?density</a></code>. A Gaussian
-kernel is used (<code>kernel = 'gaussian'</code>). Default is 5<!-- % (\code{0.05}).} --></p>
-<p>min_densityPeaks in the VAF distribution below this density value will
+      <td><p>KDE adjust density parameter; see <code>density</code>. A Gaussian
+kernel is used (<code>kernel = 'gaussian'</code>).</p></td>
+    </tr>
+    <tr>
+      <th>min_density</th>
+      <td><p>Peaks in the VAF distribution below this density value will
 not be used to match the expected peaks. This is used to remove low-density
-peaks due to noise and miscalled CNAs.</p>
-<p>neighlimParameter for the <code>peakPick</code> package - see ?<code>peakPick</code>.</p>
-<p>matching_epsilonPeaks at location \(x\) are matched in \(x-e\), \(x+e\)
-(inclusive), where \(e\) is this parameter. By default (<code>0.015</code>) a 3<!-- % tolerance -->
-is adopted.</p>
-<p>...Parameters forwarded to <code>peakpick</code> from the <code>peakPick</code> package.</p></td>
+peaks due to noise and miscalled CNAs.</p></td>
+    </tr>
+    <tr>
+      <th>neighlim</th>
+      <td><p>Parameter for the <code>peakPick</code> package; see <code>peakPick</code>.</p></td>
+    </tr>
+    <tr>
+      <th>matching_epsilon</th>
+      <td><p>Peaks at a location are matched with a range of epsilon/2
+left and right. By default (<code>0.015</code>) a 3% tolerance is adopted.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Parameters forwarded to <code>peakpick</code> from the <code>peakPick</code> package.</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
+    <p>An object of class <code>cnaqc</code>, modified to hold the results from this analysis.
+See the vignette to see how to extract and plot the results.</p>
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='st'>'example_dataset_CNAqc'</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>'CNAqc'</span>)
+<span class='no'>x</span> <span class='kw'>=</span> <span class='fu'><a href='init.html'>init</a></span>(<span class='no'>example_dataset_CNAqc</span>$<span class='no'>snvs</span>, <span class='no'>example_dataset_CNAqc</span>$<span class='no'>cna</span>,<span class='no'>example_dataset_CNAqc</span>$<span class='no'>purity</span>)</div><div class='output co'>#&gt; <span style='color: #BBBBBB;background-color: #0000BB;'> [ CNAqc - CNA Quality Check ] 
+#&gt; </span><span></div><div class='output co'>#&gt; <span class='message'>[CNAqc] Missing CCF column from CNA calls, adding CCF = 1 assuming all calls to be clonal.</span></div><div class='output co'>#&gt; </span><span style='color: #000000;background-color: #BBBB00;'>
+#&gt; Input </span><span> n = 13141 mutations for 267 CNA segments (267 clonal, 0 subclonal)
+#&gt; 
+#&gt;  </span><span style='color: #00BB00;'>Mapping mutations to clonal CNA.
+#&gt; </span><span style='color: #000000;background-color: #BBBB00;'>
+#&gt; Mapping.</span><span> n = 12963 mutations mapped to segments (~99% of input) </div><div class='input'>
+<span class='no'>x</span> <span class='kw'>=</span> <span class='fu'>analyze_peaks</span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; </span><span style='color: #BBBBBB;background-color: #0000BB;'> [ QC analysis with peaks detection ] 
+#&gt; </span><span>
+#&gt; </span><span style='color: #000000;background-color: #BBBB00;'>      CNAqc </span><span> n = 13141 mutations for 267 CNA segments (267 clonal, 0 subclonal) </span><span style='color: #000000;background-color: #BBBB00;'>
+#&gt;      Purity </span><span> 89 cellularity </span><span style='color: #000000;background-color: #BBBB00;'>
+#&gt;  Karyotypes </span><span> 7478 (2:2); 1893 (4:2); 1625 (3:2); 1563 (2:1); 312 (3:0); 81 (2:0); 4 (16:2); 2 (25:2); 2 (3:1); 1 (106:1); 1 (26:2); 1 (99:1) 
+#&gt;  </span><span style='color: #000000;background-color: #BBBB00;'>
+#&gt;    Peaks QC </span><span> </span><span style='color: #BB0000;'>FALSE</span><span> </span><span style='color: #000000;background-color: #BBBB00;'>
+#&gt; </span><span>
+#&gt; </span><span style='color: #00BBBB;'>=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-</span><span>
+#&gt; </span><span style='color: #00BBBB;'> Analysing ~ karyotypes 1:0, 1:1, 2:1, 2:0, 2:2 ~  9041 mutations ~ min. k = 657</span><span>
+#&gt; </span><span style='color: #00BBBB;'>=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-</span><span>
+#&gt; </span><span style='color: #555555;'># A tibble: 3 x 5</span><span>
+#&gt;   karyotype     n n_proportion QC    norm_prop
+#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>        </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'>1</span><span> 2:2        </span><span style='text-decoration: underline;'>7</span><span>478      0.569   TRUE      0.827
+#&gt; </span><span style='color: #555555;'>2</span><span> 2:1        </span><span style='text-decoration: underline;'>1</span><span>563      0.119   TRUE      0.173
+#&gt; </span><span style='color: #555555;'>3</span><span> 2:0          81      0.006</span><span style='text-decoration: underline;'>16</span><span> FALSE    </span><span style='color: #BB0000;'>NA</span><span>    
+#&gt; </span><span style='color: #000000;background-color: #BBBB00;'>
+#&gt; Peak detector</span><span> p = 0.89 ~ KDE a = 1 c = 0.5 ~ peakPick n = 1 epsilon = 0.015 </span><span style='color: #000000;background-color: #BBBB00;'>
+#&gt; </span><span></div><div class='output co'>#&gt; <span class='message'>Loading required package: peakPick</span></div><div class='output co'>#&gt; 
+#&gt; </span><span style='color: #00BBBB;'>=-=-=-=-=-=-=-=-</span><span>
+#&gt; </span><span style='color: #00BBBB;'> Results table</span><span>
+#&gt; </span><span style='color: #00BBBB;'>=-=-=-=-=-=-=-=-</span><span>
+#&gt; </span><span style='color: #555555;'># A tibble: 4 x 10</span><span>
+#&gt;   mutation_multip… karyotype  peak     x     y discarded   offset matched weight
+#&gt;              </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span>        </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'>1</span><span>                2 2:1       0.616  0.6   2.94 FALSE      0.015</span><span style='text-decoration: underline;'>9</span><span>  FALSE   0.086</span><span style='text-decoration: underline;'>4</span><span>
+#&gt; </span><span style='color: #555555;'>2</span><span>                1 2:1       0.308  0.3   3.6  FALSE      0.007</span><span style='text-decoration: underline;'>96</span><span> TRUE    0.086</span><span style='text-decoration: underline;'>4</span><span>
+#&gt; </span><span style='color: #555555;'>3</span><span>                2 2:2       0.471  0.46  8.14 FALSE      0.010</span><span style='text-decoration: underline;'>9</span><span>  TRUE    0.414 
+#&gt; </span><span style='color: #555555;'>4</span><span>                1 2:2       0.235  0.24  0.86 FALSE     -</span><span style='color: #BB0000;'>0.004</span><span style='color: #BB0000;text-decoration: underline;'>55</span><span> TRUE    0.414 
+#&gt; </span><span style='color: #555555;'># … with 1 more variable: score </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #000000;background-color: #BBBB00;'>
+#&gt; Fit score:</span><span> 0.00468956233367035 
+#&gt;  </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; </span><span style='color: #000000;background-color: #BBBB00;'>      CNAqc </span><span> n = 13141 mutations for 267 CNA segments (267 clonal, 0 subclonal) </span><span style='color: #000000;background-color: #BBBB00;'>
+#&gt;      Purity </span><span> 89 cellularity </span><span style='color: #000000;background-color: #BBBB00;'>
+#&gt;  Karyotypes </span><span> 7478 (2:2); 1893 (4:2); 1625 (3:2); 1563 (2:1); 312 (3:0); 81 (2:0); 4 (16:2); 2 (25:2); 2 (3:1); 1 (106:1); 1 (26:2); 1 (99:1) 
+#&gt;  </span><span style='color: #000000;background-color: #BBBB00;'>
+#&gt;    Peaks QC </span><span> </span><span style='color: #00BB00;'>TRUE</span><span>  ~ s =  0.00468956233367035 </span><span style='color: #000000;background-color: #BBBB00;'>
+#&gt; </span><span style='color: #555555;'># A tibble: 4 x 10</span><span>
+#&gt;   mutation_multip… karyotype  peak     x     y discarded   offset matched weight
+#&gt;              </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span>        </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'>1</span><span>                2 2:1       0.616  0.6   2.94 FALSE      0.015</span><span style='text-decoration: underline;'>9</span><span>  FALSE   0.086</span><span style='text-decoration: underline;'>4</span><span>
+#&gt; </span><span style='color: #555555;'>2</span><span>                1 2:1       0.308  0.3   3.6  FALSE      0.007</span><span style='text-decoration: underline;'>96</span><span> TRUE    0.086</span><span style='text-decoration: underline;'>4</span><span>
+#&gt; </span><span style='color: #555555;'>3</span><span>                2 2:2       0.471  0.46  8.14 FALSE      0.010</span><span style='text-decoration: underline;'>9</span><span>  TRUE    0.414 
+#&gt; </span><span style='color: #555555;'>4</span><span>                1 2:2       0.235  0.24  0.86 FALSE     -</span><span style='color: #BB0000;'>0.004</span><span style='color: #BB0000;text-decoration: underline;'>55</span><span> TRUE    0.414 
+#&gt; </span><span style='color: #555555;'># … with 1 more variable: score </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span></div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>x</span>$<span class='no'>peaks_analysis</span>)</div><div class='output co'>#&gt; $score
+#&gt; [1] 0.004689562
+#&gt; 
+#&gt; $matches
+#&gt; </span><span style='color: #555555;'># A tibble: 4 x 10</span><span>
+#&gt;   mutation_multip… karyotype  peak     x     y discarded   offset matched weight
+#&gt;              </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span>        </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'>1</span><span>                2 2:1       0.616  0.6   2.94 FALSE      0.015</span><span style='text-decoration: underline;'>9</span><span>  FALSE   0.086</span><span style='text-decoration: underline;'>4</span><span>
+#&gt; </span><span style='color: #555555;'>2</span><span>                1 2:1       0.308  0.3   3.6  FALSE      0.007</span><span style='text-decoration: underline;'>96</span><span> TRUE    0.086</span><span style='text-decoration: underline;'>4</span><span>
+#&gt; </span><span style='color: #555555;'>3</span><span>                2 2:2       0.471  0.46  8.14 FALSE      0.010</span><span style='text-decoration: underline;'>9</span><span>  TRUE    0.414 
+#&gt; </span><span style='color: #555555;'>4</span><span>                1 2:2       0.235  0.24  0.86 FALSE     -</span><span style='color: #BB0000;'>0.004</span><span style='color: #BB0000;text-decoration: underline;'>55</span><span> TRUE    0.414 
+#&gt; </span><span style='color: #555555;'># … with 1 more variable: score </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; 
+#&gt; $plots
+#&gt; $plots$`1:0`</div><div class='img'><img src='analyze_peaks-1.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; 
+#&gt; $plots$`1:1`</div><div class='img'><img src='analyze_peaks-2.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; 
+#&gt; $plots$`2:1`</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 2 rows containing missing values (geom_bar).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 32 rows containing missing values (geom_path).</span></div><div class='img'><img src='analyze_peaks-3.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; 
+#&gt; $plots$`2:0`</div><div class='img'><img src='analyze_peaks-4.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; 
+#&gt; $plots$`2:2`</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 2 rows containing missing values (geom_bar).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 13 rows containing missing values (geom_path).</span></div><div class='img'><img src='analyze_peaks-5.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; 
+#&gt; </div><div class='input'>
+</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
+      <li><a href="#value">Value</a></li>
+      <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>

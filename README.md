@@ -20,7 +20,7 @@ assessment of the quality of calls. Quantitative measures can also be
 used to suggest adjustemnts of the current purity estimates to increase
 the quality of CNA calls.
 
-##### Statistical model
+#### Statistical model
 
 CNAqc implements a linear score where the relative size of each of a
 set of karyotypes is used to weight the offset between an estimated
@@ -43,13 +43,11 @@ devtools::install_github("caravagn/CNAqc")
 
 -----
 
-##### Copyright and contacts
+#### Copyright and contacts
 
-Giulio Caravagna, PhD.
-
-_Institute of Cancer Research (London), UK_.
+Giulio Caravagna, PhD. _Institute of Cancer Research, London, UK_.
 
 * Personal webpage: [https://bit.ly/2kc9E6Y](https://sites.google.com/site/giuliocaravagna/), 
 * Email address: [giulio.caravagna@icr.ac.uk](mailto:giulio.caravagna@icr.ac.uk) and [gcaravagn@gmail.com](mailto:gcaravagn@gmail.com)
-* Twitter feed: [\@gcaravagna](https://twitter.com/gcaravagna)
+* Twitter feed: [@gcaravagna](https://twitter.com/gcaravagna)
 * Other works: [caravagn](https://github.com/caravagn)

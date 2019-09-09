@@ -93,9 +93,9 @@
 
 <p>CNAqc is a package to provide a set of metrics to assess the quality of Copy Number Alteration (CNA) calls.</p>
 <p>The package provides statistical measures to quantify the concordance between mutation and Copy Number calls, exploiting allelic imbalance in absolute CNA segments and allelic frequencies of somatic mutations. Quantitative metrics and plots for data exploration and quality check are available, allowing for a intuitive assessment of the quality of calls. Quantitative measures can also be used to suggest adjustemnts of the current purity estimates to increase the quality of CNA calls.</p>
-<div id="statistical-model" class="section level5">
-<h5 class="hasAnchor">
-<a href="#statistical-model" class="anchor"></a>Statistical model</h5>
+<div id="statistical-model" class="section level4">
+<h4 class="hasAnchor">
+<a href="#statistical-model" class="anchor"></a>Statistical model</h4>
 <p>CNAqc implements a linear score where the relative size of each of a set of karyotypes is used to weight the offset between an estimated peak in the data, and its expectation. The expectations are determined by standard CNA computations accouting for normal plodiy, tumour purity and tumor ploidy. The peaks are determined after a KDE of the data, run through a dedicated peak-detection package.</p>
 <hr>
 </div>
@@ -106,16 +106,15 @@
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co"># install.packages("devtools")</span></a>
 <a class="sourceLine" id="cb1-2" data-line-number="2">devtools<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/devtools/man/reexports.html">install_github</a></span>(<span class="st">"caravagn/CNAqc"</span>)</a></code></pre></div>
 <hr>
-<div id="copyright-and-contacts" class="section level5">
-<h5 class="hasAnchor">
-<a href="#copyright-and-contacts" class="anchor"></a>Copyright and contacts</h5>
-<p>Giulio Caravagna, PhD.</p>
-<p><em>Institute of Cancer Research (London), UK</em>.</p>
+<div id="copyright-and-contacts" class="section level4">
+<h4 class="hasAnchor">
+<a href="#copyright-and-contacts" class="anchor"></a>Copyright and contacts</h4>
+<p>Giulio Caravagna, PhD. <em>Institute of Cancer Research, London, UK</em>.</p>
 <ul>
 <li>Personal webpage: <a href="https://sites.google.com/site/giuliocaravagna/">https://bit.ly/2kc9E6Y</a>,</li>
 <li>Email address: <a href="mailto:giulio.caravagna@icr.ac.uk">giulio.caravagna@icr.ac.uk</a> and <a href="mailto:gcaravagn@gmail.com">gcaravagn@gmail.com</a>
 </li>
-<li>Twitter feed: <a href="https://twitter.com/gcaravagna">\@gcaravagna</a>
+<li>Twitter feed: <a href="https://twitter.com/gcaravagna">@gcaravagna</a>
 </li>
 <li>Other works: <a href="https://github.com/caravagn">caravagn</a>
 </li>

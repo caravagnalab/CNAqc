@@ -13,24 +13,23 @@ analyze_peaks(x, karyotypes = c("1:0", "1:1", "2:1", "2:0", "2:2"),
 
 \item{karyotypes}{The list of karyotypes to test. By default LOH regions (A, AA),
 diploid regions (AB), and amplification regions (AAB, AABB). These correspond to
-\code{'1:0', '1:1', '2:1', '2:0', '2:2'} in Major:minor notation.}
+\code{'1:0', '1:1', '2:1', '2:0', '2:2'} in "Major:minor" notation.}
 
 \item{min_karyotype_size}{Karyotypes are subset by their size (normalized for
 the number of input mutations). Karyotypes smaller than this value are removed
 from analysis.}
 
-\item{adjust}{KDE adjust density parameter - see \code{?density}. A Gaussian
-kernel is used (\code{kernel = 'gaussian'}). Default is 5% (\code{0.05}).}
+\item{adjust}{KDE adjust density parameter; see \code{density}. A Gaussian
+kernel is used (\code{kernel = 'gaussian'}).}
 
 \item{min_density}{Peaks in the VAF distribution below this density value will
 not be used to match the expected peaks. This is used to remove low-density
 peaks due to noise and miscalled CNAs.}
 
-\item{neighlim}{Parameter for the \code{peakPick} package - see ?\code{peakPick}.}
+\item{neighlim}{Parameter for the \code{peakPick} package; see \code{peakPick}.}
 
-\item{matching_epsilon}{Peaks at location \eqn{x} are matched in \eqn{x-e}, \eqn{x+e}
-(inclusive), where \eqn{e} is this parameter. By default (\code{0.015}) a 3% tolerance
-is adopted.}
+\item{matching_epsilon}{Peaks at a location are matched with a range of epsilon/2
+left and right. By default (\code{0.015}) a 3\% tolerance is adopted.}
 
 \item{...}{Parameters forwarded to \code{peakpick} from the \code{peakPick} package.}
 }
@@ -57,4 +56,5 @@ x = analyze_peaks(x)
 print(x)
 
 print(x$peaks_analysis)
+
 }

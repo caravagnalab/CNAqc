@@ -2,8 +2,6 @@
 output: github_document
 ---
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
-
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -16,9 +14,10 @@ knitr::opts_chunk$set(
 # CNAqc
 
 <!-- badges: start -->
-[![Travis build status](https://travis-ci.org/caravagn/CNAqc.svg?branch=master)](https://travis-ci.org/caravagn/CNAqc)
-<!-- badges: end -->
 
+[![Travis build
+status](https://travis-ci.org/caravagn/CNAqc.svg?branch=master)](https://travis-ci.org/caravagn/CNAqc)
+<!-- badges: end -->
 
 CNAqc is a package to provide a set of metrics to assess the quality of 
 Copy Number Alteration (CNA) calls.
@@ -31,8 +30,7 @@ assessment of the quality of calls. Quantitative measures can also be
 used to suggest adjustemnts of the current purity estimates to increase
 the quality of CNA calls.
 
-Statistical Model
------------------
+#### Statistical model
 
 CNAqc implements a linear score where the relative size of each of a
 set of karyotypes is used to weight the offset between an estimated
@@ -41,20 +39,26 @@ by standard CNA computations accouting for normal plodiy, tumour purity
 and tumor ploidy. The peaks are determined after a KDE of the data, run
 through a dedicated peak-detection package.
 
-## Installation
+-----
 
-You can install the released version of CNAqc from [GitHub](https://github.com/) with:
+### Installation
+
+You can install the released version of CNAqc from
+[GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
 devtools::install_github("caravagn/CNAqc")
 ```
 
-***
+-----
 
-**Author:** [Giulio Caravagna](https://sites.google.com/site/giuliocaravagna/), _Institute of Cancer Research, UK_.
+#### Copyright and contacts
 
-**Email:** [giulio.caravagna@icr.ac.uk](mailto:giulio.caravagna@icr.ac.uk)
+Giulio Caravagna, PhD. _Institute of Cancer Research, London, UK_.
 
-**Twitter:** [@gcaravagna](https://twitter.com/gcaravagna)
+* Personal webpage: [https://bit.ly/2kc9E6Y](https://sites.google.com/site/giuliocaravagna/), 
+* Email address: [giulio.caravagna@icr.ac.uk](mailto:giulio.caravagna@icr.ac.uk) and [gcaravagn@gmail.com](mailto:gcaravagn@gmail.com)
+* Twitter feed: [@gcaravagna](https://twitter.com/gcaravagna)
+* Other works: [caravagn](https://github.com/caravagn)
 
