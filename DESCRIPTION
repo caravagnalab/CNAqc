@@ -16,3 +16,5 @@ Suggests:
     knitr,
     rmarkdown
 VignetteBuilder: knitr
+URL: https://github.com/caravagn/CNAqc
+BugReports: https://github.com/caravagn/CNAqc/issues

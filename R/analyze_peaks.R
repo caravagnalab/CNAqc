@@ -32,10 +32,10 @@
 #' @return An object of class \code{cnaqc}, modified to hold the results from this analysis.
 #' See the vignette to see how to extract and plot the results.
 #'
-#' @export
-#'
 #' @import tidyverse
 #' @import peakPick
+#'
+#' @export
 #'
 #' @examples
 #' data('example_dataset_CNAqc', package = 'CNAqc')

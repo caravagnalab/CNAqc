@@ -43,6 +43,9 @@
   </a>
 </li>
 <li>
+  <a href="../articles/CNAqc.html">Get started</a>
+</li>
+<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
@@ -53,15 +56,19 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/Introduction.html">Introduction</a>
-    </li>
-    <li>
       <a href="../articles/peaks_detection.html">QC analysis via peaks detection</a>
     </li>
   </ul>
 </li>
       </ul>
-<ul class="nav navbar-nav navbar-right"></ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+  <a href="https://github.com/caravagn/CNAqc">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
 </div>
 <!--/.nav-collapse -->
   </div>
@@ -76,7 +83,7 @@
       <h1>QC analysis via peaks detection</h1>
             
       
-      
+      <small class="dont-index">Source: <a href="https://github.com/caravagn/CNAqc/blob/master/vignettes/peaks_detection.Rmd"><code>vignettes/peaks_detection.Rmd</code></a></small>
       <div class="hidden name"><code>peaks_detection.Rmd</code></div>
 
     </div>
@@ -105,7 +112,7 @@
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">x =<span class="st"> </span>CNAqc<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/CNAqc/topics/analyze_peaks">analyze_peaks</a></span>(x)</a>
 <a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co">#&gt;  [ QC analysis with peaks detection ] </span></a>
 <a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">#&gt;       CNAqc  n = 13141 mutations for 482 CNA segments (267 clonal, 0 subclonal) </span></a>
+<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">#&gt;       CNAqc  n = 13141 mutations for 267 CNA segments (267 clonal, 0 subclonal) </span></a>
 <a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co">#&gt;      Purity  89 cellularity </span></a>
 <a class="sourceLine" id="cb3-6" data-line-number="6"><span class="co">#&gt;  Karyotypes  7478 (2:2); 1893 (4:2); 1625 (3:2); 1563 (2:1); 312 (3:0); 81 (2:0); 67 (NA:NA); 16 (NA:2); 4 (104:NA); 4 (16:2); 2 (25:2); 2 (3:1); 1 (106:1); 1 (26:2); 1 (99:1) </span></a>
 <a class="sourceLine" id="cb3-7" data-line-number="7"><span class="co">#&gt;  </span></a>
@@ -139,7 +146,7 @@
 <a class="sourceLine" id="cb3-35" data-line-number="35"><span class="co">#&gt; Fit score: 0.00468956233367035 </span></a>
 <a class="sourceLine" id="cb3-36" data-line-number="36"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb3-37" data-line-number="37"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(x)</a>
-<a class="sourceLine" id="cb3-38" data-line-number="38"><span class="co">#&gt;       CNAqc  n = 13141 mutations for 482 CNA segments (267 clonal, 0 subclonal) </span></a>
+<a class="sourceLine" id="cb3-38" data-line-number="38"><span class="co">#&gt;       CNAqc  n = 13141 mutations for 267 CNA segments (267 clonal, 0 subclonal) </span></a>
 <a class="sourceLine" id="cb3-39" data-line-number="39"><span class="co">#&gt;      Purity  89 cellularity </span></a>
 <a class="sourceLine" id="cb3-40" data-line-number="40"><span class="co">#&gt;  Karyotypes  7478 (2:2); 1893 (4:2); 1625 (3:2); 1563 (2:1); 312 (3:0); 81 (2:0); 67 (NA:NA); 16 (NA:2); 4 (104:NA); 4 (16:2); 2 (25:2); 2 (3:1); 1 (106:1); 1 (26:2); 1 (99:1) </span></a>
 <a class="sourceLine" id="cb3-41" data-line-number="41"><span class="co">#&gt;  </span></a>

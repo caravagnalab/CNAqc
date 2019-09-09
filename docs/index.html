@@ -20,7 +20,7 @@
 <![endif]-->
 </head>
 <body>
-    <div class="container template-home">
+    <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
@@ -45,6 +45,9 @@
   </a>
 </li>
 <li>
+  <a href="articles/CNAqc.html">Get started</a>
+</li>
+<li>
   <a href="reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
@@ -55,15 +58,19 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="articles/Introduction.html">Introduction</a>
-    </li>
-    <li>
       <a href="articles/peaks_detection.html">QC analysis via peaks detection</a>
     </li>
   </ul>
 </li>
       </ul>
-<ul class="nav navbar-nav navbar-right"></ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+  <a href="https://github.com/caravagn/CNAqc">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
 </div>
 <!--/.nav-collapse -->
   </div>
@@ -73,13 +80,19 @@
 
       
       </header><div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
+    
+
+    
+    
+<!-- README.md is generated from README.Rmd. Please edit that file -->
 <div id="cnaqc" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#cnaqc" class="anchor"></a>CNAqc</h1></div>
-<p>CNAqc - Copy Number Alteration (CNA) quality check - is a package to provide a set of metrics to assess the quality of CNA calls.</p>
-<p>The package exploits peak detection methods to determine</p>
-<p>The package provides statistical measures to quantify the concordance between mutation and Copy Number calls, exploitinng the relation between allelic imbalance in CNA segements and allelic frequencies of somatic mutations. Quantitative metrics and plots for data exploration are available.</p>
+<!-- badges: start -->
+
+<p>CNAqc is a package to provide a set of metrics to assess the quality of Copy Number Alteration (CNA) calls.</p>
+<p>The package provides statistical measures to quantify the concordance between mutation and Copy Number calls, exploitinng the relation between allelic imbalance in CNA segements and allelic frequencies of somatic mutations. Quantitative metrics and plots for data exploration and quality check are available.</p>
 <div id="statistical-model" class="section level2">
 <h2 class="hasAnchor">
 <a href="#statistical-model" class="anchor"></a>Statistical Model</h2>
@@ -89,15 +102,31 @@
 <h2 class="hasAnchor">
 <a href="#motivation" class="anchor"></a>Motivation</h2>
 <p>With this package it is easy to visually assess the concordance of somatic mutation calls, and the CNA segements where they map. Quantitative measures can be used to suggest adjustemnts of the current estimates as modifications of the input purity.</p>
+</div>
+<div id="installation" class="section level2">
+<h2 class="hasAnchor">
+<a href="#installation" class="anchor"></a>Installation</h2>
+<p>You can install the released version of CNAqc from <a href="https://github.com/">GitHub</a> with:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co"># install.packages("devtools")</span></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">"caravagn/CNAqc"</span>)</a></code></pre></div>
 <hr>
 <p><strong>Author:</strong> <a href="https://sites.google.com/site/giuliocaravagna/">Giulio Caravagna</a>, <em>Institute of Cancer Research, UK</em>.</p>
-<p><strong>Contact:</strong> [<a href="https://twitter.com/gcaravagna">@gcaravagna</a>; <a href="mailto:giulio.caravagna@icr.ac.uk">giulio.caravagna@icr.ac.uk</a>]</p>
+<p><strong>Contact:</strong> <span class="citation">[@gcaravagna]</span>(<a href="https://twitter.com/gcaravagna" class="uri">https://twitter.com/gcaravagna</a>) <a href="mailto:giulio.caravagna@icr.ac.uk">giulio.caravagna@icr.ac.uk</a></p>
 </div>
 </div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <div class="license">
+    <div class="links">
+<h2>Links</h2>
+<ul class="list-unstyled">
+<li>Browse source code at <br><a href="https://github.com/caravagn/CNAqc">https://​github.com/​caravagn/​CNAqc</a>
+</li>
+<li>Report a bug at <br><a href="https://github.com/caravagn/CNAqc/issues">https://​github.com/​caravagn/​CNAqc/​issues</a>
+</li>
+</ul>
+</div>
+<div class="license">
 <h2>License</h2>
 <ul class="list-unstyled">
 <li>What license is it under?</li>
@@ -110,8 +139,17 @@
 </ul>
 </div>
 
-  </div>
+
+      <div class="dev-status">
+<h2>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://travis-ci.org/caravagn/CNAqc"><img src="https://travis-ci.org/caravagn/CNAqc.svg?branch=master" alt="Travis build status"></a></li>
+</ul>
 </div>
+</div>
+
+</div>
+
 
       <footer><div class="copyright">
   <p>Developed by Giulio Caravagna.</p>
