@@ -92,16 +92,11 @@
 <!-- badges: start -->
 
 <p>CNAqc is a package to provide a set of metrics to assess the quality of Copy Number Alteration (CNA) calls.</p>
-<p>The package provides statistical measures to quantify the concordance between mutation and Copy Number calls, exploitinng the relation between allelic imbalance in CNA segements and allelic frequencies of somatic mutations. Quantitative metrics and plots for data exploration and quality check are available.</p>
+<p>The package provides statistical measures to quantify the concordance between mutation and Copy Number calls, exploiting the relation between allelic imbalance in absolute CNA segments and allelic frequencies of somatic mutations. Quantitative metrics and plots for data exploration and quality check are available, allow a intuitive assessment of the quality of calls. Quantitative measures can also be used to suggest adjustemnts of the current purity estimates to increase the quality of CNA calls.</p>
 <div id="statistical-model" class="section level2">
 <h2 class="hasAnchor">
 <a href="#statistical-model" class="anchor"></a>Statistical Model</h2>
 <p>CNAqc implements a linear score where the relative size of each of a set of karyotypes is used to weight the offset between an estimated peak in the data, and its expectation. The expectations are determined by standard CNA computations accouting for normal plodiy, tumour purity and tumor ploidy. The peaks are determined after a KDE of the data, run through a dedicated peak-detection package.</p>
-</div>
-<div id="motivation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#motivation" class="anchor"></a>Motivation</h2>
-<p>With this package it is easy to visually assess the concordance of somatic mutation calls, and the CNA segements where they map. Quantitative measures can be used to suggest adjustemnts of the current estimates as modifications of the input purity.</p>
 </div>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
@@ -111,7 +106,8 @@
 <a class="sourceLine" id="cb1-2" data-line-number="2">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">"caravagn/CNAqc"</span>)</a></code></pre></div>
 <hr>
 <p><strong>Author:</strong> <a href="https://sites.google.com/site/giuliocaravagna/">Giulio Caravagna</a>, <em>Institute of Cancer Research, UK</em>.</p>
-<p><strong>Contact:</strong> <span class="citation">[@gcaravagna]</span>(<a href="https://twitter.com/gcaravagna" class="uri">https://twitter.com/gcaravagna</a>) <a href="mailto:giulio.caravagna@icr.ac.uk">giulio.caravagna@icr.ac.uk</a></p>
+<p><strong>Email:</strong> <a href="mailto:giulio.caravagna@icr.ac.uk">giulio.caravagna@icr.ac.uk</a></p>
+<p><strong>Twitter:</strong> <span class="citation">[@gcaravagna]</span>(<a href="https://twitter.com/gcaravagna" class="uri">https://twitter.com/gcaravagna</a>)</p>
 </div>
 </div>
   </div>

@@ -32,8 +32,7 @@ peaks due to noise and miscalled CNAs.}
 (inclusive), where \eqn{e} is this parameter. By default (\code{0.015}) a 3% tolerance
 is adopted.}
 
-\item{...}{Parameters forwarded to a call to function \code{peakpick} from
-the \code{peakPick} package.}
+\item{...}{Parameters forwarded to \code{peakpick} from the \code{peakPick} package.}
 }
 \value{
 An object of class \code{cnaqc}, modified to hold the results from this analysis.

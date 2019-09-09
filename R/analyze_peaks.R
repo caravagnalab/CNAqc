@@ -22,19 +22,14 @@
 #' @param min_density Peaks in the VAF distribution below this density value will
 #' not be used to match the expected peaks. This is used to remove low-density
 #' peaks due to noise and miscalled CNAs.
-#' @param neighlim Parameter for the \code{peakPick} package - see \code{?peakPick}.
+#' @param neighlim Parameter for the \code{peakPick} package - see ?\code{peakPick}.
 #' @param matching_epsilon Peaks at location \eqn{x} are matched in \eqn{x-e}, \eqn{x+e}
 #' (inclusive), where \eqn{e} is this parameter. By default (\code{0.015}) a 3% tolerance
 #' is adopted.
-#' @param ... Parameters forwarded to a call to function \code{peakpick} from
-#' the \code{peakPick} package.
+#' @param ... Parameters forwarded to \code{peakpick} from the \code{peakPick} package.
 #'
 #' @return An object of class \code{cnaqc}, modified to hold the results from this analysis.
 #' See the vignette to see how to extract and plot the results.
-#'
-#' @import tidyverse
-#' @import peakPick
-#'
 #' @export
 #'
 #' @examples

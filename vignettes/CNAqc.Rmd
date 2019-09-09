@@ -14,49 +14,89 @@ knitr::opts_chunk$set(
 )
 ```
 
-This vignette describes how to set-up your data into the `CNAqc` package.
 
 ```{r setup}
 library(CNAqc)
-require(tidyverse)
 ```
 
-The input mutations must be a `data.frame` with:
+To set-up your data and work with the `CNAqc` package, you need to have:
 
-* `chr`, `from`, `to` as `hg19` chromosome coordinates. 
-  - Chromosome names must be in the format `chr1`, `chr2`, etc.;
-  
-* `ref` and `alt` for the reference and alternative alleles. 
-  - Alleles should be characters, the tool will use all available mutation types but we 
-suggest to carry out QC with high-quality SNV data;
+* mutation calls;
+* CNA segments;
+* tumor purity estimates;
 
-* `DP`, `NV` and `VAF` (numeric) for 
-  - the base depth  - total number of reads with both reference and alternative;
-  - the number of variants with the alternative allele;
-  - the allele frequency (`VAF = NV/DP`). 
+The workflow of the package is simple:
 
-The input CNAs must be a `data.frame` with:
+1. load input data into the package;
+2. use package functions to inspiect the data, and run QC analyses;
+3. visualize and export QC results.
 
-* `chr`, `from`, `to` as `hg19` chromosome coordinates, (as for mutations);
+QC results can be used to determine if the estimated purity and CNA fits to the
+observed mutation data are good. If they are off, QC results can be
+used to adjust the actual set of calls (e.g., adjusting the purity by a certain
+factor).
 
-* `Major` and `minor` for the number of copies of the major allele, and 
-the minor (B-allele). A diploid segment will have terefore `Major = minor = 1`
-and will be denoted as `1:1`.
+# Input format
 
-* A `CCF` column can be used to represent the Cancer Cell Fractionsas 
-(i.e., clonality of the segment) a real-value in between 0 and 1 to.
-  - If this is not available, `CCF = 1` is set assuming clonal segments. 
-  Otherwise, segments with `CCF<1` are considered subclonal CNAs.
+`CNAqc` uses `hg19` chromosome coordinates to map mutations and CNAs. The package
+comes with a template dataset available.
+
+```{r}
+# Load template data
+data('example_dataset_CNAqc', package = 'CNAqc')
+```
+
+
+Input mutations and CNA must be a `data.frame`; both of them are required
+to have certain columns. 
+
+```{r}
+# Example input SNVs
+print(
+  example_dataset_CNAqc$snvs %>% 
+        select(
+          chr, from, to, # Genomic coordinates
+          ref, alt,      # Alleles (reference and alternative)
+          DP, NV, VAF    # Read counts (depth, number of variant reads, tumour VAF)
+          )
+  )
+```
+
+Chromosome names and alleles should be in character format; chromosomes 
+must be in the format `chr1`, `chr2`, etc.. `CNAqc` will use all available mutation types but we suggest to carry out QC with high-quality SNV data. 
+
+CNA calls must be in *absolute* format, reporting the allelic imbalance of each segment.
+
+```{r}
+# Example input CNA
+print(
+  example_dataset_CNAqc$cna %>% 
+        select(
+          chr, from, to, # Genomic coordinates
+          Major, minor,  # Number of copies of major/ and minor allele (B-allele)
+        )
+  )
+```
+
+In this format, a diploid segment will have `Major = minor = 1` and will be denoted as `1:1`. `CNAqc`
+distinguishes between clonal and subclonal CNA calls, if the Cancer Cell Fraction of a segment 
+(i.e., its clonality) is reported.
+
+A `CCF` column can represent the segment CCF as [0,1] real-value. If missing, 
+`CCF = 1` is set assuming clonal segments; otherwise, segments with `CCF<1` are considered subclonal CNAs.
 
 To analyze the data, a purity value in between `0` and `1` is required to
-represent the proportion of actual tumour content (sometimes called 
-"cellularity").
-
-The package comes with a template dataset available.
+represent the proportion of actual tumour content, sometimes called 
+"cellularity".
 ```{r}
-data('example_dataset_CNAqc', package = 'CNAqc')
-print(example_dataset_CNAqc)
+# Example input purity
+print(example_dataset_CNAqc$purity)
 ```
+
+# Initialization
+
+
+
 
 To sue the package, you need to initialize a `cnaqc`object mapping mutations to chromosomes. 
 
