@@ -1,11 +1,13 @@
 Package: CNAqc
 Type: Package
-Title: What the Package Does (Title Case)
+Title: CNAqc - Copy Number Analysis quality check
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Author: Giulio Caravagna
+Maintainer: Giulio Caravagna <gcaravagn@gmail.com>
+Authors@R: person("Giulio", "Caravagna", role = c("aut", "cre"), email = "gcaravagn@gmail.com")
+Description: CNAqc is a package that implements QC metrics and plots to assess the quality of Copy Number calls. 
+  The package provides statistical measures to quantify the concordance between mutation and Copy Number calls,
+  exploiring the relation between allelic imbalance in CNA segements and allelic frequencies of somatic mutations. 
 License: What license is it under?
 Encoding: UTF-8
 LazyData: true

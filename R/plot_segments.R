@@ -1,12 +1,21 @@
-#' Title
+#' Plot CNA segments.
 #'
-#' @param x
-#' @param chromosomes
+#' @description Plot CNA segments as Major/ minor allele, annotating
+#' clonal and subclonal CNA calls in two different sets of colors.
+#' This function uses \code{hg19} genome coordinates to map CNA segments.
 #'
-#' @return
+#' @param x An object of class \code{cnaqc}, created by the \code{init} function.
+#' @param chromosomes The chromosome to use for this plot.
+#'
+#' @return A \code{ggplot} object.
 #' @export
 #'
 #' @examples
+#' data('example_dataset_CNAqc', package = 'CNAqc')
+#' x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+#'
+#' plot_segments(x)
+#' plot_segments(x, chromosomes = 'chr13')
 plot_segments = function(x, chromosomes = paste0('chr', c(1:22, 'X', 'Y')))
 {
 

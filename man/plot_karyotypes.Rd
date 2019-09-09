@@ -2,14 +2,32 @@
 % Please edit documentation in R/plot_karyotypes.R
 \name{plot_karyotypes}
 \alias{plot_karyotypes}
-\title{Title}
+\title{Plot a barplot for the segments.}
 \usage{
 plot_karyotypes(x, type = "percentage", chromosomes = paste0("chr",
   c(1:22, "X", "Y")))
 }
 \arguments{
-\item{chromosomes}{}
+\item{x}{An object of class \code{cnaqc}, created by the \code{init} function.}
+
+\item{type}{With \code{"percentage"}, the proportion of genome covered is returned.
+With \code{"number"}, the segment counts. In all other cases an erorr is generated.}
+
+\item{chromosomes}{The chromosome to use for this plot.}
+}
+\value{
+A \code{ggplot} object.
 }
 \description{
-Title
+@description Plot a barplot for the segments, reporting either their
+ counts of the proportion of genome covered.
+}
+\examples{
+data('example_dataset_CNAqc', package = 'CNAqc')
+x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+
+plot_karyotypes(x)
+
+plot_karyotypes(x, chromosomes = 'chr3')
+plot_karyotypes(x, chromosomes = 'chr13')
 }

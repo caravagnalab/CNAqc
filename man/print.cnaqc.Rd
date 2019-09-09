@@ -2,18 +2,24 @@
 % Please edit documentation in R/print.cnaqc.R
 \name{print.cnaqc}
 \alias{print.cnaqc}
-\title{Print for an object of class \code{'cnaqc'}.}
+\title{Print for class \code{'cnaqc'}.}
 \usage{
 \method{print}{cnaqc}(x, ...)
 }
 \arguments{
-\item{x}{An obj of class \code{'dbpmm'}.}
+\item{x}{An obj of class \code{'cnaqc'}.}
 
-\item{...}{}
+\item{...}{Default S3 method parameter.}
 }
 \value{
-nothing.
+Nothing.
 }
 \description{
-Print for an object of class \code{'cnaqc'}.
+Print for class \code{'cnaqc'}.
+}
+\examples{
+data('example_dataset_CNAqc', package = 'CNAqc')
+x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+
+print(x)
 }

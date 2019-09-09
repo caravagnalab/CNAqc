@@ -1,12 +1,22 @@
-#' Title
+#' Plot a summary of QC results.
 #'
-#' @param x
-#' @param digits
+#'  @description Results from \code{analyze_peaks} can be visualised with this
+#'  function. Compared to individual karyotypes fits available with function \code{plot_peaks_analysis},
+#'  this function reports sumary statistics for each karyotype, and the overall score.
 #'
-#' @return
+#' @param x An object of class \code{cnaqc}, where function \code{analyze_peaks} has
+#' been computed.
+#' @param digits Number of digits used to round scores.
+#'
+#' @return A \code{ggplot} object.
 #' @export
 #'
 #' @examples
+#' data('example_dataset_CNAqc', package = 'CNAqc')
+#' x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+#'
+#' x = analyze_peaks(x)
+#' plot_qc(x)
 plot_qc = function(x, digits = 4)
 {
   stopifnot(inherits(x, "cnaqc"))

@@ -1,13 +1,41 @@
-#' Title
+#' Create a CNAqc object.
 #'
-#' @param snvs
-#' @param cna
-#' @param purity
+#' @description Creates a CNAqc object from a set of
+#' mutation and CNA calls, and a tumour purity value.
+#' The resulting object contains the mutations mapped
+#' into CNA segments, and allows for the computation
+#' of the QC metrics available in the CNAqc package.
+#' CNAqc supports `hg19` coordinates.
 #'
-#' @return
+#' @param snvs A data.frame of mutations with the following fields
+#' available: `chr`, `from`, `to` as `hg19` chromosome coordinates.
+#' `ref` and `alt` for the reference and alternative alleles, and
+#' `DP`, `NV` and `VAF` for the depth (total number of reads with both
+#' reference and alternative), the number of variants with the alternative
+#' allele and the allele frequency (VAF = NV/DP). Chromosome names must be
+#' in the format `chr1`, `chr2`, etc.; alleles should be characters and
+#' all other fields numeric.
+#' @param cna A data.frame of CNA with the following fields
+#' available: `chr`, `from`, `to` as `hg19` chromosome coordinates.
+#' `Major` and `minor` for the number of copies of the major allele,
+#' and the minor (B-allele). A `CCF` column can be used as a real-value
+#' in between 0 and 1 to represent Cancer Cell Fractions; if this is not
+#' available `CCF = 1` is set and all calls will refer to clonal segments.
+#' Otherwise, segments with `CCF<1` would be considered subclonal CNAs.
+#' @param purity Value in between `0` and `1` to represent the proportion
+#' of actual tumour content (sometimes called "cellularity").
+#'
+#' @return A CNAqc object of class `cnaqc`, with S3 methods for printing,
+#' plotting and analyzing data.
+#'
 #' @export
 #'
 #' @examples
+#' data('example_dataset_CNAqc', package = 'CNAqc')
+#' print(example_dataset_CNAqc)
+#'
+#' x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+#' print(x)
 init = function(snvs, cna, purity)
 {
   input = CNAqc:::prepare_input_data(snvs, cna, purity)
@@ -34,8 +62,8 @@ init = function(snvs, cna, purity)
   fit$cna = input$cna
 
   # Counts data
-  fit$n_snvs = nrow(snvs)
-  fit$n_cna = nrow(cna)
+  fit$n_snvs = nrow(fit$snvs)
+  fit$n_cna = nrow(fit$cna)
 
   fit$n_cna_clonal = sum(fit$cna$CCF == 1)
   fit$n_cna_sbclonal = sum(fit$cna$CCF < 1)

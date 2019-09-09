@@ -2,13 +2,47 @@
 % Please edit documentation in R/init.R
 \name{init}
 \alias{init}
-\title{Title}
+\title{Create a CNAqc object.}
 \usage{
 init(snvs, cna, purity)
 }
 \arguments{
-\item{purity}{}
+\item{snvs}{A data.frame of mutations with the following fields
+available: `chr`, `from`, `to` as `hg19` chromosome coordinates.
+`ref` and `alt` for the reference and alternative alleles, and
+`DP`, `NV` and `VAF` for the depth (total number of reads with both
+reference and alternative), the number of variants with the alternative
+allele and the allele frequency (VAF = NV/DP). Chromosome names must be
+in the format `chr1`, `chr2`, etc.; alleles should be characters and
+all other fields numeric.}
+
+\item{cna}{A data.frame of CNA with the following fields
+available: `chr`, `from`, `to` as `hg19` chromosome coordinates.
+`Major` and `minor` for the number of copies of the major allele,
+and the minor (B-allele). A `CCF` column can be used as a real-value
+in between 0 and 1 to represent Cancer Cell Fractions; if this is not
+available `CCF = 1` is set and all calls will refer to clonal segments.
+Otherwise, segments with `CCF<1` would be considered subclonal CNAs.}
+
+\item{purity}{Value in between `0` and `1` to represent the proportion
+of actual tumour content (sometimes called "cellularity").}
+}
+\value{
+A CNAqc object of class `cnaqc`, with S3 methods for printing,
+plotting and analyzing data.
 }
 \description{
-Title
+Creates a CNAqc object from a set of
+mutation and CNA calls, and a tumour purity value.
+The resulting object contains the mutations mapped
+into CNA segments, and allows for the computation
+of the QC metrics available in the CNAqc package.
+CNAqc supports `hg19` coordinates.
+}
+\examples{
+data('example_dataset_CNAqc', package = 'CNAqc')
+print(example_dataset_CNAqc)
+
+x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+print(x)
 }

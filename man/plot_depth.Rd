@@ -2,13 +2,31 @@
 % Please edit documentation in R/plot_depth.R
 \name{plot_depth}
 \alias{plot_depth}
-\title{Title}
+\title{Plot a genome-wide scatter plot of coverage.}
 \usage{
 plot_depth(x, N = 5000, chromosomes = paste0("chr", c(1:22, "X", "Y")))
 }
 \arguments{
-\item{chromosomes}{}
+\item{x}{An object of class \code{cnaqc}, created by the \code{init} function.}
+
+\item{N}{Mutations to use, randomly sampled.}
+
+\item{chromosomes}{The chromosome to use for this plot.}
+}
+\value{
+A \code{ggplot} object.
 }
 \description{
-Title
+@description Plot a genome-wide scatter plot of mutation depths, downsampled
+ if required (annotates the used proportion).
+}
+\examples{
+data('example_dataset_CNAqc', package = 'CNAqc')
+x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+
+plot_depth(x)
+
+plot_depth(x, N = 100)
+plot_depth(x, N = 1000)
+plot_depth(x, N = 10000)
 }

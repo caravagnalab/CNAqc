@@ -2,13 +2,27 @@
 % Please edit documentation in R/plot_segments.R
 \name{plot_segments}
 \alias{plot_segments}
-\title{Title}
+\title{Plot CNA segments.}
 \usage{
 plot_segments(x, chromosomes = paste0("chr", c(1:22, "X", "Y")))
 }
 \arguments{
-\item{chromosomes}{}
+\item{x}{An object of class \code{cnaqc}, created by the \code{init} function.}
+
+\item{chromosomes}{The chromosome to use for this plot.}
+}
+\value{
+A \code{ggplot} object.
 }
 \description{
-Title
+Plot CNA segments as Major/ minor allele, annotating
+clonal and subclonal CNA calls in two different sets of colors.
+This function uses \code{hg19} genome coordinates to map CNA segments.
+}
+\examples{
+data('example_dataset_CNAqc', package = 'CNAqc')
+x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+
+plot_segments(x)
+plot_segments(x, chromosomes = 'chr13')
 }

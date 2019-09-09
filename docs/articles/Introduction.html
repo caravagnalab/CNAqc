@@ -83,18 +83,47 @@
 
     
     
+<p>This vignette describes how to set-up your data into the <code>CNAqc</code> package.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(CNAqc)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">require</a></span>(tidyverse)</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="co">#&gt; Loading required package: tidyverse</span></a>
-<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="co">#&gt; ── Attaching packages ─────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse 1.2.1 ──</span></a>
-<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="co">#&gt; ✔ ggplot2 3.2.1     ✔ purrr   0.3.2</span></a>
-<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="co">#&gt; ✔ tibble  2.1.3     ✔ dplyr   0.8.3</span></a>
-<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="co">#&gt; ✔ tidyr   0.8.3     ✔ stringr 1.4.0</span></a>
-<a class="sourceLine" id="cb1-8" data-line-number="8"><span class="co">#&gt; ✔ readr   1.3.1     ✔ forcats 0.4.0</span></a>
-<a class="sourceLine" id="cb1-9" data-line-number="9"><span class="co">#&gt; ── Conflicts ────────────────────────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──</span></a>
-<a class="sourceLine" id="cb1-10" data-line-number="10"><span class="co">#&gt; ✖ dplyr::filter() masks stats::filter()</span></a>
-<a class="sourceLine" id="cb1-11" data-line-number="11"><span class="co">#&gt; ✖ dplyr::lag()    masks stats::lag()</span></a></code></pre></div>
-<p>Load a template dataset available within the CNAqc package.</p>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="co">#&gt;  [ CNAqc - Copy Number Alteration quality check ] </span></a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="co">#&gt; Author :  Giulio Caravagna &lt;gcaravagn@gmail.com&gt; </span></a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="co">#&gt; GitHub :  caravagn/CNAqc</span></a>
+<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">require</a></span>(tidyverse)</a></code></pre></div>
+<p>The input mutations must be a <code>data.frame</code> with:</p>
+<ul>
+<li>
+<code>chr</code>, <code>from</code>, <code>to</code> as <code>hg19</code> chromosome coordinates.
+<ul>
+<li>Chromosome names must be in the format <code>chr1</code>, <code>chr2</code>, etc.;</li>
+</ul>
+</li>
+<li>
+<code>ref</code> and <code>alt</code> for the reference and alternative alleles.
+<ul>
+<li>Alleles should be characters, the tool will use all available mutation types but we suggest to carry out QC with high-quality SNV data;</li>
+</ul>
+</li>
+<li>
+<code>DP</code>, <code>NV</code> and <code>VAF</code> (numeric) for
+<ul>
+<li>the base depth - total number of reads with both reference and alternative;</li>
+<li>the number of variants with the alternative allele;</li>
+<li>the allele frequency (<code>VAF = NV/DP</code>).</li>
+</ul>
+</li>
+</ul>
+<p>The input CNAs must be a <code>data.frame</code> with:</p>
+<ul>
+<li><p><code>chr</code>, <code>from</code>, <code>to</code> as <code>hg19</code> chromosome coordinates, (as for mutations);</p></li>
+<li><p><code>Major</code> and <code>minor</code> for the number of copies of the major allele, and the minor (B-allele). A diploid segment will have terefore <code>Major = minor = 1</code> and will be denoted as <code>1:1</code>.</p></li>
+<li>A <code>CCF</code> column can be used to represent the Cancer Cell Fractionsas (i.e., clonality of the segment) a real-value in between 0 and 1 to.
+<ul>
+<li>If this is not available, <code>CCF = 1</code> is set assuming clonal segments. Otherwise, segments with <code>CCF&lt;1</code> are considered subclonal CNAs.</li>
+</ul>
+</li>
+</ul>
+<p>To analyze the data, a purity value in between <code>0</code> and <code>1</code> is required to represent the proportion of actual tumour content (sometimes called “cellularity”).</p>
+<p>The package comes with a template dataset available.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/data">data</a></span>(<span class="st">'example_dataset_CNAqc'</span>, <span class="dt">package =</span> <span class="st">'CNAqc'</span>)</a>
 <a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(example_dataset_CNAqc)</a>
 <a class="sourceLine" id="cb2-3" data-line-number="3"><span class="co">#&gt; $snvs</span></a>
@@ -148,83 +177,117 @@
 <a class="sourceLine" id="cb2-51" data-line-number="51"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb2-52" data-line-number="52"><span class="co">#&gt; $purity</span></a>
 <a class="sourceLine" id="cb2-53" data-line-number="53"><span class="co">#&gt; [1] 0.89</span></a></code></pre></div>
-<p>First, initialize the <code>cnaqc</code>object mapping mutations to chromosomes.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">x =<span class="st"> </span>CNAqc<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/CNAqc/topics/init">init</a></span>(example_dataset_CNAqc<span class="op">$</span>snvs, example_dataset_CNAqc<span class="op">$</span>cna,example_dataset_CNAqc<span class="op">$</span>purity)</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co">#&gt;  [ CNAqc - CNA Quality Check ]</span></a>
-<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co">#&gt; Warning in enforce_numeric(x$from): [CNAqc] Enforcing numeric for values:</span></a>
-<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">#&gt; 1027104, 2248588, 2461999, 2727935, 2763397, 2768208, ...</span></a>
-<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co">#&gt; [CNAqc] Missing CCF column from CNA calls, adding CCF = 1 assuming all calls to be clonal.</span></a>
-<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="co">#&gt; Warning in enforce_numeric(x$Major): [CNAqc] Enforcing numeric for values:</span></a>
-<a class="sourceLine" id="cb3-7" data-line-number="7"><span class="co">#&gt; 3, 3, 3, NA, NA, 3, ...</span></a>
-<a class="sourceLine" id="cb3-8" data-line-number="8"><span class="co">#&gt; Warning in enforce_numeric(x$Major): NAs introduced by coercion</span></a>
-<a class="sourceLine" id="cb3-9" data-line-number="9"><span class="co">#&gt; Warning in enforce_numeric(x$minor): [CNAqc] Enforcing numeric for values:</span></a>
-<a class="sourceLine" id="cb3-10" data-line-number="10"><span class="co">#&gt; 2, 2, 2, NA, NA, 2, ...</span></a>
-<a class="sourceLine" id="cb3-11" data-line-number="11"><span class="co">#&gt; Warning in enforce_numeric(x$minor): NAs introduced by coercion</span></a>
-<a class="sourceLine" id="cb3-12" data-line-number="12"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb3-13" data-line-number="13"><span class="co">#&gt; Input  n = 13141 mutations for 482 CNA segments (482 clonal, 0 subclonal)</span></a>
-<a class="sourceLine" id="cb3-14" data-line-number="14"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb3-15" data-line-number="15"><span class="co">#&gt;  Mapping mutations to clonal CNA.</span></a>
+<p>To sue the package, you need to initialize a <code>cnaqc</code>object mapping mutations to chromosomes.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="co"># Use SNVs, CNAs and tumour purity </span></a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">x =<span class="st"> </span>CNAqc<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/CNAqc/topics/init">init</a></span>(</a>
+<a class="sourceLine" id="cb3-3" data-line-number="3">  example_dataset_CNAqc<span class="op">$</span>snvs, </a>
+<a class="sourceLine" id="cb3-4" data-line-number="4">  example_dataset_CNAqc<span class="op">$</span>cna,</a>
+<a class="sourceLine" id="cb3-5" data-line-number="5">  example_dataset_CNAqc<span class="op">$</span>purity)</a>
+<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="co">#&gt;  [ CNAqc - CNA Quality Check ]</span></a>
+<a class="sourceLine" id="cb3-7" data-line-number="7"><span class="co">#&gt; Warning in enforce_numeric(x$from): [CNAqc] Enforcing numeric for values:</span></a>
+<a class="sourceLine" id="cb3-8" data-line-number="8"><span class="co">#&gt; 1027104, 2248588, 2461999, 2727935, 2763397, 2768208, ...</span></a>
+<a class="sourceLine" id="cb3-9" data-line-number="9"><span class="co">#&gt; [CNAqc] Missing CCF column from CNA calls, adding CCF = 1 assuming all calls to be clonal.</span></a>
+<a class="sourceLine" id="cb3-10" data-line-number="10"><span class="co">#&gt; Warning in enforce_numeric(x$Major): [CNAqc] Enforcing numeric for values:</span></a>
+<a class="sourceLine" id="cb3-11" data-line-number="11"><span class="co">#&gt; 3, 3, 3, NA, NA, 3, ...</span></a>
+<a class="sourceLine" id="cb3-12" data-line-number="12"><span class="co">#&gt; Warning in enforce_numeric(x$Major): NAs introduced by coercion</span></a>
+<a class="sourceLine" id="cb3-13" data-line-number="13"><span class="co">#&gt; Warning in enforce_numeric(x$minor): [CNAqc] Enforcing numeric for values:</span></a>
+<a class="sourceLine" id="cb3-14" data-line-number="14"><span class="co">#&gt; 2, 2, 2, NA, NA, 2, ...</span></a>
+<a class="sourceLine" id="cb3-15" data-line-number="15"><span class="co">#&gt; Warning in enforce_numeric(x$minor): NAs introduced by coercion</span></a>
 <a class="sourceLine" id="cb3-16" data-line-number="16"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb3-17" data-line-number="17"><span class="co">#&gt; Mapping. n = 13050 mutations mapped to segments (~99% of input) </span></a>
-<a class="sourceLine" id="cb3-18" data-line-number="18"><span class="co">#&gt; [CNAqc] The following segments have Major/ minor alleles in non-numeric format or NAs</span></a>
-<a class="sourceLine" id="cb3-19" data-line-number="19"><span class="co">#&gt; # A tibble: 215 x 20</span></a>
-<a class="sourceLine" id="cb3-20" data-line-number="20"><span class="co">#&gt;    chr     from     to length covRatio   TCN SV.Type c1Mean c2Mean dhEst</span></a>
-<a class="sourceLine" id="cb3-21" data-line-number="21"><span class="co">#&gt;    &lt;chr&gt;  &lt;int&gt;  &lt;int&gt;  &lt;int&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;fct&gt;    &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb3-22" data-line-number="22"><span class="co">#&gt;  1 chr1  9.80e6 9.87e6  75009     1.26  5.38 &lt;NA&gt;        NA     NA    NA</span></a>
-<a class="sourceLine" id="cb3-23" data-line-number="23"><span class="co">#&gt;  2 chr1  9.87e6 1.05e7 604933     1.24  5.29 &lt;NA&gt;        NA     NA    NA</span></a>
-<a class="sourceLine" id="cb3-24" data-line-number="24"><span class="co">#&gt;  3 chr1  1.78e7 1.78e7  59936     1.26  5.38 &lt;NA&gt;        NA     NA    NA</span></a>
-<a class="sourceLine" id="cb3-25" data-line-number="25"><span class="co">#&gt;  4 chr1  3.09e7 3.09e7  14969     1.24  5.29 &lt;NA&gt;        NA     NA    NA</span></a>
-<a class="sourceLine" id="cb3-26" data-line-number="26"><span class="co">#&gt;  5 chr1  3.14e7 3.16e7 179994     1.24  5.29 &lt;NA&gt;        NA     NA    NA</span></a>
-<a class="sourceLine" id="cb3-27" data-line-number="27"><span class="co">#&gt;  6 chr1  3.45e7 3.45e7  20049     1.26  5.38 &lt;NA&gt;        NA     NA    NA</span></a>
-<a class="sourceLine" id="cb3-28" data-line-number="28"><span class="co">#&gt;  7 chr1  5.04e7 5.04e7  44976     1.24  5.29 &lt;NA&gt;        NA     NA    NA</span></a>
-<a class="sourceLine" id="cb3-29" data-line-number="29"><span class="co">#&gt;  8 chr1  5.19e7 5.19e7  24947     1.27  5.43 &lt;NA&gt;        NA     NA    NA</span></a>
-<a class="sourceLine" id="cb3-30" data-line-number="30"><span class="co">#&gt;  9 chr1  6.13e7 6.13e7  39974     1.24  5.29 &lt;NA&gt;        NA     NA    NA</span></a>
-<a class="sourceLine" id="cb3-31" data-line-number="31"><span class="co">#&gt; 10 chr1  6.84e7 6.84e7  20002     1.24  5.29 &lt;NA&gt;        NA     NA    NA</span></a>
-<a class="sourceLine" id="cb3-32" data-line-number="32"><span class="co">#&gt; # … with 205 more rows, and 10 more variables: dhSNPs &lt;dbl&gt;, Major &lt;dbl&gt;,</span></a>
-<a class="sourceLine" id="cb3-33" data-line-number="33"><span class="co">#&gt; #   minor &lt;dbl&gt;, CNA.type &lt;fct&gt;, NbrOfHetsSNPs &lt;int&gt;, minStart &lt;int&gt;,</span></a>
-<a class="sourceLine" id="cb3-34" data-line-number="34"><span class="co">#&gt; #   maxStart &lt;int&gt;, minStop &lt;int&gt;, maxStop &lt;int&gt;, CCF &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb3-35" data-line-number="35"><span class="co">#&gt; These CNA segments will be removed.</span></a></code></pre></div>
-<p>The summary of the object is available via the S3 <code>print</code> function.</p>
+<a class="sourceLine" id="cb3-17" data-line-number="17"><span class="co">#&gt; Input  n = 13141 mutations for 482 CNA segments (482 clonal, 0 subclonal)</span></a>
+<a class="sourceLine" id="cb3-18" data-line-number="18"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb3-19" data-line-number="19"><span class="co">#&gt;  Mapping mutations to clonal CNA.</span></a>
+<a class="sourceLine" id="cb3-20" data-line-number="20"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb3-21" data-line-number="21"><span class="co">#&gt; Mapping. n = 13050 mutations mapped to segments (~99% of input) </span></a>
+<a class="sourceLine" id="cb3-22" data-line-number="22"><span class="co">#&gt; [CNAqc] The following segments have Major/ minor alleles in non-numeric format or NAs</span></a>
+<a class="sourceLine" id="cb3-23" data-line-number="23"><span class="co">#&gt; # A tibble: 215 x 20</span></a>
+<a class="sourceLine" id="cb3-24" data-line-number="24"><span class="co">#&gt;    chr     from     to length covRatio   TCN SV.Type c1Mean c2Mean dhEst</span></a>
+<a class="sourceLine" id="cb3-25" data-line-number="25"><span class="co">#&gt;    &lt;chr&gt;  &lt;int&gt;  &lt;int&gt;  &lt;int&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;fct&gt;    &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb3-26" data-line-number="26"><span class="co">#&gt;  1 chr1  9.80e6 9.87e6  75009     1.26  5.38 &lt;NA&gt;        NA     NA    NA</span></a>
+<a class="sourceLine" id="cb3-27" data-line-number="27"><span class="co">#&gt;  2 chr1  9.87e6 1.05e7 604933     1.24  5.29 &lt;NA&gt;        NA     NA    NA</span></a>
+<a class="sourceLine" id="cb3-28" data-line-number="28"><span class="co">#&gt;  3 chr1  1.78e7 1.78e7  59936     1.26  5.38 &lt;NA&gt;        NA     NA    NA</span></a>
+<a class="sourceLine" id="cb3-29" data-line-number="29"><span class="co">#&gt;  4 chr1  3.09e7 3.09e7  14969     1.24  5.29 &lt;NA&gt;        NA     NA    NA</span></a>
+<a class="sourceLine" id="cb3-30" data-line-number="30"><span class="co">#&gt;  5 chr1  3.14e7 3.16e7 179994     1.24  5.29 &lt;NA&gt;        NA     NA    NA</span></a>
+<a class="sourceLine" id="cb3-31" data-line-number="31"><span class="co">#&gt;  6 chr1  3.45e7 3.45e7  20049     1.26  5.38 &lt;NA&gt;        NA     NA    NA</span></a>
+<a class="sourceLine" id="cb3-32" data-line-number="32"><span class="co">#&gt;  7 chr1  5.04e7 5.04e7  44976     1.24  5.29 &lt;NA&gt;        NA     NA    NA</span></a>
+<a class="sourceLine" id="cb3-33" data-line-number="33"><span class="co">#&gt;  8 chr1  5.19e7 5.19e7  24947     1.27  5.43 &lt;NA&gt;        NA     NA    NA</span></a>
+<a class="sourceLine" id="cb3-34" data-line-number="34"><span class="co">#&gt;  9 chr1  6.13e7 6.13e7  39974     1.24  5.29 &lt;NA&gt;        NA     NA    NA</span></a>
+<a class="sourceLine" id="cb3-35" data-line-number="35"><span class="co">#&gt; 10 chr1  6.84e7 6.84e7  20002     1.24  5.29 &lt;NA&gt;        NA     NA    NA</span></a>
+<a class="sourceLine" id="cb3-36" data-line-number="36"><span class="co">#&gt; # … with 205 more rows, and 10 more variables: dhSNPs &lt;dbl&gt;, Major &lt;dbl&gt;,</span></a>
+<a class="sourceLine" id="cb3-37" data-line-number="37"><span class="co">#&gt; #   minor &lt;dbl&gt;, CNA.type &lt;fct&gt;, NbrOfHetsSNPs &lt;int&gt;, minStart &lt;int&gt;,</span></a>
+<a class="sourceLine" id="cb3-38" data-line-number="38"><span class="co">#&gt; #   maxStart &lt;int&gt;, minStop &lt;int&gt;, maxStop &lt;int&gt;, CCF &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb3-39" data-line-number="39"><span class="co">#&gt; These CNA segments will be removed.</span></a></code></pre></div>
+<p>The summary of the object is available via the S3 <code>print</code> function, reporting some basic statistcs of the data.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(x)</a>
 <a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co">#&gt;       CNAqc  n = 13141 mutations for 482 CNA segments (267 clonal, 0 subclonal) </span></a>
 <a class="sourceLine" id="cb4-3" data-line-number="3"><span class="co">#&gt;      Purity  89 cellularity </span></a>
 <a class="sourceLine" id="cb4-4" data-line-number="4"><span class="co">#&gt;  Karyotypes  7478 (2:2); 1893 (4:2); 1625 (3:2); 1563 (2:1); 312 (3:0); 81 (2:0); 67 (NA:NA); 16 (NA:2); 4 (104:NA); 4 (16:2); 2 (25:2); 2 (3:1); 1 (106:1); 1 (26:2); 1 (99:1) </span></a>
 <a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co">#&gt;  </span></a>
 <a class="sourceLine" id="cb4-6" data-line-number="6"><span class="co">#&gt;    Peaks QC  FALSE</span></a></code></pre></div>
-<p>Inspection of the segments is possible; CNA calls are mapped to the hg19 human genome coordinates.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">CNAqc<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/CNAqc/topics/plot_segments">plot_segments</a></span>(x) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot.window">ylim</a></span>(<span class="dv">0</span>, <span class="dv">6</span>)</a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co">#&gt; Warning: Removed 24 rows containing missing values (geom_label).</span></a>
-<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co">#&gt; Warning: Removed 10 rows containing missing values (geom_segment).</span></a>
-<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co">#&gt; Warning: Removed 21 rows containing missing values (geom_segment).</span></a></code></pre></div>
+<p>To view the segments, the tool maps CNA calls to the hg19 human genome coordinates and plots the major and minor alleles for each segment. The returned <code>ggplot</code> object can be modified.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="co"># Default</span></a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="kw"><a href="../reference/plot_segments.html">plot_segments</a></span>(x)</a></code></pre></div>
 <p><img src="Introduction_files/figure-html/unnamed-chunk-5-1.png" width="912"></p>
-<p>And plots for the number of mutations, their VAF and depth are also available as following the mapping to hg19 segments.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">CNAqc<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/CNAqc/topics/plot_counts">plot_counts</a></span>(x)</a>
-<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="co">#&gt; Warning: Removed 2 rows containing missing values (geom_bar).</span></a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"></a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="co"># Reduce y-axis</span></a>
+<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="kw"><a href="../reference/plot_segments.html">plot_segments</a></span>(x) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot.window">ylim</a></span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">6</span>)</a>
+<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="co">#&gt; Warning: Removed 10 rows containing missing values (geom_segment).</span></a></code></pre></div>
+<p><img src="Introduction_files/figure-html/unnamed-chunk-5-2.png" width="912"></p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"></a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="co"># Reduce x-axis</span></a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="kw"><a href="../reference/plot_segments.html">plot_segments</a></span>(x) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot.window">xlim</a></span>(<span class="fl">1e6</span>, <span class="fl">50e6</span>)</a>
+<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="co">#&gt; Scale for 'x' is already present. Adding another scale for 'x', which</span></a>
+<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co">#&gt; will replace the existing scale.</span></a>
+<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="co">#&gt; Warning: Removed 24 rows containing missing values (geom_rect).</span></a>
+<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="co">#&gt; Warning: Removed 24 rows containing missing values (geom_vline).</span></a>
+<a class="sourceLine" id="cb7-8" data-line-number="8"><span class="co">#&gt; Warning: Removed 24 rows containing missing values (geom_label).</span></a>
+<a class="sourceLine" id="cb7-9" data-line-number="9"><span class="co">#&gt; Warning: Removed 252 rows containing missing values (geom_segment).</span></a>
+<a class="sourceLine" id="cb7-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb7-11" data-line-number="11"><span class="co">#&gt; Warning: Removed 252 rows containing missing values (geom_segment).</span></a></code></pre></div>
+<p><img src="Introduction_files/figure-html/unnamed-chunk-5-3.png" width="912"></p>
+<p>Genome-wide plots that follow the layout of <code>plot_segments</code> are avaiable to view the number of mutations, their VAF and depth. VAF and depth-plotting functions (scatterplots) can subset the input data to speed up rendering - by default 5000 points are randomly sampled. Counts plot bin locations by one megabase.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="co"># All genome, all data - counts of mutations per megabase</span></a>
+<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="kw"><a href="../reference/plot_counts.html">plot_counts</a></span>(x)</a>
+<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="co">#&gt; Warning: Removed 2 rows containing missing values (geom_bar).</span></a></code></pre></div>
 <p><img src="Introduction_files/figure-html/unnamed-chunk-6-1.png" width="768"></p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">CNAqc<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/CNAqc/topics/plot_vaf">plot_vaf</a></span>(x, <span class="dt">N =</span> <span class="dv">10000</span>)</a></code></pre></div>
-<p><img src="Introduction_files/figure-html/unnamed-chunk-6-2.png" width="768"></p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">CNAqc<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/CNAqc/topics/plot_depth">plot_depth</a></span>(x, <span class="dt">N =</span> <span class="dv">10000</span>)</a></code></pre></div>
-<p><img src="Introduction_files/figure-html/unnamed-chunk-6-3.png" width="768"></p>
-<p>For CNAs, it is possible to show the segments per karyotypes, reporting either their counts, or the proportion of genome covered.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">ggpubr<span class="op">::</span><span class="kw"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html">ggarrange</a></span>(</a>
-<a class="sourceLine" id="cb9-2" data-line-number="2">  CNAqc<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/CNAqc/topics/plot_karyotypes">plot_karyotypes</a></span>(x),</a>
-<a class="sourceLine" id="cb9-3" data-line-number="3">  CNAqc<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/CNAqc/topics/plot_karyotypes">plot_karyotypes</a></span>(x, <span class="dt">type =</span> <span class="st">'number'</span>),</a>
-<a class="sourceLine" id="cb9-4" data-line-number="4">  <span class="dt">common.legend =</span> <span class="ot">TRUE</span>,</a>
-<a class="sourceLine" id="cb9-5" data-line-number="5">  <span class="dt">legend =</span> <span class="st">'bottom'</span></a>
-<a class="sourceLine" id="cb9-6" data-line-number="6">)</a></code></pre></div>
-<p><img src="Introduction_files/figure-html/unnamed-chunk-7-1.png" width="384"></p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="co"># Different subsamples</span></a>
+<a class="sourceLine" id="cb9-2" data-line-number="2">ggpubr<span class="op">::</span><span class="kw"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html">ggarrange</a></span>(</a>
+<a class="sourceLine" id="cb9-3" data-line-number="3">  <span class="kw"><a href="../reference/plot_vaf.html">plot_vaf</a></span>(x, <span class="dt">N =</span> <span class="dv">1000</span>),</a>
+<a class="sourceLine" id="cb9-4" data-line-number="4">  <span class="kw"><a href="../reference/plot_vaf.html">plot_vaf</a></span>(x),</a>
+<a class="sourceLine" id="cb9-5" data-line-number="5">  <span class="kw"><a href="../reference/plot_vaf.html">plot_vaf</a></span>(x, <span class="dt">N =</span> <span class="dv">10000</span>),</a>
+<a class="sourceLine" id="cb9-6" data-line-number="6">  <span class="dt">ncol =</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb9-7" data-line-number="7">)</a></code></pre></div>
+<p><img src="Introduction_files/figure-html/unnamed-chunk-7-1.png" width="768"></p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"></a>
+<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="co"># Different subsamples</span></a>
+<a class="sourceLine" id="cb10-3" data-line-number="3">ggpubr<span class="op">::</span><span class="kw"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html">ggarrange</a></span>(</a>
+<a class="sourceLine" id="cb10-4" data-line-number="4">  <span class="kw"><a href="../reference/plot_depth.html">plot_depth</a></span>(x, <span class="dt">N =</span> <span class="dv">1000</span>),</a>
+<a class="sourceLine" id="cb10-5" data-line-number="5">  <span class="kw"><a href="../reference/plot_depth.html">plot_depth</a></span>(x),</a>
+<a class="sourceLine" id="cb10-6" data-line-number="6">  <span class="kw"><a href="../reference/plot_depth.html">plot_depth</a></span>(x, <span class="dt">N =</span> <span class="dv">10000</span>),</a>
+<a class="sourceLine" id="cb10-7" data-line-number="7">  <span class="dt">ncol =</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb10-8" data-line-number="8">)</a></code></pre></div>
+<p><img src="Introduction_files/figure-html/unnamed-chunk-7-2.png" width="768"></p>
 <p>A one-summary plot can be easily assembled exploiting the above functions and functions from <code>cowplot</code> or other ggplot-manipulation packages.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">cowplot<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/cowplot/topics/plot_grid">plot_grid</a></span>(</a>
-<a class="sourceLine" id="cb10-2" data-line-number="2">  CNAqc<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/CNAqc/topics/plot_counts">plot_counts</a></span>(x),</a>
-<a class="sourceLine" id="cb10-3" data-line-number="3">  CNAqc<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/CNAqc/topics/plot_vaf">plot_vaf</a></span>(x, <span class="dt">N =</span> <span class="dv">2000</span>),</a>
-<a class="sourceLine" id="cb10-4" data-line-number="4">  CNAqc<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/CNAqc/topics/plot_depth">plot_depth</a></span>(x, <span class="dt">N =</span> <span class="dv">2000</span>),</a>
-<a class="sourceLine" id="cb10-5" data-line-number="5">  CNAqc<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/CNAqc/topics/plot_segments">plot_segments</a></span>(x) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot.window">ylim</a></span>(<span class="dv">0</span>, <span class="dv">6</span>),</a>
-<a class="sourceLine" id="cb10-6" data-line-number="6">  <span class="dt">align =</span> <span class="st">'v'</span>, <span class="dt">nrow =</span> <span class="dv">4</span>, <span class="dt">rel_heights =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(.<span class="dv">15</span>, <span class="fl">.15</span>, <span class="fl">.15</span>, <span class="fl">.8</span>))</a>
-<a class="sourceLine" id="cb10-7" data-line-number="7"><span class="co">#&gt; Warning: Removed 2 rows containing missing values (geom_bar).</span></a>
-<a class="sourceLine" id="cb10-8" data-line-number="8"><span class="co">#&gt; Warning: Removed 24 rows containing missing values (geom_label).</span></a>
-<a class="sourceLine" id="cb10-9" data-line-number="9"><span class="co">#&gt; Warning: Removed 10 rows containing missing values (geom_segment).</span></a>
-<a class="sourceLine" id="cb10-10" data-line-number="10"><span class="co">#&gt; Warning: Removed 21 rows containing missing values (geom_segment).</span></a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">cowplot<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/cowplot/topics/plot_grid">plot_grid</a></span>(</a>
+<a class="sourceLine" id="cb11-2" data-line-number="2">  <span class="kw"><a href="../reference/plot_counts.html">plot_counts</a></span>(x),</a>
+<a class="sourceLine" id="cb11-3" data-line-number="3">  <span class="kw"><a href="../reference/plot_vaf.html">plot_vaf</a></span>(x, <span class="dt">N =</span> <span class="dv">10000</span>),</a>
+<a class="sourceLine" id="cb11-4" data-line-number="4">  <span class="kw"><a href="../reference/plot_depth.html">plot_depth</a></span>(x, <span class="dt">N =</span> <span class="dv">10000</span>),</a>
+<a class="sourceLine" id="cb11-5" data-line-number="5">  <span class="kw"><a href="../reference/plot_segments.html">plot_segments</a></span>(x) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot.window">ylim</a></span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">6</span>),</a>
+<a class="sourceLine" id="cb11-6" data-line-number="6">  <span class="dt">align =</span> <span class="st">'v'</span>, </a>
+<a class="sourceLine" id="cb11-7" data-line-number="7">  <span class="dt">nrow =</span> <span class="dv">4</span>, </a>
+<a class="sourceLine" id="cb11-8" data-line-number="8">  <span class="dt">rel_heights =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(.<span class="dv">15</span>, <span class="fl">.15</span>, <span class="fl">.15</span>, <span class="fl">.8</span>))</a>
+<a class="sourceLine" id="cb11-9" data-line-number="9"><span class="co">#&gt; Warning: Removed 2 rows containing missing values (geom_bar).</span></a>
+<a class="sourceLine" id="cb11-10" data-line-number="10"><span class="co">#&gt; Warning: Removed 10 rows containing missing values (geom_segment).</span></a></code></pre></div>
 <p><img src="Introduction_files/figure-html/unnamed-chunk-8-1.png" width="912"></p>
+<p>The total number of</p>
+<p>For CNAs, it is possible to show the segments per karyotypes, reporting either their counts, or the proportion of genome covered.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">ggpubr<span class="op">::</span><span class="kw"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html">ggarrange</a></span>(</a>
+<a class="sourceLine" id="cb12-2" data-line-number="2">  CNAqc<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/CNAqc/topics/plot_karyotypes">plot_karyotypes</a></span>(x),</a>
+<a class="sourceLine" id="cb12-3" data-line-number="3">  CNAqc<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/CNAqc/topics/plot_karyotypes">plot_karyotypes</a></span>(x, <span class="dt">type =</span> <span class="st">'number'</span>),</a>
+<a class="sourceLine" id="cb12-4" data-line-number="4">  <span class="dt">common.legend =</span> <span class="ot">TRUE</span>,</a>
+<a class="sourceLine" id="cb12-5" data-line-number="5">  <span class="dt">legend =</span> <span class="st">'bottom'</span></a>
+<a class="sourceLine" id="cb12-6" data-line-number="6">)</a></code></pre></div>
+<p><img src="Introduction_files/figure-html/unnamed-chunk-9-1.png" width="384"></p>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -235,7 +298,7 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by The package maintainer.</p>
+  <p>Developed by Giulio Caravagna.</p>
 </div>
 
 <div class="pkgdown">

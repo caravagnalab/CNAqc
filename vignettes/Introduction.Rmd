@@ -14,41 +14,125 @@ knitr::opts_chunk$set(
 )
 ```
 
+This vignette describes how to set-up your data into the `CNAqc` package.
+
 ```{r setup}
 library(CNAqc)
 require(tidyverse)
 ```
 
-Load a template dataset available within the CNAqc package.
+The input mutations must be a `data.frame` with:
+
+* `chr`, `from`, `to` as `hg19` chromosome coordinates. 
+  - Chromosome names must be in the format `chr1`, `chr2`, etc.;
+  
+* `ref` and `alt` for the reference and alternative alleles. 
+  - Alleles should be characters, the tool will use all available mutation types but we 
+suggest to carry out QC with high-quality SNV data;
+
+* `DP`, `NV` and `VAF` (numeric) for 
+  - the base depth  - total number of reads with both reference and alternative;
+  - the number of variants with the alternative allele;
+  - the allele frequency (`VAF = NV/DP`). 
+
+The input CNAs must be a `data.frame` with:
+
+* `chr`, `from`, `to` as `hg19` chromosome coordinates, (as for mutations);
+
+* `Major` and `minor` for the number of copies of the major allele, and 
+the minor (B-allele). A diploid segment will have terefore `Major = minor = 1`
+and will be denoted as `1:1`.
+
+* A `CCF` column can be used to represent the Cancer Cell Fractionsas 
+(i.e., clonality of the segment) a real-value in between 0 and 1 to.
+  - If this is not available, `CCF = 1` is set assuming clonal segments. 
+  Otherwise, segments with `CCF<1` are considered subclonal CNAs.
+
+To analyze the data, a purity value in between `0` and `1` is required to
+represent the proportion of actual tumour content (sometimes called 
+"cellularity").
+
+The package comes with a template dataset available.
 ```{r}
 data('example_dataset_CNAqc', package = 'CNAqc')
 print(example_dataset_CNAqc)
 ```
 
-First, initialize the `cnaqc`object mapping mutations to chromosomes. 
+To sue the package, you need to initialize a `cnaqc`object mapping mutations to chromosomes. 
+
 ```{r}
-x = CNAqc::init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+# Use SNVs, CNAs and tumour purity 
+x = CNAqc::init(
+  example_dataset_CNAqc$snvs, 
+  example_dataset_CNAqc$cna,
+  example_dataset_CNAqc$purity)
 ```
 
-The summary of the object is available via the S3 `print` function.
+The summary of the object is available via the S3 `print` function, reporting some basic
+statistcs of the data.
 ```{r}
 print(x)
 ```
 
 
-Inspection of the segments is possible; CNA calls are mapped to the hg19 human genome coordinates.
+
+To view the segments, the tool maps CNA calls to the hg19 human genome coordinates and plots
+the major and minor alleles for each segment. The returned `ggplot` object can be modified.
 ```{r, fig.width=9.5, fig.height=3}
-CNAqc::plot_segments(x) + ylim(0, 6)
+# Default
+plot_segments(x)
+
+# Reduce y-axis
+plot_segments(x) + ylim(-1, 6)
+
+# Reduce x-axis
+plot_segments(x) + xlim(1e6, 50e6)
 ```
 
-And plots for the number of mutations, their VAF and depth are also available
-as following the mapping to hg19 segments.
+Genome-wide plots that follow the layout of `plot_segments` are avaiable to view the number of mutations, 
+their VAF and depth. VAF and depth-plotting functions (scatterplots) can subset the input data to speed up
+rendering - by default 5000 points are randomly sampled. Counts plot bin locations by one megabase.
 
 ```{r, fig.width=8, fig.height=1}
-CNAqc::plot_counts(x)
-CNAqc::plot_vaf(x, N = 10000)
-CNAqc::plot_depth(x, N = 10000)
+# All genome, all data - counts of mutations per megabase
+plot_counts(x)
 ```
+```{r, fig.width=8, fig.height=4}
+# Different subsamples
+ggpubr::ggarrange(
+  plot_vaf(x, N = 1000),
+  plot_vaf(x),
+  plot_vaf(x, N = 10000),
+  ncol = 1
+)
+
+# Different subsamples
+ggpubr::ggarrange(
+  plot_depth(x, N = 1000),
+  plot_depth(x),
+  plot_depth(x, N = 10000),
+  ncol = 1
+)
+```
+
+
+A one-summary plot can be easily assembled exploiting the above functions and functions from `cowplot` or other ggplot-manipulation packages.
+
+```{r, fig.width=9.5, fig.height=5}
+cowplot::plot_grid(
+  plot_counts(x),
+  plot_vaf(x, N = 10000),
+  plot_depth(x, N = 10000),
+  plot_segments(x) + ylim(-1, 6),
+  align = 'v', 
+  nrow = 4, 
+  rel_heights = c(.15, .15, .15, .8))
+```
+
+
+
+
+The total number of 
 
 For CNAs, it is possible to show the segments per karyotypes, reporting either their counts, or the proportion of genome covered.
 ```{r, fig.width=4, fig.height=4}
@@ -59,16 +143,3 @@ ggpubr::ggarrange(
   legend = 'bottom'
 )
 ```
-
-A one-summary plot can be easily assembled exploiting the above functions and functions from `cowplot` or other ggplot-manipulation packages.
-
-```{r, fig.width=9.5, fig.height=5}
-cowplot::plot_grid(
-  CNAqc::plot_counts(x),
-  CNAqc::plot_vaf(x, N = 2000),
-  CNAqc::plot_depth(x, N = 2000),
-  CNAqc::plot_segments(x) + ylim(0, 6),
-  align = 'v', nrow = 4, rel_heights = c(.15, .15, .15, .8))
-```
-
-

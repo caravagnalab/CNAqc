@@ -2,15 +2,60 @@
 % Please edit documentation in R/analyze_peaks.R
 \name{analyze_peaks}
 \alias{analyze_peaks}
-\title{Analyze the peaks of this}
+\title{Analyze CNA calls by peak detection.}
 \usage{
 analyze_peaks(x, karyotypes = c("1:0", "1:1", "2:1", "2:0", "2:2"),
   min_karyotype_size = 0.05, adjust = 1, min_density = 0.5,
   neighlim = 1, matching_epsilon = 0.015, ...)
 }
 \arguments{
-\item{...}{}
+\item{x}{An object of class \code{cnaqc}, created by the \code{init} function.}
+
+\item{karyotypes}{The list of karyotypes to test. By default LOH regions (A, AA),
+diploid regions (AB), and amplification regions (AAB, AABB). These correspond to
+\code{'1:0', '1:1', '2:1', '2:0', '2:2'} in Major:minor notation.}
+
+\item{min_karyotype_size}{Karyotypes are subset by their size (normalized for
+the number of input mutations). Karyotypes smaller than this value are removed
+from analysis.}
+
+\item{adjust}{KDE adjust density parameter - see \code{?density}. A Gaussian
+kernel is used (\code{kernel = 'gaussian'}). Default is 5% (\code{0.05}).}
+
+\item{min_density}{Peaks in the VAF distribution below this density value will
+not be used to match the expected peaks. This is used to remove low-density
+peaks due to noise and miscalled CNAs.}
+
+\item{neighlim}{Parameter for the \code{peakPick} package - see \code{?peakPick}.}
+
+\item{matching_epsilon}{Peaks at location \eqn{x} are matched in \eqn{x-e}, \eqn{x+e}
+(inclusive), where \eqn{e} is this parameter. By default (\code{0.015}) a 3% tolerance
+is adopted.}
+
+\item{...}{Parameters forwarded to a call to function \code{peakpick} from
+the \code{peakPick} package.}
+}
+\value{
+An object of class \code{cnaqc}, modified to hold the results from this analysis.
+See the vignette to see how to extract and plot the results.
 }
 \description{
-Analyze the peaks of this
+This function carries out a peak-detection
+analysis based on KDE and the package \code{peakPick}
+in order to determine if the mutations that map to a
+certain karyotype have an allelic frequency that is
+consistent with the Major and minor alleles of the
+segment, and the tumour purity. A score is produced
+as a linear combination of the distance of the actual
+peak to the expected one, derived with standard equations
+for CNA analysis.
+}
+\examples{
+data('example_dataset_CNAqc', package = 'CNAqc')
+x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+
+x = analyze_peaks(x)
+print(x)
+
+print(x$peaks_analysis)
 }

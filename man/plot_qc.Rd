@@ -2,13 +2,28 @@
 % Please edit documentation in R/plot_qc.R
 \name{plot_qc}
 \alias{plot_qc}
-\title{Title}
+\title{Plot a summary of QC results.}
 \usage{
 plot_qc(x, digits = 4)
 }
 \arguments{
-\item{digits}{}
+\item{x}{An object of class \code{cnaqc}, where function \code{analyze_peaks} has
+been computed.}
+
+\item{digits}{Number of digits used to round scores.}
+}
+\value{
+A \code{ggplot} object.
 }
 \description{
-Title
+@description Results from \code{analyze_peaks} can be visualised with this
+ function. Compared to individual karyotypes fits available with function \code{plot_peaks_analysis},
+ this function reports sumary statistics for each karyotype, and the overall score.
+}
+\examples{
+data('example_dataset_CNAqc', package = 'CNAqc')
+x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+
+x = analyze_peaks(x)
+plot_qc(x)
 }

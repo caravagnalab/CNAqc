@@ -2,13 +2,25 @@
 % Please edit documentation in R/plot_counts.R
 \name{plot_counts}
 \alias{plot_counts}
-\title{Title}
+\title{Plot a genome-wide histogram of mutation counts.}
 \usage{
 plot_counts(x, chromosomes = paste0("chr", c(1:22, "X", "Y")))
 }
 \arguments{
-\item{chromosomes}{}
+\item{x}{An object of class \code{cnaqc}, created by the \code{init} function.}
+
+\item{chromosomes}{The chromosome to use for this plot.}
+}
+\value{
+A \code{ggplot} object.
 }
 \description{
-Title
+@description Plot a genome-wide histogram of mutation counts, binned
+every one megabase (10e6 positions according to the hg19 reference).
+}
+\examples{
+data('example_dataset_CNAqc', package = 'CNAqc')
+x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+
+plot_counts(x)
 }

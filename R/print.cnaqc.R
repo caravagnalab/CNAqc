@@ -1,13 +1,19 @@
-#' Print for an object of class \code{'cnaqc'}.
+#' Print for class \code{'cnaqc'}.
 #'
-#' @param x An obj of class \code{'dbpmm'}.
-#' @param ...
+#' @param x An obj of class \code{'cnaqc'}.
+#' @param ... Default S3 method parameter.
 #'
-#' @return nothing.
+#' @return Nothing.
+#'
 #' @export
-#' @import crayon
+#'
+#' @import pio
 #'
 #' @examples
+#' data('example_dataset_CNAqc', package = 'CNAqc')
+#' x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+#'
+#' print(x)
 print.cnaqc = function(x, ...)
 {
   stopifnot(inherits(x, "cnaqc"))

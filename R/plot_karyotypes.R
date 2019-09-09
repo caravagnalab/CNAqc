@@ -1,13 +1,24 @@
-#' Title
+#' Plot a barplot for the segments.
 #'
-#' @param x
-#' @param type
-#' @param chromosomes
+#'  @description Plot a barplot for the segments, reporting either their
+#'  counts of the proportion of genome covered.
 #'
-#' @return
+#' @param x An object of class \code{cnaqc}, created by the \code{init} function.
+#' @param type With \code{"percentage"}, the proportion of genome covered is returned.
+#' With \code{"number"}, the segment counts. In all other cases an erorr is generated.
+#' @param chromosomes The chromosome to use for this plot.
+#'
+#' @return A \code{ggplot} object.
 #' @export
 #'
 #' @examples
+#' data('example_dataset_CNAqc', package = 'CNAqc')
+#' x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+#'
+#' plot_karyotypes(x)
+#'
+#' plot_karyotypes(x, chromosomes = 'chr3')
+#' plot_karyotypes(x, chromosomes = 'chr13')
 plot_karyotypes = function(x,
                            type = "percentage",
                            chromosomes = paste0('chr', c(1:22, 'X', 'Y')))

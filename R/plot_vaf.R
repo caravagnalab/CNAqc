@@ -1,13 +1,24 @@
-#' Title
+#' Plot a genome-wide scatter plot of VAF
 #'
-#' @param x
-#' @param N
-#' @param chromosomes
+#'  @description Plot a genome-wide scatter plot of mutation VAFs, downsampled
+#'  if required (annotates the used proportion).
 #'
-#' @return
+#' @param x An object of class \code{cnaqc}, created by the \code{init} function.
+#' @param N Mutations to use, randomly sampled.
+#' @param chromosomes The chromosome to use for this plot.
+#'
+#' @return A \code{ggplot} object.
 #' @export
 #'
 #' @examples
+#' data('example_dataset_CNAqc', package = 'CNAqc')
+#' x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+#'
+#' plot_vaf(x)
+#'
+#' plot_vaf(x, N = 100)
+#' plot_vaf(x, N = 1000)
+#' plot_vaf(x, N = 10000)
 plot_vaf = function(x, N = 5000, chromosomes = paste0('chr', c(1:22, 'X', 'Y')))
 {
   stopifnot(inherits(x, 'cnaqc'))

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Analyze the peaks of this — analyze_peaks • CNAqc</title>
+<title>Analyze CNA calls by peak detection. — analyze_peaks • CNAqc</title>
 
 
 <!-- jquery -->
@@ -33,8 +33,7 @@
 
 
 
-<meta property="og:title" content="Analyze the peaks of this — analyze_peaks" />
-<meta property="og:description" content="Analyze the peaks of this" />
+<meta property="og:title" content="Analyze CNA calls by peak detection. — analyze_peaks" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -111,13 +110,12 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Analyze the peaks of this</h1>
+    <h1>Analyze CNA calls by peak detection.</h1>
     
     <div class="hidden name"><code>analyze_peaks.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Analyze the peaks of this</p>
     </div>
 
     <pre class="usage"><span class='fu'>analyze_peaks</span>(<span class='no'>x</span>, <span class='kw'>karyotypes</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"1:0"</span>, <span class='st'>"1:1"</span>, <span class='st'>"2:1"</span>, <span class='st'>"2:0"</span>, <span class='st'>"2:2"</span>),
@@ -128,8 +126,34 @@
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>...</th>
-      <td></td>
+      <th>x</th>
+      <td><p>An object of class <code>cnaqc</code>, created by the <code>init</code> function.</p></td>
+    </tr>
+    <tr>
+      <th>karyotypes</th>
+      <td><p>The list of karyotypes to test. By default LOH regions (A, AA),
+diploid regions (AB), and amplification regions (AAB, AABB). These correspond to
+<code>'1:0', '1:1', '2:1', '2:0', '2:2'</code> in Major:minor notation.</p></td>
+    </tr>
+    <tr>
+      <th>min_karyotype_size</th>
+      <td><p>Karyotypes are subset by their size (normalized for
+the number of input mutations). Karyotypes smaller than this value are removed
+from analysis.</p></td>
+    </tr>
+    <tr>
+      <th>adjust</th>
+      <td><p>KDE adjust density parameter - see <code><a href='https://www.rdocumentation.org/packages/stats/topics/density'>?density</a></code>. A Gaussian
+kernel is used (<code>kernel = 'gaussian'</code>). Default is 5<!-- % (\code{0.05}).} --></p>
+<p>min_densityPeaks in the VAF distribution below this density value will
+not be used to match the expected peaks. This is used to remove low-density
+peaks due to noise and miscalled CNAs.</p>
+<p>neighlimParameter for the <code>peakPick</code> package - see <code>?peakPick</code>.</p>
+<p>matching_epsilonPeaks at location \(x\) are matched in \(x-e\), \(x+e\)
+(inclusive), where \(e\) is this parameter. By default (<code>0.015</code>) a 3<!-- % tolerance -->
+is adopted.</p>
+<p>...Parameters forwarded to a call to function <code>peakpick</code> from
+the <code>peakPick</code> package.</p></td>
     </tr>
     </table>
 
@@ -146,7 +170,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by The package maintainer.</p>
+  <p>Developed by Giulio Caravagna.</p>
 </div>
 
 <div class="pkgdown">

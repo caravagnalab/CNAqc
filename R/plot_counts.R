@@ -1,12 +1,19 @@
-#' Title
+#' Plot a genome-wide histogram of mutation counts.
 #'
-#' @param x
-#' @param chromosomes
+#'  @description Plot a genome-wide histogram of mutation counts, binned
+#' every one megabase (10e6 positions according to the hg19 reference).
 #'
-#' @return
+#' @param x An object of class \code{cnaqc}, created by the \code{init} function.
+#' @param chromosomes The chromosome to use for this plot.
+#'
+#' @return A \code{ggplot} object.
 #' @export
 #'
 #' @examples
+#' data('example_dataset_CNAqc', package = 'CNAqc')
+#' x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+#'
+#' plot_counts(x)
 plot_counts = function(x, chromosomes = paste0('chr', c(1:22, 'X', 'Y')))
 {
   stopifnot(inherits(x, 'cnaqc'))
