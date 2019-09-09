@@ -18,6 +18,7 @@ Imports:
     pio,
     crayon,
     peakPick
+Remotes: caravagn/pio
 RoxygenNote: 6.1.1
 Suggests: 
     knitr,
