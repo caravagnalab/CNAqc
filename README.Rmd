@@ -47,7 +47,7 @@ CNAqc has its own webpage at [GitHub pages](https://caravagn.github.io/CNAqc/).
 
 ### Installation
 
-You can install the released version of CNAqc from
+You can install the released version of `CNAqc` from
 [GitHub](https://github.com/) with:
 
 ``` r
