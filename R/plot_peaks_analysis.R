@@ -10,7 +10,7 @@
 #'
 #' @return A \code{ggpubr} object for an assembled figure.
 #' @export
-#' 
+#'
 #' @import ggpubr
 #'
 #' @examples
@@ -30,11 +30,9 @@ plot_peaks_analysis = function(x)
 
   detections = x$peaks_analysis$plots
 
-    ggpubr::ggarrange(
-      plotlist = detections,
-      nrow = 1,
-      ncol = length(detections)
+  ggpubr::ggarrange(
+    plotlist = detections,
+    nrow = 1,
+    ncol = length(detections)
     )
-
-
 }

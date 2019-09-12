@@ -17,6 +17,7 @@ knitr::opts_chunk$set(
 ```{r setup}
 library(CNAqc)
 require(tidyverse)
+require(cowplot)
 ```
 
 We work with the same object shown in the [introductory vignette](file:///Users/gcaravagna/Documents/GitHub/CNAqc/docs/articles/CNAqc.html). 

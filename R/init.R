@@ -29,7 +29,7 @@
 #' plotting and analyzing data.
 #'
 #' @export
-#' 
+#'
 #' @import tidyverse
 #' @import pio
 #' @import crayon
@@ -42,7 +42,7 @@
 #' print(x)
 init = function(snvs, cna, purity)
 {
-  input = CNAqc:::prepare_input_data(snvs, cna, purity)
+  input = prepare_input_data(snvs, cna, purity)
 
   fit = list()
   class(fit) <- "cnaqc"
@@ -51,14 +51,14 @@ init = function(snvs, cna, purity)
   na_allele_Major = sapply(input$cna$Major, is.na)
   na_allele_minor = sapply(input$cna$minor, is.na)
   na_allele = na_allele_Major | na_allele_minor
-  
+
   discarded_cna = input$cna[na_allele, , drop = FALSE]
-  
+
   if(nrow(discarded_cna) > 0)
   {
     cat(crayon::red("\n[CNAqc] CNA calls: the following segments have Major/ minor alleles in non-numeric format or NAs, and will be removed\n"))
     pio::pioDisp()
-  
+
     input$cna = input$cna[!na_allele, , drop = FALSE]
   }
 

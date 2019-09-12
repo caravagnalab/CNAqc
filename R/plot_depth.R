@@ -50,13 +50,11 @@ plot_depth = function(x, N = 5000, chromosomes = paste0('chr', c(1:22, 'X', 'Y')
     geom_point(size = .05) +
     my_ggplot_theme() +
     xlim(low, upp) +
-    # ylim()
     theme(
       axis.text.x = element_blank(),
       axis.ticks.x = element_blank(),
       axis.title.x = element_blank()
     ) +
-    # ggpubr::rotate_y_text() +
     labs(y = "DP") +
     geom_hline(yintercept = med_DP, size = .4, linetype = 'dashed', color = 'darkred') +
     guides(fill = FALSE) +

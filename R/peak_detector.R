@@ -16,7 +16,8 @@ peak_detector = function(snvs,
   colnames(input_peakdetection) = c('x', 'y')
 
  # pio::pioStr("peak_detector", 'karyotype', snvs$karyotype[1], ' - peakPick params ...')
-  require(peakPick)
+  # require(peakPick)
+
   peaks =  peakpick(mat = input_peakdetection, neighlim = neighlim, ...)
   peaks_params = list(...)
 

@@ -3,7 +3,7 @@
   # =-=-=-=-=-=-
   # Required packages will be listed here
   # =-=-=-=-=-=-
-  requirements = c('tidyverse', 'pio', 'crayon', 'ggpubr')
+  requirements = c('tidyverse', 'pio', 'crayon', 'ggpubr', 'peakPick')
 
   suppressMessages(sapply(requirements, require, character.only = TRUE))
 

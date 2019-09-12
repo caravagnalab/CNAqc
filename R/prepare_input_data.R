@@ -9,8 +9,8 @@ prepare_input_data = function(snvs, cna, tumour_purity)
   pio::pioHdr("CNAqc - CNA Quality Check")
   cat('\n')
 
-  snvs = CNAqc:::fortify_mutation_calls(snvs)
-  cna = CNAqc:::fortify_CNA_segments(cna)
+  snvs = fortify_mutation_calls(snvs)
+  cna = fortify_CNA_segments(cna)
 
   nsnvs = nrow(snvs)
   ncna = nrow(cna)
@@ -28,7 +28,7 @@ prepare_input_data = function(snvs, cna, tumour_purity)
 
   cat(crayon::green("Mapping mutations to clonal CNA.\n"))
 
- snvs = CNAqc:::map_mutations_to_segments(snvs, cna %>% filter(CCF == 1))
+ snvs = map_mutations_to_segments(snvs, cna %>% filter(CCF == 1))
   # #   filter(!is.na(karyotype))
   #
   # nsnvs = nrow(snvs)

@@ -31,7 +31,7 @@ plot_qc = function(x, digits = 4)
   x$peaks_analysis$matches %>%
     ggplot(aes(x = mutation_multiplicity, y = karyotype, fill = score)) +
     geom_tile(aes(width = .8, height = .8, color = weight), size = 3) +
-    CNAqc:::my_ggplot_theme(cex = 1) +
+    my_ggplot_theme() +
     guides(
       fill = guide_colorbar(bquote(rho ~ ' '), barwidth = unit(2, 'cm')),
       color = guide_colorbar(bquote(omega ~ ' '), barwidth = unit(2, 'cm'))

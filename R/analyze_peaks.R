@@ -1,6 +1,6 @@
 
 #' Analyze CNA calls by peak detection.
-#' 
+#'
 #' @description This function carries out a peak-detection
 #' analysis based on KDE and the package \code{peakPick}
 #' in order to determine if the mutations that map to a
@@ -10,7 +10,7 @@
 #' as a linear combination of the distance of the actual
 #' peak to the expected one, derived with standard equations
 #' for CNA analysis.
-#' 
+#'
 #' @param x An object of class \code{cnaqc}, created by the \code{init} function.
 #' @param karyotypes The list of karyotypes to test. By default LOH regions (A, AA),
 #' diploid regions (AB), and amplification regions (AAB, AABB). These correspond to
@@ -32,8 +32,9 @@
 #' @return An object of class \code{cnaqc}, modified to hold the results from this analysis.
 #' See the vignette to see how to extract and plot the results.
 #' @export
-#' 
+#'
 #' @import peakPick
+#' @import ggrepel
 #'
 #' @examples
 #' data('example_dataset_CNAqc', package = 'CNAqc')
@@ -43,7 +44,7 @@
 #' print(x)
 #'
 #' print(x$peaks_analysis)
-#' 
+#'
 analyze_peaks = function(x,
                          karyotypes = c('1:0', '1:1', '2:1', '2:0', '2:2'),
                          min_karyotype_size = 0.05,
