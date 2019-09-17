@@ -10,7 +10,8 @@ prepare_input_data = function(snvs, cna, tumour_purity)
   cat('\n')
 
   snvs = fortify_mutation_calls(snvs)
-  cna = fortify_CNA_segments(cna)
+  cna = fortify_CNA_segments(cna) %>%
+    mutate(id = paste0('__sgm_', row_number()))
 
   nsnvs = nrow(snvs)
   ncna = nrow(cna)
@@ -19,20 +20,30 @@ prepare_input_data = function(snvs, cna, tumour_purity)
   ncnasbcl = sum(cna$CCF < 1)
 
   # Mapping mutations
-  pio::pioStr("\nInput ",
-              'n =',
-              nsnvs,
-              "mutations for",
-              ncna,
-              paste0("CNA segments (", ncnacl, " clonal, ", ncnasbcl, " subclonal)\n\n"))
+  pio::pioStr(
+    "\nInput ",
+    'n =',
+    nsnvs,
+    "mutations for",
+    ncna,
+    paste0(
+      "CNA segments (",
+      ncnacl,
+      " clonal, ",
+      ncnasbcl,
+      " subclonal)\n\n"
+    )
+  )
 
   cat(crayon::green("Mapping mutations to clonal CNA.\n"))
 
- snvs = map_mutations_to_segments(snvs, cna %>% filter(CCF == 1))
-  # #   filter(!is.na(karyotype))
-  #
-  # nsnvs = nrow(snvs)
-  # ncna = nrow(cna)
+  snvs = map_mutations_to_segments(snvs, cna %>% filter(CCF == 1))
+
+  # Tabular of mapping per segments (count)
+  tab = snvs %>%
+    group_by(segment_id) %>%
+    summarise(n = n()) %>%
+    arrange(desc(n))
 
   # Stats about mappability
   num_mappable = sum(!is.na(snvs$karyotype))
@@ -47,5 +58,5 @@ prepare_input_data = function(snvs, cna, tumour_purity)
   )
 
 
-  return(list(snvs = snvs, cna =cna))
+  return(list(snvs = snvs, cna = cna, tab = tab))
 }

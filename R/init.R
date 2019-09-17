@@ -38,7 +38,7 @@
 #' data('example_dataset_CNAqc', package = 'CNAqc')
 #' print(example_dataset_CNAqc)
 #'
-#' x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+#' x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna, example_dataset_CNAqc$purity)
 #' print(x)
 init = function(snvs, cna, purity)
 {
@@ -76,6 +76,8 @@ init = function(snvs, cna, purity)
 
   fit$n_karyotype = sort(table(fit$snvs$karyotype), decreasing = T)
   fit$purity = purity
+
+  fit$tab_mapping = input$tab
 
   fit
 }

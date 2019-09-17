@@ -4,8 +4,7 @@ map_mutations_to_segments = function(snvs, cna)
     warning("[CNAqc] karyotype columns in cna will be overwritten")
 
   snvs$karyotype = NA
-
-  # pb = txtProgressBar(min = 1, max = nrow(cna), style = 3)
+  snvs$segment_id = NA
 
   pb <- progress_estimated(nrow(cna), min_time = 2)
 
@@ -21,9 +20,9 @@ map_mutations_to_segments = function(snvs, cna)
         )
 
     snvs$karyotype[mappable] = paste0(cna$Major[i], ':', cna$minor[i])
-  }
+    snvs$segment_id[mappable] = cna$id[i]
 
-  # close(pb)
+  }
 
   snvs
 }
