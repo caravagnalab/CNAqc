@@ -21,7 +21,8 @@ Imports:
     peakPick,
     ggpubr,
     tidyverse,
-    ggrepel
+    ggrepel,
+    RColorBrewer
 Remotes: caravagn/pio
 RoxygenNote: 6.1.1
 Suggests: 

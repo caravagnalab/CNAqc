@@ -7,11 +7,10 @@ prepare_input_data = function(snvs, cna, tumour_purity)
               tumour_purity <= 1 | !is.na(tumour_purity))
 
   pio::pioHdr("CNAqc - CNA Quality Check")
-  cat('\n')
 
   snvs = fortify_mutation_calls(snvs)
   cna = fortify_CNA_segments(cna) %>%
-    mutate(id = paste0('__sgm_', row_number()))
+    mutate(segment_id = paste0('__sgm_', row_number()))
 
   nsnvs = nrow(snvs)
   ncna = nrow(cna)
@@ -21,7 +20,7 @@ prepare_input_data = function(snvs, cna, tumour_purity)
 
   # Mapping mutations
   pio::pioStr(
-    "\nInput ",
+    "Input ",
     'n =',
     nsnvs,
     "mutations for",
@@ -31,11 +30,10 @@ prepare_input_data = function(snvs, cna, tumour_purity)
       ncnacl,
       " clonal, ",
       ncnasbcl,
-      " subclonal)\n\n"
+      " subclonal)"
     )
   )
 
-  cat(crayon::green("Mapping mutations to clonal CNA.\n"))
 
   snvs = map_mutations_to_segments(snvs, cna %>% filter(CCF == 1))
 
@@ -50,10 +48,10 @@ prepare_input_data = function(snvs, cna, tumour_purity)
   perc_mappable = round(num_mappable / nsnvs * 100)
 
   pio::pioStr(
-    "\nMapping.",
+    "\nMapped.",
     'n =',
     num_mappable,
-    "mutations mapped to segments",
+    "mutations mapped to clonal segments",
     paste0('(~', perc_mappable, '% of input)')
   )
 

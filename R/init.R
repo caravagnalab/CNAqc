@@ -65,7 +65,8 @@ init = function(snvs, cna, purity)
   # TODO -- check NA chrom/from and to, and the same for SNVs
 
   fit$snvs = input$snvs
-  fit$cna = input$cna
+  fit$cna = input$cna %>%
+    left_join(input$tab, by = 'segment_id')
 
   # Counts data
   fit$n_snvs = nrow(fit$snvs)
@@ -77,7 +78,6 @@ init = function(snvs, cna, purity)
   fit$n_karyotype = sort(table(fit$snvs$karyotype), decreasing = T)
   fit$purity = purity
 
-  fit$tab_mapping = input$tab
 
   fit
 }

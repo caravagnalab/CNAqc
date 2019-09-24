@@ -38,8 +38,11 @@ plot_vaf = function(x, N = 5000, chromosomes = paste0('chr', c(1:22, 'X', 'Y')))
 
   N_all = nrow(mutations)
   mutations = mutations %>%
-    filter(DP > quant[1], DP < quant[2]) %>%
-    sample_n(N)
+    filter(DP > quant[1], DP < quant[2])
+
+  if(nrow(mutations) > N)
+    mutations = mutations %>% sample_n(N)
+
 
   maxY = max(mutations$VAF) * .9
   label_maxY = paste0("N = ", N, ' (', round(N/N_all * 100), '%)')

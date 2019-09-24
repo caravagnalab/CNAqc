@@ -20,7 +20,7 @@ map_mutations_to_segments = function(snvs, cna)
         )
 
     snvs$karyotype[mappable] = paste0(cna$Major[i], ':', cna$minor[i])
-    snvs$segment_id[mappable] = cna$id[i]
+    snvs$segment_id[mappable] = cna$segment_id[i]
 
   }
 
