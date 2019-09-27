@@ -24,16 +24,23 @@ compute_CCF = function(snvs, cna, tumour_purity, karyotypes = c('2:1', '2:0', '2
 }
 
 data('example_dataset_CNAqc')
+x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna, example_dataset_CNAqc$purity)
 
-mutation_multipl = function(snvs, karyotype)
+mutation_multipl = function(x, karyotype)
 {
   A = as.numeric(strsplit(karyotype, ':')[[1]][1])
   B = as.numeric(strsplit(karyotype, ':')[[1]][2])
 
-  snvs_k = snvs %>%
+  # Karyotype specific mutations
+  snvs_k = x$snvs %>%
     filter(karyotype == !!karyotype)
 
-  expectation = CNAqc:::expected_vaf_peak(A, B, tumour_purity) %>%
+  # Expected VAF for 1 and 2 copies of the mutation
+  #
+  # Assumption: the aneuploidy state is immediately reached
+  # out of a 1:1 state, and therefore we only care about
+  # mutations in 1 copy (pre), and 2 copies (post).
+  expectation = CNAqc:::expected_vaf_peak(A, B, x$purity) %>%
     mutate(
       label = ifelse(mutation_multiplicity == 1, "One copy", "Two copies")
     )
@@ -48,9 +55,7 @@ mutation_multipl = function(snvs, karyotype)
       linetype = 'dashed',
       aes(xintercept = peak, color = label)
     ) +
-    theme_minimal() +
-    theme(legend.position = 'bottom',
-          legend.key.height = unit(3, 'mm')) +
+    my_ggplot_theme() +
     scale_color_brewer(palette = "Set1") +
     guides(color = guide_legend("Occurrence")) +
     labs(
@@ -157,3 +162,23 @@ mutation_multipl = function(snvs, karyotype)
   return(list(snvs = snvs_k, plot = mutation_plot))
 }
 
+
+binomial_range = function(p, n)
+{
+  # Domain
+  domain = seq(0, 1, 0.01)
+
+  # Bernoulli succesfull trials
+  NV = round(domain * n)
+
+  # Before - density values
+  p_1 = expectation$peak[1]
+  d_1 = data.frame(
+    x = NV/med_coverage,
+    y = dbinom(NV, size = med_coverage, prob = p_1),
+    mutation_multiplicity = 1,
+    label = 'One copy'
+  )
+
+
+}
