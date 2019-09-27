@@ -43,6 +43,6 @@ CNAqc supports `hg19` coordinates.
 data('example_dataset_CNAqc', package = 'CNAqc')
 print(example_dataset_CNAqc)
 
-x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna, example_dataset_CNAqc$purity)
 print(x)
 }

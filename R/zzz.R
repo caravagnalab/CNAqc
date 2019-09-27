@@ -16,15 +16,15 @@
   # Header
   # =-=-=-=-=-=-
 
-  welcome_message =  getOption('CNAqc_welcome_message', default = TRUE)
+  CNAqc_welcome_message =  getOption('CNAqc_welcome_message', default = TRUE)
 
-  if(welcome_message)
+  if(CNAqc_welcome_message)
   {
     pio::pioHdr('CNAqc - Copy Number Alteration quality check')
     pio::pioStr("Author : ", "Giulio Caravagna <gcaravagn@gmail.com>", suffix = '\n')
     pio::pioStr("GitHub : ", "caravagn/CNAqc", suffix = '\n')
 
-    options(welcome_message = FALSE)
+    options(CNAqc_welcome_message = FALSE)
   }
 
   invisible()
