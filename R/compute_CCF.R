@@ -24,7 +24,7 @@ compute_CCF = function(snvs, cna, tumour_purity, karyotypes = c('2:1', '2:0', '2
 }
 
 data('example_dataset_CNAqc')
-x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna, example_dataset_CNAqc$purity)
+x = CNAqc::init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna, example_dataset_CNAqc$purity)
 
 mutation_multipl = function(x, karyotype)
 {
@@ -163,7 +163,9 @@ mutation_multipl = function(x, karyotype)
 }
 
 
-binomial_range = function(p, n)
+# Density values from a Binmoial distribution with number of trials `n`
+# and success probability `p`. Returns a data.frame with the density  
+binomial_density = function(p, n)
 {
   # Domain
   domain = seq(0, 1, 0.01)
@@ -171,14 +173,117 @@ binomial_range = function(p, n)
   # Bernoulli succesfull trials
   NV = round(domain * n)
 
-  # Before - density values
-  p_1 = expectation$peak[1]
-  d_1 = data.frame(
-    x = NV/med_coverage,
-    y = dbinom(NV, size = med_coverage, prob = p_1),
+  data.frame(
+    x = NV/n,
+    y = dbinom(NV, size = n, prob = p)
+  )
+}
+
+# Quantile from a Binmoial distribution with number of trials `n`
+# and success probability `p`. Returns a data.frame with the density  
+binomial_quantile_ranges = function(p, n, quantile_left = 0.01, quantile_right = 1 - quantile_left)
+{
+  c(
+    qbinom(quantile_left, n, p)/n,
+    qbinom(quantile_right, n, p)/n
+  )
+}
+
+# Create a entropy profile for a 2-class model
+entropy_profile_2_class = function(p, n, quantile_left = 0.01, quantile_right = 1 - quantile_left)
+{
+  # Domain
+  domain = seq(0, 1, 0.01)
+  
+  # Bernoulli succesfull trials
+  NV = round(domain * n)
+  
+  data.frame(
+    x = NV/n,
+    y = dbinom(NV, size = n, prob = p)
+  )
+  
+}
+
+# We build 2 template Binomial densities to capture:
+# 
+# - Bin(p1, n), events before aneuploidy
+# - Bin(p2, n), events after aneuploidy
+# 
+# In both cases we take as overal number of trials (n)
+# the median coverage, and use for the success parameters
+# p1 and p2 the expected peaks as of ASCAT equation.
+# 
+# Assumptions: 
+# - overdispersion is small to justify a Binomial instead
+#   of a Beta-Binomial model;
+# - trials are well-represented with the median coverage;
+p_1 = expectation$peak[1]
+p_2 = expectation$peak[2]
+
+n = med_coverage
+
+# Bin(p1, n)
+d_1 = binomial_density(p_1, n) %>%
+  mutate(
     mutation_multiplicity = 1,
     label = 'One copy'
   )
 
+# Bin(p2, n)
+d_2 = binomial_density(p_2, n) %>%
+  mutate(
+    mutation_multiplicity = 2,
+    label = 'Two copies'
+  )
 
+# Then we obtain the Binomial quantile ranges for these
+# two distributions, which we use to consider only assingments
+# that have a minimum probability support
+rg_1 = binomial_quantile_ranges(p_1, n, quantile_left = 0.01, quantile_right = 0.99)
+rg_2 = binomial_quantile_ranges(p_2, n, quantile_left = 0.01, quantile_right = 0.99)
+
+# We want to create a mixture model
+# 
+# pi_1 * Bin(p1, n) + (1 - pi_1) * Bin(p2, n)
+# 
+# to model the mixture of those two Binomial distributions. To determine
+# the mixing proportions of this mixture we do some empirical trick of
+# get the number of observations between the two Binomial quantile ranges
+# that we have just computed. 
+n_rg_1 = snvs_k %>% filter(VAF > rg_1[1], VAF < rg_1[2]) %>% nrow
+n_rg_2 = snvs_k %>% filter(VAF > rg_2[1], VAF < rg_2[2]) %>% nrow
+
+# Compute the actual mixing proportions, and re-scale the densities accordingly
+mixing = c(n_rg_1, n_rg_2)/(n_rg_1 + n_rg_2)
+d_1$mixture_y = d_1$y * mixing[1]
+d_2$mixture_y = d_2$y * mixing[2]
+
+# Now we need to decide how to assign a point in order to determine the actual mutation
+# multeplicity. We want this to be a high-confident assignments, which means that we 
+# want to avoid points of the density where the entropy is high.
+
+template_latent_variables = bind_cols(d_1, d_2) %>% 
+  select(mixture_y, mixture_y1) %>% 
+  rename(class_1 = mixture_y, class_2 = mixture_y1)
+
+assignable_snvs = snvs_k %>% 
+  filter(VAF > rg_1[1], VAF < rg_1[2]) %>%
+  bind_rows(
+    snvs_k %>% filter(VAF > rg_2[1], VAF < rg_2[2]) 
+  )
+
+hist(assignable_snvs$VAF, breaks = 100)
+require(BMix)
+
+bmfit = 
+
+
+
+den = function(x)
+{
+  d1 = mixing[1] * dbinom(round(x * med_coverage), size = med_coverage, prob = p_1)
+  d2 = mixing[2] * dbinom(round(x * med_coverage), size = med_coverage, prob = p_2)
+  
+  return(ifelse(d1 >= d2, 1, 2))
 }
