@@ -11,6 +11,7 @@ Description: CNAqc is a package to provide a set of metrics to assess the qualit
   frequencies of somatic mutatnions. Quantitative metrics and plots for data exploration and quality check 
   are available, allowing for an intuitive assessment of the quality of calls. Quantitative measures can 
   also be used to suggest adjustemnts of the current purity estimates to increase the quality of CNA calls.
+  Routines to determine Cancer Cell Franctions for each mutation are available as well.
 License: GPL
 Encoding: UTF-8
 LazyData: true

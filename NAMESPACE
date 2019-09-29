@@ -2,6 +2,7 @@
 
 S3method(print,cnaqc)
 export(analyze_peaks)
+export(compute_CCF)
 export(init)
 export(inspect_segment)
 export(plot_counts)

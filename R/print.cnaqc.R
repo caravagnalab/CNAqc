@@ -40,4 +40,12 @@ print.cnaqc = function(x, ...)
   }
   else pio::pioStr("\n   Peaks QC ", FALSE, suffix = '\n')
 
+  with_CCF = all(!is.null(x$CCF_estimates))
+
+  if(with_CCF)
+  {
+    pio::pioStr("        CCF ", with_CCF, ' ~ ', paste(names(x$CCF_estimates), collapse = ', '), suffix = '\n')
+  }
+  else pio::pioStr("        CCF ", FALSE, suffix = '\n')
+
 }

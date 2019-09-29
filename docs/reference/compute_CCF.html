@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Plot a genome-wide scatter plot of coverage. — plot_depth • CNAqc</title>
+<title>Title — compute_CCF • CNAqc</title>
 
 
 <!-- jquery -->
@@ -33,9 +33,8 @@
 
 
 
-<meta property="og:title" content="Plot a genome-wide scatter plot of coverage. — plot_depth" />
-<meta property="og:description" content="@description Plot a genome-wide scatter plot of mutation depths, downsampled
- if required (annotates the used proportion)." />
+<meta property="og:title" content="Title — compute_CCF" />
+<meta property="og:description" content="Title" />
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -121,53 +120,33 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Plot a genome-wide scatter plot of coverage.</h1>
-    <small class="dont-index">Source: <a href='https://github.com/caravagn/CNAqc/blob/master/R/plot_depth.R'><code>R/plot_depth.R</code></a></small>
-    <div class="hidden name"><code>plot_depth.Rd</code></div>
+    <h1>Title</h1>
+    <small class="dont-index">Source: <a href='https://github.com/caravagn/CNAqc/blob/master/R/compute_CCF.R'><code>R/compute_CCF.R</code></a></small>
+    <div class="hidden name"><code>compute_CCF.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>@description Plot a genome-wide scatter plot of mutation depths, downsampled
- if required (annotates the used proportion).</p>
+    <p>Title</p>
     </div>
 
-    <pre class="usage"><span class='fu'>plot_depth</span>(<span class='no'>x</span>, <span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>5000</span>, <span class='kw'>chromosomes</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/paste'>paste0</a></span>(<span class='st'>"chr"</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>1</span>:<span class='fl'>22</span>, <span class='st'>"X"</span>, <span class='st'>"Y"</span>)))</pre>
+    <pre class="usage"><span class='fu'>compute_CCF</span>(<span class='no'>x</span>, <span class='kw'>karyotypes</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"2:1"</span>, <span class='st'>"2:0"</span>, <span class='st'>"2:2"</span>),
+  <span class='kw'>entropy_quantile</span> <span class='kw'>=</span> <span class='fl'>0.9</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>An object of class <code>cnaqc</code>, created by the <code>init</code> function.</p></td>
-    </tr>
-    <tr>
-      <th>N</th>
-      <td><p>Mutations to use, randomly sampled.</p></td>
-    </tr>
-    <tr>
-      <th>chromosomes</th>
-      <td><p>The chromosome to use for this plot.</p></td>
+      <th>entropy_quantile</th>
+      <td></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A <code>ggplot</code> object.</p>
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/data'>data</a></span>(<span class='st'>'example_dataset_CNAqc'</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>'CNAqc'</span>)
-<span class='no'>x</span> <span class='kw'>=</span> <span class='fu'><a href='init.html'>init</a></span>(<span class='no'>example_dataset_CNAqc</span>$<span class='no'>snvs</span>, <span class='no'>example_dataset_CNAqc</span>$<span class='no'>cna</span>,<span class='no'>example_dataset_CNAqc</span>$<span class='no'>purity</span>)</div><div class='output co'>#&gt; <span style='color: #BBBBBB;background-color: #0000BB;'> [ CNAqc - CNA Quality Check ] 
-#&gt; </span><span></div><div class='output co'>#&gt; <span class='message'>[CNAqc] Missing CCF column from CNA calls, adding CCF = 1 assuming all calls to be clonal.</span></div><div class='output co'>#&gt; </span><span style='color: #000000;background-color: #BBBB00;'>Input </span><span> n = 13141 mutations for 267 CNA segments (267 clonal, 0 subclonal) </span><span style='color: #000000;background-color: #BBBB00;'>
-#&gt; Mapped.</span><span> n = 12963 mutations mapped to clonal segments (~99% of input) </div><div class='input'>
-<span class='fu'>plot_depth</span>(<span class='no'>x</span>)</div><div class='img'><img src='plot_depth-1.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='fu'>plot_depth</span>(<span class='no'>x</span>, <span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>100</span>)</div><div class='img'><img src='plot_depth-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>plot_depth</span>(<span class='no'>x</span>, <span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>1000</span>)</div><div class='img'><img src='plot_depth-3.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>plot_depth</span>(<span class='no'>x</span>, <span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>10000</span>)</div><div class='img'><img src='plot_depth-4.png' alt='' width='700' height='433' /></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
-      <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>

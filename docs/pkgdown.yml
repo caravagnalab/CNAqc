@@ -3,5 +3,6 @@ pkgdown: 1.3.0
 pkgdown_sha: ~
 articles:
   CNAqc: CNAqc.html
+  ccf_computation: ccf_computation.html
   peaks_detection: peaks_detection.html
 

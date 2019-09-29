@@ -43,6 +43,7 @@ segment, and the tumour purity. A score is produced
 as a linear combination of the distance of the actual
 peak to the expected one, derived with standard equations
 for CNA analysis." />
+<meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -99,6 +100,9 @@ for CNA analysis." />
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/ccf_computation.html">Computation of Cancer Cell Fractions</a>
+    </li>
     <li>
       <a href="../articles/peaks_detection.html">QC analysis via peaks detection</a>
     </li>
@@ -198,19 +202,16 @@ See the vignette to see how to extract and plot the results.</p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/data'>data</a></span>(<span class='st'>'example_dataset_CNAqc'</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>'CNAqc'</span>)
 <span class='no'>x</span> <span class='kw'>=</span> <span class='fu'><a href='init.html'>init</a></span>(<span class='no'>example_dataset_CNAqc</span>$<span class='no'>snvs</span>, <span class='no'>example_dataset_CNAqc</span>$<span class='no'>cna</span>,<span class='no'>example_dataset_CNAqc</span>$<span class='no'>purity</span>)</div><div class='output co'>#&gt; <span style='color: #BBBBBB;background-color: #0000BB;'> [ CNAqc - CNA Quality Check ] 
-#&gt; </span><span></div><div class='output co'>#&gt; <span class='message'>[CNAqc] Missing CCF column from CNA calls, adding CCF = 1 assuming all calls to be clonal.</span></div><div class='output co'>#&gt; </span><span style='color: #000000;background-color: #BBBB00;'>
-#&gt; Input </span><span> n = 13141 mutations for 267 CNA segments (267 clonal, 0 subclonal)
-#&gt; 
-#&gt;  </span><span style='color: #00BB00;'>Mapping mutations to clonal CNA.
-#&gt; </span><span style='color: #000000;background-color: #BBBB00;'>
-#&gt; Mapping.</span><span> n = 12963 mutations mapped to segments (~99% of input) </div><div class='input'>
+#&gt; </span><span></div><div class='output co'>#&gt; <span class='message'>[CNAqc] Missing CCF column from CNA calls, adding CCF = 1 assuming all calls to be clonal.</span></div><div class='output co'>#&gt; </span><span style='color: #000000;background-color: #BBBB00;'>Input </span><span> n = 13141 mutations for 267 CNA segments (267 clonal, 0 subclonal) </span><span style='color: #000000;background-color: #BBBB00;'>
+#&gt; Mapped.</span><span> n = 12963 mutations mapped to clonal segments (~99% of input) </div><div class='input'>
 <span class='no'>x</span> <span class='kw'>=</span> <span class='fu'>analyze_peaks</span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; </span><span style='color: #BBBBBB;background-color: #0000BB;'> [ QC analysis with peaks detection ] 
 #&gt; </span><span>
 #&gt; </span><span style='color: #000000;background-color: #BBBB00;'>      CNAqc </span><span> n = 13141 mutations for 267 CNA segments (267 clonal, 0 subclonal) </span><span style='color: #000000;background-color: #BBBB00;'>
-#&gt;      Purity </span><span> 89 cellularity </span><span style='color: #000000;background-color: #BBBB00;'>
+#&gt;      Purity </span><span> 89% cellularity </span><span style='color: #000000;background-color: #BBBB00;'>
 #&gt;  Karyotypes </span><span> 7478 (2:2); 1893 (4:2); 1625 (3:2); 1563 (2:1); 312 (3:0); 81 (2:0); 4 (16:2); 2 (25:2); 2 (3:1); 1 (106:1); 1 (26:2); 1 (99:1) 
 #&gt;  </span><span style='color: #000000;background-color: #BBBB00;'>
 #&gt;    Peaks QC </span><span> </span><span style='color: #BB0000;'>FALSE</span><span> </span><span style='color: #000000;background-color: #BBBB00;'>
+#&gt;         CCF </span><span> </span><span style='color: #BB0000;'>FALSE</span><span> </span><span style='color: #000000;background-color: #BBBB00;'>
 #&gt; </span><span>
 #&gt; </span><span style='color: #00BBBB;'>=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-</span><span>
 #&gt; </span><span style='color: #00BBBB;'> Analysing ~ karyotypes 1:0, 1:1, 2:1, 2:0, 2:2 ~  9041 mutations ~ min. k = 657</span><span>
@@ -223,7 +224,7 @@ See the vignette to see how to extract and plot the results.</p>
 #&gt; </span><span style='color: #555555;'>3</span><span> 2:0          81      0.006</span><span style='text-decoration: underline;'>16</span><span> FALSE    </span><span style='color: #BB0000;'>NA</span><span>    
 #&gt; </span><span style='color: #000000;background-color: #BBBB00;'>
 #&gt; Peak detector</span><span> p = 0.89 ~ KDE a = 1 c = 0.5 ~ peakPick n = 1 epsilon = 0.015 </span><span style='color: #000000;background-color: #BBBB00;'>
-#&gt; </span><span></div><div class='output co'>#&gt; <span class='message'>Loading required package: peakPick</span></div><div class='output co'>#&gt; 
+#&gt; </span><span>
 #&gt; </span><span style='color: #00BBBB;'>=-=-=-=-=-=-=-=-</span><span>
 #&gt; </span><span style='color: #00BBBB;'> Results table</span><span>
 #&gt; </span><span style='color: #00BBBB;'>=-=-=-=-=-=-=-=-</span><span>
@@ -238,7 +239,7 @@ See the vignette to see how to extract and plot the results.</p>
 #&gt; </span><span style='color: #000000;background-color: #BBBB00;'>
 #&gt; Fit score:</span><span> 0.00468956233367035 
 #&gt;  </div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; </span><span style='color: #000000;background-color: #BBBB00;'>      CNAqc </span><span> n = 13141 mutations for 267 CNA segments (267 clonal, 0 subclonal) </span><span style='color: #000000;background-color: #BBBB00;'>
-#&gt;      Purity </span><span> 89 cellularity </span><span style='color: #000000;background-color: #BBBB00;'>
+#&gt;      Purity </span><span> 89% cellularity </span><span style='color: #000000;background-color: #BBBB00;'>
 #&gt;  Karyotypes </span><span> 7478 (2:2); 1893 (4:2); 1625 (3:2); 1563 (2:1); 312 (3:0); 81 (2:0); 4 (16:2); 2 (25:2); 2 (3:1); 1 (106:1); 1 (26:2); 1 (99:1) 
 #&gt;  </span><span style='color: #000000;background-color: #BBBB00;'>
 #&gt;    Peaks QC </span><span> </span><span style='color: #00BB00;'>TRUE</span><span>  ~ s =  0.00468956233367035 </span><span style='color: #000000;background-color: #BBBB00;'>
@@ -249,7 +250,9 @@ See the vignette to see how to extract and plot the results.</p>
 #&gt; </span><span style='color: #555555;'>2</span><span>                1 2:1       0.308  0.3   3.6  FALSE      0.007</span><span style='text-decoration: underline;'>96</span><span> TRUE    0.086</span><span style='text-decoration: underline;'>4</span><span>
 #&gt; </span><span style='color: #555555;'>3</span><span>                2 2:2       0.471  0.46  8.14 FALSE      0.010</span><span style='text-decoration: underline;'>9</span><span>  TRUE    0.414 
 #&gt; </span><span style='color: #555555;'>4</span><span>                1 2:2       0.235  0.24  0.86 FALSE     -</span><span style='color: #BB0000;'>0.004</span><span style='color: #BB0000;text-decoration: underline;'>55</span><span> TRUE    0.414 
-#&gt; </span><span style='color: #555555;'># … with 1 more variable: score </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span></div><div class='input'>
+#&gt; </span><span style='color: #555555;'># … with 1 more variable: score </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #000000;background-color: #BBBB00;'>        CCF </span><span> </span><span style='color: #BB0000;'>FALSE</span><span> </span><span style='color: #000000;background-color: #BBBB00;'>
+#&gt; </span><span></div><div class='input'>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>x</span>$<span class='no'>peaks_analysis</span>)</div><div class='output co'>#&gt; $score
 #&gt; [1] 0.004689562
 #&gt; 

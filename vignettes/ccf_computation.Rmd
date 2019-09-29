@@ -1,0 +1,135 @@
+---
+title: "Computation of Cancer Cell Fractions"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Computation of Cancer Cell Fractions}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(CNAqc)
+```
+
+### Mutation multiplicity
+
+To compute Cancer Cell Fractions (CCFs), `CNAqc` first computes the mutation multiplicity (the numbe of copies of a mutation in a certain copy number segment). This is generally a difficult task, and wrong CCF estimates in turn propagate errors in other analyses. For this reason, `CNAqc` limits this computations to karyotypes that are usually "easier" - `'2:1'`, `'2:0'` and `'2:2'` - where a mutation is either present in one or two copies, assuming that the aneuploidy state is directly achieved from a diploid genome.By design, computations on other karyotypes raise an error.
+
+**Expected VAF.** Given the mutations that are mapped to a certain karyotype (e.g., `2:1`), the expected Variant Allele Frequency (VAF) for mutations in $m$ copies, with tumour purity $\pi$ and segment ploidy $p$ (number of copies of the minor and major allele) are given by
+\[
+v = \dfrac{m \pi}{
+2 (1 - \pi) + \pi p 
+} \, .
+\]
+This formula is also used to determine the expected peaks in the peak-detection algorithm used to QC copy number calls in `CNAqc` (see the vignette *"QC analysis via peaks detection"*).
+
+In this task we need to determine the value of $m$ from the observed $v$ and the karyotype. 
+
+**2-class mixture.** `CNAqc` uses a heuristic based on the fact that we expect two Binomial distributions for the mutations happening before and after aneuploudy. The density of these Binomial distributions  are:
+
+* peaked at $v_1$ for $m = 1$ (after aneuploidy) and $v_2$ for $m = 2$  (before aneuploidy). 
+* computed on the domain $[0, 1]$, after translating the read counts into allele frequencies. This is achieved fixing the number of trials of the Binomial process to the median coverage $n$ of the mutations that map to the segments under investigation (e.g., the triploid segments);
+
+Therefore, the assumptions in `CNAqc` are that overdispersion of coverage is small to justify a Binomial instead of a Beta-Binomial model, and that trials are well-represented with the median coverage.
+
+`CNAqc` computes two Binomial densities $\text{Bin}_1$ and $\text{Bin}_2$ over the set of values $[0; n]$ with $n$ number of trials and success probability $v_i$, i.e.
+\[
+\text{Bin}_i = p(s \mid n; v_i)
+\]
+as the probability of finding $s$ reads with the mutant allele at out of $n$ (median depth), assuming the mutation expected frequency is $v_i$.
+
+To finalize the densities of this mixed model is however required to determine the absolute proportions of the mixture; this quantity must be indeed used to actually scale the two theoretical densities. To do this `CNAqc` uses a simple heuristic that counts how many mutations map below the area of each of those densities. The heuristics computes the 1% and 99% quantiles of those distributions, determing two ranges $I_1 = [v_1^1; v_1^{99}]$ and $I_2 = [v_2^1; v_2^{99}]$ so that:
+
+* $n_1$ are the number of mutations with VAF in $I_1$; 
+* $n_2$ are the number of mutations with VAF in $I_2$; 
+
+Notice that these two intervals might overlap (i.e., it could be that $v_1^{99} > v_2^{1}$). This is however not a problem because the two numbers are normalized to create  a complete 2-components Binomial mixture model.
+\[
+M = \mu_1 * \text{Bin}_1 + (1 - \mu_1) * \text{Bin}_2
+\]
+where $\mu_1 = n_1/(n_1+n_2)$ are the normalized  proportions. 
+
+
+**Entropy-based assignments.** Assigning mutation multiplicities is particularly difficult at the crossing of the two Binomial densities, because in that case some mutations that have true  multiplicity $m=1$ are actually mapped to $m=2$, and viceversa. This creates false "bumps" in the CCF distribution, which could be interepreted either as miscalled copy-number segments or false clonal architectures. `CNAqc` uses a entropy-based heuristic to determine which mutations can be confidently assigned to one of the two states of $m$, and the heuristic is controlled by a user-defined parameter that represents a quantile. Plots are returned to visually aid the user to determine the best value for the input parameter.
+
+The difficult mutations to assign are those laying in between $v_1$ and $v_2$. It is reasonable to assume that mutations with VFA below $v_1$ are in one copy, and that those above $v_2$ are in two copies. This implicitely assume that we are working with clonal copy number calls, a simplyfying assumption of this analysis in `CNAqc`.
+
+`CNAqc` uses the entropy $H(x)$ of the latent variables to determine mutation multiplicities, as well as its numerical derivative $\partial_x H$ evaluated in the domain $[nv_1, nv_2]$. Both quantities are computed from the template mixture $M$. The derivative is the quantity that grows when the uncertainty of the assignments is higher. By definitiion this oscillates around low values in the leftmost and rightmost part of the evaluated spectrum, and peaks higher at the centre of the crossing of the two densities.
+
+To determine which values of the derivatives are large to suggest uncertainty, the binned values of $\partial_x H$ are used to determine the quantile $\hat{q}$ (by default, the 90%); because we expect most values to be confidently assigneable, the quantile is the determinant of the cutoff for the assignment. In fact, values below this quantile represent areas of the frequency spectrum where the assignments are confident towards either one of the two mixture components. Values above the quantile are the areas where we are not confident in the assignment. 
+
+Therefore, define from the range $[nv_1, nv_2]$ the points:
+
+* $nv_1 \leq \hat{w}_1 < nv_2$ so that $\hat{w}_1 = \min_{x}\{\partial_x H(x) > \hat{q}\}$;
+* $nv_1 < \hat{w}_2 \leq nv_2$ so that $\hat{w}_2 = \max_{x}\{\partial_x H(x) > \hat{q}\}$.
+
+Then:
+
+* any mutation in the range $[nv_1, n\hat{w}_1]$  is considered having one mutation copy;
+* any mutation in the range $[n\hat{w}_2, nv_2]$  is considered having two mutation copies;
+* any mutation in the range $[n\hat{w}_1, n\hat{w}_2]$  is considered "Not Assignable" with confidence.
+
+When `CNAqc` computes this heuristic it returns a plot of the entropy and marks the ranges $[n\hat{w}_1, n\hat{w}_2]$  determined by the quantile $\hat{q}$, so that if the user sees that the quantile selected are too stringent or loose, the input parmeter can be adjusted accordingly.
+
+#### Example computation
+
+We work with the same object shown in `CNAqc`'s Introductory Vignette.
+
+```{r echo=FALSE, results=FALSE, message=FALSE, warning=FALSE}
+# Dataset available with the package -- see Getting Started.
+data('example_dataset_CNAqc', package = 'CNAqc')
+x = CNAqc::init(
+  example_dataset_CNAqc$snvs, 
+  example_dataset_CNAqc$cna,
+  example_dataset_CNAqc$purity)
+```
+
+```{r}
+# Dataset available with the package -- see Getting Started.
+print(x)
+```
+We run function `compute_CCF` to obtain the full analysis of CCF values, first with the default parameters. 
+```{r,fig.width=9, fig.height=5}
+x_default = compute_CCF(x)
+
+# Print new object
+print(x_default)
+```
+We can visually inspect the CCF estimates for the default karyotypes (`'2:1'`, `'2:0'` and `'2:2'`). We can do that accessing the field `CCF_estimates` which contains a plot reporting the result of the analysis.
+```{r,fig.width=11, fig.height=3}
+# Result for karyptype '2:1' (triploid)
+print(x_default$CCF_estimates$`2:1`)
+```
+The plot shows all the quantities described above; in this case we see for instance that $\hat{q} = 0.9$ (default value) is a little bit off the required value, because the determined range $I$ is not fully including the peak in the entropy values. However, we see that beacuse the data quality is high the two Binomial distributions are well separated; Therefore even with this parameter value we still obtain perfectly reasonable mutation multiplicities and CCF estimates. 
+
+We inspect also the remaining karyotypes, and find a similar satisfactory result.
+```{r,fig.width=11, fig.height=3}
+# Result for karyptype '2:2' (tetraploid)
+print(x_default$CCF_estimates$`2:2`)
+
+# Result for karyptype '2:0' (tetraploid)
+print(x_default$CCF_estimates$`2:0`)
+```
+
+Just for example, this is how CCF values would have changed if we had used different value of $\hat{q}$.
+
+```{r echo=FALSE, results=FALSE, message=FALSE, warning=FALSE}
+# Computation - output not shown
+examples_low = compute_CCF(x, karyotypes = '2:1', entropy_quantile = .5)
+examples_high = compute_CCF(x, karyotypes = '2:1', entropy_quantile = .99)
+```
+```{r,fig.width=11, fig.height=3}
+# Bad estimates for q = .5
+print(examples_low$CCF_estimates)
+# Still good estimates for q = .9
+print(examples_high$CCF_estimates)
+```
+
+
