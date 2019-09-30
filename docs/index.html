@@ -11,12 +11,13 @@
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
 <script src="pkgdown.js"></script><meta property="og:title" content="CNAqc - Copy Number Analysis quality check">
 <meta property="og:description" content="CNAqc is a package to provide a set of metrics to assess the quality of 
-  Copy Number Alteration (CNA) calls.The package provides statistical measures to quantify the concordance 
+  Copy Number Alteration (CNA) calls. The package provides statistical measures to quantify the concordance 
   between mutation and Copy Number calls, exploiting allelic imbalance in absolute CNA segments and allelic 
   frequencies of somatic mutatnions. Quantitative metrics and plots for data exploration and quality check 
   are available, allowing for an intuitive assessment of the quality of calls. Quantitative measures can 
   also be used to suggest adjustemnts of the current purity estimates to increase the quality of CNA calls.
-  Routines to determine Cancer Cell Franctions for each mutation are available as well.">
+  Routines to determine Cancer Cell Franctions for each mutation are available as well. CNAqc is part of the
+  evoverse, a package that gathers multiple R packages to implement Cancer Evolution analyses.">
 <meta property="og:image" content="/logo.png">
 <meta name="twitter:card" content="summary">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -100,7 +101,7 @@
 <!-- badges: start -->
 
 <p><code>CNAqc</code> is a package to provide a set of metrics to assess the quality of Copy Number Alteration (CNA) calls, and determine reliable estimates of mutations’ Cancer Cell Franctions (CCFs).</p>
-<p><code>CNAqc</code> is part of <code>evoverse</code>, a package that interfaces several R packages that implement different types of Cancer Evolution analyses; see more <a href="https://caravagn.github.io/evoverse">about evoverse</a>.</p>
+<p><code>CNAqc</code> is part of the <code>evoverse</code>, a package that gathers multiple R packages to implement Cancer Evolution analyses; see more <a href="https://caravagn.github.io/evoverse">about evoverse</a>.</p>
 <p>The package provides statistical measures to quantify the concordance between mutation and Copy Number calls, exploiting allelic imbalance in absolute CNA segments and allelic frequencies of somatic mutations. Quantitative metrics and plots for data exploration and quality check are available, allowing for a intuitive assessment of the quality of calls. Quantitative measures can also be used to suggest adjustemnts of the current purity estimates to increase the quality of CNA calls, and to determine determine CCF values.</p>
 <div id="statistical-models" class="section level4">
 <h4 class="hasAnchor">

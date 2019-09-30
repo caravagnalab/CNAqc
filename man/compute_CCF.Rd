@@ -2,14 +2,44 @@
 % Please edit documentation in R/compute_CCF.R
 \name{compute_CCF}
 \alias{compute_CCF}
-\title{Title}
+\title{Compute CCF values for the available mutations.}
 \usage{
 compute_CCF(x, karyotypes = c("2:1", "2:0", "2:2"),
   entropy_quantile = 0.9)
 }
 \arguments{
-\item{entropy_quantile}{}
+\item{x}{An object of class \code{cnaqc}, created by the \code{init} function.}
+
+\item{karyotypes}{The karyotypes to use, this package supports only \code{c('2:1', '2:0', '2:2')}.}
+
+\item{entropy_quantile}{The entropy quantile used to determine the interval in which the CCF estimates
+are not reliable because it is not possible to determine a precise value for the multiplicity of a
+mutation from its allelic frequencies. See the package vignette `"Computation of Cancer Cell Fractions"`
+that is available at the URL \url{https://caravagn.github.io/CNAqc/articles/ccf_computation.html} to
+see the detailed meaning of this parameter.}
+}
+\value{
+An object of class \code{cnaqc}, with CCF values available for extraction and plotting.
 }
 \description{
-Title
+This function provides the implementation of a set of entropy-related routines that can estimate
+Cancer Cell Fraction values (CCFs) for the available mutations. The implemented routine is described
+in the package vignette `"Computation of Cancer Cell Fractions"` that is available at the URL
+\url{https://caravagn.github.io/CNAqc/articles/ccf_computation.html}. This function creates a field
+`CCF_estimates` inside the returned object which contains both the estimated CCF values and the
+plot of the report of this analysis.
+}
+\examples{
+
+data('example_dataset_CNAqc')
+x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna, example_dataset_CNAqc$purity)
+
+x = compute_CCF(x, karyotypes = '2:1')
+print(x)
+
+CCF(x)
+plot_CCF(x)
+}
+\seealso{
+Getters function \code{CCF} and \code{plot_CCF}.
 }

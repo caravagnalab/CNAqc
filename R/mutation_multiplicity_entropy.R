@@ -11,9 +11,13 @@ mutation_multiplicity_entropy = function(x, karyotype, entropy_quantile = .9)
     `NA` = 'red'
   )
 
-  # Karyotype specific mutations
+  # Karyotype specific mutations - clonal segments
+  cl_seg = x$cna %>%
+    filter(CCF == 1) %>%
+    pull(segment_id)
+
   snvs_k = x$snvs %>%
-    filter(karyotype == !!karyotype)
+    filter(karyotype == !!karyotype, segment_id %in% cl_seg)
 
   # Expected VAF for 1 and 2 copies of the mutation
   #

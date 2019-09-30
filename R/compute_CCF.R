@@ -1,15 +1,40 @@
-#' Title
+#' Compute CCF values for the available mutations.
 #'
-#' @param x
-#' @param karyotypes
-#' @param entropy_quantile
+#' @description
 #'
-#' @return
+#' This function provides the implementation of a set of entropy-related routines that can estimate
+#' Cancer Cell Fraction values (CCFs) for the available mutations. The implemented routine is described
+#' in the package vignette `"Computation of Cancer Cell Fractions"` that is available at the URL
+#' \url{https://caravagn.github.io/CNAqc/articles/ccf_computation.html}. This function creates a field
+#' `CCF_estimates` inside the returned object which contains both the estimated CCF values and the
+#' plot of the report of this analysis.
+#'
+#' @param x An object of class \code{cnaqc}, created by the \code{init} function.
+#' @param karyotypes The karyotypes to use, this package supports only \code{c('2:1', '2:0', '2:2')}.
+#' @param entropy_quantile The entropy quantile used to determine the interval in which the CCF estimates
+#' are not reliable because it is not possible to determine a precise value for the multiplicity of a
+#' mutation from its allelic frequencies. See the package vignette `"Computation of Cancer Cell Fractions"`
+#' that is available at the URL \url{https://caravagn.github.io/CNAqc/articles/ccf_computation.html} to
+#' see the detailed meaning of this parameter.
+#'
+#' @seealso Getters function \code{CCF} and \code{plot_CCF}.
+#' @return An object of class \code{cnaqc}, with CCF values available for extraction and plotting.
 #' @export
 #'
 #' @examples
+#'
+#' data('example_dataset_CNAqc')
+#' x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna, example_dataset_CNAqc$purity)
+#'
+#' x = compute_CCF(x, karyotypes = '2:1')
+#' print(x)
+#'
+#' CCF(x)
+#' plot_CCF(x)
 compute_CCF = function(x, karyotypes = c('2:1', '2:0', '2:2'), entropy_quantile = .9)
 {
+  stopifnot(inherits(x, 'cnaqc'))
+
   stopifnot(
     karyotypes %in% c('2:1', '2:0', '2:2')
   )
@@ -33,10 +58,6 @@ compute_CCF = function(x, karyotypes = c('2:1', '2:0', '2:2'), entropy_quantile 
 
   x
 }
-
-# data('example_dataset_CNAqc')
-# x = CNAqc::init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna, example_dataset_CNAqc$purity)
-# cc = compute_CCF(x, karyotypes = '2:1')
 
 
 

@@ -94,10 +94,17 @@
 
     
     
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(CNAqc)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="co">#&gt;  [ CNAqc - Copy Number Alteration quality check ] </span></a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="co">#&gt; Author :  Giulio Caravagna &lt;gcaravagn@gmail.com&gt; </span></a>
-<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="co">#&gt; GitHub :  caravagn/CNAqc</span></a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co"># To render in colour this vignette</span></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">old.hooks &lt;-<span class="st"> </span>fansi<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/fansi/topics/set_knit_hooks">set_knit_hooks</a></span>(knitr<span class="op">::</span>knit_hooks)</a></code></pre></div>
+<style type="text/css" scoped>
+PRE.fansi SPAN {padding-top: .25em; padding-bottom: .25em};
+</style>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(CNAqc)</a></code></pre></div>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #BBBBBB;background-color: #0000BB;"> [ CNAqc - Copy Number Alteration quality check ] 
+#&gt; </span><span style="color: #000000;background-color: #BBBB00;">Author : </span><span> Giulio Caravagna &lt;gcaravagn@gmail.com&gt; </span><span style="color: #000000;background-color: #BBBB00;">
+#&gt; GitHub : </span><span> caravagn/CNAqc </span><span style="color: #000000;background-color: #BBBB00;">
+#&gt; </span><span>
+</span></code></pre>
 <p>To set-up your data and work with the <code>CNAqc</code> package, you need to have:</p>
 <ul>
 <li>mutation calls;</li>
@@ -115,166 +122,174 @@
 <h3 class="hasAnchor">
 <a href="#input-format" class="anchor"></a>Input format</h3>
 <p><code>CNAqc</code> uses <code>hg19</code> chromosome coordinates to map mutations and CNAs. The package comes with a template dataset available.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co"># Load template data</span></a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/data">data</a></span>(<span class="st">'example_dataset_CNAqc'</span>, <span class="dt">package =</span> <span class="st">'CNAqc'</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="co"># Load template data</span></a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/data">data</a></span>(<span class="st">'example_dataset_CNAqc'</span>, <span class="dt">package =</span> <span class="st">'CNAqc'</span>)</a></code></pre></div>
 <p>Input mutations and CNA must be a <code>data.frame</code> (or a <code>tibble</code>). Both of them are required to have certain set of pretty standard columns; any extra column will be retained with the data.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="co"># Example input SNVs</span></a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(</a>
-<a class="sourceLine" id="cb3-3" data-line-number="3">  example_dataset_CNAqc<span class="op">$</span>snvs <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="st">        </span><span class="kw">select</span>(</a>
-<a class="sourceLine" id="cb3-5" data-line-number="5">          chr, from, to, <span class="co"># Genomic coordinates</span></a>
-<a class="sourceLine" id="cb3-6" data-line-number="6">          ref, alt,      <span class="co"># Alleles (reference and alternative)</span></a>
-<a class="sourceLine" id="cb3-7" data-line-number="7">          DP, NV, VAF    <span class="co"># Read counts (depth, number of variant reads, tumour VAF)</span></a>
-<a class="sourceLine" id="cb3-8" data-line-number="8">          )</a>
-<a class="sourceLine" id="cb3-9" data-line-number="9">  )</a>
-<a class="sourceLine" id="cb3-10" data-line-number="10"><span class="co">#&gt; # A tibble: 13,141 x 8</span></a>
-<a class="sourceLine" id="cb3-11" data-line-number="11"><span class="co">#&gt;    chr      from      to ref   alt      DP    NV    VAF</span></a>
-<a class="sourceLine" id="cb3-12" data-line-number="12"><span class="co">#&gt;    &lt;chr&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb3-13" data-line-number="13"><span class="co">#&gt;  1 chr1  1027104 1027105 T     G        60     6 0.1   </span></a>
-<a class="sourceLine" id="cb3-14" data-line-number="14"><span class="co">#&gt;  2 chr1  2248588 2248589 A     C       127     9 0.0709</span></a>
-<a class="sourceLine" id="cb3-15" data-line-number="15"><span class="co">#&gt;  3 chr1  2461999 2462000 G     A       156    65 0.417 </span></a>
-<a class="sourceLine" id="cb3-16" data-line-number="16"><span class="co">#&gt;  4 chr1  2727935 2727936 T     C       180    90 0.5   </span></a>
-<a class="sourceLine" id="cb3-17" data-line-number="17"><span class="co">#&gt;  5 chr1  2763397 2763398 C     T       183    61 0.333 </span></a>
-<a class="sourceLine" id="cb3-18" data-line-number="18"><span class="co">#&gt;  6 chr1  2768208 2768209 C     T       203   130 0.640 </span></a>
-<a class="sourceLine" id="cb3-19" data-line-number="19"><span class="co">#&gt;  7 chr1  2935590 2935591 C     T       228   132 0.579 </span></a>
-<a class="sourceLine" id="cb3-20" data-line-number="20"><span class="co">#&gt;  8 chr1  2980032 2980033 C     T       196    85 0.434 </span></a>
-<a class="sourceLine" id="cb3-21" data-line-number="21"><span class="co">#&gt;  9 chr1  3387161 3387162 T     G       124     6 0.0484</span></a>
-<a class="sourceLine" id="cb3-22" data-line-number="22"><span class="co">#&gt; 10 chr1  3502517 3502518 G     A        88    10 0.114 </span></a>
-<a class="sourceLine" id="cb3-23" data-line-number="23"><span class="co">#&gt; # … with 13,131 more rows</span></a></code></pre></div>
-<p>Chromosome names and alleles should be in character format; chromosomes must be in the format <code>chr1</code>, <code>chr2</code>, etc.. <code>CNAqc</code> will use all available mutation types but we suggest to carry out QC with high-quality SNV data.</p>
-<p>CNA calls must be in <em>absolute</em> format, reporting the allelic imbalance of each segment.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="co"># Example input CNA</span></a>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="co"># Example input SNVs</span></a>
 <a class="sourceLine" id="cb4-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(</a>
-<a class="sourceLine" id="cb4-3" data-line-number="3">  example_dataset_CNAqc<span class="op">$</span>cna <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3">  example_dataset_CNAqc<span class="op">$</span>snvs <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb4-4" data-line-number="4"><span class="st">        </span><span class="kw">select</span>(</a>
 <a class="sourceLine" id="cb4-5" data-line-number="5">          chr, from, to, <span class="co"># Genomic coordinates</span></a>
-<a class="sourceLine" id="cb4-6" data-line-number="6">          Major, minor  <span class="co"># Number of copies of major/ and minor allele (B-allele)</span></a>
-<a class="sourceLine" id="cb4-7" data-line-number="7">        )</a>
-<a class="sourceLine" id="cb4-8" data-line-number="8">  )</a>
-<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="co">#&gt; # A tibble: 267 x 5</span></a>
-<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="co">#&gt;    chr       from       to Major minor</span></a>
-<a class="sourceLine" id="cb4-11" data-line-number="11"><span class="co">#&gt;    &lt;chr&gt;    &lt;int&gt;    &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb4-12" data-line-number="12"><span class="co">#&gt;  1 chr1    840009  1689987     3     2</span></a>
-<a class="sourceLine" id="cb4-13" data-line-number="13"><span class="co">#&gt;  2 chr1   1689988  1815015     3     2</span></a>
-<a class="sourceLine" id="cb4-14" data-line-number="14"><span class="co">#&gt;  3 chr1   1815016  9799969     3     2</span></a>
-<a class="sourceLine" id="cb4-15" data-line-number="15"><span class="co">#&gt;  4 chr1  10479910 12079917     3     2</span></a>
-<a class="sourceLine" id="cb4-16" data-line-number="16"><span class="co">#&gt;  5 chr1  12079917 12154980     3     2</span></a>
-<a class="sourceLine" id="cb4-17" data-line-number="17"><span class="co">#&gt;  6 chr1  12154981 12839977     3     2</span></a>
-<a class="sourceLine" id="cb4-18" data-line-number="18"><span class="co">#&gt;  7 chr1  13780016 17790026     3     2</span></a>
-<a class="sourceLine" id="cb4-19" data-line-number="19"><span class="co">#&gt;  8 chr1  17849962 21080067     3     2</span></a>
-<a class="sourceLine" id="cb4-20" data-line-number="20"><span class="co">#&gt;  9 chr1  21080068 21559998     3     2</span></a>
-<a class="sourceLine" id="cb4-21" data-line-number="21"><span class="co">#&gt; 10 chr1  21559998 24830001     3     2</span></a>
-<a class="sourceLine" id="cb4-22" data-line-number="22"><span class="co">#&gt; # … with 257 more rows</span></a></code></pre></div>
+<a class="sourceLine" id="cb4-6" data-line-number="6">          ref, alt,      <span class="co"># Alleles (reference and alternative)</span></a>
+<a class="sourceLine" id="cb4-7" data-line-number="7">          DP, NV, VAF    <span class="co"># Read counts (depth, number of variant reads, tumour VAF)</span></a>
+<a class="sourceLine" id="cb4-8" data-line-number="8">          )</a>
+<a class="sourceLine" id="cb4-9" data-line-number="9">  )</a></code></pre></div>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 13,141 x 8</span><span>
+#&gt;    chr      from      to ref   alt      DP    NV    VAF
+#&gt;    </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>   </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>   </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>  </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>
+#&gt; </span><span style="color: #555555;"> 1</span><span> chr1  1</span><span style="text-decoration: underline;">027</span><span>104 1</span><span style="text-decoration: underline;">027</span><span>105 T     G        60     6 0.1   
+#&gt; </span><span style="color: #555555;"> 2</span><span> chr1  2</span><span style="text-decoration: underline;">248</span><span>588 2</span><span style="text-decoration: underline;">248</span><span>589 A     C       127     9 0.070</span><span style="text-decoration: underline;">9</span><span>
+#&gt; </span><span style="color: #555555;"> 3</span><span> chr1  2</span><span style="text-decoration: underline;">461</span><span>999 2</span><span style="text-decoration: underline;">462</span><span>000 G     A       156    65 0.417 
+#&gt; </span><span style="color: #555555;"> 4</span><span> chr1  2</span><span style="text-decoration: underline;">727</span><span>935 2</span><span style="text-decoration: underline;">727</span><span>936 T     C       180    90 0.5   
+#&gt; </span><span style="color: #555555;"> 5</span><span> chr1  2</span><span style="text-decoration: underline;">763</span><span>397 2</span><span style="text-decoration: underline;">763</span><span>398 C     T       183    61 0.333 
+#&gt; </span><span style="color: #555555;"> 6</span><span> chr1  2</span><span style="text-decoration: underline;">768</span><span>208 2</span><span style="text-decoration: underline;">768</span><span>209 C     T       203   130 0.640 
+#&gt; </span><span style="color: #555555;"> 7</span><span> chr1  2</span><span style="text-decoration: underline;">935</span><span>590 2</span><span style="text-decoration: underline;">935</span><span>591 C     T       228   132 0.579 
+#&gt; </span><span style="color: #555555;"> 8</span><span> chr1  2</span><span style="text-decoration: underline;">980</span><span>032 2</span><span style="text-decoration: underline;">980</span><span>033 C     T       196    85 0.434 
+#&gt; </span><span style="color: #555555;"> 9</span><span> chr1  3</span><span style="text-decoration: underline;">387</span><span>161 3</span><span style="text-decoration: underline;">387</span><span>162 T     G       124     6 0.048</span><span style="text-decoration: underline;">4</span><span>
+#&gt; </span><span style="color: #555555;">10</span><span> chr1  3</span><span style="text-decoration: underline;">502</span><span>517 3</span><span style="text-decoration: underline;">502</span><span>518 G     A        88    10 0.114 
+#&gt; </span><span style="color: #555555;"># … with 13,131 more rows</span><span>
+</span></code></pre>
+<p>Chromosome names and alleles should be in character format; chromosomes must be in the format <code>chr1</code>, <code>chr2</code>, etc.. <code>CNAqc</code> will use all available mutation types but we suggest to carry out QC with high-quality SNV data.</p>
+<p>CNA calls must be in <em>absolute</em> format, reporting the allelic imbalance of each segment.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="co"># Example input CNA</span></a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(</a>
+<a class="sourceLine" id="cb5-3" data-line-number="3">  example_dataset_CNAqc<span class="op">$</span>cna <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="st">        </span><span class="kw">select</span>(</a>
+<a class="sourceLine" id="cb5-5" data-line-number="5">          chr, from, to, <span class="co"># Genomic coordinates</span></a>
+<a class="sourceLine" id="cb5-6" data-line-number="6">          Major, minor  <span class="co"># Number of copies of major/ and minor allele (B-allele)</span></a>
+<a class="sourceLine" id="cb5-7" data-line-number="7">        )</a>
+<a class="sourceLine" id="cb5-8" data-line-number="8">  )</a></code></pre></div>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 267 x 5</span><span>
+#&gt;    chr       from       to Major minor
+#&gt;    </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>    </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>
+#&gt; </span><span style="color: #555555;"> 1</span><span> chr1    </span><span style="text-decoration: underline;">840</span><span>009  1</span><span style="text-decoration: underline;">689</span><span>987     3     2
+#&gt; </span><span style="color: #555555;"> 2</span><span> chr1   1</span><span style="text-decoration: underline;">689</span><span>988  1</span><span style="text-decoration: underline;">815</span><span>015     3     2
+#&gt; </span><span style="color: #555555;"> 3</span><span> chr1   1</span><span style="text-decoration: underline;">815</span><span>016  9</span><span style="text-decoration: underline;">799</span><span>969     3     2
+#&gt; </span><span style="color: #555555;"> 4</span><span> chr1  10</span><span style="text-decoration: underline;">479</span><span>910 12</span><span style="text-decoration: underline;">079</span><span>917     3     2
+#&gt; </span><span style="color: #555555;"> 5</span><span> chr1  12</span><span style="text-decoration: underline;">079</span><span>917 12</span><span style="text-decoration: underline;">154</span><span>980     3     2
+#&gt; </span><span style="color: #555555;"> 6</span><span> chr1  12</span><span style="text-decoration: underline;">154</span><span>981 12</span><span style="text-decoration: underline;">839</span><span>977     3     2
+#&gt; </span><span style="color: #555555;"> 7</span><span> chr1  13</span><span style="text-decoration: underline;">780</span><span>016 17</span><span style="text-decoration: underline;">790</span><span>026     3     2
+#&gt; </span><span style="color: #555555;"> 8</span><span> chr1  17</span><span style="text-decoration: underline;">849</span><span>962 21</span><span style="text-decoration: underline;">080</span><span>067     3     2
+#&gt; </span><span style="color: #555555;"> 9</span><span> chr1  21</span><span style="text-decoration: underline;">080</span><span>068 21</span><span style="text-decoration: underline;">559</span><span>998     3     2
+#&gt; </span><span style="color: #555555;">10</span><span> chr1  21</span><span style="text-decoration: underline;">559</span><span>998 24</span><span style="text-decoration: underline;">830</span><span>001     3     2
+#&gt; </span><span style="color: #555555;"># … with 257 more rows</span><span>
+</span></code></pre>
 <p>In this format, a diploid segment will have <code>Major = minor = 1</code> and will be denoted as <code>1:1</code>. <code>CNAqc</code> distinguishes between clonal and subclonal CNA calls, if the Cancer Cell Fraction of a segment (i.e., its clonality) is reported.</p>
 <p>A <code>CCF</code> column can represent the segment CCF as [0,1] real-value. If missing, <code>CCF = 1</code> is set assuming clonal segments; otherwise, segments with <code>CCF&lt;1</code> are considered subclonal CNAs.</p>
 <p>To analyze the data, a purity value in between <code>0</code> and <code>1</code> is required to represent the proportion of actual tumour content, sometimes called “cellularity”.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="co"># Example input purity</span></a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(example_dataset_CNAqc<span class="op">$</span>purity)</a>
-<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co">#&gt; [1] 0.89</span></a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="co"># Example input purity</span></a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(example_dataset_CNAqc<span class="op">$</span>purity)</a>
+<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="co">#&gt; [1] 0.89</span></a></code></pre></div>
 </div>
 <div id="initialisation" class="section level3">
 <h3 class="hasAnchor">
 <a href="#initialisation" class="anchor"></a>Initialisation</h3>
 <p>To use the package, you need to initialize a <code>cnaqc</code> object.</p>
 <p>This can be achieved running the initialisation function <code>init</code>, and passing mutation, CNA and purity data. This function will perform basic checks on the input format, and will map mutations to CNA segments. This operation can take some time, as it depends on the number of segments in the CNA calls, and the number of mutations in the data. This call does not subset the data, unless there are errors with respect to its expected format.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="co"># Use SNVs, CNAs and tumour purity </span></a>
-<a class="sourceLine" id="cb6-2" data-line-number="2">x =<span class="st"> </span><span class="kw"><a href="../reference/init.html">init</a></span>(</a>
-<a class="sourceLine" id="cb6-3" data-line-number="3">  example_dataset_CNAqc<span class="op">$</span>snvs, </a>
-<a class="sourceLine" id="cb6-4" data-line-number="4">  example_dataset_CNAqc<span class="op">$</span>cna,</a>
-<a class="sourceLine" id="cb6-5" data-line-number="5">  example_dataset_CNAqc<span class="op">$</span>purity</a>
-<a class="sourceLine" id="cb6-6" data-line-number="6">  )</a>
-<a class="sourceLine" id="cb6-7" data-line-number="7"><span class="co">#&gt;  [ CNAqc - CNA Quality Check ]</span></a>
-<a class="sourceLine" id="cb6-8" data-line-number="8"><span class="co">#&gt; [CNAqc] Missing CCF column from CNA calls, adding CCF = 1 assuming all calls to be clonal.</span></a>
-<a class="sourceLine" id="cb6-9" data-line-number="9"><span class="co">#&gt; Input  n = 13141 mutations for 267 CNA segments (267 clonal, 0 subclonal) </span></a>
-<a class="sourceLine" id="cb6-10" data-line-number="10"><span class="co">#&gt; Mapped. n = 12963 mutations mapped to clonal segments (~99% of input)</span></a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="co"># Use SNVs, CNAs and tumour purity </span></a>
+<a class="sourceLine" id="cb7-2" data-line-number="2">x =<span class="st"> </span><span class="kw"><a href="../reference/init.html">init</a></span>(</a>
+<a class="sourceLine" id="cb7-3" data-line-number="3">  example_dataset_CNAqc<span class="op">$</span>snvs, </a>
+<a class="sourceLine" id="cb7-4" data-line-number="4">  example_dataset_CNAqc<span class="op">$</span>cna,</a>
+<a class="sourceLine" id="cb7-5" data-line-number="5">  example_dataset_CNAqc<span class="op">$</span>purity</a>
+<a class="sourceLine" id="cb7-6" data-line-number="6">  )</a></code></pre></div>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #BBBBBB;background-color: #0000BB;"> [ CNAqc - CNA Quality Check ] 
+#&gt; </span><span>
+</span></code></pre>
+<pre><code>#&gt; [CNAqc] Missing CCF column from CNA calls, adding CCF = 1 assuming all calls to be clonal.</code></pre>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #000000;background-color: #BBBB00;">Input </span><span> n = 13141 mutations for 267 CNA segments (267 clonal, 0 subclonal) </span><span style="color: #000000;background-color: #BBBB00;">
+#&gt; Mapped.</span><span> n = 12963 mutations mapped to clonal segments (~99% of input) 
+</span></code></pre>
 <p>The summary of the object is available via the S3 <code>print</code> function, reporting some basic statistics of the data. In particular, this reports the number of mutations per karyotype sorted by size, and annotates by default is any analysis has been computed on these calls (default: no).</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(x)</a>
-<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="co">#&gt;       CNAqc  n = 13141 mutations for 267 CNA segments (267 clonal, 0 subclonal) </span></a>
-<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="co">#&gt;      Purity  89% cellularity </span></a>
-<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="co">#&gt;  Karyotypes  7478 (2:2); 1893 (4:2); 1625 (3:2); 1563 (2:1); 312 (3:0); 81 (2:0); 4 (16:2); 2 (25:2); 2 (3:1); 1 (106:1); 1 (26:2); 1 (99:1) </span></a>
-<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co">#&gt;  </span></a>
-<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="co">#&gt;    Peaks QC  FALSE </span></a>
-<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="co">#&gt;         CCF  FALSE</span></a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(x)</a></code></pre></div>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #000000;background-color: #BBBB00;">      CNAqc </span><span> n = 13141 mutations for 267 CNA segments (267 clonal, 0 subclonal) </span><span style="color: #000000;background-color: #BBBB00;">
+#&gt;      Purity </span><span> 89% cellularity </span><span style="color: #000000;background-color: #BBBB00;">
+#&gt;  Karyotypes </span><span> 7478 (2:2); 1893 (4:2); 1625 (3:2); 1563 (2:1); 312 (3:0); 81 (2:0); 4 (16:2); 2 (25:2); 2 (3:1); 1 (106:1); 1 (26:2); 1 (99:1) 
+#&gt;  </span><span style="color: #000000;background-color: #BBBB00;">
+#&gt;    Peaks QC </span><span> </span><span style="color: #BB0000;">FALSE</span><span> </span><span style="color: #000000;background-color: #BBBB00;">
+#&gt;         CCF </span><span> </span><span style="color: #BB0000;">FALSE</span><span> </span><span style="color: #000000;background-color: #BBBB00;">
+#&gt; </span><span>
+</span></code></pre>
 </div>
 <div id="plotting-segments-genome-wide-mutations-and-cna-calls" class="section level3">
 <h3 class="hasAnchor">
 <a href="#plotting-segments-genome-wide-mutations-and-cna-calls" class="anchor"></a>Plotting segments, genome-wide mutations and CNA calls</h3>
 <p><code>CNAqc</code> maps CNA calls to the <code>hg19</code> human genome coordinates; the references used are avaible attached to the package</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/data">data</a></span>(<span class="st">'chr_coordinates_hg19'</span>, <span class="dt">package =</span> <span class="st">'CNAqc'</span>)</a>
-<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(chr_coordinates_hg19)</a>
-<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="co">#&gt; # A tibble: 24 x 6</span></a>
-<a class="sourceLine" id="cb8-4" data-line-number="4"><span class="co">#&gt;    chr      length       from         to centromerStart centromerEnd</span></a>
-<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="co">#&gt;    &lt;chr&gt;     &lt;int&gt;      &lt;dbl&gt;      &lt;dbl&gt;          &lt;dbl&gt;        &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb8-6" data-line-number="6"><span class="co">#&gt;  1 chr1  249250621          0  249250621      121535434    124535434</span></a>
-<a class="sourceLine" id="cb8-7" data-line-number="7"><span class="co">#&gt;  2 chr2  243199373  249250621  492449994      341576792    344576792</span></a>
-<a class="sourceLine" id="cb8-8" data-line-number="8"><span class="co">#&gt;  3 chr3  198022430  492449994  690472424      582954848    585954848</span></a>
-<a class="sourceLine" id="cb8-9" data-line-number="9"><span class="co">#&gt;  4 chr4  191154276  690472424  881626700      740132541    743132541</span></a>
-<a class="sourceLine" id="cb8-10" data-line-number="10"><span class="co">#&gt;  5 chr5  180915260  881626700 1062541960      928032341    931032341</span></a>
-<a class="sourceLine" id="cb8-11" data-line-number="11"><span class="co">#&gt;  6 chr6  171115067 1062541960 1233657027     1121372126   1124372126</span></a>
-<a class="sourceLine" id="cb8-12" data-line-number="12"><span class="co">#&gt;  7 chr7  159138663 1233657027 1392795690     1291711358   1294711358</span></a>
-<a class="sourceLine" id="cb8-13" data-line-number="13"><span class="co">#&gt;  8 chr8  146364022 1392795690 1539159712     1436634577   1439634577</span></a>
-<a class="sourceLine" id="cb8-14" data-line-number="14"><span class="co">#&gt;  9 chr9  141213431 1539159712 1680373143     1586527391   1589527391</span></a>
-<a class="sourceLine" id="cb8-15" data-line-number="15"><span class="co">#&gt; 10 chr10 135534747 1680373143 1815907890     1719628078   1722628078</span></a>
-<a class="sourceLine" id="cb8-16" data-line-number="16"><span class="co">#&gt; # … with 14 more rows</span></a></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/data">data</a></span>(<span class="st">'chr_coordinates_hg19'</span>, <span class="dt">package =</span> <span class="st">'CNAqc'</span>)</a>
+<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(chr_coordinates_hg19)</a></code></pre></div>
+<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 24 x 6</span><span>
+#&gt;    chr      length       from         to centromerStart centromerEnd
+#&gt;    </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>     </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>      </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>      </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>          </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>        </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>
+#&gt; </span><span style="color: #555555;"> 1</span><span> chr1  249</span><span style="text-decoration: underline;">250</span><span>621          0  249</span><span style="text-decoration: underline;">250</span><span>621      121</span><span style="text-decoration: underline;">535</span><span>434    124</span><span style="text-decoration: underline;">535</span><span>434
+#&gt; </span><span style="color: #555555;"> 2</span><span> chr2  243</span><span style="text-decoration: underline;">199</span><span>373  249</span><span style="text-decoration: underline;">250</span><span>621  492</span><span style="text-decoration: underline;">449</span><span>994      341</span><span style="text-decoration: underline;">576</span><span>792    344</span><span style="text-decoration: underline;">576</span><span>792
+#&gt; </span><span style="color: #555555;"> 3</span><span> chr3  198</span><span style="text-decoration: underline;">022</span><span>430  492</span><span style="text-decoration: underline;">449</span><span>994  690</span><span style="text-decoration: underline;">472</span><span>424      582</span><span style="text-decoration: underline;">954</span><span>848    585</span><span style="text-decoration: underline;">954</span><span>848
+#&gt; </span><span style="color: #555555;"> 4</span><span> chr4  191</span><span style="text-decoration: underline;">154</span><span>276  690</span><span style="text-decoration: underline;">472</span><span>424  881</span><span style="text-decoration: underline;">626</span><span>700      740</span><span style="text-decoration: underline;">132</span><span>541    743</span><span style="text-decoration: underline;">132</span><span>541
+#&gt; </span><span style="color: #555555;"> 5</span><span> chr5  180</span><span style="text-decoration: underline;">915</span><span>260  881</span><span style="text-decoration: underline;">626</span><span>700 </span><span style="text-decoration: underline;">1</span><span>062</span><span style="text-decoration: underline;">541</span><span>960      928</span><span style="text-decoration: underline;">032</span><span>341    931</span><span style="text-decoration: underline;">032</span><span>341
+#&gt; </span><span style="color: #555555;"> 6</span><span> chr6  171</span><span style="text-decoration: underline;">115</span><span>067 </span><span style="text-decoration: underline;">1</span><span>062</span><span style="text-decoration: underline;">541</span><span>960 </span><span style="text-decoration: underline;">1</span><span>233</span><span style="text-decoration: underline;">657</span><span>027     </span><span style="text-decoration: underline;">1</span><span>121</span><span style="text-decoration: underline;">372</span><span>126   </span><span style="text-decoration: underline;">1</span><span>124</span><span style="text-decoration: underline;">372</span><span>126
+#&gt; </span><span style="color: #555555;"> 7</span><span> chr7  159</span><span style="text-decoration: underline;">138</span><span>663 </span><span style="text-decoration: underline;">1</span><span>233</span><span style="text-decoration: underline;">657</span><span>027 </span><span style="text-decoration: underline;">1</span><span>392</span><span style="text-decoration: underline;">795</span><span>690     </span><span style="text-decoration: underline;">1</span><span>291</span><span style="text-decoration: underline;">711</span><span>358   </span><span style="text-decoration: underline;">1</span><span>294</span><span style="text-decoration: underline;">711</span><span>358
+#&gt; </span><span style="color: #555555;"> 8</span><span> chr8  146</span><span style="text-decoration: underline;">364</span><span>022 </span><span style="text-decoration: underline;">1</span><span>392</span><span style="text-decoration: underline;">795</span><span>690 </span><span style="text-decoration: underline;">1</span><span>539</span><span style="text-decoration: underline;">159</span><span>712     </span><span style="text-decoration: underline;">1</span><span>436</span><span style="text-decoration: underline;">634</span><span>577   </span><span style="text-decoration: underline;">1</span><span>439</span><span style="text-decoration: underline;">634</span><span>577
+#&gt; </span><span style="color: #555555;"> 9</span><span> chr9  141</span><span style="text-decoration: underline;">213</span><span>431 </span><span style="text-decoration: underline;">1</span><span>539</span><span style="text-decoration: underline;">159</span><span>712 </span><span style="text-decoration: underline;">1</span><span>680</span><span style="text-decoration: underline;">373</span><span>143     </span><span style="text-decoration: underline;">1</span><span>586</span><span style="text-decoration: underline;">527</span><span>391   </span><span style="text-decoration: underline;">1</span><span>589</span><span style="text-decoration: underline;">527</span><span>391
+#&gt; </span><span style="color: #555555;">10</span><span> chr10 135</span><span style="text-decoration: underline;">534</span><span>747 </span><span style="text-decoration: underline;">1</span><span>680</span><span style="text-decoration: underline;">373</span><span>143 </span><span style="text-decoration: underline;">1</span><span>815</span><span style="text-decoration: underline;">907</span><span>890     </span><span style="text-decoration: underline;">1</span><span>719</span><span style="text-decoration: underline;">628</span><span>078   </span><span style="text-decoration: underline;">1</span><span>722</span><span style="text-decoration: underline;">628</span><span>078
+#&gt; </span><span style="color: #555555;"># … with 14 more rows</span><span>
+</span></code></pre>
 <p>Segments can be visualized via function <code>plot_segments</code>. By default, this function plots all the genome, annotating in the figure caption some summmary statistics about the data, and plots the major and minor alleles for each segment.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="co"># Default plot</span></a>
-<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="kw"><a href="../reference/plot_segments.html">plot_segments</a></span>(x)</a></code></pre></div>
-<p><img src="CNAqc_files/figure-html/unnamed-chunk-9-1.png" width="912"></p>
-<p>This function, as most of the package plotting functions, returns a <code>ggplot</code> object, which makes it very easy to perform further manipulations.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="co"># Reduce y-axis</span></a>
-<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="kw"><a href="../reference/plot_segments.html">plot_segments</a></span>(x) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot.window">ylim</a></span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">6</span>)</a>
-<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="co">#&gt; Warning: Removed 10 rows containing missing values (geom_segment).</span></a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="co"># Default plot</span></a>
+<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="kw"><a href="../reference/plot_segments.html">plot_segments</a></span>(x)</a></code></pre></div>
 <p><img src="CNAqc_files/figure-html/unnamed-chunk-10-1.png" width="912"></p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"></a>
-<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="co"># Reduce x,y-axis</span></a>
-<a class="sourceLine" id="cb11-3" data-line-number="3"><span class="kw"><a href="../reference/plot_segments.html">plot_segments</a></span>(x) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot.window">xlim</a></span>(<span class="fl">1e6</span>, <span class="fl">30e6</span>) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot.window">ylim</a></span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">6</span>)</a>
-<a class="sourceLine" id="cb11-4" data-line-number="4"><span class="co">#&gt; Scale for 'x' is already present. Adding another scale for 'x', which</span></a>
-<a class="sourceLine" id="cb11-5" data-line-number="5"><span class="co">#&gt; will replace the existing scale.</span></a>
-<a class="sourceLine" id="cb11-6" data-line-number="6"><span class="co">#&gt; Warning: Removed 24 rows containing missing values (geom_rect).</span></a>
-<a class="sourceLine" id="cb11-7" data-line-number="7"><span class="co">#&gt; Warning: Removed 24 rows containing missing values (geom_vline).</span></a>
-<a class="sourceLine" id="cb11-8" data-line-number="8"><span class="co">#&gt; Warning: Removed 24 rows containing missing values (geom_label).</span></a>
-<a class="sourceLine" id="cb11-9" data-line-number="9"><span class="co">#&gt; Warning: Removed 257 rows containing missing values (geom_segment).</span></a>
-<a class="sourceLine" id="cb11-10" data-line-number="10"></a>
-<a class="sourceLine" id="cb11-11" data-line-number="11"><span class="co">#&gt; Warning: Removed 257 rows containing missing values (geom_segment).</span></a></code></pre></div>
-<p><img src="CNAqc_files/figure-html/unnamed-chunk-10-2.png" width="912"></p>
+<p>This function, as most of the package plotting functions, returns a <code>ggplot</code> object, which makes it very easy to perform further manipulations.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="co"># Reduce y-axis</span></a>
+<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="kw"><a href="../reference/plot_segments.html">plot_segments</a></span>(x) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot.window">ylim</a></span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">6</span>)</a>
+<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="co">#&gt; Warning: Removed 10 rows containing missing values (geom_segment).</span></a></code></pre></div>
+<p><img src="CNAqc_files/figure-html/unnamed-chunk-11-1.png" width="912"></p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"></a>
+<a class="sourceLine" id="cb13-2" data-line-number="2"><span class="co"># Reduce x,y-axis</span></a>
+<a class="sourceLine" id="cb13-3" data-line-number="3"><span class="kw"><a href="../reference/plot_segments.html">plot_segments</a></span>(x) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot.window">xlim</a></span>(<span class="fl">1e6</span>, <span class="fl">30e6</span>) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot.window">ylim</a></span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">6</span>)</a>
+<a class="sourceLine" id="cb13-4" data-line-number="4"><span class="co">#&gt; Scale for 'x' is already present. Adding another scale for 'x', which</span></a>
+<a class="sourceLine" id="cb13-5" data-line-number="5"><span class="co">#&gt; will replace the existing scale.</span></a>
+<a class="sourceLine" id="cb13-6" data-line-number="6"><span class="co">#&gt; Warning: Removed 24 rows containing missing values (geom_rect).</span></a>
+<a class="sourceLine" id="cb13-7" data-line-number="7"><span class="co">#&gt; Warning: Removed 24 rows containing missing values (geom_vline).</span></a>
+<a class="sourceLine" id="cb13-8" data-line-number="8"><span class="co">#&gt; Warning: Removed 24 rows containing missing values (geom_label).</span></a>
+<a class="sourceLine" id="cb13-9" data-line-number="9"><span class="co">#&gt; Warning: Removed 257 rows containing missing values (geom_segment).</span></a>
+<a class="sourceLine" id="cb13-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb13-11" data-line-number="11"><span class="co">#&gt; Warning: Removed 257 rows containing missing values (geom_segment).</span></a></code></pre></div>
+<p><img src="CNAqc_files/figure-html/unnamed-chunk-11-2.png" width="912"></p>
 <p>Genome-wide plots that follow the layout of <code>plot_segments</code> are avaiable to view the number of mutations, their VAF and depth. VAF and depth-plotting functions (scatterplots) can subset the input data to speed up rendering and reduce the size of output files - by default 5000 points are randomly sampled. Counts plot, instead, bin the genome locations by one megabase.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="co"># All genome, all data - counts of mutations per megabase</span></a>
-<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="kw"><a href="../reference/plot_counts.html">plot_counts</a></span>(x)</a>
-<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="co">#&gt; Warning: Removed 2 rows containing missing values (geom_bar).</span></a></code></pre></div>
-<p><img src="CNAqc_files/figure-html/unnamed-chunk-11-1.png" width="768"></p>
-<p>An example effect of downsampling the data is the following</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="co"># Different subsamples</span></a>
-<a class="sourceLine" id="cb13-2" data-line-number="2">ggpubr<span class="op">::</span><span class="kw"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html">ggarrange</a></span>(</a>
-<a class="sourceLine" id="cb13-3" data-line-number="3">  <span class="kw"><a href="../reference/plot_vaf.html">plot_vaf</a></span>(x, <span class="dt">N =</span> <span class="dv">1000</span>),</a>
-<a class="sourceLine" id="cb13-4" data-line-number="4">  <span class="kw"><a href="../reference/plot_vaf.html">plot_vaf</a></span>(x),</a>
-<a class="sourceLine" id="cb13-5" data-line-number="5">  <span class="kw"><a href="../reference/plot_vaf.html">plot_vaf</a></span>(x, <span class="dt">N =</span> <span class="dv">10000</span>),</a>
-<a class="sourceLine" id="cb13-6" data-line-number="6">  <span class="dt">ncol =</span> <span class="dv">1</span></a>
-<a class="sourceLine" id="cb13-7" data-line-number="7">)</a></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="co"># All genome, all data - counts of mutations per megabase</span></a>
+<a class="sourceLine" id="cb14-2" data-line-number="2"><span class="kw"><a href="../reference/plot_counts.html">plot_counts</a></span>(x)</a>
+<a class="sourceLine" id="cb14-3" data-line-number="3"><span class="co">#&gt; Warning: Removed 2 rows containing missing values (geom_bar).</span></a></code></pre></div>
 <p><img src="CNAqc_files/figure-html/unnamed-chunk-12-1.png" width="768"></p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"></a>
-<a class="sourceLine" id="cb14-2" data-line-number="2"><span class="co"># Different subsamples</span></a>
-<a class="sourceLine" id="cb14-3" data-line-number="3">ggpubr<span class="op">::</span><span class="kw"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html">ggarrange</a></span>(</a>
-<a class="sourceLine" id="cb14-4" data-line-number="4">  <span class="kw"><a href="../reference/plot_depth.html">plot_depth</a></span>(x, <span class="dt">N =</span> <span class="dv">1000</span>),</a>
-<a class="sourceLine" id="cb14-5" data-line-number="5">  <span class="kw"><a href="../reference/plot_depth.html">plot_depth</a></span>(x),</a>
-<a class="sourceLine" id="cb14-6" data-line-number="6">  <span class="kw"><a href="../reference/plot_depth.html">plot_depth</a></span>(x, <span class="dt">N =</span> <span class="dv">10000</span>),</a>
-<a class="sourceLine" id="cb14-7" data-line-number="7">  <span class="dt">ncol =</span> <span class="dv">1</span></a>
-<a class="sourceLine" id="cb14-8" data-line-number="8">)</a></code></pre></div>
-<p><img src="CNAqc_files/figure-html/unnamed-chunk-12-2.png" width="768"></p>
+<p>An example effect of downsampling the data is the following</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="co"># Different subsamples</span></a>
+<a class="sourceLine" id="cb15-2" data-line-number="2">ggpubr<span class="op">::</span><span class="kw"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html">ggarrange</a></span>(</a>
+<a class="sourceLine" id="cb15-3" data-line-number="3">  <span class="kw"><a href="../reference/plot_vaf.html">plot_vaf</a></span>(x, <span class="dt">N =</span> <span class="dv">1000</span>),</a>
+<a class="sourceLine" id="cb15-4" data-line-number="4">  <span class="kw"><a href="../reference/plot_vaf.html">plot_vaf</a></span>(x),</a>
+<a class="sourceLine" id="cb15-5" data-line-number="5">  <span class="kw"><a href="../reference/plot_vaf.html">plot_vaf</a></span>(x, <span class="dt">N =</span> <span class="dv">10000</span>),</a>
+<a class="sourceLine" id="cb15-6" data-line-number="6">  <span class="dt">ncol =</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb15-7" data-line-number="7">)</a></code></pre></div>
+<p><img src="CNAqc_files/figure-html/unnamed-chunk-13-1.png" width="768"></p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"></a>
+<a class="sourceLine" id="cb16-2" data-line-number="2"><span class="co"># Different subsamples</span></a>
+<a class="sourceLine" id="cb16-3" data-line-number="3">ggpubr<span class="op">::</span><span class="kw"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html">ggarrange</a></span>(</a>
+<a class="sourceLine" id="cb16-4" data-line-number="4">  <span class="kw"><a href="../reference/plot_depth.html">plot_depth</a></span>(x, <span class="dt">N =</span> <span class="dv">1000</span>),</a>
+<a class="sourceLine" id="cb16-5" data-line-number="5">  <span class="kw"><a href="../reference/plot_depth.html">plot_depth</a></span>(x),</a>
+<a class="sourceLine" id="cb16-6" data-line-number="6">  <span class="kw"><a href="../reference/plot_depth.html">plot_depth</a></span>(x, <span class="dt">N =</span> <span class="dv">10000</span>),</a>
+<a class="sourceLine" id="cb16-7" data-line-number="7">  <span class="dt">ncol =</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb16-8" data-line-number="8">)</a></code></pre></div>
+<p><img src="CNAqc_files/figure-html/unnamed-chunk-13-2.png" width="768"></p>
 <p>A one-summary plot can be easily assembled combining the above functions and functions from <code>cowplot</code> or other ggplot-manipulation packages.</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="co"># Layout a panel with segments in bottom, and all other genome-wide plots on top.</span></a>
-<a class="sourceLine" id="cb15-2" data-line-number="2"><span class="co"># Via cowplot we can align plots on the vertical axis, and stretch their relative</span></a>
-<a class="sourceLine" id="cb15-3" data-line-number="3"><span class="co"># height to obtain a nicer layout.</span></a>
-<a class="sourceLine" id="cb15-4" data-line-number="4">cowplot<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/cowplot/topics/plot_grid">plot_grid</a></span>(</a>
-<a class="sourceLine" id="cb15-5" data-line-number="5">  <span class="kw"><a href="../reference/plot_counts.html">plot_counts</a></span>(x),</a>
-<a class="sourceLine" id="cb15-6" data-line-number="6">  <span class="kw"><a href="../reference/plot_vaf.html">plot_vaf</a></span>(x, <span class="dt">N =</span> <span class="dv">10000</span>),</a>
-<a class="sourceLine" id="cb15-7" data-line-number="7">  <span class="kw"><a href="../reference/plot_depth.html">plot_depth</a></span>(x, <span class="dt">N =</span> <span class="dv">10000</span>),</a>
-<a class="sourceLine" id="cb15-8" data-line-number="8">  <span class="kw"><a href="../reference/plot_segments.html">plot_segments</a></span>(x) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot.window">ylim</a></span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">6</span>),</a>
-<a class="sourceLine" id="cb15-9" data-line-number="9">  <span class="dt">align =</span> <span class="st">'v'</span>, </a>
-<a class="sourceLine" id="cb15-10" data-line-number="10">  <span class="dt">nrow =</span> <span class="dv">4</span>, </a>
-<a class="sourceLine" id="cb15-11" data-line-number="11">  <span class="dt">rel_heights =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(.<span class="dv">15</span>, <span class="fl">.15</span>, <span class="fl">.15</span>, <span class="fl">.8</span>))</a>
-<a class="sourceLine" id="cb15-12" data-line-number="12"><span class="co">#&gt; Warning: Removed 2 rows containing missing values (geom_bar).</span></a>
-<a class="sourceLine" id="cb15-13" data-line-number="13"><span class="co">#&gt; Warning: Removed 10 rows containing missing values (geom_segment).</span></a></code></pre></div>
-<p><img src="CNAqc_files/figure-html/unnamed-chunk-13-1.png" width="912"></p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="co"># Layout a panel with segments in bottom, and all other genome-wide plots on top.</span></a>
+<a class="sourceLine" id="cb17-2" data-line-number="2"><span class="co"># Via cowplot we can align plots on the vertical axis, and stretch their relative</span></a>
+<a class="sourceLine" id="cb17-3" data-line-number="3"><span class="co"># height to obtain a nicer layout.</span></a>
+<a class="sourceLine" id="cb17-4" data-line-number="4">cowplot<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/cowplot/topics/plot_grid">plot_grid</a></span>(</a>
+<a class="sourceLine" id="cb17-5" data-line-number="5">  <span class="kw"><a href="../reference/plot_counts.html">plot_counts</a></span>(x),</a>
+<a class="sourceLine" id="cb17-6" data-line-number="6">  <span class="kw"><a href="../reference/plot_vaf.html">plot_vaf</a></span>(x, <span class="dt">N =</span> <span class="dv">10000</span>),</a>
+<a class="sourceLine" id="cb17-7" data-line-number="7">  <span class="kw"><a href="../reference/plot_depth.html">plot_depth</a></span>(x, <span class="dt">N =</span> <span class="dv">10000</span>),</a>
+<a class="sourceLine" id="cb17-8" data-line-number="8">  <span class="kw"><a href="../reference/plot_segments.html">plot_segments</a></span>(x) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot.window">ylim</a></span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">6</span>),</a>
+<a class="sourceLine" id="cb17-9" data-line-number="9">  <span class="dt">align =</span> <span class="st">'v'</span>, </a>
+<a class="sourceLine" id="cb17-10" data-line-number="10">  <span class="dt">nrow =</span> <span class="dv">4</span>, </a>
+<a class="sourceLine" id="cb17-11" data-line-number="11">  <span class="dt">rel_heights =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(.<span class="dv">15</span>, <span class="fl">.15</span>, <span class="fl">.15</span>, <span class="fl">.8</span>))</a>
+<a class="sourceLine" id="cb17-12" data-line-number="12"><span class="co">#&gt; Warning: Removed 2 rows containing missing values (geom_bar).</span></a>
+<a class="sourceLine" id="cb17-13" data-line-number="13"><span class="co">#&gt; Warning: Removed 10 rows containing missing values (geom_segment).</span></a></code></pre></div>
+<p><img src="CNAqc_files/figure-html/unnamed-chunk-14-1.png" width="912"></p>
 <p>A summary plot of CNA calls is available via function <code>plot_karyotypes</code>. This function implements two visualizations:</p>
 <ul>
 <li>
@@ -283,13 +298,13 @@
 <code>type = 'number'</code>, reporting the counts of segments per karyotype.</li>
 </ul>
 <p>The package uses a pre-set color schema to colour diploid segments in green, LOH segments in blue and amplifications in red.</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1">ggpubr<span class="op">::</span><span class="kw"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html">ggarrange</a></span>(</a>
-<a class="sourceLine" id="cb16-2" data-line-number="2">  <span class="kw"><a href="../reference/plot_karyotypes.html">plot_karyotypes</a></span>(x),</a>
-<a class="sourceLine" id="cb16-3" data-line-number="3">  <span class="kw"><a href="../reference/plot_karyotypes.html">plot_karyotypes</a></span>(x, <span class="dt">type =</span> <span class="st">'number'</span>),</a>
-<a class="sourceLine" id="cb16-4" data-line-number="4">  <span class="dt">common.legend =</span> <span class="ot">TRUE</span>,</a>
-<a class="sourceLine" id="cb16-5" data-line-number="5">  <span class="dt">legend =</span> <span class="st">'bottom'</span></a>
-<a class="sourceLine" id="cb16-6" data-line-number="6">)</a></code></pre></div>
-<p><img src="CNAqc_files/figure-html/unnamed-chunk-14-1.png" width="432"></p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1">ggpubr<span class="op">::</span><span class="kw"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html">ggarrange</a></span>(</a>
+<a class="sourceLine" id="cb18-2" data-line-number="2">  <span class="kw"><a href="../reference/plot_karyotypes.html">plot_karyotypes</a></span>(x),</a>
+<a class="sourceLine" id="cb18-3" data-line-number="3">  <span class="kw"><a href="../reference/plot_karyotypes.html">plot_karyotypes</a></span>(x, <span class="dt">type =</span> <span class="st">'number'</span>),</a>
+<a class="sourceLine" id="cb18-4" data-line-number="4">  <span class="dt">common.legend =</span> <span class="ot">TRUE</span>,</a>
+<a class="sourceLine" id="cb18-5" data-line-number="5">  <span class="dt">legend =</span> <span class="st">'bottom'</span></a>
+<a class="sourceLine" id="cb18-6" data-line-number="6">)</a></code></pre></div>
+<p><img src="CNAqc_files/figure-html/unnamed-chunk-15-1.png" width="432"></p>
 </div>
   </div>
 

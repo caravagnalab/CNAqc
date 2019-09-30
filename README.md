@@ -11,9 +11,9 @@ status](https://travis-ci.org/caravagn/CNAqc.svg?branch=master)](https://travis-
 of Copy Number Alteration (CNA) calls, and determine reliable estimates
 of mutations’ Cancer Cell Franctions (CCFs).
 
-`CNAqc` is part of `evoverse`, a package that interfaces several R
-packages that implement different types of Cancer Evolution analyses;
-see more [about evoverse](https://caravagn.github.io/evoverse).
+`CNAqc` is part of the `evoverse`, a package that gathers multiple R
+packages to implement Cancer Evolution analyses; see more [about
+evoverse](https://caravagn.github.io/evoverse).
 
 The package provides statistical measures to quantify the concordance
 between mutation and Copy Number calls, exploiting allelic imbalance in
