@@ -23,6 +23,15 @@
     pio::pioHdr('CNAqc - Copy Number Alteration quality check')
     pio::pioStr("Author : ", "Giulio Caravagna <gcaravagn@gmail.com>", suffix = '\n')
     pio::pioStr("GitHub : ", "caravagn/CNAqc", suffix = '\n')
+    pio::pioStr("   WWW : ", "https://caravagn.github.io/CNAqc/", suffix = '\n')
+
+
+    cat(
+      "\n > CNAqc is part of the", crayon::green("\"evoverse\""),
+      crayon::blue("[https://bit.ly/2orn94e]"),
+      "- a collection of packages to implement Cancer Evolution analyses from cancer sequencing data.\n"
+    )
+
 
     options(CNAqc_welcome_message = FALSE)
   }
