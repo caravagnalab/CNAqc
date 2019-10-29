@@ -104,14 +104,19 @@
 </h1></div>
 <!-- badges: start -->
 
-<p><code>CNAqc</code> is a package to provide a set of metrics to assess the quality of Copy Number Alteration (CNA) calls, and determine reliable estimates of mutations’ Cancer Cell Franctions (CCFs).</p>
-<p><code>CNAqc</code> is part of the <code>evoverse</code>, a package that gathers multiple R packages to implement Cancer Evolution analyses; see more <a href="https://caravagn.github.io/evoverse">about evoverse</a>.</p>
-<p>The package provides statistical measures to quantify the concordance between mutation and Copy Number calls, exploiting allelic imbalance in absolute CNA segments and allelic frequencies of somatic mutations. Quantitative metrics and plots for data exploration and quality check are available, allowing for a intuitive assessment of the quality of calls. Quantitative measures can also be used to suggest adjustemnts of the current purity estimates to increase the quality of CNA calls, and to determine determine CCF values.</p>
+<p><code>CNAqc</code> is a package to process and assess the quality of absoluteCopy Number Alteration (CNA) calls, in light of somatic mutation data and purity estimates.</p>
+<p>The package provides statistical methods to:</p>
+<ul>
+<li><p>quantify the concordance between mutation and CNA calls;</p></li>
+<li><p>determine estimates of mutations’ Cancer Cell Franctions (CCFs).</p></li>
+</ul>
+<p>Most algorithms in <code>CNAqc</code> match the allelic imbalance of CNA segments with the allelic frequencies of somatic mutations, in order to determine a number of quantitative metrics. These metrics. can be used to measure the quality of the current purity estimate, or to determine determine CCF values.</p>
+<p><code>CNAqc</code> is part of the <code>evoverse</code> set of <a href="https://caravagn.github.io/evoverse">R packages</a> to implement Cancer Evolution analyses.</p>
 <div id="statistical-models" class="section level4">
 <h4 class="hasAnchor">
 <a href="#statistical-models" class="anchor"></a>Statistical models</h4>
-<p>For QC of the CNA calls <code>CNAqc</code> implements a linear score where the relative size of each of a set of karyotypes is used to weight the offset between an estimated peak in the data, and its expectation. The expectations are determined by standard CNA computations accouting for normal plodiy, tumour purity and tumor ploidy. The peaks are determined after a KDE of the data, run through a dedicated peak-detection package.</p>
-<p>To determine CCF of the input mutations <code>CNAqc</code> uses an entropy-based measure that allows to tune a heuristic for the estimation of the number of copies of each mutation. In turn, this quantity allows one estimating the CCF as the adjustment for tumour purity, segment ploidy and mutation multiplicity. These set of routines can be used to determine high-confidence CCF estimates and filter out those set of mutations for which it is generally difficult to determine mutation multiplicities and CCF values.</p>
+<p><code>CNAqc</code> implements a karyotype-weighted linear score that exploits the distance computed between a peak in the data (empirical), and its theoretical expectation. This score is determined by standard CNA computations accouting for normal plodiy, tumour purity and ploidy. The peaks are determined uwing kernel density methods and peak-detection heuristics.</p>
+<p>To determine CCF, <code>CNAqc</code> uses an entropy-based heuristic for the estimation of the number of copies of each mutation (mutation multiplicity). Then, <code>CNAqc</code> uses standard equations to estimate CCFs normalizing the allelic frequency for tumour purity, segment ploidy and mutation multiplicity.</p>
 </div>
 <div id="help-and-support" class="section level4">
 <h4 class="hasAnchor">
@@ -167,6 +172,7 @@
 <ul class="list-unstyled">
 <li><a href="https://travis-ci.org/caravagn/CNAqc"><img src="https://travis-ci.org/caravagn/CNAqc.svg?branch=master" alt="Travis build status"></a></li>
 <li><a href="https://www.tidyverse.org/lifecycle/#maturing"><img src="https://img.shields.io/badge/lifecycle-maturing-blue.svg" alt="Lifecycle: maturing"></a></li>
+<li><a href="https://caravagn.github.io/evoverse"><img src="https://img.shields.io/badge/Part%20of-evoverse-blue.svg"></a></li>
 </ul>
 </div>
 </div>
