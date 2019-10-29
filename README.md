@@ -5,6 +5,8 @@
 
 [![Travis build
 status](https://travis-ci.org/caravagn/CNAqc.svg?branch=master)](https://travis-ci.org/caravagn/CNAqc)
+[![Lifecycle:
+maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 <!-- badges: end -->
 
 `CNAqc` is a package to provide a set of metrics to assess the quality
@@ -40,14 +42,12 @@ the CCF as the adjustment for tumour purity, segment ploidy and mutation
 multiplicity. These set of routines can be used to determine
 high-confidence CCF estimates and filter out those set of mutations for
 which it is generally difficult to determine mutation multiplicities and
-CCF values.
+CCF
+values.
 
 #### Help and support
 
-CNAqc has its own webpage at [GitHub
-pages](https://caravagn.github.io/CNAqc/).
-
------
+## [![](https://img.shields.io/badge/GitHub%20Pages-https://caravagn.github.io/CNAqc/-yellow.svg)](https://caravagn.github.io/CNAqc)
 
 ### Installation
 
@@ -63,11 +63,10 @@ devtools::install_github("caravagn/CNAqc")
 
 #### Copyright and contacts
 
-Giulio Caravagna, PhD. *Institute of Cancer Research, London, UK*.
+Giulio Caravagna, PhD. *Institute of Cancer Research, London,
+UK*.
 
-  - Personal webpage:
-    [https://bit.ly/2kc9E6Y](https://sites.google.com/site/giuliocaravagna/),
-  - Email address: <giulio.caravagna@icr.ac.uk> and
-    <gcaravagn@gmail.com>
-  - Twitter feed: \[@gcaravagna\](<https://twitter.com/gcaravagna>)
-  - GitHub space: [caravagn](https://github.com/caravagn)
+[![](https://img.shields.io/badge/Email-gcaravagn@gmail.com-seagreen.svg)](mailto:gcaravagn@gmail.com)
+[![](https://img.shields.io/badge/Github-caravagn-seagreen.svg)](https://github.com/caravagn)
+[![](https://img.shields.io/badge/Twitter-@gcaravagna-steelblue.svg)](https://twitter.com/gcaravagna)
+[![](https://img.shields.io/badge/Personal%20webpage-https://bit.ly/2kc9E6Y-red.svg)](https://sites.google.com/site/giuliocaravagna/)

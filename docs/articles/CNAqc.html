@@ -6,9 +6,16 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Introduction • CNAqc</title>
+<!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
+<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png">
+<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
+<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><meta property="og:title" content="Introduction">
 <meta property="og:description" content="">
 <meta property="og:image" content="/logo.png">
@@ -39,7 +46,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -68,7 +75,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/caravagn/CNAqc">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -81,6 +88,7 @@
 <!--/.navbar -->
 
       
+
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
@@ -95,15 +103,17 @@
     
     
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co"># To render in colour this vignette</span></a>
-<a class="sourceLine" id="cb1-2" data-line-number="2">old.hooks &lt;-<span class="st"> </span>fansi<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/fansi/topics/set_knit_hooks">set_knit_hooks</a></span>(knitr<span class="op">::</span>knit_hooks)</a></code></pre></div>
+<a class="sourceLine" id="cb1-2" data-line-number="2">old.hooks &lt;-<span class="st"> </span>fansi<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/fansi/man/set_knit_hooks.html">set_knit_hooks</a></span>(knitr<span class="op">::</span>knit_hooks)</a></code></pre></div>
 <style type="text/css" scoped>
 PRE.fansi SPAN {padding-top: .25em; padding-bottom: .25em};
 </style>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(CNAqc)</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(CNAqc)</a></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #BBBBBB;background-color: #0000BB;"> [ CNAqc - Copy Number Alteration quality check ] 
 #&gt; </span><span style="color: #000000;background-color: #BBBB00;">Author : </span><span> Giulio Caravagna &lt;gcaravagn@gmail.com&gt; </span><span style="color: #000000;background-color: #BBBB00;">
 #&gt; GitHub : </span><span> caravagn/CNAqc </span><span style="color: #000000;background-color: #BBBB00;">
+#&gt;    WWW : </span><span> https://caravagn.github.io/CNAqc/ </span><span style="color: #000000;background-color: #BBBB00;">
 #&gt; </span><span>
+#&gt;  &gt; CNAqc is part of the </span><span style="color: #00BB00;">"evoverse"</span><span> </span><span style="color: #0000BB;">[https://bit.ly/2orn94e]</span><span> - a collection of packages to implement Cancer Evolution analyses from cancer sequencing data.
 </span></code></pre>
 <p>To set-up your data and work with the <code>CNAqc</code> package, you need to have:</p>
 <ul>
@@ -123,10 +133,10 @@ PRE.fansi SPAN {padding-top: .25em; padding-bottom: .25em};
 <a href="#input-format" class="anchor"></a>Input format</h3>
 <p><code>CNAqc</code> uses <code>hg19</code> chromosome coordinates to map mutations and CNAs. The package comes with a template dataset available.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="co"># Load template data</span></a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/data">data</a></span>(<span class="st">'example_dataset_CNAqc'</span>, <span class="dt">package =</span> <span class="st">'CNAqc'</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">'example_dataset_CNAqc'</span>, <span class="dt">package =</span> <span class="st">'CNAqc'</span>)</a></code></pre></div>
 <p>Input mutations and CNA must be a <code>data.frame</code> (or a <code>tibble</code>). Both of them are required to have certain set of pretty standard columns; any extra column will be retained with the data.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="co"># Example input SNVs</span></a>
-<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(</a>
 <a class="sourceLine" id="cb4-3" data-line-number="3">  example_dataset_CNAqc<span class="op">$</span>snvs <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb4-4" data-line-number="4"><span class="st">        </span><span class="kw">select</span>(</a>
 <a class="sourceLine" id="cb4-5" data-line-number="5">          chr, from, to, <span class="co"># Genomic coordinates</span></a>
@@ -152,7 +162,7 @@ PRE.fansi SPAN {padding-top: .25em; padding-bottom: .25em};
 <p>Chromosome names and alleles should be in character format; chromosomes must be in the format <code>chr1</code>, <code>chr2</code>, etc.. <code>CNAqc</code> will use all available mutation types but we suggest to carry out QC with high-quality SNV data.</p>
 <p>CNA calls must be in <em>absolute</em> format, reporting the allelic imbalance of each segment.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="co"># Example input CNA</span></a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(</a>
 <a class="sourceLine" id="cb5-3" data-line-number="3">  example_dataset_CNAqc<span class="op">$</span>cna <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb5-4" data-line-number="4"><span class="st">        </span><span class="kw">select</span>(</a>
 <a class="sourceLine" id="cb5-5" data-line-number="5">          chr, from, to, <span class="co"># Genomic coordinates</span></a>
@@ -178,7 +188,7 @@ PRE.fansi SPAN {padding-top: .25em; padding-bottom: .25em};
 <p>A <code>CCF</code> column can represent the segment CCF as [0,1] real-value. If missing, <code>CCF = 1</code> is set assuming clonal segments; otherwise, segments with <code>CCF&lt;1</code> are considered subclonal CNAs.</p>
 <p>To analyze the data, a purity value in between <code>0</code> and <code>1</code> is required to represent the proportion of actual tumour content, sometimes called “cellularity”.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="co"># Example input purity</span></a>
-<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(example_dataset_CNAqc<span class="op">$</span>purity)</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(example_dataset_CNAqc<span class="op">$</span>purity)</a>
 <a class="sourceLine" id="cb6-3" data-line-number="3"><span class="co">#&gt; [1] 0.89</span></a></code></pre></div>
 </div>
 <div id="initialisation" class="section level3">
@@ -200,7 +210,7 @@ PRE.fansi SPAN {padding-top: .25em; padding-bottom: .25em};
 #&gt; Mapped.</span><span> n = 12963 mutations mapped to clonal segments (~99% of input) 
 </span></code></pre>
 <p>The summary of the object is available via the S3 <code>print</code> function, reporting some basic statistics of the data. In particular, this reports the number of mutations per karyotype sorted by size, and annotates by default is any analysis has been computed on these calls (default: no).</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(x)</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(x)</a></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #000000;background-color: #BBBB00;">      CNAqc </span><span> n = 13141 mutations for 267 CNA segments (267 clonal, 0 subclonal) </span><span style="color: #000000;background-color: #BBBB00;">
 #&gt;      Purity </span><span> 89% cellularity </span><span style="color: #000000;background-color: #BBBB00;">
 #&gt;  Karyotypes </span><span> 7478 (2:2); 1893 (4:2); 1625 (3:2); 1563 (2:1); 312 (3:0); 81 (2:0); 4 (16:2); 2 (25:2); 2 (3:1); 1 (106:1); 1 (26:2); 1 (99:1) 
@@ -214,8 +224,8 @@ PRE.fansi SPAN {padding-top: .25em; padding-bottom: .25em};
 <h3 class="hasAnchor">
 <a href="#plotting-segments-genome-wide-mutations-and-cna-calls" class="anchor"></a>Plotting segments, genome-wide mutations and CNA calls</h3>
 <p><code>CNAqc</code> maps CNA calls to the <code>hg19</code> human genome coordinates; the references used are avaible attached to the package</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/data">data</a></span>(<span class="st">'chr_coordinates_hg19'</span>, <span class="dt">package =</span> <span class="st">'CNAqc'</span>)</a>
-<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(chr_coordinates_hg19)</a></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">'chr_coordinates_hg19'</span>, <span class="dt">package =</span> <span class="st">'CNAqc'</span>)</a>
+<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(chr_coordinates_hg19)</a></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 24 x 6</span><span>
 #&gt;    chr      length       from         to centromerStart centromerEnd
 #&gt;    </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>     </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>      </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>      </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>          </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>        </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>
@@ -237,12 +247,12 @@ PRE.fansi SPAN {padding-top: .25em; padding-bottom: .25em};
 <p><img src="CNAqc_files/figure-html/unnamed-chunk-10-1.png" width="912"></p>
 <p>This function, as most of the package plotting functions, returns a <code>ggplot</code> object, which makes it very easy to perform further manipulations.</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="co"># Reduce y-axis</span></a>
-<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="kw"><a href="../reference/plot_segments.html">plot_segments</a></span>(x) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot.window">ylim</a></span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">6</span>)</a>
+<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="kw"><a href="../reference/plot_segments.html">plot_segments</a></span>(x) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/graphics/plot.window.html">ylim</a></span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">6</span>)</a>
 <a class="sourceLine" id="cb12-3" data-line-number="3"><span class="co">#&gt; Warning: Removed 10 rows containing missing values (geom_segment).</span></a></code></pre></div>
 <p><img src="CNAqc_files/figure-html/unnamed-chunk-11-1.png" width="912"></p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"></a>
 <a class="sourceLine" id="cb13-2" data-line-number="2"><span class="co"># Reduce x,y-axis</span></a>
-<a class="sourceLine" id="cb13-3" data-line-number="3"><span class="kw"><a href="../reference/plot_segments.html">plot_segments</a></span>(x) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot.window">xlim</a></span>(<span class="fl">1e6</span>, <span class="fl">30e6</span>) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot.window">ylim</a></span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">6</span>)</a>
+<a class="sourceLine" id="cb13-3" data-line-number="3"><span class="kw"><a href="../reference/plot_segments.html">plot_segments</a></span>(x) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/graphics/plot.window.html">xlim</a></span>(<span class="fl">1e6</span>, <span class="fl">30e6</span>) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/graphics/plot.window.html">ylim</a></span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">6</span>)</a>
 <a class="sourceLine" id="cb13-4" data-line-number="4"><span class="co">#&gt; Scale for 'x' is already present. Adding another scale for 'x', which</span></a>
 <a class="sourceLine" id="cb13-5" data-line-number="5"><span class="co">#&gt; will replace the existing scale.</span></a>
 <a class="sourceLine" id="cb13-6" data-line-number="6"><span class="co">#&gt; Warning: Removed 24 rows containing missing values (geom_rect).</span></a>
@@ -279,14 +289,14 @@ PRE.fansi SPAN {padding-top: .25em; padding-bottom: .25em};
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="co"># Layout a panel with segments in bottom, and all other genome-wide plots on top.</span></a>
 <a class="sourceLine" id="cb17-2" data-line-number="2"><span class="co"># Via cowplot we can align plots on the vertical axis, and stretch their relative</span></a>
 <a class="sourceLine" id="cb17-3" data-line-number="3"><span class="co"># height to obtain a nicer layout.</span></a>
-<a class="sourceLine" id="cb17-4" data-line-number="4">cowplot<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/cowplot/topics/plot_grid">plot_grid</a></span>(</a>
+<a class="sourceLine" id="cb17-4" data-line-number="4">cowplot<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/cowplot/man/plot_grid.html">plot_grid</a></span>(</a>
 <a class="sourceLine" id="cb17-5" data-line-number="5">  <span class="kw"><a href="../reference/plot_counts.html">plot_counts</a></span>(x),</a>
 <a class="sourceLine" id="cb17-6" data-line-number="6">  <span class="kw"><a href="../reference/plot_vaf.html">plot_vaf</a></span>(x, <span class="dt">N =</span> <span class="dv">10000</span>),</a>
 <a class="sourceLine" id="cb17-7" data-line-number="7">  <span class="kw"><a href="../reference/plot_depth.html">plot_depth</a></span>(x, <span class="dt">N =</span> <span class="dv">10000</span>),</a>
-<a class="sourceLine" id="cb17-8" data-line-number="8">  <span class="kw"><a href="../reference/plot_segments.html">plot_segments</a></span>(x) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot.window">ylim</a></span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">6</span>),</a>
+<a class="sourceLine" id="cb17-8" data-line-number="8">  <span class="kw"><a href="../reference/plot_segments.html">plot_segments</a></span>(x) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/graphics/plot.window.html">ylim</a></span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">6</span>),</a>
 <a class="sourceLine" id="cb17-9" data-line-number="9">  <span class="dt">align =</span> <span class="st">'v'</span>, </a>
 <a class="sourceLine" id="cb17-10" data-line-number="10">  <span class="dt">nrow =</span> <span class="dv">4</span>, </a>
-<a class="sourceLine" id="cb17-11" data-line-number="11">  <span class="dt">rel_heights =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(.<span class="dv">15</span>, <span class="fl">.15</span>, <span class="fl">.15</span>, <span class="fl">.8</span>))</a>
+<a class="sourceLine" id="cb17-11" data-line-number="11">  <span class="dt">rel_heights =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(.<span class="dv">15</span>, <span class="fl">.15</span>, <span class="fl">.15</span>, <span class="fl">.8</span>))</a>
 <a class="sourceLine" id="cb17-12" data-line-number="12"><span class="co">#&gt; Warning: Removed 2 rows containing missing values (geom_bar).</span></a>
 <a class="sourceLine" id="cb17-13" data-line-number="13"><span class="co">#&gt; Warning: Removed 10 rows containing missing values (geom_segment).</span></a></code></pre></div>
 <p><img src="CNAqc_files/figure-html/unnamed-chunk-14-1.png" width="912"></p>
@@ -315,17 +325,20 @@ PRE.fansi SPAN {padding-top: .25em; padding-bottom: .25em};
 </div>
 
 
+
       <footer><div class="copyright">
   <p>Developed by Giulio Caravagna.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
+
       </footer>
 </div>
 
   
+
 
   </body>
 </html>

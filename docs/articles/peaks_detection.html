@@ -6,9 +6,16 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>QC analysis via peaks detection • CNAqc</title>
+<!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
+<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png">
+<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
+<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><meta property="og:title" content="QC analysis via peaks detection">
 <meta property="og:description" content="">
 <meta property="og:image" content="/logo.png">
@@ -39,7 +46,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -68,7 +75,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/caravagn/CNAqc">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -81,6 +88,7 @@
 <!--/.navbar -->
 
       
+
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
@@ -95,18 +103,20 @@
     
     
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co"># To render in colour this vignette</span></a>
-<a class="sourceLine" id="cb1-2" data-line-number="2">old.hooks &lt;-<span class="st"> </span>fansi<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/fansi/topics/set_knit_hooks">set_knit_hooks</a></span>(knitr<span class="op">::</span>knit_hooks)</a></code></pre></div>
+<a class="sourceLine" id="cb1-2" data-line-number="2">old.hooks &lt;-<span class="st"> </span>fansi<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/fansi/man/set_knit_hooks.html">set_knit_hooks</a></span>(knitr<span class="op">::</span>knit_hooks)</a></code></pre></div>
 <style type="text/css" scoped>
 PRE.fansi SPAN {padding-top: .25em; padding-bottom: .25em};
 </style>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(CNAqc)</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(CNAqc)</a></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #BBBBBB;background-color: #0000BB;"> [ CNAqc - Copy Number Alteration quality check ] 
 #&gt; </span><span style="color: #000000;background-color: #BBBB00;">Author : </span><span> Giulio Caravagna &lt;gcaravagn@gmail.com&gt; </span><span style="color: #000000;background-color: #BBBB00;">
 #&gt; GitHub : </span><span> caravagn/CNAqc </span><span style="color: #000000;background-color: #BBBB00;">
+#&gt;    WWW : </span><span> https://caravagn.github.io/CNAqc/ </span><span style="color: #000000;background-color: #BBBB00;">
 #&gt; </span><span>
+#&gt;  &gt; CNAqc is part of the </span><span style="color: #00BB00;">"evoverse"</span><span> </span><span style="color: #0000BB;">[https://bit.ly/2orn94e]</span><span> - a collection of packages to implement Cancer Evolution analyses from cancer sequencing data.
 </span></code></pre>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">require</a></span>(tidyverse)</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">require</a></span>(cowplot)</a>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span>(tidyverse)</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span>(cowplot)</a>
 <a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co">#&gt; Loading required package: cowplot</span></a>
 <a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co">#&gt; ********************************************************</span></a>
@@ -122,8 +132,8 @@ PRE.fansi SPAN {padding-top: .25em; padding-bottom: .25em};
 <a class="sourceLine" id="cb3-15" data-line-number="15"><span class="co">#&gt;     get_legend</span></a></code></pre></div>
 <p>We work with the same object shown in the <a href="file:///Users/gcaravagna/Documents/GitHub/CNAqc/docs/articles/CNAqc.html">introductory vignette</a>.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="co"># Dataset available with the package -- see Get Started.</span></a>
-<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/data">data</a></span>(<span class="st">'example_dataset_CNAqc'</span>, <span class="dt">package =</span> <span class="st">'CNAqc'</span>)</a>
-<a class="sourceLine" id="cb4-3" data-line-number="3">x =<span class="st"> </span>CNAqc<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/CNAqc/topics/init">init</a></span>(example_dataset_CNAqc<span class="op">$</span>snvs, example_dataset_CNAqc<span class="op">$</span>cna,example_dataset_CNAqc<span class="op">$</span>purity)</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">'example_dataset_CNAqc'</span>, <span class="dt">package =</span> <span class="st">'CNAqc'</span>)</a>
+<a class="sourceLine" id="cb4-3" data-line-number="3">x =<span class="st"> </span>CNAqc<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/CNAqc/man/init.html">init</a></span>(example_dataset_CNAqc<span class="op">$</span>snvs, example_dataset_CNAqc<span class="op">$</span>cna,example_dataset_CNAqc<span class="op">$</span>purity)</a>
 <a class="sourceLine" id="cb4-4" data-line-number="4"><span class="co">#&gt; [CNAqc] Missing CCF column from CNA calls, adding CCF = 1 assuming all calls to be clonal.</span></a></code></pre></div>
 <p>Peak detection routines can be used to determine the QC of the CNA calls, and are implemented in function <code>analyze_peaks</code>.</p>
 <p>Essentially, the logic is that if a certain segment has truly the number of copies of the major and minor alleles that we have estimated, then we should see this also in the VAF distribution for those very same mutations. Using standard principles of Copy Number analysis we can compute, as a function of the estimated purity and the major/ minor of a segment, where we expect to see a certain group of mutations. This kind of signal is picked up examining the profile of the VAF distribution, and using a peak-detection heuristic to match peaks in the data to their expectation.</p>
@@ -174,7 +184,7 @@ PRE.fansi SPAN {padding-top: .25em; padding-bottom: .25em};
 </ul>
 <p>The results of this analysis is a set of scores that account for karyotype size and peaks offset, and that are combined into a linear model to compute an overall QC metrics, called <code>rho</code>.</p>
 <p>A summary table is available after the computatio, and is stored inside the named list <code>peaks_analysis</code>.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(x)</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(x)</a></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #000000;background-color: #BBBB00;">      CNAqc </span><span> n = 13141 mutations for 267 CNA segments (267 clonal, 0 subclonal) </span><span style="color: #000000;background-color: #BBBB00;">
 #&gt;      Purity </span><span> 89% cellularity </span><span style="color: #000000;background-color: #BBBB00;">
 #&gt;  Karyotypes </span><span> 7478 (2:2); 1893 (4:2); 1625 (3:2); 1563 (2:1); 312 (3:0); 81 (2:0); 4 (16:2); 2 (25:2); 2 (3:1); 1 (106:1); 1 (26:2); 1 (99:1) 
@@ -215,10 +225,10 @@ PRE.fansi SPAN {padding-top: .25em; padding-bottom: .25em};
 <a class="sourceLine" id="cb10-5" data-line-number="5"><span class="co">#&gt; Warning: Removed 13 rows containing missing values (geom_path).</span></a></code></pre></div>
 <p><img src="peaks_detection_files/figure-html/unnamed-chunk-8-2.png" width="288"></p>
 <p>You can integrate plots from QC analysis with data; in this case we combine them with segments.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">cowplot<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/cowplot/topics/plot_grid">plot_grid</a></span>(</a>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">cowplot<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/cowplot/man/plot_grid.html">plot_grid</a></span>(</a>
 <a class="sourceLine" id="cb11-2" data-line-number="2">  <span class="kw"><a href="../reference/plot_peaks_analysis.html">plot_peaks_analysis</a></span>(x),</a>
-<a class="sourceLine" id="cb11-3" data-line-number="3">  <span class="kw"><a href="../reference/plot_segments.html">plot_segments</a></span>(x) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot.window">ylim</a></span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">6</span>),</a>
-<a class="sourceLine" id="cb11-4" data-line-number="4">  <span class="dt">rel_heights =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(.<span class="dv">8</span>, <span class="dv">1</span>),</a>
+<a class="sourceLine" id="cb11-3" data-line-number="3">  <span class="kw"><a href="../reference/plot_segments.html">plot_segments</a></span>(x) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/graphics/plot.window.html">ylim</a></span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">6</span>),</a>
+<a class="sourceLine" id="cb11-4" data-line-number="4">  <span class="dt">rel_heights =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(.<span class="dv">8</span>, <span class="dv">1</span>),</a>
 <a class="sourceLine" id="cb11-5" data-line-number="5">  <span class="dt">nrow =</span> <span class="dv">2</span></a>
 <a class="sourceLine" id="cb11-6" data-line-number="6">)</a>
 <a class="sourceLine" id="cb11-7" data-line-number="7"><span class="co">#&gt; Warning: Removed 2 rows containing missing values (geom_bar).</span></a>
@@ -237,17 +247,20 @@ PRE.fansi SPAN {padding-top: .25em; padding-bottom: .25em};
 </div>
 
 
+
       <footer><div class="copyright">
   <p>Developed by Giulio Caravagna.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
+
       </footer>
 </div>
 
   
+
 
   </body>
 </html>
