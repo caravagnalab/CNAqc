@@ -36,7 +36,7 @@ compute_CCF = function(x, karyotypes = c('2:1', '2:0', '2:2'), entropy_quantile 
   stopifnot(inherits(x, 'cnaqc'))
 
   stopifnot(
-    karyotypes %in% c('2:1', '2:0', '2:2')
+    karyotypes %in% c('2:1', '2:0', '2:2', '1:1', '1:0')
   )
 
   # Compute mutation multiplicity

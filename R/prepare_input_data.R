@@ -11,7 +11,7 @@ prepare_input_data = function(snvs, cna, tumour_purity)
   snvs = fortify_mutation_calls(snvs)
   cna = fortify_CNA_segments(cna) %>%
     mutate(
-      segment_id = paste0(chr, from, to, Major, minor, CCF, sep = ':')
+      segment_id = paste(chr, from, to, Major, minor, CCF, sep = ':')
       # segment_id = paste0('__sgm_', row_number())
       )
 
