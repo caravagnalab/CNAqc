@@ -6,6 +6,7 @@
 #' @param x An object of class \code{cnaqc}, created by the \code{init} function.
 #' @param N Mutations to use, randomly sampled.
 #' @param chromosomes The chromosome to use for this plot.
+#' @param annotate_chromosomes Boolean value specifying if chromosome should be annotated or not
 #'
 #' @return A \code{ggplot} object.
 #' @export
@@ -19,7 +20,7 @@
 #' plot_vaf(x, N = 100)
 #' plot_vaf(x, N = 1000)
 #' plot_vaf(x, N = 10000)
-plot_vaf = function(x, N = 5000, chromosomes = paste0('chr', c(1:22, 'X', 'Y')))
+plot_vaf = function(x, N = 5000, chromosomes = paste0('chr', c(1:22, 'X', 'Y')), annotate_chromosomes = FALSE)
 {
   stopifnot(inherits(x, 'cnaqc'))
 
@@ -47,9 +48,12 @@ plot_vaf = function(x, N = 5000, chromosomes = paste0('chr', c(1:22, 'X', 'Y')))
   maxY = max(mutations$VAF) * .9
   label_maxY = paste0("N = ", N, ' (', round(N/N_all * 100), '%)')
   
-  base_plot = blank_genome(chromosomes, y = 0.025)
+  base_plot = ggplot()
+  if (annotate_chromosomes == TRUE) {
+    base_plot = blank_genome(chromosomes, y = 0.025)  
+  }
   
-  vaf = vaf = base_plot + 
+  vaf = base_plot + 
     geom_point(data = mutations, aes(x = from, y = VAF), size = .05) +
     my_ggplot_theme()  +
     xlim(low, upp) +
