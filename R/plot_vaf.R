@@ -46,11 +46,12 @@ plot_vaf = function(x, N = 5000, chromosomes = paste0('chr', c(1:22, 'X', 'Y')))
 
   maxY = max(mutations$VAF) * .9
   label_maxY = paste0("N = ", N, ' (', round(N/N_all * 100), '%)')
-
-  vaf = ggplot(mutations,
-         aes(x = from, y = VAF)) +
-    geom_point(size = .05) +
-    my_ggplot_theme() +
+  
+  base_plot = blank_genome(chromosomes, y = 0.025)
+  
+  vaf = vaf = base_plot + 
+    geom_point(data = mutations, aes(x = from, y = VAF), size = .05) +
+    my_ggplot_theme()  +
     xlim(low, upp) +
     # ylim()
     theme(
