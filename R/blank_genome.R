@@ -1,4 +1,4 @@
-blank_genome = function(chromosomes = paste0('chr', c(1:22, 'X', 'Y')))
+blank_genome = function(chromosomes = paste0('chr', c(1:22, 'X', 'Y')), y = -0.5, chrlinecolour = "black")
 {
   # GEt hg19 coordinates
   data('chr_coordinates_hg19', package = 'CNAqc')
@@ -22,12 +22,12 @@ blank_genome = function(chromosomes = paste0('chr', c(1:22, 'X', 'Y')))
     ) +
     geom_vline(xintercept = chr_coordinates_hg19$from,
                size = 0.3,
-               colour = 'black') +
+               colour = chrlinecolour) +
     geom_label(
       data = chr_coordinates_hg19,
       aes(
         x = chr_coordinates_hg19$from,
-        y = -0.5,
+        y = y,
         label = gsub('chr', '', chr_coordinates_hg19$chr)
       ),
       hjust = 0,
