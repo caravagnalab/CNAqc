@@ -6,7 +6,7 @@
 #' @param x An object of class \code{cnaqc}, created by the \code{init} function.
 #' @param N Mutations to use, randomly sampled.
 #' @param chromosomes The chromosome to use for this plot.
-#' @param annotate_chromosomes Boolean value specifying if chromosome should be annotated or not
+#' @param annotate_chromosomes Boolean value specifying if chromosome should be annotated or not, default = FALSE
 #'
 #' @return A \code{ggplot} object.
 #' @export
