@@ -6,6 +6,8 @@
 #'
 #' @param x An object of class \code{cnaqc}, created by the \code{init} function.
 #' @param chromosomes The chromosome to use for this plot.
+#' @param circular Uses a circular layout in polar coordinates to make the segments
+#' look like a circos plot.
 #'
 #' @return A \code{ggplot} object.
 #' @export
@@ -16,9 +18,10 @@
 #'
 #' plot_segments(x)
 #' plot_segments(x, chromosomes = 'chr13')
-plot_segments = function(x, chromosomes = paste0('chr', c(1:22, 'X', 'Y')))
+plot_segments = function(x,
+                         chromosomes = paste0('chr', c(1:22, 'X', 'Y')),
+                         circular = FALSE)
 {
-
   stopifnot(inherits(x, 'cnaqc'))
 
   base_plot = blank_genome(chromosomes)
@@ -81,5 +84,34 @@ plot_segments = function(x, chromosomes = paste0('chr', c(1:22, 'X', 'Y')))
   base_plot
 }
 
+
+# Internal function -- implements a circular layout using plot_segments
+plot_segments_circular = function(x, chromosomes = paste0('chr', c(1:22, 'X', 'Y')))
+{
+  data("chr_coordinates_hg19", package = "CNAqc")
+  chr_coordinates_hg19 = chr_coordinates_hg19 %>% filter(chr %in% chromosomes)
+
+  # Uses the standard function, but rotates the coordinate system,
+  # offsets the y-axis and add a new set of labels
+  CNAqc::plot_segments(x, chromosomes = chromosomes) +
+    coord_polar(theta = 'x', start = 0, clip = 'off') +
+    ylim(0, NA) +
+    geom_label(
+      data = chr_coordinates_hg19,
+      aes(
+        x = chr_coordinates_hg19$from,
+        y = Inf,
+        label = gsub("chr",
+                     "", chr_coordinates_hg19$chr)
+      ),
+      hjust = 0,
+      colour = "white",
+      fill = "darkgray",
+      label.padding	= unit(0.1, 'lines'),
+      size = 2,
+      alpha = 1
+    )  +
+    theme(axis.text.x = element_blank())
+}
 
 
