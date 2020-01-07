@@ -20,17 +20,26 @@
 
   if(CNAqc_welcome_message)
   {
-    pio::pioHdr('CNAqc - Copy Number Alteration quality check')
-    pio::pioStr("Author : ", "Giulio Caravagna <gcaravagn@gmail.com>", suffix = '\n')
-    pio::pioStr("GitHub : ", "caravagn/CNAqc", suffix = '\n')
-    pio::pioStr("   WWW : ", "https://caravagn.github.io/CNAqc/", suffix = '\n')
+    # pio::pioHdr('CNAqc - Copy Number Alteration quality check')
+    # pio::pioStr("Author : ", "Giulio Caravagna <gcaravagn@gmail.com>", suffix = '\n')
+    # pio::pioStr("GitHub : ", "caravagn/CNAqc", suffix = '\n')
+    # pio::pioStr("   WWW : ", "https://caravagn.github.io/CNAqc/", suffix = '\n')
+    #
+    #
+    # cat(
+    #   "\n > CNAqc is part of the", crayon::green("\"evoverse\""),
+    #   crayon::blue("[https://bit.ly/2orn94e]"),
+    #   "- a collection of packages to implement Cancer Evolution analyses from cancer sequencing data.\n"
+    # )
 
 
-    cat(
-      "\n > CNAqc is part of the", crayon::green("\"evoverse\""),
-      crayon::blue("[https://bit.ly/2orn94e]"),
-      "- a collection of packages to implement Cancer Evolution analyses from cancer sequencing data.\n"
-    )
+    pk = 'CNAqc'
+    pk_l = 'Copy Number Alteration quality check'
+    www = "https://caravagn.github.io/CNAqc/"
+    em = "gcaravagn@gmail.com"
+
+    cli::cli_alert_success(
+      'Loading {.field {pk}}, {.emph \'{pk_l}\'}. Support : {.url { www}}' )
 
 
     options(CNAqc_welcome_message = FALSE)
