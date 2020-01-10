@@ -11,8 +11,8 @@ fortify_CNA_segments = function(x)
   {
     x$CCF = 1
 
-    message(
-      "[CNAqc] Missing CCF column from CNA calls, adding CCF = 1 assuming all calls to be clonal."
+    cli::cli_alert_warning(
+      "Missing CCF column from CNA calls, adding CCF = 1 assuming clonal CNA calls."
     )
   }
 

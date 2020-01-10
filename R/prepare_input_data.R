@@ -22,14 +22,13 @@ prepare_input_data = function(snvs, cna, tumour_purity)
   ncnasbcl = sum(cna$CCF < 1)
 
   # Mapping mutations
-  pio::pioStr(
-    "Input ",
-    'n =',
+  cli::cli_alert_info(
+    paste0("Input ",
+    'n = ',
     nsnvs,
-    "mutations for",
+    " mutations for",
     ncna,
-    paste0(
-      "CNA segments (",
+      " CNA segments (",
       ncnacl,
       " clonal, ",
       ncnasbcl,
@@ -50,12 +49,10 @@ prepare_input_data = function(snvs, cna, tumour_purity)
   num_mappable = sum(!is.na(snvs$karyotype))
   perc_mappable = round(num_mappable / nsnvs * 100)
 
-  pio::pioStr(
-    "\nMapped.",
-    'n =',
+  cli::cli_alert_success(
+    paste0("Mapped n =",
     num_mappable,
-    "mutations mapped to clonal segments",
-    paste0('(~', perc_mappable, '% of input)')
+    " mutations to clonal segments (~", perc_mappable, '% of input)')
   )
 
 
