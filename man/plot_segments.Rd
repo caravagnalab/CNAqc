@@ -4,12 +4,16 @@
 \alias{plot_segments}
 \title{Plot CNA segments.}
 \usage{
-plot_segments(x, chromosomes = paste0("chr", c(1:22, "X", "Y")))
+plot_segments(x, chromosomes = paste0("chr", c(1:22, "X", "Y")),
+  circular = FALSE)
 }
 \arguments{
 \item{x}{An object of class \code{cnaqc}, created by the \code{init} function.}
 
 \item{chromosomes}{The chromosome to use for this plot.}
+
+\item{circular}{Uses a circular layout in polar coordinates to make the segments
+look like a circos plot.}
 }
 \value{
 A \code{ggplot} object.
