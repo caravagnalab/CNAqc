@@ -107,39 +107,35 @@
 <style type="text/css" scoped>
 PRE.fansi SPAN {padding-top: .25em; padding-bottom: .25em};
 </style>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(CNAqc)</a></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #BBBBBB;background-color: #0000BB;"> [ CNAqc - Copy Number Alteration quality check ] 
-#&gt; </span><span style="color: #000000;background-color: #BBBB00;">Author : </span><span> Giulio Caravagna &lt;gcaravagn@gmail.com&gt; </span><span style="color: #000000;background-color: #BBBB00;">
-#&gt; GitHub : </span><span> caravagn/CNAqc </span><span style="color: #000000;background-color: #BBBB00;">
-#&gt;    WWW : </span><span> https://caravagn.github.io/CNAqc/ </span><span style="color: #000000;background-color: #BBBB00;">
-#&gt; </span><span>
-#&gt;  &gt; CNAqc is part of the </span><span style="color: #00BB00;">"evoverse"</span><span> </span><span style="color: #0000BB;">[https://bit.ly/2orn94e]</span><span> - a collection of packages to implement Cancer Evolution analyses from cancer sequencing data.
-</span></code></pre>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span>(tidyverse)</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span>(cowplot)</a>
-<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co">#&gt; Loading required package: cowplot</span></a>
-<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co">#&gt; ********************************************************</span></a>
-<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="co">#&gt; Note: As of version 1.0.0, cowplot does not change the</span></a>
-<a class="sourceLine" id="cb3-7" data-line-number="7"><span class="co">#&gt;   default ggplot2 theme anymore. To recover the previous</span></a>
-<a class="sourceLine" id="cb3-8" data-line-number="8"><span class="co">#&gt;   behavior, execute:</span></a>
-<a class="sourceLine" id="cb3-9" data-line-number="9"><span class="co">#&gt;   theme_set(theme_cowplot())</span></a>
-<a class="sourceLine" id="cb3-10" data-line-number="10"><span class="co">#&gt; ********************************************************</span></a>
-<a class="sourceLine" id="cb3-11" data-line-number="11"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb3-12" data-line-number="12"><span class="co">#&gt; Attaching package: 'cowplot'</span></a>
-<a class="sourceLine" id="cb3-13" data-line-number="13"><span class="co">#&gt; The following object is masked from 'package:ggpubr':</span></a>
-<a class="sourceLine" id="cb3-14" data-line-number="14"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb3-15" data-line-number="15"><span class="co">#&gt;     get_legend</span></a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(CNAqc)</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="co">#&gt; [32m✓[39m Loading [32m[32mCNAqc[32m[39m, [3m[3m'Copy Number Alteration quality check'[3m[23m. Support : [3m[34m[3m[34m&lt;https://caravagn.github.io/CNAqc/&gt;[34m[3m[39m[23m</span></a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span>(tidyverse)</a>
+<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span>(cowplot)</a>
+<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="co">#&gt; Loading required package: cowplot</span></a>
+<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="co">#&gt; ********************************************************</span></a>
+<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="co">#&gt; Note: As of version 1.0.0, cowplot does not change the</span></a>
+<a class="sourceLine" id="cb2-9" data-line-number="9"><span class="co">#&gt;   default ggplot2 theme anymore. To recover the previous</span></a>
+<a class="sourceLine" id="cb2-10" data-line-number="10"><span class="co">#&gt;   behavior, execute:</span></a>
+<a class="sourceLine" id="cb2-11" data-line-number="11"><span class="co">#&gt;   theme_set(theme_cowplot())</span></a>
+<a class="sourceLine" id="cb2-12" data-line-number="12"><span class="co">#&gt; ********************************************************</span></a>
+<a class="sourceLine" id="cb2-13" data-line-number="13"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb2-14" data-line-number="14"><span class="co">#&gt; Attaching package: 'cowplot'</span></a>
+<a class="sourceLine" id="cb2-15" data-line-number="15"><span class="co">#&gt; The following object is masked from 'package:ggpubr':</span></a>
+<a class="sourceLine" id="cb2-16" data-line-number="16"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb2-17" data-line-number="17"><span class="co">#&gt;     get_legend</span></a></code></pre></div>
 <p>We work with the same object shown in the <a href="file:///Users/gcaravagna/Documents/GitHub/CNAqc/docs/articles/CNAqc.html">introductory vignette</a>.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="co"># Dataset available with the package -- see Get Started.</span></a>
-<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">'example_dataset_CNAqc'</span>, <span class="dt">package =</span> <span class="st">'CNAqc'</span>)</a>
-<a class="sourceLine" id="cb4-3" data-line-number="3">x =<span class="st"> </span>CNAqc<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/CNAqc/man/init.html">init</a></span>(example_dataset_CNAqc<span class="op">$</span>snvs, example_dataset_CNAqc<span class="op">$</span>cna,example_dataset_CNAqc<span class="op">$</span>purity)</a>
-<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="co">#&gt; [CNAqc] Missing CCF column from CNA calls, adding CCF = 1 assuming all calls to be clonal.</span></a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="co"># Dataset available with the package -- see Get Started.</span></a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">'example_dataset_CNAqc'</span>, <span class="dt">package =</span> <span class="st">'CNAqc'</span>)</a>
+<a class="sourceLine" id="cb3-3" data-line-number="3">x =<span class="st"> </span>CNAqc<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/CNAqc/man/init.html">init</a></span>(example_dataset_CNAqc<span class="op">$</span>snvs, example_dataset_CNAqc<span class="op">$</span>cna,example_dataset_CNAqc<span class="op">$</span>purity)</a>
+<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">#&gt; [33m![39m Missing CCF column from CNA calls, adding CCF = 1 assuming clonal CNA calls.</span></a>
+<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co">#&gt; [36mℹ[39m Input n = 13141 mutations for267 CNA segments (267 clonal, 0 subclonal)</span></a>
+<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="co">#&gt; [32m✓[39m Mapped n =12963 mutations to clonal segments (~99% of input)</span></a></code></pre></div>
 <p>Peak detection routines can be used to determine the QC of the CNA calls, and are implemented in function <code>analyze_peaks</code>.</p>
 <p>Essentially, the logic is that if a certain segment has truly the number of copies of the major and minor alleles that we have estimated, then we should see this also in the VAF distribution for those very same mutations. Using standard principles of Copy Number analysis we can compute, as a function of the estimated purity and the major/ minor of a segment, where we expect to see a certain group of mutations. This kind of signal is picked up examining the profile of the VAF distribution, and using a peak-detection heuristic to match peaks in the data to their expectation.</p>
 <p>Because peaks are estimated from data, we can measure in a quantitative way how off data are with respect to the theoretical predictions. A large deviance suggests usually wrong purity estimation, which in turns affects the calling of CNA segments. Therefore, with the measurement available it is possible to determine how much the purity should be adjusted to achieve a better fit of the input data.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="co"># Run default analysis</span></a>
-<a class="sourceLine" id="cb5-2" data-line-number="2">x =<span class="st"> </span><span class="kw"><a href="../reference/analyze_peaks.html">analyze_peaks</a></span>(x)</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="co"># Run default analysis</span></a>
+<a class="sourceLine" id="cb4-2" data-line-number="2">x =<span class="st"> </span><span class="kw"><a href="../reference/analyze_peaks.html">analyze_peaks</a></span>(x)</a></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #BBBBBB;background-color: #0000BB;"> [ QC analysis with peaks detection ] 
 #&gt; </span><span>
 #&gt; </span><span style="color: #000000;background-color: #BBBB00;">      CNAqc </span><span> n = 13141 mutations for 267 CNA segments (267 clonal, 0 subclonal) </span><span style="color: #000000;background-color: #BBBB00;">
@@ -165,13 +161,13 @@ PRE.fansi SPAN {padding-top: .25em; padding-bottom: .25em};
 #&gt; </span><span style="color: #00BBBB;"> Results table</span><span>
 #&gt; </span><span style="color: #00BBBB;">=-=-=-=-=-=-=-=-</span><span>
 #&gt; </span><span style="color: #555555;"># A tibble: 4 x 10</span><span>
-#&gt;   mutation_multip… karyotype  peak     x     y discarded   offset matched
-#&gt;              </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>     </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;lgl&gt;</span><span>        </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;lgl&gt;</span><span>  
-#&gt; </span><span style="color: #555555;">1</span><span>                2 2:1       0.616  0.6   2.94 FALSE      0.015</span><span style="text-decoration: underline;">9</span><span>  FALSE  
-#&gt; </span><span style="color: #555555;">2</span><span>                1 2:1       0.308  0.3   3.6  FALSE      0.007</span><span style="text-decoration: underline;">96</span><span> TRUE   
-#&gt; </span><span style="color: #555555;">3</span><span>                2 2:2       0.471  0.46  8.14 FALSE      0.010</span><span style="text-decoration: underline;">9</span><span>  TRUE   
-#&gt; </span><span style="color: #555555;">4</span><span>                1 2:2       0.235  0.24  0.86 FALSE     -</span><span style="color: #BB0000;">0.004</span><span style="color: #BB0000;text-decoration: underline;">55</span><span> TRUE   
-#&gt; </span><span style="color: #555555;"># … with 2 more variables: weight </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, score </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>
+#&gt;   mutation_multip… karyotype  peak     x     y discarded   offset matched weight
+#&gt;              </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>     </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;lgl&gt;</span><span>        </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;lgl&gt;</span><span>    </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>
+#&gt; </span><span style="color: #555555;">1</span><span>                2 2:1       0.616  0.6   2.94 FALSE      0.015</span><span style="text-decoration: underline;">9</span><span>  FALSE   0.086</span><span style="text-decoration: underline;">4</span><span>
+#&gt; </span><span style="color: #555555;">2</span><span>                1 2:1       0.308  0.3   3.6  FALSE      0.007</span><span style="text-decoration: underline;">96</span><span> TRUE    0.086</span><span style="text-decoration: underline;">4</span><span>
+#&gt; </span><span style="color: #555555;">3</span><span>                2 2:2       0.471  0.46  8.14 FALSE      0.010</span><span style="text-decoration: underline;">9</span><span>  TRUE    0.414 
+#&gt; </span><span style="color: #555555;">4</span><span>                1 2:2       0.235  0.24  0.86 FALSE     -</span><span style="color: #BB0000;">0.004</span><span style="color: #BB0000;text-decoration: underline;">55</span><span> TRUE    0.414 
+#&gt; </span><span style="color: #555555;"># … with 1 more variable: score </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>
 #&gt; </span><span style="color: #000000;background-color: #BBBB00;">
 #&gt; Fit score:</span><span> 0.00468956233367035 
 #&gt;  
@@ -184,20 +180,20 @@ PRE.fansi SPAN {padding-top: .25em; padding-bottom: .25em};
 </ul>
 <p>The results of this analysis is a set of scores that account for karyotype size and peaks offset, and that are combined into a linear model to compute an overall QC metrics, called <code>rho</code>.</p>
 <p>A summary table is available after the computatio, and is stored inside the named list <code>peaks_analysis</code>.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(x)</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(x)</a></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #000000;background-color: #BBBB00;">      CNAqc </span><span> n = 13141 mutations for 267 CNA segments (267 clonal, 0 subclonal) </span><span style="color: #000000;background-color: #BBBB00;">
 #&gt;      Purity </span><span> 89% cellularity </span><span style="color: #000000;background-color: #BBBB00;">
 #&gt;  Karyotypes </span><span> 7478 (2:2); 1893 (4:2); 1625 (3:2); 1563 (2:1); 312 (3:0); 81 (2:0); 4 (16:2); 2 (25:2); 2 (3:1); 1 (106:1); 1 (26:2); 1 (99:1) 
 #&gt;  </span><span style="color: #000000;background-color: #BBBB00;">
 #&gt;    Peaks QC </span><span> </span><span style="color: #00BB00;">TRUE</span><span>  ~ s =  0.00468956233367035 </span><span style="color: #000000;background-color: #BBBB00;">
 #&gt; </span><span style="color: #555555;"># A tibble: 4 x 10</span><span>
-#&gt;   mutation_multip… karyotype  peak     x     y discarded   offset matched
-#&gt;              </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>     </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;lgl&gt;</span><span>        </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;lgl&gt;</span><span>  
-#&gt; </span><span style="color: #555555;">1</span><span>                2 2:1       0.616  0.6   2.94 FALSE      0.015</span><span style="text-decoration: underline;">9</span><span>  FALSE  
-#&gt; </span><span style="color: #555555;">2</span><span>                1 2:1       0.308  0.3   3.6  FALSE      0.007</span><span style="text-decoration: underline;">96</span><span> TRUE   
-#&gt; </span><span style="color: #555555;">3</span><span>                2 2:2       0.471  0.46  8.14 FALSE      0.010</span><span style="text-decoration: underline;">9</span><span>  TRUE   
-#&gt; </span><span style="color: #555555;">4</span><span>                1 2:2       0.235  0.24  0.86 FALSE     -</span><span style="color: #BB0000;">0.004</span><span style="color: #BB0000;text-decoration: underline;">55</span><span> TRUE   
-#&gt; </span><span style="color: #555555;"># … with 2 more variables: weight </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span style="color: #555555;">, score </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>
+#&gt;   mutation_multip… karyotype  peak     x     y discarded   offset matched weight
+#&gt;              </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>     </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;lgl&gt;</span><span>        </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;lgl&gt;</span><span>    </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>
+#&gt; </span><span style="color: #555555;">1</span><span>                2 2:1       0.616  0.6   2.94 FALSE      0.015</span><span style="text-decoration: underline;">9</span><span>  FALSE   0.086</span><span style="text-decoration: underline;">4</span><span>
+#&gt; </span><span style="color: #555555;">2</span><span>                1 2:1       0.308  0.3   3.6  FALSE      0.007</span><span style="text-decoration: underline;">96</span><span> TRUE    0.086</span><span style="text-decoration: underline;">4</span><span>
+#&gt; </span><span style="color: #555555;">3</span><span>                2 2:2       0.471  0.46  8.14 FALSE      0.010</span><span style="text-decoration: underline;">9</span><span>  TRUE    0.414 
+#&gt; </span><span style="color: #555555;">4</span><span>                1 2:2       0.235  0.24  0.86 FALSE     -</span><span style="color: #BB0000;">0.004</span><span style="color: #BB0000;text-decoration: underline;">55</span><span> TRUE    0.414 
+#&gt; </span><span style="color: #555555;"># … with 1 more variable: score </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>
 #&gt; </span><span style="color: #000000;background-color: #BBBB00;">        CCF </span><span> </span><span style="color: #BB0000;">FALSE</span><span> </span><span style="color: #000000;background-color: #BBBB00;">
 #&gt; </span><span>
 </span></code></pre>
@@ -205,37 +201,37 @@ PRE.fansi SPAN {padding-top: .25em; padding-bottom: .25em};
 <h3 class="hasAnchor">
 <a href="#plotting-results-of-the-analysis" class="anchor"></a>Plotting results of the analysis</h3>
 <p>You can visually summarise the result of the QC analysis, which reports the peaks matched to data, the karyotype size (re-normalized for the karyotypes used) and the overall score.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="../reference/plot_qc.html">plot_qc</a></span>(x)</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="../reference/plot_qc.html">plot_qc</a></span>(x)</a></code></pre></div>
 <p><img src="peaks_detection_files/figure-html/unnamed-chunk-6-1.png" width="336"></p>
 <p>For every karyotype that you have tested, a plot is available for its peak detection’s analysis, which shows the estimated KDE and the matched peaks. This plot is assembled as a <code>ggpubr</code> figure with all the <code>ggplot</code> outputs; notice that the fits for the karyotypes that have not been used, but that were passed through parameter <code>karyotypes of function</code>analyze_peaks`, are just gray panels.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw"><a href="../reference/plot_peaks_analysis.html">plot_peaks_analysis</a></span>(x)</a>
-<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="co">#&gt; Warning: Removed 2 rows containing missing values (geom_bar).</span></a>
-<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="co">#&gt; Warning: Removed 32 rows containing missing values (geom_path).</span></a>
-<a class="sourceLine" id="cb8-4" data-line-number="4"><span class="co">#&gt; Warning: Removed 2 rows containing missing values (geom_bar).</span></a>
-<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="co">#&gt; Warning: Removed 13 rows containing missing values (geom_path).</span></a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="../reference/plot_peaks_analysis.html">plot_peaks_analysis</a></span>(x)</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="co">#&gt; Warning: Removed 2 rows containing missing values (geom_bar).</span></a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="co">#&gt; Warning: Removed 32 rows containing missing values (geom_path).</span></a>
+<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="co">#&gt; Warning: Removed 2 rows containing missing values (geom_bar).</span></a>
+<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co">#&gt; Warning: Removed 13 rows containing missing values (geom_path).</span></a></code></pre></div>
 <p><img src="peaks_detection_files/figure-html/unnamed-chunk-7-1.png" width="1056"></p>
 <p>Individual karyotypes plots are available inside the named lists <code>peaks_analysis$plots</code>, named afte each required karyotype.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="co"># Diploid segments</span></a>
-<a class="sourceLine" id="cb9-2" data-line-number="2">x<span class="op">$</span>peaks_analysis<span class="op">$</span>plots<span class="op">$</span><span class="st">`</span><span class="dt">1:1</span><span class="st">`</span></a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="co"># Diploid segments</span></a>
+<a class="sourceLine" id="cb8-2" data-line-number="2">x<span class="op">$</span>peaks_analysis<span class="op">$</span>plots<span class="op">$</span><span class="st">`</span><span class="dt">1:1</span><span class="st">`</span></a></code></pre></div>
 <p><img src="peaks_detection_files/figure-html/unnamed-chunk-8-1.png" width="288"></p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"></a>
-<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="co"># Tetraploid segments</span></a>
-<a class="sourceLine" id="cb10-3" data-line-number="3">x<span class="op">$</span>peaks_analysis<span class="op">$</span>plots<span class="op">$</span><span class="st">`</span><span class="dt">2:2</span><span class="st">`</span></a>
-<a class="sourceLine" id="cb10-4" data-line-number="4"><span class="co">#&gt; Warning: Removed 2 rows containing missing values (geom_bar).</span></a>
-<a class="sourceLine" id="cb10-5" data-line-number="5"><span class="co">#&gt; Warning: Removed 13 rows containing missing values (geom_path).</span></a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"></a>
+<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="co"># Tetraploid segments</span></a>
+<a class="sourceLine" id="cb9-3" data-line-number="3">x<span class="op">$</span>peaks_analysis<span class="op">$</span>plots<span class="op">$</span><span class="st">`</span><span class="dt">2:2</span><span class="st">`</span></a>
+<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="co">#&gt; Warning: Removed 2 rows containing missing values (geom_bar).</span></a>
+<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="co">#&gt; Warning: Removed 13 rows containing missing values (geom_path).</span></a></code></pre></div>
 <p><img src="peaks_detection_files/figure-html/unnamed-chunk-8-2.png" width="288"></p>
 <p>You can integrate plots from QC analysis with data; in this case we combine them with segments.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">cowplot<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/cowplot/man/plot_grid.html">plot_grid</a></span>(</a>
-<a class="sourceLine" id="cb11-2" data-line-number="2">  <span class="kw"><a href="../reference/plot_peaks_analysis.html">plot_peaks_analysis</a></span>(x),</a>
-<a class="sourceLine" id="cb11-3" data-line-number="3">  <span class="kw"><a href="../reference/plot_segments.html">plot_segments</a></span>(x) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/graphics/plot.window.html">ylim</a></span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">6</span>),</a>
-<a class="sourceLine" id="cb11-4" data-line-number="4">  <span class="dt">rel_heights =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(.<span class="dv">8</span>, <span class="dv">1</span>),</a>
-<a class="sourceLine" id="cb11-5" data-line-number="5">  <span class="dt">nrow =</span> <span class="dv">2</span></a>
-<a class="sourceLine" id="cb11-6" data-line-number="6">)</a>
-<a class="sourceLine" id="cb11-7" data-line-number="7"><span class="co">#&gt; Warning: Removed 2 rows containing missing values (geom_bar).</span></a>
-<a class="sourceLine" id="cb11-8" data-line-number="8"><span class="co">#&gt; Warning: Removed 32 rows containing missing values (geom_path).</span></a>
-<a class="sourceLine" id="cb11-9" data-line-number="9"><span class="co">#&gt; Warning: Removed 2 rows containing missing values (geom_bar).</span></a>
-<a class="sourceLine" id="cb11-10" data-line-number="10"><span class="co">#&gt; Warning: Removed 13 rows containing missing values (geom_path).</span></a>
-<a class="sourceLine" id="cb11-11" data-line-number="11"><span class="co">#&gt; Warning: Removed 10 rows containing missing values (geom_segment).</span></a></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">cowplot<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/cowplot/man/plot_grid.html">plot_grid</a></span>(</a>
+<a class="sourceLine" id="cb10-2" data-line-number="2">  <span class="kw"><a href="../reference/plot_peaks_analysis.html">plot_peaks_analysis</a></span>(x),</a>
+<a class="sourceLine" id="cb10-3" data-line-number="3">  <span class="kw"><a href="../reference/plot_segments.html">plot_segments</a></span>(x) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/graphics/plot.window.html">ylim</a></span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">6</span>),</a>
+<a class="sourceLine" id="cb10-4" data-line-number="4">  <span class="dt">rel_heights =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(.<span class="dv">8</span>, <span class="dv">1</span>),</a>
+<a class="sourceLine" id="cb10-5" data-line-number="5">  <span class="dt">nrow =</span> <span class="dv">2</span></a>
+<a class="sourceLine" id="cb10-6" data-line-number="6">)</a>
+<a class="sourceLine" id="cb10-7" data-line-number="7"><span class="co">#&gt; Warning: Removed 2 rows containing missing values (geom_bar).</span></a>
+<a class="sourceLine" id="cb10-8" data-line-number="8"><span class="co">#&gt; Warning: Removed 32 rows containing missing values (geom_path).</span></a>
+<a class="sourceLine" id="cb10-9" data-line-number="9"><span class="co">#&gt; Warning: Removed 2 rows containing missing values (geom_bar).</span></a>
+<a class="sourceLine" id="cb10-10" data-line-number="10"><span class="co">#&gt; Warning: Removed 13 rows containing missing values (geom_path).</span></a>
+<a class="sourceLine" id="cb10-11" data-line-number="11"><span class="co">#&gt; Warning: Removed 10 rows containing missing values (geom_segment).</span></a></code></pre></div>
 <p><img src="peaks_detection_files/figure-html/unnamed-chunk-9-1.png" width="1056"></p>
 </div>
   </div>

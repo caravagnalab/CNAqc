@@ -144,7 +144,8 @@ clonal and subclonal CNA calls in two different sets of colors.
 This function uses <code>hg19</code> genome coordinates to map CNA segments.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>plot_segments</span>(<span class='no'>x</span>, <span class='kw'>chromosomes</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"chr"</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>:<span class='fl'>22</span>, <span class='st'>"X"</span>, <span class='st'>"Y"</span>)))</pre>
+    <pre class="usage"><span class='fu'>plot_segments</span>(<span class='no'>x</span>, <span class='kw'>chromosomes</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"chr"</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>:<span class='fl'>22</span>, <span class='st'>"X"</span>, <span class='st'>"Y"</span>)),
+  <span class='kw'>circular</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -157,6 +158,11 @@ This function uses <code>hg19</code> genome coordinates to map CNA segments.</p>
       <th>chromosomes</th>
       <td><p>The chromosome to use for this plot.</p></td>
     </tr>
+    <tr>
+      <th>circular</th>
+      <td><p>Uses a circular layout in polar coordinates to make the segments
+look like a circos plot.</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -166,8 +172,7 @@ This function uses <code>hg19</code> genome coordinates to map CNA segments.</p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='st'>'example_dataset_CNAqc'</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>'CNAqc'</span>)
 <span class='no'>x</span> <span class='kw'>=</span> <span class='fu'><a href='init.html'>init</a></span>(<span class='no'>example_dataset_CNAqc</span>$<span class='no'>snvs</span>, <span class='no'>example_dataset_CNAqc</span>$<span class='no'>cna</span>,<span class='no'>example_dataset_CNAqc</span>$<span class='no'>purity</span>)</div><div class='output co'>#&gt; <span style='color: #BBBBBB;background-color: #0000BB;'> [ CNAqc - CNA Quality Check ] 
-#&gt; </span><span></div><div class='output co'>#&gt; <span class='message'>[CNAqc] Missing CCF column from CNA calls, adding CCF = 1 assuming all calls to be clonal.</span></div><div class='output co'>#&gt; </span><span style='color: #000000;background-color: #BBBB00;'>Input </span><span> n = 13141 mutations for 267 CNA segments (267 clonal, 0 subclonal) </span><span style='color: #000000;background-color: #BBBB00;'>
-#&gt; Mapped.</span><span> n = 12963 mutations mapped to clonal segments (~99% of input) </div><div class='input'>
+#&gt; </span><span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #BBBB00;'>!</span><span> Missing CCF column from CNA calls, adding CCF = 1 assuming clonal CNA calls.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Input n = 13141 mutations for267 CNA segments (267 clonal, 0 subclonal)</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> Mapped n =12963 mutations to clonal segments (~99% of input)</span></div><div class='input'>
 <span class='fu'>plot_segments</span>(<span class='no'>x</span>)</div><div class='img'><img src='plot_segments-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>plot_segments</span>(<span class='no'>x</span>, <span class='kw'>chromosomes</span> <span class='kw'>=</span> <span class='st'>'chr13'</span>)</div><div class='img'><img src='plot_segments-2.png' alt='' width='700' height='433' /></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

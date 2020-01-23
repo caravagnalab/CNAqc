@@ -107,14 +107,8 @@
 <style type="text/css" scoped>
 PRE.fansi SPAN {padding-top: .25em; padding-bottom: .25em};
 </style>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(CNAqc)</a></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #BBBBBB;background-color: #0000BB;"> [ CNAqc - Copy Number Alteration quality check ] 
-#&gt; </span><span style="color: #000000;background-color: #BBBB00;">Author : </span><span> Giulio Caravagna &lt;gcaravagn@gmail.com&gt; </span><span style="color: #000000;background-color: #BBBB00;">
-#&gt; GitHub : </span><span> caravagn/CNAqc </span><span style="color: #000000;background-color: #BBBB00;">
-#&gt;    WWW : </span><span> https://caravagn.github.io/CNAqc/ </span><span style="color: #000000;background-color: #BBBB00;">
-#&gt; </span><span>
-#&gt;  &gt; CNAqc is part of the </span><span style="color: #00BB00;">"evoverse"</span><span> </span><span style="color: #0000BB;">[https://bit.ly/2orn94e]</span><span> - a collection of packages to implement Cancer Evolution analyses from cancer sequencing data.
-</span></code></pre>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(CNAqc)</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="co">#&gt; [32m✓[39m Loading [32m[32mCNAqc[32m[39m, [3m[3m'Copy Number Alteration quality check'[3m[23m. Support : [3m[34m[3m[34m&lt;https://caravagn.github.io/CNAqc/&gt;[34m[3m[39m[23m</span></a></code></pre></div>
 <p>To set-up your data and work with the <code>CNAqc</code> package, you need to have:</p>
 <ul>
 <li>mutation calls;</li>
@@ -205,10 +199,9 @@ PRE.fansi SPAN {padding-top: .25em; padding-bottom: .25em};
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #BBBBBB;background-color: #0000BB;"> [ CNAqc - CNA Quality Check ] 
 #&gt; </span><span>
 </span></code></pre>
-<pre><code>#&gt; [CNAqc] Missing CCF column from CNA calls, adding CCF = 1 assuming all calls to be clonal.</code></pre>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #000000;background-color: #BBBB00;">Input </span><span> n = 13141 mutations for 267 CNA segments (267 clonal, 0 subclonal) </span><span style="color: #000000;background-color: #BBBB00;">
-#&gt; Mapped.</span><span> n = 12963 mutations mapped to clonal segments (~99% of input) 
-</span></code></pre>
+<pre><code>#&gt; [33m![39m Missing CCF column from CNA calls, adding CCF = 1 assuming clonal CNA calls.
+#&gt; [36mℹ[39m Input n = 13141 mutations for267 CNA segments (267 clonal, 0 subclonal)
+#&gt; [32m✓[39m Mapped n =12963 mutations to clonal segments (~99% of input)</code></pre>
 <p>The summary of the object is available via the S3 <code>print</code> function, reporting some basic statistics of the data. In particular, this reports the number of mutations per karyotype sorted by size, and annotates by default is any analysis has been computed on these calls (default: no).</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(x)</a></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; <span style="color: #000000;background-color: #BBBB00;">      CNAqc </span><span> n = 13141 mutations for 267 CNA segments (267 clonal, 0 subclonal) </span><span style="color: #000000;background-color: #BBBB00;">
@@ -253,8 +246,8 @@ PRE.fansi SPAN {padding-top: .25em; padding-bottom: .25em};
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"></a>
 <a class="sourceLine" id="cb13-2" data-line-number="2"><span class="co"># Reduce x,y-axis</span></a>
 <a class="sourceLine" id="cb13-3" data-line-number="3"><span class="kw"><a href="../reference/plot_segments.html">plot_segments</a></span>(x) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/graphics/plot.window.html">xlim</a></span>(<span class="fl">1e6</span>, <span class="fl">30e6</span>) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/graphics/plot.window.html">ylim</a></span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">6</span>)</a>
-<a class="sourceLine" id="cb13-4" data-line-number="4"><span class="co">#&gt; Scale for 'x' is already present. Adding another scale for 'x', which</span></a>
-<a class="sourceLine" id="cb13-5" data-line-number="5"><span class="co">#&gt; will replace the existing scale.</span></a>
+<a class="sourceLine" id="cb13-4" data-line-number="4"><span class="co">#&gt; Scale for 'x' is already present. Adding another scale for 'x', which will</span></a>
+<a class="sourceLine" id="cb13-5" data-line-number="5"><span class="co">#&gt; replace the existing scale.</span></a>
 <a class="sourceLine" id="cb13-6" data-line-number="6"><span class="co">#&gt; Warning: Removed 24 rows containing missing values (geom_rect).</span></a>
 <a class="sourceLine" id="cb13-7" data-line-number="7"><span class="co">#&gt; Warning: Removed 24 rows containing missing values (geom_vline).</span></a>
 <a class="sourceLine" id="cb13-8" data-line-number="8"><span class="co">#&gt; Warning: Removed 24 rows containing missing values (geom_label).</span></a>
@@ -269,7 +262,7 @@ PRE.fansi SPAN {padding-top: .25em; padding-bottom: .25em};
 <p><img src="CNAqc_files/figure-html/unnamed-chunk-12-1.png" width="768"></p>
 <p>An example effect of downsampling the data is the following</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="co"># Different subsamples</span></a>
-<a class="sourceLine" id="cb15-2" data-line-number="2">ggpubr<span class="op">::</span><span class="kw"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html">ggarrange</a></span>(</a>
+<a class="sourceLine" id="cb15-2" data-line-number="2">ggpubr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/ggpubr/man/ggarrange.html">ggarrange</a></span>(</a>
 <a class="sourceLine" id="cb15-3" data-line-number="3">  <span class="kw"><a href="../reference/plot_vaf.html">plot_vaf</a></span>(x, <span class="dt">N =</span> <span class="dv">1000</span>),</a>
 <a class="sourceLine" id="cb15-4" data-line-number="4">  <span class="kw"><a href="../reference/plot_vaf.html">plot_vaf</a></span>(x),</a>
 <a class="sourceLine" id="cb15-5" data-line-number="5">  <span class="kw"><a href="../reference/plot_vaf.html">plot_vaf</a></span>(x, <span class="dt">N =</span> <span class="dv">10000</span>),</a>
@@ -278,7 +271,7 @@ PRE.fansi SPAN {padding-top: .25em; padding-bottom: .25em};
 <p><img src="CNAqc_files/figure-html/unnamed-chunk-13-1.png" width="768"></p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"></a>
 <a class="sourceLine" id="cb16-2" data-line-number="2"><span class="co"># Different subsamples</span></a>
-<a class="sourceLine" id="cb16-3" data-line-number="3">ggpubr<span class="op">::</span><span class="kw"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html">ggarrange</a></span>(</a>
+<a class="sourceLine" id="cb16-3" data-line-number="3">ggpubr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/ggpubr/man/ggarrange.html">ggarrange</a></span>(</a>
 <a class="sourceLine" id="cb16-4" data-line-number="4">  <span class="kw"><a href="../reference/plot_depth.html">plot_depth</a></span>(x, <span class="dt">N =</span> <span class="dv">1000</span>),</a>
 <a class="sourceLine" id="cb16-5" data-line-number="5">  <span class="kw"><a href="../reference/plot_depth.html">plot_depth</a></span>(x),</a>
 <a class="sourceLine" id="cb16-6" data-line-number="6">  <span class="kw"><a href="../reference/plot_depth.html">plot_depth</a></span>(x, <span class="dt">N =</span> <span class="dv">10000</span>),</a>
@@ -308,7 +301,7 @@ PRE.fansi SPAN {padding-top: .25em; padding-bottom: .25em};
 <code>type = 'number'</code>, reporting the counts of segments per karyotype.</li>
 </ul>
 <p>The package uses a pre-set color schema to colour diploid segments in green, LOH segments in blue and amplifications in red.</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1">ggpubr<span class="op">::</span><span class="kw"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html">ggarrange</a></span>(</a>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1">ggpubr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/ggpubr/man/ggarrange.html">ggarrange</a></span>(</a>
 <a class="sourceLine" id="cb18-2" data-line-number="2">  <span class="kw"><a href="../reference/plot_karyotypes.html">plot_karyotypes</a></span>(x),</a>
 <a class="sourceLine" id="cb18-3" data-line-number="3">  <span class="kw"><a href="../reference/plot_karyotypes.html">plot_karyotypes</a></span>(x, <span class="dt">type =</span> <span class="st">'number'</span>),</a>
 <a class="sourceLine" id="cb18-4" data-line-number="4">  <span class="dt">common.legend =</span> <span class="ot">TRUE</span>,</a>
