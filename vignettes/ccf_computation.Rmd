@@ -13,13 +13,9 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 
-options(crayon.enabled=TRUE)
+options(crayon.enabled=F)
 ```
 
-```{r, comment="", results="asis"}
-# To render in colour this vignette
-old.hooks <- fansi::set_knit_hooks(knitr::knit_hooks)
-```
 
 ```{r setup}
 library(CNAqc)
@@ -38,15 +34,7 @@ By design, computations on other karyotypes raise an error.
 
 ### Mutation multiplicity
 
-**Expected VAF.** Given the mutations that are mapped to a certain karyotype (e.g., `2:1`), the expected Variant Allele Frequency (VAF) for mutations in $m$ copies, with tumour purity $\pi$ and segment ploidy $p$ (number of copies of the minor and major allele) are given by
-\[
-v = \dfrac{m \pi}{
-2 (1 - \pi) + \pi p 
-} \, .
-\]
-This formula is also used to determine the expected peaks in the peak-detection algorithm used to QC copy number calls in `CNAqc` (see the vignette *"QC analysis via peaks detection"*).
-
-In this task we determine the value of $m$ from the observed $v$, the karyotype and tumour purity. 
+We know the [relation between VAF, mutation multiplicity and tumour purity](https://caravagn.github.io/CNAqc/articles/CNAqc.html). In this task we determine the value of $m$ from the observed $v$, the karyotype and tumour purity. 
 
 **2-class mixture.** `CNAqc` uses a statistical model with two Binomial distributions for the mutations happening before, and after aneuploudy. The density of these Binomial distributions are:
 
@@ -105,28 +93,12 @@ Then:
 
 When `CNAqc` computes this heuristic it returns a plot of the entropy and marks the ranges $[n\hat{w}_1, n\hat{w}_2]$  determined by the quantile $\hat{q}$. The  user can then check if the quantile selected is too stringent or loose, and adjust the input parmeter accordingly.
 
-### Cancer Cell Fractions computation
 
-CCF values, are computed as
-
-\[
-\text{CCF} = 
-\dfrac{
-v[
-(C - 2)\pi + 2
-]
-}
-{
-m \pi
-}
-\]
-where $C$ is total segment ploidy (e.g., 3 for a `2:1` state).
-  
 ### Example computation
 
-We work with the same object shown in `CNAqc`'s Introductory Vignette.
+We work with the [template dataset](https://caravagn.github.io/CNAqc/articles/Introduction.html). 
 
-```{r echo=FALSE, results=FALSE, message=FALSE, warning=FALSE}
+```{r echo=FALSE, results=FALSE, message=FALSE, include=FALSE}
 # Dataset available with the package -- see Getting Started.
 data('example_dataset_CNAqc', package = 'CNAqc')
 x = CNAqc::init(
@@ -135,10 +107,6 @@ x = CNAqc::init(
   example_dataset_CNAqc$purity)
 ```
 
-```{r}
-# Dataset available with the package -- see Getting Started.
-print(x)
-```
 We run function `compute_CCF` to obtain the full analysis of CCF values, first with the default parameters and focusing only one karyotype `2:1`. 
 ```{r,fig.width=9, fig.height=5, warning=F, message=F}
 x = compute_CCF(x, karyotypes = "2:1")

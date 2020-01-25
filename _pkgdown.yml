@@ -1,1 +1,69 @@
 destination: docs
+
+template:
+  params:
+    part_of: evoverse
+    footer: Test of my footer
+url:
+  caravagn.github.io/revolver
+
+articles:
+- title: R Markdown
+  contents:
+  - starts_with("authoring")
+- title: Websites
+  contents:
+  - rmarkdown_websites
+  - rmarkdown_site_generators
+
+authors:
+  Giulio Caravagna:
+    href: https://sites.google.com/site/giuliocaravagna/
+
+reference:
+- title: Available data
+  desc:  Reference and template dataset included in the package.
+  contents:
+  - chr_coordinates_hg19
+  - example_dataset_CNAqc
+
+- title: Data processing
+  desc:  Functions to visualise the data.
+  contents:
+  - init
+  - print
+  - inspect_segment
+  - plot_segment_size_distribution
+  - plot_karyotypes()
+  - plot_counts
+  - plot_depth
+  - plot_vaf
+  - plot_segments
+
+- title: Purity and ploidy QC
+  desc:  Analysis of CNA calls by peak detection.
+  contents:
+  - analyze_peaks
+  - plot_peaks_analysis
+  - plot_qc
+
+- title: CCF estimation
+  desc:  Computation of Cancer Cell Fractions data.
+  contents:
+  - compute_CCF
+  - CCF
+  - plot_CCF
+
+- title: Smoothing
+  desc:  Analysis and plotting functions to smooth segments.
+  contents:
+  - smooth_segments
+  - plot_smoothing
+
+- title: Overfragmentation detection
+  desc:  Analysis and plotting functions to smooth segments.
+  contents:
+  - detect_arm_overfragmentation
+  - detect_wg_overfragmentation
+  - plot_arm_fragmentation
+

@@ -20,9 +20,9 @@ options(crayon.enabled=FALSE)
 library(CNAqc)
 ```
 
-We work with the same object shown in the [introductory vignette](file:///Users/gcaravagna/Documents/GitHub/CNAqc/docs/articles/CNAqc.html). 
+We work with the [template dataset](https://caravagn.github.io/CNAqc/articles/Introduction.html). 
 
-```{r echo=TRUE, results=FALSE}
+```{r echo=TRUE, include=FALSE}
 # Dataset available with the package -- see Get Started.
 data('example_dataset_CNAqc', package = 'CNAqc')
 x = CNAqc::init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)

@@ -43,7 +43,7 @@
 
 
 <meta property="og:title" content="Function reference" />
-<meta property="og:image" content="/logo.png" />
+<meta property="og:image" content="caravagn.github.io/revolver/logo.png" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -102,6 +102,9 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="../articles/Introduction.html">Introduction</a>
+    </li>
+    <li>
       <a href="../articles/ccf_computation.html">Computation of Cancer Cell Fractions</a>
     </li>
     <li>
@@ -150,23 +153,11 @@
     <tbody>
       <tr>
         <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
+          <h2 id="section-available-data" class="hasAnchor"><a href="#section-available-data" class="anchor"></a>Available data</h2>
+          <p class="section-desc"><p>Reference and template dataset included in the package.</p></p>
         </th>
       </tr>
       <tr>
-        
-        <td>
-          <p><code><a href="CCF.html">CCF()</a></code> </p>
-        </td>
-        <td><p>Return the available mutation CCF estimates in the data.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="analyze_peaks.html">analyze_peaks()</a></code> </p>
-        </td>
-        <td><p>Analyze CNA calls by peak detection.</p></td>
-      </tr><tr>
         
         <td>
           <p><code><a href="chr_coordinates_hg19.html">chr_coordinates_hg19</a></code> </p>
@@ -175,28 +166,18 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="compute_CCF.html">compute_CCF()</a></code> </p>
-        </td>
-        <td><p>Compute CCF values for the available mutations.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="detect_arm_overfragmentation.html">detect_arm_overfragmentation()</a></code> </p>
-        </td>
-        <td><p>Title</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="detect_wg_overfragmentation.html">detect_wg_overfragmentation()</a></code> </p>
-        </td>
-        <td><p>Title</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="example_dataset_CNAqc.html">example_dataset_CNAqc</a></code> </p>
         </td>
         <td><p>Example CNAqc dataset.</p></td>
-      </tr><tr>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-data-processing" class="hasAnchor"><a href="#section-data-processing" class="anchor"></a>Data processing</h2>
+          <p class="section-desc"><p>Functions to visualise the data.</p></p>
+        </th>
+      </tr>
+      <tr>
         
         <td>
           <p><code><a href="init.html">init()</a></code> </p>
@@ -211,13 +192,7 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="plot_CCF.html">plot_CCF()</a></code> </p>
-        </td>
-        <td><p>Plot the CCF estimates in the data.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="plot_arm_fragmentation.html">plot_arm_fragmentation()</a></code> </p>
+          <p><code><a href="plot_segment_size_distribution.html">plot_segment_size_distribution()</a></code> </p>
         </td>
         <td><p>Title</p></td>
       </tr><tr>
@@ -235,9 +210,29 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="plot_karyotypes.html">plot_karyotypes()</a></code> </p>
+          <p><code><a href="plot_vaf.html">plot_vaf()</a></code> </p>
         </td>
-        <td><p>Plot a barplot for the segments.</p></td>
+        <td><p>Plot a genome-wide scatter plot of VAF</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="plot_segments.html">plot_segments()</a></code> </p>
+        </td>
+        <td><p>Plot CNA segments.</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-purity-and-ploidy-qc" class="hasAnchor"><a href="#section-purity-and-ploidy-qc" class="anchor"></a>Purity and ploidy QC</h2>
+          <p class="section-desc"><p>Analysis of CNA calls by peak detection.</p></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="analyze_peaks.html">analyze_peaks()</a></code> </p>
+        </td>
+        <td><p>Analyze CNA calls by peak detection.</p></td>
       </tr><tr>
         
         <td>
@@ -250,40 +245,76 @@
           <p><code><a href="plot_qc.html">plot_qc()</a></code> </p>
         </td>
         <td><p>Plot a summary of QC results.</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-ccf-estimation" class="hasAnchor"><a href="#section-ccf-estimation" class="anchor"></a>CCF estimation</h2>
+          <p class="section-desc"><p>Computation of Cancer Cell Fractions data.</p></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="compute_CCF.html">compute_CCF()</a></code> </p>
+        </td>
+        <td><p>Compute CCF values for the available mutations.</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="plot_segment_size_distribution.html">plot_segment_size_distribution()</a></code> </p>
+          <p><code><a href="CCF.html">CCF()</a></code> </p>
+        </td>
+        <td><p>Return the available mutation CCF estimates in the data.</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="plot_CCF.html">plot_CCF()</a></code> </p>
+        </td>
+        <td><p>Plot the CCF estimates in the data.</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-smoothing" class="hasAnchor"><a href="#section-smoothing" class="anchor"></a>Smoothing</h2>
+          <p class="section-desc"><p>Analysis and plotting functions to smooth segments.</p></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="smooth_segments.html">smooth_segments()</a></code> </p>
         </td>
         <td><p>Title</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="plot_segments.html">plot_segments()</a></code> </p>
-        </td>
-        <td><p>Plot CNA segments.</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="plot_smoothing.html">plot_smoothing()</a></code> </p>
         </td>
         <td><p>Title</p></td>
-      </tr><tr>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-overfragmentation-detection" class="hasAnchor"><a href="#section-overfragmentation-detection" class="anchor"></a>Overfragmentation detection</h2>
+          <p class="section-desc"><p>Analysis and plotting functions to smooth segments.</p></p>
+        </th>
+      </tr>
+      <tr>
         
         <td>
-          <p><code><a href="plot_vaf.html">plot_vaf()</a></code> </p>
+          <p><code><a href="detect_arm_overfragmentation.html">detect_arm_overfragmentation()</a></code> </p>
         </td>
-        <td><p>Plot a genome-wide scatter plot of VAF</p></td>
+        <td><p>Title</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="print.cnaqc.html">print(<i>&lt;cnaqc&gt;</i>)</a></code> </p>
+          <p><code><a href="detect_wg_overfragmentation.html">detect_wg_overfragmentation()</a></code> </p>
         </td>
-        <td><p>Print for class <code>'cnaqc'</code>.</p></td>
+        <td><p>Title</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="smooth_segments.html">smooth_segments()</a></code> </p>
+          <p><code><a href="plot_arm_fragmentation.html">plot_arm_fragmentation()</a></code> </p>
         </td>
         <td><p>Title</p></td>
       </tr>
@@ -294,7 +325,12 @@
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#section-all-functions">All functions</a></li>
+      <li><a href="#section-available-data">Available data</a></li>
+      <li><a href="#section-data-processing">Data processing</a></li>
+      <li><a href="#section-purity-and-ploidy-qc">Purity and ploidy QC</a></li>
+      <li><a href="#section-ccf-estimation">CCF estimation</a></li>
+      <li><a href="#section-smoothing">Smoothing</a></li>
+      <li><a href="#section-overfragmentation-detection">Overfragmentation detection</a></li>
     </ul>
   </div>
 </div>
@@ -302,7 +338,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Giulio Caravagna.</p>
+  <p>Developed by <a href='https://sites.google.com/site/giuliocaravagna/'>Giulio Caravagna</a>.</p>
 </div>
 
 <div class="pkgdown">

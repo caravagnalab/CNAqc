@@ -16,38 +16,30 @@ knitr::opts_chunk$set(
 options(crayon.enabled=F)
 ```
 
-```{r, comment="", results="asis"}
-# To render in colour this vignette
-old.hooks <- fansi::set_knit_hooks(knitr::knit_hooks)
-```
+
+
+`CNAqc` can determine if purity and CNA segments "fit well" to mutation data, an hortogonal quality check (QC) metric that can be used to adjust purity/ ploidy.
+
+ `CNAqc`  matches allelic imbalance of CNA segments to the allelic frequencies of somatic mutations. The package implements a karyotype-weighted linear score which uses the distance between data peaks (empirical), and their theoretical expectation. This score accouts for normal plodiy (germline), and tumour purity/  ploidy. The peaks are determined via kernel density estimation and peak-detection heuristics.
 
 ```{r setup}
 library(CNAqc)
-require(tidyverse)
-require(cowplot)
 ```
 
-We work with the same object shown in the [introductory vignette](file:///Users/gcaravagna/Documents/GitHub/CNAqc/docs/articles/CNAqc.html). 
+We work with the [template dataset](https://caravagn.github.io/CNAqc/articles/Introduction.html). 
 
-```{r echo=TRUE, results=FALSE}
-# Dataset available with the package -- see Get Started.
+```{r echo=FALSE, results=FALSE, message=FALSE, include=FALSE}
+# Dataset available with the package -- see Getting Started.
 data('example_dataset_CNAqc', package = 'CNAqc')
-x = CNAqc::init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+x = CNAqc::init(
+  example_dataset_CNAqc$snvs, 
+  example_dataset_CNAqc$cna,
+  example_dataset_CNAqc$purity)
 ```
 
+Peak detection routines can are implemented in function `analyze_peaks`. 
 
-Peak detection routines can be used to determine the QC of the CNA calls, and are implemented in function `analyze_peaks`. 
-
-Essentially, the logic is that if a certain segment has truly the number of copies of the major and minor alleles that we
-have estimated, then we should see this also in the VAF distribution for those very same mutations. Using standard principles
-of Copy Number analysis we can compute, as a function of the estimated purity and the major/ minor of a segment, where we expect 
-to see a certain group of mutations. This kind of signal is picked up examining the profile of the VAF distribution, and using
-a peak-detection heuristic to match peaks in the data to their expectation.
-
-Because peaks are estimated from data, we can measure in a quantitative way how off data are with respect to the theoretical
-predictions. A large deviance suggests usually wrong purity estimation, which in turns affects the calling of CNA segments.
-Therefore, with the measurement available it is possible to determine how much the purity should be adjusted to achieve a 
-better fit of the input data.
+The idea is as follows: a segment with $m$ and $M$ copies of the minor and major alleles is consistent to mutation data if the  VAF distribution peaks at certain values, which we can compute. Profiling then of the VAF distribution with a peak-detection heuristic allows `CNAqc` to measure the if peaks match. Large deviance suggests usually wrong purity estimation.
 
 
 ```{r, fig.width=11, fig.height=3}
@@ -55,39 +47,23 @@ better fit of the input data.
 x = analyze_peaks(x)
 ```
 
-The default analysis does:
-
-* analyze  LOH regions (A, AA), diploid regions (AB), and amplification regions (AAB, AABB). These correspond to
+`CNAqc` analyze  LOH regions (A, AA), diploid regions (AB), and amplification regions (AAB, AABB). These correspond to
 `'1:1'`, `'2:1'`, `'2:0'` and `'2:2'` in "Major:minor" notation. Karyotypes are subset by their size (normalized for
-the number of input mutations), and by default Karyotypes smaller than 5% of the actual mutational burden are not considered;
+the number of input mutations), and by default karyotypes smaller than 5% of the actual mutational burden are not considered
 
-* uses a KDE methods with unitary adjustment and Gaussian kernel;
+A Kernel-density method (unitary adjustment, Gaussian kernel) is used to smooth the data distribution, and the `peakPick` package to determine peaks in the smoothed density.  Peaks below a mnimum 
+density (noise and miscalled segments) are filtered, and the others are matched to a predefined location with some tolerance (e.g., plus/minus `0.5 * epsilon`, where `epsilon = 0.015` is the default).
 
-* uses the `peakPick` package to determine peaks in the KDE smooth of the VAF distribution, subsetting peaks below a mnimum 
-density which could be due to noise and miscalled CNAs. Peaks at a certain location are matched with a range of plus/minus 
-`0.5 * epsilon`, where `epsilon` is a pre-defined value which by default is `0.015`.
-
-The results of this analysis is a set of scores that account for karyotype size and peaks offset, and that are combined into
-a linear model to compute an overall QC metrics, called `rho`.
-
-A summary table is available after the computatio, and is stored inside the named list `peaks_analysis`.
+Theis analysis produces a set of scores that account for karyotype size and peaks offset, and that can be combined into a linear model to compute an overall QC metrics, called `rho`. 
 ```{r, fig.width=11, fig.height=3}
 print(x)
 ```
 
-### Plotting results of the analysis
+A summary table is stored inside the named list `peaks_analysis`.
 
-You can visually summarise the result of the QC analysis, which reports the peaks matched to data, the karyotype size
-(re-normalized for the karyotypes used) and the overall score.   
+### Plotting results 
 
-```{r, fig.width=3.5, fig.height=3.5}
-plot_qc(x)
-```
-
-For every karyotype that you have tested, a plot is available for its peak detection's analysis, which shows the 
-estimated KDE and the matched peaks. This plot is assembled as a `ggpubr` figure with all the `ggplot` outputs; notice
-that the fits for the karyotypes that have not been used, but that were passed through parameter `karyotypes of function
-`analyze_peaks`, are just gray panels.
+For every karyotype, a plot with the estimated KDE and the matched peaks is available (assembled `ggpubr` figure with); gray panels represent karyotypes that have not been used.
 
 ```{r, fig.width=11, fig.height=3}
 plot_peaks_analysis(x)
@@ -97,20 +73,24 @@ Individual karyotypes plots are available inside the named lists `peaks_analysis
 karyotype.
 
 ```{r, fig.width=3, fig.height=3}
-# Diploid segments
-x$peaks_analysis$plots$`1:1`
-
 # Tetraploid segments
 x$peaks_analysis$plots$`2:2`
 ```
 
-You can integrate plots from QC analysis with data; in this case we combine them with segments.
+You can integrate plots from QC analysis with data.
 ```{r, fig.width=11, fig.height=7}
 cowplot::plot_grid(
   plot_peaks_analysis(x),
-  plot_segments(x) + ylim(-1, 6),
+  plot_segments(x),
   rel_heights = c(.8, 1),
   nrow = 2
 )
+```
+
+You can visually summarise the result of the QC analysis, which reports the peaks matched to data, the karyotype size
+(re-normalized for the karyotypes used) and the overall score.   
+
+```{r, fig.width=5, fig.height=4}
+plot_qc(x)
 ```
 

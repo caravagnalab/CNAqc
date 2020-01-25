@@ -25,7 +25,7 @@
   also be used to suggest adjustemnts of the current purity estimates to increase the quality of CNA calls.
   Routines to determine Cancer Cell Franctions for each mutation are available as well. CNAqc is part of the
   evoverse, a package that gathers multiple R packages to implement Cancer Evolution analyses.">
-<meta property="og:image" content="/logo.png">
+<meta property="og:image" content="caravagn.github.io/revolver/logo.png">
 <meta name="twitter:card" content="summary">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -71,6 +71,9 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
+      <a href="articles/Introduction.html">Introduction</a>
+    </li>
+    <li>
       <a href="articles/ccf_computation.html">Computation of Cancer Cell Fractions</a>
     </li>
     <li>
@@ -110,20 +113,9 @@
 </h1></div>
 <!-- badges: start -->
 
-<p><code>CNAqc</code> is a package to process and assess the quality of absoluteCopy Number Alteration (CNA) calls, in light of somatic mutation data and purity estimates.</p>
-<p>The package provides statistical methods to:</p>
-<ul>
-<li><p>quantify the concordance between mutation and CNA calls;</p></li>
-<li><p>determine estimates of mutations’ Cancer Cell Franctions (CCFs).</p></li>
-</ul>
-<p>Most algorithms in <code>CNAqc</code> match the allelic imbalance of CNA segments with the allelic frequencies of somatic mutations, in order to determine a number of quantitative metrics. These metrics. can be used to measure the quality of the current purity estimate, or to determine determine CCF values.</p>
+<p><code>CNAqc</code> is a package that contains different methods to inspect the quality, visualise and process absolute Copy Number Alteration (CNA) calls.</p>
+<p>Methods are available to integrate somatic mutation data of the same tumour sample, with copy number segments, tumour purity and ploidy. The package provides also methods to estimate Cancer Cell Franctions (CCFs) normalizing tumour mutation data for copy number states and tumour purity. The package contains also statistical tests to determine if the data presents patterns of overfragmentation, either in individual chromosome arms or at the whole-genome level.</p>
 <p><code>CNAqc</code> is part of the <code>evoverse</code> set of <a href="https://caravagn.github.io/evoverse">R packages</a> to implement Cancer Evolution analyses.</p>
-<div id="statistical-models" class="section level4">
-<h4 class="hasAnchor">
-<a href="#statistical-models" class="anchor"></a>Statistical models</h4>
-<p><code>CNAqc</code> implements a karyotype-weighted linear score that exploits the distance computed between a peak in the data (empirical), and its theoretical expectation. This score is determined by standard CNA computations accouting for normal plodiy, tumour purity and ploidy. The peaks are determined uwing kernel density methods and peak-detection heuristics.</p>
-<p>To determine CCF, <code>CNAqc</code> uses an entropy-based heuristic for the estimation of the number of copies of each mutation (mutation multiplicity). Then, <code>CNAqc</code> uses standard equations to estimate CCFs normalizing the allelic frequency for tumour purity, segment ploidy and mutation multiplicity.</p>
-</div>
 <div id="help-and-support" class="section level4">
 <h4 class="hasAnchor">
 <a href="#help-and-support" class="anchor"></a>Help and support</h4>
@@ -169,7 +161,8 @@
 <div class="developers">
 <h2>Developers</h2>
 <ul class="list-unstyled">
-<li>Giulio Caravagna <br><small class="roles"> Author, maintainer </small>  </li>
+<li>
+<a href="https://sites.google.com/site/giuliocaravagna/">Giulio Caravagna</a> <br><small class="roles"> Author, maintainer </small>  </li>
 </ul>
 </div>
 
@@ -186,7 +179,7 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Giulio Caravagna.</p>
+  <p>Developed by <a href="https://sites.google.com/site/giuliocaravagna/">Giulio Caravagna</a>.</p>
 </div>
 
 <div class="pkgdown">

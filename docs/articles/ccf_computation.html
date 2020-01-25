@@ -18,7 +18,7 @@
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><meta property="og:title" content="Computation of Cancer Cell Fractions">
 <meta property="og:description" content="">
-<meta property="og:image" content="/logo.png">
+<meta property="og:image" content="caravagn.github.io/revolver/logo.png">
 <meta name="twitter:card" content="summary">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -64,6 +64,9 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
+      <a href="../articles/Introduction.html">Introduction</a>
+    </li>
+    <li>
       <a href="../articles/ccf_computation.html">Computation of Cancer Cell Fractions</a>
     </li>
     <li>
@@ -108,13 +111,8 @@
 
     
     
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co"># To render in colour this vignette</span></a>
-<a class="sourceLine" id="cb1-2" data-line-number="2">old.hooks &lt;-<span class="st"> </span>fansi<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/fansi/man/set_knit_hooks.html">set_knit_hooks</a></span>(knitr<span class="op">::</span>knit_hooks)</a></code></pre></div>
-<style type="text/css" scoped>
-PRE.fansi SPAN {padding-top: .25em; padding-bottom: .25em};
-</style>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(CNAqc)</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="co">#&gt; [32m✓[39m Loading [32m[32mCNAqc[32m[39m, [3m[3m'Copy Number Alteration quality check'[3m[23m. Support : [3m[34m[3m[34m&lt;https://caravagn.github.io/CNAqc/&gt;[34m[3m[39m[23m</span></a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(CNAqc)</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="co">#&gt; ✓ Loading CNAqc, 'Copy Number Alteration quality check'. Support : &lt;https://caravagn.github.io/CNAqc/&gt;</span></a></code></pre></div>
 <p><code>CNAqc</code> provides a function to compute mutation’s Cancer Cell Fractions (CCFs): <code>compute_CCF</code>. We suggest to use these to compare CCF estimates obtained with other tools.</p>
 <p>The process of computing CCF values requires the computation of the <em>“mutation multiplicity”</em>, namely the number of copies of a mutation in a certain copy number segment. This is generally a difficult task which requires to account for tumour purity, copy number segments and tumour purity. Errors in this task propagate errors in CCF estimates, which in turn propagate in downstream analyses.</p>
 <p>For this reason, <code>CNAqc</code>:</p>
@@ -126,12 +124,7 @@ PRE.fansi SPAN {padding-top: .25em; padding-bottom: .25em};
 <div id="mutation-multiplicity" class="section level3">
 <h3 class="hasAnchor">
 <a href="#mutation-multiplicity" class="anchor"></a>Mutation multiplicity</h3>
-<p><strong>Expected VAF.</strong> Given the mutations that are mapped to a certain karyotype (e.g., <code>2:1</code>), the expected Variant Allele Frequency (VAF) for mutations in <span class="math inline">\(m\)</span> copies, with tumour purity <span class="math inline">\(\pi\)</span> and segment ploidy <span class="math inline">\(p\)</span> (number of copies of the minor and major allele) are given by <span class="math display">\[
-v = \dfrac{m \pi}{
-2 (1 - \pi) + \pi p 
-} \, .
-\]</span> This formula is also used to determine the expected peaks in the peak-detection algorithm used to QC copy number calls in <code>CNAqc</code> (see the vignette <em>“QC analysis via peaks detection”</em>).</p>
-<p>In this task we determine the value of <span class="math inline">\(m\)</span> from the observed <span class="math inline">\(v\)</span>, the karyotype and tumour purity.</p>
+<p>We know the <a href="https://caravagn.github.io/CNAqc/articles/CNAqc.html">relation between VAF, mutation multiplicity and tumour purity</a>. In this task we determine the value of <span class="math inline">\(m\)</span> from the observed <span class="math inline">\(v\)</span>, the karyotype and tumour purity.</p>
 <p><strong>2-class mixture.</strong> <code>CNAqc</code> uses a statistical model with two Binomial distributions for the mutations happening before, and after aneuploudy. The density of these Binomial distributions are:</p>
 <ul>
 <li>peaked at <span class="math inline">\(v_1\)</span> for <span class="math inline">\(m = 1\)</span> (after aneuploidy) and <span class="math inline">\(v_2\)</span> for <span class="math inline">\(m = 2\)</span> (before aneuploidy).</li>
@@ -178,85 +171,62 @@ H(x) = - p_x \log(p_x)
 </ul>
 <p>When <code>CNAqc</code> computes this heuristic it returns a plot of the entropy and marks the ranges <span class="math inline">\([n\hat{w}_1, n\hat{w}_2]\)</span> determined by the quantile <span class="math inline">\(\hat{q}\)</span>. The user can then check if the quantile selected is too stringent or loose, and adjust the input parmeter accordingly.</p>
 </div>
-<div id="cancer-cell-fractions-computation" class="section level3">
-<h3 class="hasAnchor">
-<a href="#cancer-cell-fractions-computation" class="anchor"></a>Cancer Cell Fractions computation</h3>
-<p>CCF values, are computed as</p>
-<p><span class="math display">\[
-\text{CCF} = 
-\dfrac{
-v[
-(C - 2)\pi + 2
-]
-}
-{
-m \pi
-}
-\]</span> where <span class="math inline">\(C\)</span> is total segment ploidy (e.g., 3 for a <code>2:1</code> state).</p>
-</div>
 <div id="example-computation" class="section level3">
 <h3 class="hasAnchor">
 <a href="#example-computation" class="anchor"></a>Example computation</h3>
-<p>We work with the same object shown in <code>CNAqc</code>’s Introductory Vignette.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="co"># Dataset available with the package -- see Getting Started.</span></a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(x)</a>
-<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co">#&gt; ── [43m[30m[ CNAqc ] [39m[49m n = 13141 mutations in [32m[32m267[32m[39m segments (267 clonal + 0 subclonal) ───────────────────────────────────────────</span></a>
-<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">#&gt; [36mℹ[39m Purity: 89% ~ Ploidy: 4.</span></a>
-<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co">#&gt; [36mℹ[39m Mutation mapping (head): 7478 (2:2); 1893 (4:2); 1625 (3:2); 1563 (2:1); 312 (3:0); 81 (2:0)</span></a></code></pre></div>
+<p>We work with the <a href="https://caravagn.github.io/CNAqc/articles/Introduction.html">template dataset</a>.</p>
 <p>We run function <code>compute_CCF</code> to obtain the full analysis of CCF values, first with the default parameters and focusing only one karyotype <code>2:1</code>.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">x =<span class="st"> </span><span class="kw"><a href="../reference/compute_CCF.html">compute_CCF</a></span>(x, <span class="dt">karyotypes =</span> <span class="st">"2:1"</span>)</a></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; 
-#&gt; <span style="color: #00BBBB;">=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-</span><span>
-#&gt; </span><span style="color: #00BBBB;"> Computing mutation multiplicity with entropy H(x)</span><span>
-#&gt; </span><span style="color: #00BBBB;">=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-</span><span>
-#&gt; </span><span style="color: #000000;background-color: #BBBB00;">Binomial peaks</span><span>  </span><span style="color: #000000;background-color: #BBBB00;">
-#&gt; </span><span style="color: #555555;"># A tibble: 2 x 4</span><span>
-#&gt;   mutation_multiplicity karyotype  peak label     
-#&gt;                   </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>     </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>     
-#&gt; </span><span style="color: #555555;">1</span><span>                     1 2:1       0.308 One copy  
-#&gt; </span><span style="color: #555555;">2</span><span>                     2 2:1       0.616 Two copies
-#&gt; </span><span style="color: #000000;background-color: #BBBB00;">H(x) quantile</span><span> 0.9 </span><span style="color: #000000;background-color: #BBBB00;">
-#&gt;  Median depth</span><span> 111 </span><span style="color: #000000;background-color: #BBBB00;">
-#&gt; Mixing proportions ([1, 99] quantiles): </span><span> 0.554109589041096 0.445890410958904 </span><span style="color: #000000;background-color: #BBBB00;">
-#&gt; H(x)-derived cutoffs</span><span> 0.441441441441441 0.468468468468468 </span><span style="color: #000000;background-color: #BBBB00;">
-#&gt; </span><span>
-#&gt; </span><span style="color: #00BBBB;">=-=-=-=-=-=-=-=-=-=-=-=-=-</span><span>
-#&gt; </span><span style="color: #00BBBB;"> Summary CCF assignments</span><span>
-#&gt; </span><span style="color: #00BBBB;">=-=-=-=-=-=-=-=-=-=-=-=-=-</span><span>
-#&gt; </span><span style="color: #555555;"># A tibble: 3 x 3</span><span>
-#&gt;   karyotype mutation_multiplicity assignments
-#&gt;   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>                     </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>       </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>
-#&gt; </span><span style="color: #555555;">1</span><span> 2:1                           1         886
-#&gt; </span><span style="color: #555555;">2</span><span> 2:1                           2         675
-#&gt; </span><span style="color: #555555;">3</span><span> 2:1                          </span><span style="color: #BB0000;">NA</span><span>           2
-#&gt; Note: NA ~ mutations not confidently assignable at q = 0.9
-</span></code></pre>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"></a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co"># Print new object, it informs us of the available computation</span></a>
-<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(x)</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">x =<span class="st"> </span><span class="kw"><a href="../reference/compute_CCF.html">compute_CCF</a></span>(x, <span class="dt">karyotypes =</span> <span class="st">"2:1"</span>)</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="co">#&gt; =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-</span></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co">#&gt;  Computing mutation multiplicity with entropy H(x)</span></a>
+<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="co">#&gt; =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-</span></a>
+<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="co">#&gt; Binomial peaks  </span></a>
+<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="co">#&gt; # A tibble: 2 x 4</span></a>
+<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="co">#&gt;   mutation_multiplicity karyotype  peak label     </span></a>
+<a class="sourceLine" id="cb2-9" data-line-number="9"><span class="co">#&gt;                   &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt; &lt;chr&gt;     </span></a>
+<a class="sourceLine" id="cb2-10" data-line-number="10"><span class="co">#&gt; 1                     1 2:1       0.308 One copy  </span></a>
+<a class="sourceLine" id="cb2-11" data-line-number="11"><span class="co">#&gt; 2                     2 2:1       0.616 Two copies</span></a>
+<a class="sourceLine" id="cb2-12" data-line-number="12"><span class="co">#&gt; H(x) quantile 0.9 </span></a>
+<a class="sourceLine" id="cb2-13" data-line-number="13"><span class="co">#&gt;  Median depth 111 </span></a>
+<a class="sourceLine" id="cb2-14" data-line-number="14"><span class="co">#&gt; Mixing proportions ([1, 99] quantiles):  0.554109589041096 0.445890410958904 </span></a>
+<a class="sourceLine" id="cb2-15" data-line-number="15"><span class="co">#&gt; H(x)-derived cutoffs 0.441441441441441 0.468468468468468 </span></a>
+<a class="sourceLine" id="cb2-16" data-line-number="16"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb2-17" data-line-number="17"><span class="co">#&gt; =-=-=-=-=-=-=-=-=-=-=-=-=-</span></a>
+<a class="sourceLine" id="cb2-18" data-line-number="18"><span class="co">#&gt;  Summary CCF assignments</span></a>
+<a class="sourceLine" id="cb2-19" data-line-number="19"><span class="co">#&gt; =-=-=-=-=-=-=-=-=-=-=-=-=-</span></a>
+<a class="sourceLine" id="cb2-20" data-line-number="20"><span class="co">#&gt; # A tibble: 3 x 3</span></a>
+<a class="sourceLine" id="cb2-21" data-line-number="21"><span class="co">#&gt;   karyotype mutation_multiplicity assignments</span></a>
+<a class="sourceLine" id="cb2-22" data-line-number="22"><span class="co">#&gt;   &lt;chr&gt;                     &lt;dbl&gt;       &lt;int&gt;</span></a>
+<a class="sourceLine" id="cb2-23" data-line-number="23"><span class="co">#&gt; 1 2:1                           1         886</span></a>
+<a class="sourceLine" id="cb2-24" data-line-number="24"><span class="co">#&gt; 2 2:1                           2         675</span></a>
+<a class="sourceLine" id="cb2-25" data-line-number="25"><span class="co">#&gt; 3 2:1                          NA           2</span></a>
+<a class="sourceLine" id="cb2-26" data-line-number="26"><span class="co">#&gt; Note: NA ~ mutations not confidently assignable at q = 0.9</span></a>
+<a class="sourceLine" id="cb2-27" data-line-number="27"></a>
+<a class="sourceLine" id="cb2-28" data-line-number="28"><span class="co"># Print new object, it informs us of the available computation</span></a>
+<a class="sourceLine" id="cb2-29" data-line-number="29"><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(x)</a></code></pre></div>
 <p>We can visually inspect the CCF estimates for the computed karyotypes. We can do that accessing the field <code>x$CCF_estimates</code> which contains the data and a plot reporting the result of the analysis, or using the getter functions <code>CCF</code> and <code>plot_CCF</code>.</p>
 <p>The tibble of the data reports the computed values in column <code>"CCF"</code>, and in column <code>"mutation multiplicity"</code>.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="co"># Tibble</span></a>
-<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="kw"><a href="../reference/CCF.html">CCF</a></span>(x) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(VAF, mutation_multiplicity, CCF)</a></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #555555;"># A tibble: 1,563 x 3</span><span>
-#&gt;       VAF mutation_multiplicity    CCF
-#&gt;     </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>                 </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>  </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>
-#&gt; </span><span style="color: #555555;"> 1</span><span> 0.558                      2  0.905
-#&gt; </span><span style="color: #555555;"> 2</span><span> 0.467                     </span><span style="color: #BB0000;">NA</span><span> </span><span style="color: #BB0000;">NA</span><span>    
-#&gt; </span><span style="color: #555555;"> 3</span><span> 0.613                      2  0.995
-#&gt; </span><span style="color: #555555;"> 4</span><span> 0.529                      2  0.859
-#&gt; </span><span style="color: #555555;"> 5</span><span> 0.556                      2  0.902
-#&gt; </span><span style="color: #555555;"> 6</span><span> 0.336                      1  1.09 
-#&gt; </span><span style="color: #555555;"> 7</span><span> 0.532                      2  0.864
-#&gt; </span><span style="color: #555555;"> 8</span><span> 0.261                      1  0.848
-#&gt; </span><span style="color: #555555;"> 9</span><span> 0.567                      2  0.920
-#&gt; </span><span style="color: #555555;">10</span><span> 0.079</span><span style="text-decoration: underline;">4</span><span>                     1  0.258
-#&gt; </span><span style="color: #555555;"># … with 1,553 more rows</span><span>
-</span></code></pre>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="co"># Tibble</span></a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="kw"><a href="../reference/CCF.html">CCF</a></span>(x) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(VAF, mutation_multiplicity, CCF)</a>
+<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co">#&gt; # A tibble: 1,563 x 3</span></a>
+<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">#&gt;       VAF mutation_multiplicity    CCF</span></a>
+<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co">#&gt;     &lt;dbl&gt;                 &lt;dbl&gt;  &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="co">#&gt;  1 0.558                      2  0.905</span></a>
+<a class="sourceLine" id="cb3-7" data-line-number="7"><span class="co">#&gt;  2 0.467                     NA NA    </span></a>
+<a class="sourceLine" id="cb3-8" data-line-number="8"><span class="co">#&gt;  3 0.613                      2  0.995</span></a>
+<a class="sourceLine" id="cb3-9" data-line-number="9"><span class="co">#&gt;  4 0.529                      2  0.859</span></a>
+<a class="sourceLine" id="cb3-10" data-line-number="10"><span class="co">#&gt;  5 0.556                      2  0.902</span></a>
+<a class="sourceLine" id="cb3-11" data-line-number="11"><span class="co">#&gt;  6 0.336                      1  1.09 </span></a>
+<a class="sourceLine" id="cb3-12" data-line-number="12"><span class="co">#&gt;  7 0.532                      2  0.864</span></a>
+<a class="sourceLine" id="cb3-13" data-line-number="13"><span class="co">#&gt;  8 0.261                      1  0.848</span></a>
+<a class="sourceLine" id="cb3-14" data-line-number="14"><span class="co">#&gt;  9 0.567                      2  0.920</span></a>
+<a class="sourceLine" id="cb3-15" data-line-number="15"><span class="co">#&gt; 10 0.0794                     1  0.258</span></a>
+<a class="sourceLine" id="cb3-16" data-line-number="16"><span class="co">#&gt; # … with 1,553 more rows</span></a></code></pre></div>
 <p>The plot is a <code>ggpubr</code>-assembled figure, which in this case contains only the estimates for one karyotype.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="co"># Tibble</span></a>
-<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="kw"><a href="../reference/plot_CCF.html">plot_CCF</a></span>(x)</a></code></pre></div>
-<p><img src="ccf_computation_files/figure-html/unnamed-chunk-7-1.png" width="1056"></p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="co"># Tibble</span></a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="kw"><a href="../reference/plot_CCF.html">plot_CCF</a></span>(x)</a></code></pre></div>
+<p><img src="ccf_computation_files/figure-html/unnamed-chunk-5-1.png" width="1056"></p>
 <p>The plot shows all the quantities described above; from left to right the plot shows</p>
 <ul>
 <li>the CCF histogram, coloured by mutation multiplicity;</li>
@@ -267,77 +237,76 @@ m \pi
 </ul>
 <p>In this case we see for instance that <span class="math inline">\(\hat{q} = 0.9\)</span> (default value) is a little bit off the required value, because the determined range <span class="math inline">\(I\)</span> is not fully including the peak in the entropy values. However, we see that beacuse the data quality is high the two Binomial distributions are well separated. Therefore even with this parameter value we still obtain perfectly reasonable mutation multiplicities and CCF estimates.</p>
 <p>We inspect also the remaining karyotypes, and find a similar satisfactory result.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="co"># Analyze all of them now</span></a>
-<a class="sourceLine" id="cb8-2" data-line-number="2">x =<span class="st"> </span><span class="kw"><a href="../reference/compute_CCF.html">compute_CCF</a></span>(x)</a></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; 
-#&gt; <span style="color: #00BBBB;">=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-</span><span>
-#&gt; </span><span style="color: #00BBBB;"> Computing mutation multiplicity with entropy H(x)</span><span>
-#&gt; </span><span style="color: #00BBBB;">=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-</span><span>
-#&gt; </span><span style="color: #000000;background-color: #BBBB00;">Binomial peaks</span><span>  </span><span style="color: #000000;background-color: #BBBB00;">
-#&gt; </span><span style="color: #555555;"># A tibble: 2 x 4</span><span>
-#&gt;   mutation_multiplicity karyotype  peak label     
-#&gt;                   </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>     </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>     
-#&gt; </span><span style="color: #555555;">1</span><span>                     1 2:1       0.308 One copy  
-#&gt; </span><span style="color: #555555;">2</span><span>                     2 2:1       0.616 Two copies
-#&gt; </span><span style="color: #000000;background-color: #BBBB00;">H(x) quantile</span><span> 0.9 </span><span style="color: #000000;background-color: #BBBB00;">
-#&gt;  Median depth</span><span> 111 </span><span style="color: #000000;background-color: #BBBB00;">
-#&gt; Mixing proportions ([1, 99] quantiles): </span><span> 0.554109589041096 0.445890410958904 </span><span style="color: #000000;background-color: #BBBB00;">
-#&gt; H(x)-derived cutoffs</span><span> 0.441441441441441 0.468468468468468 </span><span style="color: #000000;background-color: #BBBB00;">
-#&gt; </span><span>
-#&gt; </span><span style="color: #00BBBB;">=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-</span><span>
-#&gt; </span><span style="color: #00BBBB;"> Computing mutation multiplicity with entropy H(x)</span><span>
-#&gt; </span><span style="color: #00BBBB;">=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-</span><span>
-#&gt; </span><span style="color: #000000;background-color: #BBBB00;">Binomial peaks</span><span>  </span><span style="color: #000000;background-color: #BBBB00;">
-#&gt; </span><span style="color: #555555;"># A tibble: 2 x 4</span><span>
-#&gt;   mutation_multiplicity karyotype  peak label     
-#&gt;                   </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>     </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>     
-#&gt; </span><span style="color: #555555;">1</span><span>                     1 2:0       0.445 One copy  
-#&gt; </span><span style="color: #555555;">2</span><span>                     2 2:0       0.89  Two copies
-#&gt; </span><span style="color: #000000;background-color: #BBBB00;">H(x) quantile</span><span> 0.9 </span><span style="color: #000000;background-color: #BBBB00;">
-#&gt;  Median depth</span><span> 76 </span><span style="color: #000000;background-color: #BBBB00;">
-#&gt; Mixing proportions ([1, 99] quantiles): </span><span> 0.0933333333333333 0.906666666666667 </span><span style="color: #000000;background-color: #BBBB00;">
-#&gt; H(x)-derived cutoffs</span><span> 0.657894736842105 0.710526315789474 </span><span style="color: #000000;background-color: #BBBB00;">
-#&gt; </span><span>
-#&gt; </span><span style="color: #00BBBB;">=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-</span><span>
-#&gt; </span><span style="color: #00BBBB;"> Computing mutation multiplicity with entropy H(x)</span><span>
-#&gt; </span><span style="color: #00BBBB;">=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-</span><span>
-#&gt; </span><span style="color: #000000;background-color: #BBBB00;">Binomial peaks</span><span>  </span><span style="color: #000000;background-color: #BBBB00;">
-#&gt; </span><span style="color: #555555;"># A tibble: 2 x 4</span><span>
-#&gt;   mutation_multiplicity karyotype  peak label     
-#&gt;                   </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>     </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span> </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>     
-#&gt; </span><span style="color: #555555;">1</span><span>                     1 2:2       0.235 One copy  
-#&gt; </span><span style="color: #555555;">2</span><span>                     2 2:2       0.471 Two copies
-#&gt; </span><span style="color: #000000;background-color: #BBBB00;">H(x) quantile</span><span> 0.9 </span><span style="color: #000000;background-color: #BBBB00;">
-#&gt;  Median depth</span><span> 141 </span><span style="color: #000000;background-color: #BBBB00;">
-#&gt; Mixing proportions ([1, 99] quantiles): </span><span> 0.0946892325649256 0.905310767435074 </span><span style="color: #000000;background-color: #BBBB00;">
-#&gt; H(x)-derived cutoffs</span><span> 0.319148936170213 0.347517730496454 </span><span style="color: #000000;background-color: #BBBB00;">
-#&gt; </span><span>
-#&gt; </span><span style="color: #00BBBB;">=-=-=-=-=-=-=-=-=-=-=-=-=-</span><span>
-#&gt; </span><span style="color: #00BBBB;"> Summary CCF assignments</span><span>
-#&gt; </span><span style="color: #00BBBB;">=-=-=-=-=-=-=-=-=-=-=-=-=-</span><span>
-#&gt; </span><span style="color: #555555;"># A tibble: 8 x 3</span><span>
-#&gt;   karyotype mutation_multiplicity assignments
-#&gt;   </span><span style="color: #555555;font-style: italic;">&lt;chr&gt;</span><span>                     </span><span style="color: #555555;font-style: italic;">&lt;dbl&gt;</span><span>       </span><span style="color: #555555;font-style: italic;">&lt;int&gt;</span><span>
-#&gt; </span><span style="color: #555555;">1</span><span> 2:0                           1           9
-#&gt; </span><span style="color: #555555;">2</span><span> 2:0                           2          72
-#&gt; </span><span style="color: #555555;">3</span><span> 2:1                           1         886
-#&gt; </span><span style="color: #555555;">4</span><span> 2:1                           2         675
-#&gt; </span><span style="color: #555555;">5</span><span> 2:1                          </span><span style="color: #BB0000;">NA</span><span>           2
-#&gt; </span><span style="color: #555555;">6</span><span> 2:2                           1        </span><span style="text-decoration: underline;">1</span><span>013
-#&gt; </span><span style="color: #555555;">7</span><span> 2:2                           2        </span><span style="text-decoration: underline;">6</span><span>427
-#&gt; </span><span style="color: #555555;">8</span><span> 2:2                          </span><span style="color: #BB0000;">NA</span><span>          38
-#&gt; Note: NA ~ mutations not confidently assignable at q = 0.9
-</span></code></pre>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="../reference/plot_CCF.html">plot_CCF</a></span>(x)</a></code></pre></div>
-<p><img src="ccf_computation_files/figure-html/unnamed-chunk-8-1.png" width="1056"></p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="co"># Analyze all of them now</span></a>
+<a class="sourceLine" id="cb5-2" data-line-number="2">x =<span class="st"> </span><span class="kw"><a href="../reference/compute_CCF.html">compute_CCF</a></span>(x)</a>
+<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co">#&gt; =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-</span></a>
+<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="co">#&gt;  Computing mutation multiplicity with entropy H(x)</span></a>
+<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="co">#&gt; =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-</span></a>
+<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="co">#&gt; Binomial peaks  </span></a>
+<a class="sourceLine" id="cb5-8" data-line-number="8"><span class="co">#&gt; # A tibble: 2 x 4</span></a>
+<a class="sourceLine" id="cb5-9" data-line-number="9"><span class="co">#&gt;   mutation_multiplicity karyotype  peak label     </span></a>
+<a class="sourceLine" id="cb5-10" data-line-number="10"><span class="co">#&gt;                   &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt; &lt;chr&gt;     </span></a>
+<a class="sourceLine" id="cb5-11" data-line-number="11"><span class="co">#&gt; 1                     1 2:1       0.308 One copy  </span></a>
+<a class="sourceLine" id="cb5-12" data-line-number="12"><span class="co">#&gt; 2                     2 2:1       0.616 Two copies</span></a>
+<a class="sourceLine" id="cb5-13" data-line-number="13"><span class="co">#&gt; H(x) quantile 0.9 </span></a>
+<a class="sourceLine" id="cb5-14" data-line-number="14"><span class="co">#&gt;  Median depth 111 </span></a>
+<a class="sourceLine" id="cb5-15" data-line-number="15"><span class="co">#&gt; Mixing proportions ([1, 99] quantiles):  0.554109589041096 0.445890410958904 </span></a>
+<a class="sourceLine" id="cb5-16" data-line-number="16"><span class="co">#&gt; H(x)-derived cutoffs 0.441441441441441 0.468468468468468 </span></a>
+<a class="sourceLine" id="cb5-17" data-line-number="17"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb5-18" data-line-number="18"><span class="co">#&gt; =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-</span></a>
+<a class="sourceLine" id="cb5-19" data-line-number="19"><span class="co">#&gt;  Computing mutation multiplicity with entropy H(x)</span></a>
+<a class="sourceLine" id="cb5-20" data-line-number="20"><span class="co">#&gt; =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-</span></a>
+<a class="sourceLine" id="cb5-21" data-line-number="21"><span class="co">#&gt; Binomial peaks  </span></a>
+<a class="sourceLine" id="cb5-22" data-line-number="22"><span class="co">#&gt; # A tibble: 2 x 4</span></a>
+<a class="sourceLine" id="cb5-23" data-line-number="23"><span class="co">#&gt;   mutation_multiplicity karyotype  peak label     </span></a>
+<a class="sourceLine" id="cb5-24" data-line-number="24"><span class="co">#&gt;                   &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt; &lt;chr&gt;     </span></a>
+<a class="sourceLine" id="cb5-25" data-line-number="25"><span class="co">#&gt; 1                     1 2:0       0.445 One copy  </span></a>
+<a class="sourceLine" id="cb5-26" data-line-number="26"><span class="co">#&gt; 2                     2 2:0       0.89  Two copies</span></a>
+<a class="sourceLine" id="cb5-27" data-line-number="27"><span class="co">#&gt; H(x) quantile 0.9 </span></a>
+<a class="sourceLine" id="cb5-28" data-line-number="28"><span class="co">#&gt;  Median depth 76 </span></a>
+<a class="sourceLine" id="cb5-29" data-line-number="29"><span class="co">#&gt; Mixing proportions ([1, 99] quantiles):  0.0933333333333333 0.906666666666667 </span></a>
+<a class="sourceLine" id="cb5-30" data-line-number="30"><span class="co">#&gt; H(x)-derived cutoffs 0.657894736842105 0.710526315789474 </span></a>
+<a class="sourceLine" id="cb5-31" data-line-number="31"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb5-32" data-line-number="32"><span class="co">#&gt; =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-</span></a>
+<a class="sourceLine" id="cb5-33" data-line-number="33"><span class="co">#&gt;  Computing mutation multiplicity with entropy H(x)</span></a>
+<a class="sourceLine" id="cb5-34" data-line-number="34"><span class="co">#&gt; =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-</span></a>
+<a class="sourceLine" id="cb5-35" data-line-number="35"><span class="co">#&gt; Binomial peaks  </span></a>
+<a class="sourceLine" id="cb5-36" data-line-number="36"><span class="co">#&gt; # A tibble: 2 x 4</span></a>
+<a class="sourceLine" id="cb5-37" data-line-number="37"><span class="co">#&gt;   mutation_multiplicity karyotype  peak label     </span></a>
+<a class="sourceLine" id="cb5-38" data-line-number="38"><span class="co">#&gt;                   &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt; &lt;chr&gt;     </span></a>
+<a class="sourceLine" id="cb5-39" data-line-number="39"><span class="co">#&gt; 1                     1 2:2       0.235 One copy  </span></a>
+<a class="sourceLine" id="cb5-40" data-line-number="40"><span class="co">#&gt; 2                     2 2:2       0.471 Two copies</span></a>
+<a class="sourceLine" id="cb5-41" data-line-number="41"><span class="co">#&gt; H(x) quantile 0.9 </span></a>
+<a class="sourceLine" id="cb5-42" data-line-number="42"><span class="co">#&gt;  Median depth 141 </span></a>
+<a class="sourceLine" id="cb5-43" data-line-number="43"><span class="co">#&gt; Mixing proportions ([1, 99] quantiles):  0.0946892325649256 0.905310767435074 </span></a>
+<a class="sourceLine" id="cb5-44" data-line-number="44"><span class="co">#&gt; H(x)-derived cutoffs 0.319148936170213 0.347517730496454 </span></a>
+<a class="sourceLine" id="cb5-45" data-line-number="45"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb5-46" data-line-number="46"><span class="co">#&gt; =-=-=-=-=-=-=-=-=-=-=-=-=-</span></a>
+<a class="sourceLine" id="cb5-47" data-line-number="47"><span class="co">#&gt;  Summary CCF assignments</span></a>
+<a class="sourceLine" id="cb5-48" data-line-number="48"><span class="co">#&gt; =-=-=-=-=-=-=-=-=-=-=-=-=-</span></a>
+<a class="sourceLine" id="cb5-49" data-line-number="49"><span class="co">#&gt; # A tibble: 8 x 3</span></a>
+<a class="sourceLine" id="cb5-50" data-line-number="50"><span class="co">#&gt;   karyotype mutation_multiplicity assignments</span></a>
+<a class="sourceLine" id="cb5-51" data-line-number="51"><span class="co">#&gt;   &lt;chr&gt;                     &lt;dbl&gt;       &lt;int&gt;</span></a>
+<a class="sourceLine" id="cb5-52" data-line-number="52"><span class="co">#&gt; 1 2:0                           1           9</span></a>
+<a class="sourceLine" id="cb5-53" data-line-number="53"><span class="co">#&gt; 2 2:0                           2          72</span></a>
+<a class="sourceLine" id="cb5-54" data-line-number="54"><span class="co">#&gt; 3 2:1                           1         886</span></a>
+<a class="sourceLine" id="cb5-55" data-line-number="55"><span class="co">#&gt; 4 2:1                           2         675</span></a>
+<a class="sourceLine" id="cb5-56" data-line-number="56"><span class="co">#&gt; 5 2:1                          NA           2</span></a>
+<a class="sourceLine" id="cb5-57" data-line-number="57"><span class="co">#&gt; 6 2:2                           1        1013</span></a>
+<a class="sourceLine" id="cb5-58" data-line-number="58"><span class="co">#&gt; 7 2:2                           2        6427</span></a>
+<a class="sourceLine" id="cb5-59" data-line-number="59"><span class="co">#&gt; 8 2:2                          NA          38</span></a>
+<a class="sourceLine" id="cb5-60" data-line-number="60"><span class="co">#&gt; Note: NA ~ mutations not confidently assignable at q = 0.9</span></a>
+<a class="sourceLine" id="cb5-61" data-line-number="61"><span class="kw"><a href="../reference/plot_CCF.html">plot_CCF</a></span>(x)</a></code></pre></div>
+<p><img src="ccf_computation_files/figure-html/unnamed-chunk-6-1.png" width="1056"></p>
 <p>Just for example, this is how CCF values would have changed if we had used different value of <span class="math inline">\(\hat{q}\)</span>.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="co"># Bad estimates for q = .5</span></a>
-<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="kw"><a href="../reference/plot_CCF.html">plot_CCF</a></span>(examples_low)</a></code></pre></div>
-<p><img src="ccf_computation_files/figure-html/unnamed-chunk-10-1.png" width="1056"></p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"></a>
-<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="co"># Still good estimates for q = .99</span></a>
-<a class="sourceLine" id="cb11-3" data-line-number="3"><span class="kw"><a href="../reference/plot_CCF.html">plot_CCF</a></span>(examples_high)</a></code></pre></div>
-<p><img src="ccf_computation_files/figure-html/unnamed-chunk-10-2.png" width="1056"></p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="co"># Bad estimates for q = .5</span></a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="kw"><a href="../reference/plot_CCF.html">plot_CCF</a></span>(examples_low)</a></code></pre></div>
+<p><img src="ccf_computation_files/figure-html/unnamed-chunk-8-1.png" width="1056"></p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"></a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="co"># Still good estimates for q = .99</span></a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="kw"><a href="../reference/plot_CCF.html">plot_CCF</a></span>(examples_high)</a></code></pre></div>
+<p><img src="ccf_computation_files/figure-html/unnamed-chunk-8-2.png" width="1056"></p>
 </div>
   </div>
 
@@ -350,7 +319,7 @@ m \pi
 
 
       <footer><div class="copyright">
-  <p>Developed by Giulio Caravagna.</p>
+  <p>Developed by <a href="https://sites.google.com/site/giuliocaravagna/">Giulio Caravagna</a>.</p>
 </div>
 
 <div class="pkgdown">
