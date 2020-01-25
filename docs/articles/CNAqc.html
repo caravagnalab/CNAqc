@@ -67,7 +67,13 @@
       <a href="../articles/ccf_computation.html">Computation of Cancer Cell Fractions</a>
     </li>
     <li>
+      <a href="../articles/fragmentation.html">Genome fragmentation analysis</a>
+    </li>
+    <li>
       <a href="../articles/peaks_detection.html">QC analysis via peaks detection</a>
+    </li>
+    <li>
+      <a href="../articles/smoothing.html">Smoothing copy number segments</a>
     </li>
   </ul>
 </li>
@@ -203,15 +209,10 @@ PRE.fansi SPAN {padding-top: .25em; padding-bottom: .25em};
 #&gt; [36mℹ[39m Input n = 13141 mutations for267 CNA segments (267 clonal, 0 subclonal)
 #&gt; [32m✓[39m Mapped n =12963 mutations to clonal segments (~99% of input)</code></pre>
 <p>The summary of the object is available via the S3 <code>print</code> function, reporting some basic statistics of the data. In particular, this reports the number of mutations per karyotype sorted by size, and annotates by default is any analysis has been computed on these calls (default: no).</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(x)</a></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #000000;background-color: #BBBB00;">      CNAqc </span><span> n = 13141 mutations for 267 CNA segments (267 clonal, 0 subclonal) </span><span style="color: #000000;background-color: #BBBB00;">
-#&gt;      Purity </span><span> 89% cellularity </span><span style="color: #000000;background-color: #BBBB00;">
-#&gt;  Karyotypes </span><span> 7478 (2:2); 1893 (4:2); 1625 (3:2); 1563 (2:1); 312 (3:0); 81 (2:0); 4 (16:2); 2 (25:2); 2 (3:1); 1 (106:1); 1 (26:2); 1 (99:1) 
-#&gt;  </span><span style="color: #000000;background-color: #BBBB00;">
-#&gt;    Peaks QC </span><span> </span><span style="color: #BB0000;">FALSE</span><span> </span><span style="color: #000000;background-color: #BBBB00;">
-#&gt;         CCF </span><span> </span><span style="color: #BB0000;">FALSE</span><span> </span><span style="color: #000000;background-color: #BBBB00;">
-#&gt; </span><span>
-</span></code></pre>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(x)</a>
+<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="co">#&gt; ── [43m[30m[ CNAqc ] [39m[49m n = 13141 mutations in [32m[32m267[32m[39m segments (267 clonal + 0 subclonal) ───────────────────────────────────────────</span></a>
+<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="co">#&gt; [36mℹ[39m Purity: 89% ~ Ploidy: 4.</span></a>
+<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="co">#&gt; [36mℹ[39m Mutation mapping (head): 7478 (2:2); 1893 (4:2); 1625 (3:2); 1563 (2:1); 312 (3:0); 81 (2:0)</span></a></code></pre></div>
 </div>
 <div id="plotting-segments-genome-wide-mutations-and-cna-calls" class="section level3">
 <h3 class="hasAnchor">
@@ -236,24 +237,37 @@ PRE.fansi SPAN {padding-top: .25em; padding-bottom: .25em};
 </span></code></pre>
 <p>Segments can be visualized via function <code>plot_segments</code>. By default, this function plots all the genome, annotating in the figure caption some summmary statistics about the data, and plots the major and minor alleles for each segment.</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="co"># Default plot</span></a>
-<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="kw"><a href="../reference/plot_segments.html">plot_segments</a></span>(x)</a></code></pre></div>
+<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="kw"><a href="../reference/plot_segments.html">plot_segments</a></span>(x)</a>
+<a class="sourceLine" id="cb11-3" data-line-number="3"><span class="co">#&gt; Warning in plot_segments(x): Segments with CN above 8 will not be plot; this is</span></a>
+<a class="sourceLine" id="cb11-4" data-line-number="4"><span class="co">#&gt; annotated in the figure.</span></a>
+<a class="sourceLine" id="cb11-5" data-line-number="5"><span class="co">#&gt; Warning: Removed 10 rows containing missing values (geom_segment).</span></a></code></pre></div>
 <p><img src="CNAqc_files/figure-html/unnamed-chunk-10-1.png" width="912"></p>
 <p>This function, as most of the package plotting functions, returns a <code>ggplot</code> object, which makes it very easy to perform further manipulations.</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="co"># Reduce y-axis</span></a>
 <a class="sourceLine" id="cb12-2" data-line-number="2"><span class="kw"><a href="../reference/plot_segments.html">plot_segments</a></span>(x) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/graphics/plot.window.html">ylim</a></span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">6</span>)</a>
-<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="co">#&gt; Warning: Removed 10 rows containing missing values (geom_segment).</span></a></code></pre></div>
+<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="co">#&gt; Warning in plot_segments(x): Segments with CN above 8 will not be plot; this is</span></a>
+<a class="sourceLine" id="cb12-4" data-line-number="4"><span class="co">#&gt; annotated in the figure.</span></a>
+<a class="sourceLine" id="cb12-5" data-line-number="5"><span class="co">#&gt; Scale for 'y' is already present. Adding another scale for 'y', which will</span></a>
+<a class="sourceLine" id="cb12-6" data-line-number="6"><span class="co">#&gt; replace the existing scale.</span></a>
+<a class="sourceLine" id="cb12-7" data-line-number="7"><span class="co">#&gt; Warning: Removed 10 rows containing missing values (geom_segment).</span></a></code></pre></div>
 <p><img src="CNAqc_files/figure-html/unnamed-chunk-11-1.png" width="912"></p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"></a>
 <a class="sourceLine" id="cb13-2" data-line-number="2"><span class="co"># Reduce x,y-axis</span></a>
 <a class="sourceLine" id="cb13-3" data-line-number="3"><span class="kw"><a href="../reference/plot_segments.html">plot_segments</a></span>(x) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/graphics/plot.window.html">xlim</a></span>(<span class="fl">1e6</span>, <span class="fl">30e6</span>) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/graphics/plot.window.html">ylim</a></span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">6</span>)</a>
-<a class="sourceLine" id="cb13-4" data-line-number="4"><span class="co">#&gt; Scale for 'x' is already present. Adding another scale for 'x', which will</span></a>
-<a class="sourceLine" id="cb13-5" data-line-number="5"><span class="co">#&gt; replace the existing scale.</span></a>
-<a class="sourceLine" id="cb13-6" data-line-number="6"><span class="co">#&gt; Warning: Removed 24 rows containing missing values (geom_rect).</span></a>
-<a class="sourceLine" id="cb13-7" data-line-number="7"><span class="co">#&gt; Warning: Removed 24 rows containing missing values (geom_vline).</span></a>
-<a class="sourceLine" id="cb13-8" data-line-number="8"><span class="co">#&gt; Warning: Removed 24 rows containing missing values (geom_label).</span></a>
-<a class="sourceLine" id="cb13-9" data-line-number="9"><span class="co">#&gt; Warning: Removed 257 rows containing missing values (geom_segment).</span></a>
-<a class="sourceLine" id="cb13-10" data-line-number="10"></a>
-<a class="sourceLine" id="cb13-11" data-line-number="11"><span class="co">#&gt; Warning: Removed 257 rows containing missing values (geom_segment).</span></a></code></pre></div>
+<a class="sourceLine" id="cb13-4" data-line-number="4"><span class="co">#&gt; Warning in plot_segments(x): Segments with CN above 8 will not be plot; this is</span></a>
+<a class="sourceLine" id="cb13-5" data-line-number="5"><span class="co">#&gt; annotated in the figure.</span></a>
+<a class="sourceLine" id="cb13-6" data-line-number="6"><span class="co">#&gt; Scale for 'x' is already present. Adding another scale for 'x', which will</span></a>
+<a class="sourceLine" id="cb13-7" data-line-number="7"><span class="co">#&gt; replace the existing scale.</span></a>
+<a class="sourceLine" id="cb13-8" data-line-number="8"><span class="co">#&gt; Scale for 'y' is already present. Adding another scale for 'y', which will</span></a>
+<a class="sourceLine" id="cb13-9" data-line-number="9"><span class="co">#&gt; replace the existing scale.</span></a>
+<a class="sourceLine" id="cb13-10" data-line-number="10"><span class="co">#&gt; Warning: Removed 24 rows containing missing values (geom_rect).</span></a>
+<a class="sourceLine" id="cb13-11" data-line-number="11"><span class="co">#&gt; Warning: Removed 24 rows containing missing values (geom_vline).</span></a>
+<a class="sourceLine" id="cb13-12" data-line-number="12"><span class="co">#&gt; Warning: Removed 24 rows containing missing values (geom_label).</span></a>
+<a class="sourceLine" id="cb13-13" data-line-number="13"><span class="co">#&gt; Warning: Removed 257 rows containing missing values (geom_segment).</span></a>
+<a class="sourceLine" id="cb13-14" data-line-number="14"></a>
+<a class="sourceLine" id="cb13-15" data-line-number="15"><span class="co">#&gt; Warning: Removed 257 rows containing missing values (geom_segment).</span></a>
+<a class="sourceLine" id="cb13-16" data-line-number="16"><span class="co">#&gt; Warning: Removed 246 rows containing missing values (geom_point).</span></a>
+<a class="sourceLine" id="cb13-17" data-line-number="17"><span class="co">#&gt; Warning: Removed 10 rows containing missing values (geom_point).</span></a></code></pre></div>
 <p><img src="CNAqc_files/figure-html/unnamed-chunk-11-2.png" width="912"></p>
 <p>Genome-wide plots that follow the layout of <code>plot_segments</code> are avaiable to view the number of mutations, their VAF and depth. VAF and depth-plotting functions (scatterplots) can subset the input data to speed up rendering and reduce the size of output files - by default 5000 points are randomly sampled. Counts plot, instead, bin the genome locations by one megabase.</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="co"># All genome, all data - counts of mutations per megabase</span></a>
@@ -290,8 +304,12 @@ PRE.fansi SPAN {padding-top: .25em; padding-bottom: .25em};
 <a class="sourceLine" id="cb17-9" data-line-number="9">  <span class="dt">align =</span> <span class="st">'v'</span>, </a>
 <a class="sourceLine" id="cb17-10" data-line-number="10">  <span class="dt">nrow =</span> <span class="dv">4</span>, </a>
 <a class="sourceLine" id="cb17-11" data-line-number="11">  <span class="dt">rel_heights =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(.<span class="dv">15</span>, <span class="fl">.15</span>, <span class="fl">.15</span>, <span class="fl">.8</span>))</a>
-<a class="sourceLine" id="cb17-12" data-line-number="12"><span class="co">#&gt; Warning: Removed 2 rows containing missing values (geom_bar).</span></a>
-<a class="sourceLine" id="cb17-13" data-line-number="13"><span class="co">#&gt; Warning: Removed 10 rows containing missing values (geom_segment).</span></a></code></pre></div>
+<a class="sourceLine" id="cb17-12" data-line-number="12"><span class="co">#&gt; Warning in plot_segments(x): Segments with CN above 8 will not be plot; this is</span></a>
+<a class="sourceLine" id="cb17-13" data-line-number="13"><span class="co">#&gt; annotated in the figure.</span></a>
+<a class="sourceLine" id="cb17-14" data-line-number="14"><span class="co">#&gt; Scale for 'y' is already present. Adding another scale for 'y', which will</span></a>
+<a class="sourceLine" id="cb17-15" data-line-number="15"><span class="co">#&gt; replace the existing scale.</span></a>
+<a class="sourceLine" id="cb17-16" data-line-number="16"><span class="co">#&gt; Warning: Removed 2 rows containing missing values (geom_bar).</span></a>
+<a class="sourceLine" id="cb17-17" data-line-number="17"><span class="co">#&gt; Warning: Removed 10 rows containing missing values (geom_segment).</span></a></code></pre></div>
 <p><img src="CNAqc_files/figure-html/unnamed-chunk-14-1.png" width="912"></p>
 <p>A summary plot of CNA calls is available via function <code>plot_karyotypes</code>. This function implements two visualizations:</p>
 <ul>

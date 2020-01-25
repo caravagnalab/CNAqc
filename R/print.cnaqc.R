@@ -18,34 +18,47 @@ print.cnaqc = function(x, ...)
 {
   stopifnot(inherits(x, "cnaqc"))
 
-  # pio::pioHdr("[CNAqc - CNA Quality Check]")
+  cli::cli_rule(
+    paste(
+      crayon::bgYellow(crayon::black("[ CNAqc ] ")),
+      'n = {.value {x$n_snvs}} mutations in {.field {x$n_cna}} segments ({.value {x$n_cna_clonal}} clonal + {.value {x$n_cna_sbclonal}} subclonal)'
+    )
+  )
 
-  # Mapping mutations
-  pio::pioStr("      CNAqc ",
-              'n =',
-              x$n_snvs,
-              "mutations for",
-              x$n_cna,
-              paste0("CNA segments (", x$n_cna_clonal, " clonal, ", x$n_cna_sbclonal, " subclonal)"))
+  # cli::cli_alert_info(paste0(" CNA segments: ", x$n_cna_clonal, " clonal, ", x$n_cna_sbclonal, " subclonal."))
+  cli::cli_alert_info(paste0("Purity: ", paste0(x$purity  *100, '% ~ Ploidy: ', x$ploidy, '.')))
 
-  pio::pioStr("\n     Purity ", paste0(x$purity  *100, '% cellularity'))
-  pio::pioStr("\n Karyotypes ", paste0(x$n_karyotype, ' (', names(x$n_karyotype), ')', collapse = '; '), '\n')
+  cli::cli_alert_info(paste0("Mutation mapping (head): ", paste0(head(x$n_karyotype), ' (',
+                                                        names(head(x$n_karyotype)), ')', collapse = '; ')))
 
+  # Available analyses
   with_peaks = all(!is.null(x$peaks_analysis))
+  with_CCF = all(!is.null(x$CCF_estimates))
+  with_smoothing = all(!is.null(x$before_smoothing))
+  with_arm_frag = all(!is.null(x$arm_fragmentation))
+  with_wg_frag = all(!is.null(x$wg_fragmentation))
+
+  if(with_peaks | with_CCF | with_smoothing | with_arm_frag | with_wg_frag) cat('\n')
 
   if(with_peaks)
   {
-    pio::pioStr("\n   Peaks QC ", with_peaks, ' ~ s = ', x$peaks_analysis$score, suffix = '\n')
+    cli::cli_alert_success("QC via peak detection available, score: {.value {x$peaks_analysis$score}}.")
     pio::pioDisp(x$peaks_analysis$matches)
   }
-  else pio::pioStr("\n   Peaks QC ", FALSE, suffix = '\n')
-
-  with_CCF = all(!is.null(x$CCF_estimates))
 
   if(with_CCF)
-  {
-    pio::pioStr("        CCF ", with_CCF, ' ~ ', paste(names(x$CCF_estimates), collapse = ', '), suffix = '\n')
-  }
-  else pio::pioStr("        CCF ", FALSE, suffix = '\n')
+    cli::cli_alert_success("Cancer Cell Fraction (CCF) data available for karyotypes: {.value {names(x$CCF_estimates)}}.")
 
+  if(with_smoothing)
+    cli::cli_alert_success("These segments are smoothed; before smoothing there were {.value {x$before_smoothing$n_cna}} segments.")
+
+  if(with_arm_frag)
+    cli::cli_alert_success("Arm-level fragmentation analysis: {.value {sum(x$arm_fragmentation$table$significant)}} segments overfragmented.")
+
+  if(with_wg_frag)
+    {
+    cond = x$wg_fragmentation$is_overfragmented
+    p = round(x$wg_fragmentation$pvalue, 5)
+    cli::cli_alert_success("Whole-genome fragmentation analysis: p = {.value {p}}: {.value {ifelse(cond, crayon::red('overfragmented'), crayon::green('not overfragmented'))}}.")
+    }
 }

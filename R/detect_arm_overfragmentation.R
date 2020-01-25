@@ -13,7 +13,7 @@
 #' @export
 #'
 #' @examples
-detect_overfragmentation = function(x,
+detect_arm_overfragmentation = function(x,
                                     alpha = 0.01,
                                     genome_percentage_cutoff = .2,
                                     minimum_segments_for_testing = 10)
@@ -50,6 +50,14 @@ detect_overfragmentation = function(x,
   counts$n_long[is.na(counts$n_long)] = 0
   counts$n_short[is.na(counts$n_short)] = 0
 
+  # Jumos
+  counts$jumps = apply(
+    counts,
+    1,
+    function(x) compute_jumps_segments(clonal_cna, x['chr'], x['arm'])
+    )
+
+
   # Test only those entries with at least minimum_segments_for_testing segments
   testable = counts %>%
     mutate(total_segments = n_short + n_long) %>%
@@ -83,7 +91,7 @@ detect_overfragmentation = function(x,
   N_sign = sum(testable$significant)
 
   cli::cli_alert_info(
-    "{.value {N_sign}} significantly overgramented chromosome arms at level {.value {alpha}}."
+    "{.value {N_sign}} significantly overfragmented chromosome arms (alpha level {.value {alpha}})."
   )
 
   x$arm_fragmentation =
@@ -96,4 +104,5 @@ detect_overfragmentation = function(x,
 
   return(x)
 }
+
 

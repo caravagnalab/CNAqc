@@ -114,7 +114,13 @@ for CNA analysis." />
       <a href="../articles/ccf_computation.html">Computation of Cancer Cell Fractions</a>
     </li>
     <li>
+      <a href="../articles/fragmentation.html">Genome fragmentation analysis</a>
+    </li>
+    <li>
       <a href="../articles/peaks_detection.html">QC analysis via peaks detection</a>
+    </li>
+    <li>
+      <a href="../articles/smoothing.html">Smoothing copy number segments</a>
     </li>
   </ul>
 </li>
@@ -215,14 +221,7 @@ See the vignette to see how to extract and plot the results.</p>
 <span class='no'>x</span> <span class='kw'>=</span> <span class='fu'><a href='init.html'>init</a></span>(<span class='no'>example_dataset_CNAqc</span>$<span class='no'>snvs</span>, <span class='no'>example_dataset_CNAqc</span>$<span class='no'>cna</span>,<span class='no'>example_dataset_CNAqc</span>$<span class='no'>purity</span>)</div><div class='output co'>#&gt; <span style='color: #BBBBBB;background-color: #0000BB;'> [ CNAqc - CNA Quality Check ] 
 #&gt; </span><span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #BBBB00;'>!</span><span> Missing CCF column from CNA calls, adding CCF = 1 assuming clonal CNA calls.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Input n = 13141 mutations for267 CNA segments (267 clonal, 0 subclonal)</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> Mapped n =12963 mutations to clonal segments (~99% of input)</span></div><div class='input'>
 <span class='no'>x</span> <span class='kw'>=</span> <span class='fu'>analyze_peaks</span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; </span><span style='color: #BBBBBB;background-color: #0000BB;'> [ QC analysis with peaks detection ] 
-#&gt; </span><span>
-#&gt; </span><span style='color: #000000;background-color: #BBBB00;'>      CNAqc </span><span> n = 13141 mutations for 267 CNA segments (267 clonal, 0 subclonal) </span><span style='color: #000000;background-color: #BBBB00;'>
-#&gt;      Purity </span><span> 89% cellularity </span><span style='color: #000000;background-color: #BBBB00;'>
-#&gt;  Karyotypes </span><span> 7478 (2:2); 1893 (4:2); 1625 (3:2); 1563 (2:1); 312 (3:0); 81 (2:0); 4 (16:2); 2 (25:2); 2 (3:1); 1 (106:1); 1 (26:2); 1 (99:1) 
-#&gt;  </span><span style='color: #000000;background-color: #BBBB00;'>
-#&gt;    Peaks QC </span><span> </span><span style='color: #BB0000;'>FALSE</span><span> </span><span style='color: #000000;background-color: #BBBB00;'>
-#&gt;         CCF </span><span> </span><span style='color: #BB0000;'>FALSE</span><span> </span><span style='color: #000000;background-color: #BBBB00;'>
-#&gt; </span><span>
+#&gt; </span><span></div><div class='output co'>#&gt; <span class='message'>── </span><span style='color: #000000;background-color: #BBBB00;'>[ CNAqc ] </span><span> n = 13141 mutations in </span><span style='color: #00BB00;'>267</span><span> segments (267 clonal + 0 subclonal) ───────────────────────────────────────────</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Purity: 89% ~ Ploidy: 4.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Mutation mapping (head): 7478 (2:2); 1893 (4:2); 1625 (3:2); 1563 (2:1); 312 (3:0); 81 (2:0)</span></div><div class='output co'>#&gt; 
 #&gt; </span><span style='color: #00BBBB;'>=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-</span><span>
 #&gt; </span><span style='color: #00BBBB;'> Analysing ~ karyotypes 1:0, 1:1, 2:1, 2:0, 2:2 ~  9041 mutations ~ min. k = 657</span><span>
 #&gt; </span><span style='color: #00BBBB;'>=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-</span><span>
@@ -248,21 +247,14 @@ See the vignette to see how to extract and plot the results.</p>
 #&gt; </span><span style='color: #555555;'># … with 1 more variable: score </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
 #&gt; </span><span style='color: #000000;background-color: #BBBB00;'>
 #&gt; Fit score:</span><span> 0.00468956233367035 
-#&gt;  </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; </span><span style='color: #000000;background-color: #BBBB00;'>      CNAqc </span><span> n = 13141 mutations for 267 CNA segments (267 clonal, 0 subclonal) </span><span style='color: #000000;background-color: #BBBB00;'>
-#&gt;      Purity </span><span> 89% cellularity </span><span style='color: #000000;background-color: #BBBB00;'>
-#&gt;  Karyotypes </span><span> 7478 (2:2); 1893 (4:2); 1625 (3:2); 1563 (2:1); 312 (3:0); 81 (2:0); 4 (16:2); 2 (25:2); 2 (3:1); 1 (106:1); 1 (26:2); 1 (99:1) 
-#&gt;  </span><span style='color: #000000;background-color: #BBBB00;'>
-#&gt;    Peaks QC </span><span> </span><span style='color: #00BB00;'>TRUE</span><span>  ~ s =  0.00468956233367035 </span><span style='color: #000000;background-color: #BBBB00;'>
-#&gt; </span><span style='color: #555555;'># A tibble: 4 x 10</span><span>
+#&gt;  </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; <span class='message'>── </span><span style='color: #000000;background-color: #BBBB00;'>[ CNAqc ] </span><span> n = 13141 mutations in </span><span style='color: #00BB00;'>267</span><span> segments (267 clonal + 0 subclonal) ───────────────────────────────────────────</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Purity: 89% ~ Ploidy: 4.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Mutation mapping (head): 7478 (2:2); 1893 (4:2); 1625 (3:2); 1563 (2:1); 312 (3:0); 81 (2:0)</span></div><div class='output co'>#&gt; </div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> QC via peak detection available, score: 0.00468956233367035.</span></div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 4 x 10</span><span>
 #&gt;   mutation_multip… karyotype  peak     x     y discarded   offset matched weight
 #&gt;              </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span>        </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
 #&gt; </span><span style='color: #555555;'>1</span><span>                2 2:1       0.616  0.6   2.94 FALSE      0.015</span><span style='text-decoration: underline;'>9</span><span>  FALSE   0.086</span><span style='text-decoration: underline;'>4</span><span>
 #&gt; </span><span style='color: #555555;'>2</span><span>                1 2:1       0.308  0.3   3.6  FALSE      0.007</span><span style='text-decoration: underline;'>96</span><span> TRUE    0.086</span><span style='text-decoration: underline;'>4</span><span>
 #&gt; </span><span style='color: #555555;'>3</span><span>                2 2:2       0.471  0.46  8.14 FALSE      0.010</span><span style='text-decoration: underline;'>9</span><span>  TRUE    0.414 
 #&gt; </span><span style='color: #555555;'>4</span><span>                1 2:2       0.235  0.24  0.86 FALSE     -</span><span style='color: #BB0000;'>0.004</span><span style='color: #BB0000;text-decoration: underline;'>55</span><span> TRUE    0.414 
-#&gt; </span><span style='color: #555555;'># … with 1 more variable: score </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #000000;background-color: #BBBB00;'>        CCF </span><span> </span><span style='color: #BB0000;'>FALSE</span><span> </span><span style='color: #000000;background-color: #BBBB00;'>
-#&gt; </span><span></div><div class='input'>
+#&gt; </span><span style='color: #555555;'># … with 1 more variable: score </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span></div><div class='input'>
 <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>x</span>$<span class='no'>peaks_analysis</span>)</div><div class='output co'>#&gt; $score
 #&gt; [1] 0.004689562
 #&gt; 

@@ -79,5 +79,12 @@ init = function(snvs, cna, purity)
   fit$purity = purity
 
 
+  tab_ploidy = fit$cna %>%
+    group_by(minor, Major) %>%
+    summarise(n = sum(length)) %>%
+    arrange(desc(n))
+
+  fit$ploidy = tab_ploidy$minor[1] + tab_ploidy$Major[1]
+
   fit
 }

@@ -13,7 +13,7 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 
-options(crayon.enabled=TRUE)
+options(crayon.enabled=F)
 ```
 
 ```{r, comment="", results="asis"}

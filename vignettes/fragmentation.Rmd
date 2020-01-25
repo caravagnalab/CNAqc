@@ -1,0 +1,82 @@
+---
+title: "Genome fragmentation analysis"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Genome fragmentation analysis}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
+options(crayon.enabled=FALSE)
+```
+
+```{r setup}
+library(CNAqc)
+```
+
+We work with the same object shown in the [introductory vignette](file:///Users/gcaravagna/Documents/GitHub/CNAqc/docs/articles/CNAqc.html). 
+
+```{r echo=TRUE, results=FALSE}
+# Dataset available with the package -- see Get Started.
+data('example_dataset_CNAqc', package = 'CNAqc')
+x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+
+print(x)
+```
+
+### Fragmentation of individual arms
+
+The fragmentation of a chromosome arm is assessed with a statistical test based on counting
+the size of the copy number segments mapping to the arm. 
+
+```{r, fig.width=3, fig.height=3}
+# A histogram of segments' lenght
+plot_segment_size_distribution(x)
+```
+ 
+`CNAqc` counts, for every arm with lenght $L$ nucleotides: 
+ 
+ * $n_s$, the number of mapped CNA segments shorter than $\delta\%$ of $L$;
+ * $n_l$, the number of mapped CNA segments longer than $\delta\%$ sof $L$.
+
+A one-sided Binomial test is used to compute a p-value for the null hypothesis of seeing $n_s$ observations in $n_l$ trials, assuming a Binomial success probability $p = \delta > 0$.  $p$ represents a model where each segment length is equally likely (uniform distribution). 
+
+In this way the test accounts for the difference in lenghts of the chromsome arms; a p-value per arm is reported and adjusted for multiple hyoptheses (Bonferroni). 
+
+```{r, fig.width=3, fig.height=3}
+# Test with default parameters (small segments: < 20% of chromosome arm)
+x = detect_arm_overfragmentation(x)
+```
+
+You can produce a arm-level report for the fragmentation test, with: 
+
+* a scatter of the counts per arm, with scaled the p-values;
+* a jump statistics per arm, $J$. 
+
+$J$ is the sum of the variation in total copy number profiles, evaluated among each pair of contiguous segments.
+
+Significantly overfragmented arms with high $J$ - for some custom minimum value --  have a "scattered" copy number profile. Those with low $J$ are more uniform, as they show little no copy number change, and can be possibly smoothed ([see the Vignette](https://caravagn.github.io/CNAqc/articles/smoothing.html)).
+
+```{r, fig.width=10, fig.height=12}
+plot_arm_fragmentation(x)
+```
+
+### Whole-genome fragmentation
+
+With the same principle a similar test can be carried out on the whole genome copy number profiles. Pooling segments shorter than $\Delta$ bases -- default 1 megabase -- and fixing a value for the Binomial probability $p$ -- default $0.2$. 
+
+Compared to the arm-level test where we can adjust for arm lengths, in this case using the $\Delta$ normalised by genome length leads to low values for $p$ that seem in practice unrealistic.
+
+```{r, fig.width=11, fig.height=3}
+x = detect_wg_overfragmentation(x)
+
+print(x)
+```
+
+

@@ -1,0 +1,56 @@
+---
+title: "Smoothing copy number segments"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Smoothing copy number segments}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
+options(crayon.enabled=FALSE)
+```
+
+```{r setup}
+library(CNAqc)
+```
+
+We work with the same object shown in the [introductory vignette](file:///Users/gcaravagna/Documents/GitHub/CNAqc/docs/articles/CNAqc.html). 
+
+```{r echo=TRUE, results=FALSE}
+# Dataset available with the package -- see Get Started.
+data('example_dataset_CNAqc', package = 'CNAqc')
+x = CNAqc::init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+```
+
+Smoothing works with a simple algorithm that merges, inside each chromosome, all contiguous segments that have the same absolute copy number values (minnor and major allele counts), and are separated by up to $\delta$ base pairs. 
+
+The default value of $\delta = 10^6$ (1 megabase).
+
+```{r, fig.width=11, fig.height=3}
+# Before smoothing
+print(x)
+
+# After smoothing
+x = smooth_segments(x, maximum_distance = 1e6) # default
+```
+
+The old obbject is retained inside the new one
+```{r, fig.width=11, fig.height=3}
+print(x$before_smoothing)
+
+# The new has theoretically smaller segments
+print(x)
+```
+
+You can visualise the effect of the smoothing automatically using `CNAqc` functions.
+```{r, fig.width=15, fig.height=7}
+plot_smoothing(x)
+```
+
+

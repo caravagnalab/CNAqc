@@ -5,12 +5,15 @@
 \title{Plot CNA segments.}
 \usage{
 plot_segments(x, chromosomes = paste0("chr", c(1:22, "X", "Y")),
-  circular = FALSE)
+  max_Y_height = 6, circular = FALSE)
 }
 \arguments{
 \item{x}{An object of class \code{cnaqc}, created by the \code{init} function.}
 
 \item{chromosomes}{The chromosome to use for this plot.}
+
+\item{max_Y_height}{Maximum height onn the Y-axis of the plot, if there are segments
+above this heigh a warning is raised and annnotated in the plot as well in graphical format.}
 
 \item{circular}{Uses a circular layout in polar coordinates to make the segments
 look like a circos plot.}

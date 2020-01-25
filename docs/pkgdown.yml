@@ -4,5 +4,7 @@ pkgdown_sha: ~
 articles:
   CNAqc: CNAqc.html
   ccf_computation: ccf_computation.html
+  fragmentation: fragmentation.html
   peaks_detection: peaks_detection.html
+  smoothing: smoothing.html
 

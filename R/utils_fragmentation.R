@@ -142,7 +142,9 @@ frequentist_test_fragmentation = function(n_short,
                                           chr,
                                           arm,
                                           testable,
-                                          p_cutoff_short = .2, N_tests = 1, alpha = 0.01)
+                                          p_cutoff_short = .2,
+                                          N_tests = 1,
+                                          alpha = 0.01)
 {
   if(!testable) return(1)
 
@@ -163,4 +165,16 @@ frequentist_test_fragmentation = function(n_short,
       )
 
   return(p_value)
+}
+
+compute_jumps_segments = function(clonal_cna, chr, arm)
+{
+  clonal_cna = clonal_cna %>%
+    filter(chr == !!chr, arm == !!arm) %>%
+    mutate(CN_total = Major + minor)
+
+  if(nrow(clonal_cna) <= 1) return(0)
+
+  delta = clonal_cna$CN_total[2:nrow(clonal_cna)] - clonal_cna$CN_total[1:(nrow(clonal_cna) - 1)]
+  sum(abs(delta))
 }

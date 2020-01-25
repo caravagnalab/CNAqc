@@ -106,7 +106,13 @@
       <a href="../articles/ccf_computation.html">Computation of Cancer Cell Fractions</a>
     </li>
     <li>
+      <a href="../articles/fragmentation.html">Genome fragmentation analysis</a>
+    </li>
+    <li>
       <a href="../articles/peaks_detection.html">QC analysis via peaks detection</a>
+    </li>
+    <li>
+      <a href="../articles/smoothing.html">Smoothing copy number segments</a>
     </li>
   </ul>
 </li>
@@ -164,13 +170,7 @@
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='st'>'example_dataset_CNAqc'</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>'CNAqc'</span>)
 <span class='no'>x</span> <span class='kw'>=</span> <span class='fu'><a href='init.html'>init</a></span>(<span class='no'>example_dataset_CNAqc</span>$<span class='no'>snvs</span>, <span class='no'>example_dataset_CNAqc</span>$<span class='no'>cna</span>,<span class='no'>example_dataset_CNAqc</span>$<span class='no'>purity</span>)</div><div class='output co'>#&gt; <span style='color: #BBBBBB;background-color: #0000BB;'> [ CNAqc - CNA Quality Check ] 
 #&gt; </span><span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #BBBB00;'>!</span><span> Missing CCF column from CNA calls, adding CCF = 1 assuming clonal CNA calls.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Input n = 13141 mutations for267 CNA segments (267 clonal, 0 subclonal)</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> Mapped n =12963 mutations to clonal segments (~99% of input)</span></div><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; </span><span style='color: #000000;background-color: #BBBB00;'>      CNAqc </span><span> n = 13141 mutations for 267 CNA segments (267 clonal, 0 subclonal) </span><span style='color: #000000;background-color: #BBBB00;'>
-#&gt;      Purity </span><span> 89% cellularity </span><span style='color: #000000;background-color: #BBBB00;'>
-#&gt;  Karyotypes </span><span> 7478 (2:2); 1893 (4:2); 1625 (3:2); 1563 (2:1); 312 (3:0); 81 (2:0); 4 (16:2); 2 (25:2); 2 (3:1); 1 (106:1); 1 (26:2); 1 (99:1) 
-#&gt;  </span><span style='color: #000000;background-color: #BBBB00;'>
-#&gt;    Peaks QC </span><span> </span><span style='color: #BB0000;'>FALSE</span><span> </span><span style='color: #000000;background-color: #BBBB00;'>
-#&gt;         CCF </span><span> </span><span style='color: #BB0000;'>FALSE</span><span> </span><span style='color: #000000;background-color: #BBBB00;'>
-#&gt; </span><span></div></span></pre>
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; <span class='message'>── </span><span style='color: #000000;background-color: #BBBB00;'>[ CNAqc ] </span><span> n = 13141 mutations in </span><span style='color: #00BB00;'>267</span><span> segments (267 clonal + 0 subclonal) ───────────────────────────────────────────</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Purity: 89% ~ Ploidy: 4.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Mutation mapping (head): 7478 (2:2); 1893 (4:2); 1625 (3:2); 1563 (2:1); 312 (3:0); 81 (2:0)</span></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

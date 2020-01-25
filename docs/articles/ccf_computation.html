@@ -67,7 +67,13 @@
       <a href="../articles/ccf_computation.html">Computation of Cancer Cell Fractions</a>
     </li>
     <li>
+      <a href="../articles/fragmentation.html">Genome fragmentation analysis</a>
+    </li>
+    <li>
       <a href="../articles/peaks_detection.html">QC analysis via peaks detection</a>
+    </li>
+    <li>
+      <a href="../articles/smoothing.html">Smoothing copy number segments</a>
     </li>
   </ul>
 </li>
@@ -193,15 +199,10 @@ m \pi
 <a href="#example-computation" class="anchor"></a>Example computation</h3>
 <p>We work with the same object shown in <code>CNAqc</code>’s Introductory Vignette.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="co"># Dataset available with the package -- see Getting Started.</span></a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(x)</a></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #000000;background-color: #BBBB00;">      CNAqc </span><span> n = 13141 mutations for 267 CNA segments (267 clonal, 0 subclonal) </span><span style="color: #000000;background-color: #BBBB00;">
-#&gt;      Purity </span><span> 89% cellularity </span><span style="color: #000000;background-color: #BBBB00;">
-#&gt;  Karyotypes </span><span> 7478 (2:2); 1893 (4:2); 1625 (3:2); 1563 (2:1); 312 (3:0); 81 (2:0); 4 (16:2); 2 (25:2); 2 (3:1); 1 (106:1); 1 (26:2); 1 (99:1) 
-#&gt;  </span><span style="color: #000000;background-color: #BBBB00;">
-#&gt;    Peaks QC </span><span> </span><span style="color: #BB0000;">FALSE</span><span> </span><span style="color: #000000;background-color: #BBBB00;">
-#&gt;         CCF </span><span> </span><span style="color: #BB0000;">FALSE</span><span> </span><span style="color: #000000;background-color: #BBBB00;">
-#&gt; </span><span>
-</span></code></pre>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(x)</a>
+<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co">#&gt; ── [43m[30m[ CNAqc ] [39m[49m n = 13141 mutations in [32m[32m267[32m[39m segments (267 clonal + 0 subclonal) ───────────────────────────────────────────</span></a>
+<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">#&gt; [36mℹ[39m Purity: 89% ~ Ploidy: 4.</span></a>
+<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co">#&gt; [36mℹ[39m Mutation mapping (head): 7478 (2:2); 1893 (4:2); 1625 (3:2); 1563 (2:1); 312 (3:0); 81 (2:0)</span></a></code></pre></div>
 <p>We run function <code>compute_CCF</code> to obtain the full analysis of CCF values, first with the default parameters and focusing only one karyotype <code>2:1</code>.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">x =<span class="st"> </span><span class="kw"><a href="../reference/compute_CCF.html">compute_CCF</a></span>(x, <span class="dt">karyotypes =</span> <span class="st">"2:1"</span>)</a></code></pre></div>
 <pre class="fansi fansi-output"><code>#&gt; 
@@ -233,14 +234,6 @@ m \pi
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"></a>
 <a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co"># Print new object, it informs us of the available computation</span></a>
 <a class="sourceLine" id="cb5-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(x)</a></code></pre></div>
-<pre class="fansi fansi-output"><code>#&gt; <span style="color: #000000;background-color: #BBBB00;">      CNAqc </span><span> n = 13141 mutations for 267 CNA segments (267 clonal, 0 subclonal) </span><span style="color: #000000;background-color: #BBBB00;">
-#&gt;      Purity </span><span> 89% cellularity </span><span style="color: #000000;background-color: #BBBB00;">
-#&gt;  Karyotypes </span><span> 7478 (2:2); 1893 (4:2); 1625 (3:2); 1563 (2:1); 312 (3:0); 81 (2:0); 4 (16:2); 2 (25:2); 2 (3:1); 1 (106:1); 1 (26:2); 1 (99:1) 
-#&gt;  </span><span style="color: #000000;background-color: #BBBB00;">
-#&gt;    Peaks QC </span><span> </span><span style="color: #BB0000;">FALSE</span><span> </span><span style="color: #000000;background-color: #BBBB00;">
-#&gt;         CCF </span><span> </span><span style="color: #00BB00;">TRUE</span><span>  ~  2:1 </span><span style="color: #000000;background-color: #BBBB00;">
-#&gt; </span><span>
-</span></code></pre>
 <p>We can visually inspect the CCF estimates for the computed karyotypes. We can do that accessing the field <code>x$CCF_estimates</code> which contains the data and a plot reporting the result of the analysis, or using the getter functions <code>CCF</code> and <code>plot_CCF</code>.</p>
 <p>The tibble of the data reports the computed values in column <code>"CCF"</code>, and in column <code>"mutation multiplicity"</code>.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="co"># Tibble</span></a>
