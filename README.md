@@ -12,15 +12,15 @@ maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www
 
 `CNAqc` is a package that contains different methods to inspect the
 quality, visualise and process absolute Copy Number Alteration (CNA)
-calls.
+calls generated from bulk seqquencing of tumour samples.
 
 Methods are available to integrate somatic mutation data of the same
-tumour sample, with copy number segments, tumour purity and ploidy. The
-package provides also methods to estimate Cancer Cell Franctions (CCFs)
-normalizing tumour mutation data for copy number states and tumour
-purity. The package contains also statistical tests to determine if the
-data presents patterns of overfragmentation, either in individual
-chromosome arms or at the whole-genome level.w
+tumour with copy number segments, tumour purity and ploidy. The package
+provides methods to estimate Cancer Cell Franctions (CCFs) normalizing
+tumour mutation data for copy number states and tumour purity. The
+package contains also statistical tests to identify patterns of
+overfragmentation either in individual chromosome arms or at the
+whole-genome level.
 
 `CNAqc` is part of the `evoverse` set of [R
 packages](https://caravagn.github.io/evoverse) to implement Cancer
