@@ -2,13 +2,24 @@
 % Please edit documentation in R/plot_arm_fragmentation.R
 \name{plot_arm_fragmentation}
 \alias{plot_arm_fragmentation}
-\title{Title}
+\title{Plot patterns of arm level fragmentation.}
 \usage{
 plot_arm_fragmentation(x)
 }
 \arguments{
-\item{x}{}
+\item{x}{A `CNAqc` object.}
 }
 \description{
-Title
+The function produces a multi-panel figure. The top left
+panel shows a scatter of the segments' length per arm, and
+their jump value. The bottom panel uses a circular layout
+to show arms. In this case dashed lines outgoing the centre
+reprent breakpoints not shown in the plot (i.e., with Major > 5).
+}
+\examples{
+data('example_dataset_CNAqc', package = 'CNAqc')
+x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+
+x = detect_arm_overfragmentation(x, genome_percentage_cutoff = .2)
+plot_arm_fragmentation(x)
 }

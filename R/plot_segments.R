@@ -9,7 +9,7 @@
 #' @param max_Y_height Maximum height onn the Y-axis of the plot, if there are segments
 #' above this heigh a warning is raised and annnotated in the plot as well in graphical format.
 #' @param circular Uses a circular layout in polar coordinates to make the segments
-#' look like a circos plot.
+#' look like a circos plot. It can save space.
 #'
 #' @return A \code{ggplot} object.
 #' @export
@@ -23,11 +23,16 @@
 plot_segments = function(x,
                          chromosomes = paste0('chr', c(1:22, 'X', 'Y')),
                          max_Y_height = 8,
-                         circular = FALSE)
+                         circular = FALSE,
+                         ...)
 {
   stopifnot(inherits(x, 'cnaqc'))
 
-  base_plot = CNAqc:::blank_genome(chromosomes)
+  # Circular layout
+  if(circular) return(plot_segments_circular(x, chromosomes = chromosomes))
+
+  # Standard plot -- baseline genome reference
+  base_plot = CNAqc:::blank_genome(chromosomes, ...)
 
   # Segments
   segments = x$cna %>%
@@ -134,27 +139,32 @@ plot_segments_circular = function(x, chromosomes = paste0('chr', c(1:22, 'X', 'Y
   data("chr_coordinates_hg19", package = "CNAqc")
   chr_coordinates_hg19 = chr_coordinates_hg19 %>% filter(chr %in% chromosomes)
 
+  low = min(chr_coordinates_hg19$from)
+  upp = max(chr_coordinates_hg19$to)
+
+
+
   # Uses the standard function, but rotates the coordinate system,
   # offsets the y-axis and add a new set of labels
-  CNAqc::plot_segments(x, chromosomes = chromosomes) +
-    coord_polar(theta = 'x', start = 0, clip = 'off') +
-    ylim(0, NA) +
-    geom_label(
-      data = chr_coordinates_hg19,
-      aes(
-        x = chr_coordinates_hg19$from,
-        y = Inf,
-        label = gsub("chr",
-                     "", chr_coordinates_hg19$chr)
-      ),
-      hjust = 0,
-      colour = "white",
-      fill = "darkgray",
-      label.padding	= unit(0.1, 'lines'),
-      size = 2,
-      alpha = 1
-    )  +
-    theme(axis.text.x = element_blank())
+ suppressMessages(
+   plot_segments(x, max_Y_height = 5, chromosomes = chromosomes, circular = FALSE, label_chr = NA) +
+      coord_polar(theta = 'x', start = 0, clip = 'off') +
+      ylim(-2, 5) +
+     # scale_x_continuous(
+     #   breaks = c(0, chr_coordinates_hg19$from, upp),
+     #   labels = c("", gsub(pattern = 'chr', replacement = '', chr_coordinates_hg19$chr), "")
+     # ) +
+     labs(
+       x = "",
+       y = ""
+     ) +
+     theme(
+       axis.text.y = element_blank(),
+       panel.grid.major = element_blank(),
+       panel.grid.minor = element_blank(),
+       panel.border = element_rect(size = .3)
+     )
+ )
 }
 
 

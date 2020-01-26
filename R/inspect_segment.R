@@ -42,7 +42,7 @@ inspect_segment = function(x,
   if(k == 0)
   {
     message("No segments matching input criteria!")
-    return(ggplot())
+    return(ggplot() + geom_blank())
   }
 
   hplot = x$snvs %>%
@@ -54,8 +54,8 @@ inspect_segment = function(x,
     scale_x_continuous(breaks = c(0,  1), limits = c(0, 1)) +
     guides(fill = FALSE) +
     labs(
-      title = paste0(k, ' segments across ', length(chrs), ' chromosomes'),
-      subtitle = paste0('>',n, " mutations per segment, segment length >", l, 'bases')
+      title = paste0(k, ' segments, ', length(chrs), ' chromosomes'),
+      subtitle = paste0('>',n, " mutations per segment, segment length >", l, ' bases.')
     )
 
   if(k < 74)

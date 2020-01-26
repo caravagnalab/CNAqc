@@ -106,7 +106,7 @@ The summary of `x` can be `print` to see the number of mutations per karyotype, 
 print(x)
 ```
 
-### Plotting segments, genome-wide mutations and CNA calls
+### Plotting copy number segments
 
 All plotting functions use `ggplot` and multi-panel figures assembled with `ggpubr` and `cowplot`.
 
@@ -117,7 +117,28 @@ Function `plot_segments` plots all the genome, annotating in the caption summmar
 plot_segments(x)
 ```
 
-Genome-wide plots that follow the layout of `plot_segments` are avaiable to view the genome-wide distributions of the number of mutations, their VAF and depth. VAF and depth-plotting functions (scatterplots) can subset the input data to speed up rendering and reduce the size of output files - by default 5000 points are randomly sampled. 
+An alternative circular layout plot is available
+```{r, fig.width=4, fig.height=4}
+# Circular layout
+plot_segments(x, circular = TRUE)
+```
+
+You can inspect the raw VAF distribution per segment, split by chromosome. Each colour represents a distinct segment; visually, we want that for every karyotype, within a chromosome, the VAF distribution of all segments follows a "similar" trend. 
+```{r, fig.width=12, fig.height=4}
+# Default parameters to filter segments (in the plot)
+inspect_segment(x)
+```
+
+**Comparing multiple calls.** If you want to compare multiple CNA calls -- required to have the same breakpoints -- you can use `plot_multisample_CNA`. Here we show it replicating twice `x`, 
+
+```{r, fig.width=6, fig.height=6}
+# Comparative CNA plot
+plot_multisample_CNA(list(`S1` = x, `S2` = x))
+```
+
+### Plotting genome-wide mutations data
+
+Genome-wide plots that follow the flat layout of `plot_segments` are avaiable to view the genome-wide distributions of the number of mutations, their VAF and depth. VAF and depth-plotting functions (scatterplots) can subset the input data to speed up rendering and reduce the size of output files - by default 5000 points are randomly sampled. 
 Counts plot, instead, bin the genome locations by one megabase.
 
 ```{r, fig.width=8, fig.height=1}
@@ -153,6 +174,7 @@ cowplot::plot_grid(
   rel_heights = c(.15, .15, .15, .8))
 ```
 
+### Plotting summaries
 
 A summary plot of CNA calls is available via function `plot_karyotypes`. This function implements two visualizations:
 
@@ -168,6 +190,11 @@ ggpubr::ggarrange(
   common.legend = TRUE,
   legend = 'bottom'
 )
+```
+
+You can also plot the segments' length distribution, which is used to detect fragmentation patterns in the segments.
+```{r, fig.width=4.5, fig.height=3}
+plot_segment_size_distribution(x)
 ```
 
 

@@ -31,14 +31,14 @@ reference:
   desc:  Functions to visualise the data.
   contents:
   - init
-  - print
   - inspect_segment
   - plot_segment_size_distribution
-  - plot_karyotypes()
+  - plot_karyotypes
   - plot_counts
   - plot_depth
   - plot_vaf
   - plot_segments
+  - plot_multisample_CNA
 
 - title: Purity and ploidy QC
   desc:  Analysis of CNA calls by peak detection.

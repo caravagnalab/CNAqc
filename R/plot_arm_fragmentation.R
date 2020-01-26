@@ -14,18 +14,34 @@
 # x = detect_overfragmentation(x, genome_percentage_cutoff = .2)
 # plot_arm_fragmentation(x)
 
-#' Title
+#' Plot patterns of arm level fragmentation.
 #'
-#' @param x
+#' @description
+#'
+#' The function produces a multi-panel figure. The top left
+#' panel shows a scatter of the segments' length per arm, and
+#' their jump value. The bottom panel uses a circular layout
+#' to show arms. In this case dashed lines outgoing the centre
+#' reprent breakpoints not shown in the plot (i.e., with Major > 5).
+#'
+#' @param x A `CNAqc` object.
 #'
 #' @return
 #' @export
 #'
 #' @examples
+#' data('example_dataset_CNAqc', package = 'CNAqc')
+#' x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+#'
+#' x = detect_arm_overfragmentation(x, genome_percentage_cutoff = .2)
+#' plot_arm_fragmentation(x)
 plot_arm_fragmentation = function(x)
 {
   # add a test: if there are any, etc
-
+  if(all(is.null(x$arm_fragmentation))) {
+    cli::cli_alert_danger("Arm overfragmentation is not available for this object, compute it first.")
+    return(ggplot() + geom_blank())
+  }
 
   # Results from fragmentation test
   fragments = x$arm_fragmentation$table %>% filter(significant)
@@ -46,14 +62,14 @@ plot_arm_fragmentation = function(x)
     ylim(0, squaring) +
     scale_color_manual(values = c(`FALSE` = 'indianred3', `TRUE` = 'forestgreen')) +
     labs(
-      title = paste0("Overfragmentation (", nrow(fragments), ' arms)'),
-      x = paste0('Segments >', 100 * x$arm_fragmentation$genome_percentage_cutoff,'% of arm'),
+      title = paste0("Segments overfragmentation in ", nrow(fragments), ' arms'),
+      x = paste0('>', 100 * x$arm_fragmentation$genome_percentage_cutoff,'% of arm'),
       y = paste0('Segments <', 100 * x$arm_fragmentation$genome_percentage_cutoff,'% of arm'),
       subtitle = paste0(
         "Bonferroni cut ", x$arm_fragmentation$table$Bonferroni_cutoff[1],
         ' (alpha = ', x$arm_fragmentation$alpha, ', ', x$arm_fragmentation$N_tests, ' tests).')
     ) +
-    guides(size = guide_legend("-log(p)"), color = guide_legend("Fragmented")) +
+    guides(size = guide_legend("-log(p)", nrow = 1), color = guide_legend("Fragmented")) +
     ggrepel::geom_text_repel(
       data = fragments,
       segment.size = 0.2,
@@ -98,15 +114,32 @@ plot_arm_fragmentation = function(x)
   # Zoom in each chromosome
   chr_to_plot = fragments$chr %>% unique
 
+  max_Y_height = 6
+
   plots_zoom = lapply(chr_to_plot,
          function(chr){
            # Add breaks for every segment
-           segments_plot = CNAqc::plot_segments(x, chromosomes = chr)
-           chr_breakpoints = segments %>% filter(chr == !!chr)
+           segments_plot = CNAqc::plot_segments(x, chromosomes = chr, circular = T, max_Y_height = max_Y_height)
+           chr_breakpoints = segments %>%
+             filter(chr == !!chr) %>%
+             mutate(
+               y = Inf,
+               outern = Major > max_Y_height
+             )
+
+           j = x$arm_fragmentation$table %>% filter(chr == !!chr) %>% pull(jumps)
 
            segments_plot +
-             labs(caption = NULL) +
-             geom_vline(xintercept = chr_breakpoints$from, size = .2, linetype = 'dashed')
+             labs(
+               caption = NULL,
+               title = chr,
+               subtitle = paste0('B = ', nrow(chr_breakpoints), ', J = ', paste(j, collapse = ' + '))
+               ) +
+             geom_vline(xintercept = chr_breakpoints %>%
+                          filter(outern) %>%
+                          pull(from), size = .2, linetype = 'dashed', color = 'orange') +
+             theme(plot.margin = margin(0.2, 0, 0, 0, "cm")) +
+             theme_void()
          })
 
   top_panel = cowplot::plot_grid(
@@ -128,13 +161,13 @@ plot_arm_fragmentation = function(x)
   # of the height of one plot (via rel_heights).
   top_panel = cowplot::plot_grid(top_panel, legend_b, ncol = 1, rel_heights = c(1, .1))
 
-  NP = ceiling(length(plots_zoom)/2)
+  NP = ceiling(length(plots_zoom)/4)
 
   zoom_panel =
     ggarrange(
       plotlist = plots_zoom,
       nrow =  NP,
-      ncol = 2
+      ncol = 4
     )
 
   figure =
@@ -148,3 +181,27 @@ plot_arm_fragmentation = function(x)
 
   return(figure)
 }
+
+plot_arm_fragmentation3d = function(x)
+{
+  # add a test: if there are any, etc
+  if(all(is.null(x$arm_fragmentation))) {
+    cli::cli_alert_danger("Arm overfragmentation is not available for this object, compute it first.")
+    return(ggplot() + geom_blank())
+  }
+
+  require(plotly)
+
+  p <- plot_ly(
+    x$arm_fragmentation$table,
+    x = ~n_long, y = ~n_short, z = ~jumps, color = ~significant, colors = c(`TRUE` = '#BF382A', `FALSE`='#0C4B8E')) %>%
+    add_markers() %>%
+    layout(scene = list(xaxis = list(title = 'Long'),
+                        yaxis = list(title = 'Short'),
+                        zaxis = list(title = 'Jumps')))
+
+  p
+}
+
+
+

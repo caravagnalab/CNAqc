@@ -118,7 +118,7 @@
 <p>The default value of <span class="math inline">\(\delta = 10^6\)</span> (1 megabase).</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co"># Before smoothing</span></a>
 <a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(x)</a>
-<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="co">#&gt; ── [ CNAqc ]  n = 13141 mutations in 267 segments (267 clonal + 0 subclonal) ───────────────────────────────────────────</span></a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="co">#&gt; ── [ CNAqc ]  n = 13141 mutations in 267 segments (267 clonal + 0 subclonal) ──────────────────────────────────────────</span></a>
 <a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co">#&gt; ℹ Purity: 89% ~ Ploidy: 4.</span></a>
 <a class="sourceLine" id="cb2-5" data-line-number="5"><span class="co">#&gt; ℹ Mutation mapping (head): 7478 (2:2); 1893 (4:2); 1625 (3:2); 1563 (2:1); 312 (3:0); 81 (2:0)</span></a>
 <a class="sourceLine" id="cb2-6" data-line-number="6"></a>
@@ -176,13 +176,13 @@
 <a class="sourceLine" id="cb2-58" data-line-number="58"><span class="co">#&gt; ✓ Mapped n =13025 mutations to clonal segments (~99% of input)</span></a></code></pre></div>
 <p>The old obbject is retained inside the new one</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(x<span class="op">$</span>before_smoothing)</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co">#&gt; ── [ CNAqc ]  n = 13141 mutations in 267 segments (267 clonal + 0 subclonal) ───────────────────────────────────────────</span></a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co">#&gt; ── [ CNAqc ]  n = 13141 mutations in 267 segments (267 clonal + 0 subclonal) ──────────────────────────────────────────</span></a>
 <a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co">#&gt; ℹ Purity: 89% ~ Ploidy: 4.</span></a>
 <a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">#&gt; ℹ Mutation mapping (head): 7478 (2:2); 1893 (4:2); 1625 (3:2); 1563 (2:1); 312 (3:0); 81 (2:0)</span></a>
 <a class="sourceLine" id="cb3-5" data-line-number="5"></a>
 <a class="sourceLine" id="cb3-6" data-line-number="6"><span class="co"># The new has theoretically smaller segments</span></a>
 <a class="sourceLine" id="cb3-7" data-line-number="7"><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(x)</a>
-<a class="sourceLine" id="cb3-8" data-line-number="8"><span class="co">#&gt; ── [ CNAqc ]  n = 13141 mutations in 87 segments (87 clonal + 0 subclonal) ─────────────────────────────────────────────</span></a>
+<a class="sourceLine" id="cb3-8" data-line-number="8"><span class="co">#&gt; ── [ CNAqc ]  n = 13141 mutations in 87 segments (87 clonal + 0 subclonal) ────────────────────────────────────────────</span></a>
 <a class="sourceLine" id="cb3-9" data-line-number="9"><span class="co">#&gt; ℹ Purity: 89% ~ Ploidy: 4.</span></a>
 <a class="sourceLine" id="cb3-10" data-line-number="10"><span class="co">#&gt; ℹ Mutation mapping (head): 7503 (2:2); 1899 (4:2); 1643 (3:2); 1571 (2:1); 317 (3:0); 81 (2:0)</span></a>
 <a class="sourceLine" id="cb3-11" data-line-number="11"><span class="co">#&gt; ✓ These segments are smoothed; before smoothing there were 267 segments.</span></a></code></pre></div>
@@ -195,6 +195,8 @@
 <a class="sourceLine" id="cb4-6" data-line-number="6"><span class="co">#&gt; annotated in the figure.</span></a>
 <a class="sourceLine" id="cb4-7" data-line-number="7"><span class="co">#&gt; Warning: Removed 10 rows containing missing values (geom_segment).</span></a></code></pre></div>
 <p><img src="smoothing_files/figure-html/unnamed-chunk-5-1.png" width="1440"></p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="../reference/plot_multisample_CNA.html">plot_multisample_CNA</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="st">`</span><span class="dt">Before</span><span class="st">`</span> =<span class="st"> </span>x<span class="op">$</span>before_smoothing, <span class="st">`</span><span class="dt">After</span><span class="st">`</span> =<span class="st"> </span>x))</a></code></pre></div>
+<p><img src="smoothing_files/figure-html/unnamed-chunk-6-1.png" width="576"></p>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

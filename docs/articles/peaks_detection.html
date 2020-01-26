@@ -121,7 +121,7 @@
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co"># Run default analysis</span></a>
 <a class="sourceLine" id="cb2-2" data-line-number="2">x =<span class="st"> </span><span class="kw"><a href="../reference/analyze_peaks.html">analyze_peaks</a></span>(x)</a>
 <a class="sourceLine" id="cb2-3" data-line-number="3"><span class="co">#&gt;  [ QC analysis with peaks detection ]</span></a>
-<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co">#&gt; ── [ CNAqc ]  n = 13141 mutations in 267 segments (267 clonal + 0 subclonal) ───────────────────────────────────────────</span></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co">#&gt; ── [ CNAqc ]  n = 13141 mutations in 267 segments (267 clonal + 0 subclonal) ──────────────────────────────────────────</span></a>
 <a class="sourceLine" id="cb2-5" data-line-number="5"><span class="co">#&gt; ℹ Purity: 89% ~ Ploidy: 4.</span></a>
 <a class="sourceLine" id="cb2-6" data-line-number="6"><span class="co">#&gt; ℹ Mutation mapping (head): 7478 (2:2); 1893 (4:2); 1625 (3:2); 1563 (2:1); 312 (3:0); 81 (2:0)</span></a>
 <a class="sourceLine" id="cb2-7" data-line-number="7"><span class="co">#&gt; </span></a>
@@ -155,7 +155,7 @@
 <p>A Kernel-density method (unitary adjustment, Gaussian kernel) is used to smooth the data distribution, and the <code>peakPick</code> package to determine peaks in the smoothed density. Peaks below a mnimum density (noise and miscalled segments) are filtered, and the others are matched to a predefined location with some tolerance (e.g., plus/minus <code>0.5 * epsilon</code>, where <code>epsilon = 0.015</code> is the default).</p>
 <p>Theis analysis produces a set of scores that account for karyotype size and peaks offset, and that can be combined into a linear model to compute an overall QC metrics, called <code>rho</code>.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(x)</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co">#&gt; ── [ CNAqc ]  n = 13141 mutations in 267 segments (267 clonal + 0 subclonal) ───────────────────────────────────────────</span></a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co">#&gt; ── [ CNAqc ]  n = 13141 mutations in 267 segments (267 clonal + 0 subclonal) ──────────────────────────────────────────</span></a>
 <a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co">#&gt; ℹ Purity: 89% ~ Ploidy: 4.</span></a>
 <a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">#&gt; ℹ Mutation mapping (head): 7478 (2:2); 1893 (4:2); 1625 (3:2); 1563 (2:1); 312 (3:0); 81 (2:0)</span></a>
 <a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co">#&gt; ✓ QC via peak detection available, score: 0.00468956233367035.</span></a>

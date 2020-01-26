@@ -5,7 +5,7 @@
 \title{Plot CNA segments.}
 \usage{
 plot_segments(x, chromosomes = paste0("chr", c(1:22, "X", "Y")),
-  max_Y_height = 6, circular = FALSE)
+  max_Y_height = 8, circular = FALSE, ...)
 }
 \arguments{
 \item{x}{An object of class \code{cnaqc}, created by the \code{init} function.}
@@ -16,7 +16,7 @@ plot_segments(x, chromosomes = paste0("chr", c(1:22, "X", "Y")),
 above this heigh a warning is raised and annnotated in the plot as well in graphical format.}
 
 \item{circular}{Uses a circular layout in polar coordinates to make the segments
-look like a circos plot.}
+look like a circos plot. It can save space.}
 }
 \value{
 A \code{ggplot} object.

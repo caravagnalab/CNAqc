@@ -53,4 +53,7 @@ You can visualise the effect of the smoothing automatically using `CNAqc` functi
 plot_smoothing(x)
 ```
 
+```{r, fig.width=6, fig.height=6}
+plot_multisample_CNA(list(`Before` = x$before_smoothing, `After` = x))
+```
 

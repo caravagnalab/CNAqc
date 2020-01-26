@@ -214,13 +214,13 @@
 <a class="sourceLine" id="cb7-10" data-line-number="10"><span class="co">#&gt; ✓ Mapped n =12963 mutations to clonal segments (~99% of input)</span></a></code></pre></div>
 <p>The summary of <code>x</code> can be <code>print</code> to see the number of mutations per karyotype, sorted by size.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(x)</a>
-<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="co">#&gt; ── [ CNAqc ]  n = 13141 mutations in 267 segments (267 clonal + 0 subclonal) ───────────────────────────────────────────</span></a>
+<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="co">#&gt; ── [ CNAqc ]  n = 13141 mutations in 267 segments (267 clonal + 0 subclonal) ──────────────────────────────────────────</span></a>
 <a class="sourceLine" id="cb8-3" data-line-number="3"><span class="co">#&gt; ℹ Purity: 89% ~ Ploidy: 4.</span></a>
 <a class="sourceLine" id="cb8-4" data-line-number="4"><span class="co">#&gt; ℹ Mutation mapping (head): 7478 (2:2); 1893 (4:2); 1625 (3:2); 1563 (2:1); 312 (3:0); 81 (2:0)</span></a></code></pre></div>
 </div>
-<div id="plotting-segments-genome-wide-mutations-and-cna-calls" class="section level3">
+<div id="plotting-copy-number-segments" class="section level3">
 <h3 class="hasAnchor">
-<a href="#plotting-segments-genome-wide-mutations-and-cna-calls" class="anchor"></a>Plotting segments, genome-wide mutations and CNA calls</h3>
+<a href="#plotting-copy-number-segments" class="anchor"></a>Plotting copy number segments</h3>
 <p>All plotting functions use <code>ggplot</code> and multi-panel figures assembled with <code>ggpubr</code> and <code>cowplot</code>.</p>
 <p>Function <code>plot_segments</code> plots all the genome, annotating in the caption summmary statistics. The major and minor alleles for each segment are plotted as red and blue bars. In the bottom, each circle annotates a breakpoint in the segments. By default the plot has limited y-axis, and breakpoints of segments outside the plot (e.g. very high amplifications) are in different color.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="co"># Default plot</span></a>
@@ -229,39 +229,63 @@
 <a class="sourceLine" id="cb9-4" data-line-number="4"><span class="co">#&gt; annotated in the figure.</span></a>
 <a class="sourceLine" id="cb9-5" data-line-number="5"><span class="co">#&gt; Warning: Removed 10 rows containing missing values (geom_segment).</span></a></code></pre></div>
 <p><img src="Introduction_files/figure-html/unnamed-chunk-9-1.png" width="912"></p>
-<p>Genome-wide plots that follow the layout of <code>plot_segments</code> are avaiable to view the genome-wide distributions of the number of mutations, their VAF and depth. VAF and depth-plotting functions (scatterplots) can subset the input data to speed up rendering and reduce the size of output files - by default 5000 points are randomly sampled. Counts plot, instead, bin the genome locations by one megabase.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="co"># All genome, all data - counts of mutations per megabase</span></a>
-<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="kw"><a href="../reference/plot_counts.html">plot_counts</a></span>(x)</a>
-<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="co">#&gt; Warning: Removed 2 rows containing missing values (geom_bar).</span></a></code></pre></div>
-<p><img src="Introduction_files/figure-html/unnamed-chunk-10-1.png" width="768"></p>
+<p>An alternative circular layout plot is available</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="co"># Circular layout</span></a>
+<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="kw"><a href="../reference/plot_segments.html">plot_segments</a></span>(x, <span class="dt">circular =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="co">#&gt; Warning in plot_segments(x, max_Y_height = 5, chromosomes = chromosomes, :</span></a>
+<a class="sourceLine" id="cb10-4" data-line-number="4"><span class="co">#&gt; Segments with CN above 5 will not be plot; this is annotated in the figure.</span></a>
+<a class="sourceLine" id="cb10-5" data-line-number="5"><span class="co">#&gt; Warning: Removed 10 rows containing missing values (geom_segment).</span></a></code></pre></div>
+<p><img src="Introduction_files/figure-html/unnamed-chunk-10-1.png" width="384"></p>
+<p>You can inspect the raw VAF distribution per segment, split by chromosome. Each colour represents a distinct segment; visually, we want that for every karyotype, within a chromosome, the VAF distribution of all segments follows a “similar” trend.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="co"># Default parameters to filter segments (in the plot)</span></a>
+<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="kw"><a href="../reference/inspect_segment.html">inspect_segment</a></span>(x)</a>
+<a class="sourceLine" id="cb11-3" data-line-number="3"><span class="co">#&gt; Warning: Removed 30 rows containing missing values (geom_bar).</span></a></code></pre></div>
+<p><img src="Introduction_files/figure-html/unnamed-chunk-11-1.png" width="1152"></p>
+<p><strong>Comparing multiple calls.</strong> If you want to compare multiple CNA calls – required to have the same breakpoints – you can use <code>plot_multisample_CNA</code>. Here we show it replicating twice <code>x</code>,</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="co"># Comparative CNA plot</span></a>
+<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="kw"><a href="../reference/plot_multisample_CNA.html">plot_multisample_CNA</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="st">`</span><span class="dt">S1</span><span class="st">`</span> =<span class="st"> </span>x, <span class="st">`</span><span class="dt">S2</span><span class="st">`</span> =<span class="st"> </span>x))</a></code></pre></div>
+<p><img src="Introduction_files/figure-html/unnamed-chunk-12-1.png" width="576"></p>
+</div>
+<div id="plotting-genome-wide-mutations-data" class="section level3">
+<h3 class="hasAnchor">
+<a href="#plotting-genome-wide-mutations-data" class="anchor"></a>Plotting genome-wide mutations data</h3>
+<p>Genome-wide plots that follow the flat layout of <code>plot_segments</code> are avaiable to view the genome-wide distributions of the number of mutations, their VAF and depth. VAF and depth-plotting functions (scatterplots) can subset the input data to speed up rendering and reduce the size of output files - by default 5000 points are randomly sampled. Counts plot, instead, bin the genome locations by one megabase.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="co"># All genome, all data - counts of mutations per megabase</span></a>
+<a class="sourceLine" id="cb13-2" data-line-number="2"><span class="kw"><a href="../reference/plot_counts.html">plot_counts</a></span>(x)</a>
+<a class="sourceLine" id="cb13-3" data-line-number="3"><span class="co">#&gt; Warning: Removed 2 rows containing missing values (geom_bar).</span></a></code></pre></div>
+<p><img src="Introduction_files/figure-html/unnamed-chunk-13-1.png" width="768"></p>
 <p>An example effect of downsampling the data is the following</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="co"># Different subsamples</span></a>
-<a class="sourceLine" id="cb11-2" data-line-number="2">ggpubr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/ggpubr/man/ggarrange.html">ggarrange</a></span>(</a>
-<a class="sourceLine" id="cb11-3" data-line-number="3">  <span class="kw"><a href="../reference/plot_depth.html">plot_depth</a></span>(x, <span class="dt">N =</span> <span class="dv">1000</span>),</a>
-<a class="sourceLine" id="cb11-4" data-line-number="4">  <span class="kw"><a href="../reference/plot_depth.html">plot_depth</a></span>(x),</a>
-<a class="sourceLine" id="cb11-5" data-line-number="5">  <span class="kw"><a href="../reference/plot_depth.html">plot_depth</a></span>(x, <span class="dt">N =</span> <span class="dv">10000</span>),</a>
-<a class="sourceLine" id="cb11-6" data-line-number="6">  <span class="dt">ncol =</span> <span class="dv">1</span></a>
-<a class="sourceLine" id="cb11-7" data-line-number="7">)</a></code></pre></div>
-<p><img src="Introduction_files/figure-html/unnamed-chunk-11-1.png" width="768"></p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="co"># Different subsamples</span></a>
+<a class="sourceLine" id="cb14-2" data-line-number="2">ggpubr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/ggpubr/man/ggarrange.html">ggarrange</a></span>(</a>
+<a class="sourceLine" id="cb14-3" data-line-number="3">  <span class="kw"><a href="../reference/plot_depth.html">plot_depth</a></span>(x, <span class="dt">N =</span> <span class="dv">1000</span>),</a>
+<a class="sourceLine" id="cb14-4" data-line-number="4">  <span class="kw"><a href="../reference/plot_depth.html">plot_depth</a></span>(x),</a>
+<a class="sourceLine" id="cb14-5" data-line-number="5">  <span class="kw"><a href="../reference/plot_depth.html">plot_depth</a></span>(x, <span class="dt">N =</span> <span class="dv">10000</span>),</a>
+<a class="sourceLine" id="cb14-6" data-line-number="6">  <span class="dt">ncol =</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb14-7" data-line-number="7">)</a></code></pre></div>
+<p><img src="Introduction_files/figure-html/unnamed-chunk-14-1.png" width="768"></p>
 <p>A one-summary plot can be easily assembled combining the above functions and functions from <code>cowplot</code> or other ggplot-manipulation packages.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="co"># Layout a panel with segments in bottom, and all other genome-wide plots on top.</span></a>
-<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="co"># Via cowplot we can align plots on the vertical axis, and stretch their relative</span></a>
-<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="co"># height to obtain a nicer layout.</span></a>
-<a class="sourceLine" id="cb12-4" data-line-number="4">cowplot<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/cowplot/man/plot_grid.html">plot_grid</a></span>(</a>
-<a class="sourceLine" id="cb12-5" data-line-number="5">  <span class="kw"><a href="../reference/plot_counts.html">plot_counts</a></span>(x),</a>
-<a class="sourceLine" id="cb12-6" data-line-number="6">  <span class="kw"><a href="../reference/plot_vaf.html">plot_vaf</a></span>(x, <span class="dt">N =</span> <span class="dv">10000</span>),</a>
-<a class="sourceLine" id="cb12-7" data-line-number="7">  <span class="kw"><a href="../reference/plot_depth.html">plot_depth</a></span>(x, <span class="dt">N =</span> <span class="dv">10000</span>),</a>
-<a class="sourceLine" id="cb12-8" data-line-number="8">  <span class="kw"><a href="../reference/plot_segments.html">plot_segments</a></span>(x) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/graphics/plot.window.html">ylim</a></span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">6</span>),</a>
-<a class="sourceLine" id="cb12-9" data-line-number="9">  <span class="dt">align =</span> <span class="st">'v'</span>, </a>
-<a class="sourceLine" id="cb12-10" data-line-number="10">  <span class="dt">nrow =</span> <span class="dv">4</span>, </a>
-<a class="sourceLine" id="cb12-11" data-line-number="11">  <span class="dt">rel_heights =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(.<span class="dv">15</span>, <span class="fl">.15</span>, <span class="fl">.15</span>, <span class="fl">.8</span>))</a>
-<a class="sourceLine" id="cb12-12" data-line-number="12"><span class="co">#&gt; Warning in plot_segments(x): Segments with CN above 8 will not be plot; this is</span></a>
-<a class="sourceLine" id="cb12-13" data-line-number="13"><span class="co">#&gt; annotated in the figure.</span></a>
-<a class="sourceLine" id="cb12-14" data-line-number="14"><span class="co">#&gt; Scale for 'y' is already present. Adding another scale for 'y', which will</span></a>
-<a class="sourceLine" id="cb12-15" data-line-number="15"><span class="co">#&gt; replace the existing scale.</span></a>
-<a class="sourceLine" id="cb12-16" data-line-number="16"><span class="co">#&gt; Warning: Removed 2 rows containing missing values (geom_bar).</span></a>
-<a class="sourceLine" id="cb12-17" data-line-number="17"><span class="co">#&gt; Warning: Removed 10 rows containing missing values (geom_segment).</span></a></code></pre></div>
-<p><img src="Introduction_files/figure-html/unnamed-chunk-12-1.png" width="912"></p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="co"># Layout a panel with segments in bottom, and all other genome-wide plots on top.</span></a>
+<a class="sourceLine" id="cb15-2" data-line-number="2"><span class="co"># Via cowplot we can align plots on the vertical axis, and stretch their relative</span></a>
+<a class="sourceLine" id="cb15-3" data-line-number="3"><span class="co"># height to obtain a nicer layout.</span></a>
+<a class="sourceLine" id="cb15-4" data-line-number="4">cowplot<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/cowplot/man/plot_grid.html">plot_grid</a></span>(</a>
+<a class="sourceLine" id="cb15-5" data-line-number="5">  <span class="kw"><a href="../reference/plot_counts.html">plot_counts</a></span>(x),</a>
+<a class="sourceLine" id="cb15-6" data-line-number="6">  <span class="kw"><a href="../reference/plot_vaf.html">plot_vaf</a></span>(x, <span class="dt">N =</span> <span class="dv">10000</span>),</a>
+<a class="sourceLine" id="cb15-7" data-line-number="7">  <span class="kw"><a href="../reference/plot_depth.html">plot_depth</a></span>(x, <span class="dt">N =</span> <span class="dv">10000</span>),</a>
+<a class="sourceLine" id="cb15-8" data-line-number="8">  <span class="kw"><a href="../reference/plot_segments.html">plot_segments</a></span>(x) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/graphics/plot.window.html">ylim</a></span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">6</span>),</a>
+<a class="sourceLine" id="cb15-9" data-line-number="9">  <span class="dt">align =</span> <span class="st">'v'</span>, </a>
+<a class="sourceLine" id="cb15-10" data-line-number="10">  <span class="dt">nrow =</span> <span class="dv">4</span>, </a>
+<a class="sourceLine" id="cb15-11" data-line-number="11">  <span class="dt">rel_heights =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(.<span class="dv">15</span>, <span class="fl">.15</span>, <span class="fl">.15</span>, <span class="fl">.8</span>))</a>
+<a class="sourceLine" id="cb15-12" data-line-number="12"><span class="co">#&gt; Warning in plot_segments(x): Segments with CN above 8 will not be plot; this is</span></a>
+<a class="sourceLine" id="cb15-13" data-line-number="13"><span class="co">#&gt; annotated in the figure.</span></a>
+<a class="sourceLine" id="cb15-14" data-line-number="14"><span class="co">#&gt; Scale for 'y' is already present. Adding another scale for 'y', which will</span></a>
+<a class="sourceLine" id="cb15-15" data-line-number="15"><span class="co">#&gt; replace the existing scale.</span></a>
+<a class="sourceLine" id="cb15-16" data-line-number="16"><span class="co">#&gt; Warning: Removed 2 rows containing missing values (geom_bar).</span></a>
+<a class="sourceLine" id="cb15-17" data-line-number="17"><span class="co">#&gt; Warning: Removed 10 rows containing missing values (geom_segment).</span></a></code></pre></div>
+<p><img src="Introduction_files/figure-html/unnamed-chunk-15-1.png" width="912"></p>
+</div>
+<div id="plotting-summaries" class="section level3">
+<h3 class="hasAnchor">
+<a href="#plotting-summaries" class="anchor"></a>Plotting summaries</h3>
 <p>A summary plot of CNA calls is available via function <code>plot_karyotypes</code>. This function implements two visualizations:</p>
 <ul>
 <li>
@@ -270,13 +294,16 @@
 <code>type = 'number'</code>, reporting the counts of segments per karyotype.</li>
 </ul>
 <p>The package uses a pre-set color schema to colour diploid segments in green, LOH segments in blue and amplifications in red.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">ggpubr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/ggpubr/man/ggarrange.html">ggarrange</a></span>(</a>
-<a class="sourceLine" id="cb13-2" data-line-number="2">  <span class="kw"><a href="../reference/plot_karyotypes.html">plot_karyotypes</a></span>(x),</a>
-<a class="sourceLine" id="cb13-3" data-line-number="3">  <span class="kw"><a href="../reference/plot_karyotypes.html">plot_karyotypes</a></span>(x, <span class="dt">type =</span> <span class="st">'number'</span>),</a>
-<a class="sourceLine" id="cb13-4" data-line-number="4">  <span class="dt">common.legend =</span> <span class="ot">TRUE</span>,</a>
-<a class="sourceLine" id="cb13-5" data-line-number="5">  <span class="dt">legend =</span> <span class="st">'bottom'</span></a>
-<a class="sourceLine" id="cb13-6" data-line-number="6">)</a></code></pre></div>
-<p><img src="Introduction_files/figure-html/unnamed-chunk-13-1.png" width="432"></p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1">ggpubr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/ggpubr/man/ggarrange.html">ggarrange</a></span>(</a>
+<a class="sourceLine" id="cb16-2" data-line-number="2">  <span class="kw"><a href="../reference/plot_karyotypes.html">plot_karyotypes</a></span>(x),</a>
+<a class="sourceLine" id="cb16-3" data-line-number="3">  <span class="kw"><a href="../reference/plot_karyotypes.html">plot_karyotypes</a></span>(x, <span class="dt">type =</span> <span class="st">'number'</span>),</a>
+<a class="sourceLine" id="cb16-4" data-line-number="4">  <span class="dt">common.legend =</span> <span class="ot">TRUE</span>,</a>
+<a class="sourceLine" id="cb16-5" data-line-number="5">  <span class="dt">legend =</span> <span class="st">'bottom'</span></a>
+<a class="sourceLine" id="cb16-6" data-line-number="6">)</a></code></pre></div>
+<p><img src="Introduction_files/figure-html/unnamed-chunk-16-1.png" width="432"></p>
+<p>You can also plot the segments’ length distribution, which is used to detect fragmentation patterns in the segments.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="kw"><a href="../reference/plot_segment_size_distribution.html">plot_segment_size_distribution</a></span>(x)</a></code></pre></div>
+<p><img src="Introduction_files/figure-html/unnamed-chunk-17-1.png" width="432"></p>
 </div>
   </div>
 

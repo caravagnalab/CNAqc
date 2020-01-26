@@ -1,4 +1,4 @@
-blank_genome = function(chromosomes = paste0('chr', c(1:22, 'X', 'Y')))
+blank_genome = function(chromosomes = paste0('chr', c(1:22, 'X', 'Y')), label_chr = -0.5)
 {
   # GEt hg19 coordinates
   data('chr_coordinates_hg19', package = 'CNAqc')
@@ -8,32 +8,29 @@ blank_genome = function(chromosomes = paste0('chr', c(1:22, 'X', 'Y')))
   low = min(chr_coordinates_hg19$from)
   upp = max(chr_coordinates_hg19$to)
 
-  ggplot(chr_coordinates_hg19) +
-    my_ggplot_theme() +
+  pl = ggplot(chr_coordinates_hg19) +
+    CNAqc:::my_ggplot_theme() +
     geom_rect(
       aes(
         xmin = centromerStart,
         xmax = centromerEnd,
-        ymin = -Inf,
+        ymin = 0,
         ymax = Inf
       ),
       alpha = .3,
       colour = 'gainsboro'
     ) +
-    geom_vline(xintercept = chr_coordinates_hg19$from,
-               size = 0.3,
-               colour = 'black') +
-    geom_label(
+    geom_segment(
       data = chr_coordinates_hg19,
       aes(
-        x = chr_coordinates_hg19$from,
-        y = -0.5,
-        label = gsub('chr', '', chr_coordinates_hg19$chr)
+        x = from,
+        xend = from,
+        y = 0,
+        yend = Inf
       ),
-      hjust = 0,
-      colour = 'white',
-      fill = 'black',
-      size = 3
+      size = .1,
+      color = 'black',
+      linetype = 8
     ) +
     geom_hline(yintercept = 0,
                size = 1,
@@ -44,9 +41,33 @@ blank_genome = function(chromosomes = paste0('chr', c(1:22, 'X', 'Y')))
       colour = 'black',
       linetype = 'dashed'
     ) +
-    labs(x = "Location",
+    labs(x = "Chromosome",
          y = "Major/ minor allele") +
     ggpubr::rotate_y_text() +
-    xlim(low, upp)
+    # ggpubr::rotate_x_text() +
+    # xlim(low, upp) +
+    scale_x_continuous(
+      breaks = c(0, chr_coordinates_hg19$from, upp),
+      labels = c("", gsub(pattern = 'chr', replacement = '', chr_coordinates_hg19$chr), "")
+    )
+
+
+  # if(!is.null(label_chr) & !is.na(label_chr))
+  #   pl = pl +
+  #   geom_label(
+  #     data = chr_coordinates_hg19,
+  #     aes(
+  #       x = chr_coordinates_hg19$from,
+  #       y = label_chr,
+  #       label = gsub('chr', '', chr_coordinates_hg19$chr)
+  #     ),
+  #     hjust = 0,
+  #     colour = 'white',
+  #     fill = 'black',
+  #     size = 3
+  #   )
+
+
+  return(pl)
 }
 
