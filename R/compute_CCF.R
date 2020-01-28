@@ -31,16 +31,27 @@
 #'
 #' CCF(x)
 #' plot_CCF(x)
-compute_CCF = function(x, karyotypes = c('2:1', '2:0', '2:2'), entropy_quantile = .9)
+compute_CCF = function(x, karyotypes = c('1:0', '1:1', '2:1', '2:0', '2:2'), entropy_quantile = .9)
 {
   stopifnot(inherits(x, 'cnaqc'))
 
+  nkaryotypes = x$n_karyotype[x$n_karyotype > 25]
+
+  karyotypes = intersect(karyotypes, nkaryotypes %>% names)
   stopifnot(
-    karyotypes %in% c('2:1', '2:0', '2:2', '1:1', '1:0')
+    karyotypes %in% c('1:0', '1:1', '2:1', '2:0', '2:2')
   )
 
   # Compute mutation multiplicity
-  x$CCF_estimates = lapply(karyotypes, CNAqc:::mutation_multiplicity_entropy, x = x, entropy_quantile = entropy_quantile)
+  x$CCF_estimates = lapply(
+    karyotypes,
+    function(k)
+    {
+      if(k %in% c('1:0', '1:1'))
+        return(mutmult_single_copy(x, k))
+
+      return(mutmult_two_copies(x, k, entropy_quantile = .9))
+    })
   names(x$CCF_estimates) = karyotypes
 
   # Report some stats
@@ -48,7 +59,7 @@ compute_CCF = function(x, karyotypes = c('2:1', '2:0', '2:2'), entropy_quantile 
   mutations = Reduce(bind_rows, mutations)
 
   cat('\n')
-  cli::cli_h2("Summary CCF assignments (with q = {.field {entropy_quantile}})")
+  cli::cli_h2("Summary CCF assignments: NA ~ not assignable with q = {.field {entropy_quantile}}")
   pioDisp(
     mutations %>%
       group_by(karyotype, mutation_multiplicity) %>%
