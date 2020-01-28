@@ -36,17 +36,17 @@ plot_icon_CNA = function(x)
 
   # Extract calls, and flatten them for plotting
   calls = L$cna %>%
-    mutate(
+    dplyr::mutate(
       label = paste(Major, minor, sep = ':'),
       CN = minor + Major
     ) %>%
-    select(chr, from, to, label, CN)
+    dplyr::select(chr, from, to, label, CN)
 
 
   calls = CNAqc:::relative_to_absolute_coordinates(calls)
 
   calls_flat = calls %>%
-        mutate(
+    dplyr::mutate(
           label = ifelse(label %in% names(KARYO_colors), label, 'other')
         )
 
@@ -55,7 +55,7 @@ plot_icon_CNA = function(x)
   # Get hg19 coordinates for used chromosomes
   data('chr_coordinates_hg19', package = 'CNAqc')
 
-  chr_coordinates_hg19 = chr_coordinates_hg19 %>% filter(chr %in% chromosomes)
+  chr_coordinates_hg19 = chr_coordinates_hg19 %>% dplyr::filter(chr %in% chromosomes)
 
   low = min(chr_coordinates_hg19$from)
   upp = max(chr_coordinates_hg19$to)
@@ -69,9 +69,9 @@ plot_icon_CNA = function(x)
   # Segment id for the y-axis
   # bl_genome =
   bl_genome +
-    geom_segment(
+    ggplot2::geom_segment(
       data = calls_flat,
-      aes(
+      ggplot2::aes(
         x = from,
         xend = to,
         color = label
@@ -80,10 +80,10 @@ plot_icon_CNA = function(x)
       yend = 1,
       size = 10
     ) +
-    scale_color_manual(values = KARYO_colors) +
-    coord_polar(theta = 'x', clip = 'off') +
-    guides(color = F) +
+    ggplot2::scale_color_manual(values = KARYO_colors) +
+    ggplot2::coord_polar(theta = 'x', clip = 'off') +
+    ggplot2::guides(color = F) +
     # guides(color = guide_legend('Karyotype', nrow = 1)) +
-    ylim(-2, 2) +
-    theme_void()
+    ggplot2::ylim(-2, 2) +
+    ggplot2::theme_void()
 }
