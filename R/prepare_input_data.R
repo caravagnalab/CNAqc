@@ -7,6 +7,7 @@ prepare_input_data = function(snvs, cna, tumour_purity)
               tumour_purity <= 1 | !is.na(tumour_purity))
 
   pio::pioHdr("CNAqc - CNA Quality Check")
+  cat('\n')
 
   snvs = fortify_mutation_calls(snvs)
   cna = fortify_CNA_segments(cna) %>%
@@ -26,7 +27,7 @@ prepare_input_data = function(snvs, cna, tumour_purity)
     paste0("Input ",
     'n = ',
     nsnvs,
-    " mutations for",
+    " mutations for ",
     ncna,
       " CNA segments (",
       ncnacl,
@@ -50,9 +51,9 @@ prepare_input_data = function(snvs, cna, tumour_purity)
   perc_mappable = round(num_mappable / nsnvs * 100)
 
   cli::cli_alert_success(
-    paste0("Mapped n =",
+    paste0("Mapped n = ",
     num_mappable,
-    " mutations to clonal segments (~", perc_mappable, '% of input)')
+    " mutations to clonal segments (", perc_mappable, '% of input)')
   )
 
 

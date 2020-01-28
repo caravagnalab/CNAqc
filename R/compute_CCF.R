@@ -47,14 +47,15 @@ compute_CCF = function(x, karyotypes = c('2:1', '2:0', '2:2'), entropy_quantile 
   mutations = lapply(x$CCF_estimates , function(x) x$mutations)
   mutations = Reduce(bind_rows, mutations)
 
-  pioTit("Summary CCF assignments")
+  cat('\n')
+  cli::cli_h2("Summary CCF assignments (with q = {.field {entropy_quantile}})")
   pioDisp(
     mutations %>%
       group_by(karyotype, mutation_multiplicity) %>%
       summarise(assignments = n()) %>%
       ungroup()
   )
-  cat("Note: NA ~ mutations not confidently assignable at q =", entropy_quantile, '\n')
+  cat("Note: NA ~ mutations not confidently assignable with q =", entropy_quantile, '\n')
 
   x
 }

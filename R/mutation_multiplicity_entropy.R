@@ -1,6 +1,7 @@
 mutation_multiplicity_entropy = function(x, karyotype, entropy_quantile = .9)
 {
-  pio::pioTit("Computing mutation multiplicity with entropy H(x)")
+  # pio::pioTit("Computing mutation multiplicity with entropy H(x)")
+  cli::cli_rule("Computing mutation multiplicity for karyotype {.field {karyotype}} ~ q = {.value {entropy_quantile}}")
 
   A = as.numeric(strsplit(karyotype, ':')[[1]][1])
   B = as.numeric(strsplit(karyotype, ':')[[1]][2])
@@ -8,7 +9,7 @@ mutation_multiplicity_entropy = function(x, karyotype, entropy_quantile = .9)
   colors = c(
     `1` = 'forestgreen',
     `2` = 'darkorange3',
-    `NA` = 'red'
+    `NA` = 'indianred2'
   )
 
   # Karyotype specific mutations - clonal segments
@@ -29,10 +30,11 @@ mutation_multiplicity_entropy = function(x, karyotype, entropy_quantile = .9)
 
   med_coverage = median(snvs_k$DP, na.rm = TRUE)
 
-  pio::pioStr("Binomial peaks", suffix = '\n')
+  cli::cli_alert_info("Expected Binomial peaks for these calls")
+  # pio::pioStr("Binomial peaks", suffix = '\n')
   pioDisp(expectation)
-  pio::pioStr("H(x) quantile", entropy_quantile, suffix = '\n')
-  pio::pioStr(" Median depth", med_coverage, suffix = '\n')
+  # pio::pioStr("H(x) quantile", entropy_quantile, suffix = '\n')
+  # pio::pioStr(" Median depth", med_coverage, suffix = '\n')
 
 
   # =-=-=-=-=-=-=-=-=-=-=-
@@ -59,16 +61,16 @@ mutation_multiplicity_entropy = function(x, karyotype, entropy_quantile = .9)
   n = med_coverage
 
   # Bin(p1, n)
-  d_1 = binomial_density(p_1, n)
+  d_1 = CNAqc:::binomial_density(p_1, n)
 
   # Bin(p2, n)
-  d_2 = binomial_density(p_2, n)
+  d_2 = CNAqc:::binomial_density(p_2, n)
 
   # Then we obtain the Binomial quantile ranges for these
   # two distributions, which we use to consider only assingments
   # that have a minimum probability support
-  rg_1 = binomial_quantile_ranges(p_1, n, quantile_left = 0.01, quantile_right = 0.99)
-  rg_2 = binomial_quantile_ranges(p_2, n, quantile_left = 0.01, quantile_right = 0.99)
+  rg_1 = CNAqc:::binomial_quantile_ranges(p_1, n, quantile_left = 0.01, quantile_right = 0.99)
+  rg_2 = CNAqc:::binomial_quantile_ranges(p_2, n, quantile_left = 0.01, quantile_right = 0.99)
 
   # We want to create a mixture model
   #
@@ -86,12 +88,12 @@ mutation_multiplicity_entropy = function(x, karyotype, entropy_quantile = .9)
   d_1$mixture_y = d_1$y * mixing[1]
   d_2$mixture_y = d_2$y * mixing[2]
 
-  pioStr("Mixing proportions ([1, 99] quantiles): ", mixing[1], mixing[2], suffix = '\n')
+  cli::cli_alert_info("Mixing pre/ post aneuploidy: {.value {round(mixing, 2)}}")
 
   # Now we need to decide how to assign a point in order to determine the actual mutation
   # multeplicity. We want this to be using the entropy of a 2-class model, and the
   # magnitude of the differential of the entropy
-  joint = entropy_profile_2_class(d_1, d_2)
+  joint = CNAqc:::entropy_profile_2_class(d_1, d_2)
 
   # q-Quantile of the entropy that we try to cut out, profiled in between the
   # two Binomial peaks (fluctuations outside are generally irrelevant)
@@ -116,7 +118,7 @@ mutation_multiplicity_entropy = function(x, karyotype, entropy_quantile = .9)
   lp = profile_entropy$x[1]
   rp = profile_entropy$x[nrow(profile_entropy)]
 
-  pioStr("H(x)-derived cutoffs", lp, rp, suffix = '\n')
+  cli::cli_alert_info("H(x)-derived cutoffs: [{.value {lp}}; {.value {rp}}]")
 
   y_lp = joint$entropy[round(lp, 2) * 100]
   y_rp = joint$entropy[round(rp, 2) * 100]
