@@ -40,7 +40,7 @@ compute_CCF = function(x, karyotypes = c('2:1', '2:0', '2:2'), entropy_quantile 
   )
 
   # Compute mutation multiplicity
-  x$CCF_estimates = lapply(karyotypes, mutation_multiplicity_entropy, x = x, entropy_quantile = entropy_quantile)
+  x$CCF_estimates = lapply(karyotypes, CNAqc:::mutation_multiplicity_entropy, x = x, entropy_quantile = entropy_quantile)
   names(x$CCF_estimates) = karyotypes
 
   # Report some stats

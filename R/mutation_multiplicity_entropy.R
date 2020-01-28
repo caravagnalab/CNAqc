@@ -14,11 +14,16 @@ mutation_multiplicity_entropy = function(x, karyotype, entropy_quantile = .9)
 
   # Karyotype specific mutations - clonal segments
   cl_seg = x$cna %>%
-    filter(CCF == 1) %>%
-    pull(segment_id)
+    dplyr::filter(CCF == 1) %>%
+    dplyr::pull(segment_id)
 
   snvs_k = x$snvs %>%
-    filter(karyotype == !!karyotype, segment_id %in% cl_seg)
+    dplyr::filter(karyotype == !!karyotype, segment_id %in% cl_seg)
+
+  if(nrow(snvs_k) < 25)
+  {
+    stop("Will not compute CCF with less than 25 mutations with CNA karyotype ", karyotype)
+  }
 
   # Expected VAF for 1 and 2 copies of the mutation
   #
@@ -28,121 +33,126 @@ mutation_multiplicity_entropy = function(x, karyotype, entropy_quantile = .9)
   expectation = CNAqc:::expected_vaf_peak(A, B, x$purity) %>%
     mutate(label = ifelse(mutation_multiplicity == 1, "One copy", "Two copies"))
 
+
   med_coverage = median(snvs_k$DP, na.rm = TRUE)
 
-  cli::cli_alert_info("Expected Binomial peaks for these calls")
+
+
+  cli::cli_alert_info("Expected Binomial peak(s) for these calls (max 2 copies)")
   # pio::pioStr("Binomial peaks", suffix = '\n')
   pioDisp(expectation)
   # pio::pioStr("H(x) quantile", entropy_quantile, suffix = '\n')
   # pio::pioStr(" Median depth", med_coverage, suffix = '\n')
 
+  MULTIPLE_COPIES = max(expectation$mutation_multiplicity) > 1
 
-  # =-=-=-=-=-=-=-=-=-=-=-
-  # Entropy-derived heuristic for the detection of points
-  # that are difficult to assign
-  # =-=-=-=-=-=-=-=-=-=-=-
+  if(MULTIPLE_COPIES)
+  {
+    # =-=-=-=-=-=-=-=-=-=-=-
+    # Entropy-derived heuristic for the detection of points
+    # that are difficult to assign
+    # =-=-=-=-=-=-=-=-=-=-=-
+    # We build 2 template Binomial densities to capture:
+    #
+    # - Bin(p1, n), events before aneuploidy
+    # - Bin(p2, n), events after aneuploidy
+    #
+    # In both cases we take as overal number of trials (n)
+    # the median coverage, and use for the success parameters
+    # p1 and p2 the expected peaks as of ASCAT equation.
+    #
+    # Assumptions:
+    # - overdispersion is small to justify a Binomial instead
+    #   of a Beta-Binomial model;
+    # - trials are well-represented with the median coverage;
+    p_1 = expectation$peak[1]
+    p_2 = expectation$peak[2]
 
-  # We build 2 template Binomial densities to capture:
-  #
-  # - Bin(p1, n), events before aneuploidy
-  # - Bin(p2, n), events after aneuploidy
-  #
-  # In both cases we take as overal number of trials (n)
-  # the median coverage, and use for the success parameters
-  # p1 and p2 the expected peaks as of ASCAT equation.
-  #
-  # Assumptions:
-  # - overdispersion is small to justify a Binomial instead
-  #   of a Beta-Binomial model;
-  # - trials are well-represented with the median coverage;
-  p_1 = expectation$peak[1]
-  p_2 = expectation$peak[2]
+    n = med_coverage
 
-  n = med_coverage
+     # Bin(p1, n)
+    d_1 = CNAqc:::binomial_density(p_1, n)
 
-  # Bin(p1, n)
-  d_1 = CNAqc:::binomial_density(p_1, n)
+    # Bin(p2, n)
+    d_2 = CNAqc:::binomial_density(p_2, n)
 
-  # Bin(p2, n)
-  d_2 = CNAqc:::binomial_density(p_2, n)
+    # Then we obtain the Binomial quantile ranges for these
+    # two distributions, which we use to consider only assingments
+    # that have a minimum probability support
+    rg_1 = CNAqc:::binomial_quantile_ranges(p_1, n, quantile_left = 0.01, quantile_right = 0.99)
+    rg_2 = CNAqc:::binomial_quantile_ranges(p_2, n, quantile_left = 0.01, quantile_right = 0.99)
 
-  # Then we obtain the Binomial quantile ranges for these
-  # two distributions, which we use to consider only assingments
-  # that have a minimum probability support
-  rg_1 = CNAqc:::binomial_quantile_ranges(p_1, n, quantile_left = 0.01, quantile_right = 0.99)
-  rg_2 = CNAqc:::binomial_quantile_ranges(p_2, n, quantile_left = 0.01, quantile_right = 0.99)
+    # We want to create a mixture model
+    #
+    # pi_1 * Bin(p1, n) + (1 - pi_1) * Bin(p2, n)
+    #
+    # to model the mixture of those two Binomial distributions. To determine
+    # the mixing proportions of this mixture we do some empirical trick of
+    # get the number of observations between the two Binomial quantile ranges
+    # that we have just computed.
+    n_rg_1 = snvs_k %>% filter(VAF > rg_1[1], VAF < rg_1[2]) %>% nrow
+    n_rg_2 = snvs_k %>% filter(VAF > rg_2[1], VAF < rg_2[2]) %>% nrow
 
-  # We want to create a mixture model
-  #
-  # pi_1 * Bin(p1, n) + (1 - pi_1) * Bin(p2, n)
-  #
-  # to model the mixture of those two Binomial distributions. To determine
-  # the mixing proportions of this mixture we do some empirical trick of
-  # get the number of observations between the two Binomial quantile ranges
-  # that we have just computed.
-  n_rg_1 = snvs_k %>% filter(VAF > rg_1[1], VAF < rg_1[2]) %>% nrow
-  n_rg_2 = snvs_k %>% filter(VAF > rg_2[1], VAF < rg_2[2]) %>% nrow
+    # Compute the actual mixing proportions, and re-scale the densities accordingly
+    mixing = c(n_rg_1, n_rg_2)/(n_rg_1 + n_rg_2)
+    d_1$mixture_y = d_1$y * mixing[1]
+    d_2$mixture_y = d_2$y * mixing[2]
 
-  # Compute the actual mixing proportions, and re-scale the densities accordingly
-  mixing = c(n_rg_1, n_rg_2)/(n_rg_1 + n_rg_2)
-  d_1$mixture_y = d_1$y * mixing[1]
-  d_2$mixture_y = d_2$y * mixing[2]
+    cli::cli_alert_info("Mixing pre/ post aneuploidy: {.value {round(mixing, 2)}}")
 
-  cli::cli_alert_info("Mixing pre/ post aneuploidy: {.value {round(mixing, 2)}}")
+    # Now we need to decide how to assign a point in order to determine the actual mutation
+    # multeplicity. We want this to be using the entropy of a 2-class model, and the
+    # magnitude of the differential of the entropy
+    joint = CNAqc:::entropy_profile_2_class(d_1, d_2)
 
-  # Now we need to decide how to assign a point in order to determine the actual mutation
-  # multeplicity. We want this to be using the entropy of a 2-class model, and the
-  # magnitude of the differential of the entropy
-  joint = CNAqc:::entropy_profile_2_class(d_1, d_2)
+    # q-Quantile of the entropy that we try to cut out, profiled in between the
+    # two Binomial peaks (fluctuations outside are generally irrelevant)
+    profile_entropy = joint %>%
+      filter(x > p_1, x < p_2)
 
-  # q-Quantile of the entropy that we try to cut out, profiled in between the
-  # two Binomial peaks (fluctuations outside are generally irrelevant)
-  profile_entropy = joint %>%
-    filter(x > p_1, x < p_2)
+    q = quantile(profile_entropy$diff, entropy_quantile)
 
-  q = quantile(profile_entropy$diff, entropy_quantile)
+    # Magnitude plot
+    magnitude_plot =
+      ggplot(profile_entropy) +
+      geom_histogram(aes(diff), bins = 100) +
+      geom_vline(xintercept = q, color = 'darkred', linetype = 'dashed', size = .3) +
+      labs(title = bquote(partialdiff * 'H(x) ~ ' ~ hat(q) ~ '=' ~ .(entropy_quantile)),
+           y = 'Magnitude',
+           x = bquote(partialdiff * 'H(x)')) +
+      CNAqc:::my_ggplot_theme()
 
-  # Magnitude plot
-  magnitude_plot =
-    ggplot(profile_entropy) +
-    geom_histogram(aes(diff), bins = 100) +
-    geom_vline(xintercept = q, color = 'darkred', linetype = 'dashed', size = .3) +
-    labs(title = bquote(partialdiff * 'H(x) ~ ' ~ hat(q) ~ '=' ~ .(entropy_quantile)),
-         y = 'Magnitude',
-         x = bquote(partialdiff * 'H(x)')) +
-    my_ggplot_theme()
+    profile_entropy = profile_entropy %>% dplyr::filter(diff > q)
 
-  profile_entropy = profile_entropy %>% filter(diff > q)
+    # Points determined cutting the H(x)
+    lp = profile_entropy$x[1]
+    rp = profile_entropy$x[nrow(profile_entropy)]
 
-  # Points determined cutting the H(x)
-  lp = profile_entropy$x[1]
-  rp = profile_entropy$x[nrow(profile_entropy)]
+    cli::cli_alert_info("H(x)-derived cutoffs: [{.value {lp}}; {.value {rp}}]")
 
-  cli::cli_alert_info("H(x)-derived cutoffs: [{.value {lp}}; {.value {rp}}]")
+    y_lp = joint$entropy[round(lp, 2) * 100]
+    y_rp = joint$entropy[round(rp, 2) * 100]
 
-  y_lp = joint$entropy[round(lp, 2) * 100]
-  y_rp = joint$entropy[round(rp, 2) * 100]
+    class_plot =
+      ggplot(joint) +
+      geom_line(aes(x = x, y = A), color = 'darkred', linetype = 'dashed') +
+      geom_vline(xintercept = c(p_1, p_2), color = 'black', linetype = 'dashed') +
+      my_ggplot_theme() +
+      labs(title = paste0("Binomial Mixture"),
+           y = 'Density',
+           x = 'VAF')
 
-  class_plot =
-    ggplot(joint) +
-    geom_line(aes(x = x, y = A), color = 'darkred', linetype = 'dashed') +
-    geom_vline(xintercept = c(p_1, p_2), color = 'black', linetype = 'dashed') +
-    my_ggplot_theme() +
-    labs(title = paste0("Binomial Mixture"),
-         y = 'Density',
-         x = 'VAF')
-
-  # Entropy plot
-  entropy_plot = ggplot(joint) +
-    geom_line(aes(x = x, y = entropy), color = 'black', size = .3) +
-      geom_line(aes(x = x, y = diff), color = 'darkred', size = .3) +
-      geom_line(data = profile_entropy, aes(x = x, y = entropy), color = 'black', size = .3) +
-    geom_vline(xintercept = c(lp, rp), color = 'steelblue', linetype = 'dashed') +
-    my_ggplot_theme() +
-    labs(title = bquote("H(x) ~ I = [" * .(round(lp, 2)) * '; ' * .(round(rp, 2)) * ']' ),
-         subtitle = paste0(),
-         y = 'Profile',
-         x = bquote('H(x) (black) and' ~ partialdiff *'H(x) (red)'))
+    # Entropy plot
+    entropy_plot = ggplot(joint) +
+      geom_line(aes(x = x, y = entropy), color = 'black', size = .3) +
+        geom_line(aes(x = x, y = diff), color = 'darkred', size = .3) +
+        geom_line(data = profile_entropy, aes(x = x, y = entropy), color = 'black', size = .3) +
+      geom_vline(xintercept = c(lp, rp), color = 'steelblue', linetype = 'dashed') +
+      my_ggplot_theme() +
+      labs(title = bquote("H(x) ~ I = [" * .(round(lp, 2)) * '; ' * .(round(rp, 2)) * ']' ),
+           subtitle = paste0(),
+           y = 'Profile',
+           x = bquote('H(x) (black) and' ~ partialdiff *'H(x) (red)'))
 
   # Assignemnts based on lp
   snvs_k = snvs_k %>%
@@ -153,6 +163,17 @@ mutation_multiplicity_entropy = function(x, karyotype, entropy_quantile = .9)
         TRUE ~ 'NA')
     )
   snvs_k$mutation_multiplicity = as.numeric(snvs_k$mutation_multiplicity)
+
+  }
+
+  if(!MULTIPLE_COPIES)
+  {
+    cli::cli_alert_info("Single Binomial peak, multiplicity is 1.")
+    magnitude_plot = class_plot = entropy_plot = ggplot() + geom_blank()
+
+    # Assignemnts fixed
+    snvs_k = snvs_k %>% dplyr::mutate(mutation_multiplicity = 1)
+  }
 
   # Compute CCF values from mutation multiplicity
   # m - minor allele
@@ -167,7 +188,7 @@ mutation_multiplicity_entropy = function(x, karyotype, entropy_quantile = .9)
   }
 
   snvs_k = snvs_k %>%
-    mutate(
+    dplyr::mutate(
       CCF = adjustment_fun(VAF, B, A, x$purity, mutation_multiplicity)
     )
 
@@ -181,7 +202,7 @@ mutation_multiplicity_entropy = function(x, karyotype, entropy_quantile = .9)
       linetype = 'dashed',
       aes(xintercept = peak, color = label)
     ) +
-    my_ggplot_theme() +
+   CNAqc:::my_ggplot_theme() +
     scale_color_manual(values = colors) +
     scale_fill_manual(values = colors) +
     guides(color = FALSE, fill = guide_legend('Copies')) +
@@ -189,17 +210,18 @@ mutation_multiplicity_entropy = function(x, karyotype, entropy_quantile = .9)
       y = paste0('Density (n = ', med_coverage, 'x)'),
       title = paste0("Mutation multiplicity"))
 
-  mutation_plot = mutation_plot +
-    geom_histogram(data = snvs_k, binwidth = 0.01, fill = NA, size = .1) +
-    geom_line(data = d_1, aes(x = x, y = mixture_y), inherit.aes = FALSE, size = .3) +
-    geom_line(data = d_2, aes(x = x, y = mixture_y), inherit.aes = FALSE, size = .3) +
-    geom_vline(xintercept = rg_1, linetype = 3, size = .2) +
-    geom_vline(xintercept = rg_2, linetype = 3, size = .2)
+  if(MULTIPLE_COPIES)
+    mutation_plot = mutation_plot +
+      geom_histogram(data = snvs_k, binwidth = 0.01, fill = NA, size = .1) +
+      geom_line(data = d_1, aes(x = x, y = mixture_y), inherit.aes = FALSE, size = .3) +
+      geom_line(data = d_2, aes(x = x, y = mixture_y), inherit.aes = FALSE, size = .3) +
+      geom_vline(xintercept = rg_1, linetype = 3, size = .2) +
+      geom_vline(xintercept = rg_2, linetype = 3, size = .2)
 
   # CCF plots
   CCF_plot = ggplot(snvs_k, aes(CCF, y = ..count.. / sum(..count..))) +
     geom_histogram(binwidth = 0.01, aes(fill = paste(mutation_multiplicity))) +
-    my_ggplot_theme() +
+    CNAqc:::my_ggplot_theme() +
     scale_color_manual(values = colors) +
     scale_fill_manual(values = colors) +
     guides(color = FALSE, fill = guide_legend('Copies')) +
