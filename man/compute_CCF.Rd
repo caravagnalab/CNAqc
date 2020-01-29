@@ -34,7 +34,7 @@ plot of the report of this analysis.
 data('example_dataset_CNAqc')
 x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna, example_dataset_CNAqc$purity)
 
-x = compute_CCF(x, karyotypes = '2:1')
+x = compute_CCF(x, karyotypes = c('1:0', '1:1', '2:1', '2:0', '2:2'))
 print(x)
 
 CCF(x)
