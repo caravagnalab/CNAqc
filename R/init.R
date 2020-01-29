@@ -42,7 +42,7 @@
 #' print(x)
 init = function(snvs, cna, purity)
 {
-  input = prepare_input_data(snvs, cna, purity)
+  input = CNAqc:::prepare_input_data(snvs, cna, purity)
 
   fit = list()
   class(fit) <- "cnaqc"
