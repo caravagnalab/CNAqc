@@ -59,7 +59,7 @@ compute_CCF = function(x, karyotypes = c('1:0', '1:1', '2:1', '2:0', '2:2'), ent
   mutations = Reduce(bind_rows, mutations)
 
   cat('\n')
-  cli::cli_h2("Summary CCF assignments: NA ~ not assignable with q = {.field {entropy_quantile}}")
+  cli::cli_h2("Summary CCF assignments. NA: not assignable with q = {.field {entropy_quantile}}")
   pioDisp(
     mutations %>%
       group_by(karyotype, mutation_multiplicity) %>%
