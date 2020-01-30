@@ -277,7 +277,8 @@ plot_mutation_multiplicity_entropy = function(x, karyotype)
       scale_fill_manual(values = colors) +
       guides(color = FALSE, fill = guide_legend('Copies')) +
       labs(y = paste0('Density'),
-           title = paste0("CCF for ", karyotype))
+           title = paste0("CCF for ", karyotype)) +
+      xlim(0, NA)
 
     figure = cowplot::plot_grid(
       CCF_plot,
@@ -292,7 +293,7 @@ plot_mutation_multiplicity_entropy = function(x, karyotype)
       # scale = c(1, .8)
     )
 
-    return(list(mutations = snvs_k, plot = figure))
+    return(figure)
 
 }
 

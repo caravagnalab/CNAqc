@@ -29,10 +29,12 @@ plot_CCF = function(x)
     stop("Input does not have CCF estimates, see ?compute_CCF to determine CCF values.")
   }
 
-  ccf = lapply(names(x$CCF_estimates), plot_mutation_multiplicity_entropy, x = x)
-
   ggpubr::ggarrange(
-    plotlist = ccf,
+    plotlist = lapply(
+      names(x$CCF_estimates),
+      plot_mutation_multiplicity_entropy,
+      x = x
+    ),
     ncol = 1,
     nrow = length(ccf)
   )
