@@ -140,7 +140,9 @@ mutmult_two_copies = function(x, karyotype, entropy_quantile)
       profile_entropy = profile_entropy,
       filtered_profile_entropy = filtered_profile_entropy,
       entropy_quantile = entropy_quantile,
-      p_12 = c(p_1, p_2)
+      p_12 = c(p_1, p_2),
+      d_12 = c(d_1, d_2),
+      rg_12 = c(rg_1, rg_2)
     )
   ))
 }
@@ -149,6 +151,7 @@ mutmult_two_copies = function(x, karyotype, entropy_quantile)
 plot_mutation_multiplicity_entropy = function(x, karyotype)
 {
   computation = x$CCF_estimates[[karyotype]]
+  snvs_k = computation$mutations
 
   # Mono-peak
   magnitude_plot = class_plot = entropy_plot = ggplot() + geom_blank()
@@ -157,10 +160,11 @@ plot_mutation_multiplicity_entropy = function(x, karyotype)
              `2` = 'darkorange3',
              `NA` = 'indianred2')
 
+  colors = wesanderson::wes_palette("Royal1", n = 3, type = 'discrete')
+
   if(!(karyotype %in% c('1:1', '1:0')))
   {
     # Double peaks
-    snvs_k = computation$mutations
     profile_entropy = computation$params$profile_entropy
     filtered_profile_entropy = computation$params$filtered_profile_entropy
     entropy_quantile = computation$params$entropy_quantile
@@ -231,47 +235,39 @@ plot_mutation_multiplicity_entropy = function(x, karyotype)
   mutation_plot = ggplot(snvs_k, aes(VAF, y = ..count.. / sum(..count..))) +
       geom_histogram(binwidth = 0.01, aes(fill = paste(mutation_multiplicity))) +
       xlim(0, 1) +
-      geom_vline(
-        data = expectation,
-        size = .3,
-        linetype = 'dashed',
-        aes(xintercept = peak, color = label)
-      ) +
       CNAqc:::my_ggplot_theme() +
       scale_color_manual(values = colors) +
       scale_fill_manual(values = colors) +
       guides(color = FALSE, fill = guide_legend('Copies')) +
       labs(
-        y = paste0('Density (n = ', med_coverage, 'x)'),
+        y = paste0('Density (simulated ', med_coverage, 'x)'),
         title = paste0("Mutation multiplicity")
       )
 
-  if(!(karyotype %in% c('1:1', '1:0')))
+  if (!(karyotype %in% c('1:1', '1:0')))
+  {
+    d_12 = computation$params$d_12
+    rg_12 = computation$params$rg_12
+    expectation = computation$params$expectation
+
     mutation_plot = mutation_plot +
-      geom_histogram(
-        data = snvs_k,
-        binwidth = 0.01,
-        fill = NA,
-        size = .1
-      ) +
       geom_line(
-        data = d_1,
+        data = data.frame(d_12[1:3]) %>% bind_rows(data.frame(d_12[2 * 1:3])) ,
         aes(x = x, y = mixture_y),
         inherit.aes = FALSE,
         size = .3
       ) +
-      geom_line(
-        data = d_2,
-        aes(x = x, y = mixture_y),
-        inherit.aes = FALSE,
-        size = .3
-      ) +
-      geom_vline(xintercept = rg_1,
+      geom_vline(xintercept = rg_12,
                  linetype = 3,
-                 size = .2) +
-      geom_vline(xintercept = rg_2,
-                 linetype = 3,
-                 size = .2)
+               size = .4) +
+    geom_vline(
+      data = expectation,
+      size = .5,
+      linetype = 'dashed',
+      color = 'indianred2',
+      aes(xintercept = peak, color = label)
+    )
+  }
 
     # CCF plots
     CCF_plot = ggplot(snvs_k, aes(CCF, y = ..count.. / sum(..count..))) +

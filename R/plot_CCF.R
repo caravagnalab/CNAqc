@@ -31,7 +31,6 @@ plot_CCF = function(x)
 
   ccf = lapply(names(x$CCF_estimates), plot_mutation_multiplicity_entropy, x = x)
 
-
   ggpubr::ggarrange(
     plotlist = ccf,
     ncol = 1,
