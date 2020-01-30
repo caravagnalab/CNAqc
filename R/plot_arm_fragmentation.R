@@ -114,6 +114,14 @@ plot_arm_fragmentation = function(x)
   # Zoom in each chromosome
   chr_to_plot = fragments$chr %>% unique
 
+  if(length(chr_to_plot) > 9) {
+    cli::cli_alert_danger(
+      "Arm overfragmentation involves >9 arms, but only 9 (3x3) will be plot."
+    )
+    chr_to_plot = chr_to_plot[1:9]
+  }
+
+
   max_Y_height = 6
 
   plots_zoom = lapply(chr_to_plot,

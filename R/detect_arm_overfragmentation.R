@@ -13,6 +13,11 @@
 #' @export
 #'
 #' @examples
+#' data('example_dataset_CNAqc')
+#' x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna, example_dataset_CNAqc$purity)
+#'
+#' x = detect_arm_overfragmentation(x)
+#' print(x)
 detect_arm_overfragmentation = function(x,
                                     alpha = 0.01,
                                     genome_percentage_cutoff = .2,
@@ -21,7 +26,7 @@ detect_arm_overfragmentation = function(x,
   clonal_cna = x$cna %>% filter(CCF == 1)
 
   # Split calls in arms p and q
-  expanded_reference = expand_reference_chr_to_arms()
+  expanded_reference = CNAqc:::expand_reference_chr_to_arms()
 
   # Chromosome length
   L = pio:::nmfy(
@@ -29,7 +34,7 @@ detect_arm_overfragmentation = function(x,
     expanded_reference$length)
 
   # Break segments by arm
-  clonal_cna = split_cna_to_arms(CNAqc:::relative_to_absolute_coordinates(clonal_cna)) %>%
+  clonal_cna = CNAqc:::split_cna_to_arms(CNAqc:::relative_to_absolute_coordinates(clonal_cna)) %>%
     mutate(
       L = L[paste0(chr, arm)],
       perc_length = length/L,
@@ -42,9 +47,28 @@ detect_arm_overfragmentation = function(x,
     summarise(n_short = n()) %>%
     ungroup()
 
-  counts = counts %>%
-    spread(smaller, n_short) %>%
-    rename(n_short = `TRUE`, n_long = `FALSE`)
+  # Detect overfragmentation exception - no short segments (will not compute)
+  if(all(counts$smaller == FALSE)) {
+    cli::cli_alert_warning("No short segments with these parameters.")
+    return(x)
+  }
+
+  # Detect overfragmentation exception - only short segments
+  if(all(counts$smaller == TRUE))
+  {
+    counts = counts %>%
+      spread(smaller, n_short) %>%
+      rename(n_short = `TRUE`)
+
+    # Force this in
+    counts$n_long = 0
+  }
+  else
+  {
+    counts = counts %>%
+      spread(smaller, n_short) %>%
+      rename(n_short = `TRUE`, n_long = `FALSE`)
+  }
 
   # NAs are 0s
   counts$n_long[is.na(counts$n_long)] = 0
@@ -54,7 +78,7 @@ detect_arm_overfragmentation = function(x,
   counts$jumps = apply(
     counts,
     1,
-    function(x) compute_jumps_segments(clonal_cna, x['chr'], x['arm'])
+    function(x) CNAqc:::compute_jumps_segments(clonal_cna, x['chr'], x['arm'])
     )
 
 
