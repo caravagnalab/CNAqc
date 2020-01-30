@@ -36,6 +36,6 @@ plot_CCF = function(x)
       x = x
     ),
     ncol = 1,
-    nrow = length(ccf)
+    nrow = length(names(x$CCF_estimates))
   )
 }
