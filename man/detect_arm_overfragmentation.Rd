@@ -13,3 +13,10 @@ detect_arm_overfragmentation(x, alpha = 0.01,
 \description{
 Title
 }
+\examples{
+data('example_dataset_CNAqc')
+x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna, example_dataset_CNAqc$purity)
+
+x = detect_arm_overfragmentation(x)
+print(x)
+}
