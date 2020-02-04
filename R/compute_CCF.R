@@ -31,7 +31,7 @@
 #'
 #' CCF(x)
 #' plot_CCF(x)
-compute_CCF = function(x, karyotypes = c('1:0', '1:1', '2:1', '2:0', '2:2'), entropy_quantile = .9)
+compute_CCF = function(x, karyotypes = c('1:0', '1:1', '2:0', '2:1', '2:2'), entropy_quantile = .9)
 {
   stopifnot(inherits(x, 'cnaqc'))
 
