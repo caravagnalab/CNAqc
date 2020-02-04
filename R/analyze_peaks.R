@@ -56,10 +56,10 @@ analyze_peaks = function(x,
 {
   stopifnot(inherits(x, "cnaqc"))
 
-  pio::pioHdr("QC analysis with peaks detection")
+  # pio::pioHdr("QC analysis with peaks detection")
 
-  cat('\n')
-  print(x)
+  # cat('\n')
+  # print(x)
 
   # Karyotypes of interest, and filter for karyotype size
   qc_snvs = x$snvs %>%
@@ -79,11 +79,12 @@ analyze_peaks = function(x,
   n_k = sum(filtered_qc_snvs %>% filter(QC) %>% pull(n))
 
 
-  pio::pioTit(
-    "Analysing",
-    "~ karyotypes", paste(karyotypes, collapse = ', '),
-    "~ ", n_k, 'mutations',
-    "~ min. k =", round(min_karyotype_size * x$n_snvs))
+  cli::cli_alert_info(
+    paste0(
+      "Analysing karyotypes ", paste(karyotypes, collapse = ', '),
+    ", ", n_k, ' mutations, skipping karyotypes with less than ',
+    round(min_karyotype_size * x$n_snvs), ' mutations.')
+    )
 
   print(filtered_qc_snvs)
 
@@ -101,14 +102,14 @@ analyze_peaks = function(x,
       ' ~ peakPick n = ', neighlim, ' epsilon = ', matching_epsilon
     ), suffix = '\n')
 
-  e = function(){
-    ggplot() +
-      geom_blank() +
-      theme(
-        plot.background = element_rect(fill = "lightgray"),
-        panel.background = element_rect(fill = "lightgray"),
-        )
-  }
+  # e = function(){
+  #   ggplot() +
+  #     geom_blank() +
+  #     theme(
+  #       plot.background = element_rect(fill = "lightgray"),
+  #       panel.background = element_rect(fill = "lightgray"),
+  #       )
+  # }
 
   detections = NULL
   for (k in karyotypes)
@@ -117,7 +118,7 @@ analyze_peaks = function(x,
     if (!(k %in% qc_karyotypes))
     {
       detection = list(matching = NULL,
-                       plot = e())
+                       plot = eplot())
     }
     else
     {
@@ -153,7 +154,7 @@ analyze_peaks = function(x,
 
   overall_score = sum(assembled_corrections$score)
 
-  pio::pioTit("Results table")
+  # pio::pioTit("Results table")
   print(assembled_corrections)
 
   pio::pioStr("\nFit score:", overall_score, '\n')
