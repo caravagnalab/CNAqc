@@ -15,12 +15,21 @@ fortify_CNA_segments = function(x)
       "Missing CCF column from CNA calls, adding CCF = 1 assuming clonal CNA calls."
     )
   }
-
+  
   x$from = enforce_numeric(x$from)
   x$to = enforce_numeric(x$to)
   x$Major = enforce_numeric(x$Major)
   x$minor = enforce_numeric(x$minor)
-
+  
+  if (!('length' %in% C))
+  {
+    x = x %>% dplyr::mutate(length = to - from)
+    
+    cli::cli_alert_warning(
+      "Missing segments length from CNA calls, adding it to CNA calls."
+    )
+  }
+  
   return(x %>% as_tibble)
   # Supported formats
   # alt_chr = c('chr', 'chromosome', 'Chromosome')
@@ -48,7 +57,9 @@ fortify_mutation_calls = function(x)
 
   if(max(c(nchar(x$alt), nchar(x$ref))) > 1)
   {
-    stop("Use only SNVs.")
+    warning(
+      "You are using indels mutation data, just beware that indels count-values aree less reliable than SNVs ones ...."
+    )
   }
 
   x$from = enforce_numeric(x$from)
