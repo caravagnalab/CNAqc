@@ -41,7 +41,7 @@ fortify_CNA_segments = function(x)
       cli::cli_alert_info("Driver annotation is present in mutation data (is_driver), will be used in plotting.")
   }
 
-  return(x %>% tibble::as_tibble)
+  return(tibble::as_tibble(x))
   # Supported formats
   # alt_chr = c('chr', 'chromosome', 'Chromosome')
   # alt_from = c('from', 'pos', 'start', 'Start')
@@ -79,7 +79,7 @@ fortify_mutation_calls = function(x)
   x$NV = enforce_numeric(x$NV)
   x$VAF = enforce_numeric(x$VAF)
 
-  return(x %>% tibble::as_tibble)
+  return(tibble::as_tibble(x))
 }
 
 enforce_numeric = function(x) {
