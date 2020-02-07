@@ -50,6 +50,7 @@ prepare_input_data = function(snvs, cna, tumour_purity)
   num_mappable = sum(!is.na(snvs$karyotype))
   perc_mappable = round(num_mappable / nsnvs * 100)
 
+  cat("\n")
   cli::cli_alert_success(
     paste0("Mapped n = ",
     num_mappable,

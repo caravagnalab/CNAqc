@@ -129,7 +129,28 @@ plot_segments = function(x,
       color = 'orange'
     )
 
-  base_plot
+  # Annotate driver events if required
+  if("is_driver" %in% x$snvs)
+  {
+    driver_list = x$snvs %>%
+      dplyr::filter(is_driver) %>%
+      dplyr::left_join(
+        x$cna %>% dplyr::select(segment_id, Major),
+        by = 'segment_id')
+
+    base_plot = base_plot +
+      ggrepel::geom_text_repel(
+        data = CNAqc:::relative_to_absolute_coordinates(driver_list),
+        aes(x = from, y = Major, label = gene),
+        ylim = c(max_Y_height - 1, NA),
+        segment.colour = 'darkblue',
+        segment.size = .3,
+        color = 'darkblue',
+        arrow = grid::arrow(length = unit(0.05, "inches"), type  = 'closed')
+      )
+  }
+
+  return(base_plot)
 }
 
 

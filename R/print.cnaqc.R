@@ -26,10 +26,14 @@ print.cnaqc = function(x, ...)
   )
 
   # cli::cli_alert_info(paste0(" CNA segments: ", x$n_cna_clonal, " clonal, ", x$n_cna_sbclonal, " subclonal."))
-  cli::cli_alert_info(paste0("Purity: ", paste0(x$purity  *100, '% ~ Ploidy: ', x$ploidy, '.')))
 
-  cli::cli_alert_info(paste0("Mutation mapping (head): ", paste0(head(x$n_karyotype), ' (',
-                                                        names(head(x$n_karyotype)), ')', collapse = '; ')))
+  # cli::cli_alert_info(paste0("Mutation mapping (head): ", paste0(head(x$n_karyotype), ' (',
+                                                        # names(head(x$n_karyotype)), ')', collapse = '; ')))
+
+  # cli::cli_alert_info(paste0("Mutation mapping (up to top 5): "))
+  cat('\n')
+  bar_print_console(x$n_karyotype)
+  cat('\n')
 
   # Available analyses
   with_peaks = all(!is.null(x$peaks_analysis))
@@ -37,6 +41,8 @@ print.cnaqc = function(x, ...)
   with_smoothing = all(!is.null(x$before_smoothing))
   with_arm_frag = all(!is.null(x$arm_fragmentation))
   with_wg_frag = all(!is.null(x$wg_fragmentation))
+
+  cli::cli_alert_info(paste0("Sample Purity: ", paste0(x$purity  *100, '% ~ Ploidy: ', x$ploidy, '.')))
 
   if(with_peaks | with_CCF | with_smoothing | with_arm_frag | with_wg_frag) cat('\n')
 
@@ -61,4 +67,28 @@ print.cnaqc = function(x, ...)
     p = round(x$wg_fragmentation$pvalue, 5)
     cli::cli_alert_success("Whole-genome fragmentation analysis: p = {.value {p}}: {.value {ifelse(cond, crayon::red('overfragmented'), crayon::green('not overfragmented'))}}.")
     }
+}
+
+bar_print_console = function(e, top = 5){
+  e = e %>% sort(decreasing = T)
+
+  width = options("width")$width/3 %>% round
+  bars = (e/max(e) * width) %>% round
+
+  bars = bars[1:min(top, length(bars))]
+
+  # Max labels widts
+  label_width = sapply(names(e), nchar) %>% max
+  entries_width = sapply(e, nchar) %>% max
+
+  p = sapply(
+    names(bars),
+    function(b)
+    {
+      cat(sprintf(' %*s ', label_width, b))
+      cat(sprintf(' [n = %*s] ', entries_width, e[b]))
+
+      cat(paste(rep("\u25A0", bars[b]), collapse = ''))
+      cat("\n")
+    })
 }

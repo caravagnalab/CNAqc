@@ -1,7 +1,7 @@
 map_mutations_to_segments = function(snvs, cna)
 {
   if('karyotype' %in% colnames(snvs))
-    warning("[CNAqc] karyotype columns in cna will be overwritten")
+    warning("[CNAqc] a karyotype column is present in CNA calls, and will be overwritten")
 
   snvs$karyotype = NA
   snvs$segment_id = NA
@@ -21,7 +21,6 @@ map_mutations_to_segments = function(snvs, cna)
 
     snvs$karyotype[mappable] = paste0(cna$Major[i], ':', cna$minor[i])
     snvs$segment_id[mappable] = cna$segment_id[i]
-
   }
 
   snvs

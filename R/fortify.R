@@ -15,22 +15,33 @@ fortify_CNA_segments = function(x)
       "Missing CCF column from CNA calls, adding CCF = 1 assuming clonal CNA calls."
     )
   }
-  
+
   x$from = enforce_numeric(x$from)
   x$to = enforce_numeric(x$to)
   x$Major = enforce_numeric(x$Major)
   x$minor = enforce_numeric(x$minor)
-  
+
   if (!('length' %in% C))
   {
     x = x %>% dplyr::mutate(length = to - from)
-    
+
     cli::cli_alert_warning(
       "Missing segments length from CNA calls, adding it to CNA calls."
     )
   }
-  
-  return(x %>% as_tibble)
+
+  if('is_driver' %in% C)
+  {
+    if(!("gene" %in% C))
+    {
+      x = x %>% dplyr::mutate(gene = paste(chr, from, to, ref, alt, sep = ':'))
+      cli::cli_alert_info("Driver annotation is present in mutation data (is_driver) but a gene column is missing, genome coordinates will be used in plotting.")
+    }
+    else
+      cli::cli_alert_info("Driver annotation is present in mutation data (is_driver), will be used in plotting.")
+  }
+
+  return(x %>% tibble::as_tibble)
   # Supported formats
   # alt_chr = c('chr', 'chromosome', 'Chromosome')
   # alt_from = c('from', 'pos', 'start', 'Start')
@@ -68,7 +79,7 @@ fortify_mutation_calls = function(x)
   x$NV = enforce_numeric(x$NV)
   x$VAF = enforce_numeric(x$VAF)
 
-  return(x %>% as_tibble)
+  return(x %>% tibble::as_tibble)
 }
 
 enforce_numeric = function(x) {
@@ -80,3 +91,4 @@ enforce_numeric = function(x) {
 
   x
 }
+
