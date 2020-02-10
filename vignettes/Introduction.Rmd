@@ -21,7 +21,7 @@ options(crayon.enabled=F)
 library(CNAqc)
 ```
 
-### Reference genome coordinates
+## Reference genome coordinates
 
 `CNAqc` maps CNA calls to the `hg19` human genome coordinates; the references used are avaible attached to the package
 ```{r, fig.width=9.5, fig.height=3}
@@ -35,7 +35,7 @@ You can use a hidden function to plot the reference
 print(CNAqc:::blank_genome())
 ```
 
-### Template dataset
+## Template dataset
 
 The package comes with a template dataset available. Input data must be a `data.frame` with standard columns; any extra column will be retained with the data. 
 
@@ -85,7 +85,7 @@ represent the proportion of actual tumour content, sometimes called
 print(example_dataset_CNAqc$purity)
 ```
 
-### Initialisation
+## Initialisation of a new dataset
 
 To use the package, you need to initialize a `cnaqc` S3 object with the initialisation function `init`.
 
@@ -106,7 +106,7 @@ The summary of `x` can be `print` to see the number of mutations per karyotype, 
 print(x)
 ```
 
-### Plotting copy number segments
+## Plotting copy number segments
 
 All plotting functions use `ggplot` and multi-panel figures assembled with `ggpubr` and `cowplot`.
 
@@ -136,7 +136,7 @@ inspect_segment(x)
 plot_multisample_CNA(list(`S1` = x, `S2` = x))
 ```
 
-### Plotting genome-wide mutations data
+## Plotting genome-wide mutations data
 
 Genome-wide plots that follow the flat layout of `plot_segments` are avaiable to view the genome-wide distributions of the number of mutations, their VAF and depth. VAF and depth-plotting functions (scatterplots) can subset the input data to speed up rendering and reduce the size of output files - by default 5000 points are randomly sampled. 
 Counts plot, instead, bin the genome locations by one megabase.
@@ -157,7 +157,6 @@ ggpubr::ggarrange(
 )
 ```
 
-
 A one-summary plot can be easily assembled combining the above functions and functions from `cowplot` or other ggplot-manipulation packages.
 
 ```{r, fig.width=9.5, fig.height=5}
@@ -174,7 +173,7 @@ cowplot::plot_grid(
   rel_heights = c(.15, .15, .15, .8))
 ```
 
-### Plotting summaries
+## Plotting summaries
 
 A summary plot of CNA calls is available via function `plot_karyotypes`. This function implements two visualizations:
 
@@ -197,6 +196,47 @@ You can also plot the segments' length distribution, which is used to detect fra
 plot_segment_size_distribution(x)
 ```
 
+## Plotting driver mutations
 
+You need to annotate your data with the `is_driver` column, set to `TRUE` for driver mutation events. Here we make it at random
 
+```{r, fig.width=4.5, fig.height=4}
+y = x
 
+# Whatever 4 random entries
+which_genes = sample(1:nrow(y$snvs), 4)
+
+y$snvs = y$snvs %>%
+  mutate(
+    is_driver = ifelse(
+      row_number() %in% which_genes,
+      TRUE,
+      FALSE),
+    gene = paste(chr, '_', from, sep = '')
+  )
+
+```
+
+Drivers are annotated in the print and in the segments plot.
+```{r, fig.width=9.5, fig.height=3}
+print(y)
+
+# Annotation is automatic
+plot_segments(y)
+```
+
+```{r, fig.width=4, fig.height=4}
+# Circular layout
+plot_segments(y, circular = TRUE)
+```
+
+## Subsetting data
+
+You can subset randomly the data; if drivers are annotated (`is_driver` boolean column), the drivers are forced to say in.
+
+```{r, fig.width=4, fig.height=4}
+y_5000 = subsample(y, N = 5000)
+
+# 5000 + the ranomd entries that we sampled before
+print(y_5000)
+```

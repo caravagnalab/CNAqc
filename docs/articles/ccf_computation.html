@@ -192,7 +192,13 @@ H(x) = - p_x \log(p_x)
 <a class="sourceLine" id="cb2-14" data-line-number="14"><span class="co">#&gt; Note: NA ~ mutations not confidently assignable with q = 0.9</span></a>
 <a class="sourceLine" id="cb2-15" data-line-number="15"></a>
 <a class="sourceLine" id="cb2-16" data-line-number="16"><span class="co"># Print new object, it informs us of the available computation</span></a>
-<a class="sourceLine" id="cb2-17" data-line-number="17"><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(x)</a></code></pre></div>
+<a class="sourceLine" id="cb2-17" data-line-number="17"><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(x)</a>
+<a class="sourceLine" id="cb2-18" data-line-number="18"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb2-19" data-line-number="19"><span class="co">#&gt;    2:2  [n = 7478] ■■■■■■■■■■■■■■■■■■■■■■■■■■■</span></a>
+<a class="sourceLine" id="cb2-20" data-line-number="20"><span class="co">#&gt;    4:2  [n = 1893] ■■■■■■■</span></a>
+<a class="sourceLine" id="cb2-21" data-line-number="21"><span class="co">#&gt;    3:2  [n = 1625] ■■■■■■</span></a>
+<a class="sourceLine" id="cb2-22" data-line-number="22"><span class="co">#&gt;    2:1  [n = 1563] ■■■■■■</span></a>
+<a class="sourceLine" id="cb2-23" data-line-number="23"><span class="co">#&gt;    3:0  [n =  312] ■</span></a></code></pre></div>
 <p>We can visually inspect the CCF estimates for the computed karyotypes. We can do that accessing the field <code>x$CCF_estimates</code> which contains the data and a plot reporting the result of the analysis, or using the getter functions <code>CCF</code> and <code>plot_CCF</code>.</p>
 <p>The tibble of the data reports the computed values in column <code>"CCF"</code>, and in column <code>"mutation multiplicity"</code>.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="co"># Tibble</span></a>
@@ -213,7 +219,10 @@ H(x) = - p_x \log(p_x)
 <a class="sourceLine" id="cb3-16" data-line-number="16"><span class="co">#&gt; # … with 1,553 more rows</span></a></code></pre></div>
 <p>The plot is a <code>ggpubr</code>-assembled figure, which in this case contains only the estimates for one karyotype.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="co"># Tibble</span></a>
-<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="kw"><a href="../reference/plot_CCF.html">plot_CCF</a></span>(x)</a></code></pre></div>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="kw"><a href="../reference/plot_CCF.html">plot_CCF</a></span>(x)</a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="co">#&gt; Warning: Removed 2 rows containing non-finite values (stat_bin).</span></a>
+<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="co">#&gt; Warning: Removed 2 rows containing missing values (geom_bar).</span></a>
+<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co">#&gt; Warning: Removed 6 rows containing missing values (geom_bar).</span></a></code></pre></div>
 <p><img src="ccf_computation_files/figure-html/unnamed-chunk-5-1.png" width="1056"></p>
 <p>The plot shows all the quantities described above; from left to right the plot shows</p>
 <ul>
@@ -230,13 +239,13 @@ H(x) = - p_x \log(p_x)
 <a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co">#&gt; # A tibble: 2 x 4</span></a>
 <a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co">#&gt;   mutation_multiplicity karyotype  peak label     </span></a>
 <a class="sourceLine" id="cb5-5" data-line-number="5"><span class="co">#&gt;                   &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt; &lt;chr&gt;     </span></a>
-<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="co">#&gt; 1                     1 2:1       0.308 One copy  </span></a>
-<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="co">#&gt; 2                     2 2:1       0.616 Two copies</span></a>
+<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="co">#&gt; 1                     1 2:0       0.445 One copy  </span></a>
+<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="co">#&gt; 2                     2 2:0       0.89  Two copies</span></a>
 <a class="sourceLine" id="cb5-8" data-line-number="8"><span class="co">#&gt; # A tibble: 2 x 4</span></a>
 <a class="sourceLine" id="cb5-9" data-line-number="9"><span class="co">#&gt;   mutation_multiplicity karyotype  peak label     </span></a>
 <a class="sourceLine" id="cb5-10" data-line-number="10"><span class="co">#&gt;                   &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt; &lt;chr&gt;     </span></a>
-<a class="sourceLine" id="cb5-11" data-line-number="11"><span class="co">#&gt; 1                     1 2:0       0.445 One copy  </span></a>
-<a class="sourceLine" id="cb5-12" data-line-number="12"><span class="co">#&gt; 2                     2 2:0       0.89  Two copies</span></a>
+<a class="sourceLine" id="cb5-11" data-line-number="11"><span class="co">#&gt; 1                     1 2:1       0.308 One copy  </span></a>
+<a class="sourceLine" id="cb5-12" data-line-number="12"><span class="co">#&gt; 2                     2 2:1       0.616 Two copies</span></a>
 <a class="sourceLine" id="cb5-13" data-line-number="13"><span class="co">#&gt; # A tibble: 2 x 4</span></a>
 <a class="sourceLine" id="cb5-14" data-line-number="14"><span class="co">#&gt;   mutation_multiplicity karyotype  peak label     </span></a>
 <a class="sourceLine" id="cb5-15" data-line-number="15"><span class="co">#&gt;                   &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt; &lt;chr&gt;     </span></a>
@@ -259,11 +268,17 @@ H(x) = - p_x \log(p_x)
 <p><img src="ccf_computation_files/figure-html/unnamed-chunk-6-1.png" width="1056"></p>
 <p>Just for example, this is how CCF values would have changed if we had used different value of <span class="math inline">\(\hat{q}\)</span>.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="co"># Bad estimates for q = .5</span></a>
-<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="kw"><a href="../reference/plot_CCF.html">plot_CCF</a></span>(examples_low)</a></code></pre></div>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="kw"><a href="../reference/plot_CCF.html">plot_CCF</a></span>(examples_low)</a>
+<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="co">#&gt; Warning: Removed 2 rows containing non-finite values (stat_bin).</span></a>
+<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="co">#&gt; Warning: Removed 2 rows containing missing values (geom_bar).</span></a>
+<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="co">#&gt; Warning: Removed 6 rows containing missing values (geom_bar).</span></a></code></pre></div>
 <p><img src="ccf_computation_files/figure-html/unnamed-chunk-8-1.png" width="1056"></p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"></a>
 <a class="sourceLine" id="cb7-2" data-line-number="2"><span class="co"># Still good estimates for q = .99</span></a>
-<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="kw"><a href="../reference/plot_CCF.html">plot_CCF</a></span>(examples_high)</a></code></pre></div>
+<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="kw"><a href="../reference/plot_CCF.html">plot_CCF</a></span>(examples_high)</a>
+<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="co">#&gt; Warning: Removed 2 rows containing non-finite values (stat_bin).</span></a>
+<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co">#&gt; Warning: Removed 2 rows containing missing values (geom_bar).</span></a>
+<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="co">#&gt; Warning: Removed 6 rows containing missing values (geom_bar).</span></a></code></pre></div>
 <p><img src="ccf_computation_files/figure-html/unnamed-chunk-8-2.png" width="1056"></p>
 </div>
   </div>

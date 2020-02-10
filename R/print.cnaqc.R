@@ -32,7 +32,7 @@ print.cnaqc = function(x, ...)
 
   # cli::cli_alert_info(paste0("Mutation mapping (up to top 5): "))
   cat('\n')
-  bar_print_console(x$n_karyotype)
+  bar_print_console(x)
   cat('\n')
 
   # Available analyses
@@ -69,8 +69,8 @@ print.cnaqc = function(x, ...)
     }
 }
 
-bar_print_console = function(e, top = 5){
-  e = e %>% sort(decreasing = T)
+bar_print_console = function(x, top = 5){
+  e = x$n_karyotype %>% sort(decreasing = T)
 
   width = options("width")$width/3 %>% round
   bars = (e/max(e) * width) %>% round
@@ -89,6 +89,16 @@ bar_print_console = function(e, top = 5){
       cat(sprintf(' [n = %*s] ', entries_width, e[b]))
 
       cat(paste(rep("\u25A0", bars[b]), collapse = ''))
+
+      drv = x$snvs %>% dplyr::filter(karyotype == b)
+      if('is_driver' %in% colnames(x$snvs))
+      {
+        drv = drv %>% dplyr::filter(is_driver) %>% pull(gene)
+
+        if(length(drv) > 0)
+          cat('  {', crayon::yellow(paste(drv, collapse = ', ')), '}')
+      }
+
       cat("\n")
     })
 }
