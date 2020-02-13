@@ -25,10 +25,9 @@ plot_karyotypes = function(x,
 {
   stopifnot(inherits(x, 'cnaqc'))
 
-  data('chr_coordinates_hg19', package = 'CNAqc')
-  genome_size = chr_coordinates_hg19 %>%
-    filter(chr %in% chromosomes) %>%
-    rename(chr_size = length)
+  # Get coordinates for used chromosomes
+  genome_size = CNAqc:::get_reference(x$reference_genome) %>% 
+    dplyr::filter(chr %in% chromosomes) 
 
   segments = x$cna %>%
     filter(chr %in% chromosomes) %>%
@@ -54,7 +53,7 @@ plot_karyotypes = function(x,
   }
   else
   {
-    genome_size = rev(chr_coordinates_hg19$to)[1]
+    genome_size = sum(genome_size$length)
 
     segments = segments %>%
       filter(CCF == 1) %>%

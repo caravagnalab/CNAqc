@@ -26,7 +26,7 @@ Imports:
     ggrepel,
     RColorBrewer
 Remotes: caravagn/pio
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.0
 Suggests: 
     knitr,
     rmarkdown

@@ -4,9 +4,16 @@
 \alias{analyze_peaks}
 \title{Analyze CNA calls by peak detection.}
 \usage{
-analyze_peaks(x, karyotypes = c("1:0", "1:1", "2:1", "2:0", "2:2"),
-  min_karyotype_size = 0.05, adjust = 1, min_density = 0.5,
-  neighlim = 1, matching_epsilon = 0.015, ...)
+analyze_peaks(
+  x,
+  karyotypes = c("1:0", "1:1", "2:1", "2:0", "2:2"),
+  min_karyotype_size = 0.05,
+  adjust = 1,
+  min_density = 0.5,
+  neighlim = 1,
+  matching_epsilon = 0.015,
+  ...
+)
 }
 \arguments{
 \item{x}{An object of class \code{cnaqc}, created by the \code{init} function.}

@@ -43,7 +43,7 @@ plot_icon_CNA = function(x)
     dplyr::select(chr, from, to, label, CN)
 
 
-  calls = CNAqc:::relative_to_absolute_coordinates(calls)
+  calls = CNAqc:::relative_to_absolute_coordinates(x, calls)
 
   calls_flat = calls %>%
     dplyr::mutate(
@@ -52,13 +52,11 @@ plot_icon_CNA = function(x)
 
   chromosomes = calls_flat$chr %>% unique
 
-  # Get hg19 coordinates for used chromosomes
-  data('chr_coordinates_hg19', package = 'CNAqc')
+  # Get coordinates for used chromosomes
+  reference_genome = CNAqc:::get_reference(x$reference_genome) %>% dplyr::filter(chr %in% chromosomes)
 
-  chr_coordinates_hg19 = chr_coordinates_hg19 %>% dplyr::filter(chr %in% chromosomes)
-
-  low = min(chr_coordinates_hg19$from)
-  upp = max(chr_coordinates_hg19$to)
+  low = min(reference_genome$from)
+  upp = max(reference_genome$to)
 
   # Default blank genome -- remove labels with label_chr = NA
   bl_genome = suppressMessages(

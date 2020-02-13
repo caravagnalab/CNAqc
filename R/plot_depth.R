@@ -23,14 +23,14 @@ plot_depth = function(x, N = 5000, chromosomes = paste0('chr', c(1:22, 'X', 'Y')
 {
   stopifnot(inherits(x, 'cnaqc'))
 
-  mutations = x$snvs %>%
-    filter(chr %in% chromosomes) %>%
-    relative_to_absolute_coordinates
-
+  mutations = CNAqc:::relative_to_absolute_coordinates(
+    x, 
+    x$snvs %>% dplyr::filter(chr %in% chromosomes))
+  
   # X-range
-  data('chr_coordinates_hg19', package = 'CNAqc')
-  low = min(chr_coordinates_hg19$from)
-  upp = max(chr_coordinates_hg19$to)
+  reference_genome = CNAqc:::get_reference(x$reference_genome)
+  low = min(reference_genome$from)
+  upp = max(reference_genome$to)
 
   med_DP = median(mutations$DP)
 

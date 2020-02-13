@@ -7,8 +7,8 @@
 #' @export
 #'
 #' @examples
-smooth_segments = function(x, maximum_distance = 1e6) {
-
+smooth_segments = function(x, maximum_distance = 1e6) 
+{
   segments = x$cna
   smoothed_segments = NULL
 

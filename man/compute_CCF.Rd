@@ -4,8 +4,11 @@
 \alias{compute_CCF}
 \title{Compute CCF values for the available mutations.}
 \usage{
-compute_CCF(x, karyotypes = c("1:0", "1:1", "2:0", "2:1", "2:2"),
-  entropy_quantile = 0.9)
+compute_CCF(
+  x,
+  karyotypes = c("1:0", "1:1", "2:0", "2:1", "2:2"),
+  entropy_quantile = 0.9
+)
 }
 \arguments{
 \item{x}{An object of class \code{cnaqc}, created by the \code{init} function.}

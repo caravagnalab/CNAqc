@@ -1,7 +1,9 @@
 # Unused
-expand_reference_chr_to_arms = function()
+expand_reference_chr_to_arms = function(x)
 {
-  p_arm = apply(CNAqc::chr_coordinates_hg19, 1,function(w) {
+  coordinates = CNAqc:::get_reference(ref = x$reference_genome)
+  
+  p_arm = apply(coordinates, 1,function(w) {
     data.frame(
       chr = paste0(w['chr'], 'p'),
       chr_original = w['chr'],
@@ -13,7 +15,7 @@ expand_reference_chr_to_arms = function()
     )
   })
 
-  q_arm = apply(CNAqc::chr_coordinates_hg19, 1,function(w) {
+  q_arm = apply(coordinates, 1,function(w) {
     data.frame(
       chr = paste0(w['chr'], 'q'),
       chr_original = w['chr'],
@@ -43,10 +45,10 @@ expand_reference_chr_to_arms = function()
 
 }
 
-split_cna_to_arms = function(clonal_cna)
+split_cna_to_arms = function(x, clonal_cna)
 {
   split_clonal_cna = NULL
-  reference_genonme = CNAqc::chr_coordinates_hg19
+  reference_genonme = CNAqc:::get_reference(ref = x$reference_genome)
 
   for(i in 1:nrow(clonal_cna))
   {

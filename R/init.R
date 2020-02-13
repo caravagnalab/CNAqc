@@ -24,6 +24,7 @@
 #' Otherwise, segments with `CCF<1` would be considered subclonal CNAs.
 #' @param purity Value in between `0` and `1` to represent the proportion
 #' of actual tumour content (sometimes called "cellularity").
+#' @param ref The reference genome (either "hg19" or "GRCh38"); the default is "GRCh38".
 #'
 #' @return A CNAqc object of class `cnaqc`, with S3 methods for printing,
 #' plotting and analyzing data.
@@ -40,13 +41,22 @@
 #'
 #' x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna, example_dataset_CNAqc$purity)
 #' print(x)
-init = function(snvs, cna, purity)
+init = function(snvs, cna, purity, ref = "GRCh38")
 {
-  input = CNAqc:::prepare_input_data(snvs, cna, purity)
-
+  pio::pioHdr("CNAqc - CNA Quality Check")
+  cat('\n')
+  
+  # Output
   fit = list()
   class(fit) <- "cnaqc"
-
+  
+  # Reference genome
+  fit$reference_genome = ref
+  cli::cli_alert_info("Using reference genome coordinates for: {.field {ref}}.")
+  
+  # Partse input
+  input = CNAqc:::prepare_input_data(snvs, cna, purity)
+  
   # Remove CNA segments with NA Major/minor
   na_allele_Major = sapply(input$cna$Major, is.na)
   na_allele_minor = sapply(input$cna$minor, is.na)
@@ -57,7 +67,7 @@ init = function(snvs, cna, purity)
   if(nrow(discarded_cna) > 0)
   {
     cat(crayon::red("\n[CNAqc] CNA calls: the following segments have Major/ minor alleles in non-numeric format or NAs, and will be removed\n"))
-    pio::pioDisp()
+    pio::pioDisp(discarded_cna)
 
     input$cna = input$cna[!na_allele, , drop = FALSE]
   }

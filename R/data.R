@@ -4,8 +4,9 @@
 #'
 #' @usage data(chr_coordinates_hg19)
 #'
-#' @format A tibble that represents the coorinates for hg19 chromosome
-#' (chr, length, from, to, centromerStart and centromerEnd)
+#' @format A tibble that represents the coordinates for hg19 genome assembly, reporting the chromosome label,
+#' from and to (chromosome range), the length of the chromosome, the position (start and end) of the 
+#' centromers.
 #'
 #' @keywords datasets
 #'
@@ -16,6 +17,26 @@
 #' chr_coordinates_hg19
 #'
 "chr_coordinates_hg19"
+
+#' Coordinates for GRCh38 chromosomes.
+#'
+#' @docType data
+#'
+#' @usage data(chr_coordinates_GRCh38)
+#'
+#' @format A tibble that represents the coordinates for GRCh38 genome assembly, reporting the chromosome label,
+#' from and to (chromosome range), the length of the chromosome, the position (start and end) of the 
+#' centromers.
+#'
+#' @keywords datasets
+#'
+#' @references GRCh38
+#'
+#' @examples
+#' data(chr_coordinates_GRCh38)
+#' chr_coordinates_GRCh38
+#'
+"chr_coordinates_GRCh38"
 
 #' Example CNAqc dataset.
 #'

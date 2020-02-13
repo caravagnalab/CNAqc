@@ -44,16 +44,16 @@ plot_multisample_CNA = function(x)
   calls = lapply(Ln,
                  function(s)
                  {
-                   L[[s]]$cna %>%
+                   W = L[[s]]$cna %>%
                      mutate(
                        label = paste(Major, minor, sep = ':'),
                        CN = minor + Major,
                        sample = s
                      ) %>%
                      select(chr, from, to, label, CN, sample)
+                   
+                   CNAqc:::relative_to_absolute_coordinates(L[[s]], W)
                  })
-
-  calls = lapply(calls, CNAqc:::relative_to_absolute_coordinates)
 
   calls_flat =
     suppressWarnings(
@@ -67,13 +67,10 @@ plot_multisample_CNA = function(x)
 
   chromosomes = calls_flat$chr %>% unique
 
-  # Get hg19 coordinates for used chromosomes
-  data('chr_coordinates_hg19', package = 'CNAqc')
-
-  chr_coordinates_hg19 = chr_coordinates_hg19 %>% filter(chr %in% chromosomes)
-
-  low = min(chr_coordinates_hg19$from)
-  upp = max(chr_coordinates_hg19$to)
+  # Reference genome
+  reference_genome = CNAqc:::get_reference(L[[1]]$reference_genome) %>% filter(chr %in% chromosomes)
+  low = min(reference_genome$from)
+  upp = max(reference_genome$to)
 
   # Default blank genome -- remove labels with label_chr = NA
   bl_genome = suppressMessages(

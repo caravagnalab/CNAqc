@@ -159,7 +159,7 @@ of the QC metrics available in the CNAqc package.
 CNAqc supports `hg19` coordinates.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>init</span>(<span class='no'>snvs</span>, <span class='no'>cna</span>, <span class='no'>purity</span>)</pre>
+    <pre class="usage"><span class='fu'>init</span>(<span class='no'>snvs</span>, <span class='no'>cna</span>, <span class='no'>purity</span>, <span class='kw'>ref</span> <span class='kw'>=</span> <span class='st'>"GRCh38"</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -189,6 +189,10 @@ Otherwise, segments with `CCF&lt;1` would be considered subclonal CNAs.</p></td>
       <th>purity</th>
       <td><p>Value in between `0` and `1` to represent the proportion
 of actual tumour content (sometimes called "cellularity").</p></td>
+    </tr>
+    <tr>
+      <th>ref</th>
+      <td><p>The reference genome (either "hg19" or "GRCh38"); the default is "GRCh38".</p></td>
     </tr>
     </table>
 
@@ -233,14 +237,17 @@ plotting and analyzing data.</p>
 #&gt; 
 #&gt; $purity
 #&gt; [1] 0.89
+#&gt; 
+#&gt; $reference
+#&gt; [1] "hg19"
 #&gt; </div><div class='input'>
 <span class='no'>x</span> <span class='kw'>=</span> <span class='fu'>init</span>(<span class='no'>example_dataset_CNAqc</span>$<span class='no'>snvs</span>, <span class='no'>example_dataset_CNAqc</span>$<span class='no'>cna</span>, <span class='no'>example_dataset_CNAqc</span>$<span class='no'>purity</span>)</div><div class='output co'>#&gt; </span><span style='color: #BBBBBB;background-color: #0000BB;'> [ CNAqc - CNA Quality Check ] 
-#&gt; </span><span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #BBBB00;'>!</span><span> Missing CCF column from CNA calls, adding CCF = 1 assuming clonal CNA calls.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Input n = 13141 mutations for 267 CNA segments (267 clonal, 0 subclonal)</span></div><div class='output co'>#&gt; </div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> Mapped n = 12963 mutations to clonal segments (99% of input)</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; <span class='message'>── </span><span style='color: #000000;background-color: #BBBB00;'>[ CNAqc ] </span><span> n = 13141 mutations in </span><span style='color: #00BB00;'>267</span><span> segments (267 clonal + 0 subclonal) ───────────────────────────</span></div><div class='output co'>#&gt; 
-#&gt;    2:2  [n = 7478] ■■■■■■■■■■■■■■■■■■■■■■■■■■■</div><div class='output co'>#&gt; <span class='warning'>Warning: Unknown or uninitialised column: 'is_driver'.</span></div><div class='output co'>#&gt; 
-#&gt;    4:2  [n = 1893] ■■■■■■■</div><div class='output co'>#&gt; <span class='warning'>Warning: Unknown or uninitialised column: 'is_driver'.</span></div><div class='output co'>#&gt; 
-#&gt;    3:2  [n = 1625] ■■■■■■</div><div class='output co'>#&gt; <span class='warning'>Warning: Unknown or uninitialised column: 'is_driver'.</span></div><div class='output co'>#&gt; 
-#&gt;    2:1  [n = 1563] ■■■■■■</div><div class='output co'>#&gt; <span class='warning'>Warning: Unknown or uninitialised column: 'is_driver'.</span></div><div class='output co'>#&gt; 
-#&gt;    3:0  [n =  312] ■</div><div class='output co'>#&gt; <span class='warning'>Warning: Unknown or uninitialised column: 'is_driver'.</span></div><div class='output co'>#&gt; 
+#&gt; </span><span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Using reference genome coordinates for: </span><span style='color: #00BB00;'>GRCh38</span><span>.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #BBBB00;'>!</span><span> Missing CCF column from CNA calls, adding CCF = 1 assuming clonal CNA calls.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Input n = 13141 mutations for 267 CNA segments (267 clonal, 0 subclonal)</span></div><div class='output co'>#&gt; </div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> Mapped n = 12963 mutations to clonal segments (99% of input)</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; <span class='message'>── </span><span style='color: #000000;background-color: #BBBB00;'>[ CNAqc ] </span><span> n = 13141 mutations in </span><span style='color: #00BB00;'>267</span><span> segments (267 clonal + 0 subclonal). Genome reference: </span><span style='color: #00BB00;'>GRCh38</span><span>. ──────────────────────────────────────────────────────────────────────────</span></div><div class='output co'>#&gt; 
+#&gt;    2:2  [n = 7478] ■■■■■■■■■■■■■■■■■■■■■■■■■■■
+#&gt;    4:2  [n = 1893] ■■■■■■■
+#&gt;    3:2  [n = 1625] ■■■■■■
+#&gt;    2:1  [n = 1563] ■■■■■■
+#&gt;    3:0  [n =  312] ■
 #&gt; </div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Sample Purity: 89% ~ Ploidy: 4.</span></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

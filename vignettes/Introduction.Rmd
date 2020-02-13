@@ -23,16 +23,24 @@ library(CNAqc)
 
 ## Reference genome coordinates
 
-`CNAqc` maps CNA calls to the `hg19` human genome coordinates; the references used are avaible attached to the package
+`CNAqc` contains two harcoded reference genomes, `hg19` and `GRCh38` (default). For each reference genome the package stores the location of the chromosomes, and their centromers; you can use an internal function to extract these data.
+
 ```{r, fig.width=9.5, fig.height=3}
-data('chr_coordinates_hg19', package = 'CNAqc')
-print(chr_coordinates_hg19)
+CNAqc:::get_reference("hg19")
+
+CNAqc:::get_reference("GRCh38")
 ```
 
-You can use a hidden function to plot the reference
+
+The reference genomes can be specified as a parameter once you create a `CNAqc` object (see below). Coordinates are used to translate relative to absolute genome coordinates of somatic mutations and CNA segments; this is done 
+mostly when plotting the data. Note that  mapping of mutations to CNA segments is independent of the reference genome, and it will work only if both mutation and CNA segments are mapped to the same reference.
+
+You can use a hidden function to plot the reference.
 
 ```{r, fig.width=9.5, fig.height=3}
-print(CNAqc:::blank_genome())
+print(CNAqc:::blank_genome(ref = 'hg19'))
+
+print(CNAqc:::blank_genome(ref = 'GRCh38'))
 ```
 
 ## Template dataset
@@ -97,7 +105,8 @@ This function will check input formats, and will map mutations to CNA segments. 
 x = init(
   example_dataset_CNAqc$snvs, 
   example_dataset_CNAqc$cna,
-  example_dataset_CNAqc$purity
+  example_dataset_CNAqc$purity,
+  ref = 'hg19'
   )
 ```
 

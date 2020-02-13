@@ -26,7 +26,7 @@ detect_arm_overfragmentation = function(x,
   clonal_cna = x$cna %>% filter(CCF == 1)
 
   # Split calls in arms p and q
-  expanded_reference = CNAqc:::expand_reference_chr_to_arms()
+  expanded_reference = CNAqc:::expand_reference_chr_to_arms(x)
 
   # Chromosome length
   L = pio:::nmfy(
@@ -34,7 +34,7 @@ detect_arm_overfragmentation = function(x,
     expanded_reference$length)
 
   # Break segments by arm
-  clonal_cna = CNAqc:::split_cna_to_arms(CNAqc:::relative_to_absolute_coordinates(clonal_cna)) %>%
+  clonal_cna = CNAqc:::split_cna_to_arms(x, CNAqc:::relative_to_absolute_coordinates(x, clonal_cna)) %>%
     mutate(
       L = L[paste0(chr, arm)],
       perc_length = length/L,

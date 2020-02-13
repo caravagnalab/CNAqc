@@ -26,11 +26,12 @@ get_karyotypes_colors = function(karyotypes)
   c(color, pio:::nmfy(missing, rep('gray', nmissing)))
 }
 
-relative_to_absolute_coordinates = function(cna) {
-  data('chr_coordinates_hg19', package = 'CNAqc')
+relative_to_absolute_coordinates = function(x, cna) 
+{
+  reference_genome = CNAqc:::get_reference(x$reference_genome)
 
-  vfrom = chr_coordinates_hg19$from
-  names(vfrom) = chr_coordinates_hg19$chr
+  vfrom = reference_genome$from
+  names(vfrom) = reference_genome$chr
 
   cna %>%
     mutate(

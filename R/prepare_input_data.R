@@ -6,9 +6,6 @@ prepare_input_data = function(snvs, cna, tumour_purity)
   stopifnot(tumour_purity > 0 |
               tumour_purity <= 1 | !is.na(tumour_purity))
 
-  pio::pioHdr("CNAqc - CNA Quality Check")
-  cat('\n')
-
   snvs = fortify_mutation_calls(snvs)
   cna = fortify_CNA_segments(cna) %>%
     mutate(
@@ -37,7 +34,11 @@ prepare_input_data = function(snvs, cna, tumour_purity)
     )
   )
 
-
+  # Subclonal CNA calls -- raise informative warning
+  if(ncnasbcl > 0)
+    cli::boxx("Subclonal (CCF < 1) CNA calls are in the data, but will not be used for most of the analyses", col = 'red')
+  
+  
   snvs = map_mutations_to_segments(snvs, cna %>% filter(CCF == 1))
 
   # Tabular of mapping per segments (count)

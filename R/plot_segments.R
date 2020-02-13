@@ -32,12 +32,12 @@ plot_segments = function(x,
   if(circular) return(plot_segments_circular(x, chromosomes = chromosomes))
 
   # Standard plot -- baseline genome reference
-  base_plot = CNAqc:::blank_genome(chromosomes, ...)
+  base_plot = CNAqc:::blank_genome(chromosomes = chromosomes, ref = x$reference_genome, ...)
 
   # Segments
   segments = x$cna %>%
     filter(chr %in% chromosomes)
-  segments = CNAqc:::relative_to_absolute_coordinates(segments)
+  segments = CNAqc:::relative_to_absolute_coordinates(x, segments)
 
   # if there are 1-1 segments, shadow them
   one_one = segments %>% filter(Major == 1, minor == 1)
@@ -141,7 +141,7 @@ plot_segments = function(x,
     if(nrow(driver_list) > 0)
       base_plot = base_plot +
         ggrepel::geom_text_repel(
-          data = CNAqc:::relative_to_absolute_coordinates(driver_list),
+          data = CNAqc:::relative_to_absolute_coordinates(x, driver_list),
           aes(x = from, y = Major, label = gene),
           ylim = c(max_Y_height - 1, NA),
           segment.colour = 'darkblue',
@@ -159,24 +159,12 @@ plot_segments = function(x,
 # Internal function -- implements a circular layout using plot_segments
 plot_segments_circular = function(x, chromosomes = paste0('chr', c(1:22, 'X', 'Y')))
 {
-  data("chr_coordinates_hg19", package = "CNAqc")
-  chr_coordinates_hg19 = chr_coordinates_hg19 %>% filter(chr %in% chromosomes)
-
-  low = min(chr_coordinates_hg19$from)
-  upp = max(chr_coordinates_hg19$to)
-
-
-
   # Uses the standard function, but rotates the coordinate system,
   # offsets the y-axis and add a new set of labels
  suppressMessages(
    plot_segments(x, max_Y_height = 5, chromosomes = chromosomes, circular = FALSE, label_chr = NA) +
       coord_polar(theta = 'x', start = 0, clip = 'off') +
       ylim(-2, 5) +
-     # scale_x_continuous(
-     #   breaks = c(0, chr_coordinates_hg19$from, upp),
-     #   labels = c("", gsub(pattern = 'chr', replacement = '', chr_coordinates_hg19$chr), "")
-     # ) +
      labs(
        x = "",
        y = ""

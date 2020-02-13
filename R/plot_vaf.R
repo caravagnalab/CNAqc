@@ -23,17 +23,17 @@ plot_vaf = function(x, N = 5000, chromosomes = paste0('chr', c(1:22, 'X', 'Y')))
 {
   stopifnot(inherits(x, 'cnaqc'))
 
-  mutations = x$snvs %>%
-    filter(chr %in% chromosomes) %>%
-    relative_to_absolute_coordinates
-
+  mutations = CNAqc:::relative_to_absolute_coordinates(
+    x, 
+    x$snvs %>% dplyr::filter(chr %in% chromosomes))
+  
   # X-range
-  data('chr_coordinates_hg19', package = 'CNAqc')
-  low = min(chr_coordinates_hg19$from)
-  upp = max(chr_coordinates_hg19$to)
-
+  reference_genome = CNAqc:::get_reference(x$reference_genome)
+  low = min(reference_genome$from)
+  upp = max(reference_genome$to)
+  
+  # VAF stats
   med_VAF = median(mutations$VAF)
-
   quant = quantile(mutations$DP, probs = c(.1, .99))
 
   N_all = nrow(mutations)
@@ -66,4 +66,11 @@ plot_vaf = function(x, N = 5000, chromosomes = paste0('chr', c(1:22, 'X', 'Y')))
     annotate("label", fill = 'white', x = upp, y = maxY, label = label_maxY, size = 2, hjust = 1)
 
   vaf
+  
+  # 
+  # vaf + 
+  #   geom_point(size = .05, aes(color = paste0(ref, '>', alt))) 
+  
+
+    
 }

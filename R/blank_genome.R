@@ -1,14 +1,12 @@
-blank_genome = function(chromosomes = paste0('chr', c(1:22, 'X', 'Y')), label_chr = -0.5)
+blank_genome = function(ref = "GRCh38", chromosomes = paste0('chr', c(1:22, 'X', 'Y')), label_chr = -0.5)
 {
-  # GEt hg19 coordinates
-  data('chr_coordinates_hg19', package = 'CNAqc')
+  reference_coordinates = get_reference(ref) %>% 
+    filter(chr %in% chromosomes)
 
-  chr_coordinates_hg19 = chr_coordinates_hg19 %>% filter(chr %in% chromosomes)
+  low = min(reference_coordinates$from)
+  upp = max(reference_coordinates$to)
 
-  low = min(chr_coordinates_hg19$from)
-  upp = max(chr_coordinates_hg19$to)
-
-  pl = ggplot(chr_coordinates_hg19) +
+  pl = ggplot(reference_coordinates) +
     CNAqc:::my_ggplot_theme() +
     geom_rect(
       aes(
@@ -21,7 +19,7 @@ blank_genome = function(chromosomes = paste0('chr', c(1:22, 'X', 'Y')), label_ch
       colour = 'gainsboro'
     ) +
     geom_segment(
-      data = chr_coordinates_hg19,
+      data = reference_coordinates,
       aes(
         x = from,
         xend = from,
@@ -47,19 +45,19 @@ blank_genome = function(chromosomes = paste0('chr', c(1:22, 'X', 'Y')), label_ch
     # ggpubr::rotate_x_text() +
     # xlim(low, upp) +
     scale_x_continuous(
-      breaks = c(0, chr_coordinates_hg19$from, upp),
-      labels = c("", gsub(pattern = 'chr', replacement = '', chr_coordinates_hg19$chr), "")
+      breaks = c(0, reference_coordinates$from, upp),
+      labels = c("", gsub(pattern = 'chr', replacement = '', reference_coordinates$chr), "")
     )
 
 
   # if(!is.null(label_chr) & !is.na(label_chr))
   #   pl = pl +
   #   geom_label(
-  #     data = chr_coordinates_hg19,
+  #     data = reference_coordinates,
   #     aes(
-  #       x = chr_coordinates_hg19$from,
+  #       x = reference_coordinates$from,
   #       y = label_chr,
-  #       label = gsub('chr', '', chr_coordinates_hg19$chr)
+  #       label = gsub('chr', '', reference_coordinates$chr)
   #     ),
   #     hjust = 0,
   #     colour = 'white',

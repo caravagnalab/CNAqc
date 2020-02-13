@@ -135,9 +135,9 @@
 <a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co">#&gt; ℹ One-tailed Binomial test: 8 tests, alpha 0.01. Short segments: 0.2% of the reference arm.</span></a>
 <a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">#&gt; ✓ chr7p,  p = 1.71798691840001e-24 ~ 34 segments, 34 short.</span></a>
 <a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co">#&gt; ✓ chr1p,  p = 1.62738995200002e-15 ~ 24 segments, 23 short.</span></a>
-<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="co">#&gt; ✓ chr1q,  p = 4.34176000000001e-08 ~ 13 segments, 12 short.</span></a>
-<a class="sourceLine" id="cb3-7" data-line-number="7"><span class="co">#&gt; ✓ chr11q,  p = 1.0657792e-06 ~ 13 segments, 11 short.</span></a>
-<a class="sourceLine" id="cb3-8" data-line-number="8"><span class="co">#&gt; ✓ chr12q,  p = 2.00704e-07 ~ 12 segments, 11 short.</span></a>
+<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="co">#&gt; ✓ chr11q,  p = 2.4788992e-07 ~ 14 segments, 12 short.</span></a>
+<a class="sourceLine" id="cb3-7" data-line-number="7"><span class="co">#&gt; ✓ chr1q,  p = 4.34176000000001e-08 ~ 13 segments, 12 short.</span></a>
+<a class="sourceLine" id="cb3-8" data-line-number="8"><span class="co">#&gt; ✓ chr12q,  p = 4.34176000000001e-08 ~ 13 segments, 12 short.</span></a>
 <a class="sourceLine" id="cb3-9" data-line-number="9"><span class="co">#&gt; ✓ chr3q,  p = 4.52608e-06 ~ 12 segments, 10 short.</span></a>
 <a class="sourceLine" id="cb3-10" data-line-number="10"><span class="co">#&gt; ✓ chr7q,  p = 4.52608e-06 ~ 12 segments, 10 short.</span></a>
 <a class="sourceLine" id="cb3-11" data-line-number="11"><span class="co">#&gt; ✓ chr8p,  p = 9.21599999999998e-07 ~ 11 segments, 10 short.</span></a>
@@ -181,25 +181,16 @@
 <a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co">#&gt; ! The whole genome is overfragmented with alpha = 0.05; p = 6.44688822866778e-06</span></a>
 <a class="sourceLine" id="cb5-5" data-line-number="5"></a>
 <a class="sourceLine" id="cb5-6" data-line-number="6"><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(x)</a>
-<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="co">#&gt; ── [ CNAqc ]  n = 13141 mutations in 267 segments (267 clonal + 0 subclonal) ───────────────────────────</span></a>
+<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="co">#&gt; ── [ CNAqc ]  n = 13141 mutations in 267 segments (267 clonal + 0 subclonal). Genome reference: GRCh38. ──────────────────────────────────────────────────────────────────────────</span></a>
 <a class="sourceLine" id="cb5-8" data-line-number="8"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb5-9" data-line-number="9"><span class="co">#&gt;    2:2  [n = 7478] ■■■■■■■■■■■■■■■■■■■■■■■■■■■</span></a>
-<a class="sourceLine" id="cb5-10" data-line-number="10"><span class="co">#&gt; Warning: Unknown or uninitialised column: 'is_driver'.</span></a>
-<a class="sourceLine" id="cb5-11" data-line-number="11"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb5-12" data-line-number="12"><span class="co">#&gt;    4:2  [n = 1893] ■■■■■■■</span></a>
-<a class="sourceLine" id="cb5-13" data-line-number="13"><span class="co">#&gt; Warning: Unknown or uninitialised column: 'is_driver'.</span></a>
-<a class="sourceLine" id="cb5-14" data-line-number="14"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb5-15" data-line-number="15"><span class="co">#&gt;    3:2  [n = 1625] ■■■■■■</span></a>
-<a class="sourceLine" id="cb5-16" data-line-number="16"><span class="co">#&gt; Warning: Unknown or uninitialised column: 'is_driver'.</span></a>
-<a class="sourceLine" id="cb5-17" data-line-number="17"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb5-18" data-line-number="18"><span class="co">#&gt;    2:1  [n = 1563] ■■■■■■</span></a>
-<a class="sourceLine" id="cb5-19" data-line-number="19"><span class="co">#&gt; Warning: Unknown or uninitialised column: 'is_driver'.</span></a>
-<a class="sourceLine" id="cb5-20" data-line-number="20"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb5-21" data-line-number="21"><span class="co">#&gt;    3:0  [n =  312] ■</span></a>
-<a class="sourceLine" id="cb5-22" data-line-number="22"><span class="co">#&gt; Warning: Unknown or uninitialised column: 'is_driver'.</span></a>
-<a class="sourceLine" id="cb5-23" data-line-number="23"><span class="co">#&gt; ℹ Sample Purity: 89% ~ Ploidy: 4.</span></a>
-<a class="sourceLine" id="cb5-24" data-line-number="24"><span class="co">#&gt; ✓ Arm-level fragmentation analysis: 8 segments overfragmented.</span></a>
-<a class="sourceLine" id="cb5-25" data-line-number="25"><span class="co">#&gt; ✓ Whole-genome fragmentation analysis: p = 1e-05: overfragmented.</span></a></code></pre></div>
+<a class="sourceLine" id="cb5-10" data-line-number="10"><span class="co">#&gt;    4:2  [n = 1893] ■■■■■■■</span></a>
+<a class="sourceLine" id="cb5-11" data-line-number="11"><span class="co">#&gt;    3:2  [n = 1625] ■■■■■■</span></a>
+<a class="sourceLine" id="cb5-12" data-line-number="12"><span class="co">#&gt;    2:1  [n = 1563] ■■■■■■</span></a>
+<a class="sourceLine" id="cb5-13" data-line-number="13"><span class="co">#&gt;    3:0  [n =  312] ■</span></a>
+<a class="sourceLine" id="cb5-14" data-line-number="14"><span class="co">#&gt; ℹ Sample Purity: 89% ~ Ploidy: 4.</span></a>
+<a class="sourceLine" id="cb5-15" data-line-number="15"><span class="co">#&gt; ✓ Arm-level fragmentation analysis: 8 segments overfragmented.</span></a>
+<a class="sourceLine" id="cb5-16" data-line-number="16"><span class="co">#&gt; ✓ Whole-genome fragmentation analysis: p = 1e-05: overfragmented.</span></a></code></pre></div>
 </div>
   </div>
 

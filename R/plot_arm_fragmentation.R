@@ -45,7 +45,7 @@ plot_arm_fragmentation = function(x)
 
   # Results from fragmentation test
   fragments = x$arm_fragmentation$table %>% filter(significant)
-  segments = CNAqc:::relative_to_absolute_coordinates(x$cna)
+  segments = CNAqc:::relative_to_absolute_coordinates(x, x$cna)
 
   # Plot the fragments table
   squaring = max(c(x$arm_fragmentation$table$n_long, x$arm_fragmentation$table$n_short))

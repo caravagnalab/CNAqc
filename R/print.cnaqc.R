@@ -21,7 +21,7 @@ print.cnaqc = function(x, ...)
   cli::cli_rule(
     paste(
       crayon::bgYellow(crayon::black("[ CNAqc ] ")),
-      'n = {.value {x$n_snvs}} mutations in {.field {x$n_cna}} segments ({.value {x$n_cna_clonal}} clonal + {.value {x$n_cna_sbclonal}} subclonal)'
+      'n = {.value {x$n_snvs}} mutations in {.field {x$n_cna}} segments ({.value {x$n_cna_clonal}} clonal + {.value {x$n_cna_sbclonal}} subclonal). Genome reference: {.field {x$reference_genome}}.'
     )
   )
 

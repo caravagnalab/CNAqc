@@ -4,7 +4,7 @@
 \alias{init}
 \title{Create a CNAqc object.}
 \usage{
-init(snvs, cna, purity)
+init(snvs, cna, purity, ref = "GRCh38")
 }
 \arguments{
 \item{snvs}{A data.frame of mutations with the following fields
@@ -26,6 +26,8 @@ Otherwise, segments with `CCF<1` would be considered subclonal CNAs.}
 
 \item{purity}{Value in between `0` and `1` to represent the proportion
 of actual tumour content (sometimes called "cellularity").}
+
+\item{ref}{The reference genome (either "hg19" or "GRCh38"); the default is "GRCh38".}
 }
 \value{
 A CNAqc object of class `cnaqc`, with S3 methods for printing,
