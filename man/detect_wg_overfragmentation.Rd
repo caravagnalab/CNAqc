@@ -4,18 +4,11 @@
 \alias{detect_wg_overfragmentation}
 \title{Title}
 \usage{
-detect_wg_overfragmentation(
-  x,
-  alpha = 0.05,
-  binomial_p = 0.2,
-  small_segments_cutoff = 1e+06
-)
+detect_wg_overfragmentation(x, alpha = 0.05, binomial_p = 0.2,
+  small_segments_cutoff = 1e+06)
 }
 \arguments{
 \item{alpha}{}
-}
-\value{
-
 }
 \description{
 Title

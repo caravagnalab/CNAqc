@@ -4,12 +4,8 @@
 \alias{inspect_segment}
 \title{Plot the VAF of a set of segments}
 \usage{
-inspect_segment(
-  x,
-  chrs = c(paste0("chr", 1:22), "chrX", "chrY"),
-  n = 200,
-  l = 1000
-)
+inspect_segment(x, chrs = c(paste0("chr", 1:22), "chrX", "chrY"),
+  n = 200, l = 1000)
 }
 \arguments{
 \item{x}{An object of class \code{cnaqc}.}

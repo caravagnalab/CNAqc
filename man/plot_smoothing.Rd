@@ -9,9 +9,6 @@ plot_smoothing(x)
 \arguments{
 \item{x}{}
 }
-\value{
-
-}
 \description{
 Title
 }

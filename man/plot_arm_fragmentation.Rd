@@ -9,9 +9,6 @@ plot_arm_fragmentation(x)
 \arguments{
 \item{x}{A `CNAqc` object.}
 }
-\value{
-
-}
 \description{
 The function produces a multi-panel figure. The top left
 panel shows a scatter of the segments' length per arm, and

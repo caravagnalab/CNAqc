@@ -9,9 +9,6 @@ plot_segment_size_distribution(x, annotate_cut = 1e+07)
 \arguments{
 \item{annotate_cut}{}
 }
-\value{
-
-}
 \description{
 Title
 }

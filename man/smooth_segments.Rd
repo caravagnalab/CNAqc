@@ -9,9 +9,6 @@ smooth_segments(x, maximum_distance = 1e+06)
 \arguments{
 \item{maximum_distance}{}
 }
-\value{
-
-}
 \description{
 Title
 }
