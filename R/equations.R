@@ -26,11 +26,26 @@ ccf_adjustment_fun = function(v, m, M, p, mut.allele = 1)
 # M - Major allele
 # p - purity
 # mut.allele - mutation multiplicity
-purity_estimation_fun = function(v, m, M, p, mut.allele = 1)
+purity_estimation_fun = function(v, m, M, mut.allele = 1)
 {
   CN = m+M
 
-  (2 * v)/(v * (2-CN) + m)
+  (2 * v)/(v * (2-CN) + mut.allele)
 }
+
+# # Tetraploid (m = M = 2), VAF 50% -- pure tumour!
+# purity_estimation_fun(v = .5, m = 2, M = 2, mut.allele = 2)
+#
+# # Triploid (m = 1, M = 2), VAF 2/3%  -- pure tumour!
+# purity_estimation_fun(v = 2/3, m = 1, M = 2, mut.allele = 2)
+#
+# purity_estimation_fun(v = .66, m = 1, M = 2, mut.allele = 2)
+#
+# # Diploid balanced (m = M = 1), VAF 50% -- pure tumour!
+# purity_estimation_fun(v = .5, m = 1, M = 1, mut.allele = 1)
+
+
+
+
 
 
