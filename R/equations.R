@@ -52,8 +52,8 @@ purity_estimation_fun = function(v, m, M, mut.allele = 1)
 # purity_estimation_fun(v = .06, m = 2, M = 2, mut.allele = 2)
 #
 # purity_estimation_fun(v = .06, m = 0, M = 1, mut.allele = 1)
-
-
+#
+# purity_estimation_fun(v = .06, m = 1, M = 1, mut.allele = 1)
 
 
 

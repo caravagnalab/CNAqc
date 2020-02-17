@@ -45,18 +45,18 @@ init = function(snvs, cna, purity, ref = "GRCh38")
 {
   pio::pioHdr("CNAqc - CNA Quality Check")
   cat('\n')
-  
+
   # Output
   fit = list()
   class(fit) <- "cnaqc"
-  
+
   # Reference genome
   fit$reference_genome = ref
   cli::cli_alert_info("Using reference genome coordinates for: {.field {ref}}.")
-  
+
   # Partse input
   input = CNAqc:::prepare_input_data(snvs, cna, purity)
-  
+
   # Remove CNA segments with NA Major/minor
   na_allele_Major = sapply(input$cna$Major, is.na)
   na_allele_minor = sapply(input$cna$minor, is.na)
@@ -87,7 +87,6 @@ init = function(snvs, cna, purity, ref = "GRCh38")
 
   fit$n_karyotype = sort(table(fit$snvs$karyotype), decreasing = T)
   fit$purity = purity
-
 
   tab_ploidy = fit$cna %>%
     group_by(minor, Major) %>%
