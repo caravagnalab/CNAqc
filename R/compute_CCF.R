@@ -11,11 +11,6 @@
 #'
 #' @param x An object of class \code{cnaqc}, created by the \code{init} function.
 #' @param karyotypes The karyotypes to use, this package supports only \code{c('2:1', '2:0', '2:2')}.
-#' @param entropy_quantile The entropy quantile used to determine the interval in which the CCF estimates
-#' are not reliable because it is not possible to determine a precise value for the multiplicity of a
-#' mutation from its allelic frequencies. See the package vignette `"Computation of Cancer Cell Fractions"`
-#' that is available at the URL \url{https://caravagn.github.io/CNAqc/articles/ccf_computation.html} to
-#' see the detailed meaning of this parameter.
 #'
 #' @seealso Getters function \code{CCF} and \code{plot_CCF}.
 #' @return An object of class \code{cnaqc}, with CCF values available for extraction and plotting.
@@ -31,7 +26,7 @@
 #'
 #' CCF(x)
 #' plot_CCF(x)
-compute_CCF = function(x, karyotypes = c('1:0', '1:1', '2:0', '2:1', '2:2'), entropy_quantile = .9)
+compute_CCF = function(x, karyotypes = c('1:0', '1:1', '2:0', '2:1', '2:2'))
 {
   stopifnot(inherits(x, 'cnaqc'))
 
@@ -50,7 +45,7 @@ compute_CCF = function(x, karyotypes = c('1:0', '1:1', '2:0', '2:1', '2:2'), ent
       if(k %in% c('1:0', '1:1'))
         return(mutmult_single_copy(x, k))
 
-      return(mutmult_two_copies(x, k, entropy_quantile = .9))
+      return(mutmult_two_copies(x, k))
     })
   names(x$CCF_estimates) = karyotypes
 
@@ -59,14 +54,14 @@ compute_CCF = function(x, karyotypes = c('1:0', '1:1', '2:0', '2:1', '2:2'), ent
   mutations = Reduce(bind_rows, mutations)
 
   cat('\n')
-  cli::cli_h2("Summary CCF assignments. NA: not assignable with q = {.field {entropy_quantile}}")
+  cli::cli_h2("Summary CCF assignments. NA: not assignable")
   pioDisp(
     mutations %>%
       group_by(karyotype, mutation_multiplicity) %>%
       summarise(assignments = n()) %>%
       ungroup()
   )
-  cat("Note: NA ~ mutations not confidently assignable with q =", entropy_quantile, '\n')
+  cat("Note: NA ~ mutations not confidently assignable")
 
   x
 }

@@ -141,25 +141,9 @@ The plot shows all the quantities described above; from left to right the plot s
 In this case we see for instance that $\hat{q} = 0.9$ (default value) is a little bit off the required value, because the determined range $I$ is not fully including the peak in the entropy values. However, we see that beacuse the data quality is high the two Binomial distributions are well separated. Therefore even with this parameter value we still obtain perfectly reasonable mutation multiplicities and CCF estimates. 
 
 We inspect also the remaining karyotypes, and find a similar satisfactory result.
-```{r,fig.width=11, fig.height=9,  warning=F, message=F}
+```{r,fig.width=9.5, fig.height=9,  warning=F, message=F}
 # Analyze all of them now
 x = compute_CCF(x)
 plot_CCF(x)
 ```
-
-Just for example, this is how CCF values would have changed if we had used different value of $\hat{q}$.
-
-```{r echo=FALSE, results=FALSE, message=FALSE, warning=FALSE}
-# Computation - output not shown
-examples_low = compute_CCF(x, karyotypes = '2:1', entropy_quantile = .5)
-examples_high = compute_CCF(x, karyotypes = '2:1', entropy_quantile = .99)
-```
-```{r,fig.width=11, fig.height=3}
-# Bad estimates for q = .5
-plot_CCF(examples_low)
-
-# Still good estimates for q = .99
-plot_CCF(examples_high)
-```
-
 

@@ -1,9 +1,9 @@
 # Density values from a Binmoial distribution with number of trials `n`
 # and success probability `p`. Returns a data.frame with the density
-binomial_density = function(p, n)
+binomial_density = function(p, n, N_bins = 100)
 {
   # Domain
-  domain = seq(0, 1, 0.01)
+  domain = seq(0, 1, 1/N_bins)
 
   # Bernoulli succesfull trials
   NV = round(domain * n)

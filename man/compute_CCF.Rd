@@ -4,19 +4,12 @@
 \alias{compute_CCF}
 \title{Compute CCF values for the available mutations.}
 \usage{
-compute_CCF(x, karyotypes = c("1:0", "1:1", "2:0", "2:1", "2:2"),
-  entropy_quantile = 0.9)
+compute_CCF(x, karyotypes = c("1:0", "1:1", "2:0", "2:1", "2:2"))
 }
 \arguments{
 \item{x}{An object of class \code{cnaqc}, created by the \code{init} function.}
 
 \item{karyotypes}{The karyotypes to use, this package supports only \code{c('2:1', '2:0', '2:2')}.}
-
-\item{entropy_quantile}{The entropy quantile used to determine the interval in which the CCF estimates
-are not reliable because it is not possible to determine a precise value for the multiplicity of a
-mutation from its allelic frequencies. See the package vignette `"Computation of Cancer Cell Fractions"`
-that is available at the URL \url{https://caravagn.github.io/CNAqc/articles/ccf_computation.html} to
-see the detailed meaning of this parameter.}
 }
 \value{
 An object of class \code{cnaqc}, with CCF values available for extraction and plotting.

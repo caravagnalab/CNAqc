@@ -9,6 +9,9 @@ subsample(x, N = 15000, keep_drivers = TRUE)
 \arguments{
 \item{keep_drivers}{}
 }
+\value{
+
+}
 \description{
 Randomly subsample a dataset
 }

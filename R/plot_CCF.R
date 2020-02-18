@@ -32,7 +32,7 @@ plot_CCF = function(x)
   ggpubr::ggarrange(
     plotlist = lapply(
       names(x$CCF_estimates),
-      plot_mutation_multiplicity_entropy,
+      CNAqc:::plot_mutation_multiplicity_entropy,
       x = x
     ),
     ncol = 1,

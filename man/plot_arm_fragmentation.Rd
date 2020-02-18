@@ -4,16 +4,23 @@
 \alias{plot_arm_fragmentation}
 \title{Plot patterns of arm level fragmentation.}
 \usage{
-plot_arm_fragmentation(x)
+plot_arm_fragmentation(x, zoom = 0)
 }
 \arguments{
 \item{x}{A `CNAqc` object.}
+
+\item{zoom}{Number of maximum zoom panels to show in the bottom of
+the figure.}
+}
+\value{
+
 }
 \description{
 The function produces a multi-panel figure. The top left
 panel shows a scatter of the segments' length per arm, and
 their jump value. The bottom panel uses a circular layout
-to show arms. In this case dashed lines outgoing the centre
+to show arms, and can be activated setting \code{zoom > 0} 
+(default is 0). In this case dashed lines outgoing the centre
 reprent breakpoints not shown in the plot (i.e., with Major > 5).
 }
 \examples{
