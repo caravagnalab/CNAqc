@@ -4,12 +4,17 @@
 \alias{compute_CCF}
 \title{Compute CCF values for the available mutations.}
 \usage{
-compute_CCF(x, karyotypes = c("1:0", "1:1", "2:0", "2:1", "2:2"))
+compute_CCF(x, karyotypes = c("1:0", "1:1", "2:0", "2:1", "2:2"),
+  cutoff_QC_PASS = 0.1)
 }
 \arguments{
 \item{x}{An object of class \code{cnaqc}, created by the \code{init} function.}
 
 \item{karyotypes}{The karyotypes to use, this package supports only \code{c('2:1', '2:0', '2:2')}.}
+
+\item{cutoff_QC_PASS}{Percentage of mutations that can be not-assigned (\code{NA}) in a karyotype.
+If the karyotype has more than \code{cutoff_QC_PASS} percentage of non-assigned mutations then
+the overall set of CCF calls is failed for the karyotype.}
 }
 \value{
 An object of class \code{cnaqc}, with CCF values available for extraction and plotting.
@@ -30,6 +35,7 @@ x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna, example_dataset_
 x = compute_CCF(x, karyotypes = c('1:0', '1:1', '2:1', '2:0', '2:2'))
 print(x)
 
+# Extract the values with these other functions
 CCF(x)
 plot_CCF(x)
 }

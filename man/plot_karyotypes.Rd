@@ -4,11 +4,8 @@
 \alias{plot_karyotypes}
 \title{Plot a barplot for the segments.}
 \usage{
-plot_karyotypes(
-  x,
-  type = "percentage",
-  chromosomes = paste0("chr", c(1:22, "X", "Y"))
-)
+plot_karyotypes(x, type = "percentage", chromosomes = paste0("chr",
+  c(1:22, "X", "Y")))
 }
 \arguments{
 \item{x}{An object of class \code{cnaqc}, created by the \code{init} function.}

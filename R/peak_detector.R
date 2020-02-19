@@ -3,31 +3,40 @@ peak_detector = function(snvs,
                          expectation,
                          tumour_purity,
                          filtered_qc_snvs,
-                         adjust = 1,
-                         neighlim = 1,
-                         min_density = 0.5,
                          matching_epsilon = 0.015,
-                         ...)
+                         kernel_adjust = 1,
+                         p = 0.005)
 {
   y = snvs %>% pull(VAF)
-  den = density(y, kernel = 'gaussian', adjust = adjust)
+
+  # Smoothed Gaussian kernel
+  den = density(y, kernel = 'gaussian', adjust = kernel_adjust)
 
   input_peakdetection = matrix(cbind(x = den$x, y = den$y), ncol = 2)
   colnames(input_peakdetection) = c('x', 'y')
 
- # pio::pioStr("peak_detector", 'karyotype', snvs$karyotype[1], ' - peakPick params ...')
-  # require(peakPick)
-
-  peaks =  peakpick(mat = input_peakdetection, neighlim = neighlim, ...)
-  peaks_params = list(...)
-
-  xy_peaks = input_peakdetection[peaks[, 2], , drop = FALSE] %>%
+  # Test 5 parametrisations of peakPick neighlim
+  pks = Reduce(
+    dplyr::bind_rows,
+    lapply(1:5,
+         function(n){
+           pk = peakPick::peakpick(mat = input_peakdetection, neighlim = n)
+           input_peakdetection[pk[, 2], , drop = FALSE] %>% as.data.frame()
+         }
+         )
+  ) %>%
     as_tibble() %>%
-    mutate(
-      x = round(x, 2),
-      y = round(y, 2)
-    ) %>%
-    mutate(discarded = y < min_density)
+    dplyr::arrange(x) %>%
+    dplyr::mutate(x = round(x, 2), y = round(y, 2)) %>%
+    dplyr::distinct(x, .keep_all = TRUE)
+
+  # peaks_params = list(...)
+
+  hst = hist(snvs$VAF, breaks = seq(0, 1, 0.01), plot = F)$counts
+  pks$counts_per_bin = hst[round(pks$x * 100)]
+
+  xy_peaks = pks %>%
+    dplyr::mutate(discarded = counts_per_bin < sum(hst) * p)
 
   # linear combination of the weight, split by number of peaks to match
   weight = filtered_qc_snvs %>%
@@ -45,22 +54,18 @@ peak_detector = function(snvs,
       size = .3,
       color = 'black'
     ) +
-    my_ggplot_theme(cex = 1) +
+    CNAqc:::my_ggplot_theme(cex = 1) +
     labs(
       title = paste0("Karyotype ", snvs$karyotype[1]),
       subtitle = paste0('w = ', round(weight, 3), ' (n = ', nrow(snvs), ')'),
-      # caption = paste0(
-      #   "  KDE bandwith adjustment : ", adjust, '\n',
-      #   "peakPick neighlim integer : ", neighlim
-      # ),
       y = 'KDE'
     ) +
-    geom_hline(
-      yintercept = min_density,
-      color = 'darkred',
-      linetype = 'dashed',
-      size = .3
-    ) +
+    # geom_hline(
+    #   yintercept = sum(hst) * 0.005,
+    #   color = 'darkred',
+    #   linetype = 'dashed',
+    #   size = .3
+    # ) +
     theme(
       legend.position = 'bottom'
     )  +
@@ -69,11 +74,12 @@ peak_detector = function(snvs,
   # Add points for peaks to plot
   plot_data = plot_data +
     geom_point(data = xy_peaks,
-               aes(x = x, y = y, shape = discarded),
-               size = 1.5,
+               aes(x = x, y = y, shape = discarded, size = counts_per_bin),
+               # size = 1.5,
                show.legend = FALSE
     ) +
-    scale_shape_manual(values = c(`TRUE` = 1, `FALSE` = 16))
+    scale_shape_manual(values = c(`TRUE` = 1, `FALSE` = 16)) +
+    scale_size(range = c(1, 5))
 
   # Compute matching
   #
@@ -93,8 +99,8 @@ peak_detector = function(snvs,
     for(s in 1:missing) match_xy_peaks = bind_rows(match_xy_peaks, entry)
   }
 
-  expectation = bind_cols(expectation, match_xy_peaks) %>%
-    mutate(
+  expectation = dplyr::bind_cols(expectation, match_xy_peaks) %>%
+    dplyr::mutate(
       offset = peak - x,
       matched = abs(offset) <= matching_epsilon
     )

@@ -4,13 +4,8 @@
 \alias{plot_segments}
 \title{Plot CNA segments.}
 \usage{
-plot_segments(
-  x,
-  chromosomes = paste0("chr", c(1:22, "X", "Y")),
-  max_Y_height = 8,
-  circular = FALSE,
-  ...
-)
+plot_segments(x, chromosomes = paste0("chr", c(1:22, "X", "Y")),
+  max_Y_height = 8, circular = FALSE, ...)
 }
 \arguments{
 \item{x}{An object of class \code{cnaqc}, created by the \code{init} function.}

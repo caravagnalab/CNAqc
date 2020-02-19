@@ -4,18 +4,11 @@
 \alias{detect_arm_overfragmentation}
 \title{Title}
 \usage{
-detect_arm_overfragmentation(
-  x,
-  alpha = 0.01,
-  genome_percentage_cutoff = 0.2,
-  minimum_segments_for_testing = 10
-)
+detect_arm_overfragmentation(x, alpha = 0.01,
+  genome_percentage_cutoff = 0.2, minimum_segments_for_testing = 10)
 }
 \arguments{
 \item{minimum_segments_for_testing}{}
-}
-\value{
-
 }
 \description{
 Title

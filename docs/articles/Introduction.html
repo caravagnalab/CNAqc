@@ -235,7 +235,7 @@
 <a class="sourceLine" id="cb8-12" data-line-number="12"><span class="co">#&gt; ✓ Mapped n = 12963 mutations to clonal segments (99% of input)</span></a></code></pre></div>
 <p>The summary of <code>x</code> can be <code>print</code> to see the number of mutations per karyotype, sorted by size.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(x)</a>
-<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="co">#&gt; ── [ CNAqc ]  n = 13141 mutations in 267 segments (267 clonal + 0 subclonal). Genome reference: hg19. ────────────────────────────────────────────────────────────────────────────</span></a>
+<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="co">#&gt; ── [ CNAqc ]  n = 13141 mutations in 267 segments (267 clonal + 0 subclonal). Genome reference</span></a>
 <a class="sourceLine" id="cb9-3" data-line-number="3"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb9-4" data-line-number="4"><span class="co">#&gt;    2:2  [n = 7478] ■■■■■■■■■■■■■■■■■■■■■■■■■■■</span></a>
 <a class="sourceLine" id="cb9-5" data-line-number="5"><span class="co">#&gt;    4:2  [n = 1893] ■■■■■■■</span></a>
@@ -325,11 +325,7 @@
 <a class="sourceLine" id="cb17-3" data-line-number="3">  <span class="kw"><a href="../reference/plot_karyotypes.html">plot_karyotypes</a></span>(x, <span class="dt">type =</span> <span class="st">'number'</span>),</a>
 <a class="sourceLine" id="cb17-4" data-line-number="4">  <span class="dt">common.legend =</span> <span class="ot">TRUE</span>,</a>
 <a class="sourceLine" id="cb17-5" data-line-number="5">  <span class="dt">legend =</span> <span class="st">'bottom'</span></a>
-<a class="sourceLine" id="cb17-6" data-line-number="6">)</a>
-<a class="sourceLine" id="cb17-7" data-line-number="7"><span class="co">#&gt; Warning: Unknown or uninitialised column: 'length'.</span></a>
-<a class="sourceLine" id="cb17-8" data-line-number="8"><span class="co">#&gt; Warning: Removed 14 rows containing missing values (geom_bar).</span></a>
-<a class="sourceLine" id="cb17-9" data-line-number="9"></a>
-<a class="sourceLine" id="cb17-10" data-line-number="10"><span class="co">#&gt; Warning: Removed 14 rows containing missing values (geom_bar).</span></a></code></pre></div>
+<a class="sourceLine" id="cb17-6" data-line-number="6">)</a></code></pre></div>
 <p><img src="Introduction_files/figure-html/unnamed-chunk-16-1.png" width="432"></p>
 <p>You can also plot the segments’ length distribution, which is used to detect fragmentation patterns in the segments.</p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="kw"><a href="../reference/plot_segment_size_distribution.html">plot_segment_size_distribution</a></span>(x)</a></code></pre></div>
@@ -354,12 +350,12 @@
 <a class="sourceLine" id="cb19-13" data-line-number="13">  )</a></code></pre></div>
 <p>Drivers are annotated in the print and in the segments plot.</p>
 <div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(y)</a>
-<a class="sourceLine" id="cb20-2" data-line-number="2"><span class="co">#&gt; ── [ CNAqc ]  n = 13141 mutations in 267 segments (267 clonal + 0 subclonal). Genome reference: hg19. ────────────────────────────────────────────────────────────────────────────</span></a>
+<a class="sourceLine" id="cb20-2" data-line-number="2"><span class="co">#&gt; ── [ CNAqc ]  n = 13141 mutations in 267 segments (267 clonal + 0 subclonal). Genome reference</span></a>
 <a class="sourceLine" id="cb20-3" data-line-number="3"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb20-4" data-line-number="4"><span class="co">#&gt;    2:2  [n = 7478] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { chr6_38727576, chr6_144463098, chr15_88359415 }</span></a>
+<a class="sourceLine" id="cb20-4" data-line-number="4"><span class="co">#&gt;    2:2  [n = 7478] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { chr6_123466485, chr13_57237624, chrX_45633816 }</span></a>
 <a class="sourceLine" id="cb20-5" data-line-number="5"><span class="co">#&gt;    4:2  [n = 1893] ■■■■■■■</span></a>
-<a class="sourceLine" id="cb20-6" data-line-number="6"><span class="co">#&gt;    3:2  [n = 1625] ■■■■■■</span></a>
-<a class="sourceLine" id="cb20-7" data-line-number="7"><span class="co">#&gt;    2:1  [n = 1563] ■■■■■■  { chr11_42048645 }</span></a>
+<a class="sourceLine" id="cb20-6" data-line-number="6"><span class="co">#&gt;    3:2  [n = 1625] ■■■■■■  { chr7_53459477 }</span></a>
+<a class="sourceLine" id="cb20-7" data-line-number="7"><span class="co">#&gt;    2:1  [n = 1563] ■■■■■■</span></a>
 <a class="sourceLine" id="cb20-8" data-line-number="8"><span class="co">#&gt;    3:0  [n =  312] ■</span></a>
 <a class="sourceLine" id="cb20-9" data-line-number="9"><span class="co">#&gt; ℹ Sample Purity: 89% ~ Ploidy: 4.</span></a>
 <a class="sourceLine" id="cb20-10" data-line-number="10"></a>
@@ -386,17 +382,17 @@
 <a class="sourceLine" id="cb22-4" data-line-number="4"><span class="co">#&gt; ℹ Input n = 5004 mutations for 267 CNA segments (267 clonal, 0 subclonal)</span></a>
 <a class="sourceLine" id="cb22-5" data-line-number="5"><span class="co">#&gt; Warning in map_mutations_to_segments(snvs, cna %&gt;% filter(CCF == 1)): [CNAqc] a</span></a>
 <a class="sourceLine" id="cb22-6" data-line-number="6"><span class="co">#&gt; karyotype column is present in CNA calls, and will be overwritten</span></a>
-<a class="sourceLine" id="cb22-7" data-line-number="7"><span class="co">#&gt; ✓ Mapped n = 4949 mutations to clonal segments (99% of input)</span></a>
+<a class="sourceLine" id="cb22-7" data-line-number="7"><span class="co">#&gt; ✓ Mapped n = 4942 mutations to clonal segments (99% of input)</span></a>
 <a class="sourceLine" id="cb22-8" data-line-number="8"></a>
 <a class="sourceLine" id="cb22-9" data-line-number="9"><span class="co"># 5000 + the ranomd entries that we sampled before</span></a>
 <a class="sourceLine" id="cb22-10" data-line-number="10"><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(y_<span class="dv">5000</span>)</a>
-<a class="sourceLine" id="cb22-11" data-line-number="11"><span class="co">#&gt; ── [ CNAqc ]  n = 5004 mutations in 267 segments (267 clonal + 0 subclonal). Genome reference: GRCh38. ───────────────────────────────────────────────────────────────────────────</span></a>
+<a class="sourceLine" id="cb22-11" data-line-number="11"><span class="co">#&gt; ── [ CNAqc ]  n = 5004 mutations in 267 segments (267 clonal + 0 subclonal). Genome reference:</span></a>
 <a class="sourceLine" id="cb22-12" data-line-number="12"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb22-13" data-line-number="13"><span class="co">#&gt;    2:2  [n = 2871] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { chr6_38727576, chr6_144463098, chr15_88359415, chr15_88359415 }</span></a>
-<a class="sourceLine" id="cb22-14" data-line-number="14"><span class="co">#&gt;    4:2  [n =  706] ■■■■■■■</span></a>
-<a class="sourceLine" id="cb22-15" data-line-number="15"><span class="co">#&gt;    3:2  [n =  628] ■■■■■■</span></a>
-<a class="sourceLine" id="cb22-16" data-line-number="16"><span class="co">#&gt;    2:1  [n =  594] ■■■■■■  { chr11_42048645 }</span></a>
-<a class="sourceLine" id="cb22-17" data-line-number="17"><span class="co">#&gt;    3:0  [n =  119] ■</span></a>
+<a class="sourceLine" id="cb22-13" data-line-number="13"><span class="co">#&gt;    2:2  [n = 2853] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { chr6_123466485, chr13_57237624, chrX_45633816 }</span></a>
+<a class="sourceLine" id="cb22-14" data-line-number="14"><span class="co">#&gt;    4:2  [n =  736] ■■■■■■■</span></a>
+<a class="sourceLine" id="cb22-15" data-line-number="15"><span class="co">#&gt;    3:2  [n =  613] ■■■■■■  { chr7_53459477 }</span></a>
+<a class="sourceLine" id="cb22-16" data-line-number="16"><span class="co">#&gt;    2:1  [n =  577] ■■■■■</span></a>
+<a class="sourceLine" id="cb22-17" data-line-number="17"><span class="co">#&gt;    3:0  [n =  125] ■</span></a>
 <a class="sourceLine" id="cb22-18" data-line-number="18"><span class="co">#&gt; ℹ Sample Purity: 89% ~ Ploidy: 4.</span></a></code></pre></div>
 </div>
   </div>

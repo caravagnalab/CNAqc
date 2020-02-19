@@ -9,9 +9,6 @@ subset_by_segment_karyotype(x, karyotype)
 \arguments{
 \item{karyotype}{}
 }
-\value{
-
-}
 \description{
 
 }

@@ -23,36 +23,75 @@ plot_qc = function(x, digits = 4)
 
   with_peaks = all(!is.null(x$peaks_analysis))
   if(!with_peaks){
-    stop("Input does not have peaks, see ?peaks_analysis to run peaks analysis.")
+    stop("Missing peaks, see ?peaks_analysis to run peaks analysis.")
   }
 
-  rounded_score = round(x$peaks_analysis$score, digits)
+  with_ccf = all(!is.null(x$CCF_estimates))
+  if(!with_ccf){
+    stop("Missing CCF, see ?compute_CCF to estimate CCF values.")
+  }
 
-  x$peaks_analysis$matches %>%
-    ggplot(aes(x = mutation_multiplicity, y = karyotype, fill = score)) +
-    geom_tile(aes(width = .8, height = .8, color = weight), size = 3) +
-    my_ggplot_theme() +
-    guides(
-      fill = guide_colorbar(bquote(rho ~ ' '), barwidth = unit(2, 'cm')),
-      color = guide_colorbar(bquote(omega ~ ' '), barwidth = unit(2, 'cm'))
-    ) +
-    scale_fill_gradient2(high = 'steelblue') +
-    scale_color_distiller(palette = 'Greens', direction = 1, limits = c(0, 1)) +
-    scale_alpha_continuous() +
-    geom_text(
-      data = x$peaks_analysis$matches,
-      aes(label = round(score, digits), color = score),
-      size = 3
-    ) +
-    geom_text(
-      data = x$peaks_analysis$matches %>% mutate(cross = ifelse(matched, '', 'X')),
-      aes(label = cross),
-      color = 'red'
-    ) +
-    labs(
-      x = 'Mutation multiplicuty',
-      y = 'Karyotype',
-      title = "Summary matches",
-      subtitle = bquote("QC score " ~ widehat(rho)  ~' = ' ~ sum(omega[i] ~ rho[i], i, )  ~' = ' ~ .(rounded_score))
-    )
+  all_karyptypes = x$peaks_analysis$plots %>% names
+
+  button = function(color, radio)
+  {
+    ggplot(data = data.frame(
+      x = 0,
+      y = 0,
+      label = radio,
+      stringsAsFactors = FALSE
+    ),
+    aes(x = x , y = y, label = label)) +
+      theme_void() +
+      theme(plot.background = element_rect(fill = color)) +
+      geom_text()
+  }
+
+  # peak detection
+  analysed_karyotypes = x$peaks_analysis$matches$karyotype %>% unique
+  qc_karyotypes = x$peaks_analysis$matches %>%
+    dplyr::distinct(karyotype, QC)
+
+  # create remote
+  radios_peaks = lapply(all_karyptypes,
+         function(k) {
+           if (k %in% analysed_karyotypes)
+           {
+             QC = qc_karyotypes %>% dplyr::filter(karyotype == k) %>% dplyr::pull(QC)
+             if(QC == "PASS") return(button('forestgreen', k))
+             else return(button('indianred3', k))
+           }
+           else
+             return(button('gainsboro', k))
+         })
+
+  radios_peaks = append(list(ggpubr::text_grob("Peaks", face = 'bold')), radios_peaks)
+  radios_peaks = ggpubr::ggarrange(
+    plotlist = radios_peaks, ncol = length(radios_peaks), nrow = 1)
+
+  # CCF
+  analysed_karyotypes = x$CCF_estimates %>% names
+
+  # create remote
+  radios_ccf = lapply(all_karyptypes,
+                        function(k) {
+                          if (k %in% analysed_karyotypes)
+                          {
+                            QC = x$CCF_estimates[[k]]$QC_table$QC
+                            if(QC == "PASS") return(button('forestgreen', k))
+                            else return(button('indianred3', k))
+                          }
+                          else
+                            return(button('gainsboro', k))
+                        })
+
+  radios_ccf = append(list(ggpubr::text_grob("CCF", face = 'bold')), radios_ccf)
+  radios_ccf = ggpubr::ggarrange(
+    plotlist = radios_ccf, ncol = length(radios_ccf), nrow = 1)
+
+
+  remotes =
+    ggpubr::ggarrange(radios_peaks, radios_ccf, nrow = 2, ncol = 1)
+
+  return(remotes)
 }

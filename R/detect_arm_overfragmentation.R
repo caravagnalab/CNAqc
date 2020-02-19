@@ -107,7 +107,7 @@ detect_arm_overfragmentation = function(x,
                                          N_tests = N_tests,
                                          alpha = alpha),
       Bonferroni_cutoff = alpha/N_tests,
-      significant = p_value < (alpha/N_tests)
+      significant = ifelse(N_tests == 0, FALSE, p_value < (alpha/N_tests))
     ) %>%
     arrange(p_value) %>%
     ungroup()

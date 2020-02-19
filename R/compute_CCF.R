@@ -11,6 +11,9 @@
 #'
 #' @param x An object of class \code{cnaqc}, created by the \code{init} function.
 #' @param karyotypes The karyotypes to use, this package supports only \code{c('2:1', '2:0', '2:2')}.
+#' @param cutoff_QC_PASS Percentage of mutations that can be not-assigned (\code{NA}) in a karyotype.
+#' If the karyotype has more than \code{cutoff_QC_PASS} percentage of non-assigned mutations then
+#' the overall set of CCF calls is failed for the karyotype.
 #'
 #' @seealso Getters function \code{CCF} and \code{plot_CCF}.
 #' @return An object of class \code{cnaqc}, with CCF values available for extraction and plotting.
@@ -24,9 +27,12 @@
 #' x = compute_CCF(x, karyotypes = c('1:0', '1:1', '2:1', '2:0', '2:2'))
 #' print(x)
 #'
+#' # Extract the values with these other functions
 #' CCF(x)
 #' plot_CCF(x)
-compute_CCF = function(x, karyotypes = c('1:0', '1:1', '2:0', '2:1', '2:2'))
+compute_CCF = function(x,
+                       karyotypes = c('1:0', '1:1', '2:0', '2:1', '2:2'),
+                       cutoff_QC_PASS = 0.1)
 {
   stopifnot(inherits(x, 'cnaqc'))
 
@@ -43,25 +49,53 @@ compute_CCF = function(x, karyotypes = c('1:0', '1:1', '2:0', '2:1', '2:2'))
     function(k)
     {
       if(k %in% c('1:0', '1:1'))
-        return(mutmult_single_copy(x, k))
+        return(suppressWarnings(CNAqc:::mutmult_single_copy(x, k)))
 
-      return(mutmult_two_copies(x, k))
+      return(suppressWarnings(CNAqc:::mutmult_two_copies(x, k)))
     })
   names(x$CCF_estimates) = karyotypes
 
   # Report some stats
   mutations = lapply(x$CCF_estimates , function(x) x$mutations)
-  mutations = Reduce(bind_rows, mutations)
+  mutations = Reduce(dplyr::bind_rows, mutations)
 
-  cat('\n')
-  cli::cli_h2("Summary CCF assignments. NA: not assignable")
-  pioDisp(
-    mutations %>%
-      group_by(karyotype, mutation_multiplicity) %>%
-      summarise(assignments = n()) %>%
-      ungroup()
-  )
-  cat("Note: NA ~ mutations not confidently assignable")
+  # pioDisp(
+  #   mutations %>%
+  #     dplyr::group_by(karyotype, mutation_multiplicity) %>%
+  #     dplyr::summarise(assignments = n()) %>%
+  #     dplyr::ungroup()
+  # )
+
+  # QC the findings
+  N = mutations %>%
+    dplyr::group_by(karyotype) %>%
+    dplyr::summarise(N = n()) %>%
+    dplyr::ungroup()
+
+  NA_N = mutations %>%
+    dplyr::group_by(karyotype, mutation_multiplicity) %>%
+    dplyr::summarise(Unknown = n()) %>%
+    dplyr::filter(is.na(mutation_multiplicity)) %>%
+    dplyr::select(-mutation_multiplicity) %>%
+    dplyr::ungroup()
+
+  QC_table = N %>%
+    dplyr::full_join(NA_N, by = 'karyotype') %>%
+    dplyr::mutate(
+      Unknown = ifelse(is.na(Unknown), 0, Unknown),
+      p_Unkown = Unknown/N,
+      QC = ifelse(p_Unkown < cutoff_QC_PASS, "PASS", "FAIL")
+    )
+
+  if(any(QC_table$QC == "FAIL"))
+  {
+    cat('\n')
+    cli::cli_h2("Summary CCF assignments. (>{.field {cutoff_QC_PASS*100}%} NAs: not assignable with confidence)")
+    pioDisp(QC_table)
+  }
+
+  for(k in QC_table$karyotype)
+    x$CCF_estimates[[k]]$QC_table = QC_table %>% dplyr::filter(karyotype == !!k)
 
   x
 }

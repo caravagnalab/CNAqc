@@ -26,18 +26,18 @@ mutmult_single_copy = function(x, karyotype)
 #   cli::cli_rule(
 #     "Computing mutation multiplicity for karyotype {.field {karyotype}} ~ q = {.value {entropy_quantile}}"
 #   )
-# 
+#
 #   A = as.numeric(strsplit(karyotype, ':')[[1]][1])
 #   B = as.numeric(strsplit(karyotype, ':')[[1]][2])
-# 
+#
 #   # Karyotype specific mutations - clonal segments
 #   cl_seg = x$cna %>%
 #     dplyr::filter(CCF == 1) %>%
 #     dplyr::pull(segment_id)
-# 
+#
 #   snvs_k = x$snvs %>%
 #     dplyr::filter(karyotype == !!karyotype, segment_id %in% cl_seg)
-# 
+#
 #   # Expected VAF for 1 and 2 copies of the mutation
 #   #
 #   # Assumption: the aneuploidy state is immediately reached
@@ -45,12 +45,12 @@ mutmult_single_copy = function(x, karyotype)
 #   # mutations in 1 copy (pre), and 2 copies (post).
 #   expectation = CNAqc:::expected_vaf_peak(A, B, x$purity) %>%
 #     mutate(label = ifelse(mutation_multiplicity == 1, "One copy", "Two copies"))
-# 
+#
 #   med_coverage = median(snvs_k$DP, na.rm = TRUE)
-# 
+#
 #   cli::cli_alert_info("Expected Binomial peak(s) for these calls (1 and 2 copies)")
 #   pioDisp(expectation)
-# 
+#
 #   # =-=-=-=-=-=-=-=-=-=-=-
 #   # Entropy-derived heuristic for the detection of points
 #   # that are difficult to assign
@@ -70,19 +70,19 @@ mutmult_single_copy = function(x, karyotype)
 #   # - trials are well-represented with the median coverage;
 #   p_1 = expectation$peak[1]
 #   p_2 = expectation$peak[2]
-# 
+#
 #   n = ceiling(med_coverage)
-# 
+#
 #   # Bin(p1, n) and Bin(p2, n)
 #   d_1 = CNAqc:::binomial_density(p_1, n, N_bins = 1000)
 #   d_2 = CNAqc:::binomial_density(p_2, n, N_bins = 1000)
-# 
+#
 #   # Then we obtain the Binomial quantile ranges for these
 #   # two distributions, which we use to consider only assingments
 #   # that have a minimum probability support
 #   rg_1 = CNAqc:::binomial_quantile_ranges(p_1, n, quantile_left = 0.01, quantile_right = 0.99)
 #   rg_2 = CNAqc:::binomial_quantile_ranges(p_2, n, quantile_left = 0.01, quantile_right = 0.99)
-# 
+#
 #   # We want to create a mixture model: pi_1 * Bin(p1, n) + (1 - pi_1) * Bin(p2, n)
 #   # to model the mixture of those two Binomial distributions. To determine
 #   # the mixing proportions of this mixture we do some empirical trick of
@@ -90,34 +90,34 @@ mutmult_single_copy = function(x, karyotype)
 #   # that we have just computed.
 #   n_rg_1 = snvs_k %>% filter(VAF > rg_1[1], VAF < rg_1[2]) %>% nrow
 #   n_rg_2 = snvs_k %>% filter(VAF > rg_2[1], VAF < rg_2[2]) %>% nrow
-# 
+#
 #   # Compute the actual mixing proportions, and re-scale the densities accordingly
 #   mixing = c(n_rg_1, n_rg_2) / (n_rg_1 + n_rg_2)
 #   d_1$mixture_y = d_1$y * mixing[1]
 #   d_2$mixture_y = d_2$y * mixing[2]
-# 
+#
 #   cli::cli_alert_info("Mixing pre/ post aneuploidy: {.value {round(mixing, 2)}}")
-# 
+#
 #   # Now we need to decide how to assign a point in order to determine the actual mutation
 #   # multeplicity. We want this to be using the entropy of a 2-class model, and the
 #   # magnitude of the differential of the entropy
 #   joint = CNAqc:::entropy_profile_2_class(d_1, d_2)
-# 
+#
 #   # q-Quantile of the entropy that we try to cut out, profiled in between the
 #   # two Binomial peaks (fluctuations outside are generally irrelevant)
 #   profile_entropy = joint %>%
 #     filter(x > p_1, x < p_2)
-# 
+#
 #   q = quantile(profile_entropy$diff, entropy_quantile)
-# 
+#
 #   filtered_profile_entropy = profile_entropy %>% dplyr::filter(diff > q)
-# 
+#
 #   # Points determined cutting the H(x)
 #   lp = filtered_profile_entropy$x[1]
 #   rp = filtered_profile_entropy$x[nrow(filtered_profile_entropy)]
-# 
+#
 #   cli::cli_alert_info("H(x)-derived cutoffs: [{.value {lp}}; {.value {rp}}]")
-# 
+#
 #   # Assignemnts based on lp
 #   snvs_k = snvs_k %>%
 #     rowwise() %>%
@@ -132,7 +132,7 @@ mutmult_single_copy = function(x, karyotype)
 #        NA)
 #     ) %>%
 #     ungroup()
-# 
+#
 #   return(list(
 #     mutations = snvs_k,
 #     params = list(
@@ -147,21 +147,21 @@ mutmult_single_copy = function(x, karyotype)
 #     )
 #   ))
 # }
-# 
+#
 # plot_mutation_multiplicity_entropy = function(x, karyotype)
 # {
 #   computation = x$CCF_estimates[[karyotype]]
 #   snvs_k = computation$mutations
-# 
+#
 #   # Mono-peak
 #   magnitude_plot = class_plot = entropy_plot = ggplot() + geom_blank()
-# 
+#
 #   colors = c(`1` = 'forestgreen',
 #              `2` = 'darkorange3',
 #              `NA` = 'indianred2')
-# 
+#
 #   colors = wesanderson::wes_palette("Royal1", n = 3, type = 'discrete')
-# 
+#
 #   if(!(karyotype %in% c('1:1', '1:0')))
 #   {
 #     # Double peaks
@@ -170,12 +170,12 @@ mutmult_single_copy = function(x, karyotype)
 #     entropy_quantile = computation$params$entropy_quantile
 #     joint = computation$params$joint
 #     p_12 = computation$params$p_12
-# 
+#
 #     lp = profile_entropy$x[1]
 #     rp = profile_entropy$x[nrow(profile_entropy)]
-# 
+#
 #     q = quantile(profile_entropy$diff, entropy_quantile)
-# 
+#
 #     # Magnitude plot
 #     magnitude_plot =
 #         ggplot(profile_entropy) +
@@ -192,7 +192,7 @@ mutmult_single_copy = function(x, karyotype)
 #           x = bquote(partialdiff * 'H(x)')
 #         ) +
 #         CNAqc:::my_ggplot_theme()
-# 
+#
 #       class_plot =
 #         ggplot(joint) +
 #         geom_line(aes(x = x, y = A), color = 'darkred', linetype = 'dashed') +
@@ -203,7 +203,7 @@ mutmult_single_copy = function(x, karyotype)
 #         labs(title = paste0("Binomial Mixture"),
 #              y = 'Density',
 #              x = 'VAF')
-# 
+#
 #       # Entropy plot
 #       entropy_plot = ggplot(joint) +
 #         geom_line(aes(x = x, y = entropy), color = 'black', size = .3) +
@@ -226,12 +226,12 @@ mutmult_single_copy = function(x, karyotype)
 #           y = 'Profile',
 #           x = bquote('H(x) (black) and' ~ partialdiff * 'H(x) (red)')
 #         )
-# 
+#
 #     } # end: with multiple peaks
-# 
+#
 #   # Mutation plots
 #   med_coverage = median(snvs_k$DP, na.rm = TRUE)
-# 
+#
 #   mutation_plot = ggplot(snvs_k, aes(VAF, y = ..count.. / sum(..count..))) +
 #       geom_histogram(binwidth = 0.01, aes(fill = paste(mutation_multiplicity))) +
 #       xlim(0, 1) +
@@ -243,13 +243,13 @@ mutmult_single_copy = function(x, karyotype)
 #         y = paste0('Density (simulated ', med_coverage, 'x)'),
 #         title = paste0("Mutation multiplicity")
 #       )
-# 
+#
 #   if (!(karyotype %in% c('1:1', '1:0')))
 #   {
 #     d_12 = computation$params$d_12
 #     rg_12 = computation$params$rg_12
 #     expectation = computation$params$expectation
-# 
+#
 #     mutation_plot = mutation_plot +
 #       geom_line(
 #         data = data.frame(d_12[1:3]) %>% bind_rows(data.frame(d_12[2 * 1:3])) ,
@@ -268,7 +268,7 @@ mutmult_single_copy = function(x, karyotype)
 #       aes(xintercept = peak, color = label)
 #     )
 #   }
-# 
+#
 #     # CCF plots
 #     CCF_plot = ggplot(snvs_k, aes(CCF, y = ..count.. / sum(..count..))) +
 #       geom_histogram(binwidth = 0.01, aes(fill = paste(mutation_multiplicity))) +
@@ -279,7 +279,7 @@ mutmult_single_copy = function(x, karyotype)
 #       labs(y = paste0('Density'),
 #            title = paste0("CCF for ", karyotype)) +
 #       xlim(0, NA)
-# 
+#
 #     figure = cowplot::plot_grid(
 #       CCF_plot,
 #       mutation_plot,
@@ -292,9 +292,9 @@ mutmult_single_copy = function(x, karyotype)
 #       ncol = 5
 #       # scale = c(1, .8)
 #     )
-# 
+#
 #     return(figure)
-# 
+#
 # }
 
 mutmult_two_copies = function(x, karyotype)
@@ -302,18 +302,18 @@ mutmult_two_copies = function(x, karyotype)
   cli::cli_rule(
     "Computing mutation multiplicity for karyotype {.field {karyotype}}"
   )
-  
+
   A = as.numeric(strsplit(karyotype, ':')[[1]][1])
   B = as.numeric(strsplit(karyotype, ':')[[1]][2])
-  
+
   # Karyotype specific mutations - clonal segments
   cl_seg = x$cna %>%
     dplyr::filter(CCF == 1) %>%
     dplyr::pull(segment_id)
-  
+
   snvs_k = x$snvs %>%
     dplyr::filter(karyotype == !!karyotype, segment_id %in% cl_seg)
-  
+
   # Expected VAF for 1 and 2 copies of the mutation
   #
   # Assumption: the aneuploidy state is immediately reached
@@ -321,9 +321,9 @@ mutmult_two_copies = function(x, karyotype)
   # mutations in 1 copy (pre), and 2 copies (post).
   expectation = CNAqc:::expected_vaf_peak(A, B, x$purity) %>%
     mutate(label = ifelse(mutation_multiplicity == 1, "One copy", "Two copies"))
-  
+
   med_coverage = median(snvs_k$DP, na.rm = TRUE)
-  
+
   cli::cli_alert_info("Expected Binomial peak(s) for these calls (1 and 2 copies): {.value {expectation$peak}}")
 
   # =-=-=-=-=-=-=-=-=-=-=-
@@ -345,19 +345,19 @@ mutmult_two_copies = function(x, karyotype)
   # - trials are well-represented with the median coverage;
   p_1 = expectation$peak[1]
   p_2 = expectation$peak[2]
-  
+
   n = ceiling(med_coverage)
-  
+
   # Bin(p1, n) and Bin(p2, n)
   d_1 = CNAqc:::binomial_density(p_1, n, N_bins = 1000)
   d_2 = CNAqc:::binomial_density(p_2, n, N_bins = 1000)
-  
+
   # Then we obtain the Binomial quantile ranges for these
   # two distributions, which we use to consider only assingments
   # that have a minimum probability support
   rg_1 = CNAqc:::binomial_quantile_ranges(p_1, n, quantile_left = 0.01, quantile_right = 0.99)
   rg_2 = CNAqc:::binomial_quantile_ranges(p_2, n, quantile_left = 0.01, quantile_right = 0.99)
-  
+
   # We want to create a mixture model: pi_1 * Bin(p1, n) + (1 - pi_1) * Bin(p2, n)
   # to model the mixture of those two Binomial distributions. To determine
   # the mixing proportions of this mixture we do some empirical trick of
@@ -365,45 +365,45 @@ mutmult_two_copies = function(x, karyotype)
   # that we have just computed.
   n_rg_1 = snvs_k %>% filter(VAF > rg_1[1], VAF < rg_1[2]) %>% nrow
   n_rg_2 = snvs_k %>% filter(VAF > rg_2[1], VAF < rg_2[2]) %>% nrow
-  
+
   # Compute the actual mixing proportions, and re-scale the densities accordingly
   mixing = c(n_rg_1, n_rg_2) / (n_rg_1 + n_rg_2)
   d_1$mixture_y = d_1$y * mixing[1]
   d_2$mixture_y = d_2$y * mixing[2]
-  
+
   cli::cli_alert_info("Mixing pre/ post aneuploidy: {.value {round(mixing, 2)}}")
-  
+
   # Now we need to decide how to assign a point in order to determine the actual mutation
   # multeplicity. We want this to be using the entropy of a 2-class model, and the
   # magnitude of the differential of the entropy
   joint = CNAqc:::entropy_profile_2_class(d_1, d_2)
-  
+
   # Prifile the entropy via peak detection
   entropy_profile_x = joint$x
   entropy_profile = joint$entropy
-  
+
   input_peakdetection = matrix(cbind(x = entropy_profile_x, y = entropy_profile), ncol = 2)
   colnames(input_peakdetection) = c('x', 'y')
-  
+
   # Peaks detection with these parameters seems to work often
   peaks =  peakPick::peakpick(mat = input_peakdetection, neighlim = 1, deriv.lim = 0.01, peak.min.sd = 0, peak.npos = 1)
-  
+
   xy_peaks = input_peakdetection[peaks[, 2], , drop = FALSE] %>%
     as_tibble() %>%
     mutate(
       x = x,
       y = x
-    ) 
+    )
   xy_peaks
-  
+
   # Points in the centre where there is a violation of the peaks are the actual points we want
   central = entropy_profile_x[which.max(entropy_profile)]
-  
+
   lp = xy_peaks %>% dplyr::filter(x < central) %>% dplyr::arrange(desc(x)) %>% dplyr::filter(row_number() == 1) %>% dplyr::pull(x)
   rp = xy_peaks %>% dplyr::filter(x > central) %>% dplyr::arrange(x) %>% dplyr::filter(row_number() == 1) %>% dplyr::pull(x)
-  
+
   cli::cli_alert_info("Not assignamble area: [{.value {lp}}; {.value {rp}}]")
-  
+
   # Assignemnts based on lp
   snvs_k = snvs_k %>%
     rowwise() %>%
@@ -418,7 +418,7 @@ mutmult_two_copies = function(x, karyotype)
         NA)
     ) %>%
     ungroup()
-  
+
   return(list(
     mutations = snvs_k,
     params = list(
@@ -429,28 +429,44 @@ mutmult_two_copies = function(x, karyotype)
   ))
 }
 
+
+
+
 plot_mutation_multiplicity_entropy = function(x, karyotype)
 {
+  # Function to a border to a plot
+  qc_plot = function(x, QC)
+  {
+    qc = ifelse(QC == "FAIL", "indianred3", 'forestgreen')
+
+    x +
+      theme(title = element_text(color = qc),
+            panel.border = element_rect(
+              colour = qc,
+              fill = NA,
+              size = 5
+            ))
+  }
+
+  # Process
   computation = x$CCF_estimates[[karyotype]]
   snvs_k = computation$mutations
-  
+
+  QC = computation$QC_table$QC
+
   # Mono-peak
   magnitude_plot = class_plot = entropy_plot = ggplot() + geom_blank()
-  
-  colors = c(`1` = 'forestgreen',
-             `2` = 'darkorange3',
-             `NA` = 'indianred2')
-  
+
   colors = wesanderson::wes_palette("Royal1", n = 3, type = 'discrete')
-  
+
   if(!(karyotype %in% c('1:1', '1:0')))
   {
     # Double peaks
     joint = computation$params$joint
-    
+
     lp = computation$params$cuts[1]
     rp = computation$params$cuts[2]
-    
+
     # Entropy plot
     entropy_plot = ggplot(joint) +
       geom_line(aes(x = x, y = entropy), color = 'black', size = .3) +
@@ -466,14 +482,14 @@ plot_mutation_multiplicity_entropy = function(x, karyotype)
         y = 'Profile',
         x = bquote('Entropy H(x)')
       )
-    
+
   } # end: with multiple peaks
-  
+
   # piechart
   ns_counts = sum(is.na(snvs_k$mutation_multiplicity))
-  
+
   pieplot = snvs_k %>%
-    dplyr::group_by(mutation_multiplicity) %>% 
+    dplyr::group_by(mutation_multiplicity) %>%
     dplyr::summarise(n = n()) %>%
     dplyr::mutate(mutation_multiplicity = paste0(mutation_multiplicity)) %>%
     ggplot(
@@ -492,12 +508,12 @@ plot_mutation_multiplicity_entropy = function(x, karyotype)
       axis.ticks.y = element_blank(),
       axis.text.y = element_blank()
       ) +
-    guides(color = FALSE, fill = guide_legend('Copies')) 
-    
-    
+    guides(color = FALSE, fill = guide_legend('Copies'))
+
+
   # Mutation plots
   med_coverage = median(snvs_k$DP, na.rm = TRUE)
-  
+
   mutation_plot = ggplot(snvs_k, aes(VAF, y = ..count.. / sum(..count..))) +
     geom_histogram(binwidth = 0.01, aes(fill = paste(mutation_multiplicity))) +
     xlim(0, 1) +
@@ -509,16 +525,16 @@ plot_mutation_multiplicity_entropy = function(x, karyotype)
       y = paste0('Density (', med_coverage, 'x)'),
       title = paste0("Mutation multiplicity")
     )
-  
+
   if (!(karyotype %in% c('1:1', '1:0')))
   {
     lp = computation$params$cuts[1]
     rp = computation$params$cuts[2]
-    
+
     # d_12 = computation$params$d_12
     # rg_12 = computation$params$rg_12
     expectation = computation$params$expectation
-    
+
     mutation_plot = mutation_plot +
       geom_vline(
         data = expectation,
@@ -532,9 +548,9 @@ plot_mutation_multiplicity_entropy = function(x, karyotype)
         color = 'red',
         linetype = 'dashed',
         size = .3
-      )   
+      )
     }
-  
+
   # CCF plots
   CCF_plot = ggplot(snvs_k, aes(CCF, y = ..count.. / sum(..count..))) +
     geom_histogram(binwidth = 0.01, aes(fill = paste(mutation_multiplicity))) +
@@ -545,10 +561,10 @@ plot_mutation_multiplicity_entropy = function(x, karyotype)
     labs(y = paste0('Density'),
          title = paste0("CCF for ", karyotype)) +
     xlim(0, NA)
-  
+
   # Plot assembly
   # panel = ggpubr::ggarrange(mutation_plot, CCF_plot, pieplot, ncol = 3, nrow = 1, common.legend = T, legend = 'bottom')
-  
+
   figure = cowplot::plot_grid(
     CCF_plot,
     mutation_plot,
@@ -557,10 +573,8 @@ plot_mutation_multiplicity_entropy = function(x, karyotype)
     align = 'h',
     axis = 'b',
     ncol = 4
-    # scale = c(1, .8)
   )
-  
-  return(figure)
-  
+
+  return(qc_plot(figure, QC))
 }
 
