@@ -431,7 +431,6 @@ mutmult_two_copies = function(x, karyotype)
 
 
 
-
 plot_mutation_multiplicity_entropy = function(x, karyotype)
 {
   # Function to a border to a plot
@@ -443,8 +442,7 @@ plot_mutation_multiplicity_entropy = function(x, karyotype)
       theme(title = element_text(color = qc),
             panel.border = element_rect(
               colour = qc,
-              fill = NA,
-              size = 5
+              fill = NA
             ))
   }
 
@@ -566,7 +564,7 @@ plot_mutation_multiplicity_entropy = function(x, karyotype)
   # panel = ggpubr::ggarrange(mutation_plot, CCF_plot, pieplot, ncol = 3, nrow = 1, common.legend = T, legend = 'bottom')
 
   figure = cowplot::plot_grid(
-    CCF_plot,
+    qc_plot(CCF_plot, QC),
     mutation_plot,
     entropy_plot,
     pieplot,
@@ -575,6 +573,6 @@ plot_mutation_multiplicity_entropy = function(x, karyotype)
     ncol = 4
   )
 
-  return(qc_plot(figure, QC))
+  return(figure)
 }
 

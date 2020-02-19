@@ -98,7 +98,6 @@ analyze_peaks = function(x,
 
   tumour_purity = x$purity
 
-
   detections = NULL
   for (k in karyotypes)
   {
@@ -153,8 +152,7 @@ analyze_peaks = function(x,
       theme(title = element_text(color = qc),
             panel.border = element_rect(
               colour = qc,
-              fill = NA,
-              size = 5
+              fill = NA
             ))
   }
 

@@ -30,9 +30,20 @@ plot_peaks_analysis = function(x)
 
   detections = x$peaks_analysis$plots
 
-  ggpubr::ggarrange(
+  pl = suppressWarnings(ggpubr::ggarrange(
     plotlist = detections,
     nrow = 1,
     ncol = length(detections)
-    )
+    ))
+
+  qc = ifelse(x$peaks_analysis$QC == 'PASS', 'forestgreen', 'indianred3')
+
+  pl = pl +
+    theme(title = element_text(color = qc),
+          panel.border = element_rect(
+            colour = qc,
+            fill = NA
+          ))
+
+  pl
 }
