@@ -1,13 +1,13 @@
-blank_genome = function(ref = "GRCh38", chromosomes = paste0('chr', c(1:22, 'X', 'Y')), label_chr = -0.5)
+blank_genome = function(ref = "GRCh38", chromosomes = paste0('chr', c(1:22, 'X', 'Y')), label_chr = -0.5, cex = 1)
 {
-  reference_coordinates = get_reference(ref) %>% 
+  reference_coordinates = get_reference(ref) %>%
     filter(chr %in% chromosomes)
 
   low = min(reference_coordinates$from)
   upp = max(reference_coordinates$to)
 
   pl = ggplot(reference_coordinates) +
-    CNAqc:::my_ggplot_theme() +
+    CNAqc:::my_ggplot_theme(cex = cex) +
     geom_rect(
       aes(
         xmin = centromerStart,

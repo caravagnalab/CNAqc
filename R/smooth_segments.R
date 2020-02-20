@@ -7,7 +7,7 @@
 #' @export
 #'
 #' @examples
-smooth_segments = function(x, maximum_distance = 1e6) 
+smooth_segments = function(x, maximum_distance = 1e6)
 {
   segments = x$cna
   smoothed_segments = NULL
@@ -77,7 +77,9 @@ smooth_segments = function(x, maximum_distance = 1e6)
   cli::cli_alert_info("Creating a new CNAqc object. The old object will be retained in the $before_smoothing field.")
 
   # Clean up the new segments table,
-  x_new = CNAqc::init(x$snvs, smoothed_segments, purity = x$purity)
+  x_new = CNAqc::init(x$snvs,
+                      smoothed_segments %>% dplyr::select(-segment_id, -n),
+                      purity = x$purity)
   x_new$before_smoothing = x
 
   return(x_new)

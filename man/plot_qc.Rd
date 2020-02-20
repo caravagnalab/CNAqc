@@ -4,13 +4,11 @@
 \alias{plot_qc}
 \title{Plot a summary of QC results.}
 \usage{
-plot_qc(x, digits = 4)
+plot_qc(x)
 }
 \arguments{
 \item{x}{An object of class \code{cnaqc}, where function \code{analyze_peaks} has
 been computed.}
-
-\item{digits}{Number of digits used to round scores.}
 }
 \value{
 A \code{ggplot} object.

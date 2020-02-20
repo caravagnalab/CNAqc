@@ -29,13 +29,19 @@ plot_CCF = function(x)
     stop("Input does not have CCF estimates, see ?compute_CCF to determine CCF values.")
   }
 
+  USE_KARYOTYPES = c("1:0", '1:1', '2:0', '2:1', '2:2')
+  ccf_plot = lapply(
+    USE_KARYOTYPES,
+    function(k)
+    {
+      if(!(k %in% names(x$CCF_estimates))) return(CNAqc:::eplot())
+      suppressWarnings(CNAqc:::plot_mutation_multiplicity_entropy(x, k))
+    }
+  )
+
   ggpubr::ggarrange(
-    plotlist = lapply(
-      names(x$CCF_estimates),
-      CNAqc:::plot_mutation_multiplicity_entropy,
-      x = x
-    ),
+    plotlist = ccf_plot,
     ncol = 1,
-    nrow = length(names(x$CCF_estimates))
+    nrow = length(ccf_plot)
   )
 }

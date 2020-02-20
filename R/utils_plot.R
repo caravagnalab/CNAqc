@@ -1,9 +1,11 @@
 my_ggplot_theme = function(cex = 1)
 {
-  theme_light(base_size = 10 * cex) +
+  cex_opt = getOption('CNAqc_cex', default = 1)
+
+  theme_light(base_size = 10 * cex_opt) +
     theme(
       legend.position = "bottom",
-      legend.key.size = unit(.3 * cex, "cm"),
+      legend.key.size = unit(.3 * cex_opt, "cm"),
       panel.background = element_rect(fill = 'white')
     )
 }
@@ -26,7 +28,7 @@ get_karyotypes_colors = function(karyotypes)
   c(color, pio:::nmfy(missing, rep('gray', nmissing)))
 }
 
-relative_to_absolute_coordinates = function(x, cna) 
+relative_to_absolute_coordinates = function(x, cna)
 {
   reference_genome = CNAqc:::get_reference(x$reference_genome)
 

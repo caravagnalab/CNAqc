@@ -24,9 +24,9 @@ plot_depth = function(x, N = 5000, chromosomes = paste0('chr', c(1:22, 'X', 'Y')
   stopifnot(inherits(x, 'cnaqc'))
 
   mutations = CNAqc:::relative_to_absolute_coordinates(
-    x, 
+    x,
     x$snvs %>% dplyr::filter(chr %in% chromosomes))
-  
+
   # X-range
   reference_genome = CNAqc:::get_reference(x$reference_genome)
   low = min(reference_genome$from)
@@ -46,11 +46,13 @@ plot_depth = function(x, N = 5000, chromosomes = paste0('chr', c(1:22, 'X', 'Y')
   maxY = max(mutations$DP) * .9
   label_maxY = paste0("N = ", N, ' (', round(N/N_all * 100), '%)')
 
+  cex_opt = getOption('CNAqc_cex', default = 1)
+
   ggplot(mutations,
                   aes(x = from, y = DP)) +
     scale_fill_viridis_c() +
-    geom_point(size = .05) +
-    my_ggplot_theme() +
+    geom_point(size = .05 * cex_opt) +
+    CNAqc:::my_ggplot_theme() +
     xlim(low, upp) +
     theme(
       axis.text.x = element_blank(),
