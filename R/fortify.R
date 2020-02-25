@@ -79,6 +79,17 @@ fortify_mutation_calls = function(x)
   x$NV = enforce_numeric(x$NV)
   x$VAF = enforce_numeric(x$VAF)
 
+  # Complement required driver information if missing
+  if('is_driver' %in% colnames(x))
+  {
+    if(!('gene' %in% colnames(x)))
+    {
+      cli::cli_alert_info("Drivers are annotated, but 'gene' column is missing, using mutation location.")
+      x = x %>%
+        dplyr::mutate(gene = paste(chr, from, to, ref, alt, sep = ':'))
+    }
+  }
+
   return(tibble::as_tibble(x))
 }
 
