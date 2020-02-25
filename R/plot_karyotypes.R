@@ -26,21 +26,25 @@ plot_karyotypes = function(x,
   stopifnot(inherits(x, 'cnaqc'))
 
   # Get coordinates for used chromosomes
-  genome_size = CNAqc:::get_reference(x$reference_genome) %>% 
-    dplyr::filter(chr %in% chromosomes) 
+  genome_size = CNAqc:::get_reference(x$reference_genome) %>%
+    dplyr::filter(chr %in% chromosomes)
 
   segments = x$cna %>%
-    filter(chr %in% chromosomes) %>%
-    mutate(
+    dplyr::filter(chr %in% chromosomes) %>%
+    dplyr::mutate(
       label = paste0(Major, ':', minor),
       call = ifelse(CCF == 1, "Clonal", "Subclonal")
     )
 
+  colors = CNAqc:::get_karyotypes_colors('other')
+
+  segments = segments %>%
+    dplyr::mutate(label = ifelse(label %in% names(colors), label, 'other'))
+
   if(type == 'number')
   {
-    colors = get_karyotypes_colors(unique(segments$label))
 
-    pl = ggplot(segments %>% mutate(K = ""),
+    pl = ggplot(segments %>% dplyr::mutate(K = ""),
                  aes(x = K, fill = label)) +
       my_ggplot_theme() +
       geom_bar(alpha = 1, color = 'white', size = .1) +
@@ -56,12 +60,12 @@ plot_karyotypes = function(x,
     genome_size = sum(genome_size$length)
 
     segments = segments %>%
-      filter(CCF == 1) %>%
-      mutate(
+      dplyr::filter(CCF == 1) %>%
+      dplyr::mutate(
         percentage = (to - from)/genome_size
       ) %>%
-      group_by(label, call) %>%
-      summarise(percentage = sum(percentage))
+      dplyr::group_by(label, call) %>%
+      dplyr::summarise(percentage = sum(percentage))
 
     colors = get_karyotypes_colors(unique(segments$label))
 

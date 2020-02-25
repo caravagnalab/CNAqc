@@ -169,7 +169,7 @@ plot_qc = function(x)
     stop("Missing CCF, see ?compute_CCF to estimate CCF values.")
   }
 
-  all_karyptypes = x$peaks_analysis$plots %>% names
+  all_karyptypes = x$peaks_analysis$fits %>% names
 
   peaks_QC = x$peaks_analysis$matches %>%
     dplyr::select(karyotype, QC) %>%

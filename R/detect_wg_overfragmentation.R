@@ -3,17 +3,7 @@
 # CNAqc::plot_segments(x) + ylim(0, 5)
 # x = detect_wg_overfragmentation(x,  small_segments_cutoff = 1e6)
 
-#' Title
-#'
-#' @param x
-#' @param binomial_p
-#' @param small_segments_cutoff
-#' @param alpha
-#'
-#' @return
-#' @export
-#'
-#' @examples
+
 detect_wg_overfragmentation = function(x,
                                         alpha = 0.05,
                                         binomial_p = 0.2,

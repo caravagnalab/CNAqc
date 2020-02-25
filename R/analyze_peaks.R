@@ -1,4 +1,5 @@
 
+
 #' Analyze CNA calls by peak detection.
 #'
 #' @description This function carries out a peak-detection
@@ -48,14 +49,13 @@ analyze_peaks = function(x,
                          min_karyotype_size = 0.05,
                          p_binsize_peaks = 0.005,
                          matching_epsilon = 0.025,
-                         kernel_adjust = 1
-                         )
+                         kernel_adjust = 1)
 {
   # Check input
   stopifnot(inherits(x, "cnaqc"))
-  stopifnot(min_karyotype_size >0 & min_karyotype_size < 1)
-  stopifnot(p_binsize_peaks >0 & p_binsize_peaks < 1)
-  stopifnot(matching_epsilon >0 & matching_epsilon < 1)
+  stopifnot(min_karyotype_size > 0 & min_karyotype_size < 1)
+  stopifnot(p_binsize_peaks > 0 & p_binsize_peaks < 1)
+  stopifnot(matching_epsilon > 0 & matching_epsilon < 1)
   stopifnot(is.numeric(kernel_adjust))
 
   # Karyotypes of interest, and filter for karyotype size
@@ -68,18 +68,35 @@ analyze_peaks = function(x,
     dplyr::arrange(desc(n)) %>%
     dplyr::mutate(QC = n_proportion > min_karyotype_size)
 
-  # Re-normalize karyotype size for the one with QC = true
+  # Re-normalize karyotype size for the ones with QC = true
   N_total = sum(filtered_qc_snvs %>% filter(QC) %>% pull(n_proportion))
   filtered_qc_snvs = filtered_qc_snvs %>%
     dplyr::mutate(norm_prop = ifelse(QC, n_proportion / N_total, NA))
 
   n_k = sum(filtered_qc_snvs %>% filter(QC) %>% pull(n))
 
+  # cli::cli_alert_info(
+  #   paste0(
+  #     "Requested karyotypes ",
+  #     paste(karyotypes, collapse = ', '),
+  #     "; found n = ",
+  #     n_k,
+  #     ' mutations in ',
+  #     paste(
+  #       filtered_qc_snvs %>% dplyr::filter(QC) %>% dplyr::pull(karyotype),
+  #       collapse = ', '
+  #     ),
+  #     ' (skipping those with n < ',
+  #     round(min_karyotype_size * x$n_snvs),
+  #     ' mutations).'
+  #   )
+  # )
+
+  cli::cli_alert_info("Requested karyotypes {.field {karyotypes}}.")
+
   cli::cli_alert_info(
     paste0(
-      "Requested karyotypes ",
-      paste(karyotypes, collapse = ', '),
-      "; found n = ",
+      "Found n = ",
       n_k,
       ' mutations in ',
       paste(
@@ -91,10 +108,9 @@ analyze_peaks = function(x,
       ' mutations).'
     )
   )
-
   # Actual data and analysis
-  qc_karyotypes = filtered_qc_snvs %>% filter(QC) %>% pull(karyotype)
-  qc_snvs = qc_snvs %>% filter(karyotype %in% qc_karyotypes)
+  qc_karyotypes = filtered_qc_snvs %>% dplyr::filter(QC) %>% dplyr::pull(karyotype)
+  qc_snvs = qc_snvs %>% dplyr::filter(karyotype %in% qc_karyotypes)
 
   tumour_purity = x$purity
 
@@ -104,8 +120,7 @@ analyze_peaks = function(x,
     # For karyotypes that cannot be checked we create a dummy entry
     if (!(k %in% qc_karyotypes))
     {
-      detection = list(matching = NULL,
-                       plot = CNAqc:::eplot())
+      detection = list(matching = NULL)
     }
     else
     {
@@ -113,14 +128,33 @@ analyze_peaks = function(x,
       AB = as.numeric(strsplit(k, ':')[[1]])
       expectation = CNAqc:::expected_vaf_peak(AB[1], AB[2], tumour_purity)
 
-      detection = peak_detector(
-        snvs = qc_snvs %>% dplyr::filter(karyotype == k),
-        expectation = expectation,
-        tumour_purity = tumour_purity,
-        filtered_qc_snvs = filtered_qc_snvs,
-        p = p_binsize_peaks,
-        kernel_adjust = kernel_adjust,
-        matching_epsilon = matching_epsilon)
+      # Bootstrap function
+      pd = function(w)
+      {
+        w = qc_snvs %>%
+          dplyr::filter(karyotype == k)
+
+        peak_detector(
+          snvs = w %>%
+            dplyr::sample_n(size = nrow(w), replace = TRUE),
+          expectation = expectation,
+          tumour_purity = tumour_purity,
+          filtered_qc_snvs = filtered_qc_snvs,
+          p = p_binsize_peaks,
+          kernel_adjust = kernel_adjust,
+          matching_epsilon = matching_epsilon
+        )
+
+      }
+
+      # Sample 15 peaks via the bootstrap
+      best_peaks = lapply(1:15, pd)
+      best_score = which.min(sapply(best_peaks, function(w)
+        w$matching$weight %*% w$matching$offset))
+      best_score = best_score[]
+
+      # Best is returned
+      detection = best_peaks[[best_score]]
     }
 
     detections = append(detections, list(detection))
@@ -130,37 +164,38 @@ analyze_peaks = function(x,
   # =-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=
   # Compute a linear combination for a GOF of each karyotype
   # =-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-  assembled_corrections = Reduce(
-    bind_rows,
-    lapply(detections, function(w) w$matching)
-    ) %>%
+  assembled_corrections = Reduce(bind_rows,
+                                 lapply(detections, function(w)
+                                   w$matching)) %>%
     mutate(score = weight * offset)
 
   overall_score = sum(assembled_corrections$score)
 
-  ######   ######   ######   ######   ######   ######   ######
-  # QC of the analysis, each karyotype independently up to the overall score
-  ######   ######   ######   ######   ######   ######   ######
-
-  # Function to a border to a plot
-  qc_plot = function(x, QC)
-  {
-    if(is.na(QC)) return(x)
-    qc = ifelse(QC == "FAIL", "indianred3", 'forestgreen')
-
-    x +
-      theme(title = element_text(color = qc),
-            panel.border = element_rect(
-              colour = qc,
-              fill = NA
-            ))
-  }
+  # ######   ######   ######   ######   ######   ######   ######
+  # # QC of the analysis, each karyotype independently up to the overall score
+  # ######   ######   ######   ######   ######   ######   ######
+  #
+  # # Function to a border to a plot
+  # qc_plot = function(x, QC)
+  # {
+  #   if (is.na(QC))
+  #     return(x)
+  #   qc = ifelse(QC == "FAIL", "indianred3", 'forestgreen')
+  #
+  #   x +
+  #     theme(title = element_text(color = qc),
+  #           panel.border = element_rect(colour = qc,
+  #                                       fill = NA))
+  # }
 
   # QC per karyotype ~ kscore is karyotype score (sum, partila of the overall score)
   score_per_karyotype = assembled_corrections %>%
     dplyr::group_by(karyotype) %>%
-    dplyr::summarise(kscore = sum(score)) %>%
-    dplyr::mutate(QC = ifelse(abs(kscore) < 2 * matching_epsilon, "PASS", "FAIL"))
+    dplyr::arrange(desc(counts_per_bin)) %>%
+    dplyr::filter(row_number() == 1) %>%
+    dplyr::select(karyotype, matched) %>%
+    dplyr::mutate(QC = ifelse(matched, "PASS", 'FAIL')) %>%
+    dplyr::select(-matched)
 
   assembled_corrections = assembled_corrections %>% dplyr::left_join(score_per_karyotype, by = 'karyotype')
 
@@ -169,23 +204,32 @@ analyze_peaks = function(x,
   # QC overall score
   QC = ifelse(abs(overall_score) < 2 * matching_epsilon, "PASS", "FAIL")
 
-  if(QC == "FAIL")
-    cli::cli_alert_danger("Peak detection {red('FAIL')} with {.value {red(paste0('r = ', overall_score))}} and tolerance e = {.value {2 * matching_epsilon}}")
-  if(QC == "PASS")
-    cli::cli_alert_success("Peak detection {green('PASS')} with {.value {green(paste0('r = ', overall_score))}} and tolerance e = {.value {2 * matching_epsilon}}")
+  if (QC == "FAIL")
+    cli::cli_alert_danger(
+      "Peak detection {red('FAIL')} with {.value {red(paste0('r = ', overall_score))}} and tolerance e = {.value {2 * matching_epsilon}}"
+    )
+  if (QC == "PASS")
+    cli::cli_alert_success(
+      "Peak detection {green('PASS')} with {.value {green(paste0('r = ', overall_score))}} and tolerance e = {.value {2 * matching_epsilon}}"
+    )
 
   # Plots assembly
-  qc_each_plot = pio:::nmfy(score_per_karyotype$karyotype, score_per_karyotype$QC)
-  na_plots = setdiff(names(detections), score_per_karyotype$karyotype)
-  qc_each_plot[na_plots] = NA
-
-  plots = lapply(names(detections), function(w) qc_plot(detections[[w]]$plot, QC = qc_each_plot[w]))
-  names(plots) = karyotypes
+  # qc_each_plot = pio:::nmfy(score_per_karyotype$karyotype, score_per_karyotype$QC)
+  # na_plots = setdiff(names(detections), score_per_karyotype$karyotype)
+  # qc_each_plot[na_plots] = NA
+  #
+  # plots = lapply(names(detections), function(w)
+  #   qc_plot(detections[[w]]$plot, QC = qc_each_plot[w]))
+  # names(plots) = karyotypes
 
   x$peaks_analysis = list(
     score = overall_score,
+    fits = detections,
     matches = assembled_corrections,
-    plots = plots,
+    # plots = plots,
+    min_karyotype_size = min_karyotype_size,
+    p_binsize_peaks = p_binsize_peaks,
+    matching_epsilon = matching_epsilon,
     QC = QC
   )
 

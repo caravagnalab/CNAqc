@@ -120,22 +120,22 @@
 <p>The idea is as follows: a segment with <span class="math inline">\(m\)</span> and <span class="math inline">\(M\)</span> copies of the minor and major alleles is consistent to mutation data if the VAF distribution peaks at certain values, which we can compute. Profiling then of the VAF distribution with a peak-detection heuristic allows <code>CNAqc</code> to measure the if peaks match. Large deviance suggests usually wrong purity estimation.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co"># Run default analysis</span></a>
 <a class="sourceLine" id="cb2-2" data-line-number="2">x =<span class="st"> </span><span class="kw"><a href="../reference/analyze_peaks.html">analyze_peaks</a></span>(x)</a>
-<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="co">#&gt; ℹ Requested karyotypes 1:0, 1:1, 2:1, 2:0, 2:2; found n = 9041 mutations in 2:2, 2:1 (skipping those with n &lt; 657 mutations).</span></a>
-<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co">#&gt; # A tibble: 4 x 13</span></a>
-<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="co">#&gt;   mutation_multip… karyotype  peak     x     y counts_per_bin discarded   offset</span></a>
-<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="co">#&gt;              &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;          &lt;int&gt; &lt;lgl&gt;        &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="co">#&gt; 1                2 2:1       0.616  0.6   2.94             60 FALSE      0.0159 </span></a>
-<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="co">#&gt; 2                1 2:1       0.308  0.3   3.6              78 FALSE      0.00796</span></a>
-<a class="sourceLine" id="cb2-9" data-line-number="9"><span class="co">#&gt; 3                2 2:2       0.471  0.46  8.14            625 FALSE      0.0109 </span></a>
-<a class="sourceLine" id="cb2-10" data-line-number="10"><span class="co">#&gt; 4                1 2:2       0.235  0.24  0.86             65 FALSE     -0.00455</span></a>
-<a class="sourceLine" id="cb2-11" data-line-number="11"><span class="co">#&gt; # … with 5 more variables: matched &lt;lgl&gt;, weight &lt;dbl&gt;, score &lt;dbl&gt;,</span></a>
-<a class="sourceLine" id="cb2-12" data-line-number="12"><span class="co">#&gt; #   kscore &lt;dbl&gt;, QC &lt;chr&gt;</span></a>
-<a class="sourceLine" id="cb2-13" data-line-number="13"><span class="co">#&gt; ✓ Peak detection PASS with r = 0.00468956233367035 and tolerance e = 0.05</span></a></code></pre></div>
+<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="co">#&gt; ℹ Requested karyotypes 1:0, 1:1, 2:1, 2:0 and 2:2.</span></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co">#&gt; ℹ Found n = 9041 mutations in 2:2, 2:1 (skipping those with n &lt; 657 mutations).</span></a>
+<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="co">#&gt; # A tibble: 4 x 12</span></a>
+<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="co">#&gt;   mutation_multip… karyotype  peak     x     y counts_per_bin discarded   offset</span></a>
+<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="co">#&gt;              &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;          &lt;int&gt; &lt;lgl&gt;        &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="co">#&gt; 1                2 2:1       0.616  0.61  2.93             51 FALSE      0.00592</span></a>
+<a class="sourceLine" id="cb2-9" data-line-number="9"><span class="co">#&gt; 2                1 2:1       0.308  0.31  3.73             64 FALSE     -0.00204</span></a>
+<a class="sourceLine" id="cb2-10" data-line-number="10"><span class="co">#&gt; 3                2 2:2       0.471  0.46  8.57            686 FALSE      0.0109 </span></a>
+<a class="sourceLine" id="cb2-11" data-line-number="11"><span class="co">#&gt; 4                1 2:2       0.235  0.25  0.81             72 FALSE     -0.0146 </span></a>
+<a class="sourceLine" id="cb2-12" data-line-number="12"><span class="co">#&gt; # … with 4 more variables: matched &lt;lgl&gt;, weight &lt;dbl&gt;, score &lt;dbl&gt;, QC &lt;chr&gt;</span></a>
+<a class="sourceLine" id="cb2-13" data-line-number="13"><span class="co">#&gt; ✓ Peak detection PASS with r = -0.00117483319779741 and tolerance e = 0.05</span></a></code></pre></div>
 <p><code>CNAqc</code> analyze LOH regions (A, AA), diploid regions (AB), and amplification regions (AAB, AABB). These correspond to <code>'1:1'</code>, <code>'2:1'</code>, <code>'2:0'</code> and <code>'2:2'</code> in “Major:minor” notation. Karyotypes are subset by their size (normalized for the number of input mutations), and by default karyotypes smaller than 5% of the actual mutational burden are not considered</p>
 <p>A Kernel-density method (unitary adjustment, Gaussian kernel) is used to smooth the data distribution, and the <code>peakPick</code> package to determine peaks in the smoothed density. Peaks below a mnimum density (noise and miscalled segments) are filtered, and the others are matched to a predefined location with some tolerance (e.g., plus/minus <code>0.5 * epsilon</code>, where <code>epsilon = 0.015</code> is the default).</p>
 <p>Theis analysis produces a set of scores that account for karyotype size and peaks offset, and that can be combined into a linear model to compute an overall QC metrics, called <code>rho</code>.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(x)</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co">#&gt; ── [ CNAqc ]  n = 13141 mutations in 267 segments (267 clonal + 0 subclonal). Genome reference</span></a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co">#&gt; ── [ CNAqc ]  n = 13141 mutations in 267 segments (267 clonal + 0 subclonal). Genome reference: GRCh38. ─────────────</span></a>
 <a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">#&gt;    2:2  [n = 7478] ■■■■■■■■■■■■■■■■■■■■■■■■■■■</span></a>
 <a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co">#&gt;    4:2  [n = 1893] ■■■■■■■</span></a>
@@ -143,16 +143,15 @@
 <a class="sourceLine" id="cb3-7" data-line-number="7"><span class="co">#&gt;    2:1  [n = 1563] ■■■■■■</span></a>
 <a class="sourceLine" id="cb3-8" data-line-number="8"><span class="co">#&gt;    3:0  [n =  312] ■</span></a>
 <a class="sourceLine" id="cb3-9" data-line-number="9"><span class="co">#&gt; ℹ Sample Purity: 89% ~ Ploidy: 4.</span></a>
-<a class="sourceLine" id="cb3-10" data-line-number="10"><span class="co">#&gt; ✓ QC via peak detection available, score: 0.00468956233367035.</span></a>
-<a class="sourceLine" id="cb3-11" data-line-number="11"><span class="co">#&gt; # A tibble: 4 x 13</span></a>
+<a class="sourceLine" id="cb3-10" data-line-number="10"><span class="co">#&gt; ✓ QC via peak detection available, score: -0.00117483319779741.</span></a>
+<a class="sourceLine" id="cb3-11" data-line-number="11"><span class="co">#&gt; # A tibble: 4 x 12</span></a>
 <a class="sourceLine" id="cb3-12" data-line-number="12"><span class="co">#&gt;   mutation_multip… karyotype  peak     x     y counts_per_bin discarded   offset</span></a>
 <a class="sourceLine" id="cb3-13" data-line-number="13"><span class="co">#&gt;              &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;          &lt;int&gt; &lt;lgl&gt;        &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb3-14" data-line-number="14"><span class="co">#&gt; 1                2 2:1       0.616  0.6   2.94             60 FALSE      0.0159 </span></a>
-<a class="sourceLine" id="cb3-15" data-line-number="15"><span class="co">#&gt; 2                1 2:1       0.308  0.3   3.6              78 FALSE      0.00796</span></a>
-<a class="sourceLine" id="cb3-16" data-line-number="16"><span class="co">#&gt; 3                2 2:2       0.471  0.46  8.14            625 FALSE      0.0109 </span></a>
-<a class="sourceLine" id="cb3-17" data-line-number="17"><span class="co">#&gt; 4                1 2:2       0.235  0.24  0.86             65 FALSE     -0.00455</span></a>
-<a class="sourceLine" id="cb3-18" data-line-number="18"><span class="co">#&gt; # … with 5 more variables: matched &lt;lgl&gt;, weight &lt;dbl&gt;, score &lt;dbl&gt;,</span></a>
-<a class="sourceLine" id="cb3-19" data-line-number="19"><span class="co">#&gt; #   kscore &lt;dbl&gt;, QC &lt;chr&gt;</span></a></code></pre></div>
+<a class="sourceLine" id="cb3-14" data-line-number="14"><span class="co">#&gt; 1                2 2:1       0.616  0.61  2.93             51 FALSE      0.00592</span></a>
+<a class="sourceLine" id="cb3-15" data-line-number="15"><span class="co">#&gt; 2                1 2:1       0.308  0.31  3.73             64 FALSE     -0.00204</span></a>
+<a class="sourceLine" id="cb3-16" data-line-number="16"><span class="co">#&gt; 3                2 2:2       0.471  0.46  8.57            686 FALSE      0.0109 </span></a>
+<a class="sourceLine" id="cb3-17" data-line-number="17"><span class="co">#&gt; 4                1 2:2       0.235  0.25  0.81             72 FALSE     -0.0146 </span></a>
+<a class="sourceLine" id="cb3-18" data-line-number="18"><span class="co">#&gt; # … with 4 more variables: matched &lt;lgl&gt;, weight &lt;dbl&gt;, score &lt;dbl&gt;, QC &lt;chr&gt;</span></a></code></pre></div>
 <p>A summary table is stored inside the named list <code>peaks_analysis</code>.</p>
 <div id="plotting-results" class="section level3">
 <h3 class="hasAnchor">
@@ -163,9 +162,7 @@
 <p>Individual karyotypes plots are available inside the named lists <code>peaks_analysis$plots</code>, named afte each required karyotype.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="co"># Tetraploid segments</span></a>
 <a class="sourceLine" id="cb5-2" data-line-number="2">x<span class="op">$</span>peaks_analysis<span class="op">$</span>plots<span class="op">$</span><span class="st">`</span><span class="dt">2:2</span><span class="st">`</span></a>
-<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co">#&gt; Warning: Removed 2 rows containing missing values (geom_bar).</span></a>
-<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co">#&gt; Warning: Removed 13 rows containing missing values (geom_path).</span></a></code></pre></div>
-<p><img src="peaks_detection_files/figure-html/unnamed-chunk-6-1.png" width="288"></p>
+<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co">#&gt; NULL</span></a></code></pre></div>
 <p>You can integrate plots from QC analysis with data.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">cowplot<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/cowplot/man/plot_grid.html">plot_grid</a></span>(</a>
 <a class="sourceLine" id="cb6-2" data-line-number="2">  <span class="kw"><a href="../reference/plot_peaks_analysis.html">plot_peaks_analysis</a></span>(x),</a>

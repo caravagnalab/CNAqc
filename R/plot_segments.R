@@ -56,6 +56,33 @@ plot_segments = function(x,
       fill = 'forestgreen'
     )
 
+  # Fragmentation ~ add some annotation to hihglight that
+  if(!is.null(x$arm_fragmentation))
+  {
+    fragmented = x$arm_fragmentation$table %>%
+      dplyr::filter(significant, chr %in% chromosomes) %>%
+      dplyr::mutate(label = paste0(chr, arm)) %>%
+      dplyr::pull(label)
+
+    expanded_reference = CNAqc:::expand_reference_chr_to_arms(x) %>%
+      dplyr::filter(chr %in% fragmented)
+
+    base_plot = base_plot +
+      geom_rect(
+        data = expanded_reference,
+        aes(
+          xmin = from,
+          xmax = to,
+          ymin = -Inf,
+          ymax = Inf
+        ),
+        alpha = .2,
+        fill = NA,
+        color = 'purple4'
+      )
+
+  }
+
   # Segments
   base_plot = base_plot +
     geom_segment(

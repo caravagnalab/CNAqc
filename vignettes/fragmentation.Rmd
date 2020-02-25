@@ -50,6 +50,8 @@ In this way the test accounts for the difference in lenghts of the chromsome arm
 ```{r, fig.width=3, fig.height=3}
 # Test with default parameters (small segments: < 20% of chromosome arm)
 x = detect_arm_overfragmentation(x)
+
+print(x)
 ```
 
 You can produce a arm-level report for the fragmentation test, with: 
@@ -59,22 +61,36 @@ You can produce a arm-level report for the fragmentation test, with:
 
 $J$ is the sum of the variation in total copy number profiles, evaluated among each pair of contiguous segments.
 
-Significantly overfragmented arms with high $J$ - for some custom minimum value --  have a "scattered" copy number profile. Those with low $J$ are more uniform, as they show little no copy number change, and can be possibly smoothed ([see the Vignette](https://caravagn.github.io/CNAqc/articles/smoothing.html)).
+Significantly overfragmented arms with high $J$  have a "scattered" copy number profile. Those with low $J$ are more uniform, as they show little no copy number change, and can be possibly smoothed (see below).
 
-```{r, fig.width=10, fig.height=12}
-plot_arm_fragmentation(x)
+```{r, fig.width=7, fig.height=12}
+plot_arm_fragmentation(x, zoom = 3)
 ```
 
-### Whole-genome fragmentation
+Once available, these results appear in any call to `plot_segments` as annotated purple squares sorrounding the arms.
 
-With the same principle a similar test can be carried out on the whole genome copy number profiles. Pooling segments shorter than $\Delta$ bases -- default 1 megabase -- and fixing a value for the Binomial probability $p$ -- default $0.2$. 
+```{r, fig.width=9.5, fig.height=3}
+# Default plot has now segments
+plot_segments(x)
+```
 
-Compared to the arm-level test where we can adjust for arm lengths, in this case using the $\Delta$ normalised by genome length leads to low values for $p$ that seem in practice unrealistic.
+[Smoothing](https://caravagn.github.io/CNAqc/articles/smoothing.html) is a good way to start cleaning up the fragmented sets of arms, as it merges segments that have no karyotype change, and are closer than a certain distance.
 
-```{r, fig.width=11, fig.height=3}
-x = detect_wg_overfragmentation(x)
+```{r, fig.width=9.5, fig.height=3}
+# Smooth with default parameters
+x = smooth_segments(x)
+
+# Re-compute the fragmentation
+x = detect_arm_overfragmentation(x)
 
 print(x)
 ```
+
+```{r, fig.width=10, fig.height=12}
+plot_arm_fragmentation(x, zoom = 6)
+```
+
+
+
 
 

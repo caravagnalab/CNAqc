@@ -2,7 +2,7 @@
 expand_reference_chr_to_arms = function(x)
 {
   coordinates = CNAqc:::get_reference(ref = x$reference_genome)
-  
+
   p_arm = apply(coordinates, 1,function(w) {
     data.frame(
       chr = paste0(w['chr'], 'p'),
@@ -27,19 +27,19 @@ expand_reference_chr_to_arms = function(x)
     )
   })
 
-  bind_rows(
-    Reduce(bind_rows, p_arm),
-    Reduce(bind_rows, q_arm)
+  dplyr::bind_rows(
+    Reduce(dplyr::bind_rows, p_arm),
+    Reduce(dplyr::bind_rows, q_arm)
   ) %>%
     as_tibble() %>%
-    mutate(
+    dplyr::mutate(
       from = as.numeric(from),
       to = as.numeric(to),
       centromerStart = as.numeric(centromerStart),
       centromerEnd = as.numeric(centromerEnd),
       length = to - from
     ) %>%
-    select(
+    dplyr::select(
       chr, chr_original, length, from, to, centromerStart, centromerEnd
     )
 
