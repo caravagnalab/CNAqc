@@ -46,6 +46,9 @@ plot_arm_fragmentation = function(x, zoom = 0)
     return(ggplot() + geom_blank())
   }
 
+  # plot cex overriding
+  cex_opt = getOption('CNAqc_cex', default = 1)
+
   # Results from fragmentation test
   fragments = x$arm_fragmentation$table %>% filter(significant)
   segments = CNAqc:::relative_to_absolute_coordinates(x, x$cna)
@@ -89,6 +92,7 @@ plot_arm_fragmentation = function(x, zoom = 0)
       size = jumps,
       color = significant
     )) +
+    scale_size_continuous(range = c(1, 3) * cex_opt)  +
     CNAqc:::my_ggplot_theme() +
     geom_abline(size = .3,
                 color = 'red',
@@ -124,7 +128,7 @@ plot_arm_fragmentation = function(x, zoom = 0)
         x = n_long,
         y = n_short
       ),
-      # size = 3,
+      size = 4.5 * cex_opt,
       color = 'steelblue',
       xlim = 10
     ) +
