@@ -29,10 +29,13 @@ plot_segments = function(x,
   stopifnot(inherits(x, 'cnaqc'))
 
   # Circular layout
-  if(circular) return(plot_segments_circular(x, chromosomes = chromosomes))
+  if (circular)
+    return(plot_segments_circular(x, chromosomes = chromosomes))
 
   # Standard plot -- baseline genome reference
-  base_plot = CNAqc:::blank_genome(chromosomes = chromosomes, ref = x$reference_genome, ...)
+  base_plot = CNAqc:::blank_genome(chromosomes = chromosomes,
+                                   ref = x$reference_genome,
+                                   ...)
 
   # Segments
   segments = x$cna %>%
@@ -57,30 +60,33 @@ plot_segments = function(x,
     )
 
   # Fragmentation ~ add some annotation to hihglight that
-  if(!is.null(x$arm_fragmentation))
+  if (!is.null(x$arm_fragmentation))
   {
     fragmented = x$arm_fragmentation$table %>%
       dplyr::filter(significant, chr %in% chromosomes) %>%
       dplyr::mutate(label = paste0(chr, arm)) %>%
       dplyr::pull(label)
 
-    expanded_reference = CNAqc:::expand_reference_chr_to_arms(x) %>%
-      dplyr::filter(chr %in% fragmented)
+    if (length(fragmented) > 0)
+    {
+      expanded_reference = CNAqc:::expand_reference_chr_to_arms(x) %>%
+        dplyr::filter(chr %in% fragmented)
 
-    base_plot = base_plot +
-      geom_rect(
-        data = expanded_reference,
-        aes(
-          xmin = from,
-          xmax = to,
-          ymin = -Inf,
-          ymax = Inf
-        ),
-        alpha = .2,
-        fill = NA,
-        color = 'purple4'
-      )
+      base_plot = base_plot +
+        geom_rect(
+          data = expanded_reference,
+          aes(
+            xmin = from,
+            xmax = to,
+            ymin = -Inf,
+            ymax = Inf
+          ),
+          alpha = .2,
+          fill = NA,
+          color = 'purple4'
+        )
 
+    }
   }
 
   # Segments
@@ -110,9 +116,12 @@ plot_segments = function(x,
     labs(
       caption =
         paste0(
-          x$n_snvs, ' mutations, ',
-          x$n_cna_clonal, ' clonal CNA, ',
-          x$n_cna_sbclonal, ' subclonal CNA'
+          x$n_snvs,
+          ' mutations, ',
+          x$n_cna_clonal,
+          ' clonal CNA, ',
+          x$n_cna_sbclonal,
+          ' subclonal CNA'
         )
     )
 
@@ -122,15 +131,23 @@ plot_segments = function(x,
   # 1) chop off segments too high to render the plot readable
   MH = max(max(segments$minor), max(segments$Major))
 
-  if(MH > max_Y_height) {
-    warning("Segments with CN above ", max_Y_height, " will not be plot; this is annotated in the figure.")
+  if (MH > max_Y_height) {
+    warning(
+      "Segments with CN above ",
+      max_Y_height,
+      " will not be plot; this is annotated in the figure."
+    )
 
     base_plot = base_plot + ylim(-0.5, max_Y_height)
   }
 
   # 2) minimum height of the plot
-  if(MH <= max_Y_height) {
-    warning("No segments with CN above 3, the plot is anyway scaled up to ", max_Y_height, " to render better.")
+  if (MH <= max_Y_height) {
+    warning(
+      "No segments with CN above 3, the plot is anyway scaled up to ",
+      max_Y_height,
+      " to render better."
+    )
 
     base_plot = base_plot + ylim(-0.5, 5)
   }
@@ -138,7 +155,11 @@ plot_segments = function(x,
   # =-=-=-=-=-=-=-=-=-=-=-=-
   # Breakpoints annotations
   # =-=-=-=-=-=-=-=-=-=-=-=-
-  breakpoints = data.frame(x = segments$from, y = 0.1, outern = segments$Major > max_Y_height)
+  breakpoints = data.frame(
+    x = segments$from,
+    y = 0.1,
+    outern = segments$Major > max_Y_height
+  )
 
   base_plot = base_plot +
     geom_point(
@@ -157,15 +178,14 @@ plot_segments = function(x,
     )
 
   # Annotate driver events if required
-  if("is_driver" %in% colnames(x$snvs))
+  if ("is_driver" %in% colnames(x$snvs))
   {
     driver_list = x$snvs %>%
       dplyr::filter(is_driver, chr %in% chromosomes) %>%
-      dplyr::left_join(
-        x$cna %>% dplyr::select(segment_id, Major),
-        by = 'segment_id')
+      dplyr::left_join(x$cna %>% dplyr::select(segment_id, Major),
+                       by = 'segment_id')
 
-    if(nrow(driver_list) > 0)
+    if (nrow(driver_list) > 0)
       base_plot = base_plot +
         ggrepel::geom_text_repel(
           data = CNAqc:::relative_to_absolute_coordinates(x, driver_list),
@@ -188,21 +208,27 @@ plot_segments_circular = function(x, chromosomes = paste0('chr', c(1:22, 'X', 'Y
 {
   # Uses the standard function, but rotates the coordinate system,
   # offsets the y-axis and add a new set of labels
- suppressMessages(
-   plot_segments(x, max_Y_height = 5, chromosomes = chromosomes, circular = FALSE, label_chr = NA) +
-      coord_polar(theta = 'x', start = 0, clip = 'off') +
+  suppressMessages(
+    plot_segments(
+      x,
+      max_Y_height = 5,
+      chromosomes = chromosomes,
+      circular = FALSE,
+      label_chr = NA
+    ) +
+      coord_polar(
+        theta = 'x',
+        start = 0,
+        clip = 'off'
+      ) +
       ylim(-2, 5) +
-     labs(
-       x = "",
-       y = ""
-     ) +
-     theme(
-       axis.text.y = element_blank(),
-       panel.grid.major = element_blank(),
-       panel.grid.minor = element_blank(),
-       panel.border = element_rect(size = .3)
-     )
- )
+      labs(x = "",
+           y = "") +
+      theme(
+        axis.text.y = element_blank(),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.border = element_rect(size = .3)
+      )
+  )
 }
-
-

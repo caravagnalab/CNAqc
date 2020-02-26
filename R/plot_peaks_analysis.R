@@ -25,7 +25,8 @@ plot_peaks_analysis = function(x)
 
   with_peaks = all(!is.null(x$peaks_analysis))
   if (!with_peaks) {
-    stop("Input does not have peaks, see ?peaks_analysis to run peaks analysis.")
+    warning("Input does not have peaks, see ?peaks_analysis to run peaks analysis.")
+    return(CNAqc:::eplot())
   }
 
   karyotypes = x$peaks_analysis$fits %>% names

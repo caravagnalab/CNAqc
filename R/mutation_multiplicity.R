@@ -386,7 +386,11 @@ mutmult_two_copies = function(x, karyotype)
   colnames(input_peakdetection) = c('x', 'y')
 
   # Peaks detection with these parameters seems to work often
-  peaks =  peakPick::peakpick(mat = input_peakdetection, neighlim = 1, deriv.lim = 0.01, peak.min.sd = 0, peak.npos = 1)
+  peaks =  peakPick::peakpick(mat = input_peakdetection,
+                              neighlim = 1,
+                              deriv.lim = 0.01,
+                              peak.min.sd = 0,
+                              peak.npos = 1)
 
   xy_peaks = input_peakdetection[peaks[, 2], , drop = FALSE] %>%
     as_tibble() %>%
@@ -394,7 +398,14 @@ mutmult_two_copies = function(x, karyotype)
       x = x,
       y = x
     )
+
   xy_peaks
+
+  if(nrow(xy_peaks) == 0) {
+    cli::cli_alert_danger("No peaks detected for CCF detection, will not compute values for this karyotype.")
+
+    return(NULL)
+  }
 
   # Points in the centre where there is a violation of the peaks are the actual points we want
   central = entropy_profile_x[which.max(entropy_profile)]

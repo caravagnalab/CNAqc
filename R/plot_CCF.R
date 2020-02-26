@@ -26,7 +26,8 @@ plot_CCF = function(x)
 
   with_CCF = all(!is.null(x$CCF_estimates))
   if(!with_CCF){
-    stop("Input does not have CCF estimates, see ?compute_CCF to determine CCF values.")
+    warning("Input does not have CCF estimates, see ?compute_CCF to determine CCF values.")
+    return(CNAqc:::eplot())
   }
 
   USE_KARYOTYPES = c("1:0", '1:1', '2:0', '2:1', '2:2')

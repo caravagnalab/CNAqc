@@ -55,6 +55,16 @@ compute_CCF = function(x,
     })
   names(x$CCF_estimates) = karyotypes
 
+  # Check if there is any null (errors), and remove it
+  null_entries = sapply(x$CCF_estimates, function(x) all(is.null(x)))
+  x$CCF_estimates = x$CCF_estimates[!null_entries]
+
+  # On extreme cases where there is NO CCF available, we just return x
+  if(length(x$CCF_estimates) == 0) {
+    x$CCF_estimates = NULL
+    return(x)
+  }
+
   # Report some stats
   mutations = lapply(x$CCF_estimates , function(x) x$mutations)
   mutations = Reduce(dplyr::bind_rows, mutations)

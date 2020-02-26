@@ -43,7 +43,7 @@ plot_arm_fragmentation = function(x, zoom = 0)
   # add a test: if there are any, etc
   if(all(is.null(x$arm_fragmentation))) {
     cli::cli_alert_danger("Arm overfragmentation is not available for this object, compute it first.")
-    return(ggplot() + geom_blank())
+    return(CNAqc:::eplot())
   }
 
   # plot cex overriding
@@ -268,7 +268,7 @@ plot_arm_fragmentation3d = function(x)
   # add a test: if there are any, etc
   if(all(is.null(x$arm_fragmentation))) {
     cli::cli_alert_danger("Arm overfragmentation is not available for this object, compute it first.")
-    return(ggplot() + geom_blank())
+    return(CNAqc:::eplot())
   }
 
   require(plotly)
