@@ -89,11 +89,11 @@ init = function(snvs, cna, purity, ref = "GRCh38")
   fit$purity = purity
 
   tab_ploidy = fit$cna %>%
-    group_by(minor, Major) %>%
-    summarise(n = sum(length)) %>%
-    arrange(desc(n))
+    dplyr::group_by(minor, Major) %>%
+    dplyr::summarise(n = sum(length)) %>%
+    dplyr::arrange(desc(n))
 
-  fit$ploidy = tab_ploidy$minor[1] + tab_ploidy$Major[1]
+  fit$ploidy = as.numeric(tab_ploidy$minor[1]) + as.numeric(tab_ploidy$Major[1])
 
   fit
 }
