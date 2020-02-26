@@ -32,6 +32,9 @@ inspect_segment = function(x,
                            n = 200,
                            l = 1000)
 {
+  stopifnot(inherits(x, 'cnaqc'))
+
+
   segment_ids = x$cna %>%
     mutate(size = to - from) %>%
     filter(n > !!n, size > l, chr %in% chrs) %>%

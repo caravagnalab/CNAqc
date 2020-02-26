@@ -378,6 +378,8 @@ mutmult_two_copies = function(x, karyotype)
   # magnitude of the differential of the entropy
   joint = CNAqc:::entropy_profile_2_class(d_1, d_2)
 
+  # if(any(duplicated(joint))) joint = joint[!duplicated(joint), ]
+
   # Prifile the entropy via peak detection
   entropy_profile_x = joint$x
   entropy_profile = joint$entropy
@@ -410,8 +412,45 @@ mutmult_two_copies = function(x, karyotype)
   # Points in the centre where there is a violation of the peaks are the actual points we want
   central = entropy_profile_x[which.max(entropy_profile)]
 
+  # signal = entropy_profile
+  #
+  # J = joint %>%
+  #   dplyr::distinct(x, entropy)
+  # entropy_profile_x =
+  # entropy_profile = joint$entropy
+  #
+  # dy = J$entropy[-1] - J$entropy[-length(J$entropy)]
+  # dx = J$x[-1] - J$x[-length(J$x)]
+  #
+  # dydx = dy/dx
+  #
+  #   infl <- c(FALSE, diff(diff(dydx)>0)!=0)
+  #   points(J$x[infl ], dydx[infl ], col="blue", pch = 3)
+  # abline(v=dydx)
+  #
+  # mdy = abs(median(dy))
+  #
+  # lp = rp = which.max(J$entropy)
+#
+#   repeat{
+#     lp = lp - 1
+#     if(lp == 1 | abs(dy[lp]) > mdy) break
+#   }
+#
+#   repeat{
+#     rp = rp + 1
+#     if(rp == length(J$entropy) | abs(dy[rp]) > mdy) break
+#   }
+
   lp = xy_peaks %>% dplyr::filter(x < central) %>% dplyr::arrange(desc(x)) %>% dplyr::filter(row_number() == 1) %>% dplyr::pull(x)
   rp = xy_peaks %>% dplyr::filter(x > central) %>% dplyr::arrange(x) %>% dplyr::filter(row_number() == 1) %>% dplyr::pull(x)
+
+  if(length(lp) == 0 | length(rp) == 0) {
+    cli::cli_alert_danger("No suitable range of uncertainty detected for CCF, will not compute values for this karyotype.")
+
+    return(NULL)
+  }
+
 
   cli::cli_alert_info("Not assignamble area: [{.value {lp}}; {.value {rp}}]")
 

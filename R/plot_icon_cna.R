@@ -20,6 +20,8 @@
 #' plot_multisample_CNA(list(`S1` = x, `S2` = x))
 plot_icon_CNA = function(x)
 {
+  stopifnot(inherits(x, 'cnaqc'))
+
   L = x
 
   KARYO_colors =
