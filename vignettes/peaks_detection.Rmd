@@ -41,6 +41,7 @@ Peak detection routines can are implemented in function `analyze_peaks`.
 
 The idea is as follows: a segment with $m$ and $M$ copies of the minor and major alleles is consistent to mutation data if the  VAF distribution peaks at certain values, which we can compute. Profiling then of the VAF distribution with a peak-detection heuristic allows `CNAqc` to measure the if peaks match. Large deviance suggests usually wrong purity estimation.
 
+# Peak analysis
 
 ```{r, fig.width=11, fig.height=3, warning=F}
 # Run default analysis
@@ -61,7 +62,7 @@ print(x)
 
 A summary table is stored inside the named list `peaks_analysis`.
 
-### Plotting results 
+# Plotting results 
 
 For every karyotype, a plot with the estimated KDE and the matched peaks is available (assembled `ggpubr` figure with); gray panels represent karyotypes that have not been used.
 
@@ -87,9 +88,31 @@ cowplot::plot_grid(
 )
 ```
 
-You can visually summarise the result of the QC analysis, which reports a small set of radio buttons (remote) for 
+# Summary results and Quality Check (QC)
 
-```{r, fig.width=3, fig.height=1, message=F, warning=F}
-plot_qc(compute_CCF(x))
+The summary technical table is available as `peaks_analysis$matches` inside `x`. 
+
+```{r}
+x$peaks_analysis$matches
 ```
+
+The table reports several information. The following might be of some use after the analysis:
+
+- `mutation_multiplicity` and `karyotype`, which are the number of copies of the mutation, and the segment's karyotype. Each segment with `discarded = FALSE` has been analysed;
+- `peak`, `x`, `y` report where the expected peak should be found, and where it has been found (`x` and `y`);
+- `offset`, `weight` and `score` that report the factors of the final `score`;
+- `QC` that reports if the  peak is considered matched.
+
+The overall `QC` result - `"PASS"/"FAIL"` - is available in `x`.
+```{r}
+x$peaks_analysis$QC
+```
+
+
+You can visually summarise the result of the QC analysis, for both peaks and [CCF computation](https://caravagn.github.io/CNAqc/articles/ccf_computation.html).
+
+```{r, fig.width=3, fig.height=3, message=F, warning=F}
+plot_qc(x)
+```
+Here since CCF have not been computed, the only available QC tests are for peak-detection.
 
