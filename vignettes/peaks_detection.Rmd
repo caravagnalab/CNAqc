@@ -114,5 +114,6 @@ You can visually summarise the result of the QC analysis, for both peaks and [CC
 ```{r, fig.width=3, fig.height=3, message=F, warning=F}
 plot_qc(x)
 ```
+
 Here since CCF have not been computed, the only available QC tests are for peak-detection.
 
