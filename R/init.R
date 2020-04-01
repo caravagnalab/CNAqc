@@ -39,7 +39,7 @@
 #' data('example_dataset_CNAqc', package = 'CNAqc')
 #' print(example_dataset_CNAqc)
 #'
-#' x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna, example_dataset_CNAqc$purity)
+#' x = init(snvs = example_dataset_CNAqc$snvs, cna = example_dataset_CNAqc$cna, purity = example_dataset_CNAqc$purity)
 #' print(x)
 init = function(snvs, cna, purity, ref = "GRCh38")
 {
@@ -91,9 +91,15 @@ init = function(snvs, cna, purity, ref = "GRCh38")
   tab_ploidy = fit$cna %>%
     dplyr::group_by(minor, Major) %>%
     dplyr::summarise(n = sum(length)) %>%
-    dplyr::arrange(desc(n))
+    dplyr::arrange(desc(n)) %>%
+    dplyr::mutate(karyotype = paste0(Major, ':', minor)) %>%
+    dplyr::ungroup()
 
   fit$ploidy = as.numeric(tab_ploidy$minor[1]) + as.numeric(tab_ploidy$Major[1])
+  fit$most_prevalent_karyotype = paste0(tab_ploidy$minor[1], ':', tab_ploidy$Major[1])
+  fit$basepairs_by_karyotype = tab_ploidy
+
+  fit$most_mutations_karyotype = names(fit$n_karyotype)[1]
 
   fit
 }
