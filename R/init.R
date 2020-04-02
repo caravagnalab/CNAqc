@@ -96,7 +96,7 @@ init = function(snvs, cna, purity, ref = "GRCh38")
     dplyr::ungroup()
 
   fit$ploidy = as.numeric(tab_ploidy$minor[1]) + as.numeric(tab_ploidy$Major[1])
-  fit$most_prevalent_karyotype = paste0(tab_ploidy$minor[1], ':', tab_ploidy$Major[1])
+  fit$most_prevalent_karyotype = paste0(tab_ploidy$Major[1], ':',  tab_ploidy$minor[1])
   fit$basepairs_by_karyotype = tab_ploidy
 
   fit$most_mutations_karyotype = names(fit$n_karyotype)[1]
