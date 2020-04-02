@@ -30,13 +30,18 @@ plot_CCF = function(x)
     return(CNAqc:::eplot())
   }
 
+  method = x$CCF_estimates[[1]]$QC_table$method[1]
+
   USE_KARYOTYPES = c("1:0", '1:1', '2:0', '2:1', '2:2')
   ccf_plot = lapply(
     USE_KARYOTYPES,
     function(k)
     {
       if(!(k %in% names(x$CCF_estimates))) return(CNAqc:::eplot())
-      suppressWarnings(CNAqc:::plot_mutation_multiplicity_entropy(x, k))
+
+      if(method == 'ENTROPY') return(suppressWarnings(CNAqc:::plot_mutation_multiplicity_entropy(x, k)))
+      if(method == 'ROUGH') return(suppressWarnings(CNAqc:::plot_mutation_multiplicity_rough(x, k)))
+      return(CNAqc:::eplot())
     }
   )
 

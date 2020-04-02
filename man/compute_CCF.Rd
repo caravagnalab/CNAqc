@@ -5,7 +5,7 @@
 \title{Compute CCF values for the available mutations.}
 \usage{
 compute_CCF(x, karyotypes = c("1:0", "1:1", "2:0", "2:1", "2:2"),
-  cutoff_QC_PASS = 0.1)
+  cutoff_QC_PASS = 0.1, method = "ENTROPY")
 }
 \arguments{
 \item{x}{An object of class \code{cnaqc}, created by the \code{init} function.}
@@ -15,6 +15,9 @@ compute_CCF(x, karyotypes = c("1:0", "1:1", "2:0", "2:1", "2:2"),
 \item{cutoff_QC_PASS}{Percentage of mutations that can be not-assigned (\code{NA}) in a karyotype.
 If the karyotype has more than \code{cutoff_QC_PASS} percentage of non-assigned mutations then
 the overall set of CCF calls is failed for the karyotype.}
+
+\item{method}{Either \code{"ENTROPY"} or \code{"ROUGH"}, to reflect the two different algorithms
+to compute CCF. See the package vignette to understand the differences across methods.}
 }
 \value{
 An object of class \code{cnaqc}, with CCF values available for extraction and plotting.

@@ -14,6 +14,8 @@
 #' @param cutoff_QC_PASS Percentage of mutations that can be not-assigned (\code{NA}) in a karyotype.
 #' If the karyotype has more than \code{cutoff_QC_PASS} percentage of non-assigned mutations then
 #' the overall set of CCF calls is failed for the karyotype.
+#' @param method Either \code{"ENTROPY"} or \code{"ROUGH"}, to reflect the two different algorithms
+#' to compute CCF. See the package vignette to understand the differences across methods.
 #'
 #' @seealso Getters function \code{CCF} and \code{plot_CCF}.
 #' @return An object of class \code{cnaqc}, with CCF values available for extraction and plotting.
@@ -32,9 +34,11 @@
 #' plot_CCF(x)
 compute_CCF = function(x,
                        karyotypes = c('1:0', '1:1', '2:0', '2:1', '2:2'),
-                       cutoff_QC_PASS = 0.1)
+                       cutoff_QC_PASS = 0.1,
+                       method = 'ENTROPY')
 {
   stopifnot(inherits(x, 'cnaqc'))
+  stopifnot(method %in% c('ENTROPY', "ROUGH"))
 
   nkaryotypes = x$n_karyotype[x$n_karyotype > 25]
 
@@ -51,7 +55,10 @@ compute_CCF = function(x,
       if(k %in% c('1:0', '1:1'))
         return(suppressWarnings(CNAqc:::mutmult_single_copy(x, k)))
 
-      return(suppressWarnings(CNAqc:::mutmult_two_copies(x, k)))
+      if(method == "ENTROPY")
+        return(suppressWarnings(CNAqc:::mutmult_two_copies_entropy(x, k)))
+      else
+        return(suppressWarnings(CNAqc:::mutmult_two_copies_rough(x, k)))
     })
   names(x$CCF_estimates) = karyotypes
 
@@ -94,7 +101,8 @@ compute_CCF = function(x,
     dplyr::mutate(
       Unknown = ifelse(is.na(Unknown), 0, Unknown),
       p_Unkown = Unknown/N,
-      QC = ifelse(p_Unkown < cutoff_QC_PASS, "PASS", "FAIL")
+      QC = ifelse(p_Unkown < cutoff_QC_PASS, "PASS", "FAIL"),
+      method = method
     )
 
   if(any(QC_table$QC == "FAIL"))

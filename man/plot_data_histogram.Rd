@@ -4,10 +4,11 @@
 \alias{plot_data_histogram}
 \title{Title}
 \usage{
-plot_data_histogram(x, which = "VAF")
+plot_data_histogram(x, which = "VAF", karyotypes = c("1:0", "1:1",
+  "2:0", "2:1", "2:2"))
 }
 \arguments{
-\item{which}{}
+\item{karyotypes}{}
 }
 \description{
 Title
