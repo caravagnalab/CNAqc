@@ -29,7 +29,10 @@ To analyse a tumour sample with `CNAqc`, you need:
 * absolute CNA segments (clonal/ suclonal copy number calls);
 * a tumor purity estimate.
 
-The package uses `hg19` chromosome coordinates to map mutations to CNAs, and requires standard information like genome coordinates and type of DNA modification.   
+The package uses  chromosome coordinates to map mutations to CNAs, and elaborate a number of analysis on the data.
+These can be used to check the quality (QC) and consistency among the calls, or other other metrics often used to
+study cancer evolution. Besides genomic coordinates, `CNAqc` requires standard information on the
+type of DNA modification; _VEP, ANNOVER or other types of annotations are not required_.   
 
 **Available vignettes:** 
 

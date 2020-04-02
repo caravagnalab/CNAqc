@@ -38,7 +38,8 @@ plot_CCF_data = function(x, karyotypes = c("1:0", '1:1', '2:0', '2:1', '2:2'))
   ccf_data = Reduce(dplyr::bind_rows,
                     lapply(x$CCF_estimates, function(x)
                       x$mutations)) %>%
-    dplyr::mutate(karyotype = ifelse(karyotype %in% karyotypes, karyotype, "other"))
+    dplyr::mutate(karyotype = ifelse(karyotype %in% karyotypes, karyotype, "other")) %>%
+    dplyr::filter(!is.na(CCF))
 
   ggplot(data = ccf_data,
          aes(CCF, fill = karyotype)) +

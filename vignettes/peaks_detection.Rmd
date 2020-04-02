@@ -52,7 +52,7 @@ x = analyze_peaks(x)
 `'1:1'`, `'2:1'`, `'2:0'` and `'2:2'` in "Major:minor" notation. Karyotypes are subset by their size (normalized for
 the number of input mutations), and by default karyotypes smaller than 5% of the actual mutational burden are not considered
 
-A Kernel-density method (unitary adjustment, Gaussian kernel) is used to smooth the data distribution, and the `peakPick` package to determine peaks in the smoothed density.  Peaks below a mnimum 
+A Kernel-density method (unitary adjustment, Gaussian kernel) is used to smooth the data distribution, and the  [peakPick: Peak Picking Methods Inspired by Biological Data](https://cran.rstudio.com/web/packages/peakPick/index.html) package is used   to determine peaks in the smoothed density.  Peaks below a mnimum 
 density (noise and miscalled segments) are filtered, and the others are matched to a predefined location with some tolerance (e.g., plus/minus `0.5 * epsilon`, where `epsilon = 0.015` is the default).
 
 Theis analysis produces a set of scores that account for karyotype size and peaks offset, and that can be combined into a linear model to compute an overall QC metrics, called `rho`. 
