@@ -2,13 +2,29 @@
 % Please edit documentation in R/smooth_segments.R
 \name{smooth_segments}
 \alias{smooth_segments}
-\title{Title}
+\title{Smooth copy number segments.}
 \usage{
 smooth_segments(x, maximum_distance = 1e+06)
 }
 \arguments{
-\item{maximum_distance}{}
+\item{x}{An object of class \code{cnaqc}, created by the \code{init} function.}
+
+\item{maximum_distance}{The \code{Delta} maximum of nucleotides to allow
+to join two equivalent copy number segments.}
+}
+\value{
+An object of class \code{cnaqc}, created by the \code{init} function.
 }
 \description{
-Title
+This functions join segments that have the same Major and minor alleles
+(absolute copy number), and that are split by at most a certain number
+of nucleotides \code{Delta}. The pre-smoothing copy number segments are
+retained in the output computation.
+}
+\examples{
+data('example_dataset_CNAqc', package = 'CNAqc')
+x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+
+x = smooth_segments(x)
+plot_smoothing(x)
 }

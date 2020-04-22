@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Title — plot_segment_size_distribution • CNAqc</title>
+<title>Plot the segments' size distribution. — plot_segment_size_distribution • CNAqc</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,9 +42,10 @@
 
 
 
-<meta property="og:title" content="Title — plot_segment_size_distribution" />
-<meta property="og:description" content="Title" />
-<meta property="og:image" content="caravagn.github.io/revolver/logo.png" />
+<meta property="og:title" content="Plot the segments' size distribution. — plot_segment_size_distribution" />
+<meta property="og:description" content="This is the histogram of the number of bases (length)
+in each copy number segment." />
+<meta property="og:image" content="caravagn.github.io/CNAqc/logo.png" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -140,13 +141,14 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Title</h1>
+    <h1>Plot the segments' size distribution.</h1>
     <small class="dont-index">Source: <a href='https://github.com/caravagn/CNAqc/blob/master/R/plot_segment_size_distribution.R'><code>R/plot_segment_size_distribution.R</code></a></small>
     <div class="hidden name"><code>plot_segment_size_distribution.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Title</p>
+    <p>This is the histogram of the number of bases (length)
+in each copy number segment.</p>
     </div>
 
     <pre class="usage"><span class='fu'>plot_segment_size_distribution</span>(<span class='no'>x</span>, <span class='kw'>annotate_cut</span> <span class='kw'>=</span> <span class='fl'>1e+07</span>)</pre>
@@ -155,17 +157,31 @@
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
+      <th>x</th>
+      <td><p>An object of class <code>cnaqc</code>, created by the <code>init</code> function.</p></td>
+    </tr>
+    <tr>
       <th>annotate_cut</th>
-      <td></td>
+      <td><p>A custom vertical line annotation.</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
+    <p>A <code>ggplot</code> object.</p>
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='st'>'example_dataset_CNAqc'</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>'CNAqc'</span>)
+<span class='no'>x</span> <span class='kw'>=</span> <span class='fu'><a href='init.html'>init</a></span>(<span class='no'>example_dataset_CNAqc</span>$<span class='no'>snvs</span>, <span class='no'>example_dataset_CNAqc</span>$<span class='no'>cna</span>,<span class='no'>example_dataset_CNAqc</span>$<span class='no'>purity</span>)</div><div class='output co'>#&gt; <span style='color: #BBBBBB;background-color: #0000BB;'> [ CNAqc - CNA Quality Check ] 
+#&gt; </span><span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Using reference genome coordinates for: </span><span style='color: #00BB00;'>GRCh38</span><span>.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #BBBB00;'>!</span><span> Missing CCF column from CNA calls, adding CCF = 1 assuming clonal CNA calls.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Input n = 13141 mutations for 267 CNA segments (267 clonal, 0 subclonal)</span></div><div class='output co'>#&gt; </div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> Mapped n = 12963 mutations to clonal segments (99% of input)</span></div><div class='input'>
+<span class='fu'>plot_segment_size_distribution</span>(<span class='no'>x</span>)</div><div class='img'><img src='plot_segment_size_distribution-1.png' alt='' width='700' height='433' /></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
+      <li><a href="#value">Value</a></li>
+      <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>

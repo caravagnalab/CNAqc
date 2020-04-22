@@ -1,14 +1,24 @@
-# w = x
-# x = smooth_segments(x)
-
-#' Title
+#' Plot smoothed segments data
 #'
-#' @param x
+#' @description
 #'
-#' @return
+#' This function returns a multipanel figure with the segments profile before
+#' and after smoothing, along with the segments' size distribution histogram.
+#' It can only be applied on an object where smoothing has been run.
+#'
+#' @seealso smooth_segments
+#'
+#' @param x An object of class \code{cnaqc}, created by the \code{init} function.
+#'
+#' @return A figure arranged with multiple \code{ggplot} objects.
 #' @export
 #'
 #' @examples
+#' data('example_dataset_CNAqc', package = 'CNAqc')
+#' x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+#'
+#' x = smooth_segments(x)
+#' plot_smoothing(x)
 plot_smoothing = function(x)
 {
   # test it has smoothing

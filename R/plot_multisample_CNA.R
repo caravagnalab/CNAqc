@@ -1,9 +1,3 @@
-# data('example_evoverse', package = 'evoverse')
-# x = example_evoverse
-# L = x$CNAqc
-
-
-
 #' Plots CNA for multiple samples.
 #'
 #' @description
@@ -20,7 +14,7 @@
 #'
 #' @examples
 #' data('example_dataset_CNAqc', package = 'CNAqc')
-#' x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+#' x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna, example_dataset_CNAqc$purity)
 #'
 #' plot_multisample_CNA(list(`S1` = x, `S2` = x))
 plot_multisample_CNA = function(x)
@@ -29,16 +23,7 @@ plot_multisample_CNA = function(x)
   Ln = names(L)
   if(is.null(Ln)) Ln = paste0("Sample ", 1:length(L))
 
-  KARYO_colors =
-    c(
-      `0:0` = 'darkblue',
-      `1:0` = 'steelblue',
-      `1:1` = ggplot2::alpha('forestgreen', .8),
-      `2:0` = 'turquoise4',
-      `2:1` = ggplot2::alpha('orange', .8),
-      `2:2` = 'indianred3',
-      `other` = 'darkred'
-    )
+  KARYO_colors = CNAqc:::get_karyotypes_colors(NULL)
 
   # Extract calls, and flatten them for plotting
   calls = lapply(Ln,
@@ -51,7 +36,7 @@ plot_multisample_CNA = function(x)
                        sample = s
                      ) %>%
                      select(chr, from, to, label, CN, sample)
-                   
+
                    CNAqc:::relative_to_absolute_coordinates(L[[s]], W)
                  })
 
@@ -64,6 +49,8 @@ plot_multisample_CNA = function(x)
         label = ifelse(label %in% names(KARYO_colors), label, 'other')
       )
     )
+
+  KARYO_colors = c(KARYO_colors, `other` = 'gray')
 
   chromosomes = calls_flat$chr %>% unique
 

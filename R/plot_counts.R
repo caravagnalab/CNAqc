@@ -19,9 +19,9 @@ plot_counts = function(x, chromosomes = paste0('chr', c(1:22, 'X', 'Y')))
   stopifnot(inherits(x, 'cnaqc'))
 
   mutations = CNAqc:::relative_to_absolute_coordinates(
-    x, 
+    x,
     x$snvs %>% dplyr::filter(chr %in% chromosomes))
-  
+
   # X-range
   reference_genome = CNAqc:::get_reference(x$reference_genome)
   low = min(reference_genome$from)
@@ -34,15 +34,11 @@ plot_counts = function(x, chromosomes = paste0('chr', c(1:22, 'X', 'Y')))
     geom_histogram(aes(y = ..count..), binwidth = binsize, fill = 'black') +
     my_ggplot_theme() +
     xlim(low, upp) +
-    # scale_x_continuous(low, upp - upp*binsize) +
     theme(
       axis.text.x = element_blank(),
       axis.ticks.x = element_blank(),
       axis.title.x = element_blank()
     ) +
-    # ggpubr::rotate_y_text() +
-    # scale_y_continuous(breaks = scales::pretty_breaks(n = 2),
-    #                    limits = c(0, m)) +
     labs(y = 'n')
 
   hplot

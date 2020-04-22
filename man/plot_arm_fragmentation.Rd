@@ -12,6 +12,9 @@ plot_arm_fragmentation(x, zoom = 0)
 \item{zoom}{Number of maximum zoom panels to show in the bottom of
 the figure.}
 }
+\value{
+A \code{ggplot} object for the plot.
+}
 \description{
 The function produces a multi-panel figure. The top left
 panel shows a scatter of the segments' length per arm, and

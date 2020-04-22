@@ -1,15 +1,21 @@
-# data('example_dataset_CNAqc')
-# x = CNAqc::init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna, example_dataset_CNAqc$purity)
-# CNAqc::plot_segments(x) + ylim(0, 5)
-
-#' Title
+#' Determines segments' fragmentation status.
 #'
-#' @param x
-#' @param alpha
-#' @param genome_percentage_cutoff
-#' @param minimum_segments_for_testing
+#' @description
 #'
-#' @return
+#' This functions determines if, at the arm level, the segments are over-fragmented
+#' using the statistical test described in the package manual.
+#'
+#' @param x An object of class \code{cnaqc}, created by the \code{init} function.
+#' @param alpha Confidence level for the tests, for instance \code{0.05}.
+#' @param genome_percentage_cutoff Segments are considered long or short depending on whether
+#' they are longer (in basepairs) than \code{genome_percentage_cutoff * L} bases, where \code{L}
+#' is the arm length for the reference genome. Default is \code{0.2} (twenty percent).
+#' @param minimum_segments_for_testing Smallest number of segments required to actually test
+#' a certain arm Default is \code{10} segments. This number influences the correction for mulitple
+#' hypothesis testing.
+#'
+#' @return An object of class \code{cnaqc} with the results.
+#'
 #' @export
 #'
 #' @examples
@@ -19,9 +25,9 @@
 #' x = detect_arm_overfragmentation(x)
 #' print(x)
 detect_arm_overfragmentation = function(x,
-                                    alpha = 0.01,
-                                    genome_percentage_cutoff = .2,
-                                    minimum_segments_for_testing = 10)
+                                        alpha = 0.01,
+                                        genome_percentage_cutoff = .2,
+                                        minimum_segments_for_testing = 10)
 {
   clonal_cna = x$cna %>% filter(CCF == 1)
 
@@ -29,15 +35,14 @@ detect_arm_overfragmentation = function(x,
   expanded_reference = CNAqc:::expand_reference_chr_to_arms(x)
 
   # Chromosome length
-  L = pio:::nmfy(
-    expanded_reference$chr,
-    expanded_reference$length)
+  L = pio:::nmfy(expanded_reference$chr,
+                 expanded_reference$length)
 
   # Break segments by arm
   clonal_cna = CNAqc:::split_cna_to_arms(x, CNAqc:::relative_to_absolute_coordinates(x, clonal_cna)) %>%
     mutate(
       L = L[paste0(chr, arm)],
-      perc_length = length/L,
+      perc_length = length / L,
       smaller =  perc_length <= genome_percentage_cutoff
     )
 
@@ -48,13 +53,13 @@ detect_arm_overfragmentation = function(x,
     ungroup()
 
   # Detect overfragmentation exception - no short segments (will not compute)
-  if(all(counts$smaller == FALSE)) {
+  if (all(counts$smaller == FALSE)) {
     cli::cli_alert_warning("No short segments with these parameters.")
     return(x)
   }
 
   # Detect overfragmentation exception - only short segments
-  if(all(counts$smaller == TRUE))
+  if (all(counts$smaller == TRUE))
   {
     counts = counts %>%
       spread(smaller, n_short) %>%
@@ -75,11 +80,10 @@ detect_arm_overfragmentation = function(x,
   counts$n_short[is.na(counts$n_short)] = 0
 
   # Jumos
-  counts$jumps = apply(
-    counts,
-    1,
-    function(x) CNAqc:::compute_jumps_segments(clonal_cna, x['chr'], x['arm'])
-    )
+  counts$jumps = apply(counts,
+                       1,
+                       function(x)
+                         CNAqc:::compute_jumps_segments(clonal_cna, x['chr'], x['arm']))
 
 
   # Test only those entries with at least minimum_segments_for_testing segments
@@ -98,16 +102,18 @@ detect_arm_overfragmentation = function(x,
   testable = testable %>%
     rowwise() %>%
     mutate(
-      p_value = frequentist_test_fragmentation(n_short,
-                                         n_long,
-                                         chr,
-                                         arm,
-                                         testable,
-                                         p_cutoff_short = genome_percentage_cutoff,
-                                         N_tests = N_tests,
-                                         alpha = alpha),
-      Bonferroni_cutoff = alpha/N_tests,
-      significant = ifelse(N_tests == 0, FALSE, p_value < (alpha/N_tests))
+      p_value = frequentist_test_fragmentation(
+        n_short,
+        n_long,
+        chr,
+        arm,
+        testable,
+        p_cutoff_short = genome_percentage_cutoff,
+        N_tests = N_tests,
+        alpha = alpha
+      ),
+      Bonferroni_cutoff = alpha / N_tests,
+      significant = ifelse(N_tests == 0, FALSE, p_value < (alpha / N_tests))
     ) %>%
     arrange(p_value) %>%
     ungroup()
@@ -124,9 +130,8 @@ detect_arm_overfragmentation = function(x,
       alpha = alpha,
       N_tests = N_tests,
       genome_percentage_cutoff = genome_percentage_cutoff,
-      minimum_segments_for_testing = minimum_segments_for_testing)
+      minimum_segments_for_testing = minimum_segments_for_testing
+    )
 
   return(x)
 }
-
-

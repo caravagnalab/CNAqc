@@ -1,12 +1,24 @@
-#' Title
+#' Smooth copy number segments.
 #'
-#' @param x
-#' @param maximum_distance
+#' @description
+#' This functions join segments that have the same Major and minor alleles
+#' (absolute copy number), and that are split by at most a certain number
+#' of nucleotides \code{Delta}. The pre-smoothing copy number segments are
+#' retained in the output computation.
 #'
-#' @return
+#' @param x An object of class \code{cnaqc}, created by the \code{init} function.
+#' @param maximum_distance The \code{Delta} maximum of nucleotides to allow
+#' to join two equivalent copy number segments.
+#'
+#' @return An object of class \code{cnaqc}, created by the \code{init} function.
 #' @export
 #'
 #' @examples
+#' data('example_dataset_CNAqc', package = 'CNAqc')
+#' x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+#'
+#' x = smooth_segments(x)
+#' plot_smoothing(x)
 smooth_segments = function(x, maximum_distance = 1e6)
 {
   segments = x$cna

@@ -1,12 +1,21 @@
-#' Title
+#' Plot the segments' size distribution.
 #'
-#' @param x
-#' @param annotate_cut
+#' @description
 #'
-#' @return
+#' This is the histogram of the number of bases (length)
+#' in each copy number segment.
+#'
+#' @param x An object of class \code{cnaqc}, created by the \code{init} function.
+#' @param annotate_cut A custom vertical line annotation.
+#'
+#' @return A \code{ggplot} object.
 #' @export
 #'
 #' @examples
+#' data('example_dataset_CNAqc', package = 'CNAqc')
+#' x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+#'
+#' plot_segment_size_distribution(x)
 plot_segment_size_distribution = function(x, annotate_cut = 1e7)
 {
   x$cna %>%

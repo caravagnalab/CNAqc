@@ -6,10 +6,16 @@
 #'
 #' @param x An object of class \code{cnaqc}, created by the \code{init} function.
 #' @param chromosomes The chromosome to use for this plot.
-#' @param max_Y_height Maximum height onn the Y-axis of the plot, if there are segments
-#' above this heigh a warning is raised and annnotated in the plot as well in graphical format.
+#' @param max_Y_height Maximum height for the Y-axis of the plot. Segments witht total copy
+#' number (Major plus minor) above \code{max_Y_height} are not showm; in that case a point
+#' annotation is put on top of the plot, and \code{max_Y_height} is annotated in the grid.
+#' @param highlight A list of karyotype ids in \code{"Major:minor"} notation
+#' (e.g., \code{"1:1", "2,1", ...}) that will be shadowed with a transparent area.
+#' By default, it plots the most prevalent karyotype,
 #' @param circular Uses a circular layout in polar coordinates to make the segments
-#' look like a circos plot. It can save space.
+#' look like a circos plot. This visualisation can save space.
+#' @param cn Type of copy number segment to show on the plot. Either \code{"absolute"} for
+#' Major and minor annotation, or \code{"total"} for the total (Major plus minor) annotation.
 #'
 #' @return A \code{ggplot} object.
 #' @export
@@ -22,8 +28,10 @@
 #' plot_segments(x, chromosomes = 'chr13')
 plot_segments = function(x,
                          chromosomes = paste0('chr', c(1:22, 'X', 'Y')),
-                         max_Y_height = 8,
+                         max_Y_height = 6,
                          circular = FALSE,
+                         cn = 'absolute',
+                         highlight = x$most_prevalent_karyotype,
                          ...)
 {
   stopifnot(inherits(x, 'cnaqc'))
@@ -39,25 +47,26 @@ plot_segments = function(x,
 
   # Segments
   segments = x$cna %>%
-    filter(chr %in% chromosomes)
+    dplyr::filter(chr %in% chromosomes)  %>%
+    dplyr::mutate(
+      total = Major + minor,
+       karyotype = paste0(Major, ':', minor)
+      )
+
   segments = CNAqc:::relative_to_absolute_coordinates(x, segments)
 
-  # if there are 1-1 segments, shadow them
-  one_one = segments %>% filter(Major == 1, minor == 1)
+  # =-=-=-=-=-=-=-=-=-=-=-=-
+  # Shadow for highligthing
+  # =-=-=-=-=-=-=-=-=-=-=-=-
+  base_plot = CNAqc:::add_shadow_to_plot(segments, base_plot, highlight)
 
-  if (nrow(one_one) > 0)
-    base_plot = base_plot +
-    geom_rect(
-      data = one_one,
-      aes(
-        xmin = from,
-        xmax = to,
-        ymin = -Inf,
-        ymax = Inf
-      ),
-      alpha = .2,
-      fill = 'forestgreen'
-    )
+  # =-=-=-=-=-=-=-=-=-=-=-=-
+  # Draw Segments
+  # =-=-=-=-=-=-=-=-=-=-=-=-
+  base_plot = CNAqc:::add_segments_to_plot(
+    segments = segments %>% dplyr::filter(total <= max_Y_height),
+    base_plot = base_plot,
+    cn = cn)
 
   # Fragmentation ~ add some annotation to hihglight that
   if (!is.null(x$arm_fragmentation))
@@ -89,33 +98,12 @@ plot_segments = function(x,
     }
   }
 
-  # Segments
+  # Caption
   base_plot = base_plot +
-    geom_segment(
-      data = segments,
-      aes(
-        x = from,
-        xend = to,
-        y = Major,
-        yend = Major
-      ),
-      size = 1.5,
-      colour = 'red'
-    ) +
-    geom_segment(
-      data = segments %>% mutate(minor = minor - 0.1),
-      aes(
-        x = from,
-        xend = to,
-        y = minor,
-        yend = minor
-      ),
-      size = 1,
-      colour = 'steelblue'
-    ) +
     labs(
       caption =
         paste0(
+          "Ploidy ", x$ploidy, '; ',
           x$n_snvs,
           ' mutations, ',
           x$n_cna_clonal,
@@ -126,78 +114,16 @@ plot_segments = function(x,
     )
 
   # =-=-=-=-=-=-=-=-=-=-=-=-
-  # Be smart layout
-  # =-=-=-=-=-=-=-=-=-=-=-=-
-  # 1) chop off segments too high to render the plot readable
-  MH = max(max(segments$minor), max(segments$Major))
-
-  if (MH > max_Y_height) {
-    warning(
-      "Segments with CN above ",
-      max_Y_height,
-      " will not be plot; this is annotated in the figure."
-    )
-
-    base_plot = base_plot + ylim(-0.5, max_Y_height)
-  }
-
-  # 2) minimum height of the plot
-  if (MH <= max_Y_height) {
-    warning(
-      "No segments with CN above 3, the plot is anyway scaled up to ",
-      max_Y_height,
-      " to render better."
-    )
-
-    base_plot = base_plot + ylim(-0.5, 5)
-  }
-
-  # =-=-=-=-=-=-=-=-=-=-=-=-
   # Breakpoints annotations
   # =-=-=-=-=-=-=-=-=-=-=-=-
-  breakpoints = data.frame(
-    x = segments$from,
-    y = 0.1,
-    outern = segments$Major > max_Y_height
-  )
+  base_plot = CNAqc:::add_breakpoints_to_plot(segments, base_plot, max_Y_height)
 
-  base_plot = base_plot +
-    geom_point(
-      data = breakpoints %>% filter(!outern),
-      aes(x = x, y = y),
-      size = .5,
-      shape = 1,
-      color = 'black'
-    ) +
-    geom_point(
-      data = breakpoints %>% filter(outern),
-      aes(x = x, y = y),
-      size = .5,
-      shape = 4,
-      color = 'orange'
-    )
+  # =-=-=-=-=-=-=-=-=-=-=-=-
+  # Drivers annotations
+  # =-=-=-=-=-=-=-=-=-=-=-=-
+  drivers_list =  x$snvs %>% dplyr::filter(chr %in% chromosomes)
+  base_plot = CNAqc:::add_drivers_to_segment_plot(x, drivers_list = drivers_list, base_plot)
 
-  # Annotate driver events if required
-  if ("is_driver" %in% colnames(x$snvs))
-  {
-    driver_list = x$snvs %>%
-      dplyr::filter(is_driver, chr %in% chromosomes) %>%
-      dplyr::left_join(x$cna %>% dplyr::select(segment_id, Major),
-                       by = 'segment_id')
-
-    if (nrow(driver_list) > 0)
-      base_plot = base_plot +
-        ggrepel::geom_text_repel(
-          data = CNAqc:::relative_to_absolute_coordinates(x, driver_list),
-          aes(x = from, y = Major, label = gene),
-          ylim = c(max_Y_height - 1, NA),
-          segment.colour = 'darkblue',
-          segment.size = .3,
-          nudge_y = max_Y_height - 0.5,
-          color = 'darkblue',
-          arrow = grid::arrow(length = unit(0.05, "inches"), type  = 'closed')
-        )
-  }
 
   return(base_plot)
 }

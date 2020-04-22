@@ -2,13 +2,28 @@
 % Please edit documentation in R/plot_smoothing.R
 \name{plot_smoothing}
 \alias{plot_smoothing}
-\title{Title}
+\title{Plot smoothed segments data}
 \usage{
 plot_smoothing(x)
 }
 \arguments{
-\item{x}{}
+\item{x}{An object of class \code{cnaqc}, created by the \code{init} function.}
+}
+\value{
+A figure arranged with multiple \code{ggplot} objects.
 }
 \description{
-Title
+This function returns a multipanel figure with the segments profile before
+and after smoothing, along with the segments' size distribution histogram.
+It can only be applied on an object where smoothing has been run.
+}
+\examples{
+data('example_dataset_CNAqc', package = 'CNAqc')
+x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+
+x = smooth_segments(x)
+plot_smoothing(x)
+}
+\seealso{
+smooth_segments
 }

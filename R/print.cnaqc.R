@@ -41,10 +41,17 @@ print.cnaqc = function(x, ...)
   with_smoothing = all(!is.null(x$before_smoothing))
   with_arm_frag = all(!is.null(x$arm_fragmentation))
   with_wg_frag = all(!is.null(x$wg_fragmentation))
+  with_drivers = all(c("gene", "is_driver") %in% colnames(x$snvs))
 
   cli::cli_alert_info(paste0("Sample Purity: ", paste0(x$purity  *100, '% ~ Ploidy: ', x$ploidy, '.')))
 
-  if(with_peaks | with_CCF | with_smoothing | with_arm_frag | with_wg_frag) cat('\n')
+  if(with_drivers | with_peaks | with_CCF | with_smoothing | with_arm_frag | with_wg_frag) cat('\n')
+
+  if(with_drivers)
+  {
+    nd = x$snvs %>% dplyr::filter(is_driver) %>% nrow()
+    cli::cli_alert_info("Mutations annotated have {.value {nd}} drivers.")
+  }
 
   if(with_peaks)
   {
@@ -101,4 +108,38 @@ bar_print_console = function(x, top = 5){
 
       cat("\n")
     })
+}
+
+
+#' Plot for class \code{'cnaqc'}.
+#'
+#' @description
+#'
+#' The default plot is the CNA segments in wide format
+#'
+#' @param x An obj of class \code{'cnaqc'}.
+#' @param ... Default S3 method parameter.
+#'
+#' @return Nothing.
+#'
+#' @export
+#'
+#' @examples
+#' data('example_dataset_CNAqc', package = 'CNAqc')
+#' x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+#'
+#' plot(x)
+plot.cnaqc = function(x, ...)
+{
+  stopifnot(inherits(x, "cnaqc"))
+
+  cowplot::plot_grid(
+    plot_counts(x),
+    plot_vaf(x, N = 10000),
+    plot_depth(x, N = 10000),
+    plot_segments(x),
+    align = 'v',
+    nrow = 4,
+    rel_heights = c(.15, .15, .15, .8)
+    )
 }

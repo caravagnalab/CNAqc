@@ -2,13 +2,25 @@
 % Please edit documentation in R/plot_segment_size_distribution.R
 \name{plot_segment_size_distribution}
 \alias{plot_segment_size_distribution}
-\title{Title}
+\title{Plot the segments' size distribution.}
 \usage{
 plot_segment_size_distribution(x, annotate_cut = 1e+07)
 }
 \arguments{
-\item{annotate_cut}{}
+\item{x}{An object of class \code{cnaqc}, created by the \code{init} function.}
+
+\item{annotate_cut}{A custom vertical line annotation.}
+}
+\value{
+A \code{ggplot} object.
 }
 \description{
-Title
+This is the histogram of the number of bases (length)
+in each copy number segment.
+}
+\examples{
+data('example_dataset_CNAqc', package = 'CNAqc')
+x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+
+plot_segment_size_distribution(x)
 }

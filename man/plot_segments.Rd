@@ -5,18 +5,27 @@
 \title{Plot CNA segments.}
 \usage{
 plot_segments(x, chromosomes = paste0("chr", c(1:22, "X", "Y")),
-  max_Y_height = 8, circular = FALSE, ...)
+  max_Y_height = 6, circular = FALSE, cn = "absolute",
+  highlight = x$most_prevalent_karyotype, ...)
 }
 \arguments{
 \item{x}{An object of class \code{cnaqc}, created by the \code{init} function.}
 
 \item{chromosomes}{The chromosome to use for this plot.}
 
-\item{max_Y_height}{Maximum height onn the Y-axis of the plot, if there are segments
-above this heigh a warning is raised and annnotated in the plot as well in graphical format.}
+\item{max_Y_height}{Maximum height for the Y-axis of the plot. Segments witht total copy
+number (Major plus minor) above \code{max_Y_height} are not showm; in that case a point
+annotation is put on top of the plot, and \code{max_Y_height} is annotated in the grid.}
 
 \item{circular}{Uses a circular layout in polar coordinates to make the segments
-look like a circos plot. It can save space.}
+look like a circos plot. This visualisation can save space.}
+
+\item{cn}{Type of copy number segment to show on the plot. Either \code{"absolute"} for
+Major and minor annotation, or \code{"total"} for the total (Major plus minor) annotation.}
+
+\item{highlight}{A list of karyotype ids in \code{"Major:minor"} notation
+(e.g., \code{"1:1", "2,1", ...}) that will be shadowed with a transparent area.
+By default, it plots the most prevalent karyotype,}
 }
 \value{
 A \code{ggplot} object.

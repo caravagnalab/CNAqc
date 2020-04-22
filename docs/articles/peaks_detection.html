@@ -128,33 +128,34 @@
 <a class="sourceLine" id="cb2-5" data-line-number="5"><span class="co">#&gt; # A tibble: 4 x 12</span></a>
 <a class="sourceLine" id="cb2-6" data-line-number="6"><span class="co">#&gt;   mutation_multip… karyotype  peak     x     y counts_per_bin discarded   offset</span></a>
 <a class="sourceLine" id="cb2-7" data-line-number="7"><span class="co">#&gt;              &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;          &lt;int&gt; &lt;lgl&gt;        &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="co">#&gt; 1                2 2:1       0.616  0.61  3.11             59 FALSE      0.00592</span></a>
-<a class="sourceLine" id="cb2-9" data-line-number="9"><span class="co">#&gt; 2                1 2:1       0.308  0.3   3.46             86 FALSE      0.00796</span></a>
-<a class="sourceLine" id="cb2-10" data-line-number="10"><span class="co">#&gt; 3                2 2:2       0.471  0.46  8.08            610 FALSE      0.0109 </span></a>
-<a class="sourceLine" id="cb2-11" data-line-number="11"><span class="co">#&gt; 4                1 2:2       0.235  0.25  0.87             74 FALSE     -0.0146 </span></a>
+<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="co">#&gt; 1                2 2:1       0.616  0.61  2.92             53 FALSE      0.00592</span></a>
+<a class="sourceLine" id="cb2-9" data-line-number="9"><span class="co">#&gt; 2                1 2:1       0.308  0.31  3.66             65 FALSE     -0.00204</span></a>
+<a class="sourceLine" id="cb2-10" data-line-number="10"><span class="co">#&gt; 3                2 2:2       0.471  0.46  7.96            583 FALSE      0.0109 </span></a>
+<a class="sourceLine" id="cb2-11" data-line-number="11"><span class="co">#&gt; 4                1 2:2       0.235  0.25  0.91             88 FALSE     -0.0146 </span></a>
 <a class="sourceLine" id="cb2-12" data-line-number="12"><span class="co">#&gt; # … with 4 more variables: matched &lt;lgl&gt;, weight &lt;dbl&gt;, score &lt;dbl&gt;, QC &lt;chr&gt;</span></a>
-<a class="sourceLine" id="cb2-13" data-line-number="13"><span class="co">#&gt; ✓ Peak detection PASS with r = -0.000310437666329653 and tolerance e = 0.05</span></a></code></pre></div>
+<a class="sourceLine" id="cb2-13" data-line-number="13"><span class="co">#&gt; ✓ Peak detection PASS with r = -0.00117483319779741 and tolerance e = 0.05</span></a></code></pre></div>
 <p><code>CNAqc</code> analyze LOH regions (A, AA), diploid regions (AB), and amplification regions (AAB, AABB). These correspond to <code>'1:1'</code>, <code>'2:1'</code>, <code>'2:0'</code> and <code>'2:2'</code> in “Major:minor” notation. Karyotypes are subset by their size (normalized for the number of input mutations), and by default karyotypes smaller than 5% of the actual mutational burden are not considered</p>
-<p>A Kernel-density method (unitary adjustment, Gaussian kernel) is used to smooth the data distribution, and the <code>peakPick</code> package to determine peaks in the smoothed density. Peaks below a mnimum density (noise and miscalled segments) are filtered, and the others are matched to a predefined location with some tolerance (e.g., plus/minus <code>0.5 * epsilon</code>, where <code>epsilon = 0.015</code> is the default).</p>
+<p>A Kernel-density method (unitary adjustment, Gaussian kernel) is used to smooth the data distribution, and the <a href="https://cran.rstudio.com/web/packages/peakPick/index.html">peakPick: Peak Picking Methods Inspired by Biological Data</a> package is used to determine peaks in the smoothed density. Peaks below a mnimum density (noise and miscalled segments) are filtered, and the others are matched to a predefined location with some tolerance (e.g., plus/minus <code>0.5 * epsilon</code>, where <code>epsilon = 0.015</code> is the default).</p>
 <p>Theis analysis produces a set of scores that account for karyotype size and peaks offset, and that can be combined into a linear model to compute an overall QC metrics, called <code>rho</code>.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(x)</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co">#&gt; ── [ CNAqc ]  n = 13141 mutations in 267 segments (267 clonal + 0 subclonal). Genome reference: GRCh38. ─────────</span></a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co">#&gt; ── [ CNAqc ]  n = 13141 mutations in 267 segments (267 clonal + 0 subclonal). Genome reference: GRCh38. ──────────────────</span></a>
 <a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">#&gt;    2:2  [n = 7478] ■■■■■■■■■■■■■■■■■■■■■■■■■■■</span></a>
+<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">#&gt;    2:2  [n = 7478] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { NOTCH3 }</span></a>
 <a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co">#&gt;    4:2  [n = 1893] ■■■■■■■</span></a>
 <a class="sourceLine" id="cb3-6" data-line-number="6"><span class="co">#&gt;    3:2  [n = 1625] ■■■■■■</span></a>
-<a class="sourceLine" id="cb3-7" data-line-number="7"><span class="co">#&gt;    2:1  [n = 1563] ■■■■■■</span></a>
+<a class="sourceLine" id="cb3-7" data-line-number="7"><span class="co">#&gt;    2:1  [n = 1563] ■■■■■■  { TTN }</span></a>
 <a class="sourceLine" id="cb3-8" data-line-number="8"><span class="co">#&gt;    3:0  [n =  312] ■</span></a>
 <a class="sourceLine" id="cb3-9" data-line-number="9"><span class="co">#&gt; ℹ Sample Purity: 89% ~ Ploidy: 4.</span></a>
-<a class="sourceLine" id="cb3-10" data-line-number="10"><span class="co">#&gt; ✓ QC via peak detection available, score: -0.000310437666329653.</span></a>
-<a class="sourceLine" id="cb3-11" data-line-number="11"><span class="co">#&gt; # A tibble: 4 x 12</span></a>
-<a class="sourceLine" id="cb3-12" data-line-number="12"><span class="co">#&gt;   mutation_multip… karyotype  peak     x     y counts_per_bin discarded   offset</span></a>
-<a class="sourceLine" id="cb3-13" data-line-number="13"><span class="co">#&gt;              &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;          &lt;int&gt; &lt;lgl&gt;        &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb3-14" data-line-number="14"><span class="co">#&gt; 1                2 2:1       0.616  0.61  3.11             59 FALSE      0.00592</span></a>
-<a class="sourceLine" id="cb3-15" data-line-number="15"><span class="co">#&gt; 2                1 2:1       0.308  0.3   3.46             86 FALSE      0.00796</span></a>
-<a class="sourceLine" id="cb3-16" data-line-number="16"><span class="co">#&gt; 3                2 2:2       0.471  0.46  8.08            610 FALSE      0.0109 </span></a>
-<a class="sourceLine" id="cb3-17" data-line-number="17"><span class="co">#&gt; 4                1 2:2       0.235  0.25  0.87             74 FALSE     -0.0146 </span></a>
-<a class="sourceLine" id="cb3-18" data-line-number="18"><span class="co">#&gt; # … with 4 more variables: matched &lt;lgl&gt;, weight &lt;dbl&gt;, score &lt;dbl&gt;, QC &lt;chr&gt;</span></a></code></pre></div>
+<a class="sourceLine" id="cb3-10" data-line-number="10"><span class="co">#&gt; ℹ Mutations annotated have 3 drivers.</span></a>
+<a class="sourceLine" id="cb3-11" data-line-number="11"><span class="co">#&gt; ✓ QC via peak detection available, score: -0.00117483319779741.</span></a>
+<a class="sourceLine" id="cb3-12" data-line-number="12"><span class="co">#&gt; # A tibble: 4 x 12</span></a>
+<a class="sourceLine" id="cb3-13" data-line-number="13"><span class="co">#&gt;   mutation_multip… karyotype  peak     x     y counts_per_bin discarded   offset</span></a>
+<a class="sourceLine" id="cb3-14" data-line-number="14"><span class="co">#&gt;              &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;          &lt;int&gt; &lt;lgl&gt;        &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb3-15" data-line-number="15"><span class="co">#&gt; 1                2 2:1       0.616  0.61  2.92             53 FALSE      0.00592</span></a>
+<a class="sourceLine" id="cb3-16" data-line-number="16"><span class="co">#&gt; 2                1 2:1       0.308  0.31  3.66             65 FALSE     -0.00204</span></a>
+<a class="sourceLine" id="cb3-17" data-line-number="17"><span class="co">#&gt; 3                2 2:2       0.471  0.46  7.96            583 FALSE      0.0109 </span></a>
+<a class="sourceLine" id="cb3-18" data-line-number="18"><span class="co">#&gt; 4                1 2:2       0.235  0.25  0.91             88 FALSE     -0.0146 </span></a>
+<a class="sourceLine" id="cb3-19" data-line-number="19"><span class="co">#&gt; # … with 4 more variables: matched &lt;lgl&gt;, weight &lt;dbl&gt;, score &lt;dbl&gt;, QC &lt;chr&gt;</span></a></code></pre></div>
 <p>A summary table is stored inside the named list <code>peaks_analysis</code>.</p>
 </div>
 <div id="plotting-results" class="section level1">
@@ -184,10 +185,10 @@
 <a class="sourceLine" id="cb7-2" data-line-number="2"><span class="co">#&gt; # A tibble: 4 x 12</span></a>
 <a class="sourceLine" id="cb7-3" data-line-number="3"><span class="co">#&gt;   mutation_multip… karyotype  peak     x     y counts_per_bin discarded   offset</span></a>
 <a class="sourceLine" id="cb7-4" data-line-number="4"><span class="co">#&gt;              &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;          &lt;int&gt; &lt;lgl&gt;        &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co">#&gt; 1                2 2:1       0.616  0.61  3.11             59 FALSE      0.00592</span></a>
-<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="co">#&gt; 2                1 2:1       0.308  0.3   3.46             86 FALSE      0.00796</span></a>
-<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="co">#&gt; 3                2 2:2       0.471  0.46  8.08            610 FALSE      0.0109 </span></a>
-<a class="sourceLine" id="cb7-8" data-line-number="8"><span class="co">#&gt; 4                1 2:2       0.235  0.25  0.87             74 FALSE     -0.0146 </span></a>
+<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co">#&gt; 1                2 2:1       0.616  0.61  2.92             53 FALSE      0.00592</span></a>
+<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="co">#&gt; 2                1 2:1       0.308  0.31  3.66             65 FALSE     -0.00204</span></a>
+<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="co">#&gt; 3                2 2:2       0.471  0.46  7.96            583 FALSE      0.0109 </span></a>
+<a class="sourceLine" id="cb7-8" data-line-number="8"><span class="co">#&gt; 4                1 2:2       0.235  0.25  0.91             88 FALSE     -0.0146 </span></a>
 <a class="sourceLine" id="cb7-9" data-line-number="9"><span class="co">#&gt; # … with 4 more variables: matched &lt;lgl&gt;, weight &lt;dbl&gt;, score &lt;dbl&gt;, QC &lt;chr&gt;</span></a></code></pre></div>
 <p>The table reports several information. The following might be of some use after the analysis:</p>
 <ul>
@@ -205,7 +206,8 @@
 <a class="sourceLine" id="cb8-2" data-line-number="2"><span class="co">#&gt; [1] "PASS"</span></a></code></pre></div>
 <p>You can visually summarise the result of the QC analysis, for both peaks and <a href="https://caravagn.github.io/CNAqc/articles/ccf_computation.html">CCF computation</a>.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="../reference/plot_qc.html">plot_qc</a></span>(x)</a></code></pre></div>
-<p><img src="peaks_detection_files/figure-html/unnamed-chunk-10-1.png" width="288"> Here since CCF have not been computed, the only available QC tests are for peak-detection.</p>
+<p><img src="peaks_detection_files/figure-html/unnamed-chunk-10-1.png" width="288"></p>
+<p>Here since CCF have not been computed, the only available QC tests are for peak-detection.</p>
 </div>
   </div>
 

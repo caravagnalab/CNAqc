@@ -25,6 +25,7 @@ reference:
   desc:  Reference and template dataset included in the package.
   contents:
   - chr_coordinates_hg19
+  - chr_coordinates_GRCh38
   - example_dataset_CNAqc
 
 - title: Data processing
@@ -34,11 +35,19 @@ reference:
   - inspect_segment
   - plot_segment_size_distribution
   - plot_karyotypes
+  - plot_data_histogram
   - plot_counts
   - plot_depth
   - plot_vaf
   - plot_segments
   - plot_multisample_CNA
+  - plot_icon_CNA
+  - subsample
+  - subset_by_segment_karyotype
+  - subset_by_segment_totalcn
+  - print.cnaqc
+  - print.cnaqc
+
 
 - title: Purity and ploidy QC
   desc:  Analysis of CNA calls by peak detection.
@@ -64,6 +73,5 @@ reference:
   desc:  Analysis and plotting functions to smooth segments.
   contents:
   - detect_arm_overfragmentation
-  - detect_wg_overfragmentation
   - plot_arm_fragmentation
 

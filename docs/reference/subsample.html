@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Randomly subsample a dataset — subsample • CNAqc</title>
+<title>Randomly subsample a dataset's mutations. — subsample • CNAqc</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,9 +42,11 @@
 
 
 
-<meta property="og:title" content="Randomly subsample a dataset — subsample" />
-<meta property="og:description" content="Randomly subsample a dataset" />
-<meta property="og:image" content="caravagn.github.io/revolver/logo.png" />
+<meta property="og:title" content="Randomly subsample a dataset's mutations. — subsample" />
+<meta property="og:description" content="This functions subsample mutations with uniform probability, retaining
+all the copy number calls. If data contains driver mutation annotations,
+these can be forced to remain." />
+<meta property="og:image" content="caravagn.github.io/CNAqc/logo.png" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -140,13 +142,15 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Randomly subsample a dataset</h1>
+    <h1>Randomly subsample a dataset's mutations.</h1>
     <small class="dont-index">Source: <a href='https://github.com/caravagn/CNAqc/blob/master/R/subsample.R'><code>R/subsample.R</code></a></small>
     <div class="hidden name"><code>subsample.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Randomly subsample a dataset</p>
+    <p>This functions subsample mutations with uniform probability, retaining
+all the copy number calls. If data contains driver mutation annotations,
+these can be forced to remain.</p>
     </div>
 
     <pre class="usage"><span class='fu'>subsample</span>(<span class='no'>x</span>, <span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>15000</span>, <span class='kw'>keep_drivers</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
@@ -155,17 +159,49 @@
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
+      <th>x</th>
+      <td><p>An object of class <code>cnaqc</code>, created by the <code>init</code> function.</p></td>
+    </tr>
+    <tr>
+      <th>N</th>
+      <td><p>The maximum number of mutations to retain.</p></td>
+    </tr>
+    <tr>
       <th>keep_drivers</th>
-      <td></td>
+      <td><p>If <code>TRUE</code>, it retains drivers annotated in the data.</p></td>
+    </tr>
+    <tr>
+      <th>x</th>
+      <td><p>An object of class <code>cnaqc</code>, created by the <code>init</code> function.</p></td>
     </tr>
     </table>
 
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='st'>'example_dataset_CNAqc'</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>'CNAqc'</span>)
+<span class='no'>x</span> <span class='kw'>=</span> <span class='fu'><a href='init.html'>init</a></span>(<span class='no'>example_dataset_CNAqc</span>$<span class='no'>snvs</span>, <span class='no'>example_dataset_CNAqc</span>$<span class='no'>cna</span>,<span class='no'>example_dataset_CNAqc</span>$<span class='no'>purity</span>)</div><div class='output co'>#&gt; <span style='color: #BBBBBB;background-color: #0000BB;'> [ CNAqc - CNA Quality Check ] 
+#&gt; </span><span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Using reference genome coordinates for: </span><span style='color: #00BB00;'>GRCh38</span><span>.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #BBBB00;'>!</span><span> Missing CCF column from CNA calls, adding CCF = 1 assuming clonal CNA calls.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Input n = 13141 mutations for 267 CNA segments (267 clonal, 0 subclonal)</span></div><div class='output co'>#&gt; </div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> Mapped n = 12963 mutations to clonal segments (99% of input)</span></div><div class='input'>
+<span class='fu'>subsample</span>(<span class='no'>x</span>, <span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>100</span>)</div><div class='output co'>#&gt; </span><span style='color: #BBBBBB;background-color: #0000BB;'> [ CNAqc - CNA Quality Check ] 
+#&gt; </span><span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Using reference genome coordinates for: </span><span style='color: #00BB00;'>GRCh38</span><span>.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Input n = 103 mutations for 267 CNA segments (267 clonal, 0 subclonal)</span></div><div class='output co'>#&gt; <span class='warning'>Warning: [CNAqc] a karyotype column is present in CNA calls, and will be overwritten</span></div><div class='output co'>#&gt; </div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> Mapped n = 102 mutations to clonal segments (99% of input)</span></div><div class='output co'>#&gt; <span class='message'>── </span><span style='color: #000000;background-color: #BBBB00;'>[ CNAqc ] </span><span> n = 103 mutations in </span><span style='color: #00BB00;'>267</span><span> segments (267 clonal + 0 subclonal). Genome reference: </span><span style='color: #00BB00;'>GRCh38</span><span>. ────────────────────</span></div><div class='output co'>#&gt; 
+#&gt;   2:2  [n = 59] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { </span><span style='color: #BBBB00;'>NOTCH3</span><span> }
+#&gt;   2:1  [n = 17] ■■■■■■■■  { </span><span style='color: #BBBB00;'>TTN</span><span> }
+#&gt;   3:2  [n = 13] ■■■■■■
+#&gt;   4:2  [n = 10] ■■■■■
+#&gt;  16:2  [n =  1] 
+#&gt; </div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Sample Purity: 89% ~ Ploidy: 4.</span></div><div class='output co'>#&gt; </div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Mutations annotated have 3 drivers.</span></div><div class='input'><span class='fu'>subsample</span>(<span class='no'>x</span>, <span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>1000</span>)</div><div class='output co'>#&gt; </span><span style='color: #BBBBBB;background-color: #0000BB;'> [ CNAqc - CNA Quality Check ] 
+#&gt; </span><span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Using reference genome coordinates for: </span><span style='color: #00BB00;'>GRCh38</span><span>.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Input n = 1003 mutations for 267 CNA segments (267 clonal, 0 subclonal)</span></div><div class='output co'>#&gt; <span class='warning'>Warning: [CNAqc] a karyotype column is present in CNA calls, and will be overwritten</span></div><div class='output co'>#&gt; </div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> Mapped n = 988 mutations to clonal segments (99% of input)</span></div><div class='output co'>#&gt; <span class='message'>── </span><span style='color: #000000;background-color: #BBBB00;'>[ CNAqc ] </span><span> n = 1003 mutations in </span><span style='color: #00BB00;'>267</span><span> segments (267 clonal + 0 subclonal). Genome reference: </span><span style='color: #00BB00;'>GRCh38</span><span>. ───────────────────</span></div><div class='output co'>#&gt; 
+#&gt;  2:2  [n = 584] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { </span><span style='color: #BBBB00;'>NOTCH3</span><span> }
+#&gt;  4:2  [n = 157] ■■■■■■■
+#&gt;  3:2  [n = 115] ■■■■■
+#&gt;  2:1  [n = 101] ■■■■■  { </span><span style='color: #BBBB00;'>TTN</span><span> }
+#&gt;  3:0  [n =  24] ■
+#&gt; </div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Sample Purity: 89% ~ Ploidy: 4.</span></div><div class='output co'>#&gt; </div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Mutations annotated have 3 drivers.</span></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
+      <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>

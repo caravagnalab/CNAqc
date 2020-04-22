@@ -1,19 +1,3 @@
-# data('example_dataset_CNAqc')
-# x = CNAqc::init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna, example_dataset_CNAqc$purity)
-# x = detect_overfragmentation(x, genome_percentage_cutoff = .1)
-# ggsave(plot_arm_fragmentation(x),filename = 'a.pdf', width = 10, height = 10)
-
-#
-# x = evoverse.datasets::MSEQ_CRC_ADENOCARCINOMA_SET7
-# muts = x$mutations %>% select(chr, from, to, ref, alt, starts_with('Set7_55'))
-# colnames(muts)[6:8] = c('VAF', 'DP', 'NV')
-# cna = x$CNA %>% select(chr, from, to, starts_with('Set7_55'))
-# colnames(cna)[4:5] = c('minor', 'Major')
-# x = CNAqc::init(muts, cna, .88)
-# CNAqc::plot_segments(x)
-# x = detect_overfragmentation(x, genome_percentage_cutoff = .2)
-# plot_arm_fragmentation(x)
-
 #' Plot patterns of arm level fragmentation.
 #'
 #' @description
@@ -29,7 +13,7 @@
 #' @param zoom Number of maximum zoom panels to show in the bottom of
 #' the figure.
 #'
-#' @return
+#' @return A \code{ggplot} object for the plot.
 #' @export
 #'
 #' @examples

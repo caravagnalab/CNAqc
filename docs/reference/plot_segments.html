@@ -46,7 +46,7 @@
 <meta property="og:description" content="Plot CNA segments as Major/ minor allele, annotating
 clonal and subclonal CNA calls in two different sets of colors.
 This function uses hg19 genome coordinates to map CNA segments." />
-<meta property="og:image" content="caravagn.github.io/revolver/logo.png" />
+<meta property="og:image" content="caravagn.github.io/CNAqc/logo.png" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -154,7 +154,8 @@ This function uses <code>hg19</code> genome coordinates to map CNA segments.</p>
     </div>
 
     <pre class="usage"><span class='fu'>plot_segments</span>(<span class='no'>x</span>, <span class='kw'>chromosomes</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"chr"</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>:<span class='fl'>22</span>, <span class='st'>"X"</span>, <span class='st'>"Y"</span>)),
-  <span class='kw'>max_Y_height</span> <span class='kw'>=</span> <span class='fl'>8</span>, <span class='kw'>circular</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
+  <span class='kw'>max_Y_height</span> <span class='kw'>=</span> <span class='fl'>6</span>, <span class='kw'>circular</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>cn</span> <span class='kw'>=</span> <span class='st'>"absolute"</span>,
+  <span class='kw'>highlight</span> <span class='kw'>=</span> <span class='no'>x</span>$<span class='no'>most_prevalent_karyotype</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -169,13 +170,25 @@ This function uses <code>hg19</code> genome coordinates to map CNA segments.</p>
     </tr>
     <tr>
       <th>max_Y_height</th>
-      <td><p>Maximum height onn the Y-axis of the plot, if there are segments
-above this heigh a warning is raised and annnotated in the plot as well in graphical format.</p></td>
+      <td><p>Maximum height for the Y-axis of the plot. Segments witht total copy
+number (Major plus minor) above <code>max_Y_height</code> are not showm; in that case a point
+annotation is put on top of the plot, and <code>max_Y_height</code> is annotated in the grid.</p></td>
     </tr>
     <tr>
       <th>circular</th>
       <td><p>Uses a circular layout in polar coordinates to make the segments
-look like a circos plot. It can save space.</p></td>
+look like a circos plot. This visualisation can save space.</p></td>
+    </tr>
+    <tr>
+      <th>cn</th>
+      <td><p>Type of copy number segment to show on the plot. Either <code>"absolute"</code> for
+Major and minor annotation, or <code>"total"</code> for the total (Major plus minor) annotation.</p></td>
+    </tr>
+    <tr>
+      <th>highlight</th>
+      <td><p>A list of karyotype ids in <code>"Major:minor"</code> notation
+(e.g., <code>"1:1", "2,1", ...</code>) that will be shadowed with a transparent area.
+By default, it plots the most prevalent karyotype,</p></td>
     </tr>
     </table>
 
@@ -187,7 +200,7 @@ look like a circos plot. It can save space.</p></td>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='st'>'example_dataset_CNAqc'</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>'CNAqc'</span>)
 <span class='no'>x</span> <span class='kw'>=</span> <span class='fu'><a href='init.html'>init</a></span>(<span class='no'>example_dataset_CNAqc</span>$<span class='no'>snvs</span>, <span class='no'>example_dataset_CNAqc</span>$<span class='no'>cna</span>,<span class='no'>example_dataset_CNAqc</span>$<span class='no'>purity</span>)</div><div class='output co'>#&gt; <span style='color: #BBBBBB;background-color: #0000BB;'> [ CNAqc - CNA Quality Check ] 
 #&gt; </span><span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Using reference genome coordinates for: </span><span style='color: #00BB00;'>GRCh38</span><span>.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #BBBB00;'>!</span><span> Missing CCF column from CNA calls, adding CCF = 1 assuming clonal CNA calls.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Input n = 13141 mutations for 267 CNA segments (267 clonal, 0 subclonal)</span></div><div class='output co'>#&gt; </div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> Mapped n = 12963 mutations to clonal segments (99% of input)</span></div><div class='input'>
-<span class='fu'>plot_segments</span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Segments with CN above 8 will not be plot; this is annotated in the figure.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 10 rows containing missing values (geom_segment).</span></div><div class='img'><img src='plot_segments-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>plot_segments</span>(<span class='no'>x</span>, <span class='kw'>chromosomes</span> <span class='kw'>=</span> <span class='st'>'chr13'</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: No segments with CN above 3, the plot is anyway scaled up to 8 to render better.</span></div><div class='img'><img src='plot_segments-2.png' alt='' width='700' height='433' /></div></span></pre>
+<span class='fu'>plot_segments</span>(<span class='no'>x</span>)</div><div class='img'><img src='plot_segments-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>plot_segments</span>(<span class='no'>x</span>, <span class='kw'>chromosomes</span> <span class='kw'>=</span> <span class='st'>'chr13'</span>)</div><div class='img'><img src='plot_segments-2.png' alt='' width='700' height='433' /></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

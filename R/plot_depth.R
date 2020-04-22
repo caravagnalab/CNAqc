@@ -48,12 +48,12 @@ plot_depth = function(x, N = 5000, chromosomes = paste0('chr', c(1:22, 'X', 'Y')
 
   cex_opt = getOption('CNAqc_cex', default = 1)
 
-  ggplot(mutations,
+  dp = ggplot(mutations,
                   aes(x = from, y = DP)) +
     scale_fill_viridis_c() +
+    xlim(low, upp) +
     geom_point(size = .05 * cex_opt) +
     CNAqc:::my_ggplot_theme() +
-    xlim(low, upp) +
     theme(
       axis.text.x = element_blank(),
       axis.ticks.x = element_blank(),
@@ -61,6 +61,11 @@ plot_depth = function(x, N = 5000, chromosomes = paste0('chr', c(1:22, 'X', 'Y')
     ) +
     labs(y = "DP") +
     geom_hline(yintercept = med_DP, size = .4, linetype = 'dashed', color = 'darkred') +
-    guides(fill = FALSE) +
-    annotate("label", fill = 'white', x = upp, y = maxY, label = label_maxY, size = 2, hjust = 1)
+    guides(fill = FALSE)
+
+  # Simulate an internal legend
+  L = ggplot_build(dp)$layout$panel_params[[1]]
+  Lx = abs(L$x.range[2] - L$x.range[1]) * .85
+
+  dp + annotate("label", fill = 'white', x = Lx, y = maxY, label = label_maxY, size = 2, hjust = 1)
 }
