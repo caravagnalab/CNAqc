@@ -259,19 +259,19 @@
 <a class="sourceLine" id="cb9-4" data-line-number="4"><span class="co">#&gt; ℹ Input n = 5003 mutations for 267 CNA segments (267 clonal, 0 subclonal)</span></a>
 <a class="sourceLine" id="cb9-5" data-line-number="5"><span class="co">#&gt; Warning in map_mutations_to_segments(snvs, cna %&gt;% filter(CCF == 1)): [CNAqc] a</span></a>
 <a class="sourceLine" id="cb9-6" data-line-number="6"><span class="co">#&gt; karyotype column is present in CNA calls, and will be overwritten</span></a>
-<a class="sourceLine" id="cb9-7" data-line-number="7"><span class="co">#&gt; ✓ Mapped n = 4926 mutations to clonal segments (98% of input)</span></a>
+<a class="sourceLine" id="cb9-7" data-line-number="7"><span class="co">#&gt; ✓ Mapped n = 4941 mutations to clonal segments (99% of input)</span></a>
 <a class="sourceLine" id="cb9-8" data-line-number="8"></a>
 <a class="sourceLine" id="cb9-9" data-line-number="9"><span class="co"># 5000 + the ranomd entries that we sampled before</span></a>
 <a class="sourceLine" id="cb9-10" data-line-number="10"><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(y_<span class="dv">5000</span>)</a>
 <a class="sourceLine" id="cb9-11" data-line-number="11"><span class="co">#&gt; ── [ CNAqc ]  n = 5003 mutations in 267 segments (267 clonal + 0 subclonal). Genome reference: GRCh38. ───────────────────────────</span></a>
 <a class="sourceLine" id="cb9-12" data-line-number="12"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb9-13" data-line-number="13"><span class="co">#&gt;   2:2  [n = 2856] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { chr19:15292495:15292496:G:A }</span></a>
-<a class="sourceLine" id="cb9-14" data-line-number="14"><span class="co">#&gt;   4:2  [n =  707] ■■■■■■■</span></a>
-<a class="sourceLine" id="cb9-15" data-line-number="15"><span class="co">#&gt;   3:2  [n =  631] ■■■■■■</span></a>
-<a class="sourceLine" id="cb9-16" data-line-number="16"><span class="co">#&gt;   2:1  [n =  596] ■■■■■■  { chr2:179431633:179431634:C:T }</span></a>
-<a class="sourceLine" id="cb9-17" data-line-number="17"><span class="co">#&gt;   3:0  [n =  107] ■</span></a>
+<a class="sourceLine" id="cb9-13" data-line-number="13"><span class="co">#&gt;    2:2  [n = 2848] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { chr19:15292495:15292496:G:A }</span></a>
+<a class="sourceLine" id="cb9-14" data-line-number="14"><span class="co">#&gt;    4:2  [n =  718] ■■■■■■■</span></a>
+<a class="sourceLine" id="cb9-15" data-line-number="15"><span class="co">#&gt;    3:2  [n =  620] ■■■■■■</span></a>
+<a class="sourceLine" id="cb9-16" data-line-number="16"><span class="co">#&gt;    2:1  [n =  597] ■■■■■■  { chr2:179431633:179431634:C:T, chr2:179431633:179431634:C:T }</span></a>
+<a class="sourceLine" id="cb9-17" data-line-number="17"><span class="co">#&gt;    3:0  [n =  119] ■</span></a>
 <a class="sourceLine" id="cb9-18" data-line-number="18"><span class="co">#&gt; ℹ Sample Purity: 89% ~ Ploidy: 4.</span></a>
-<a class="sourceLine" id="cb9-19" data-line-number="19"><span class="co">#&gt; ℹ Mutations annotated have 3 drivers.</span></a></code></pre></div>
+<a class="sourceLine" id="cb9-19" data-line-number="19"><span class="co">#&gt; ℹ Mutations annotated have 4 drivers.</span></a></code></pre></div>
 <p>You can also subset data by <em>karyotype of the segments</em>, and by <em>total copy number</em> of the segment. Both subset do not keep drivers that map off the selected segments.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="co"># Triploid and copy-neutral LOH segments </span></a>
 <a class="sourceLine" id="cb10-2" data-line-number="2">y_tripl_cnloh =<span class="st"> </span><span class="kw"><a href="../reference/subset_by_segment_karyotype.html">subset_by_segment_karyotype</a></span>(x, <span class="dt">karyotypes =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">'2:1'</span>, <span class="st">'2:0'</span>))</a>
