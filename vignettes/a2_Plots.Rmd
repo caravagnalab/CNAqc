@@ -169,7 +169,7 @@ ggpubr::ggarrange(
 
 A one-summary plot can be easily assembled combining the above functions and functions from `cowplot` or other ggplot-manipulation packages.
 
-```{r, fig.width=9.5, fig.height=5}
+```{r, fig.width=9.5, fig.height=6}
 # Layout a panel with segments in bottom, and all other genome-wide plots on top.
 # Via cowplot we can align plots on the vertical axis, and stretch their relative
 # height to obtain a nicer layout.

@@ -78,7 +78,7 @@ annotate_drivers_to_histogram = function(x, drivers_list, p, which)
       aes(
         x = eval(parse(text = which)),
         y = y,
-        label = gene,
+        label = driver_label,
         fill = karyotype
       ),
       ylim = c(L$y.range[2] * .9, NA),
@@ -95,6 +95,7 @@ annotate_drivers_to_histogram = function(x, drivers_list, p, which)
 add_drivers_to_segment_plot = function(x, drivers_list, base_plot)
 {
   # Annotate driver events if required
+  if(is.null(drivers_list)) return(base_plot)
   if (nrow(drivers_list) == 0) return(base_plot)
 
   # Coordinate of the plot, place label in top part
@@ -121,7 +122,7 @@ add_drivers_to_segment_plot = function(x, drivers_list, base_plot)
       aes(
         x = from,
         y = y,
-        label = gene,
+        label = driver_label,
         fill = karyotype
       ),
       ylim = c(L$y.range[2] * .9, NA),

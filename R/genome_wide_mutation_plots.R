@@ -22,20 +22,21 @@ plot_gw_counts = function(x, chromosomes = paste0('chr', c(1:22, 'X', 'Y')))
     x,
     x$snvs %>% dplyr::filter(chr %in% chromosomes))
 
-  # X-range
-  reference_genome = CNAqc:::get_reference(x$reference_genome)
-  low = min(reference_genome$from)
-  upp = max(reference_genome$to)
+  bl_plot = CNAqc:::blank_genome(ref = x$reference_genome, chromosomes = chromosomes)
+
+  # # X-range
+  # reference_genome = CNAqc:::get_reference(x$reference_genome)
+  # low = min(reference_genome$from)
+  # upp = max(reference_genome$to)
 
   # Histogram of mutation counts with 1 megabase bins
   binsize = 1e6
 
-  hplot = ggplot(mutations, aes(x = from)) +
-    geom_histogram(aes(y = ..count..), binwidth = binsize, fill = 'black') +
-    my_ggplot_theme() +
-    xlim(low, upp) +
+  hplot = bl_plot +
+    geom_histogram(data = mutations, aes(x = from, y = ..count..), binwidth = binsize, fill = 'black') +
+    CNAqc:::my_ggplot_theme() +
     theme(
-      axis.text.x = element_blank(),
+      # axis.text.x = element_blank(),
       axis.ticks.x = element_blank(),
       axis.title.x = element_blank()
     ) +
@@ -74,10 +75,12 @@ plot_gw_depth = function(x, N = 5000, chromosomes = paste0('chr', c(1:22, 'X', '
     x,
     x$snvs %>% dplyr::filter(chr %in% chromosomes))
 
+  bl_plot = CNAqc:::blank_genome(ref = x$reference_genome, chromosomes = chromosomes)
+
   # X-range
-  reference_genome = CNAqc:::get_reference(x$reference_genome)
-  low = min(reference_genome$from)
-  upp = max(reference_genome$to)
+  # reference_genome = CNAqc:::get_reference(x$reference_genome)
+  # low = min(reference_genome$from)
+  # upp = max(reference_genome$to)
 
   med_DP = median(mutations$DP)
 
@@ -95,14 +98,15 @@ plot_gw_depth = function(x, N = 5000, chromosomes = paste0('chr', c(1:22, 'X', '
 
   cex_opt = getOption('CNAqc_cex', default = 1)
 
-  dp = ggplot(mutations,
-              aes(x = from, y = DP)) +
+  dp = bl_plot +
+    geom_point(data = mutations,
+               aes(x = from, y = DP),
+               size = .05 * cex_opt) +
     scale_fill_viridis_c() +
-    xlim(low, upp) +
-    geom_point(size = .05 * cex_opt) +
+    # xlim(low, upp) +
     CNAqc:::my_ggplot_theme() +
     theme(
-      axis.text.x = element_blank(),
+      # axis.text.x = element_blank(),
       axis.ticks.x = element_blank(),
       axis.title.x = element_blank()
     ) +
@@ -146,10 +150,12 @@ plot_gw_vaf = function(x, N = 5000, chromosomes = paste0('chr', c(1:22, 'X', 'Y'
     x,
     x$snvs %>% dplyr::filter(chr %in% chromosomes))
 
-  # X-range
-  reference_genome = CNAqc:::get_reference(x$reference_genome)
-  low = min(reference_genome$from)
-  upp = max(reference_genome$to)
+  bl_plot = CNAqc:::blank_genome(ref = x$reference_genome, chromosomes = chromosomes)
+
+  # # X-range
+  # reference_genome = CNAqc:::get_reference(x$reference_genome)
+  # low = min(reference_genome$from)
+  # upp = max(reference_genome$to)
 
   # VAF stats
   med_VAF = median(mutations$VAF)
@@ -165,17 +171,16 @@ plot_gw_vaf = function(x, N = 5000, chromosomes = paste0('chr', c(1:22, 'X', 'Y'
   maxY = max(mutations$VAF) * .9
   label_maxY = paste0("N = ", N, ' (', round(N/N_all * 100), '%)')
 
-  vaf = ggplot(mutations,
-               aes(x = from, y = VAF)) +
-    geom_point(size = .05) +
+  vaf = bl_plot +
+    geom_point(data = mutations, aes(x = from, y = VAF), size = .05) +
     CNAqc:::my_ggplot_theme() +
-    scale_x_continuous(
-      breaks = c(0, upp),
-      labels = c("", "")
-    ) +
-    xlim(low, upp) +
+    # scale_x_continuous(
+    #   breaks = c(0, upp),
+    #   labels = c("", "")
+    # ) +
+    # xlim(low, upp) +
     theme(
-      axis.text.x = element_blank(),
+      # axis.text.x = element_blank(),
       axis.ticks.x = element_blank(),
       axis.title.x = element_blank()
     ) +
@@ -208,11 +213,13 @@ plot_gw_vaf = function(x, N = 5000, chromosomes = paste0('chr', c(1:22, 'X', 'Y'
 #' data('example_dataset_CNAqc', package = 'CNAqc')
 #' x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
 #'
-#' plot_gw_vaf(x)
+#' # Compute CCF
+#' x = compute_CCF(x)
+#' plot_gw_ccf(x)
 #'
-#' plot_gw_vaf(x, N = 100)
-#' plot_gw_vaf(x, N = 1000)
-#' plot_gw_vaf(x, N = 10000)
+#' plot_gw_ccf(x, N = 100)
+#' plot_gw_ccf(x, N = 1000)
+#' plot_gw_ccf(x, N = 10000)
 plot_gw_ccf = function(x, N = 5000, chromosomes = paste0('chr', c(1:22, 'X', 'Y')))
 {
   stopifnot(inherits(x, 'cnaqc'))
@@ -229,10 +236,12 @@ plot_gw_ccf = function(x, N = 5000, chromosomes = paste0('chr', c(1:22, 'X', 'Y'
     CNAqc::CCF(x) %>% dplyr::filter(chr %in% chromosomes)
     )
 
-  # X-range
-  reference_genome = CNAqc:::get_reference(x$reference_genome)
-  low = min(reference_genome$from)
-  upp = max(reference_genome$to)
+  bl_plot = CNAqc:::blank_genome(ref = x$reference_genome, chromosomes = chromosomes)
+
+  # # X-range
+  # reference_genome = CNAqc:::get_reference(x$reference_genome)
+  # low = min(reference_genome$from)
+  # upp = max(reference_genome$to)
 
   # CCF stats
   med_CCF = median(mutations$CCF)
@@ -252,13 +261,13 @@ plot_gw_ccf = function(x, N = 5000, chromosomes = paste0('chr', c(1:22, 'X', 'Y'
                aes(x = from, y = CCF)) +
     geom_point(size = .05) +
     CNAqc:::my_ggplot_theme() +
-    scale_x_continuous(
-      breaks = c(0, upp),
-      labels = c("", "")
-    ) +
-    xlim(low, upp) +
+    # scale_x_continuous(
+    #   breaks = c(0, upp),
+    #   labels = c("", "")
+    # ) +
+    # xlim(low, upp) +
     theme(
-      axis.text.x = element_blank(),
+      # axis.text.x = element_blank(),
       axis.ticks.x = element_blank(),
       axis.title.x = element_blank()
     ) +
