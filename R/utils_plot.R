@@ -75,11 +75,9 @@ add_segments_to_plot = function(segments, base_plot, cn)
 
   if (cn == 'total')
   {
-    t_seg = segments %>% dplyr::select(from, to, total) %>% rename(value = total)
-
     base_plot = base_plot +
       geom_segment(
-        data = t_seg %>% dplyr::mutate(Allele = "Segment ploidy"),
+        data = segments %>% dplyr::select(from, to, total) %>% dplyr::mutate(Allele = "Segment ploidy"),
         aes(
           x = from,
           xend = to,
@@ -192,51 +190,6 @@ add_breakpoints_to_plot = function(segments, base_plot, max_Y_height)
     )
 
   return(base_plot)
-}
-
-add_drivers_to_segment_plot = function(x, drivers_list, base_plot)
-{
-  # Annotate driver events if required
-  if (!("is_driver" %in% colnames(x$snvs))) return(base_plot)
-
-  drivers_list = drivers_list %>% dplyr::filter(is_driver)
-  if (nrow(drivers_list) == 0) return(base_plot)
-
-  # Coordinate of the plot, place label in top part
-  L = ggplot_build(base_plot)$layout$panel_params[[1]]
-
-  drivers_list = CNAqc:::relative_to_absolute_coordinates(
-    x,
-    drivers_list %>% dplyr::filter(is_driver)
-    )
-
-  drivers_list$y = L$y.range[2] * .9
-
-  base_plot +
-    geom_vline(
-      data = drivers_list,
-      show.legend = FALSE,
-      aes(xintercept = from),
-      linetype = 'dashed',
-      color = 'black',
-      size = .3
-    ) +
-    ggrepel::geom_label_repel(
-      data = drivers_list,
-      aes(
-        x = from,
-        y = y,
-        label = gene,
-        # fill = karyotype
-      ),
-      ylim = c(L$y.range[2] * .9, NA),
-      size = 2,
-      nudge_y = 0,
-      nudge_x = 0,
-      show.legend = FALSE
-    )
-
-
 }
 
 relative_to_absolute_coordinates = function(x, cna)

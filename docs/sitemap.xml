@@ -25,6 +25,9 @@
     <loc>caravagn.github.io/CNAqc/reference/example_dataset_CNAqc.html</loc>
   </url>
   <url>
+    <loc>caravagn.github.io/CNAqc/reference/get_drivers.html</loc>
+  </url>
+  <url>
     <loc>caravagn.github.io/CNAqc/reference/init.html</loc>
   </url>
   <url>
@@ -40,13 +43,19 @@
     <loc>caravagn.github.io/CNAqc/reference/plot_arm_fragmentation.html</loc>
   </url>
   <url>
-    <loc>caravagn.github.io/CNAqc/reference/plot_counts.html</loc>
-  </url>
-  <url>
     <loc>caravagn.github.io/CNAqc/reference/plot_data_histogram.html</loc>
   </url>
   <url>
-    <loc>caravagn.github.io/CNAqc/reference/plot_depth.html</loc>
+    <loc>caravagn.github.io/CNAqc/reference/plot_gw_ccf.html</loc>
+  </url>
+  <url>
+    <loc>caravagn.github.io/CNAqc/reference/plot_gw_counts.html</loc>
+  </url>
+  <url>
+    <loc>caravagn.github.io/CNAqc/reference/plot_gw_depth.html</loc>
+  </url>
+  <url>
+    <loc>caravagn.github.io/CNAqc/reference/plot_gw_vaf.html</loc>
   </url>
   <url>
     <loc>caravagn.github.io/CNAqc/reference/plot_icon_CNA.html</loc>
@@ -73,9 +82,6 @@
     <loc>caravagn.github.io/CNAqc/reference/plot_smoothing.html</loc>
   </url>
   <url>
-    <loc>caravagn.github.io/CNAqc/reference/plot_vaf.html</loc>
-  </url>
-  <url>
     <loc>caravagn.github.io/CNAqc/reference/print.cnaqc.html</loc>
   </url>
   <url>
@@ -95,6 +101,9 @@
   </url>
   <url>
     <loc>caravagn.github.io/CNAqc/articles/Introduction.html</loc>
+  </url>
+  <url>
+    <loc>caravagn.github.io/CNAqc/articles/Plots.html</loc>
   </url>
   <url>
     <loc>caravagn.github.io/CNAqc/articles/ccf_computation.html</loc>

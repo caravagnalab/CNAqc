@@ -2,7 +2,7 @@
 % Please edit documentation in R/detect_arm_overfragmentation.R
 \name{detect_arm_overfragmentation}
 \alias{detect_arm_overfragmentation}
-\title{Determines segments' fragmentation status.}
+\title{Determines fragmentation of copy number segments}
 \usage{
 detect_arm_overfragmentation(x, alpha = 0.01,
   genome_percentage_cutoff = 0.2, minimum_segments_for_testing = 10)
@@ -14,7 +14,7 @@ detect_arm_overfragmentation(x, alpha = 0.01,
 
 \item{genome_percentage_cutoff}{Segments are considered long or short depending on whether
 they are longer (in basepairs) than \code{genome_percentage_cutoff * L} bases, where \code{L}
-is the arm length for the reference genome. Default is \code{0.2} (20%).}
+is the arm length for the reference genome. Default is \code{0.2} (twenty percent).}
 
 \item{minimum_segments_for_testing}{Smallest number of segments required to actually test
 a certain arm Default is \code{10} segments. This number influences the correction for mulitple

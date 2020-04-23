@@ -43,11 +43,10 @@ plot_data_histogram = function(x,
   if (which == 'NV') plot_f = CNAqc:::plot_NV_data(x, karyotypes = karyotypes)
   if (which == 'CCF') plot_f = CNAqc:::plot_CCF_data(x, karyotypes = karyotypes)
 
-  drivers_list = x$snvs
-  if(which == "CCF") drivers_list = CNAqc::CCF(x)
+  if(!CNAqc:::has_driver_data(x)) return(NULL)
 
   plot_f = CNAqc:::annotate_drivers_to_histogram(
-    drivers_list = drivers_list,
+    drivers_list = get_drivers(x,  which = ifelse(which %in% c("VAF", "CCF"), which, 'VAF')),
     p = plot_f,
     which = which)
 
@@ -74,12 +73,15 @@ plot_CCF_data = function(x,
     dplyr::mutate(karyotype = ifelse(karyotype %in% karyotypes, karyotype, "other")) %>%
     dplyr::filter(!is.na(CCF))
 
+  # Whatever is fit
+  meth = x$CCF_estimates[[1]]$params$method
+
   ggplot(data = ccf_data,
          aes(CCF, fill = karyotype)) +
     geom_histogram(binwidth = 0.01) +
     xlim(0, max(ccf_data$CCF, na.rm = T) %>% ceiling) +
     CNAqc:::my_ggplot_theme() +
-    labs(title = "CCF values",
+    labs(title = paste0("CCF (", meth, ')'),
          caption = paste0("n = ", nrow(ccf_data))) +
     scale_fill_manual(values = CNAqc:::get_karyotypes_colors(unique(ccf_data$karyotype)))
 }
@@ -125,8 +127,8 @@ plot_DP_data = function(x,
     geom_histogram(bins = 100) +
     scale_x_log10() +
     CNAqc:::my_ggplot_theme() +
-    labs(title = "Sequencing depth (coverage)",
-         caption = paste0("Median coverage ", median(raw_muts$DP), 'x')) +
+    labs(title = "Sequencing depth",
+         caption = paste0("Median DP ", median(raw_muts$DP), 'x')) +
     geom_vline(
       xintercept = median(raw_muts$DP),
       color = 'black',
@@ -150,8 +152,8 @@ plot_NV_data = function(x,
     geom_histogram(bins = 100) +
     scale_x_log10() +
     CNAqc:::my_ggplot_theme() +
-    labs(title = "Number of variant reads (coverage mutant)",
-         caption = paste0("Median coverage ", median(raw_muts$NV), 'x')) +
+    labs(title = "Variant reads",
+         caption = paste0("Median NV ", median(raw_muts$NV), 'x')) +
     geom_vline(
       xintercept = median(raw_muts$NV),
       color = 'black',
@@ -161,47 +163,3 @@ plot_NV_data = function(x,
     scale_fill_manual(values = CNAqc:::get_karyotypes_colors(unique(raw_muts$karyotype)))
 }
 
-annotate_drivers_to_histogram = function(drivers_list, p, which = 'VAF')
-{
-  # Annotate driver events if required
-  if (!("is_driver" %in% colnames(drivers_list)))
-    return(p)
-
-  # Get drivers and bind them to CNA
-  drivers_list = drivers_list %>%
-    dplyr::filter(is_driver)
-
-  if (nrow(drivers_list) == 0)
-    return(p)
-
-  # Coordinate of the plot, place label in top part
-  L = ggplot_build(p)$layout$panel_params[[1]]
-
-  drivers_list$y = L$y.range[2] * .9
-
-  p = p +
-    geom_vline(
-      data = drivers_list,
-      show.legend = FALSE,
-      aes(color = karyotype, xintercept = eval(parse(text = which))),
-      linetype = 'dashed',
-      size = .3
-    ) +
-    scale_color_manual(values = CNAqc:::get_karyotypes_colors(unique(drivers_list$karyotype))) +
-    ggrepel::geom_label_repel(
-      data = drivers_list,
-      aes(
-        x = eval(parse(text = which)),
-        y = y,
-        label = gene,
-        fill = karyotype
-      ),
-      ylim = c(L$y.range[2] * .9, NA),
-      size = 2,
-      nudge_y = 0,
-      nudge_x = 0,
-      show.legend = FALSE
-    )
-
-  return(p)
-}

@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Introduction • CNAqc</title>
+<title>1. Introduction • CNAqc</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -16,7 +16,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Introduction">
+<script src="../pkgdown.js"></script><meta property="og:title" content="1. Introduction">
 <meta property="og:description" content="">
 <meta property="og:image" content="caravagn.github.io/CNAqc/logo.png">
 <meta name="twitter:card" content="summary">
@@ -64,19 +64,22 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/Introduction.html">Introduction</a>
+      <a href="../articles/Introduction.html">1. Introduction</a>
     </li>
     <li>
-      <a href="../articles/ccf_computation.html">Computation of Cancer Cell Fractions</a>
+      <a href="../articles/Plots.html">2. Plotting data</a>
+    </li>
+    <li>
+      <a href="../articles/ccf_computation.html">4. Computation of Cancer Cell Fractions</a>
     </li>
     <li>
       <a href="../articles/fragmentation.html">Genome fragmentation analysis</a>
     </li>
     <li>
-      <a href="../articles/peaks_detection.html">QC analysis via peaks detection</a>
+      <a href="../articles/peaks_detection.html">3. QC analysis via peaks detection</a>
     </li>
     <li>
-      <a href="../articles/smoothing.html">Smoothing copy number segments</a>
+      <a href="../articles/smoothing.html">5. Smoothing copy number segments</a>
     </li>
   </ul>
 </li>
@@ -101,7 +104,7 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1>Introduction</h1>
+      <h1>1. Introduction</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/caravagn/CNAqc/blob/master/vignettes/Introduction.Rmd"><code>vignettes/Introduction.Rmd</code></a></small>
@@ -113,275 +116,238 @@
     
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(CNAqc)</a>
 <a class="sourceLine" id="cb1-2" data-line-number="2"><span class="co">#&gt; ✓ Loading CNAqc, 'Copy Number Alteration quality check'. Support : &lt;https://caravagn.github.io/CNAqc/&gt;</span></a></code></pre></div>
-<div id="reference-genome-coordinates" class="section level2">
-<h2 class="hasAnchor">
-<a href="#reference-genome-coordinates" class="anchor"></a>Reference genome coordinates</h2>
-<p><code>CNAqc</code> contains two harcoded reference genomes, <code>hg19</code> and <code>GRCh38</code> (default). For each reference genome the package stores the location of the chromosomes, and their centromers; you can use an internal function to extract these data.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">CNAqc<span class="op">:::</span><span class="kw">get_reference</span>(<span class="st">"hg19"</span>)</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="co">#&gt; # A tibble: 24 x 6</span></a>
-<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="co">#&gt;    chr      length       from         to centromerStart centromerEnd</span></a>
-<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co">#&gt;    &lt;chr&gt;     &lt;int&gt;      &lt;dbl&gt;      &lt;dbl&gt;          &lt;dbl&gt;        &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="co">#&gt;  1 chr1  249250621          0  249250621      121535434    124535434</span></a>
-<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="co">#&gt;  2 chr2  243199373  249250621  492449994      341576792    344576792</span></a>
-<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="co">#&gt;  3 chr3  198022430  492449994  690472424      582954848    585954848</span></a>
-<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="co">#&gt;  4 chr4  191154276  690472424  881626700      740132541    743132541</span></a>
-<a class="sourceLine" id="cb2-9" data-line-number="9"><span class="co">#&gt;  5 chr5  180915260  881626700 1062541960      928032341    931032341</span></a>
-<a class="sourceLine" id="cb2-10" data-line-number="10"><span class="co">#&gt;  6 chr6  171115067 1062541960 1233657027     1121372126   1124372126</span></a>
-<a class="sourceLine" id="cb2-11" data-line-number="11"><span class="co">#&gt;  7 chr7  159138663 1233657027 1392795690     1291711358   1294711358</span></a>
-<a class="sourceLine" id="cb2-12" data-line-number="12"><span class="co">#&gt;  8 chr8  146364022 1392795690 1539159712     1436634577   1439634577</span></a>
-<a class="sourceLine" id="cb2-13" data-line-number="13"><span class="co">#&gt;  9 chr9  141213431 1539159712 1680373143     1586527391   1589527391</span></a>
-<a class="sourceLine" id="cb2-14" data-line-number="14"><span class="co">#&gt; 10 chr10 135534747 1680373143 1815907890     1719628078   1722628078</span></a>
-<a class="sourceLine" id="cb2-15" data-line-number="15"><span class="co">#&gt; # … with 14 more rows</span></a>
-<a class="sourceLine" id="cb2-16" data-line-number="16"></a>
-<a class="sourceLine" id="cb2-17" data-line-number="17">CNAqc<span class="op">:::</span><span class="kw">get_reference</span>(<span class="st">"GRCh38"</span>)</a>
-<a class="sourceLine" id="cb2-18" data-line-number="18"><span class="co">#&gt; # A tibble: 24 x 6</span></a>
-<a class="sourceLine" id="cb2-19" data-line-number="19"><span class="co">#&gt;    chr      length       from         to centromerStart centromerEnd</span></a>
-<a class="sourceLine" id="cb2-20" data-line-number="20"><span class="co">#&gt;    &lt;chr&gt;     &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;          &lt;dbl&gt;        &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb2-21" data-line-number="21"><span class="co">#&gt;  1 chr1  248956422          0  248956422      122026459    124849229</span></a>
-<a class="sourceLine" id="cb2-22" data-line-number="22"><span class="co">#&gt;  2 chr2  242193529  248956422  491149951      341144567    341144567</span></a>
-<a class="sourceLine" id="cb2-23" data-line-number="23"><span class="co">#&gt;  3 chr3  198295559  491149951  689445510      581922409    582703370</span></a>
-<a class="sourceLine" id="cb2-24" data-line-number="24"><span class="co">#&gt;  4 chr4  190214555  689445510  879660065      739157571    739157571</span></a>
-<a class="sourceLine" id="cb2-25" data-line-number="25"><span class="co">#&gt;  5 chr5  181538259  879660065 1061198324      926145965    929381368</span></a>
-<a class="sourceLine" id="cb2-26" data-line-number="26"><span class="co">#&gt;  6 chr6  170805979 1061198324 1232004303     1119752212   1119752212</span></a>
-<a class="sourceLine" id="cb2-27" data-line-number="27"><span class="co">#&gt;  7 chr7  159345973 1232004303 1391350276     1290173956   1293382091</span></a>
-<a class="sourceLine" id="cb2-28" data-line-number="28"><span class="co">#&gt;  8 chr8  145138636 1391350276 1536488912     1435384020   1435384020</span></a>
-<a class="sourceLine" id="cb2-29" data-line-number="29"><span class="co">#&gt;  9 chr9  138394717 1536488912 1674883629     1579878547   1579878547</span></a>
-<a class="sourceLine" id="cb2-30" data-line-number="30"><span class="co">#&gt; 10 chr10 133797422 1674883629 1808681051     1714570311   1716429449</span></a>
-<a class="sourceLine" id="cb2-31" data-line-number="31"><span class="co">#&gt; # … with 14 more rows</span></a></code></pre></div>
-<p>The reference genomes can be specified as a parameter once you create a <code>CNAqc</code> object (see below). Coordinates are used to translate relative to absolute genome coordinates of somatic mutations and CNA segments; this is done mostly when plotting the data. Note that mapping of mutations to CNA segments is independent of the reference genome, and it will work only if both mutation and CNA segments are mapped to the same reference.</p>
-<p>You can use a hidden function to plot the reference.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(CNAqc<span class="op">:::</span><span class="kw">blank_genome</span>(<span class="dt">ref =</span> <span class="st">'hg19'</span>))</a></code></pre></div>
-<p><img src="Introduction_files/figure-html/unnamed-chunk-3-1.png" width="912"></p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"></a>
-<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(CNAqc<span class="op">:::</span><span class="kw">blank_genome</span>(<span class="dt">ref =</span> <span class="st">'GRCh38'</span>))</a></code></pre></div>
-<p><img src="Introduction_files/figure-html/unnamed-chunk-3-2.png" width="912"></p>
-</div>
-<div id="template-dataset" class="section level2">
-<h2 class="hasAnchor">
-<a href="#template-dataset" class="anchor"></a>Template dataset</h2>
-<p>The package comes with a template dataset available. Input data must be a <code>data.frame</code> with standard columns; any extra column will be retained with the data.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="co"># Load template data</span></a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">'example_dataset_CNAqc'</span>, <span class="dt">package =</span> <span class="st">'CNAqc'</span>)</a>
-<a class="sourceLine" id="cb5-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co"># Example input SNVs</span></a>
-<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(</a>
-<a class="sourceLine" id="cb5-6" data-line-number="6">  example_dataset_CNAqc<span class="op">$</span>snvs <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="st">        </span><span class="kw">select</span>(</a>
-<a class="sourceLine" id="cb5-8" data-line-number="8">          chr, from, to, <span class="co"># Genomic coordinates</span></a>
-<a class="sourceLine" id="cb5-9" data-line-number="9">          ref, alt,      <span class="co"># Alleles (reference and alternative)</span></a>
-<a class="sourceLine" id="cb5-10" data-line-number="10">          DP, NV, VAF    <span class="co"># Read counts (depth, number of variant reads, tumour VAF)</span></a>
-<a class="sourceLine" id="cb5-11" data-line-number="11">          )</a>
-<a class="sourceLine" id="cb5-12" data-line-number="12">  )</a>
-<a class="sourceLine" id="cb5-13" data-line-number="13"><span class="co">#&gt; # A tibble: 13,141 x 8</span></a>
-<a class="sourceLine" id="cb5-14" data-line-number="14"><span class="co">#&gt;    chr      from      to ref   alt      DP    NV    VAF</span></a>
-<a class="sourceLine" id="cb5-15" data-line-number="15"><span class="co">#&gt;    &lt;chr&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb5-16" data-line-number="16"><span class="co">#&gt;  1 chr1  1027104 1027105 T     G        60     6 0.1   </span></a>
-<a class="sourceLine" id="cb5-17" data-line-number="17"><span class="co">#&gt;  2 chr1  2248588 2248589 A     C       127     9 0.0709</span></a>
-<a class="sourceLine" id="cb5-18" data-line-number="18"><span class="co">#&gt;  3 chr1  2461999 2462000 G     A       156    65 0.417 </span></a>
-<a class="sourceLine" id="cb5-19" data-line-number="19"><span class="co">#&gt;  4 chr1  2727935 2727936 T     C       180    90 0.5   </span></a>
-<a class="sourceLine" id="cb5-20" data-line-number="20"><span class="co">#&gt;  5 chr1  2763397 2763398 C     T       183    61 0.333 </span></a>
-<a class="sourceLine" id="cb5-21" data-line-number="21"><span class="co">#&gt;  6 chr1  2768208 2768209 C     T       203   130 0.640 </span></a>
-<a class="sourceLine" id="cb5-22" data-line-number="22"><span class="co">#&gt;  7 chr1  2935590 2935591 C     T       228   132 0.579 </span></a>
-<a class="sourceLine" id="cb5-23" data-line-number="23"><span class="co">#&gt;  8 chr1  2980032 2980033 C     T       196    85 0.434 </span></a>
-<a class="sourceLine" id="cb5-24" data-line-number="24"><span class="co">#&gt;  9 chr1  3387161 3387162 T     G       124     6 0.0484</span></a>
-<a class="sourceLine" id="cb5-25" data-line-number="25"><span class="co">#&gt; 10 chr1  3502517 3502518 G     A        88    10 0.114 </span></a>
-<a class="sourceLine" id="cb5-26" data-line-number="26"><span class="co">#&gt; # … with 13,131 more rows</span></a></code></pre></div>
-<p>Chromosome names and alleles should be in character format; chromosomes must be in the format <code>chr1</code>, <code>chr2</code>, etc.. <code>CNAqc</code> will not filter any input data.</p>
-<p>CNA calls must be in <em>absolute</em> format, reporting the allelic imbalance of each segment.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="co"># Example input CNA</span></a>
-<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(</a>
-<a class="sourceLine" id="cb6-3" data-line-number="3">  example_dataset_CNAqc<span class="op">$</span>cna <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="st">        </span><span class="kw">select</span>(</a>
-<a class="sourceLine" id="cb6-5" data-line-number="5">          chr, from, to, <span class="co"># Genomic coordinates</span></a>
-<a class="sourceLine" id="cb6-6" data-line-number="6">          Major, minor  <span class="co"># Number of copies of major/ and minor allele (B-allele)</span></a>
-<a class="sourceLine" id="cb6-7" data-line-number="7">        )</a>
-<a class="sourceLine" id="cb6-8" data-line-number="8">  )</a>
-<a class="sourceLine" id="cb6-9" data-line-number="9"><span class="co">#&gt; # A tibble: 267 x 5</span></a>
-<a class="sourceLine" id="cb6-10" data-line-number="10"><span class="co">#&gt;    chr       from       to Major minor</span></a>
-<a class="sourceLine" id="cb6-11" data-line-number="11"><span class="co">#&gt;    &lt;chr&gt;    &lt;int&gt;    &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb6-12" data-line-number="12"><span class="co">#&gt;  1 chr1    840009  1689987     3     2</span></a>
-<a class="sourceLine" id="cb6-13" data-line-number="13"><span class="co">#&gt;  2 chr1   1689988  1815015     3     2</span></a>
-<a class="sourceLine" id="cb6-14" data-line-number="14"><span class="co">#&gt;  3 chr1   1815016  9799969     3     2</span></a>
-<a class="sourceLine" id="cb6-15" data-line-number="15"><span class="co">#&gt;  4 chr1  10479910 12079917     3     2</span></a>
-<a class="sourceLine" id="cb6-16" data-line-number="16"><span class="co">#&gt;  5 chr1  12079917 12154980     3     2</span></a>
-<a class="sourceLine" id="cb6-17" data-line-number="17"><span class="co">#&gt;  6 chr1  12154981 12839977     3     2</span></a>
-<a class="sourceLine" id="cb6-18" data-line-number="18"><span class="co">#&gt;  7 chr1  13780016 17790026     3     2</span></a>
-<a class="sourceLine" id="cb6-19" data-line-number="19"><span class="co">#&gt;  8 chr1  17849962 21080067     3     2</span></a>
-<a class="sourceLine" id="cb6-20" data-line-number="20"><span class="co">#&gt;  9 chr1  21080068 21559998     3     2</span></a>
-<a class="sourceLine" id="cb6-21" data-line-number="21"><span class="co">#&gt; 10 chr1  21559998 24830001     3     2</span></a>
-<a class="sourceLine" id="cb6-22" data-line-number="22"><span class="co">#&gt; # … with 257 more rows</span></a></code></pre></div>
-<p>In this format, a diploid segment will have <code>Major = minor = 1</code> and will be denoted as <code>1:1</code>. <code>CNAqc</code> distinguishes between clonal and subclonal CNA calls, if the Cancer Cell Fraction of a segment (i.e., its clonality) is reported.</p>
-<p>A <code>CCF</code> column can represent the segment CCF as [0,1] real-value. If missing, <code>CCF = 1</code> is set assuming clonal segments; otherwise, segments with <code>CCF&lt;1</code> are considered subclonal CNAs.</p>
-<p>To analyze the data, a purity value in between <code>0</code> and <code>1</code> is required to represent the proportion of actual tumour content, sometimes called “cellularity”.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(example_dataset_CNAqc<span class="op">$</span>purity)</a>
-<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="co">#&gt; [1] 0.89</span></a></code></pre></div>
-</div>
+<p>We discuss the input format and references used in <code>CNAqc</code>.</p>
+<div id="input-format" class="section level1">
+<h1 class="hasAnchor">
+<a href="#input-format" class="anchor"></a>Input format</h1>
+<p>You need to provide data for <em>somatic mutations</em>, <em>copy number segments</em> and <em>tumour purity</em>. The package comes with a template dataset available.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co"># Load template data</span></a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">'example_dataset_CNAqc'</span>, <span class="dt">package =</span> <span class="st">'CNAqc'</span>)</a></code></pre></div>
+<p>These fields are required for <strong>mutation</strong> calls:</p>
+<ul>
+<li>the mutation location, as <code>chr</code>, <code>from</code>, <code>to</code>.</li>
+<li>the mutation reference and alternative alleles <code>ref</code> and <code>alt</code>;</li>
+<li>the total number of reads covering the mutated base(s), <code>DP</code> (depth);</li>
+<li>the total number of reads covering only the mutant allele(s), <code>NV</code> (number of reads with variant);</li>
+<li>the Variant Allele Frequency, <code>VAF</code>, defined as <code>NV/DP</code>.</li>
+</ul>
+<p>Chromosome names and alleles should be in character format; chromosomes must be in the format <code>chr1</code>, <code>chr2</code>, etc..</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="co"># Example input SNVs</span></a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(</a>
+<a class="sourceLine" id="cb3-3" data-line-number="3">  example_dataset_CNAqc<span class="op">$</span>snvs <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="st">        </span><span class="kw">select</span>(</a>
+<a class="sourceLine" id="cb3-5" data-line-number="5">          chr, from, to, <span class="co"># Genomic coordinates</span></a>
+<a class="sourceLine" id="cb3-6" data-line-number="6">          ref, alt,      <span class="co"># Alleles (reference and alternative)</span></a>
+<a class="sourceLine" id="cb3-7" data-line-number="7">          DP, NV, VAF    <span class="co"># Read counts (depth, number of variant reads, tumour VAF)</span></a>
+<a class="sourceLine" id="cb3-8" data-line-number="8">          )</a>
+<a class="sourceLine" id="cb3-9" data-line-number="9">  )</a>
+<a class="sourceLine" id="cb3-10" data-line-number="10"><span class="co">#&gt; # A tibble: 13,141 x 8</span></a>
+<a class="sourceLine" id="cb3-11" data-line-number="11"><span class="co">#&gt;    chr      from      to ref   alt      DP    NV    VAF</span></a>
+<a class="sourceLine" id="cb3-12" data-line-number="12"><span class="co">#&gt;    &lt;chr&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb3-13" data-line-number="13"><span class="co">#&gt;  1 chr1  1027104 1027105 T     G        60     6 0.1   </span></a>
+<a class="sourceLine" id="cb3-14" data-line-number="14"><span class="co">#&gt;  2 chr1  2248588 2248589 A     C       127     9 0.0709</span></a>
+<a class="sourceLine" id="cb3-15" data-line-number="15"><span class="co">#&gt;  3 chr1  2461999 2462000 G     A       156    65 0.417 </span></a>
+<a class="sourceLine" id="cb3-16" data-line-number="16"><span class="co">#&gt;  4 chr1  2727935 2727936 T     C       180    90 0.5   </span></a>
+<a class="sourceLine" id="cb3-17" data-line-number="17"><span class="co">#&gt;  5 chr1  2763397 2763398 C     T       183    61 0.333 </span></a>
+<a class="sourceLine" id="cb3-18" data-line-number="18"><span class="co">#&gt;  6 chr1  2768208 2768209 C     T       203   130 0.640 </span></a>
+<a class="sourceLine" id="cb3-19" data-line-number="19"><span class="co">#&gt;  7 chr1  2935590 2935591 C     T       228   132 0.579 </span></a>
+<a class="sourceLine" id="cb3-20" data-line-number="20"><span class="co">#&gt;  8 chr1  2980032 2980033 C     T       196    85 0.434 </span></a>
+<a class="sourceLine" id="cb3-21" data-line-number="21"><span class="co">#&gt;  9 chr1  3387161 3387162 T     G       124     6 0.0484</span></a>
+<a class="sourceLine" id="cb3-22" data-line-number="22"><span class="co">#&gt; 10 chr1  3502517 3502518 G     A        88    10 0.114 </span></a>
+<a class="sourceLine" id="cb3-23" data-line-number="23"><span class="co">#&gt; # … with 13,131 more rows</span></a></code></pre></div>
+<p>Optionally, you can annotate also <em>driver mutations</em>:</p>
+<ul>
+<li>whether the mutation is a driver, using a boolean flag <code>is_driver</code>;</li>
+<li>a <code>driver_label</code> reportin the label to show in the plots with drivers.</li>
+</ul>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2">  example_dataset_CNAqc<span class="op">$</span>snvs <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="st">        </span><span class="kw">select</span>(</a>
+<a class="sourceLine" id="cb4-4" data-line-number="4">          chr, from, to, ref, alt, is_driver, driver_label, <span class="kw">everything</span>()</a>
+<a class="sourceLine" id="cb4-5" data-line-number="5">        )</a>
+<a class="sourceLine" id="cb4-6" data-line-number="6">  )</a>
+<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="co">#&gt; # A tibble: 13,141 x 13</span></a>
+<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="co">#&gt;    chr     from     to ref   alt   is_driver driver_label FILTER    DP    NV</span></a>
+<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="co">#&gt;    &lt;chr&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;lgl&gt;     &lt;chr&gt;        &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="co">#&gt;  1 chr1  1.03e6 1.03e6 T     G     FALSE     C1orf159(EN… PASS      60     6</span></a>
+<a class="sourceLine" id="cb4-11" data-line-number="11"><span class="co">#&gt;  2 chr1  2.25e6 2.25e6 A     C     FALSE     SKI(dist=70… PASS     127     9</span></a>
+<a class="sourceLine" id="cb4-12" data-line-number="12"><span class="co">#&gt;  3 chr1  2.46e6 2.46e6 G     A     FALSE     HES5         PASS     156    65</span></a>
+<a class="sourceLine" id="cb4-13" data-line-number="13"><span class="co">#&gt;  4 chr1  2.73e6 2.73e6 T     C     FALSE     RP11-740P5.2 PASS     180    90</span></a>
+<a class="sourceLine" id="cb4-14" data-line-number="14"><span class="co">#&gt;  5 chr1  2.76e6 2.76e6 C     T     FALSE     RP11-740P5.… PASS     183    61</span></a>
+<a class="sourceLine" id="cb4-15" data-line-number="15"><span class="co">#&gt;  6 chr1  2.77e6 2.77e6 C     T     FALSE     RP11-740P5.… PASS     203   130</span></a>
+<a class="sourceLine" id="cb4-16" data-line-number="16"><span class="co">#&gt;  7 chr1  2.94e6 2.94e6 C     T     FALSE     RP11-740P5.… PASS     228   132</span></a>
+<a class="sourceLine" id="cb4-17" data-line-number="17"><span class="co">#&gt;  8 chr1  2.98e6 2.98e6 C     T     FALSE     LINC00982    PASS     196    85</span></a>
+<a class="sourceLine" id="cb4-18" data-line-number="18"><span class="co">#&gt;  9 chr1  3.39e6 3.39e6 T     G     FALSE     ARHGEF16     PASS     124     6</span></a>
+<a class="sourceLine" id="cb4-19" data-line-number="19"><span class="co">#&gt; 10 chr1  3.50e6 3.50e6 G     A     FALSE     MEGF6        PASS      88    10</span></a>
+<a class="sourceLine" id="cb4-20" data-line-number="20"><span class="co">#&gt; # … with 13,131 more rows, and 3 more variables: VAF &lt;dbl&gt;,</span></a>
+<a class="sourceLine" id="cb4-21" data-line-number="21"><span class="co">#&gt; #   ANNOVAR_FUNCTION &lt;chr&gt;, GENE &lt;chr&gt;</span></a></code></pre></div>
+<p>These fields are required for <strong>copy number segments</strong>:</p>
+<ul>
+<li>the segment location, as <code>chr</code>, <code>from</code> and <code>to</code>;</li>
+<li>the segment absolute number of copies of the major and minor alleles, as <code>Major</code> and <code>minor</code>;</li>
+</ul>
+<p>In <code>CNAqc</code> format, a diploid balanced segment has <code>Major = minor = 1</code> and will be shortly denoted as <em>karyotype</em> <code>1:1</code>. Similarly, a tetraploid segment has <code>Major = minor = 2</code> and <em>karyotype</em> <code>2:2</code>. A fixed set of colours is used to identify the main karyotypes supported by <code>CNAqc</code>: <code>"1:0"</code>, <code>"2:0"</code>, <code>"1:1"</code>, <code>"2:1"</code> and <code>"2:2"</code>.</p>
+<p>Optionally, you can annotate also annotate the Cancer Cell Fraction (CCF) <code>CCF</code> for each segment:</p>
+<ul>
+<li>segments with <code>CCF = 1</code> are <em>clonal</em>, otherwise <em>subclonal</em>;</li>
+<li>by default, if missing, all segments are assumed to be clonal and assigned <code>CCF = 1</code>. Some computations subset only clonal copy number segments (see the manual of each function).</li>
+</ul>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="co"># Example input CNA</span></a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(</a>
+<a class="sourceLine" id="cb5-3" data-line-number="3">  example_dataset_CNAqc<span class="op">$</span>cna <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="st">        </span><span class="kw">select</span>(</a>
+<a class="sourceLine" id="cb5-5" data-line-number="5">          chr, from, to, <span class="co"># Genomic coordinates</span></a>
+<a class="sourceLine" id="cb5-6" data-line-number="6">          Major, minor  <span class="co"># Number of copies of major/ and minor allele (B-allele)</span></a>
+<a class="sourceLine" id="cb5-7" data-line-number="7">        )</a>
+<a class="sourceLine" id="cb5-8" data-line-number="8">  )</a>
+<a class="sourceLine" id="cb5-9" data-line-number="9"><span class="co">#&gt; # A tibble: 267 x 5</span></a>
+<a class="sourceLine" id="cb5-10" data-line-number="10"><span class="co">#&gt;    chr       from       to Major minor</span></a>
+<a class="sourceLine" id="cb5-11" data-line-number="11"><span class="co">#&gt;    &lt;chr&gt;    &lt;int&gt;    &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb5-12" data-line-number="12"><span class="co">#&gt;  1 chr1    840009  1689987     3     2</span></a>
+<a class="sourceLine" id="cb5-13" data-line-number="13"><span class="co">#&gt;  2 chr1   1689988  1815015     3     2</span></a>
+<a class="sourceLine" id="cb5-14" data-line-number="14"><span class="co">#&gt;  3 chr1   1815016  9799969     3     2</span></a>
+<a class="sourceLine" id="cb5-15" data-line-number="15"><span class="co">#&gt;  4 chr1  10479910 12079917     3     2</span></a>
+<a class="sourceLine" id="cb5-16" data-line-number="16"><span class="co">#&gt;  5 chr1  12079917 12154980     3     2</span></a>
+<a class="sourceLine" id="cb5-17" data-line-number="17"><span class="co">#&gt;  6 chr1  12154981 12839977     3     2</span></a>
+<a class="sourceLine" id="cb5-18" data-line-number="18"><span class="co">#&gt;  7 chr1  13780016 17790026     3     2</span></a>
+<a class="sourceLine" id="cb5-19" data-line-number="19"><span class="co">#&gt;  8 chr1  17849962 21080067     3     2</span></a>
+<a class="sourceLine" id="cb5-20" data-line-number="20"><span class="co">#&gt;  9 chr1  21080068 21559998     3     2</span></a>
+<a class="sourceLine" id="cb5-21" data-line-number="21"><span class="co">#&gt; 10 chr1  21559998 24830001     3     2</span></a>
+<a class="sourceLine" id="cb5-22" data-line-number="22"><span class="co">#&gt; # … with 257 more rows</span></a></code></pre></div>
+<p>Tumour <strong>purity</strong>, defined as the percentage of reads coming from tumour cells), which must be a value in <span class="math inline">\([0, 1]\)</span>.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="co"># Example purity</span></a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(example_dataset_CNAqc<span class="op">$</span>purity)</a>
+<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="co">#&gt; [1] 0.89</span></a></code></pre></div>
+<p><strong>Note</strong> In the current implementation no use of subclonal copy number segments is done. Most function compute statics only with clonal copy number segments.</p>
 <div id="initialisation-of-a-new-dataset" class="section level2">
 <h2 class="hasAnchor">
 <a href="#initialisation-of-a-new-dataset" class="anchor"></a>Initialisation of a new dataset</h2>
-<p>To use the package, you need to initialize a <code>cnaqc</code> S3 object with the initialisation function <code>init</code>.</p>
-<p>This function will check input formats, and will map mutations to CNA segments. This call does not subset the data, unless there are errors with respect to its expected format.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="co"># Use SNVs, CNAs and tumour purity </span></a>
-<a class="sourceLine" id="cb8-2" data-line-number="2">x =<span class="st"> </span><span class="kw"><a href="../reference/init.html">init</a></span>(</a>
-<a class="sourceLine" id="cb8-3" data-line-number="3">  example_dataset_CNAqc<span class="op">$</span>snvs, </a>
-<a class="sourceLine" id="cb8-4" data-line-number="4">  example_dataset_CNAqc<span class="op">$</span>cna,</a>
-<a class="sourceLine" id="cb8-5" data-line-number="5">  example_dataset_CNAqc<span class="op">$</span>purity,</a>
-<a class="sourceLine" id="cb8-6" data-line-number="6">  <span class="dt">ref =</span> <span class="st">'hg19'</span></a>
-<a class="sourceLine" id="cb8-7" data-line-number="7">  )</a>
-<a class="sourceLine" id="cb8-8" data-line-number="8"><span class="co">#&gt;  [ CNAqc - CNA Quality Check ]</span></a>
-<a class="sourceLine" id="cb8-9" data-line-number="9"><span class="co">#&gt; ℹ Using reference genome coordinates for: hg19.</span></a>
-<a class="sourceLine" id="cb8-10" data-line-number="10"><span class="co">#&gt; ! Missing CCF column from CNA calls, adding CCF = 1 assuming clonal CNA calls.</span></a>
-<a class="sourceLine" id="cb8-11" data-line-number="11"><span class="co">#&gt; ℹ Input n = 13141 mutations for 267 CNA segments (267 clonal, 0 subclonal)</span></a>
-<a class="sourceLine" id="cb8-12" data-line-number="12"><span class="co">#&gt; ✓ Mapped n = 12963 mutations to clonal segments (99% of input)</span></a></code></pre></div>
+<p>To use <code>CNAqc</code>, you need to initialize a <code>cnaqc</code> S3 object with the initialisation function <code>init</code>.</p>
+<p>This function will check input formats, and will map mutations to CNA segments. This call does not subset the data, unless there are errors with respect to the required formats. It is required to explicit the reference genome for the assembly (see below).</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="co"># Use SNVs, CNAs and tumour purity (hg19 reference, see below)</span></a>
+<a class="sourceLine" id="cb7-2" data-line-number="2">x =<span class="st"> </span><span class="kw"><a href="../reference/init.html">init</a></span>(</a>
+<a class="sourceLine" id="cb7-3" data-line-number="3">  example_dataset_CNAqc<span class="op">$</span>snvs, </a>
+<a class="sourceLine" id="cb7-4" data-line-number="4">  example_dataset_CNAqc<span class="op">$</span>cna,</a>
+<a class="sourceLine" id="cb7-5" data-line-number="5">  example_dataset_CNAqc<span class="op">$</span>purity,</a>
+<a class="sourceLine" id="cb7-6" data-line-number="6">  <span class="dt">ref =</span> <span class="st">'hg19'</span></a>
+<a class="sourceLine" id="cb7-7" data-line-number="7">  )</a>
+<a class="sourceLine" id="cb7-8" data-line-number="8"><span class="co">#&gt;  [ CNAqc - CNA Quality Check ]</span></a>
+<a class="sourceLine" id="cb7-9" data-line-number="9"><span class="co">#&gt; ℹ Using reference genome coordinates for: hg19.</span></a>
+<a class="sourceLine" id="cb7-10" data-line-number="10"><span class="co">#&gt; ℹ Drivers are annotated, but 'gene' column is missing, using mutation location.</span></a>
+<a class="sourceLine" id="cb7-11" data-line-number="11"><span class="co">#&gt; ! Missing CCF column from CNA calls, adding CCF = 1 assuming clonal CNA calls.</span></a>
+<a class="sourceLine" id="cb7-12" data-line-number="12"><span class="co">#&gt; ℹ Input n = 13141 mutations for 267 CNA segments (267 clonal, 0 subclonal)</span></a>
+<a class="sourceLine" id="cb7-13" data-line-number="13"><span class="co">#&gt; ✓ Mapped n = 12963 mutations to clonal segments (99% of input)</span></a></code></pre></div>
 <p>The summary of <code>x</code> can be <code>print</code> to see the number of mutations per karyotype, sorted by size.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(x)</a>
-<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="co">#&gt; ── [ CNAqc ]  n = 13141 mutations in 267 segments (267 clonal + 0 subclonal). Genome reference: hg19. ────────────────────</span></a>
-<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="co">#&gt;    2:2  [n = 7478] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { NOTCH3 }</span></a>
-<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="co">#&gt;    4:2  [n = 1893] ■■■■■■■</span></a>
-<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="co">#&gt;    3:2  [n = 1625] ■■■■■■</span></a>
-<a class="sourceLine" id="cb9-7" data-line-number="7"><span class="co">#&gt;    2:1  [n = 1563] ■■■■■■  { TTN }</span></a>
-<a class="sourceLine" id="cb9-8" data-line-number="8"><span class="co">#&gt;    3:0  [n =  312] ■</span></a>
-<a class="sourceLine" id="cb9-9" data-line-number="9"><span class="co">#&gt; ℹ Sample Purity: 89% ~ Ploidy: 4.</span></a>
-<a class="sourceLine" id="cb9-10" data-line-number="10"><span class="co">#&gt; ℹ Mutations annotated have 3 drivers.</span></a></code></pre></div>
-</div>
-<div id="plotting-copy-number-segments" class="section level2">
-<h2 class="hasAnchor">
-<a href="#plotting-copy-number-segments" class="anchor"></a>Plotting copy number segments</h2>
-<p>All plotting functions use <code>ggplot</code> and multi-panel figures assembled with <code>ggpubr</code> and <code>cowplot</code>.</p>
-<p>Function <code>plot_segments</code> plots all the genome, annotating in the caption summmary statistics. The major and minor alleles for each segment are plotted as red and blue bars. In the bottom, each circle annotates a breakpoint in the segments. By default the plot has limited y-axis, and breakpoints of segments outside the plot (e.g. very high amplifications) are in different color.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="co"># Default plot</span></a>
-<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="kw"><a href="../reference/plot_segments.html">plot_segments</a></span>(x)</a></code></pre></div>
-<p><img src="Introduction_files/figure-html/unnamed-chunk-9-1.png" width="912"></p>
-<p>An alternative circular layout plot is available</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="co"># Circular layout</span></a>
-<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="kw"><a href="../reference/plot_segments.html">plot_segments</a></span>(x, <span class="dt">circular =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
-<p><img src="Introduction_files/figure-html/unnamed-chunk-10-1.png" width="384"></p>
-<p>You can inspect the raw VAF distribution per segment, split by chromosome. Each colour represents a distinct segment; visually, we want that for every karyotype, within a chromosome, the VAF distribution of all segments follows a “similar” trend.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="co"># Default parameters to filter segments (in the plot)</span></a>
-<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="kw"><a href="../reference/inspect_segment.html">inspect_segment</a></span>(x)</a>
-<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="co">#&gt; Warning: Removed 30 rows containing missing values (geom_bar).</span></a></code></pre></div>
-<p><img src="Introduction_files/figure-html/unnamed-chunk-11-1.png" width="1152"></p>
-<p><strong>Comparing multiple calls.</strong> If you want to compare multiple CNA calls – required to have the same breakpoints – you can use <code>plot_multisample_CNA</code>. Here we show it replicating twice <code>x</code>,</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="co"># Comparative CNA plot</span></a>
-<a class="sourceLine" id="cb13-2" data-line-number="2"><span class="kw"><a href="../reference/plot_multisample_CNA.html">plot_multisample_CNA</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="st">`</span><span class="dt">S1</span><span class="st">`</span> =<span class="st"> </span>x, <span class="st">`</span><span class="dt">S2</span><span class="st">`</span> =<span class="st"> </span>x))</a></code></pre></div>
-<p><img src="Introduction_files/figure-html/unnamed-chunk-12-1.png" width="576"></p>
-</div>
-<div id="plotting-genome-wide-mutations-data" class="section level2">
-<h2 class="hasAnchor">
-<a href="#plotting-genome-wide-mutations-data" class="anchor"></a>Plotting genome-wide mutations data</h2>
-<p>Genome-wide plots that follow the flat layout of <code>plot_segments</code> are avaiable to view the genome-wide distributions of the number of mutations, their VAF and depth. VAF and depth-plotting functions (scatterplots) can subset the input data to speed up rendering and reduce the size of output files - by default 5000 points are randomly sampled. Counts plot, instead, bin the genome locations by one megabase.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="co"># All genome, all data - counts of mutations per megabase</span></a>
-<a class="sourceLine" id="cb14-2" data-line-number="2"><span class="kw"><a href="../reference/plot_counts.html">plot_counts</a></span>(x)</a>
-<a class="sourceLine" id="cb14-3" data-line-number="3"><span class="co">#&gt; Warning: Removed 2 rows containing missing values (geom_bar).</span></a></code></pre></div>
-<p><img src="Introduction_files/figure-html/unnamed-chunk-13-1.png" width="768"></p>
-<p>An example effect of downsampling the data is the following</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="co"># Different subsamples</span></a>
-<a class="sourceLine" id="cb15-2" data-line-number="2">ggpubr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/ggpubr/man/ggarrange.html">ggarrange</a></span>(</a>
-<a class="sourceLine" id="cb15-3" data-line-number="3">  <span class="kw"><a href="../reference/plot_depth.html">plot_depth</a></span>(x, <span class="dt">N =</span> <span class="dv">1000</span>),</a>
-<a class="sourceLine" id="cb15-4" data-line-number="4">  <span class="kw"><a href="../reference/plot_depth.html">plot_depth</a></span>(x),</a>
-<a class="sourceLine" id="cb15-5" data-line-number="5">  <span class="kw"><a href="../reference/plot_depth.html">plot_depth</a></span>(x, <span class="dt">N =</span> <span class="dv">10000</span>),</a>
-<a class="sourceLine" id="cb15-6" data-line-number="6">  <span class="dt">ncol =</span> <span class="dv">1</span></a>
-<a class="sourceLine" id="cb15-7" data-line-number="7">)</a></code></pre></div>
-<p><img src="Introduction_files/figure-html/unnamed-chunk-14-1.png" width="768"></p>
-<p>A one-summary plot can be easily assembled combining the above functions and functions from <code>cowplot</code> or other ggplot-manipulation packages.</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="co"># Layout a panel with segments in bottom, and all other genome-wide plots on top.</span></a>
-<a class="sourceLine" id="cb16-2" data-line-number="2"><span class="co"># Via cowplot we can align plots on the vertical axis, and stretch their relative</span></a>
-<a class="sourceLine" id="cb16-3" data-line-number="3"><span class="co"># height to obtain a nicer layout.</span></a>
-<a class="sourceLine" id="cb16-4" data-line-number="4">cowplot<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/cowplot/man/plot_grid.html">plot_grid</a></span>(</a>
-<a class="sourceLine" id="cb16-5" data-line-number="5">  <span class="kw"><a href="../reference/plot_counts.html">plot_counts</a></span>(x),</a>
-<a class="sourceLine" id="cb16-6" data-line-number="6">  <span class="kw"><a href="../reference/plot_vaf.html">plot_vaf</a></span>(x, <span class="dt">N =</span> <span class="dv">10000</span>),</a>
-<a class="sourceLine" id="cb16-7" data-line-number="7">  <span class="kw"><a href="../reference/plot_depth.html">plot_depth</a></span>(x, <span class="dt">N =</span> <span class="dv">10000</span>),</a>
-<a class="sourceLine" id="cb16-8" data-line-number="8">  <span class="kw"><a href="../reference/plot_segments.html">plot_segments</a></span>(x) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/graphics/plot.window.html">ylim</a></span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">6</span>),</a>
-<a class="sourceLine" id="cb16-9" data-line-number="9">  <span class="dt">align =</span> <span class="st">'v'</span>, </a>
-<a class="sourceLine" id="cb16-10" data-line-number="10">  <span class="dt">nrow =</span> <span class="dv">4</span>, </a>
-<a class="sourceLine" id="cb16-11" data-line-number="11">  <span class="dt">rel_heights =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(.<span class="dv">15</span>, <span class="fl">.15</span>, <span class="fl">.15</span>, <span class="fl">.8</span>))</a>
-<a class="sourceLine" id="cb16-12" data-line-number="12"><span class="co">#&gt; Scale for 'x' is already present. Adding another scale for 'x', which will</span></a>
-<a class="sourceLine" id="cb16-13" data-line-number="13"><span class="co">#&gt; replace the existing scale.</span></a>
-<a class="sourceLine" id="cb16-14" data-line-number="14"><span class="co">#&gt; Warning: Removed 2 rows containing missing values (geom_bar).</span></a></code></pre></div>
-<p><img src="Introduction_files/figure-html/unnamed-chunk-15-1.png" width="912"></p>
-</div>
-<div id="plotting-summaries" class="section level2">
-<h2 class="hasAnchor">
-<a href="#plotting-summaries" class="anchor"></a>Plotting summaries</h2>
-<p>A summary plot of CNA calls is available via function <code>plot_karyotypes</code>. This function implements two visualizations:</p>
-<ul>
-<li>
-<code>type = 'percentage'</code>, reporting the proportion of genome covered by each karyotypes (default);</li>
-<li>
-<code>type = 'number'</code>, reporting the counts of segments per karyotype.</li>
-</ul>
-<p>The package uses a pre-set color schema to colour diploid segments in green, LOH segments in blue and amplifications in red.</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1">ggpubr<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/ggpubr/man/ggarrange.html">ggarrange</a></span>(</a>
-<a class="sourceLine" id="cb17-2" data-line-number="2">  <span class="kw"><a href="../reference/plot_karyotypes.html">plot_karyotypes</a></span>(x),</a>
-<a class="sourceLine" id="cb17-3" data-line-number="3">  <span class="kw"><a href="../reference/plot_karyotypes.html">plot_karyotypes</a></span>(x, <span class="dt">type =</span> <span class="st">'number'</span>),</a>
-<a class="sourceLine" id="cb17-4" data-line-number="4">  <span class="dt">common.legend =</span> <span class="ot">TRUE</span>,</a>
-<a class="sourceLine" id="cb17-5" data-line-number="5">  <span class="dt">legend =</span> <span class="st">'bottom'</span></a>
-<a class="sourceLine" id="cb17-6" data-line-number="6">)</a></code></pre></div>
-<p><img src="Introduction_files/figure-html/unnamed-chunk-16-1.png" width="432"></p>
-<p>You can also plot the segments’ length distribution, which is used to detect fragmentation patterns in the segments.</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="kw"><a href="../reference/plot_segment_size_distribution.html">plot_segment_size_distribution</a></span>(x)</a></code></pre></div>
-<p><img src="Introduction_files/figure-html/unnamed-chunk-17-1.png" width="432"></p>
-</div>
-<div id="plotting-driver-mutations" class="section level2">
-<h2 class="hasAnchor">
-<a href="#plotting-driver-mutations" class="anchor"></a>Plotting driver mutations</h2>
-<p>You need to annotate your data with the <code>is_driver</code> column, set to <code>TRUE</code> for driver mutation events. Here we make it at random</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1">y =<span class="st"> </span>x</a>
-<a class="sourceLine" id="cb19-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb19-3" data-line-number="3"><span class="co"># Whatever 4 random entries</span></a>
-<a class="sourceLine" id="cb19-4" data-line-number="4">which_genes =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/sample.html">sample</a></span>(<span class="dv">1</span><span class="op">:</span><span class="kw"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(y<span class="op">$</span>snvs), <span class="dv">4</span>)</a>
-<a class="sourceLine" id="cb19-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb19-6" data-line-number="6">y<span class="op">$</span>snvs =<span class="st"> </span>y<span class="op">$</span>snvs <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb19-7" data-line-number="7"><span class="st">  </span><span class="kw">mutate</span>(</a>
-<a class="sourceLine" id="cb19-8" data-line-number="8">    <span class="dt">is_driver =</span> <span class="kw"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span>(</a>
-<a class="sourceLine" id="cb19-9" data-line-number="9">      <span class="kw">row_number</span>() <span class="op">%in%</span><span class="st"> </span>which_genes,</a>
-<a class="sourceLine" id="cb19-10" data-line-number="10">      <span class="ot">TRUE</span>,</a>
-<a class="sourceLine" id="cb19-11" data-line-number="11">      <span class="ot">FALSE</span>),</a>
-<a class="sourceLine" id="cb19-12" data-line-number="12">    <span class="dt">gene =</span> <span class="kw"><a href="https://rdrr.io/r/base/paste.html">paste</a></span>(chr, <span class="st">'_'</span>, from, <span class="dt">sep =</span> <span class="st">''</span>)</a>
-<a class="sourceLine" id="cb19-13" data-line-number="13">  )</a></code></pre></div>
-<p>Drivers are annotated in the print and in the segments plot.</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(y)</a>
-<a class="sourceLine" id="cb20-2" data-line-number="2"><span class="co">#&gt; ── [ CNAqc ]  n = 13141 mutations in 267 segments (267 clonal + 0 subclonal). Genome reference: hg19. ────────────────────</span></a>
-<a class="sourceLine" id="cb20-3" data-line-number="3"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb20-4" data-line-number="4"><span class="co">#&gt;    2:2  [n = 7478] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { chr4_104498931, chrX_148768687 }</span></a>
-<a class="sourceLine" id="cb20-5" data-line-number="5"><span class="co">#&gt;    4:2  [n = 1893] ■■■■■■■  { chr3_19582018 }</span></a>
-<a class="sourceLine" id="cb20-6" data-line-number="6"><span class="co">#&gt;    3:2  [n = 1625] ■■■■■■  { chr1_103163220 }</span></a>
-<a class="sourceLine" id="cb20-7" data-line-number="7"><span class="co">#&gt;    2:1  [n = 1563] ■■■■■■</span></a>
-<a class="sourceLine" id="cb20-8" data-line-number="8"><span class="co">#&gt;    3:0  [n =  312] ■</span></a>
-<a class="sourceLine" id="cb20-9" data-line-number="9"><span class="co">#&gt; ℹ Sample Purity: 89% ~ Ploidy: 4.</span></a>
-<a class="sourceLine" id="cb20-10" data-line-number="10"><span class="co">#&gt; ℹ Mutations annotated have 4 drivers.</span></a>
-<a class="sourceLine" id="cb20-11" data-line-number="11"></a>
-<a class="sourceLine" id="cb20-12" data-line-number="12"><span class="co"># Annotation is automatic</span></a>
-<a class="sourceLine" id="cb20-13" data-line-number="13"><span class="kw"><a href="../reference/plot_segments.html">plot_segments</a></span>(y)</a></code></pre></div>
-<p><img src="Introduction_files/figure-html/unnamed-chunk-19-1.png" width="912"></p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="co"># Circular layout</span></a>
-<a class="sourceLine" id="cb21-2" data-line-number="2"><span class="kw"><a href="../reference/plot_segments.html">plot_segments</a></span>(y, <span class="dt">circular =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
-<p><img src="Introduction_files/figure-html/unnamed-chunk-20-1.png" width="384"></p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(x)</a>
+<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="co">#&gt; ── [ CNAqc ]  n = 13141 mutations in 267 segments (267 clonal + 0 subclonal). Genome reference: hg19. ────────────────────</span></a>
+<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb8-4" data-line-number="4"><span class="co">#&gt;    2:2  [n = 7478] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { chr19:15292495:15292496:G:A }</span></a>
+<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="co">#&gt;    4:2  [n = 1893] ■■■■■■■</span></a>
+<a class="sourceLine" id="cb8-6" data-line-number="6"><span class="co">#&gt;    3:2  [n = 1625] ■■■■■■</span></a>
+<a class="sourceLine" id="cb8-7" data-line-number="7"><span class="co">#&gt;    2:1  [n = 1563] ■■■■■■  { chr2:179431633:179431634:C:T }</span></a>
+<a class="sourceLine" id="cb8-8" data-line-number="8"><span class="co">#&gt;    3:0  [n =  312] ■</span></a>
+<a class="sourceLine" id="cb8-9" data-line-number="9"><span class="co">#&gt; ℹ Sample Purity: 89% ~ Ploidy: 4.</span></a>
+<a class="sourceLine" id="cb8-10" data-line-number="10"><span class="co">#&gt; ℹ Mutations annotated have 3 drivers.</span></a></code></pre></div>
 </div>
 <div id="subsetting-data" class="section level2">
 <h2 class="hasAnchor">
 <a href="#subsetting-data" class="anchor"></a>Subsetting data</h2>
-<p>You can subset randomly the data; if drivers are annotated (<code>is_driver</code> boolean column), the drivers are forced to say in.</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1">y_<span class="dv">5000</span> =<span class="st"> </span><span class="kw"><a href="../reference/subsample.html">subsample</a></span>(y, <span class="dt">N =</span> <span class="dv">5000</span>)</a>
-<a class="sourceLine" id="cb22-2" data-line-number="2"><span class="co">#&gt;  [ CNAqc - CNA Quality Check ]</span></a>
-<a class="sourceLine" id="cb22-3" data-line-number="3"><span class="co">#&gt; ℹ Using reference genome coordinates for: GRCh38.</span></a>
-<a class="sourceLine" id="cb22-4" data-line-number="4"><span class="co">#&gt; ℹ Input n = 5004 mutations for 267 CNA segments (267 clonal, 0 subclonal)</span></a>
-<a class="sourceLine" id="cb22-5" data-line-number="5"><span class="co">#&gt; Warning in map_mutations_to_segments(snvs, cna %&gt;% filter(CCF == 1)): [CNAqc] a</span></a>
-<a class="sourceLine" id="cb22-6" data-line-number="6"><span class="co">#&gt; karyotype column is present in CNA calls, and will be overwritten</span></a>
-<a class="sourceLine" id="cb22-7" data-line-number="7"><span class="co">#&gt; ✓ Mapped n = 4936 mutations to clonal segments (99% of input)</span></a>
-<a class="sourceLine" id="cb22-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb22-9" data-line-number="9"><span class="co"># 5000 + the ranomd entries that we sampled before</span></a>
-<a class="sourceLine" id="cb22-10" data-line-number="10"><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(y_<span class="dv">5000</span>)</a>
-<a class="sourceLine" id="cb22-11" data-line-number="11"><span class="co">#&gt; ── [ CNAqc ]  n = 5004 mutations in 267 segments (267 clonal + 0 subclonal). Genome reference: GRCh38. ───────────────────</span></a>
-<a class="sourceLine" id="cb22-12" data-line-number="12"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb22-13" data-line-number="13"><span class="co">#&gt;   2:2  [n = 2809] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { chr4_104498931, chrX_148768687, chr4_104498931 }</span></a>
-<a class="sourceLine" id="cb22-14" data-line-number="14"><span class="co">#&gt;   4:2  [n =  732] ■■■■■■■  { chr3_19582018, chr3_19582018 }</span></a>
-<a class="sourceLine" id="cb22-15" data-line-number="15"><span class="co">#&gt;   3:2  [n =  621] ■■■■■■  { chr1_103163220, chr1_103163220 }</span></a>
-<a class="sourceLine" id="cb22-16" data-line-number="16"><span class="co">#&gt;   2:1  [n =  613] ■■■■■■</span></a>
-<a class="sourceLine" id="cb22-17" data-line-number="17"><span class="co">#&gt;   3:0  [n =  124] ■</span></a>
-<a class="sourceLine" id="cb22-18" data-line-number="18"><span class="co">#&gt; ℹ Sample Purity: 89% ~ Ploidy: 4.</span></a>
-<a class="sourceLine" id="cb22-19" data-line-number="19"><span class="co">#&gt; ℹ Mutations annotated have 7 drivers.</span></a></code></pre></div>
+<p>You can <em>subset randomly</em> the data; if drivers are annotated, they can be forced to say in.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">y_<span class="dv">5000</span> =<span class="st"> </span><span class="kw"><a href="../reference/subsample.html">subsample</a></span>(x, <span class="dt">N =</span> <span class="dv">5000</span>, <span class="dt">keep_drivers =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="co">#&gt;  [ CNAqc - CNA Quality Check ]</span></a>
+<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="co">#&gt; ℹ Using reference genome coordinates for: GRCh38.</span></a>
+<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="co">#&gt; ℹ Input n = 5003 mutations for 267 CNA segments (267 clonal, 0 subclonal)</span></a>
+<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="co">#&gt; Warning in map_mutations_to_segments(snvs, cna %&gt;% filter(CCF == 1)): [CNAqc] a</span></a>
+<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="co">#&gt; karyotype column is present in CNA calls, and will be overwritten</span></a>
+<a class="sourceLine" id="cb9-7" data-line-number="7"><span class="co">#&gt; ✓ Mapped n = 4930 mutations to clonal segments (99% of input)</span></a>
+<a class="sourceLine" id="cb9-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb9-9" data-line-number="9"><span class="co"># 5000 + the ranomd entries that we sampled before</span></a>
+<a class="sourceLine" id="cb9-10" data-line-number="10"><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(y_<span class="dv">5000</span>)</a>
+<a class="sourceLine" id="cb9-11" data-line-number="11"><span class="co">#&gt; ── [ CNAqc ]  n = 5003 mutations in 267 segments (267 clonal + 0 subclonal). Genome reference: GRCh38. ───────────────────</span></a>
+<a class="sourceLine" id="cb9-12" data-line-number="12"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb9-13" data-line-number="13"><span class="co">#&gt;    2:2  [n = 2820] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { chr19:15292495:15292496:G:A, chr19:15292495:15292496:G:A }</span></a>
+<a class="sourceLine" id="cb9-14" data-line-number="14"><span class="co">#&gt;    4:2  [n =  737] ■■■■■■■</span></a>
+<a class="sourceLine" id="cb9-15" data-line-number="15"><span class="co">#&gt;    3:2  [n =  619] ■■■■■■</span></a>
+<a class="sourceLine" id="cb9-16" data-line-number="16"><span class="co">#&gt;    2:1  [n =  596] ■■■■■■  { chr2:179431633:179431634:C:T, chr2:179431633:179431634:C:T }</span></a>
+<a class="sourceLine" id="cb9-17" data-line-number="17"><span class="co">#&gt;    3:0  [n =  121] ■</span></a>
+<a class="sourceLine" id="cb9-18" data-line-number="18"><span class="co">#&gt; ℹ Sample Purity: 89% ~ Ploidy: 4.</span></a>
+<a class="sourceLine" id="cb9-19" data-line-number="19"><span class="co">#&gt; ℹ Mutations annotated have 6 drivers.</span></a></code></pre></div>
+<p>You can also subset data by <em>karyotype of the segments</em>, and by <em>total copy number</em> of the segment. Both subset do not keep drivers that map off the selected segments.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="co"># Triploid and copy-neutral LOH segments </span></a>
+<a class="sourceLine" id="cb10-2" data-line-number="2">y_tripl_cnloh =<span class="st"> </span><span class="kw"><a href="../reference/subset_by_segment_karyotype.html">subset_by_segment_karyotype</a></span>(x, <span class="dt">karyotypes =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">'2:1'</span>, <span class="st">'2:0'</span>))</a>
+<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="co">#&gt;  [ CNAqc - CNA Quality Check ]</span></a>
+<a class="sourceLine" id="cb10-4" data-line-number="4"><span class="co">#&gt; ℹ Using reference genome coordinates for: hg19.</span></a>
+<a class="sourceLine" id="cb10-5" data-line-number="5"><span class="co">#&gt; ℹ Input n = 13141 mutations for 58 CNA segments (58 clonal, 0 subclonal)</span></a>
+<a class="sourceLine" id="cb10-6" data-line-number="6"><span class="co">#&gt; Warning in map_mutations_to_segments(snvs, cna %&gt;% filter(CCF == 1)): [CNAqc] a</span></a>
+<a class="sourceLine" id="cb10-7" data-line-number="7"><span class="co">#&gt; karyotype column is present in CNA calls, and will be overwritten</span></a>
+<a class="sourceLine" id="cb10-8" data-line-number="8"><span class="co">#&gt; ✓ Mapped n = 1644 mutations to clonal segments (13% of input)</span></a>
+<a class="sourceLine" id="cb10-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb10-10" data-line-number="10"><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(y_tripl_cnloh)</a>
+<a class="sourceLine" id="cb10-11" data-line-number="11"><span class="co">#&gt; ── [ CNAqc ]  n = 13141 mutations in 58 segments (58 clonal + 0 subclonal). Genome reference: hg19. ──────────────────────</span></a>
+<a class="sourceLine" id="cb10-12" data-line-number="12"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb10-13" data-line-number="13"><span class="co">#&gt;  2:1  [n = 1563] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { chr2:179431633:179431634:C:T }</span></a>
+<a class="sourceLine" id="cb10-14" data-line-number="14"><span class="co">#&gt;  2:0  [n =   81] ■  { chr17:7577106:7577107:G:C }</span></a>
+<a class="sourceLine" id="cb10-15" data-line-number="15"><span class="co">#&gt; ℹ Sample Purity: 89% ~ Ploidy: 3.</span></a>
+<a class="sourceLine" id="cb10-16" data-line-number="16"><span class="co">#&gt; ℹ Mutations annotated have 3 drivers.</span></a>
+<a class="sourceLine" id="cb10-17" data-line-number="17"></a>
+<a class="sourceLine" id="cb10-18" data-line-number="18"><span class="co"># Two and four copies</span></a>
+<a class="sourceLine" id="cb10-19" data-line-number="19">y_<span class="dv">2</span>_<span class="dv">4</span> =<span class="st"> </span><span class="kw"><a href="../reference/subset_by_segment_totalcn.html">subset_by_segment_totalcn</a></span>(x, <span class="dt">totalcn =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">2</span>, <span class="dv">4</span>))</a>
+<a class="sourceLine" id="cb10-20" data-line-number="20"><span class="co">#&gt;  [ CNAqc - CNA Quality Check ]</span></a>
+<a class="sourceLine" id="cb10-21" data-line-number="21"><span class="co">#&gt; ℹ Using reference genome coordinates for: hg19.</span></a>
+<a class="sourceLine" id="cb10-22" data-line-number="22"><span class="co">#&gt; ℹ Input n = 13141 mutations for 90 CNA segments (90 clonal, 0 subclonal)</span></a>
+<a class="sourceLine" id="cb10-23" data-line-number="23"><span class="co">#&gt; Warning in map_mutations_to_segments(snvs, cna %&gt;% filter(CCF == 1)): [CNAqc] a</span></a>
+<a class="sourceLine" id="cb10-24" data-line-number="24"><span class="co">#&gt; karyotype column is present in CNA calls, and will be overwritten</span></a>
+<a class="sourceLine" id="cb10-25" data-line-number="25"><span class="co">#&gt; ✓ Mapped n = 7561 mutations to clonal segments (58% of input)</span></a>
+<a class="sourceLine" id="cb10-26" data-line-number="26"></a>
+<a class="sourceLine" id="cb10-27" data-line-number="27"><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(y_<span class="dv">2</span>_<span class="dv">4</span>)</a>
+<a class="sourceLine" id="cb10-28" data-line-number="28"><span class="co">#&gt; ── [ CNAqc ]  n = 13141 mutations in 90 segments (90 clonal + 0 subclonal). Genome reference: hg19. ──────────────────────</span></a>
+<a class="sourceLine" id="cb10-29" data-line-number="29"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb10-30" data-line-number="30"><span class="co">#&gt;  2:2  [n = 7478] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { chr19:15292495:15292496:G:A }</span></a>
+<a class="sourceLine" id="cb10-31" data-line-number="31"><span class="co">#&gt;  2:0  [n =   81]   { chr17:7577106:7577107:G:C }</span></a>
+<a class="sourceLine" id="cb10-32" data-line-number="32"><span class="co">#&gt;  3:1  [n =    2]</span></a>
+<a class="sourceLine" id="cb10-33" data-line-number="33"><span class="co">#&gt; ℹ Sample Purity: 89% ~ Ploidy: 4.</span></a>
+<a class="sourceLine" id="cb10-34" data-line-number="34"><span class="co">#&gt; ℹ Mutations annotated have 3 drivers.</span></a></code></pre></div>
+</div>
+<div id="reference-genome-coordinates" class="section level2">
+<h2 class="hasAnchor">
+<a href="#reference-genome-coordinates" class="anchor"></a>Reference genome coordinates</h2>
+<p><code>CNAqc</code> contains two coordinates for two reference genomes, <code>hg19</code> and <code>GRCh38</code> (default). For each reference genome the package stores the location of the chromosomes, and their centromers; you can access these data.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">CNAqc<span class="op">:::</span><span class="kw">get_reference</span>(<span class="st">"hg19"</span>)</a>
+<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="co">#&gt; # A tibble: 24 x 6</span></a>
+<a class="sourceLine" id="cb11-3" data-line-number="3"><span class="co">#&gt;    chr      length       from         to centromerStart centromerEnd</span></a>
+<a class="sourceLine" id="cb11-4" data-line-number="4"><span class="co">#&gt;    &lt;chr&gt;     &lt;int&gt;      &lt;dbl&gt;      &lt;dbl&gt;          &lt;dbl&gt;        &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb11-5" data-line-number="5"><span class="co">#&gt;  1 chr1  249250621          0  249250621      121535434    124535434</span></a>
+<a class="sourceLine" id="cb11-6" data-line-number="6"><span class="co">#&gt;  2 chr2  243199373  249250621  492449994      341576792    344576792</span></a>
+<a class="sourceLine" id="cb11-7" data-line-number="7"><span class="co">#&gt;  3 chr3  198022430  492449994  690472424      582954848    585954848</span></a>
+<a class="sourceLine" id="cb11-8" data-line-number="8"><span class="co">#&gt;  4 chr4  191154276  690472424  881626700      740132541    743132541</span></a>
+<a class="sourceLine" id="cb11-9" data-line-number="9"><span class="co">#&gt;  5 chr5  180915260  881626700 1062541960      928032341    931032341</span></a>
+<a class="sourceLine" id="cb11-10" data-line-number="10"><span class="co">#&gt;  6 chr6  171115067 1062541960 1233657027     1121372126   1124372126</span></a>
+<a class="sourceLine" id="cb11-11" data-line-number="11"><span class="co">#&gt;  7 chr7  159138663 1233657027 1392795690     1291711358   1294711358</span></a>
+<a class="sourceLine" id="cb11-12" data-line-number="12"><span class="co">#&gt;  8 chr8  146364022 1392795690 1539159712     1436634577   1439634577</span></a>
+<a class="sourceLine" id="cb11-13" data-line-number="13"><span class="co">#&gt;  9 chr9  141213431 1539159712 1680373143     1586527391   1589527391</span></a>
+<a class="sourceLine" id="cb11-14" data-line-number="14"><span class="co">#&gt; 10 chr10 135534747 1680373143 1815907890     1719628078   1722628078</span></a>
+<a class="sourceLine" id="cb11-15" data-line-number="15"><span class="co">#&gt; # … with 14 more rows</span></a>
+<a class="sourceLine" id="cb11-16" data-line-number="16"></a>
+<a class="sourceLine" id="cb11-17" data-line-number="17">CNAqc<span class="op">:::</span><span class="kw">get_reference</span>(<span class="st">"GRCh38"</span>)</a>
+<a class="sourceLine" id="cb11-18" data-line-number="18"><span class="co">#&gt; # A tibble: 24 x 6</span></a>
+<a class="sourceLine" id="cb11-19" data-line-number="19"><span class="co">#&gt;    chr      length       from         to centromerStart centromerEnd</span></a>
+<a class="sourceLine" id="cb11-20" data-line-number="20"><span class="co">#&gt;    &lt;chr&gt;     &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;          &lt;dbl&gt;        &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb11-21" data-line-number="21"><span class="co">#&gt;  1 chr1  248956422          0  248956422      122026459    124849229</span></a>
+<a class="sourceLine" id="cb11-22" data-line-number="22"><span class="co">#&gt;  2 chr2  242193529  248956422  491149951      341144567    341144567</span></a>
+<a class="sourceLine" id="cb11-23" data-line-number="23"><span class="co">#&gt;  3 chr3  198295559  491149951  689445510      581922409    582703370</span></a>
+<a class="sourceLine" id="cb11-24" data-line-number="24"><span class="co">#&gt;  4 chr4  190214555  689445510  879660065      739157571    739157571</span></a>
+<a class="sourceLine" id="cb11-25" data-line-number="25"><span class="co">#&gt;  5 chr5  181538259  879660065 1061198324      926145965    929381368</span></a>
+<a class="sourceLine" id="cb11-26" data-line-number="26"><span class="co">#&gt;  6 chr6  170805979 1061198324 1232004303     1119752212   1119752212</span></a>
+<a class="sourceLine" id="cb11-27" data-line-number="27"><span class="co">#&gt;  7 chr7  159345973 1232004303 1391350276     1290173956   1293382091</span></a>
+<a class="sourceLine" id="cb11-28" data-line-number="28"><span class="co">#&gt;  8 chr8  145138636 1391350276 1536488912     1435384020   1435384020</span></a>
+<a class="sourceLine" id="cb11-29" data-line-number="29"><span class="co">#&gt;  9 chr9  138394717 1536488912 1674883629     1579878547   1579878547</span></a>
+<a class="sourceLine" id="cb11-30" data-line-number="30"><span class="co">#&gt; 10 chr10 133797422 1674883629 1808681051     1714570311   1716429449</span></a>
+<a class="sourceLine" id="cb11-31" data-line-number="31"><span class="co">#&gt; # … with 14 more rows</span></a></code></pre></div>
+<p>The reference genomes can be specified as a parameter once you create a <code>CNAqc</code> object. Coordinates are used to translate relative to absolute genome coordinates of somatic mutations and CNA segments; this is done only when plotting the data. Note that mapping of mutations to CNA segments is independent of the reference genome, and it will work as far as both mutation and CNA segments are mapped to the same reference.</p>
+<p>You can use a hidden function to plot a reference, and make it explicit with a title.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(CNAqc<span class="op">:::</span><span class="kw">blank_genome</span>(<span class="dt">ref =</span> <span class="st">'hg19'</span>) <span class="op">+</span><span class="st"> </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">"HG19 genome reference"</span>))</a></code></pre></div>
+<p><img src="Introduction_files/figure-html/unnamed-chunk-12-1.png" width="912"></p>
+</div>
 </div>
   </div>
 
@@ -391,14 +357,13 @@
       <h2 class="hasAnchor">
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-<li><a href="#reference-genome-coordinates">Reference genome coordinates</a></li>
-      <li><a href="#template-dataset">Template dataset</a></li>
-      <li><a href="#initialisation-of-a-new-dataset">Initialisation of a new dataset</a></li>
-      <li><a href="#plotting-copy-number-segments">Plotting copy number segments</a></li>
-      <li><a href="#plotting-genome-wide-mutations-data">Plotting genome-wide mutations data</a></li>
-      <li><a href="#plotting-summaries">Plotting summaries</a></li>
-      <li><a href="#plotting-driver-mutations">Plotting driver mutations</a></li>
+<li>
+<a href="#input-format">Input format</a><ul class="nav nav-pills nav-stacked">
+<li><a href="#initialisation-of-a-new-dataset">Initialisation of a new dataset</a></li>
       <li><a href="#subsetting-data">Subsetting data</a></li>
+      <li><a href="#reference-genome-coordinates">Reference genome coordinates</a></li>
+      </ul>
+</li>
       </ul>
 </div>
       </div>

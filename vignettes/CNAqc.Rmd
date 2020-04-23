@@ -16,11 +16,6 @@ knitr::opts_chunk$set(
 options(crayon.enabled=F)
 ```
 
-
-```{r setup}
-library(CNAqc)
-```
-
 ### Requirements
 
 To analyse a tumour sample with `CNAqc`, you need: 
@@ -36,11 +31,12 @@ type of DNA modification; _VEP, ANNOVER or other types of annotations are not re
 
 **Available vignettes:** 
 
-* [Introduction (data formats, example datasets)](https://caravagn.github.io/CNAqc/articles/Introduction.html). 
-* [QC purity and ploidy via peak detection](https://caravagn.github.io/CNAqc/articles/peaks_detection.html). 
-* [Cancer Cell Fractions computation](https://caravagn.github.io/CNAqc/articles/ccf_computation.html). 
-* [Segments smoothing](https://caravagn.github.io/CNAqc/articles/smoothing.html). 
-* [Genome fragmentation analysis](https://caravagn.github.io/CNAqc/articles/fragmentation.html). 
+* [1. Introduction (data formats, example dataset)](https://caravagn.github.io/CNAqc/articles/Introduction.html). 
+* [2. Plots (data formats, example dataset)](https://caravagn.github.io/CNAqc/articles/Plots.html). 
+* [3. QC purity and ploidy via peak detection](https://caravagn.github.io/CNAqc/articles/peaks_detection.html). 
+* [4. Cancer Cell Fractions computation](https://caravagn.github.io/CNAqc/articles/ccf_computation.html). 
+* [5. Segments smoothing](https://caravagn.github.io/CNAqc/articles/smoothing.html). 
+* [6. Genome fragmentation analysis](https://caravagn.github.io/CNAqc/articles/fragmentation.html). 
 
 
 ### Technical details

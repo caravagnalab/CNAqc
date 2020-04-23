@@ -33,12 +33,13 @@ reference:
   contents:
   - init
   - inspect_segment
+  - get_drivers
   - plot_segment_size_distribution
   - plot_karyotypes
   - plot_data_histogram
-  - plot_counts
-  - plot_depth
-  - plot_vaf
+  - plot_gw_counts
+  - plot_gw_depth
+  - plot_gw_vaf
   - plot_segments
   - plot_multisample_CNA
   - plot_icon_CNA
@@ -46,7 +47,7 @@ reference:
   - subset_by_segment_karyotype
   - subset_by_segment_totalcn
   - print.cnaqc
-  - print.cnaqc
+  - plot.cnaqc
 
 
 - title: Purity and ploidy QC
@@ -62,6 +63,8 @@ reference:
   - compute_CCF
   - CCF
   - plot_CCF
+  - plot_gw_ccf
+
 
 - title: Smoothing
   desc:  Analysis and plotting functions to smooth segments.

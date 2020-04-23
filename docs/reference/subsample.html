@@ -105,19 +105,22 @@ these can be forced to remain." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/Introduction.html">Introduction</a>
+      <a href="../articles/Introduction.html">1. Introduction</a>
     </li>
     <li>
-      <a href="../articles/ccf_computation.html">Computation of Cancer Cell Fractions</a>
+      <a href="../articles/Plots.html">2. Plotting data</a>
+    </li>
+    <li>
+      <a href="../articles/ccf_computation.html">4. Computation of Cancer Cell Fractions</a>
     </li>
     <li>
       <a href="../articles/fragmentation.html">Genome fragmentation analysis</a>
     </li>
     <li>
-      <a href="../articles/peaks_detection.html">QC analysis via peaks detection</a>
+      <a href="../articles/peaks_detection.html">3. QC analysis via peaks detection</a>
     </li>
     <li>
-      <a href="../articles/smoothing.html">Smoothing copy number segments</a>
+      <a href="../articles/smoothing.html">5. Smoothing copy number segments</a>
     </li>
   </ul>
 </li>
@@ -180,21 +183,21 @@ these can be forced to remain.</p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='st'>'example_dataset_CNAqc'</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>'CNAqc'</span>)
 <span class='no'>x</span> <span class='kw'>=</span> <span class='fu'><a href='init.html'>init</a></span>(<span class='no'>example_dataset_CNAqc</span>$<span class='no'>snvs</span>, <span class='no'>example_dataset_CNAqc</span>$<span class='no'>cna</span>,<span class='no'>example_dataset_CNAqc</span>$<span class='no'>purity</span>)</div><div class='output co'>#&gt; <span style='color: #BBBBBB;background-color: #0000BB;'> [ CNAqc - CNA Quality Check ] 
-#&gt; </span><span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Using reference genome coordinates for: </span><span style='color: #00BB00;'>GRCh38</span><span>.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #BBBB00;'>!</span><span> Missing CCF column from CNA calls, adding CCF = 1 assuming clonal CNA calls.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Input n = 13141 mutations for 267 CNA segments (267 clonal, 0 subclonal)</span></div><div class='output co'>#&gt; </div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> Mapped n = 12963 mutations to clonal segments (99% of input)</span></div><div class='input'>
+#&gt; </span><span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Using reference genome coordinates for: </span><span style='color: #00BB00;'>GRCh38</span><span>.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Drivers are annotated, but 'gene' column is missing, using mutation location.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #BBBB00;'>!</span><span> Missing CCF column from CNA calls, adding CCF = 1 assuming clonal CNA calls.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Input n = 13141 mutations for 267 CNA segments (267 clonal, 0 subclonal)</span></div><div class='output co'>#&gt; </div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> Mapped n = 12963 mutations to clonal segments (99% of input)</span></div><div class='input'>
 <span class='fu'>subsample</span>(<span class='no'>x</span>, <span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>100</span>)</div><div class='output co'>#&gt; </span><span style='color: #BBBBBB;background-color: #0000BB;'> [ CNAqc - CNA Quality Check ] 
-#&gt; </span><span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Using reference genome coordinates for: </span><span style='color: #00BB00;'>GRCh38</span><span>.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Input n = 103 mutations for 267 CNA segments (267 clonal, 0 subclonal)</span></div><div class='output co'>#&gt; <span class='warning'>Warning: [CNAqc] a karyotype column is present in CNA calls, and will be overwritten</span></div><div class='output co'>#&gt; </div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> Mapped n = 102 mutations to clonal segments (99% of input)</span></div><div class='output co'>#&gt; <span class='message'>── </span><span style='color: #000000;background-color: #BBBB00;'>[ CNAqc ] </span><span> n = 103 mutations in </span><span style='color: #00BB00;'>267</span><span> segments (267 clonal + 0 subclonal). Genome reference: </span><span style='color: #00BB00;'>GRCh38</span><span>. ────────────────────</span></div><div class='output co'>#&gt; 
-#&gt;   2:2  [n = 59] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { </span><span style='color: #BBBB00;'>NOTCH3</span><span> }
-#&gt;   2:1  [n = 17] ■■■■■■■■  { </span><span style='color: #BBBB00;'>TTN</span><span> }
-#&gt;   3:2  [n = 13] ■■■■■■
-#&gt;   4:2  [n = 10] ■■■■■
-#&gt;  16:2  [n =  1] 
+#&gt; </span><span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Using reference genome coordinates for: </span><span style='color: #00BB00;'>GRCh38</span><span>.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Input n = 103 mutations for 267 CNA segments (267 clonal, 0 subclonal)</span></div><div class='output co'>#&gt; <span class='warning'>Warning: [CNAqc] a karyotype column is present in CNA calls, and will be overwritten</span></div><div class='output co'>#&gt; </div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> Mapped n = 101 mutations to clonal segments (98% of input)</span></div><div class='output co'>#&gt; <span class='message'>── </span><span style='color: #000000;background-color: #BBBB00;'>[ CNAqc ] </span><span> n = 103 mutations in </span><span style='color: #00BB00;'>267</span><span> segments (267 clonal + 0 subclonal). Genome reference: </span><span style='color: #00BB00;'>GRCh38</span><span>. ────────────────────</span></div><div class='output co'>#&gt; 
+#&gt;  2:2  [n = 59] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { </span><span style='color: #BBBB00;'>chr19:15292495:15292496:G:A</span><span> }
+#&gt;  2:1  [n = 16] ■■■■■■■  { </span><span style='color: #BBBB00;'>chr2:179431633:179431634:C:T</span><span> }
+#&gt;  4:2  [n = 13] ■■■■■■
+#&gt;  3:2  [n = 12] ■■■■■
+#&gt;  2:0  [n =  1]   { </span><span style='color: #BBBB00;'>chr17:7577106:7577107:G:C</span><span> }
 #&gt; </div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Sample Purity: 89% ~ Ploidy: 4.</span></div><div class='output co'>#&gt; </div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Mutations annotated have 3 drivers.</span></div><div class='input'><span class='fu'>subsample</span>(<span class='no'>x</span>, <span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>1000</span>)</div><div class='output co'>#&gt; </span><span style='color: #BBBBBB;background-color: #0000BB;'> [ CNAqc - CNA Quality Check ] 
-#&gt; </span><span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Using reference genome coordinates for: </span><span style='color: #00BB00;'>GRCh38</span><span>.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Input n = 1003 mutations for 267 CNA segments (267 clonal, 0 subclonal)</span></div><div class='output co'>#&gt; <span class='warning'>Warning: [CNAqc] a karyotype column is present in CNA calls, and will be overwritten</span></div><div class='output co'>#&gt; </div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> Mapped n = 988 mutations to clonal segments (99% of input)</span></div><div class='output co'>#&gt; <span class='message'>── </span><span style='color: #000000;background-color: #BBBB00;'>[ CNAqc ] </span><span> n = 1003 mutations in </span><span style='color: #00BB00;'>267</span><span> segments (267 clonal + 0 subclonal). Genome reference: </span><span style='color: #00BB00;'>GRCh38</span><span>. ───────────────────</span></div><div class='output co'>#&gt; 
-#&gt;  2:2  [n = 584] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { </span><span style='color: #BBBB00;'>NOTCH3</span><span> }
-#&gt;  4:2  [n = 157] ■■■■■■■
-#&gt;  3:2  [n = 115] ■■■■■
-#&gt;  2:1  [n = 101] ■■■■■  { </span><span style='color: #BBBB00;'>TTN</span><span> }
-#&gt;  3:0  [n =  24] ■
+#&gt; </span><span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Using reference genome coordinates for: </span><span style='color: #00BB00;'>GRCh38</span><span>.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Input n = 1003 mutations for 267 CNA segments (267 clonal, 0 subclonal)</span></div><div class='output co'>#&gt; <span class='warning'>Warning: [CNAqc] a karyotype column is present in CNA calls, and will be overwritten</span></div><div class='output co'>#&gt; </div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> Mapped n = 985 mutations to clonal segments (98% of input)</span></div><div class='output co'>#&gt; <span class='message'>── </span><span style='color: #000000;background-color: #BBBB00;'>[ CNAqc ] </span><span> n = 1003 mutations in </span><span style='color: #00BB00;'>267</span><span> segments (267 clonal + 0 subclonal). Genome reference: </span><span style='color: #00BB00;'>GRCh38</span><span>. ───────────────────</span></div><div class='output co'>#&gt; 
+#&gt;   2:2  [n = 570] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { </span><span style='color: #BBBB00;'>chr19:15292495:15292496:G:A</span><span> }
+#&gt;   4:2  [n = 139] ■■■■■■■
+#&gt;   2:1  [n = 124] ■■■■■■  { </span><span style='color: #BBBB00;'>chr2:179431633:179431634:C:T</span><span> }
+#&gt;   3:2  [n = 124] ■■■■■■
+#&gt;   3:0  [n =  20] ■
 #&gt; </div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Sample Purity: 89% ~ Ploidy: 4.</span></div><div class='output co'>#&gt; </div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Mutations annotated have 3 drivers.</span></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

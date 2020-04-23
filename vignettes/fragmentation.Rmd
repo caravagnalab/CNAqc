@@ -1,8 +1,8 @@
 ---
-title: "Genome fragmentation analysis"
+title: "6. Genome fragmentation analysis"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Genome fragmentation analysis}
+  %\VignetteIndexEntry{6. Genome fragmentation analysis}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

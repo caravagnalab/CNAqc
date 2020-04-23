@@ -50,7 +50,7 @@ plot_segments = function(x,
     dplyr::filter(chr %in% chromosomes)  %>%
     dplyr::mutate(
       total = Major + minor,
-       karyotype = paste0(Major, ':', minor)
+      karyotype = paste0(Major, ':', minor)
       )
 
   segments = CNAqc:::relative_to_absolute_coordinates(x, segments)
@@ -107,7 +107,7 @@ plot_segments = function(x,
           x$n_snvs,
           ' mutations, ',
           x$n_cna_clonal,
-          ' clonal CNA, ',
+          ' CNA segeents, ',
           x$n_cna_sbclonal,
           ' subclonal CNA'
         )
@@ -121,7 +121,7 @@ plot_segments = function(x,
   # =-=-=-=-=-=-=-=-=-=-=-=-
   # Drivers annotations
   # =-=-=-=-=-=-=-=-=-=-=-=-
-  drivers_list =  x$snvs %>% dplyr::filter(chr %in% chromosomes)
+  drivers_list = CNAqc:::get_drivers(x, chromosomes = chromosomes)
   base_plot = CNAqc:::add_drivers_to_segment_plot(x, drivers_list = drivers_list, base_plot)
 
 

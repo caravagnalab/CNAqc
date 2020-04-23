@@ -1,8 +1,8 @@
 ---
-title: "Computation of Cancer Cell Fractions"
+title: "4. Computation of Cancer Cell Fractions"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Computation of Cancer Cell Fractions}
+  %\VignetteIndexEntry{4. Computation of Cancer Cell Fractions}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

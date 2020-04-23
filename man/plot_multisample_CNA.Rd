@@ -20,7 +20,7 @@ to certain karyotypes. Each sample is plot on a lane, like in a donut plot.
 }
 \examples{
 data('example_dataset_CNAqc', package = 'CNAqc')
-x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna, example_dataset_CNAqc$purity)
 
 plot_multisample_CNA(list(`S1` = x, `S2` = x))
 }

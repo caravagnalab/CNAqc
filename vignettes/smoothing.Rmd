@@ -1,8 +1,8 @@
 ---
-title: "Smoothing copy number segments"
+title: "5. Smoothing copy number segments"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Smoothing copy number segments}
+  %\VignetteIndexEntry{5. Smoothing copy number segments}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

@@ -1,8 +1,8 @@
 ---
-title: "Introduction"
+title: "1. Introduction"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Introduction}
+  %\VignetteIndexEntry{1. Introduction}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -21,37 +21,28 @@ options(crayon.enabled=F)
 library(CNAqc)
 ```
 
-## Reference genome coordinates
+We discuss the input format and references used in `CNAqc`.
 
-`CNAqc` contains two harcoded reference genomes, `hg19` and `GRCh38` (default). For each reference genome the package stores the location of the chromosomes, and their centromers; you can use an internal function to extract these data.
+# Input format
 
-```{r, fig.width=9.5, fig.height=3}
-CNAqc:::get_reference("hg19")
-
-CNAqc:::get_reference("GRCh38")
-```
-
-
-The reference genomes can be specified as a parameter once you create a `CNAqc` object (see below). Coordinates are used to translate relative to absolute genome coordinates of somatic mutations and CNA segments; this is done 
-mostly when plotting the data. Note that  mapping of mutations to CNA segments is independent of the reference genome, and it will work only if both mutation and CNA segments are mapped to the same reference.
-
-You can use a hidden function to plot the reference.
-
-```{r, fig.width=9.5, fig.height=3}
-print(CNAqc:::blank_genome(ref = 'hg19'))
-
-print(CNAqc:::blank_genome(ref = 'GRCh38'))
-```
-
-## Template dataset
-
-The package comes with a template dataset available. Input data must be a `data.frame` with standard columns; any extra column will be retained with the data. 
-
+You need to provide data for _somatic mutations_, _copy number segments_ and _tumour purity_. The package comes with a template dataset available.
 
 ```{r}
 # Load template data
 data('example_dataset_CNAqc', package = 'CNAqc')
+```
 
+These fields are required for **mutation** calls:
+
+* the mutation location, as `chr`, `from`, `to`. 
+* the mutation reference and alternative alleles `ref` and `alt`;
+* the total number of reads covering the mutated base(s), `DP` (depth);
+* the total number of reads covering only the mutant allele(s), `NV` (number of reads with variant);
+* the Variant Allele Frequency, `VAF`, defined as `NV/DP`.
+
+Chromosome names and alleles should be in character format; chromosomes must be in the format `chr1`, `chr2`, etc..
+
+```{r}
 # Example input SNVs
 print(
   example_dataset_CNAqc$snvs %>% 
@@ -63,10 +54,32 @@ print(
   )
 ```
 
-Chromosome names and alleles should be in character format; chromosomes 
-must be in the format `chr1`, `chr2`, etc.. `CNAqc` will not filter any input data.
+Optionally, you can annotate also _driver mutations_:
 
-CNA calls must be in *absolute* format, reporting the allelic imbalance of each segment.
+* whether the mutation is a driver, using a boolean flag `is_driver`;
+* a `driver_label` reportin the label to show in the plots with drivers.
+
+```{r}
+print(
+  example_dataset_CNAqc$snvs %>% 
+        select(
+          chr, from, to, ref, alt, is_driver, driver_label, everything()
+        )
+  )
+```
+
+These fields are required for **copy number segments**:
+
+* the segment location, as `chr`, `from` and `to`;
+* the segment absolute number of copies of the major and minor alleles, as `Major` and `minor`;
+
+In `CNAqc` format, a diploid balanced segment has `Major = minor = 1` and will be shortly denoted as *karyotype* `1:1`. Similarly, a tetraploid segment has `Major = minor = 2` and *karyotype* `2:2`. A fixed set of colours is used to identify the main karyotypes supported by `CNAqc`: `"1:0"`, `"2:0"`, `"1:1"`, `"2:1"` and `"2:2"`. 
+
+Optionally, you can annotate also annotate the Cancer Cell Fraction (CCF) `CCF` for each segment:
+
+* segments with `CCF = 1` are _clonal_, otherwise _subclonal_;
+* by default, if missing, all segments are assumed to be clonal and assigned `CCF = 1`. Some computations subset only clonal copy number segments (see the manual of each function).
+
 
 ```{r}
 # Example input CNA
@@ -78,30 +91,24 @@ print(
         )
   )
 ```
+Tumour **purity**, defined as the percentage of reads coming from tumour cells), which must be a value in $[0, 1]$.
 
-In this format, a diploid segment will have `Major = minor = 1` and will be denoted as `1:1`. `CNAqc`
-distinguishes between clonal and subclonal CNA calls, if the Cancer Cell Fraction of a segment 
-(i.e., its clonality) is reported.
-
-A `CCF` column can represent the segment CCF as [0,1] real-value. If missing, 
-`CCF = 1` is set assuming clonal segments; otherwise, segments with `CCF<1` are considered subclonal CNAs.
-
-To analyze the data, a purity value in between `0` and `1` is required to
-represent the proportion of actual tumour content, sometimes called 
-"cellularity".
 ```{r}
+# Example purity
 print(example_dataset_CNAqc$purity)
 ```
 
+**Note** In the current implementation no use of subclonal copy number segments is done. Most function compute statics only with clonal copy number segments.
+
 ## Initialisation of a new dataset
 
-To use the package, you need to initialize a `cnaqc` S3 object with the initialisation function `init`.
+To use `CNAqc`, you need to initialize a `cnaqc` S3 object with the initialisation function `init`.
 
-This function will check input formats, and will map mutations to CNA segments. This call does not subset the data, unless there are errors with respect to its expected format.
-
+This function will check input formats, and will map mutations to CNA segments. This call does not subset the data, unless there are errors with respect to the required formats. It is required to explicit the reference genome for the
+assembly (see below).
 
 ```{r}
-# Use SNVs, CNAs and tumour purity 
+# Use SNVs, CNAs and tumour purity (hg19 reference, see below)
 x = init(
   example_dataset_CNAqc$snvs, 
   example_dataset_CNAqc$cna,
@@ -115,137 +122,50 @@ The summary of `x` can be `print` to see the number of mutations per karyotype, 
 print(x)
 ```
 
-## Plotting copy number segments
-
-All plotting functions use `ggplot` and multi-panel figures assembled with `ggpubr` and `cowplot`.
-
-Function `plot_segments` plots all the genome, annotating in the caption summmary statistics. The major and minor alleles for each segment are plotted as red and blue bars. In the bottom, each circle annotates a breakpoint in the segments. By default the plot has limited y-axis, and breakpoints of segments outside the plot (e.g. very high amplifications) are in different color.
-
-```{r, fig.width=9.5, fig.height=3}
-# Default plot
-plot_segments(x)
-```
-
-An alternative circular layout plot is available
-```{r, fig.width=4, fig.height=4}
-# Circular layout
-plot_segments(x, circular = TRUE)
-```
-
-You can inspect the raw VAF distribution per segment, split by chromosome. Each colour represents a distinct segment; visually, we want that for every karyotype, within a chromosome, the VAF distribution of all segments follows a "similar" trend. 
-```{r, fig.width=12, fig.height=4}
-# Default parameters to filter segments (in the plot)
-inspect_segment(x)
-```
-
-**Comparing multiple calls.** If you want to compare multiple CNA calls -- required to have the same breakpoints -- you can use `plot_multisample_CNA`. Here we show it replicating twice `x`, 
-
-```{r, fig.width=6, fig.height=6}
-# Comparative CNA plot
-plot_multisample_CNA(list(`S1` = x, `S2` = x))
-```
-
-## Plotting genome-wide mutations data
-
-Genome-wide plots that follow the flat layout of `plot_segments` are avaiable to view the genome-wide distributions of the number of mutations, their VAF and depth. VAF and depth-plotting functions (scatterplots) can subset the input data to speed up rendering and reduce the size of output files - by default 5000 points are randomly sampled. 
-Counts plot, instead, bin the genome locations by one megabase.
-
-```{r, fig.width=8, fig.height=1}
-# All genome, all data - counts of mutations per megabase
-plot_counts(x)
-```
-
-An example effect of downsampling the data is the following
-```{r, fig.width=8, fig.height=4}
-# Different subsamples
-ggpubr::ggarrange(
-  plot_depth(x, N = 1000),
-  plot_depth(x),
-  plot_depth(x, N = 10000),
-  ncol = 1
-)
-```
-
-A one-summary plot can be easily assembled combining the above functions and functions from `cowplot` or other ggplot-manipulation packages.
-
-```{r, fig.width=9.5, fig.height=5}
-# Layout a panel with segments in bottom, and all other genome-wide plots on top.
-# Via cowplot we can align plots on the vertical axis, and stretch their relative
-# height to obtain a nicer layout.
-cowplot::plot_grid(
-  plot_counts(x),
-  plot_vaf(x, N = 10000),
-  plot_depth(x, N = 10000),
-  plot_segments(x) + ylim(-1, 6),
-  align = 'v', 
-  nrow = 4, 
-  rel_heights = c(.15, .15, .15, .8))
-```
-
-## Plotting summaries
-
-A summary plot of CNA calls is available via function `plot_karyotypes`. This function implements two visualizations:
-
-* `type = 'percentage'`, reporting the proportion of genome covered by each karyotypes (default);
-* `type = 'number'`, reporting the counts of segments per karyotype.
-
-The package uses a pre-set color schema to colour diploid segments in green, LOH segments in blue and amplifications in red.
-
-```{r, fig.width=4.5, fig.height=4}
-ggpubr::ggarrange(
-  plot_karyotypes(x),
-  plot_karyotypes(x, type = 'number'),
-  common.legend = TRUE,
-  legend = 'bottom'
-)
-```
-
-You can also plot the segments' length distribution, which is used to detect fragmentation patterns in the segments.
-```{r, fig.width=4.5, fig.height=3}
-plot_segment_size_distribution(x)
-```
-
-## Plotting driver mutations
-
-You need to annotate your data with the `is_driver` column, set to `TRUE` for driver mutation events. Here we make it at random
-
-```{r, fig.width=4.5, fig.height=4}
-y = x
-
-# Whatever 4 random entries
-which_genes = sample(1:nrow(y$snvs), 4)
-
-y$snvs = y$snvs %>%
-  mutate(
-    is_driver = ifelse(
-      row_number() %in% which_genes,
-      TRUE,
-      FALSE),
-    gene = paste(chr, '_', from, sep = '')
-  )
-
-```
-
-Drivers are annotated in the print and in the segments plot.
-```{r, fig.width=9.5, fig.height=3}
-print(y)
-
-# Annotation is automatic
-plot_segments(y)
-```
-
-```{r, fig.width=4, fig.height=4}
-# Circular layout
-plot_segments(y, circular = TRUE)
-```
 
 ## Subsetting data
 
-You can subset randomly the data; if drivers are annotated (`is_driver` boolean column), the drivers are forced to say in.
+You can _subset randomly_ the data; if drivers are annotated, they can be forced to say in.
 
 ```{r, fig.width=4, fig.height=4}
-y_5000 = subsample(y, N = 5000)
+y_5000 = subsample(x, N = 5000, keep_drivers = TRUE)
 
 # 5000 + the ranomd entries that we sampled before
 print(y_5000)
 ```
+
+You can also subset data by _karyotype of the segments_, and by _total copy number_ of the segment. Both subset do not keep drivers that map off the selected segments.
+```{r, fig.width=4, fig.height=4}
+# Triploid and copy-neutral LOH segments 
+y_tripl_cnloh = subset_by_segment_karyotype(x, karyotypes = c('2:1', '2:0'))
+
+print(y_tripl_cnloh)
+
+# Two and four copies
+y_2_4 = subset_by_segment_totalcn(x, totalcn = c(2, 4))
+
+print(y_2_4)
+```
+
+
+## Reference genome coordinates
+
+`CNAqc` contains two coordinates for two reference genomes, `hg19` and `GRCh38` (default). For each reference genome the package stores the location of the chromosomes, and their centromers; you can access these data.
+
+```{r, fig.width=9.5, fig.height=3}
+CNAqc:::get_reference("hg19")
+
+CNAqc:::get_reference("GRCh38")
+```
+
+The reference genomes can be specified as a parameter once you create a `CNAqc` object. Coordinates are used to translate relative to absolute genome coordinates of somatic mutations and CNA segments; this is done only 
+when plotting the data. Note that mapping of mutations to CNA segments is independent of the reference genome, and it will work as far as both mutation and CNA segments are mapped to the same reference.
+
+You can use a hidden function to plot a reference, and make it explicit with a title.
+
+```{r, fig.width=9.5, fig.height=3}
+print(CNAqc:::blank_genome(ref = 'hg19') + labs(title = "HG19 genome reference"))
+```
+
+
+

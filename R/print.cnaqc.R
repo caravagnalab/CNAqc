@@ -133,13 +133,68 @@ plot.cnaqc = function(x, ...)
 {
   stopifnot(inherits(x, "cnaqc"))
 
-  cowplot::plot_grid(
-    plot_counts(x),
-    plot_vaf(x, N = 10000),
-    plot_depth(x, N = 10000),
-    plot_segments(x),
-    align = 'v',
-    nrow = 4,
-    rel_heights = c(.15, .15, .15, .8)
+  with_CCF = all(!is.null(x$CCF_estimates))
+
+  # Annotate genome wide muts
+  top_plots = suppressWarnings(suppressMessages(
+    list(
+      plot_gw_counts(x),
+      plot_gw_vaf(x, N = 10000),
+      plot_gw_depth(x, N = 10000),
+      plot_gw_ccf(x, N = 10000)
     )
+  ))
+
+  # Segment plots
+  segments_plot = cowplot::plot_grid(
+    plotlist = append(top_plots, list(plot_segments(x))),
+    align = 'v',
+    nrow = length(top_plots) + 1,
+    rel_heights = c(rep(.15, length(top_plots)), .3 * length(top_plots) + 0.2)
+    )
+
+  # Data histograms
+  top_plots = suppressWarnings(suppressMessages(
+    list(
+      plot_data_histogram(x, which = 'CCF'),
+      plot_data_histogram(x, which = 'VAF'),
+      plot_data_histogram(x, which = 'DP'),
+      plot_data_histogram(x, which = 'NV')
+    )
+  ))
+
+  hist_plot = ggpubr::ggarrange(
+    plotlist = top_plots,
+    nrow = 1,
+    ncol = 4,
+    common.legend = TRUE,
+    legend = 'bottom'
+  )
+
+  # Figure
+  ggpubr::ggarrange(
+    segments_plot,
+    hist_plot,
+    nrow = 1,
+    ncol = 2,
+    widths = c(1, .3)
+  )
+
+
+  ggpubr::ggarrange(
+    segments_plot,
+    hist_plot = ggpubr::ggarrange(
+      plotlist = top_plots,
+      nrow = 1,
+      ncol = 4,
+      common.legend = TRUE,
+      legend = 'bottom'
+    ),
+    nrow = 2,
+    ncol = 1,
+    heights = c(1, .7)
+  )
+
+
+
 }

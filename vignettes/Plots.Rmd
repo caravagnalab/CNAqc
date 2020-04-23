@@ -1,0 +1,188 @@
+---
+title: "2. Plotting data"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{2. Plotting data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
+options(crayon.enabled=F)
+```
+
+
+```{r setup}
+library(CNAqc)
+require(dplyr)
+```
+
+We work with the [template dataset](https://caravagn.github.io/CNAqc/articles/Introduction.html). 
+
+```{r echo=FALSE, results=TRUE, message=FALSE, include=TRUE}
+# Dataset available with the package 
+data('example_dataset_CNAqc', package = 'CNAqc')
+x = CNAqc::init(
+  example_dataset_CNAqc$snvs, 
+  example_dataset_CNAqc$cna,
+  example_dataset_CNAqc$purity,
+  ref = 'hg19')
+
+print(x)
+```
+
+
+# Plotting copy number segments
+
+All plotting functions use `ggplot` and multi-panel figures assembled with either `ggpubr` and `cowplot`.
+
+Function `plot_segments` plots all the genome, annotating in the caption summmary statistics. By default, it plots the major and minor alleles for each segment as red and blue bars. In the bottom, each circle annotates a breakpoint in the segments; grays are breakpoints of samples that are shown in the plot. Since by default this plot has limited y-axis,  breakpoints of segments outside the plot (e.g. very high amplifications) are in black.
+
+Since `x` has drivers annotated, these are also plot with a colour that reflects their karyotype. Areas in the genome that are mapped to the most prevalent karyotype (here, `"2:2"`), are shadowed by default.
+
+```{r, fig.width=9.5, fig.height=3}
+# Default plot
+plot_segments(x)
+```
+
+An alternative circular layout plot is available (default parameters).
+```{r, fig.width=4, fig.height=4}
+# Circular layout
+plot_segments(x, circular = TRUE)
+```
+
+## Custom segments plot
+
+```{r, fig.width=9.5, fig.height=3}
+# Shadow other karyotypes
+plot_segments(x, highlight = c("2:1", "2:0", "2:2")) + labs(title = "Annotate different karyotypes")
+
+# Subset the genome
+plot_segments(x, chromosomes = 'chr17') + labs(title = "Chromosome 17 zoom")
+plot_segments(x, chromosomes = c('chr17', 'chr13')) + labs(title = "Chromosome 17 and 13 zoom")
+
+# Total copy number
+plot_segments(x, cn = 'total') + labs(title = "Total copy number")
+```
+
+## Comparing multiple calls
+
+If you want to compare multiple CNA calls that have the same breakpoints using `plot_multisample_CNA`. 
+
+Here we show it replicating twice `x`, and making up some changes in `x`'s calls (rendering some segment diploid).
+
+```{r, fig.width=6, fig.height=6}
+y = CNAqc::init(
+  example_dataset_CNAqc$snvs, 
+  example_dataset_CNAqc$cna %>%
+    mutate(
+      Major = ifelse(chr %in% c("chr3", "chr4", "chr1"), 1, Major),
+      minor = ifelse(chr %in% c("chr3", "chr4", "chr1"), 1, minor)
+      ),
+  example_dataset_CNAqc$purity,
+  ref = 'hg19')
+
+# Comparative CNA plot
+plot_multisample_CNA(list(`Original` = x, `Copy` = x, `Faked_diploid` = y))
+```
+
+## Plotting segments summaries
+
+A summary plot of CNA calls is available via function `plot_karyotypes`. This function implements two visualizations:
+
+* `type = 'percentage'`, reporting the proportion of genome covered by each karyotypes (default);
+* `type = 'number'`, reporting the counts of segments per karyotype.
+
+The package uses a pre-set color schema to colour diploid segments in green, LOH segments with blues and amplifications in reds.
+
+```{r, fig.width=4.5, fig.height=4}
+ggpubr::ggarrange(
+  plot_karyotypes(x),
+  plot_karyotypes(x, type = 'number'),
+  common.legend = TRUE,
+  legend = 'bottom'
+)
+```
+
+You can also plot the segments' length distribution, which is used to detect fragmentation patterns in the segments.
+```{r, fig.width=4.5, fig.height=3}
+plot_segment_size_distribution(x)
+```
+
+# Plotting mutations
+
+You have a function to plot all your data histograms
+
+```{r, fig.width=10, fig.height=4}
+ggpubr::ggarrange(
+  plot_data_histogram(x, which = 'VAF'),
+  plot_data_histogram(x, which = 'DP'),
+  plot_data_histogram(x, which = 'NV'),
+  ncol = 3,
+  nrow = 1
+  )
+```
+
+If you [compute Cancer Cell Fractions (CCF) values](https://caravagn.github.io/CNAqc/articles/ccf_computation.html), you can use `plot_data_histogram(x, which = 'CCF')` as well.
+
+## Segment-specific VAF distribution
+
+You can inspect the raw VAF distribution per segment, split by chromosome. Each colour represents a distinct segment; we want can use this plot to check that, for every karyotype and chromosome, the VAF distributions are similar.
+```{r, fig.width=12, fig.height=4}
+# Default parameters to filter segments are annotatetd in the plot
+inspect_segment(x)
+```
+
+You can facet your data histograms and obtain a similar layout
+```{r, fig.width=30, fig.height=6}
+plot_data_histogram(x, which = 'VAF') + facet_grid(karyotype~chr, scales = 'free')
+```
+
+## Visualising genome-wide mutations data
+
+Genome-wide plots that follow the layout of `plot_segments` are avaiable to view the genome-wide distributions of the number of mutations, their VAF and depth. VAF and depth-plotting functions (scatterplots) can subset the input data to speed up rendering and reduce the size of output files - by default `N = 5000` points are randomly sampled. 
+Counts plot, instead, bin the genome locations by _one megabase_ ($10^6$ bases).
+
+```{r, fig.width=8, fig.height=1}
+# All genome, all data - counts of mutations per megabase
+plot_gw_counts(x)
+```
+
+An example effect of downsampling the data is the following
+```{r, fig.width=8, fig.height=4}
+# Different subsamples
+ggpubr::ggarrange(
+  plot_gw_depth(x, N = 1000),
+  plot_gw_depth(x),
+  plot_gw_depth(x, N = 10000),
+  ncol = 1
+)
+```
+
+
+# Plotting all data
+
+A one-summary plot can be easily assembled combining the above functions and functions from `cowplot` or other ggplot-manipulation packages.
+
+```{r, fig.width=9.5, fig.height=5}
+# Layout a panel with segments in bottom, and all other genome-wide plots on top.
+# Via cowplot we can align plots on the vertical axis, and stretch their relative
+# height to obtain a nicer layout.
+cowplot::plot_grid(
+  plot_gw_counts(x),
+  plot_gw_vaf(x, N = 10000),
+  plot_gw_depth(x, N = 10000),
+  plot_segments(x),
+  align = 'v', 
+  nrow = 4, 
+  rel_heights = c(.15, .15, .15, .8))
+```
+
+This is actually done by the default S3 `plot` function, which includes both segments and data histograms
+
+

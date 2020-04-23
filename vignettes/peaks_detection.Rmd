@@ -1,8 +1,8 @@
 ---
-title: "QC analysis via peaks detection"
+title: "3. QC analysis via peaks detection"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{QC analysis via peaks detection}
+  %\VignetteIndexEntry{3. QC analysis via peaks detection}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

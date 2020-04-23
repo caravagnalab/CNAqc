@@ -111,19 +111,22 @@ for CNA analysis." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/Introduction.html">Introduction</a>
+      <a href="../articles/Introduction.html">1. Introduction</a>
     </li>
     <li>
-      <a href="../articles/ccf_computation.html">Computation of Cancer Cell Fractions</a>
+      <a href="../articles/Plots.html">2. Plotting data</a>
+    </li>
+    <li>
+      <a href="../articles/ccf_computation.html">4. Computation of Cancer Cell Fractions</a>
     </li>
     <li>
       <a href="../articles/fragmentation.html">Genome fragmentation analysis</a>
     </li>
     <li>
-      <a href="../articles/peaks_detection.html">QC analysis via peaks detection</a>
+      <a href="../articles/peaks_detection.html">3. QC analysis via peaks detection</a>
     </li>
     <li>
-      <a href="../articles/smoothing.html">Smoothing copy number segments</a>
+      <a href="../articles/smoothing.html">5. Smoothing copy number segments</a>
     </li>
   </ul>
 </li>
@@ -216,26 +219,26 @@ See the vignette to see how to extract and plot the results.</p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='st'>'example_dataset_CNAqc'</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>'CNAqc'</span>)
 <span class='no'>x</span> <span class='kw'>=</span> <span class='fu'><a href='init.html'>init</a></span>(<span class='no'>example_dataset_CNAqc</span>$<span class='no'>snvs</span>, <span class='no'>example_dataset_CNAqc</span>$<span class='no'>cna</span>,<span class='no'>example_dataset_CNAqc</span>$<span class='no'>purity</span>)</div><div class='output co'>#&gt; <span style='color: #BBBBBB;background-color: #0000BB;'> [ CNAqc - CNA Quality Check ] 
-#&gt; </span><span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Using reference genome coordinates for: </span><span style='color: #00BB00;'>GRCh38</span><span>.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #BBBB00;'>!</span><span> Missing CCF column from CNA calls, adding CCF = 1 assuming clonal CNA calls.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Input n = 13141 mutations for 267 CNA segments (267 clonal, 0 subclonal)</span></div><div class='output co'>#&gt; </div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> Mapped n = 12963 mutations to clonal segments (99% of input)</span></div><div class='input'>
+#&gt; </span><span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Using reference genome coordinates for: </span><span style='color: #00BB00;'>GRCh38</span><span>.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Drivers are annotated, but 'gene' column is missing, using mutation location.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #BBBB00;'>!</span><span> Missing CCF column from CNA calls, adding CCF = 1 assuming clonal CNA calls.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Input n = 13141 mutations for 267 CNA segments (267 clonal, 0 subclonal)</span></div><div class='output co'>#&gt; </div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> Mapped n = 12963 mutations to clonal segments (99% of input)</span></div><div class='input'>
 <span class='no'>x</span> <span class='kw'>=</span> <span class='fu'>analyze_peaks</span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Requested karyotypes </span><span style='color: #00BB00;'>1:0</span><span>, </span><span style='color: #00BB00;'>1:1</span><span>, </span><span style='color: #00BB00;'>2:1</span><span>, </span><span style='color: #00BB00;'>2:0</span><span> and </span><span style='color: #00BB00;'>2:2</span><span>.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Found n = 9041 mutations in 2:2, 2:1 (skipping those with n &lt; 657 mutations).</span></div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 4 x 12</span><span>
 #&gt;   mutation_multip… karyotype  peak     x     y counts_per_bin discarded   offset
 #&gt;              </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>          </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span>        </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span>                2 2:1       0.616  0.61  2.86             46 FALSE      0.005</span><span style='text-decoration: underline;'>92</span><span>
-#&gt; </span><span style='color: #555555;'>2</span><span>                1 2:1       0.308  0.31  3.75             72 FALSE     -</span><span style='color: #BB0000;'>0.002</span><span style='color: #BB0000;text-decoration: underline;'>04</span><span>
-#&gt; </span><span style='color: #555555;'>3</span><span>                2 2:2       0.471  0.46  8.17            614 FALSE      0.010</span><span style='text-decoration: underline;'>9</span><span> 
+#&gt; </span><span style='color: #555555;'>1</span><span>                2 2:1       0.616  0.61  2.86             45 FALSE      0.005</span><span style='text-decoration: underline;'>92</span><span>
+#&gt; </span><span style='color: #555555;'>2</span><span>                1 2:1       0.308  0.31  3.73             72 FALSE     -</span><span style='color: #BB0000;'>0.002</span><span style='color: #BB0000;text-decoration: underline;'>04</span><span>
+#&gt; </span><span style='color: #555555;'>3</span><span>                2 2:2       0.471  0.46  8.16            612 FALSE      0.010</span><span style='text-decoration: underline;'>9</span><span> 
 #&gt; </span><span style='color: #555555;'>4</span><span>                1 2:2       0.235  0.25  0.75             70 FALSE     -</span><span style='color: #BB0000;'>0.014</span><span style='color: #BB0000;text-decoration: underline;'>6</span><span> 
 #&gt; </span><span style='color: #555555;'># … with 4 more variables: matched </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #555555;'>, weight </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, score </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, QC </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> Peak detection </span><span style='color: #00BB00;'>PASS</span><span> with </span><span style='color: #00BB00;'>r = -0.00117483319779741</span><span> and tolerance e = 0.05</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; <span class='message'>── </span><span style='color: #000000;background-color: #BBBB00;'>[ CNAqc ] </span><span> n = 13141 mutations in </span><span style='color: #00BB00;'>267</span><span> segments (267 clonal + 0 subclonal). Genome reference: </span><span style='color: #00BB00;'>GRCh38</span><span>. ──────────────────</span></div><div class='output co'>#&gt; 
-#&gt;    2:2  [n = 7478] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { </span><span style='color: #BBBB00;'>NOTCH3</span><span> }
+#&gt;    2:2  [n = 7478] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { </span><span style='color: #BBBB00;'>chr19:15292495:15292496:G:A</span><span> }
 #&gt;    4:2  [n = 1893] ■■■■■■■
 #&gt;    3:2  [n = 1625] ■■■■■■
-#&gt;    2:1  [n = 1563] ■■■■■■  { </span><span style='color: #BBBB00;'>TTN</span><span> }
+#&gt;    2:1  [n = 1563] ■■■■■■  { </span><span style='color: #BBBB00;'>chr2:179431633:179431634:C:T</span><span> }
 #&gt;    3:0  [n =  312] ■
 #&gt; </div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Sample Purity: 89% ~ Ploidy: 4.</span></div><div class='output co'>#&gt; </div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Mutations annotated have 3 drivers.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> QC via peak detection available, score: -0.00117483319779741.</span></div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 4 x 12</span><span>
 #&gt;   mutation_multip… karyotype  peak     x     y counts_per_bin discarded   offset
 #&gt;              </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>          </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span>        </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span>                2 2:1       0.616  0.61  2.86             46 FALSE      0.005</span><span style='text-decoration: underline;'>92</span><span>
-#&gt; </span><span style='color: #555555;'>2</span><span>                1 2:1       0.308  0.31  3.75             72 FALSE     -</span><span style='color: #BB0000;'>0.002</span><span style='color: #BB0000;text-decoration: underline;'>04</span><span>
-#&gt; </span><span style='color: #555555;'>3</span><span>                2 2:2       0.471  0.46  8.17            614 FALSE      0.010</span><span style='text-decoration: underline;'>9</span><span> 
+#&gt; </span><span style='color: #555555;'>1</span><span>                2 2:1       0.616  0.61  2.86             45 FALSE      0.005</span><span style='text-decoration: underline;'>92</span><span>
+#&gt; </span><span style='color: #555555;'>2</span><span>                1 2:1       0.308  0.31  3.73             72 FALSE     -</span><span style='color: #BB0000;'>0.002</span><span style='color: #BB0000;text-decoration: underline;'>04</span><span>
+#&gt; </span><span style='color: #555555;'>3</span><span>                2 2:2       0.471  0.46  8.16            612 FALSE      0.010</span><span style='text-decoration: underline;'>9</span><span> 
 #&gt; </span><span style='color: #555555;'>4</span><span>                1 2:2       0.235  0.25  0.75             70 FALSE     -</span><span style='color: #BB0000;'>0.014</span><span style='color: #BB0000;text-decoration: underline;'>6</span><span> 
 #&gt; </span><span style='color: #555555;'># … with 4 more variables: matched </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #555555;'>, weight </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, score </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, QC </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span></div><div class='input'>
 <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>x</span>$<span class='no'>peaks_analysis</span>)</div><div class='output co'>#&gt; $score
@@ -257,8 +260,8 @@ See the vignette to see how to extract and plot the results.</p>
 #&gt; </span><span style='color: #555555;'># A tibble: 2 x 10</span><span>
 #&gt;   mutation_multip… karyotype  peak     x     y counts_per_bin discarded   offset
 #&gt;              </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>          </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span>        </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span>                2 2:1       0.616  0.61  2.86             46 FALSE      0.005</span><span style='text-decoration: underline;'>92</span><span>
-#&gt; </span><span style='color: #555555;'>2</span><span>                1 2:1       0.308  0.31  3.75             72 FALSE     -</span><span style='color: #BB0000;'>0.002</span><span style='color: #BB0000;text-decoration: underline;'>04</span><span>
+#&gt; </span><span style='color: #555555;'>1</span><span>                2 2:1       0.616  0.61  2.86             45 FALSE      0.005</span><span style='text-decoration: underline;'>92</span><span>
+#&gt; </span><span style='color: #555555;'>2</span><span>                1 2:1       0.308  0.31  3.73             72 FALSE     -</span><span style='color: #BB0000;'>0.002</span><span style='color: #BB0000;text-decoration: underline;'>04</span><span>
 #&gt; </span><span style='color: #555555;'># … with 2 more variables: matched </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #555555;'>, weight </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
 #&gt; 
 #&gt; $fits$`2:1`$density
@@ -266,22 +269,22 @@ See the vignette to see how to extract and plot the results.</p>
 #&gt; Call:
 #&gt; 	density.default(x = y, adjust = kernel_adjust, kernel = "gaussian")
 #&gt; 
-#&gt; Data: y (1563 obs.);	Bandwidth 'bw' = 0.03346
+#&gt; Data: y (1563 obs.);	Bandwidth 'bw' = 0.03344
 #&gt; 
 #&gt;        x                  y          
-#&gt;  Min.   :-0.05119   Min.   :0.00017  
-#&gt;  1st Qu.: 0.17680   1st Qu.:0.13425  
-#&gt;  Median : 0.40480   Median :0.54495  
-#&gt;  Mean   : 0.40480   Mean   :1.09545  
-#&gt;  3rd Qu.: 0.63279   3rd Qu.:1.97807  
-#&gt;  Max.   : 0.86079   Max.   :3.74964  
+#&gt;  Min.   :-0.05113   Min.   :0.00017  
+#&gt;  1st Qu.: 0.17683   1st Qu.:0.13437  
+#&gt;  Median : 0.40480   Median :0.54953  
+#&gt;  Mean   : 0.40480   Mean   :1.09559  
+#&gt;  3rd Qu.: 0.63276   3rd Qu.:1.98170  
+#&gt;  Max.   : 0.86073   Max.   :3.73431  
 #&gt; 
 #&gt; $fits$`2:1`$xy_peaks
 #&gt; </span><span style='color: #555555;'># A tibble: 2 x 4</span><span>
 #&gt;       x     y counts_per_bin discarded
 #&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>          </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span>    
-#&gt; </span><span style='color: #555555;'>1</span><span>  0.31  3.75             72 FALSE    
-#&gt; </span><span style='color: #555555;'>2</span><span>  0.61  2.86             46 FALSE    
+#&gt; </span><span style='color: #555555;'>1</span><span>  0.31  3.73             72 FALSE    
+#&gt; </span><span style='color: #555555;'>2</span><span>  0.61  2.86             45 FALSE    
 #&gt; 
 #&gt; 
 #&gt; $fits$`2:0`
@@ -294,7 +297,7 @@ See the vignette to see how to extract and plot the results.</p>
 #&gt; </span><span style='color: #555555;'># A tibble: 2 x 10</span><span>
 #&gt;   mutation_multip… karyotype  peak     x     y counts_per_bin discarded  offset
 #&gt;              </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>          </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span>       </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span>                2 2:2       0.471  0.46  8.17            614 FALSE      0.010</span><span style='text-decoration: underline;'>9</span><span>
+#&gt; </span><span style='color: #555555;'>1</span><span>                2 2:2       0.471  0.46  8.16            612 FALSE      0.010</span><span style='text-decoration: underline;'>9</span><span>
 #&gt; </span><span style='color: #555555;'>2</span><span>                1 2:2       0.235  0.25  0.75             70 FALSE     -</span><span style='color: #BB0000;'>0.014</span><span style='color: #BB0000;text-decoration: underline;'>6</span><span>
 #&gt; </span><span style='color: #555555;'># … with 2 more variables: matched </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #555555;'>, weight </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
 #&gt; 
@@ -303,15 +306,15 @@ See the vignette to see how to extract and plot the results.</p>
 #&gt; Call:
 #&gt; 	density.default(x = y, adjust = kernel_adjust, kernel = "gaussian")
 #&gt; 
-#&gt; Data: y (7478 obs.);	Bandwidth 'bw' = 0.008003
+#&gt; Data: y (7478 obs.);	Bandwidth 'bw' = 0.00801
 #&gt; 
-#&gt;        x                y          
-#&gt;  Min.   :0.0211   Min.   :0.00000  
-#&gt;  1st Qu.:0.2718   1st Qu.:0.00841  
-#&gt;  Median :0.5226   Median :0.18116  
-#&gt;  Mean   :0.5226   Mean   :0.99613  
-#&gt;  3rd Qu.:0.7733   3rd Qu.:0.71912  
-#&gt;  Max.   :1.0240   Max.   :8.17332  
+#&gt;        x                 y           
+#&gt;  Min.   :0.02108   Min.   :0.000000  
+#&gt;  1st Qu.:0.27182   1st Qu.:0.008399  
+#&gt;  Median :0.52256   Median :0.181167  
+#&gt;  Mean   :0.52256   Mean   :0.996088  
+#&gt;  3rd Qu.:0.77329   3rd Qu.:0.717005  
+#&gt;  Max.   :1.02403   Max.   :8.156854  
 #&gt; 
 #&gt; $fits$`2:2`$xy_peaks
 #&gt; </span><span style='color: #555555;'># A tibble: 9 x 4</span><span>
@@ -320,7 +323,7 @@ See the vignette to see how to extract and plot the results.</p>
 #&gt; </span><span style='color: #555555;'>1</span><span>  0.11  0.24             16 TRUE     
 #&gt; </span><span style='color: #555555;'>2</span><span>  0.21  0.85             57 FALSE    
 #&gt; </span><span style='color: #555555;'>3</span><span>  0.25  0.75             70 FALSE    
-#&gt; </span><span style='color: #555555;'>4</span><span>  0.46  8.17            614 FALSE    
+#&gt; </span><span style='color: #555555;'>4</span><span>  0.46  8.16            612 FALSE    
 #&gt; </span><span style='color: #555555;'>5</span><span>  0.67  0.01              0 TRUE     
 #&gt; </span><span style='color: #555555;'>6</span><span>  0.73  0.02              0 TRUE     
 #&gt; </span><span style='color: #555555;'>7</span><span>  0.85  0.01              1 TRUE     
@@ -333,9 +336,9 @@ See the vignette to see how to extract and plot the results.</p>
 #&gt; </span><span style='color: #555555;'># A tibble: 4 x 12</span><span>
 #&gt;   mutation_multip… karyotype  peak     x     y counts_per_bin discarded   offset
 #&gt;              </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>          </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span>        </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span>                2 2:1       0.616  0.61  2.86             46 FALSE      0.005</span><span style='text-decoration: underline;'>92</span><span>
-#&gt; </span><span style='color: #555555;'>2</span><span>                1 2:1       0.308  0.31  3.75             72 FALSE     -</span><span style='color: #BB0000;'>0.002</span><span style='color: #BB0000;text-decoration: underline;'>04</span><span>
-#&gt; </span><span style='color: #555555;'>3</span><span>                2 2:2       0.471  0.46  8.17            614 FALSE      0.010</span><span style='text-decoration: underline;'>9</span><span> 
+#&gt; </span><span style='color: #555555;'>1</span><span>                2 2:1       0.616  0.61  2.86             45 FALSE      0.005</span><span style='text-decoration: underline;'>92</span><span>
+#&gt; </span><span style='color: #555555;'>2</span><span>                1 2:1       0.308  0.31  3.73             72 FALSE     -</span><span style='color: #BB0000;'>0.002</span><span style='color: #BB0000;text-decoration: underline;'>04</span><span>
+#&gt; </span><span style='color: #555555;'>3</span><span>                2 2:2       0.471  0.46  8.16            612 FALSE      0.010</span><span style='text-decoration: underline;'>9</span><span> 
 #&gt; </span><span style='color: #555555;'>4</span><span>                1 2:2       0.235  0.25  0.75             70 FALSE     -</span><span style='color: #BB0000;'>0.014</span><span style='color: #BB0000;text-decoration: underline;'>6</span><span> 
 #&gt; </span><span style='color: #555555;'># … with 4 more variables: matched </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #555555;'>, weight </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, score </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, QC </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>
 #&gt; 

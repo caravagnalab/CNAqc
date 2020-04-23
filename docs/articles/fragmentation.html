@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Genome fragmentation analysis • CNAqc</title>
+<title>6. Genome fragmentation analysis • CNAqc</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -16,7 +16,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Genome fragmentation analysis">
+<script src="../pkgdown.js"></script><meta property="og:title" content="6. Genome fragmentation analysis">
 <meta property="og:description" content="">
 <meta property="og:image" content="caravagn.github.io/CNAqc/logo.png">
 <meta name="twitter:card" content="summary">
@@ -64,19 +64,22 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/Introduction.html">Introduction</a>
+      <a href="../articles/Introduction.html">1. Introduction</a>
     </li>
     <li>
-      <a href="../articles/ccf_computation.html">Computation of Cancer Cell Fractions</a>
+      <a href="../articles/Plots.html">2. Plotting data</a>
     </li>
     <li>
-      <a href="../articles/fragmentation.html">Genome fragmentation analysis</a>
+      <a href="../articles/ccf_computation.html">4. Computation of Cancer Cell Fractions</a>
     </li>
     <li>
-      <a href="../articles/peaks_detection.html">QC analysis via peaks detection</a>
+      <a href="../articles/fragmentation.html">6. Genome fragmentation analysis</a>
     </li>
     <li>
-      <a href="../articles/smoothing.html">Smoothing copy number segments</a>
+      <a href="../articles/peaks_detection.html">3. QC analysis via peaks detection</a>
+    </li>
+    <li>
+      <a href="../articles/smoothing.html">5. Smoothing copy number segments</a>
     </li>
   </ul>
 </li>
@@ -101,7 +104,7 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1>Genome fragmentation analysis</h1>
+      <h1>6. Genome fragmentation analysis</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/caravagn/CNAqc/blob/master/vignettes/fragmentation.Rmd"><code>vignettes/fragmentation.Rmd</code></a></small>
@@ -146,10 +149,10 @@
 <a class="sourceLine" id="cb3-14" data-line-number="14"><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(x)</a>
 <a class="sourceLine" id="cb3-15" data-line-number="15"><span class="co">#&gt; ── [ CNAqc ]  n = 13141 mutations in 267 segments (267 clonal + 0 subclonal). Genome reference: GRCh38. ──────────────────</span></a>
 <a class="sourceLine" id="cb3-16" data-line-number="16"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb3-17" data-line-number="17"><span class="co">#&gt;    2:2  [n = 7478] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { NOTCH3 }</span></a>
+<a class="sourceLine" id="cb3-17" data-line-number="17"><span class="co">#&gt;    2:2  [n = 7478] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { chr19:15292495:15292496:G:A }</span></a>
 <a class="sourceLine" id="cb3-18" data-line-number="18"><span class="co">#&gt;    4:2  [n = 1893] ■■■■■■■</span></a>
 <a class="sourceLine" id="cb3-19" data-line-number="19"><span class="co">#&gt;    3:2  [n = 1625] ■■■■■■</span></a>
-<a class="sourceLine" id="cb3-20" data-line-number="20"><span class="co">#&gt;    2:1  [n = 1563] ■■■■■■  { TTN }</span></a>
+<a class="sourceLine" id="cb3-20" data-line-number="20"><span class="co">#&gt;    2:1  [n = 1563] ■■■■■■  { chr2:179431633:179431634:C:T }</span></a>
 <a class="sourceLine" id="cb3-21" data-line-number="21"><span class="co">#&gt;    3:0  [n =  312] ■</span></a>
 <a class="sourceLine" id="cb3-22" data-line-number="22"><span class="co">#&gt; ℹ Sample Purity: 89% ~ Ploidy: 4.</span></a>
 <a class="sourceLine" id="cb3-23" data-line-number="23"><span class="co">#&gt; ℹ Mutations annotated have 3 drivers.</span></a>
@@ -166,7 +169,9 @@
 <p><img src="fragmentation_files/figure-html/unnamed-chunk-5-1.png" width="672"></p>
 <p>Once available, these results appear in any call to <code>plot_segments</code> as annotated purple squares sorrounding the arms.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="co"># Default plot has now segments</span></a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="kw"><a href="../reference/plot_segments.html">plot_segments</a></span>(x)</a></code></pre></div>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="kw"><a href="../reference/plot_segments.html">plot_segments</a></span>(x)</a>
+<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co">#&gt; Scale for 'fill' is already present. Adding another scale for 'fill', which</span></a>
+<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co">#&gt; will replace the existing scale.</span></a></code></pre></div>
 <p><img src="fragmentation_files/figure-html/unnamed-chunk-6-1.png" width="912"></p>
 <p><a href="https://caravagn.github.io/CNAqc/articles/smoothing.html">Smoothing</a> is a good way to start cleaning up the fragmented sets of arms, as it merges segments that have no karyotype change, and are closer than a certain distance.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="co"># Smooth with default parameters</span></a>
@@ -233,10 +238,10 @@
 <a class="sourceLine" id="cb6-62" data-line-number="62"><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(x)</a>
 <a class="sourceLine" id="cb6-63" data-line-number="63"><span class="co">#&gt; ── [ CNAqc ]  n = 13141 mutations in 87 segments (87 clonal + 0 subclonal). Genome reference: GRCh38. ────────────────────</span></a>
 <a class="sourceLine" id="cb6-64" data-line-number="64"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb6-65" data-line-number="65"><span class="co">#&gt;    2:2  [n = 7503] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { NOTCH3 }</span></a>
+<a class="sourceLine" id="cb6-65" data-line-number="65"><span class="co">#&gt;    2:2  [n = 7503] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { chr19:15292495:15292496:G:A }</span></a>
 <a class="sourceLine" id="cb6-66" data-line-number="66"><span class="co">#&gt;    4:2  [n = 1899] ■■■■■■■</span></a>
 <a class="sourceLine" id="cb6-67" data-line-number="67"><span class="co">#&gt;    3:2  [n = 1643] ■■■■■■</span></a>
-<a class="sourceLine" id="cb6-68" data-line-number="68"><span class="co">#&gt;    2:1  [n = 1571] ■■■■■■  { TTN }</span></a>
+<a class="sourceLine" id="cb6-68" data-line-number="68"><span class="co">#&gt;    2:1  [n = 1571] ■■■■■■  { chr2:179431633:179431634:C:T }</span></a>
 <a class="sourceLine" id="cb6-69" data-line-number="69"><span class="co">#&gt;    3:0  [n =  317] ■</span></a>
 <a class="sourceLine" id="cb6-70" data-line-number="70"><span class="co">#&gt; ℹ Sample Purity: 89% ~ Ploidy: 4.</span></a>
 <a class="sourceLine" id="cb6-71" data-line-number="71"><span class="co">#&gt; ℹ Mutations annotated have 3 drivers.</span></a>

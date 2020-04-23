@@ -1,4 +1,4 @@
-#' Determines segments' fragmentation status.
+#' Determines fragmentation of copy number segments
 #'
 #' @description
 #'
