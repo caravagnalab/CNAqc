@@ -100,21 +100,21 @@
     <loc>caravagn.github.io/CNAqc/articles/CNAqc.html</loc>
   </url>
   <url>
-    <loc>caravagn.github.io/CNAqc/articles/Introduction.html</loc>
+    <loc>caravagn.github.io/CNAqc/articles/a1_Introduction.html</loc>
   </url>
   <url>
-    <loc>caravagn.github.io/CNAqc/articles/Plots.html</loc>
+    <loc>caravagn.github.io/CNAqc/articles/a2_Plots.html</loc>
   </url>
   <url>
-    <loc>caravagn.github.io/CNAqc/articles/ccf_computation.html</loc>
+    <loc>caravagn.github.io/CNAqc/articles/a3_peaks_detection.html</loc>
   </url>
   <url>
-    <loc>caravagn.github.io/CNAqc/articles/fragmentation.html</loc>
+    <loc>caravagn.github.io/CNAqc/articles/a4_ccf_computation.html</loc>
   </url>
   <url>
-    <loc>caravagn.github.io/CNAqc/articles/peaks_detection.html</loc>
+    <loc>caravagn.github.io/CNAqc/articles/a5_smoothing.html</loc>
   </url>
   <url>
-    <loc>caravagn.github.io/CNAqc/articles/smoothing.html</loc>
+    <loc>caravagn.github.io/CNAqc/articles/a6_fragmentation.html</loc>
   </url>
 </urlset>

@@ -104,16 +104,20 @@ We set $m=1$ for $x \leq \hat{p}$, and $m=2$ otherwise. Since there are no `NA` 
 
 # Example entropy computation
 
-We work with the [template dataset](https://caravagn.github.io/CNAqc/articles/Introduction.html). 
+We work with the template dataset. 
 
-```{r echo=FALSE, results=FALSE, message=FALSE, include=FALSE}
-# Dataset available with the package -- see Getting Started.
+```{r echo=FALSE, results=TRUE, message=FALSE}
+# Dataset available with the package 
 data('example_dataset_CNAqc', package = 'CNAqc')
 x = CNAqc::init(
   example_dataset_CNAqc$snvs, 
   example_dataset_CNAqc$cna,
-  example_dataset_CNAqc$purity)
+  example_dataset_CNAqc$purity,
+  ref = 'hg19')
+
+print(x)
 ```
+
 
 We run function `compute_CCF` to obtain the full analysis of CCF values. Without parameters (or with `method = 'ENTROPY'`), we use the entropy method and all supported karyotypes (default). 
 ```{r,fig.width=9, fig.height=5, warning=F, message=T}

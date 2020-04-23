@@ -22,9 +22,9 @@ library(CNAqc)
 require(dplyr)
 ```
 
-We work with the [template dataset](https://caravagn.github.io/CNAqc/articles/Introduction.html). 
+We work with the template dataset. 
 
-```{r echo=FALSE, results=TRUE, message=FALSE, include=TRUE}
+```{r echo=FALSE, results=TRUE, message=FALSE}
 # Dataset available with the package 
 data('example_dataset_CNAqc', package = 'CNAqc')
 x = CNAqc::init(

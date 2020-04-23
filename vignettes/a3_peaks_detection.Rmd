@@ -26,18 +26,21 @@ options(crayon.enabled=F)
 library(CNAqc)
 ```
 
-We work with the [template dataset](https://caravagn.github.io/CNAqc/articles/Introduction.html). 
+We work with the template dataset. 
 
-```{r echo=FALSE, results=FALSE, message=FALSE, include=FALSE}
-# Dataset available with the package -- see Getting Started.
+```{r echo=FALSE, results=TRUE, message=FALSE}
+# Dataset available with the package 
 data('example_dataset_CNAqc', package = 'CNAqc')
 x = CNAqc::init(
   example_dataset_CNAqc$snvs, 
   example_dataset_CNAqc$cna,
-  example_dataset_CNAqc$purity)
+  example_dataset_CNAqc$purity,
+  ref = 'hg19')
+
+print(x)
 ```
 
-Peak detection routines can are implemented in function `analyze_peaks`. 
+Peak detection routines are implemented in function `analyze_peaks`. 
 
 The idea is as follows: a segment with $m$ and $M$ copies of the minor and major alleles is consistent to mutation data if the  VAF distribution peaks at certain values, which we can compute. Profiling then of the VAF distribution with a peak-detection heuristic allows `CNAqc` to measure the if peaks match. Large deviance suggests usually wrong purity estimation.
 

@@ -111,22 +111,22 @@ for CNA analysis." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/Introduction.html">1. Introduction</a>
+      <a href="../articles/a1_Introduction.html">1. Introduction</a>
     </li>
     <li>
-      <a href="../articles/Plots.html">2. Plotting data</a>
+      <a href="../articles/a2_Plots.html">2. Plotting data</a>
     </li>
     <li>
-      <a href="../articles/ccf_computation.html">4. Computation of Cancer Cell Fractions</a>
+      <a href="../articles/a3_peaks_detection.html">3. QC analysis via peaks detection</a>
     </li>
     <li>
-      <a href="../articles/fragmentation.html">Genome fragmentation analysis</a>
+      <a href="../articles/a4_ccf_computation.html">4. Computation of Cancer Cell Fractions</a>
     </li>
     <li>
-      <a href="../articles/peaks_detection.html">3. QC analysis via peaks detection</a>
+      <a href="../articles/a5_smoothing.html">5. Smoothing copy number segments</a>
     </li>
     <li>
-      <a href="../articles/smoothing.html">5. Smoothing copy number segments</a>
+      <a href="../articles/a6_fragmentation.html">6. Genome fragmentation analysis</a>
     </li>
   </ul>
 </li>
@@ -227,7 +227,7 @@ See the vignette to see how to extract and plot the results.</p>
 #&gt; </span><span style='color: #555555;'>2</span><span>                1 2:1       0.308  0.31  3.73             72 FALSE     -</span><span style='color: #BB0000;'>0.002</span><span style='color: #BB0000;text-decoration: underline;'>04</span><span>
 #&gt; </span><span style='color: #555555;'>3</span><span>                2 2:2       0.471  0.46  8.16            612 FALSE      0.010</span><span style='text-decoration: underline;'>9</span><span> 
 #&gt; </span><span style='color: #555555;'>4</span><span>                1 2:2       0.235  0.25  0.75             70 FALSE     -</span><span style='color: #BB0000;'>0.014</span><span style='color: #BB0000;text-decoration: underline;'>6</span><span> 
-#&gt; </span><span style='color: #555555;'># … with 4 more variables: matched </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #555555;'>, weight </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, score </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, QC </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> Peak detection </span><span style='color: #00BB00;'>PASS</span><span> with </span><span style='color: #00BB00;'>r = -0.00117483319779741</span><span> and tolerance e = 0.05</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; <span class='message'>── </span><span style='color: #000000;background-color: #BBBB00;'>[ CNAqc ] </span><span> n = 13141 mutations in </span><span style='color: #00BB00;'>267</span><span> segments (267 clonal + 0 subclonal). Genome reference: </span><span style='color: #00BB00;'>GRCh38</span><span>. ──────────────────</span></div><div class='output co'>#&gt; 
+#&gt; </span><span style='color: #555555;'># … with 4 more variables: matched </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #555555;'>, weight </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, score </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, QC </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> Peak detection </span><span style='color: #00BB00;'>PASS</span><span> with </span><span style='color: #00BB00;'>r = -0.00117483319779741</span><span> and tolerance e = 0.05</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; <span class='message'>── </span><span style='color: #000000;background-color: #BBBB00;'>[ CNAqc ] </span><span> n = 13141 mutations in </span><span style='color: #00BB00;'>267</span><span> segments (267 clonal + 0 subclonal). Genome reference: </span><span style='color: #00BB00;'>GRCh38</span><span>. ──────────────────────────</span></div><div class='output co'>#&gt; 
 #&gt;    2:2  [n = 7478] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { </span><span style='color: #BBBB00;'>chr19:15292495:15292496:G:A</span><span> }
 #&gt;    4:2  [n = 1893] ■■■■■■■
 #&gt;    3:2  [n = 1625] ■■■■■■

@@ -4,7 +4,11 @@ Title: CNAqc - Copy Number Analysis quality check
 Version: 0.1.0
 Author: Giulio Caravagna
 Maintainer: Giulio Caravagna <gcaravagn@gmail.com>
-Authors@R: person("Giulio", "Caravagna", role = c("aut", "cre"), email = "gcaravagn@gmail.com")
+Authors@R: c(
+    person("Giulio", "Caravagna", , "gcaravagn@gmail.com", role = c("aut", "cre"),
+      comment = c(ORCID = "0000-0003-4240-3265")
+    )
+  )
 Description: CNAqc is a package to provide a set of metrics to assess the quality of 
   Copy Number Alteration (CNA) calls. The package provides statistical measures to quantify the concordance 
   between mutation and Copy Number calls, exploiting allelic imbalance in absolute CNA segments and allelic 

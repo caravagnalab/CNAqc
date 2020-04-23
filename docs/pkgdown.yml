@@ -3,12 +3,12 @@ pkgdown: 1.4.1
 pkgdown_sha: ~
 articles:
   CNAqc: CNAqc.html
-  Introduction: Introduction.html
-  Plots: Plots.html
-  ccf_computation: ccf_computation.html
-  fragmentation: fragmentation.html
-  peaks_detection: peaks_detection.html
-  smoothing: smoothing.html
+  a1_Introduction: a1_Introduction.html
+  a2_Plots: a2_Plots.html
+  a3_peaks_detection: a3_peaks_detection.html
+  a4_ccf_computation: a4_ccf_computation.html
+  a5_smoothing: a5_smoothing.html
+  a6_fragmentation: a6_fragmentation.html
 urls:
   reference: caravagn.github.io/CNAqc/reference
   article: caravagn.github.io/CNAqc/articles

@@ -20,13 +20,20 @@ options(crayon.enabled=FALSE)
 library(CNAqc)
 ```
 
-We work with the [template dataset](https://caravagn.github.io/CNAqc/articles/Introduction.html). 
+We work with the template dataset. 
 
-```{r echo=TRUE, include=FALSE}
-# Dataset available with the package -- see Get Started.
+```{r echo=FALSE, results=TRUE, message=FALSE}
+# Dataset available with the package 
 data('example_dataset_CNAqc', package = 'CNAqc')
-x = CNAqc::init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+x = CNAqc::init(
+  example_dataset_CNAqc$snvs, 
+  example_dataset_CNAqc$cna,
+  example_dataset_CNAqc$purity,
+  ref = 'hg19')
+
+print(x)
 ```
+
 
 Smoothing works with a simple algorithm that merges, inside each chromosome, all contiguous segments that have the same absolute copy number values (minnor and major allele counts), and are separated by up to $\delta$ base pairs. 
 
