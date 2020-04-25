@@ -13,9 +13,6 @@ prepare_input_data = function(snvs, cna, tumour_purity)
       # segment_id = paste0('__sgm_', row_number())
       )
 
-  nsnvs = nrow(snvs)
-  ncna = nrow(cna)
-
   ncnacl = sum(cna$CCF == 1)
   ncnasbcl = sum(cna$CCF < 1)
 
@@ -23,9 +20,9 @@ prepare_input_data = function(snvs, cna, tumour_purity)
   cli::cli_alert_info(
     paste0("Input ",
     'n = ',
-    nsnvs,
+    nrow(snvs),
     " mutations for ",
-    ncna,
+    nrow(cna),
       " CNA segments (",
       ncnacl,
       " clonal, ",
@@ -37,9 +34,22 @@ prepare_input_data = function(snvs, cna, tumour_purity)
   # Subclonal CNA calls -- raise informative warning
   if(ncnasbcl > 0)
     cli::boxx("Subclonal (CCF < 1) CNA calls are in the data, but will not be used for most of the analyses", col = 'red')
-  
-  
+
   snvs = map_mutations_to_segments(snvs, cna %>% filter(CCF == 1))
+
+  # Notify NA (not mapped)
+  not_mappable = sum(is.na(snvs$karyotype))
+
+  if(not_mappable > 0)
+  {
+    cli::cli_alert_danger('n = {.value {not_mappable}} mutations  cannot be mapped to segments and will be removed.')
+    snvs = snvs %>% dplyr::filter(!is.na(karyotype))
+  }
+
+  nsnvs = nrow(snvs)
+  ncna = nrow(cna)
+
+
 
   # Tabular of mapping per segments (count)
   tab = snvs %>%

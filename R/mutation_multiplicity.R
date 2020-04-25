@@ -558,20 +558,7 @@ mutmult_two_copies_rough = function(x, karyotype)
 
 plot_mutation_multiplicity_entropy = function(x, karyotype)
 {
-  # Function to a border to a plot
-  qc_plot = function(x, QC)
-  {
-    qc = ifelse(QC == "FAIL", "indianred3", 'forestgreen')
-
-    x +
-      theme(title = element_text(color = qc),
-            panel.border = element_rect(
-              colour = qc,
-              fill = NA
-            ))
-  }
-
-  # Process
+   # Process
   computation = x$CCF_estimates[[karyotype]]
   snvs_k = computation$mutations
 
@@ -703,19 +690,6 @@ plot_mutation_multiplicity_entropy = function(x, karyotype)
 
 plot_mutation_multiplicity_rough = function(x, karyotype)
 {
-  # Function to a border to a plot
-  qc_plot = function(x, QC)
-  {
-    qc = ifelse(QC == "FAIL", "indianred3", 'forestgreen')
-
-    x +
-      theme(title = element_text(color = qc),
-            panel.border = element_rect(
-              colour = qc,
-              fill = NA
-            ))
-  }
-
   # Process
   computation = x$CCF_estimates[[karyotype]]
   snvs_k = computation$mutations
@@ -816,3 +790,119 @@ plot_mutation_multiplicity_rough = function(x, karyotype)
 
   return(figure)
 }
+
+plot_mutation_multiplicity_rough_strip = function(x, karyotype)
+{
+  # Process
+  computation = x$CCF_estimates[[karyotype]]
+  snvs_k = computation$mutations
+
+  QC = computation$QC_table$QC
+
+  # Mono-peak
+  colors = wesanderson::wes_palette("Zissou1", n = 3, type = 'discrete')[c(1,3)]
+
+  # Mutation plots
+  med_coverage = median(snvs_k$DP, na.rm = TRUE)
+  cuts = computation$params$cuts
+
+  mutation_plot = ggplot(snvs_k, aes(VAF, y = ..count.. / sum(..count..))) +
+    geom_histogram(binwidth = 0.01, aes(fill = paste(mutation_multiplicity))) +
+    xlim(0, 1) +
+    CNAqc:::my_ggplot_theme() +
+    scale_color_manual(values = colors) +
+    scale_fill_manual(values = colors) +
+    guides(color = FALSE, fill = guide_legend('Copies')) +
+    labs(
+      y = paste0('Density (', med_coverage, 'x)'),
+      title = paste0("Mutation multiplicity ", karyotype)
+    )
+  if (!(karyotype %in% c('1:1', '1:0')))
+  {
+    lp = computation$params$cuts[1]
+    rp = computation$params$cuts[2]
+
+    expectation = computation$params$expectation
+
+    mutation_plot = mutation_plot +
+      geom_vline(
+        data = expectation,
+        size = .7,
+        linetype = 'dashed',
+        color = 'steelblue',
+        aes(xintercept = peak, color = label)
+      ) +
+      geom_vline(xintercept = cuts, size = .3, linetype = 'dashed')
+
+  }
+
+  return(CNAqc:::qc_plot(mutation_plot, QC))
+}
+
+plot_mutation_multiplicity_entropy_strip = function(x, karyotype)
+{
+  # Process
+  computation = x$CCF_estimates[[karyotype]]
+  snvs_k = computation$mutations
+
+  QC = computation$QC_table$QC
+
+  # Mono-peak
+  colors = wesanderson::wes_palette("Royal1", n = 3, type = 'discrete')
+
+  # Mutation plots
+  med_coverage = median(snvs_k$DP, na.rm = TRUE)
+
+  mutation_plot = ggplot(snvs_k, aes(VAF, y = ..count.. / sum(..count..))) +
+    geom_histogram(binwidth = 0.01, aes(fill = paste(mutation_multiplicity))) +
+    xlim(0, 1) +
+    CNAqc:::my_ggplot_theme() +
+    scale_color_manual(values = colors) +
+    scale_fill_manual(values = colors) +
+    guides(color = FALSE, fill = guide_legend('Copies')) +
+    labs(
+      y = paste0('Density (', med_coverage, 'x)'),
+      title = paste0("Mutation multiplicity ", karyotype)
+    )
+
+  if (!(karyotype %in% c('1:1', '1:0')))
+  {
+    lp = computation$params$cuts[1]
+    rp = computation$params$cuts[2]
+
+    expectation = computation$params$expectation
+
+    mutation_plot = mutation_plot +
+      geom_vline(
+        data = expectation,
+        size = .7,
+        linetype = 'dashed',
+        color = 'steelblue',
+        aes(xintercept = peak, color = label)
+      ) +
+      geom_vline(
+        xintercept = c(lp, rp),
+        color = 'red',
+        linetype = 'dashed',
+        size = .3
+      )
+  }
+
+  return(CNAqc:::qc_plot(mutation_plot, QC))
+}
+
+
+# Function to a border to a plot
+qc_plot = function(x, QC)
+{
+  qc = ifelse(QC == "FAIL", "indianred3", 'forestgreen')
+
+  x +
+    theme(title = element_text(color = qc),
+          panel.border = element_rect(
+            colour = qc,
+            fill = NA
+          ))
+}
+
+

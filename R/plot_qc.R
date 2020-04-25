@@ -192,7 +192,7 @@ compute_QC_table = function(x)
       QC = NA,
       type = 'Peaks',
       stringsAsFactors = FALSE
-    )
+    ) %>% as_tibble()
   }
   else
   {
@@ -202,10 +202,10 @@ compute_QC_table = function(x)
       dplyr::distinct(karyotype, QC, .keep_all = T) %>%
       dplyr::arrange(karyotype) %>%
       dplyr::mutate(
-        value = 1,
-        lab.ypos = cumsum(value) - 0.5 * value,
+        # value = 1,
+        # lab.ypos = cumsum(value) - 0.5 * value,
         QC = paste(QC),
-        label = karyotype,
+        # label = karyotype,
         type = 'Peaks')
   }
 
@@ -217,7 +217,7 @@ compute_QC_table = function(x)
       QC = NA,
       type = 'CCF',
       stringsAsFactors = FALSE
-    )
+    ) %>% as_tibble()
   }
   else
   {
@@ -226,22 +226,25 @@ compute_QC_table = function(x)
       dplyr::full_join(data.frame(karyotype = all_karyptypes, stringsAsFactors = F), by = 'karyotype') %>%
       dplyr::arrange(karyotype) %>%
       dplyr::mutate(
-        value = 1,
-        lab.ypos = cumsum(value) - 0.5 * value,
+        # value = 1,
+        # lab.ypos = cumsum(value) - 0.5 * value,
         QC = paste(QC),
-        label = karyotype,
+        # label = karyotype,
         type = 'CCF')
   }
 
   # Bind both tables
-  QC_table = dplyr::bind_rows(peaks_QC, CCF_QC)
-  QC_table$karyotype = factor(QC_table$karyotype, all_karyptypes)
-  QC_table$type = factor(QC_table$type, levels = c('Peaks', 'CCF'))
-
-  QC_table = QC_table %>%
+  QC_table = dplyr::bind_rows(peaks_QC, CCF_QC) %>%
     dplyr::mutate(
       QC = ifelse(!is.na(QC) & QC == "NA", NA, QC)
     )
+
+  # QC_table$karyotype = factor(QC_table$karyotype, all_karyptypes)
+  # QC_table$type = factor(QC_table$type, levels = c('Peaks', 'CCF'))
+  # QC_table = QC_table %>%
+  #   dplyr::mutate(
+  #     QC = ifelse(!is.na(QC) & QC == "NA", NA, QC)
+  #   )
 
   # Percentage of PASS cases, out of not-NA ones
   pPASS =
