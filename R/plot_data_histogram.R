@@ -76,7 +76,7 @@ plot_CCF_data = function(x,
     dplyr::filter(!is.na(CCF))
 
   # Whatever is fit
-  meth = x$CCF_estimates[[1]]$params$method
+  meth = x$CCF_estimates[[1]]$$QC_table$method
 
   ggplot(data = ccf_data,
          aes(CCF, fill = karyotype)) +

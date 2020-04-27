@@ -22,7 +22,8 @@ plot_gw_counts = function(x, chromosomes = paste0('chr', c(1:22, 'X', 'Y')))
     x,
     x$snvs %>% dplyr::filter(chr %in% chromosomes))
 
-  bl_plot = CNAqc:::blank_genome(ref = x$reference_genome, chromosomes = chromosomes)
+  bl_plot = CNAqc:::blank_genome(ref = x$reference_genome, chromosomes = chromosomes) +
+    ylim(NA, NA)
 
   # # X-range
   # reference_genome = CNAqc:::get_reference(x$reference_genome)
@@ -75,7 +76,8 @@ plot_gw_depth = function(x, N = 5000, chromosomes = paste0('chr', c(1:22, 'X', '
     x,
     x$snvs %>% dplyr::filter(chr %in% chromosomes))
 
-  bl_plot = CNAqc:::blank_genome(ref = x$reference_genome, chromosomes = chromosomes)
+  bl_plot = CNAqc:::blank_genome(ref = x$reference_genome, chromosomes = chromosomes) +
+    ylim(NA, NA)
 
   # X-range
   # reference_genome = CNAqc:::get_reference(x$reference_genome)
@@ -150,7 +152,8 @@ plot_gw_vaf = function(x, N = 5000, chromosomes = paste0('chr', c(1:22, 'X', 'Y'
     x,
     x$snvs %>% dplyr::filter(chr %in% chromosomes))
 
-  bl_plot = CNAqc:::blank_genome(ref = x$reference_genome, chromosomes = chromosomes)
+  bl_plot = CNAqc:::blank_genome(ref = x$reference_genome, chromosomes = chromosomes) +
+    ylim(NA, NA)
 
   # # X-range
   # reference_genome = CNAqc:::get_reference(x$reference_genome)
@@ -236,7 +239,8 @@ plot_gw_ccf = function(x, N = 5000, chromosomes = paste0('chr', c(1:22, 'X', 'Y'
     CNAqc::CCF(x) %>% dplyr::filter(chr %in% chromosomes)
     )
 
-  bl_plot = CNAqc:::blank_genome(ref = x$reference_genome, chromosomes = chromosomes)
+  bl_plot = CNAqc:::blank_genome(ref = x$reference_genome, chromosomes = chromosomes) +
+    ylim(NA, NA)
 
   # # X-range
   # reference_genome = CNAqc:::get_reference(x$reference_genome)
