@@ -38,6 +38,8 @@ plot_data_histogram = function(x,
     stop("'which' must be one of 'VAF', 'DP', 'NV' or 'CCF'.")
 
   # By case
+  plot_f = CNAqc:::eplot()
+
   if (which == 'VAF') plot_f = CNAqc:::plot_VAF_data(x, karyotypes = karyotypes)
   if (which == 'DP') plot_f = CNAqc:::plot_DP_data(x, karyotypes = karyotypes)
   if (which == 'NV') plot_f = CNAqc:::plot_NV_data(x, karyotypes = karyotypes)
