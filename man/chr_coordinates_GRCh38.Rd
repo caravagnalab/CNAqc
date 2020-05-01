@@ -4,9 +4,11 @@
 \name{chr_coordinates_GRCh38}
 \alias{chr_coordinates_GRCh38}
 \title{Coordinates for GRCh38 chromosomes.}
-\format{A tibble that represents the coordinates for GRCh38 genome assembly, reporting the chromosome label,
+\format{
+A tibble that represents the coordinates for GRCh38 genome assembly, reporting the chromosome label,
 from and to (chromosome range), the length of the chromosome, the position (start and end) of the 
-centromers.}
+centromers.
+}
 \usage{
 data(chr_coordinates_GRCh38)
 }

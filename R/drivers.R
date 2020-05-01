@@ -64,7 +64,8 @@ annotate_drivers_to_histogram = function(x, drivers_list, p, which)
 
   drivers_list$y = L$y.range[2] * .9
 
-  p = p +
+  p =
+    p +
     geom_vline(
       data = drivers_list,
       show.legend = FALSE,
@@ -73,7 +74,22 @@ annotate_drivers_to_histogram = function(x, drivers_list, p, which)
       size = .3
     ) +
     scale_color_manual(values = CNAqc:::get_karyotypes_colors(unique(drivers_list$karyotype))) +
-    ggrepel::geom_label_repel(
+    # ggrepel::geom_label_repel(
+    #   data = drivers_list,
+    #   aes(
+    #     x = eval(parse(text = which)),
+    #     y = y,
+    #     label = driver_label,
+    #     # color = karyotype
+    #   ),
+    #   color = 'red',
+    #   ylim = c(L$y.range[2] * .9, NA),
+    #   size = 2,
+    #   nudge_y = 0,
+    #   nudge_x = 0,
+    #   show.legend = FALSE
+    # )
+    geom_text(
       data = drivers_list,
       aes(
         x = eval(parse(text = which)),
@@ -86,7 +102,10 @@ annotate_drivers_to_histogram = function(x, drivers_list, p, which)
       nudge_y = 0,
       nudge_x = 0,
       show.legend = FALSE
-    )
+    ) +
+      scale_fill_manual(values = CNAqc:::get_karyotypes_colors(unique(drivers_list$karyotype))) +
+      coord_cartesian(clip = 'off')
+
 
   return(p)
 }
@@ -131,7 +150,9 @@ add_drivers_to_segment_plot = function(x, drivers_list, base_plot)
       nudge_x = 0,
       show.legend = FALSE
     ) +
-    scale_fill_manual(values = CNAqc:::get_karyotypes_colors(NULL))
+    scale_fill_manual(values = CNAqc:::get_karyotypes_colors(unique(drivers_list$karyotype))) +
+    coord_cartesian(clip = 'off')
+
 
 
 }

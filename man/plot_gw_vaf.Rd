@@ -4,8 +4,7 @@
 \alias{plot_gw_vaf}
 \title{Plot a genome-wide scatter plot of VAF}
 \usage{
-plot_gw_vaf(x, N = 5000, chromosomes = paste0("chr", c(1:22, "X",
-  "Y")))
+plot_gw_vaf(x, N = 5000, chromosomes = paste0("chr", c(1:22, "X", "Y")))
 }
 \arguments{
 \item{x}{An object of class \code{cnaqc}, created by the \code{init} function.}

@@ -4,14 +4,17 @@
 \alias{plot_CCF}
 \title{Plot the CCF estimates in the data.}
 \usage{
-plot_CCF(x)
+plot_CCF(x, strip = FALSE)
 }
 \arguments{
 \item{x}{An object of class \code{cnaqc}, where CCF have been computed using
 function `compute_CCF`.}
+
+\item{strip}{If \code{TRUE}, shows little detail and a strip horizontal plot.
+Otherwise it shows a detailed report (multiple rows).}
 }
 \value{
-A `ggpubr` figure of the CCF estiamtes.
+A `ggpubr` figure of the CCF estimates.
 }
 \description{
 This function extracts the plots of the Cancer Cell Fractions (CCFs) estimates

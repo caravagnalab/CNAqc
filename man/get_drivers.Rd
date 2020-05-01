@@ -4,8 +4,7 @@
 \alias{get_drivers}
 \title{Extract driver data.}
 \usage{
-get_drivers(x, chromosomes = paste0("chr", c(1:22, "X", "Y")),
-  which = "VAF")
+get_drivers(x, chromosomes = paste0("chr", c(1:22, "X", "Y")), which = "VAF")
 }
 \arguments{
 \item{x}{An object of class \code{cnaqc}, created by the \code{init} function

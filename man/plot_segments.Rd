@@ -4,9 +4,15 @@
 \alias{plot_segments}
 \title{Plot CNA segments.}
 \usage{
-plot_segments(x, chromosomes = paste0("chr", c(1:22, "X", "Y")),
-  max_Y_height = 6, circular = FALSE, cn = "absolute",
-  highlight = x$most_prevalent_karyotype, ...)
+plot_segments(
+  x,
+  chromosomes = paste0("chr", c(1:22, "X", "Y")),
+  max_Y_height = 6,
+  circular = FALSE,
+  cn = "absolute",
+  highlight = x$most_prevalent_karyotype,
+  ...
+)
 }
 \arguments{
 \item{x}{An object of class \code{cnaqc}, created by the \code{init} function.}

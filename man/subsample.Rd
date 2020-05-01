@@ -12,8 +12,6 @@ subsample(x, N = 15000, keep_drivers = TRUE)
 \item{N}{The maximum number of mutations to retain.}
 
 \item{keep_drivers}{If \code{TRUE}, it retains drivers annotated in the data.}
-
-\item{x}{An object of class \code{cnaqc}, created by the \code{init} function.}
 }
 \description{
 This functions subsample mutations with uniform probability, retaining

@@ -81,37 +81,71 @@ plot_segments = function(x,
       expanded_reference = CNAqc:::expand_reference_chr_to_arms(x) %>%
         dplyr::filter(chr %in% fragmented)
 
+      # base_plot = base_plot +
+      #   geom_rect(
+      #     data = expanded_reference,
+      #     aes(
+      #       xmin = from,
+      #       xmax = to,
+      #       ymin = -Inf,
+      #       ymax = Inf
+      #     ),
+      #     alpha = .2,
+      #     fill = NA,
+      #     color = 'purple4'
+      #   )
+      #
+      # base_plot +
+      #   geom_segment(
+      #     data = expanded_reference,
+      #     aes(
+      #       x = from,
+      #       xend = to,
+      #       y = -0.2,
+      #       yend = -0.2,
+      #     ),
+      #     color = 'purple4',
+      #     linetype = 1,
+      #     size = 2
+      #   )
+
       base_plot = base_plot +
-        geom_rect(
+        geom_label(
           data = expanded_reference,
           aes(
-            xmin = from,
-            xmax = to,
-            ymin = -Inf,
-            ymax = Inf
+            x = from,
+            label = gsub(pattern = 'chr', replacement = '', chr),
+            y = -0.2
           ),
-          alpha = .2,
-          fill = NA,
-          color = 'purple4'
+          fill = 'purple4',
+          color = 'white',
+          size = 2,
+          label.padding = unit(0.05, 'cm')
         )
-
-    }
+      }
   }
 
   # Caption
-  base_plot = base_plot +
-    labs(
-      caption =
-        paste0(
-          "Ploidy ", x$ploidy, '; ',
-          x$n_snvs,
-          ' mutations, ',
-          x$n_cna_clonal,
-          ' CNA segeents, ',
-          x$n_cna_sbclonal,
-          ' subclonal CNA'
-        )
+
+  capt_label = paste0(
+    "Ploidy ", x$ploidy, "; Purity  ", x$purity,
+    '; n = ', x$n_snvs, ' mutations in ',
+    x$n_cna_clonal,
+    ' segments'
+  )
+
+  # Add extras
+  if (!is.null(x$arm_fragmentation))
+    capt_label = paste0(
+      capt_label,
+      '; ',
+      x$arm_fragmentation$table %>%
+        dplyr::filter(significant, chr %in% chromosomes) %>%
+        length,
+      ' fragmented arms'
     )
+
+  base_plot = base_plot + labs(caption = capt_label)
 
   # =-=-=-=-=-=-=-=-=-=-=-=-
   # Breakpoints annotations

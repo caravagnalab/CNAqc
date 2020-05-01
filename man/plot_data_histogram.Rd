@@ -4,8 +4,11 @@
 \alias{plot_data_histogram}
 \title{Plot the data histogram.}
 \usage{
-plot_data_histogram(x, which = "VAF", karyotypes = c("1:0", "1:1",
-  "2:0", "2:1", "2:2"))
+plot_data_histogram(
+  x,
+  which = "VAF",
+  karyotypes = c("1:0", "1:1", "2:0", "2:1", "2:2")
+)
 }
 \arguments{
 \item{x}{An object of class \code{cnaqc}, created by the \code{init} function.}

@@ -4,8 +4,7 @@
 \alias{plot_gw_depth}
 \title{Plot a genome-wide scatter plot of coverage.}
 \usage{
-plot_gw_depth(x, N = 5000, chromosomes = paste0("chr", c(1:22, "X",
-  "Y")))
+plot_gw_depth(x, N = 5000, chromosomes = paste0("chr", c(1:22, "X", "Y")))
 }
 \arguments{
 \item{x}{An object of class \code{cnaqc}, created by the \code{init} function.}

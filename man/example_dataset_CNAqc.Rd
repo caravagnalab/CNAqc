@@ -4,8 +4,10 @@
 \name{example_dataset_CNAqc}
 \alias{example_dataset_CNAqc}
 \title{Example CNAqc dataset.}
-\format{A list of snvs, cna and purity value that
-can be used to run CNAqc analyses.}
+\format{
+A list of snvs, cna and purity value that
+can be used to run CNAqc analyses.
+}
 \usage{
 data(example_dataset_CNAqc)
 }

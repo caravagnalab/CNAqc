@@ -4,8 +4,12 @@
 \alias{detect_arm_overfragmentation}
 \title{Determines fragmentation of copy number segments}
 \usage{
-detect_arm_overfragmentation(x, alpha = 0.01,
-  genome_percentage_cutoff = 0.2, minimum_segments_for_testing = 10)
+detect_arm_overfragmentation(
+  x,
+  alpha = 0.01,
+  genome_percentage_cutoff = 0.2,
+  minimum_segments_for_testing = 10
+)
 }
 \arguments{
 \item{x}{An object of class \code{cnaqc}, created by the \code{init} function.}

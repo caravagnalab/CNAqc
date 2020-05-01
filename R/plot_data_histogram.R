@@ -47,10 +47,15 @@ plot_data_histogram = function(x,
 
   if(!CNAqc:::has_driver_data(x)) return(plot_f)
 
+  # Drivers
   plot_f = CNAqc:::annotate_drivers_to_histogram(
-    drivers_list = get_drivers(x,  which = ifelse(which %in% c("VAF", "CCF"), which, 'VAF')),
+    drivers_list = get_drivers(x,  which = ifelse(which %in% c("VAF", "CCF"), which, 'VAF')) %>%
+      dplyr::mutate(karyotype = ifelse(
+        karyotype %in% karyotypes, karyotype, "other"
+      )),
     p = plot_f,
-    which = which)
+    which = which
+  )
 
   return(plot_f)
 }
@@ -76,7 +81,7 @@ plot_CCF_data = function(x,
     dplyr::filter(!is.na(CCF))
 
   # Whatever is fit
-  meth = x$CCF_estimates[[1]]$$QC_table$method
+  meth = x$CCF_estimates[[1]]$QC_table$method
 
   ggplot(data = ccf_data,
          aes(CCF, fill = karyotype)) +

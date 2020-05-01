@@ -4,8 +4,7 @@
 \alias{plot_gw_ccf}
 \title{Plot a genome-wide scatter plot of VAF}
 \usage{
-plot_gw_ccf(x, N = 5000, chromosomes = paste0("chr", c(1:22, "X",
-  "Y")))
+plot_gw_ccf(x, N = 5000, chromosomes = paste0("chr", c(1:22, "X", "Y")))
 }
 \arguments{
 \item{x}{An object of class \code{cnaqc}, created by the \code{init} function.}
@@ -25,9 +24,11 @@ A \code{ggplot} object.
 data('example_dataset_CNAqc', package = 'CNAqc')
 x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
 
-plot_gw_vaf(x)
+# Compute CCF
+x = compute_CCF(x)
+plot_gw_ccf(x)
 
-plot_gw_vaf(x, N = 100)
-plot_gw_vaf(x, N = 1000)
-plot_gw_vaf(x, N = 10000)
+plot_gw_ccf(x, N = 100)
+plot_gw_ccf(x, N = 1000)
+plot_gw_ccf(x, N = 10000)
 }

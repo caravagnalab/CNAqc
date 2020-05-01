@@ -1,6 +1,6 @@
 #' Plot a genome-wide histogram of mutation counts.
 #'
-#'  @description Plot a genome-wide histogram of mutation counts, binned
+#' @description Plot a genome-wide histogram of mutation counts, binned
 #' every one megabase (10e6 positions according to the hg19 reference).
 #'
 #' @param x An object of class \code{cnaqc}, created by the \code{init} function.
@@ -22,8 +22,7 @@ plot_gw_counts = function(x, chromosomes = paste0('chr', c(1:22, 'X', 'Y')))
     x,
     x$snvs %>% dplyr::filter(chr %in% chromosomes))
 
-  bl_plot = CNAqc:::blank_genome(ref = x$reference_genome, chromosomes = chromosomes) +
-    ylim(NA, NA)
+  bl_plot = CNAqc:::blank_genome(ref = x$reference_genome, chromosomes = chromosomes)
 
   # # X-range
   # reference_genome = CNAqc:::get_reference(x$reference_genome)
@@ -76,8 +75,7 @@ plot_gw_depth = function(x, N = 5000, chromosomes = paste0('chr', c(1:22, 'X', '
     x,
     x$snvs %>% dplyr::filter(chr %in% chromosomes))
 
-  bl_plot = CNAqc:::blank_genome(ref = x$reference_genome, chromosomes = chromosomes) +
-    ylim(NA, NA)
+  bl_plot = CNAqc:::blank_genome(ref = x$reference_genome, chromosomes = chromosomes)
 
   # X-range
   # reference_genome = CNAqc:::get_reference(x$reference_genome)
@@ -114,7 +112,8 @@ plot_gw_depth = function(x, N = 5000, chromosomes = paste0('chr', c(1:22, 'X', '
     ) +
     labs(y = "DP") +
     geom_hline(yintercept = med_DP, size = .4, linetype = 'dashed', color = 'darkred') +
-    guides(fill = FALSE)
+    guides(fill = FALSE) +
+    ylim(min(mutations$DP, na.rm = T) * .85, NA)
 
   # Simulate an internal legend
   L = ggplot_build(dp)$layout$panel_params[[1]]
@@ -152,8 +151,7 @@ plot_gw_vaf = function(x, N = 5000, chromosomes = paste0('chr', c(1:22, 'X', 'Y'
     x,
     x$snvs %>% dplyr::filter(chr %in% chromosomes))
 
-  bl_plot = CNAqc:::blank_genome(ref = x$reference_genome, chromosomes = chromosomes) +
-    ylim(NA, NA)
+  bl_plot = CNAqc:::blank_genome(ref = x$reference_genome, chromosomes = chromosomes)
 
   # # X-range
   # reference_genome = CNAqc:::get_reference(x$reference_genome)
@@ -161,7 +159,7 @@ plot_gw_vaf = function(x, N = 5000, chromosomes = paste0('chr', c(1:22, 'X', 'Y'
   # upp = max(reference_genome$to)
 
   # VAF stats
-  med_VAF = median(mutations$VAF)
+  med_VAF = median(mutations$VAF, na.rm = T)
   quant = quantile(mutations$DP, probs = c(.1, .99))
 
   N_all = nrow(mutations)
