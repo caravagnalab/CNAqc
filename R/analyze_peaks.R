@@ -19,6 +19,9 @@
 #' @param min_karyotype_size Karyotypes are subset by their size (normalized for
 #' the number of input mutations). Karyotypes smaller than this value are removed
 #' from analysis.
+#' @param min_absolute_karyotype_mutations As \code{min_karyotype_size} this imposes a
+#' minimum number of mutations on a karyotype to be analysed (in absolute number of
+#' mutations). Karyotypes smaller than this value are removed from analysis.
 #' @param kernel_adjust KDE adjust density parameter; see \code{density}. A Gaussian
 #' kernel is used (\code{kernel = 'gaussian'}).
 #' @param p_binsize_peaks Peaks detected will be filtered if, in a peak, we map
@@ -47,13 +50,15 @@
 analyze_peaks = function(x,
                          karyotypes = c('1:0', '1:1', '2:1', '2:0', '2:2'),
                          min_karyotype_size = 0.05,
+                         min_absolute_karyotype_mutations = 50,
                          p_binsize_peaks = 0.005,
                          matching_epsilon = 0.025,
                          kernel_adjust = 1)
 {
   # Check input
   stopifnot(inherits(x, "cnaqc"))
-  stopifnot(min_karyotype_size > 0 & min_karyotype_size < 1)
+  stopifnot(min_karyotype_size >= 0 & min_karyotype_size < 1)
+  stopifnot(min_absolute_karyotype_mutations >= 0)
   stopifnot(p_binsize_peaks > 0 & p_binsize_peaks < 1)
   stopifnot(matching_epsilon > 0 & matching_epsilon < 1)
   stopifnot(is.numeric(kernel_adjust))
@@ -66,7 +71,7 @@ analyze_peaks = function(x,
     dplyr::group_by(karyotype) %>%
     summarise(n = n(), n_proportion = n() / x$n_snvs) %>%
     dplyr::arrange(desc(n)) %>%
-    dplyr::mutate(QC = n_proportion > min_karyotype_size)
+    dplyr::mutate(QC = (n_proportion > min_karyotype_size) & n > min_absolute_karyotype_mutations)
 
   # Re-normalize karyotype size for the ones with QC = true
   N_total = sum(filtered_qc_snvs %>% filter(QC) %>% pull(n_proportion))
