@@ -113,9 +113,18 @@ analyze_peaks = function(x,
       ' mutations).'
     )
   )
+
+  # Special case, nothing to compute
+  if(n_k == 0) {
+    warning("There are non mutations to detect peaks, returning input object.")
+    return(x)
+  }
+
   # Actual data and analysis
   qc_karyotypes = filtered_qc_snvs %>% dplyr::filter(QC) %>% dplyr::pull(karyotype)
   qc_snvs = qc_snvs %>% dplyr::filter(karyotype %in% qc_karyotypes)
+
+
 
   tumour_purity = x$purity
 
