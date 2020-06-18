@@ -37,7 +37,6 @@ peak_detector = function(snvs,
 
 
   # print(pks)
-
   hst = hist(snvs$VAF, breaks = seq(0, 1, 0.01), plot = F)$counts
   pks$counts_per_bin = hst[round(pks$x * 100)]
 
@@ -170,5 +169,90 @@ peak_detector = function(snvs,
     )
 }
 
+peak_detector_closest_hit_match = function(snvs,
+                         expectation,
+                         tumour_purity,
+                         filtered_qc_snvs,
+                         matching_epsilon = 0.015,
+                         kernel_adjust = 1,
+                         p = 0.005)
+{
+  # Smoothed Gaussian kernel for VAF
+  y = snvs %>% dplyr::pull(VAF)
 
+  den = density(y, kernel = 'gaussian', adjust = kernel_adjust)
+  in_range = den$x >= min(y) & den$x <= max(y)
+
+  input_peakdetection = matrix(cbind(x = den$x[in_range], y = den$y[in_range]), ncol = 2)
+  colnames(input_peakdetection) = c('x', 'y')
+
+  # Test 5 parametrisations of peakPick neighlim
+  pks = Reduce(
+    dplyr::bind_rows,
+    lapply(1:5,
+           function(n){
+             pk = peakPick::peakpick(mat = input_peakdetection, neighlim = n)
+             input_peakdetection[pk[, 2], , drop = FALSE] %>% as.data.frame()
+           }
+    )
+  ) %>%
+    as_tibble() %>%
+    dplyr::arrange(x) %>%
+    dplyr::mutate(x = round(x, 2), y = round(y, 2)) %>%
+    dplyr::distinct(x, .keep_all = TRUE)
+
+
+  # print(pks)
+  hst = hist(snvs$VAF, breaks = seq(0, 1, 0.01), plot = F)$counts
+  pks$counts_per_bin = hst[round(pks$x * 100)]
+
+  xy_peaks = pks %>%
+    dplyr::mutate(discarded = counts_per_bin < sum(hst) * p)
+
+  # linear combination of the weight, split by number of peaks to match
+  weight = filtered_qc_snvs %>%
+    filter(karyotype == snvs$karyotype[1]) %>%
+    pull(norm_prop)
+
+  weight = weight/nrow(expectation)
+
+  ###### ###### ###### ###### ######
+  # Compute matching ~ get any possible match given the expectation
+  #
+  # 1) sort the expected peaks and the xy_peaks by expected VAF
+  # 2) combine them and subtract
+  get_match = function(p)
+  {
+    not_discarded = xy_peaks %>% filter(!discarded)
+
+    distances = abs(not_discarded$x - expectation$peak[p])
+    id_match = which.min(distances)
+
+    if(length(id_match) == 0) return(NA)
+    else return(not_discarded[id_match, ])
+  }
+
+  matched_peaks = lapply(seq_along(expectation$peak), get_match)
+
+  # Matching table
+  matching = expectation %>%
+    dplyr::bind_cols(Reduce(dplyr::bind_rows, matched_peaks))
+
+  matching$offset = matching$peak - matching$x
+  matching$matched = matching$offset <= matching_epsilon
+  matching$weight = weight
+
+  # Density estimated
+  density = den
+
+  # Peaks
+  peaks = xy_peaks
+
+  return(
+    list(
+      matching = matching,
+      density = den,
+      xy_peaks = xy_peaks)
+  )
+}
 

@@ -31,6 +31,15 @@
 #' left and right. By default (\code{0.025}) a maxium 5\% tolerance is adopted. The status of
 #' overall PASS/ FAIL for this analysis is determined with the same tolerance, given the score
 #' computed across all karyotypes.
+#' @param n_bootstrap Number of times peak detection is bootstrapped (this helps sometimes
+#' finding peaks that might be visually observable but fail to be detected by the underlying
+#' peak detection heuristic). The default of this parameter is 1, meaning that no bootstrap
+#' is performed.
+#' @param matching_strategy If \code{"closest"}, the closest peak will be used to
+#' match the expected peak. If \code{"rightmost"}, peaks are matched prioritizing
+#' right to left peaks (the higher get matched first); this strategy is more correct
+#' in principle but works only if there are no spurious peaks in the estimated
+#' density. By defaule the first strategy is used.
 #'
 #' @return An object of class \code{cnaqc}, modified to hold the results from this analysis.
 #' See the vignette to see how to extract and plot the results.
@@ -47,13 +56,19 @@
 #' print(x)
 #'
 #' print(x$peaks_analysis)
+#'
+#'
+#' x = analyze_peaks(x, matching_strategy = "rightmost")
+#' print(x)
 analyze_peaks = function(x,
                          karyotypes = c('1:0', '1:1', '2:1', '2:0', '2:2'),
                          min_karyotype_size = 0.05,
                          min_absolute_karyotype_mutations = 50,
                          p_binsize_peaks = 0.005,
                          matching_epsilon = 0.025,
-                         kernel_adjust = 1)
+                         n_bootstrap = 1,
+                         kernel_adjust = 1,
+                         matching_strategy = "closest")
 {
   # Check input
   stopifnot(inherits(x, "cnaqc"))
@@ -62,6 +77,7 @@ analyze_peaks = function(x,
   stopifnot(p_binsize_peaks > 0 & p_binsize_peaks < 1)
   stopifnot(matching_epsilon > 0 & matching_epsilon < 1)
   stopifnot(is.numeric(kernel_adjust))
+  stopifnot(matching_strategy %in% c("closest", "rightmost"))
 
   # Karyotypes of interest, and filter for karyotype size
   qc_snvs = x$snvs %>%
@@ -97,7 +113,7 @@ analyze_peaks = function(x,
   #   )
   # )
 
-  cli::cli_alert_info("Requested karyotypes {.field {karyotypes}}.")
+  cli::cli_alert_info("Requested karyotypes {.field {karyotypes}}. Matching strategy {.field {matching_strategy}}.")
 
   cli::cli_alert_info(
     paste0(
@@ -124,8 +140,6 @@ analyze_peaks = function(x,
   qc_karyotypes = filtered_qc_snvs %>% dplyr::filter(QC) %>% dplyr::pull(karyotype)
   qc_snvs = qc_snvs %>% dplyr::filter(karyotype %in% qc_karyotypes)
 
-
-
   tumour_purity = x$purity
 
   detections = NULL
@@ -142,27 +156,45 @@ analyze_peaks = function(x,
       AB = as.numeric(strsplit(k, ':')[[1]])
       expectation = CNAqc:::expected_vaf_peak(AB[1], AB[2], tumour_purity)
 
-      # Bootstrap function
+      # Bootstrap function - k is a fake parameter
       pd = function(w)
       {
         w = qc_snvs %>%
           dplyr::filter(karyotype == k)
 
-        peak_detector(
-          snvs = w %>%
-            dplyr::sample_n(size = nrow(w), replace = TRUE),
-          expectation = expectation,
-          tumour_purity = tumour_purity,
-          filtered_qc_snvs = filtered_qc_snvs,
-          p = p_binsize_peaks,
-          kernel_adjust = kernel_adjust,
-          matching_epsilon = matching_epsilon
-        )
+        run_results = NULL
 
+        if(matching_strategy == "rightmost")
+          run_results = CNAqc:::peak_detector(
+            snvs = w %>%
+              dplyr::sample_n(size = nrow(w), replace = TRUE),
+            expectation = expectation,
+            tumour_purity = tumour_purity,
+            filtered_qc_snvs = filtered_qc_snvs,
+            p = p_binsize_peaks,
+            kernel_adjust = kernel_adjust,
+            matching_epsilon = matching_epsilon
+          )
+
+        if(matching_strategy == "closest")
+          run_results = CNAqc:::peak_detector_closest_hit_match(
+            snvs = w %>%
+              dplyr::sample_n(size = nrow(w), replace = TRUE),
+            expectation = expectation,
+            tumour_purity = tumour_purity,
+            filtered_qc_snvs = filtered_qc_snvs,
+            p = p_binsize_peaks,
+            kernel_adjust = kernel_adjust,
+            matching_epsilon = matching_epsilon
+          )
+
+        run_results
       }
 
-      # Sample 15 peaks via the bootstrap
-      best_peaks = lapply(1:15, pd)
+      # Sample "n_bootstrap" times via the bootstrap
+      if(n_bootstrap < 0) n_bootstrap = 1
+
+      best_peaks = lapply(1:n_bootstrap, pd)
       best_score = which.min(sapply(best_peaks, function(w)
         w$matching$weight %*% w$matching$offset))
       best_score = best_score[]
@@ -240,6 +272,7 @@ analyze_peaks = function(x,
     score = overall_score,
     fits = detections,
     matches = assembled_corrections,
+    matching_strategy = matching_strategy,
     # plots = plots,
     min_karyotype_size = min_karyotype_size,
     p_binsize_peaks = p_binsize_peaks,

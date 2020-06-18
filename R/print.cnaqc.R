@@ -55,7 +55,7 @@ print.cnaqc = function(x, ...)
 
   if(with_peaks)
   {
-    cli::cli_alert_success("QC via peak detection available, score: {.value {x$peaks_analysis$score}}.")
+    cli::cli_alert_success("QC via peak detection available, score: {.value {x$peaks_analysis$score}} [match by {.field {x$peaks_analysis$matching_strategy}}].")
     pio::pioDisp(x$peaks_analysis$matches)
   }
 
