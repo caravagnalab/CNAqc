@@ -43,6 +43,15 @@ peak_detector = function(snvs,
   xy_peaks = pks %>%
     dplyr::mutate(discarded = counts_per_bin < sum(hst) * p)
 
+  # Handle special case where everything is discarded by including the one
+  # with highest value of counts_per_bin (just that).
+  if(all(xy_peaks$discarded)) {
+    xy_peaks = xy_peaks %>%
+      mutate(
+        discarded = ifelse(counts_per_bin == max(xy_peaks$counts_per_bin), TRUE, discarded)
+      )
+  }
+
   # linear combination of the weight, split by number of peaks to match
   weight = filtered_qc_snvs %>%
     filter(karyotype == snvs$karyotype[1]) %>%
@@ -208,6 +217,15 @@ peak_detector_closest_hit_match = function(snvs,
 
   xy_peaks = pks %>%
     dplyr::mutate(discarded = counts_per_bin < sum(hst) * p)
+
+  # Handle special case where everything is discarded by including the one
+  # with highest value of counts_per_bin (just that).
+  if(all(xy_peaks$discarded)) {
+    xy_peaks = xy_peaks %>%
+      mutate(
+        discarded = ifelse(counts_per_bin == max(xy_peaks$counts_per_bin), TRUE, discarded)
+      )
+  }
 
   # linear combination of the weight, split by number of peaks to match
   weight = filtered_qc_snvs %>%

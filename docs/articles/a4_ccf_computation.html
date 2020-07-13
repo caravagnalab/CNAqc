@@ -115,7 +115,11 @@
     
     
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(CNAqc)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="co">#&gt; ✓ Loading CNAqc, 'Copy Number Alteration quality check'. Support : &lt;https://caravagn.github.io/CNAqc/&gt;</span></a></code></pre></div>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="co">#&gt; Warning: package 'tibble' was built under R version 3.6.2</span></a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="co">#&gt; Warning: package 'tidyr' was built under R version 3.6.2</span></a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="co">#&gt; Warning: package 'purrr' was built under R version 3.6.2</span></a>
+<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="co">#&gt; Warning: package 'ggpubr' was built under R version 3.6.2</span></a>
+<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="co">#&gt; ✓ Loading CNAqc, 'Copy Number Alteration quality check'. Support : &lt;https://caravagn.github.io/CNAqc/&gt;</span></a></code></pre></div>
 <p><code>CNAqc</code> provides a function to compute mutation’s Cancer Cell Fractions (CCFs): <code>compute_CCF</code>. We suggest to use these to compare CCF estimates obtained with other tools, for instance, or to compute de novo CCF values.</p>
 <p>The process of computing CCF values requires the computation of the <em>“mutation multiplicity”</em>, namely the number of copies of a mutation in a certain copy number segment. This is a difficult task that harmonize the data accounting for tumour purity, and CNAs. Errors in this task propagate errors in CCF estimates, and downstream analyses.</p>
 <p>For this reason, <code>CNAqc</code>:</p>
@@ -192,22 +196,22 @@ H(x) = - p_x \log(p_x)
 #&gt;    3:0  [n =  312] ■</code></pre>
 <p>We run function <code>compute_CCF</code> to obtain the full analysis of CCF values. Without parameters (or with <code>method = 'ENTROPY'</code>), we use the entropy method and all supported karyotypes (default).</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">x =<span class="st"> </span><span class="kw"><a href="../reference/compute_CCF.html">compute_CCF</a></span>(x)</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co">#&gt; ── Computing mutation multiplicity for karyotype 2:0 using the entropy method. ───────────────────────────────────────────────────</span></a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co">#&gt; ── Computing mutation multiplicity for karyotype 2:0 using the entropy method. ───────────────────────────────────────────────────────</span></a>
 <a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co">#&gt; ℹ Expected Binomial peak(s) for these calls (1 and 2 copies): 0.445 and 0.89</span></a>
 <a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">#&gt; ℹ Mixing pre/ post aneuploidy: 0.09 and 0.91</span></a>
 <a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co">#&gt; ℹ Not assignamble area: [0.631578947368421; 0.723684210526316]</span></a>
-<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="co">#&gt; ── Computing mutation multiplicity for karyotype 2:1 using the entropy method. ───────────────────────────────────────────────────</span></a>
+<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="co">#&gt; ── Computing mutation multiplicity for karyotype 2:1 using the entropy method. ───────────────────────────────────────────────────────</span></a>
 <a class="sourceLine" id="cb3-7" data-line-number="7"><span class="co">#&gt; ℹ Expected Binomial peak(s) for these calls (1 and 2 copies): 0.307958477508651 and 0.615916955017301</span></a>
 <a class="sourceLine" id="cb3-8" data-line-number="8"><span class="co">#&gt; ℹ Mixing pre/ post aneuploidy: 0.55 and 0.45</span></a>
 <a class="sourceLine" id="cb3-9" data-line-number="9"><span class="co">#&gt; ℹ Not assignamble area: [0.423423423423423; 0.504504504504504]</span></a>
-<a class="sourceLine" id="cb3-10" data-line-number="10"><span class="co">#&gt; ── Computing mutation multiplicity for karyotype 2:2 using the entropy method. ───────────────────────────────────────────────────</span></a>
+<a class="sourceLine" id="cb3-10" data-line-number="10"><span class="co">#&gt; ── Computing mutation multiplicity for karyotype 2:2 using the entropy method. ───────────────────────────────────────────────────────</span></a>
 <a class="sourceLine" id="cb3-11" data-line-number="11"><span class="co">#&gt; ℹ Expected Binomial peak(s) for these calls (1 and 2 copies): 0.235449735449735 and 0.470899470899471</span></a>
 <a class="sourceLine" id="cb3-12" data-line-number="12"><span class="co">#&gt; ℹ Mixing pre/ post aneuploidy: 0.09 and 0.91</span></a>
 <a class="sourceLine" id="cb3-13" data-line-number="13"><span class="co">#&gt; ℹ Not assignamble area: [0.290780141843972; 0.368794326241135]</span></a>
 <a class="sourceLine" id="cb3-14" data-line-number="14"></a>
 <a class="sourceLine" id="cb3-15" data-line-number="15"><span class="co"># Print new object, it informs us of the available computation</span></a>
 <a class="sourceLine" id="cb3-16" data-line-number="16"><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(x)</a>
-<a class="sourceLine" id="cb3-17" data-line-number="17"><span class="co">#&gt; ── [ CNAqc ]  n = 13141 mutations in 267 segments (267 clonal + 0 subclonal). Genome reference: hg19. ────────────────────────────</span></a>
+<a class="sourceLine" id="cb3-17" data-line-number="17"><span class="co">#&gt; ── [ CNAqc ]  n = 12963 mutations in 267 segments (267 clonal + 0 subclonal). Genome reference: hg19. ────────────────────────────────</span></a>
 <a class="sourceLine" id="cb3-18" data-line-number="18"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb3-19" data-line-number="19"><span class="co">#&gt;    2:2  [n = 7478] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { chr19:15292495:15292496:G:A }</span></a>
 <a class="sourceLine" id="cb3-20" data-line-number="20"><span class="co">#&gt;    4:2  [n = 1893] ■■■■■■■</span></a>
@@ -216,7 +220,7 @@ H(x) = - p_x \log(p_x)
 <a class="sourceLine" id="cb3-23" data-line-number="23"><span class="co">#&gt;    3:0  [n =  312] ■</span></a>
 <a class="sourceLine" id="cb3-24" data-line-number="24"><span class="co">#&gt; ℹ Sample Purity: 89% ~ Ploidy: 4.</span></a>
 <a class="sourceLine" id="cb3-25" data-line-number="25"><span class="co">#&gt; ℹ Mutations annotated have 3 drivers.</span></a>
-<a class="sourceLine" id="cb3-26" data-line-number="26"><span class="co">#&gt; ✓ Cancer Cell Fraction (CCF) data available for karyotypes: 2:0, 2:1 and 2:2.</span></a></code></pre></div>
+<a class="sourceLine" id="cb3-26" data-line-number="26"><span class="co">#&gt; ✓ Cancer Cell Fraction (CCF) data available for karyotypes: 2:0, 2:1, and 2:2.</span></a></code></pre></div>
 <p>We can visually inspect the CCF estimates for the computed karyotypes. We can do that accessing the field <code>x$CCF_estimates</code> which contains the data and a plot reporting the result of the analysis, or using the getter functions <code>CCF</code> and two plotting functions</p>
 <p>The tibble of the data reports the computed values in column <code>"CCF"</code>, and in column <code>"mutation multiplicity"</code>.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="co"># Tibble</span></a>
@@ -248,25 +252,27 @@ H(x) = - p_x \log(p_x)
 </ul>
 <p>The rightmost CCF histogram plot is also sourrounded by a green or red square to reflect QC status of <code>PASS</code> (green) or <code>FAIL</code> (red).</p>
 <p>The CCF histogram can be computed with <code>plot_data_histogram</code>, specifying <code>CCF</code> as parameter.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="../reference/plot_data_histogram.html">plot_data_histogram</a></span>(x, <span class="dt">which =</span> <span class="st">'CCF'</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="../reference/plot_data_histogram.html">plot_data_histogram</a></span>(x, <span class="dt">which =</span> <span class="st">'CCF'</span>)</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="co">#&gt; Scale for 'fill' is already present. Adding another scale for 'fill', which</span></a>
+<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="co">#&gt; will replace the existing scale.</span></a></code></pre></div>
 <p><img src="a4_ccf_computation_files/figure-html/unnamed-chunk-6-1.png" width="384"></p>
 <div id="comparison-with-the-rough-computation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#comparison-with-the-rough-computation" class="anchor"></a>Comparison with the rough computation</h2>
 <p>We work with the same data as above, <code>x</code>.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">x_r =<span class="st"> </span><span class="kw"><a href="../reference/compute_CCF.html">compute_CCF</a></span>(x, <span class="dt">method =</span> <span class="st">'ROUGH'</span>)</a>
-<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="co">#&gt; ── Computing mutation multiplicity for karyotype 2:0 using raw VAF cuts. ─────────────────────────────────────────────────────────</span></a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="co">#&gt; ── Computing mutation multiplicity for karyotype 2:0 using raw VAF cuts. ─────────────────────────────────────────────────────────────</span></a>
 <a class="sourceLine" id="cb7-3" data-line-number="3"><span class="co">#&gt; ℹ Expected Binomial peak(s) for these calls (1 and 2 copies): 0.445 and 0.89.</span></a>
 <a class="sourceLine" id="cb7-4" data-line-number="4"><span class="co">#&gt; ℹ Mutations per peak: n = 7, n = 68. The hard cut is t = 0.486533333333333.</span></a>
-<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co">#&gt; ── Computing mutation multiplicity for karyotype 2:1 using raw VAF cuts. ─────────────────────────────────────────────────────────</span></a>
+<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co">#&gt; ── Computing mutation multiplicity for karyotype 2:1 using raw VAF cuts. ─────────────────────────────────────────────────────────────</span></a>
 <a class="sourceLine" id="cb7-6" data-line-number="6"><span class="co">#&gt; ℹ Expected Binomial peak(s) for these calls (1 and 2 copies): 0.307958477508651 and 0.615916955017301.</span></a>
 <a class="sourceLine" id="cb7-7" data-line-number="7"><span class="co">#&gt; ℹ Mutations per peak: n = 809, n = 651. The hard cut is t = 0.47860122292269.</span></a>
-<a class="sourceLine" id="cb7-8" data-line-number="8"><span class="co">#&gt; ── Computing mutation multiplicity for karyotype 2:2 using raw VAF cuts. ─────────────────────────────────────────────────────────</span></a>
+<a class="sourceLine" id="cb7-8" data-line-number="8"><span class="co">#&gt; ── Computing mutation multiplicity for karyotype 2:2 using raw VAF cuts. ─────────────────────────────────────────────────────────────</span></a>
 <a class="sourceLine" id="cb7-9" data-line-number="9"><span class="co">#&gt; ℹ Expected Binomial peak(s) for these calls (1 and 2 copies): 0.235449735449735 and 0.470899470899471.</span></a>
 <a class="sourceLine" id="cb7-10" data-line-number="10"><span class="co">#&gt; ℹ Mutations per peak: n = 649, n = 6205. The hard cut is t = 0.257744290207086.</span></a>
 <a class="sourceLine" id="cb7-11" data-line-number="11"></a>
 <a class="sourceLine" id="cb7-12" data-line-number="12"><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(x_r)</a>
-<a class="sourceLine" id="cb7-13" data-line-number="13"><span class="co">#&gt; ── [ CNAqc ]  n = 13141 mutations in 267 segments (267 clonal + 0 subclonal). Genome reference: hg19. ────────────────────────────</span></a>
+<a class="sourceLine" id="cb7-13" data-line-number="13"><span class="co">#&gt; ── [ CNAqc ]  n = 12963 mutations in 267 segments (267 clonal + 0 subclonal). Genome reference: hg19. ────────────────────────────────</span></a>
 <a class="sourceLine" id="cb7-14" data-line-number="14"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb7-15" data-line-number="15"><span class="co">#&gt;    2:2  [n = 7478] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { chr19:15292495:15292496:G:A }</span></a>
 <a class="sourceLine" id="cb7-16" data-line-number="16"><span class="co">#&gt;    4:2  [n = 1893] ■■■■■■■</span></a>
@@ -275,7 +281,7 @@ H(x) = - p_x \log(p_x)
 <a class="sourceLine" id="cb7-19" data-line-number="19"><span class="co">#&gt;    3:0  [n =  312] ■</span></a>
 <a class="sourceLine" id="cb7-20" data-line-number="20"><span class="co">#&gt; ℹ Sample Purity: 89% ~ Ploidy: 4.</span></a>
 <a class="sourceLine" id="cb7-21" data-line-number="21"><span class="co">#&gt; ℹ Mutations annotated have 3 drivers.</span></a>
-<a class="sourceLine" id="cb7-22" data-line-number="22"><span class="co">#&gt; ✓ Cancer Cell Fraction (CCF) data available for karyotypes: 2:0, 2:1 and 2:2.</span></a></code></pre></div>
+<a class="sourceLine" id="cb7-22" data-line-number="22"><span class="co">#&gt; ✓ Cancer Cell Fraction (CCF) data available for karyotypes: 2:0, 2:1, and 2:2.</span></a></code></pre></div>
 <p>The data can be accessed in the usual way; the layout of the CCF plots are conceptually the same, but use different colors. The cutoff is annotated in the panel with the mutation multiplicity <span class="math inline">\(m\)</span> assigned to each observed VAF value.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw"><a href="../reference/plot_CCF.html">plot_CCF</a></span>(x_r)</a></code></pre></div>
 <p><img src="a4_ccf_computation_files/figure-html/unnamed-chunk-8-1.png" width="1056"></p>
@@ -292,7 +298,11 @@ H(x) = - p_x \log(p_x)
 <a class="sourceLine" id="cb10-2" data-line-number="2">  <span class="kw"><a href="../reference/plot_data_histogram.html">plot_data_histogram</a></span>(x, <span class="dt">which =</span> <span class="st">'CCF'</span>),</a>
 <a class="sourceLine" id="cb10-3" data-line-number="3">  <span class="kw"><a href="../reference/plot_data_histogram.html">plot_data_histogram</a></span>(x_r, <span class="dt">which =</span> <span class="st">'CCF'</span>),</a>
 <a class="sourceLine" id="cb10-4" data-line-number="4">  <span class="dt">nrow =</span> <span class="dv">1</span></a>
-<a class="sourceLine" id="cb10-5" data-line-number="5">)</a></code></pre></div>
+<a class="sourceLine" id="cb10-5" data-line-number="5">)</a>
+<a class="sourceLine" id="cb10-6" data-line-number="6"><span class="co">#&gt; Scale for 'fill' is already present. Adding another scale for 'fill', which</span></a>
+<a class="sourceLine" id="cb10-7" data-line-number="7"><span class="co">#&gt; will replace the existing scale.</span></a>
+<a class="sourceLine" id="cb10-8" data-line-number="8"><span class="co">#&gt; Scale for 'fill' is already present. Adding another scale for 'fill', which</span></a>
+<a class="sourceLine" id="cb10-9" data-line-number="9"><span class="co">#&gt; will replace the existing scale.</span></a></code></pre></div>
 <p><img src="a4_ccf_computation_files/figure-html/unnamed-chunk-10-1.png" width="768"></p>
 </div>
 <div id="decreasing-sequencing-coverage" class="section level2">
@@ -307,17 +317,17 @@ H(x) = - p_x \log(p_x)
 <a class="sourceLine" id="cb11-4" data-line-number="4">  x<span class="op">$</span>purity)</a>
 <a class="sourceLine" id="cb11-5" data-line-number="5"><span class="co">#&gt;  [ CNAqc - CNA Quality Check ]</span></a>
 <a class="sourceLine" id="cb11-6" data-line-number="6"><span class="co">#&gt; ℹ Using reference genome coordinates for: GRCh38.</span></a>
-<a class="sourceLine" id="cb11-7" data-line-number="7"><span class="co">#&gt; ℹ Input n = 13141 mutations for 267 CNA segments (267 clonal, 0 subclonal)</span></a>
-<a class="sourceLine" id="cb11-8" data-line-number="8"><span class="co">#&gt; ✓ Mapped n = 12963 mutations to clonal segments (99% of input)</span></a>
+<a class="sourceLine" id="cb11-7" data-line-number="7"><span class="co">#&gt; ℹ Input n = 12963 mutations for 267 CNA segments (267 clonal, 0 subclonal)</span></a>
+<a class="sourceLine" id="cb11-8" data-line-number="8"><span class="co">#&gt; ✓ Mapped n = 12963 mutations to clonal segments (100% of input)</span></a>
 <a class="sourceLine" id="cb11-9" data-line-number="9"></a>
 <a class="sourceLine" id="cb11-10" data-line-number="10"><span class="co"># Recompute CCF values</span></a>
 <a class="sourceLine" id="cb11-11" data-line-number="11">y_e =<span class="st"> </span><span class="kw"><a href="../reference/compute_CCF.html">compute_CCF</a></span>(x_s, <span class="dt">method =</span> <span class="st">'ENTROPY'</span>, <span class="dt">karyotypes =</span> <span class="st">'2:2'</span>)</a>
-<a class="sourceLine" id="cb11-12" data-line-number="12"><span class="co">#&gt; ── Computing mutation multiplicity for karyotype 2:2 using the entropy method. ───────────────────────────────────────────────────</span></a>
+<a class="sourceLine" id="cb11-12" data-line-number="12"><span class="co">#&gt; ── Computing mutation multiplicity for karyotype 2:2 using the entropy method. ───────────────────────────────────────────────────────</span></a>
 <a class="sourceLine" id="cb11-13" data-line-number="13"><span class="co">#&gt; ℹ Expected Binomial peak(s) for these calls (1 and 2 copies): 0.235449735449735 and 0.470899470899471</span></a>
 <a class="sourceLine" id="cb11-14" data-line-number="14"><span class="co">#&gt; ℹ Mixing pre/ post aneuploidy: 0.1 and 0.9</span></a>
 <a class="sourceLine" id="cb11-15" data-line-number="15"><span class="co">#&gt; ℹ Not assignamble area: [0.258823529411765; 0.388235294117647]</span></a>
 <a class="sourceLine" id="cb11-16" data-line-number="16">y_r =<span class="st"> </span><span class="kw"><a href="../reference/compute_CCF.html">compute_CCF</a></span>(x_s, <span class="dt">method =</span> <span class="st">'ROUGH'</span>, <span class="dt">karyotypes =</span> <span class="st">'2:2'</span>)</a>
-<a class="sourceLine" id="cb11-17" data-line-number="17"><span class="co">#&gt; ── Computing mutation multiplicity for karyotype 2:2 using raw VAF cuts. ─────────────────────────────────────────────────────────</span></a>
+<a class="sourceLine" id="cb11-17" data-line-number="17"><span class="co">#&gt; ── Computing mutation multiplicity for karyotype 2:2 using raw VAF cuts. ─────────────────────────────────────────────────────────────</span></a>
 <a class="sourceLine" id="cb11-18" data-line-number="18"><span class="co">#&gt; ℹ Expected Binomial peak(s) for these calls (1 and 2 copies): 0.235449735449735 and 0.470899470899471.</span></a>
 <a class="sourceLine" id="cb11-19" data-line-number="19"><span class="co">#&gt; ℹ Mutations per peak: n = 717, n = 6412. The hard cut is t = 0.259130119839897.</span></a>
 <a class="sourceLine" id="cb11-20" data-line-number="20"></a>

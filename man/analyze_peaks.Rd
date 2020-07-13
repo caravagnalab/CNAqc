@@ -8,9 +8,12 @@ analyze_peaks(
   x,
   karyotypes = c("1:0", "1:1", "2:1", "2:0", "2:2"),
   min_karyotype_size = 0.05,
+  min_absolute_karyotype_mutations = 50,
   p_binsize_peaks = 0.005,
   matching_epsilon = 0.025,
-  kernel_adjust = 1
+  n_bootstrap = 1,
+  kernel_adjust = 1,
+  matching_strategy = "closest"
 )
 }
 \arguments{
@@ -24,6 +27,10 @@ diploid regions (AB), and amplification regions (AAB, AABB). These correspond to
 the number of input mutations). Karyotypes smaller than this value are removed
 from analysis.}
 
+\item{min_absolute_karyotype_mutations}{As \code{min_karyotype_size} this imposes a
+minimum number of mutations on a karyotype to be analysed (in absolute number of
+mutations). Karyotypes smaller than this value are removed from analysis.}
+
 \item{p_binsize_peaks}{Peaks detected will be filtered if, in a peak, we map
 less than \code{p_binsize_peaks * N} mutations. The value \code{N} is obtained
 couting all mutations that map in all peaks.}
@@ -33,8 +40,19 @@ left and right. By default (\code{0.025}) a maxium 5\% tolerance is adopted. The
 overall PASS/ FAIL for this analysis is determined with the same tolerance, given the score
 computed across all karyotypes.}
 
+\item{n_bootstrap}{Number of times peak detection is bootstrapped (this helps sometimes
+finding peaks that might be visually observable but fail to be detected by the underlying
+peak detection heuristic). The default of this parameter is 1, meaning that no bootstrap
+is performed.}
+
 \item{kernel_adjust}{KDE adjust density parameter; see \code{density}. A Gaussian
 kernel is used (\code{kernel = 'gaussian'}).}
+
+\item{matching_strategy}{If \code{"closest"}, the closest peak will be used to
+match the expected peak. If \code{"rightmost"}, peaks are matched prioritizing
+right to left peaks (the higher get matched first); this strategy is more correct
+in principle but works only if there are no spurious peaks in the estimated
+density. By defaule the first strategy is used.}
 }
 \value{
 An object of class \code{cnaqc}, modified to hold the results from this analysis.
@@ -59,4 +77,8 @@ x = analyze_peaks(x)
 print(x)
 
 print(x$peaks_analysis)
+
+
+x = analyze_peaks(x, matching_strategy = "rightmost")
+print(x)
 }

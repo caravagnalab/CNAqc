@@ -156,18 +156,23 @@ analyze_peaks = function(x,
       AB = as.numeric(strsplit(k, ':')[[1]])
       expectation = CNAqc:::expected_vaf_peak(AB[1], AB[2], tumour_purity)
 
-      # Bootstrap function - k is a fake parameter
-      pd = function(w)
+      # Bootstrap function - w is a fake parameter, the N total
+      # is used meaning that if N==1 no bootstrap is computed
+      pd = function(w, n_boot)
       {
         w = qc_snvs %>%
           dplyr::filter(karyotype == k)
+
+        # Bootstrap only if multiple samples are required
+        data_input = w
+        if(n_boot > 1)
+          data_input = w %>% dplyr::sample_n(size = nrow(w), replace = TRUE)
 
         run_results = NULL
 
         if(matching_strategy == "rightmost")
           run_results = CNAqc:::peak_detector(
-            snvs = w %>%
-              dplyr::sample_n(size = nrow(w), replace = TRUE),
+            snvs = data_input,
             expectation = expectation,
             tumour_purity = tumour_purity,
             filtered_qc_snvs = filtered_qc_snvs,
@@ -178,8 +183,7 @@ analyze_peaks = function(x,
 
         if(matching_strategy == "closest")
           run_results = CNAqc:::peak_detector_closest_hit_match(
-            snvs = w %>%
-              dplyr::sample_n(size = nrow(w), replace = TRUE),
+            snvs = data_input,
             expectation = expectation,
             tumour_purity = tumour_purity,
             filtered_qc_snvs = filtered_qc_snvs,
@@ -194,7 +198,7 @@ analyze_peaks = function(x,
       # Sample "n_bootstrap" times via the bootstrap
       if(n_bootstrap < 0) n_bootstrap = 1
 
-      best_peaks = lapply(1:n_bootstrap, pd)
+      best_peaks = lapply(1:n_bootstrap, pd, n_boot = n_bootstrap)
       best_score = which.min(sapply(best_peaks, function(w)
         w$matching$weight %*% w$matching$offset))
       best_score = best_score[]

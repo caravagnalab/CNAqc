@@ -55,5 +55,22 @@ purity_estimation_fun = function(v, m, M, mut.allele = 1)
 #
 # purity_estimation_fun(v = .06, m = 1, M = 1, mut.allele = 1)
 
+# Compute VAF values from CCF and mutation multiplicity
+# m - minor allele
+# M - Major allele
+# p - purity
+# mut.allele - mutation multiplicity
+vaf_from_ccf = function(ccf, m, M, p, mut.allele = 1)
+{
+  CN = as.numeric(m) + as.numeric(M)
+  ccf = as.numeric(ccf)
+  p = as.numeric(p)
+  mut.allele = as.numeric(mut.allele)
 
+  (mut.allele * p * ccf)/((CN-2) * p + 2)
+}
+
+vaf_from_ccf(1, 1, 1, 1, 1)
+vaf_from_ccf(.3, 1, 1, 1, 1)
+vaf_from_ccf(1, 1, 2, 1, 1)
 

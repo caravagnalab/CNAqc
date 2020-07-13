@@ -115,7 +115,11 @@
     
     
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(CNAqc)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="co">#&gt; ✓ Loading CNAqc, 'Copy Number Alteration quality check'. Support : &lt;https://caravagn.github.io/CNAqc/&gt;</span></a></code></pre></div>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="co">#&gt; Warning: package 'tibble' was built under R version 3.6.2</span></a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="co">#&gt; Warning: package 'tidyr' was built under R version 3.6.2</span></a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="co">#&gt; Warning: package 'purrr' was built under R version 3.6.2</span></a>
+<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="co">#&gt; Warning: package 'ggpubr' was built under R version 3.6.2</span></a>
+<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="co">#&gt; ✓ Loading CNAqc, 'Copy Number Alteration quality check'. Support : &lt;https://caravagn.github.io/CNAqc/&gt;</span></a></code></pre></div>
 <p>We work with the template dataset.</p>
 <pre><code>#&gt;  [ CNAqc - CNA Quality Check ]
 #&gt; 
@@ -128,7 +132,7 @@
 <p>The default value of <span class="math inline">\(\delta = 10^6\)</span> (1 megabase).</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="co"># Before smoothing</span></a>
 <a class="sourceLine" id="cb3-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(x)</a>
-<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co">#&gt; ── [ CNAqc ]  n = 13141 mutations in 267 segments (267 clonal + 0 subclonal). Genome reference: hg19. ────────────────────────────</span></a>
+<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co">#&gt; ── [ CNAqc ]  n = 12963 mutations in 267 segments (267 clonal + 0 subclonal). Genome reference: hg19. ────────────────────────────────</span></a>
 <a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co">#&gt;    2:2  [n = 7478] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { chr19:15292495:15292496:G:A }</span></a>
 <a class="sourceLine" id="cb3-6" data-line-number="6"><span class="co">#&gt;    4:2  [n = 1893] ■■■■■■■</span></a>
@@ -187,13 +191,13 @@
 <a class="sourceLine" id="cb3-59" data-line-number="59"><span class="co">#&gt; ℹ Creating a new CNAqc object. The old object will be retained in the $before_smoothing field.</span></a>
 <a class="sourceLine" id="cb3-60" data-line-number="60"><span class="co">#&gt;  [ CNAqc - CNA Quality Check ]</span></a>
 <a class="sourceLine" id="cb3-61" data-line-number="61"><span class="co">#&gt; ℹ Using reference genome coordinates for: GRCh38.</span></a>
-<a class="sourceLine" id="cb3-62" data-line-number="62"><span class="co">#&gt; ℹ Input n = 13141 mutations for 87 CNA segments (87 clonal, 0 subclonal)</span></a>
+<a class="sourceLine" id="cb3-62" data-line-number="62"><span class="co">#&gt; ℹ Input n = 12963 mutations for 87 CNA segments (87 clonal, 0 subclonal)</span></a>
 <a class="sourceLine" id="cb3-63" data-line-number="63"><span class="co">#&gt; Warning in map_mutations_to_segments(snvs, cna %&gt;% filter(CCF == 1)): [CNAqc] a</span></a>
 <a class="sourceLine" id="cb3-64" data-line-number="64"><span class="co">#&gt; karyotype column is present in CNA calls, and will be overwritten</span></a>
-<a class="sourceLine" id="cb3-65" data-line-number="65"><span class="co">#&gt; ✓ Mapped n = 13025 mutations to clonal segments (99% of input)</span></a></code></pre></div>
+<a class="sourceLine" id="cb3-65" data-line-number="65"><span class="co">#&gt; ✓ Mapped n = 12963 mutations to clonal segments (100% of input)</span></a></code></pre></div>
 <p>The old obbject is retained inside the new one</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(x<span class="op">$</span>before_smoothing)</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co">#&gt; ── [ CNAqc ]  n = 13141 mutations in 267 segments (267 clonal + 0 subclonal). Genome reference: hg19. ────────────────────────────</span></a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co">#&gt; ── [ CNAqc ]  n = 12963 mutations in 267 segments (267 clonal + 0 subclonal). Genome reference: hg19. ────────────────────────────────</span></a>
 <a class="sourceLine" id="cb4-3" data-line-number="3"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb4-4" data-line-number="4"><span class="co">#&gt;    2:2  [n = 7478] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { chr19:15292495:15292496:G:A }</span></a>
 <a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co">#&gt;    4:2  [n = 1893] ■■■■■■■</span></a>
@@ -205,13 +209,13 @@
 <a class="sourceLine" id="cb4-11" data-line-number="11"></a>
 <a class="sourceLine" id="cb4-12" data-line-number="12"><span class="co"># The new has theoretically smaller segments</span></a>
 <a class="sourceLine" id="cb4-13" data-line-number="13"><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(x)</a>
-<a class="sourceLine" id="cb4-14" data-line-number="14"><span class="co">#&gt; ── [ CNAqc ]  n = 13141 mutations in 87 segments (87 clonal + 0 subclonal). Genome reference: GRCh38. ────────────────────────────</span></a>
+<a class="sourceLine" id="cb4-14" data-line-number="14"><span class="co">#&gt; ── [ CNAqc ]  n = 12963 mutations in 87 segments (87 clonal + 0 subclonal). Genome reference: GRCh38. ────────────────────────────────</span></a>
 <a class="sourceLine" id="cb4-15" data-line-number="15"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb4-16" data-line-number="16"><span class="co">#&gt;    2:2  [n = 7503] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { chr19:15292495:15292496:G:A }</span></a>
-<a class="sourceLine" id="cb4-17" data-line-number="17"><span class="co">#&gt;    4:2  [n = 1899] ■■■■■■■</span></a>
-<a class="sourceLine" id="cb4-18" data-line-number="18"><span class="co">#&gt;    3:2  [n = 1643] ■■■■■■</span></a>
-<a class="sourceLine" id="cb4-19" data-line-number="19"><span class="co">#&gt;    2:1  [n = 1571] ■■■■■■  { chr2:179431633:179431634:C:T }</span></a>
-<a class="sourceLine" id="cb4-20" data-line-number="20"><span class="co">#&gt;    3:0  [n =  317] ■</span></a>
+<a class="sourceLine" id="cb4-16" data-line-number="16"><span class="co">#&gt;    2:2  [n = 7478] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { chr19:15292495:15292496:G:A }</span></a>
+<a class="sourceLine" id="cb4-17" data-line-number="17"><span class="co">#&gt;    4:2  [n = 1893] ■■■■■■■</span></a>
+<a class="sourceLine" id="cb4-18" data-line-number="18"><span class="co">#&gt;    3:2  [n = 1625] ■■■■■■</span></a>
+<a class="sourceLine" id="cb4-19" data-line-number="19"><span class="co">#&gt;    2:1  [n = 1563] ■■■■■■  { chr2:179431633:179431634:C:T }</span></a>
+<a class="sourceLine" id="cb4-20" data-line-number="20"><span class="co">#&gt;    3:0  [n =  312] ■</span></a>
 <a class="sourceLine" id="cb4-21" data-line-number="21"><span class="co">#&gt; ℹ Sample Purity: 89% ~ Ploidy: 4.</span></a>
 <a class="sourceLine" id="cb4-22" data-line-number="22"><span class="co">#&gt; ℹ Mutations annotated have 3 drivers.</span></a>
 <a class="sourceLine" id="cb4-23" data-line-number="23"><span class="co">#&gt; ✓ These segments are smoothed; before smoothing there were 267 segments.</span></a></code></pre></div>

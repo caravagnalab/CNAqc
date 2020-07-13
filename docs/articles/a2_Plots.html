@@ -115,8 +115,12 @@
     
     
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(CNAqc)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="co">#&gt; ✓ Loading CNAqc, 'Copy Number Alteration quality check'. Support : &lt;https://caravagn.github.io/CNAqc/&gt;</span></a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span>(dplyr)</a></code></pre></div>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="co">#&gt; Warning: package 'tibble' was built under R version 3.6.2</span></a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="co">#&gt; Warning: package 'tidyr' was built under R version 3.6.2</span></a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="co">#&gt; Warning: package 'purrr' was built under R version 3.6.2</span></a>
+<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="co">#&gt; Warning: package 'ggpubr' was built under R version 3.6.2</span></a>
+<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="co">#&gt; ✓ Loading CNAqc, 'Copy Number Alteration quality check'. Support : &lt;https://caravagn.github.io/CNAqc/&gt;</span></a>
+<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span>(dplyr)</a></code></pre></div>
 <p>We work with the template dataset.</p>
 <pre><code>#&gt;  [ CNAqc - CNA Quality Check ]
 #&gt; 
@@ -173,7 +177,7 @@
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">y =<span class="st"> </span>CNAqc<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/CNAqc/man/init.html">init</a></span>(</a>
 <a class="sourceLine" id="cb9-2" data-line-number="2">  example_dataset_CNAqc<span class="op">$</span>snvs, </a>
 <a class="sourceLine" id="cb9-3" data-line-number="3">  example_dataset_CNAqc<span class="op">$</span>cna <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="st">    </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(</a>
+<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="st">    </span><span class="kw"><a href="https://rdrr.io/pkg/dplyr/man/mutate.html">mutate</a></span>(</a>
 <a class="sourceLine" id="cb9-5" data-line-number="5">      <span class="dt">Major =</span> <span class="kw"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span>(chr <span class="op">%in%</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"chr3"</span>, <span class="st">"chr4"</span>, <span class="st">"chr1"</span>), <span class="dv">1</span>, Major),</a>
 <a class="sourceLine" id="cb9-6" data-line-number="6">      <span class="dt">minor =</span> <span class="kw"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span>(chr <span class="op">%in%</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"chr3"</span>, <span class="st">"chr4"</span>, <span class="st">"chr1"</span>), <span class="dv">1</span>, minor)</a>
 <a class="sourceLine" id="cb9-7" data-line-number="7">      ),</a>
@@ -184,10 +188,11 @@
 <a class="sourceLine" id="cb9-12" data-line-number="12"><span class="co">#&gt; ℹ Drivers are annotated, but 'gene' column is missing, using mutation location.</span></a>
 <a class="sourceLine" id="cb9-13" data-line-number="13"><span class="co">#&gt; ! Missing CCF column from CNA calls, adding CCF = 1 assuming clonal CNA calls.</span></a>
 <a class="sourceLine" id="cb9-14" data-line-number="14"><span class="co">#&gt; ℹ Input n = 13141 mutations for 267 CNA segments (267 clonal, 0 subclonal)</span></a>
-<a class="sourceLine" id="cb9-15" data-line-number="15"><span class="co">#&gt; ✓ Mapped n = 12963 mutations to clonal segments (99% of input)</span></a>
-<a class="sourceLine" id="cb9-16" data-line-number="16"></a>
-<a class="sourceLine" id="cb9-17" data-line-number="17"><span class="co"># Comparative CNA plot</span></a>
-<a class="sourceLine" id="cb9-18" data-line-number="18"><span class="kw"><a href="../reference/plot_multisample_CNA.html">plot_multisample_CNA</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="st">`</span><span class="dt">Original</span><span class="st">`</span> =<span class="st"> </span>x, <span class="st">`</span><span class="dt">Copy</span><span class="st">`</span> =<span class="st"> </span>x, <span class="st">`</span><span class="dt">Faked_diploid</span><span class="st">`</span> =<span class="st"> </span>y))</a></code></pre></div>
+<a class="sourceLine" id="cb9-15" data-line-number="15"><span class="co">#&gt; x n = 178 mutations  cannot be mapped to segments and will be removed.</span></a>
+<a class="sourceLine" id="cb9-16" data-line-number="16"><span class="co">#&gt; ✓ Mapped n = 12963 mutations to clonal segments (100% of input)</span></a>
+<a class="sourceLine" id="cb9-17" data-line-number="17"></a>
+<a class="sourceLine" id="cb9-18" data-line-number="18"><span class="co"># Comparative CNA plot</span></a>
+<a class="sourceLine" id="cb9-19" data-line-number="19"><span class="kw"><a href="../reference/plot_multisample_CNA.html">plot_multisample_CNA</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="st">`</span><span class="dt">Original</span><span class="st">`</span> =<span class="st"> </span>x, <span class="st">`</span><span class="dt">Copy</span><span class="st">`</span> =<span class="st"> </span>x, <span class="st">`</span><span class="dt">Faked_diploid</span><span class="st">`</span> =<span class="st"> </span>y))</a></code></pre></div>
 <p><img src="a2_Plots_files/figure-html/unnamed-chunk-6-1.png" width="576"></p>
 </div>
 <div id="plotting-segments-summaries" class="section level2">
@@ -224,7 +229,21 @@
 <a class="sourceLine" id="cb12-5" data-line-number="5">  <span class="dt">ncol =</span> <span class="dv">3</span>,</a>
 <a class="sourceLine" id="cb12-6" data-line-number="6">  <span class="dt">nrow =</span> <span class="dv">1</span></a>
 <a class="sourceLine" id="cb12-7" data-line-number="7">  )</a>
-<a class="sourceLine" id="cb12-8" data-line-number="8"><span class="co">#&gt; Warning: Removed 8 rows containing missing values (geom_bar).</span></a></code></pre></div>
+<a class="sourceLine" id="cb12-8" data-line-number="8"><span class="co">#&gt; Warning: Ignoring unknown parameters: ylim</span></a>
+<a class="sourceLine" id="cb12-9" data-line-number="9"><span class="co">#&gt; Warning: Ignoring unknown aesthetics: fill</span></a>
+<a class="sourceLine" id="cb12-10" data-line-number="10"><span class="co">#&gt; Scale for 'fill' is already present. Adding another scale for 'fill', which</span></a>
+<a class="sourceLine" id="cb12-11" data-line-number="11"><span class="co">#&gt; will replace the existing scale.</span></a>
+<a class="sourceLine" id="cb12-12" data-line-number="12"><span class="co">#&gt; Warning: Ignoring unknown parameters: ylim</span></a>
+<a class="sourceLine" id="cb12-13" data-line-number="13"></a>
+<a class="sourceLine" id="cb12-14" data-line-number="14"><span class="co">#&gt; Warning: Ignoring unknown aesthetics: fill</span></a>
+<a class="sourceLine" id="cb12-15" data-line-number="15"><span class="co">#&gt; Scale for 'fill' is already present. Adding another scale for 'fill', which</span></a>
+<a class="sourceLine" id="cb12-16" data-line-number="16"><span class="co">#&gt; will replace the existing scale.</span></a>
+<a class="sourceLine" id="cb12-17" data-line-number="17"><span class="co">#&gt; Warning: Ignoring unknown parameters: ylim</span></a>
+<a class="sourceLine" id="cb12-18" data-line-number="18"></a>
+<a class="sourceLine" id="cb12-19" data-line-number="19"><span class="co">#&gt; Warning: Ignoring unknown aesthetics: fill</span></a>
+<a class="sourceLine" id="cb12-20" data-line-number="20"><span class="co">#&gt; Scale for 'fill' is already present. Adding another scale for 'fill', which</span></a>
+<a class="sourceLine" id="cb12-21" data-line-number="21"><span class="co">#&gt; will replace the existing scale.</span></a>
+<a class="sourceLine" id="cb12-22" data-line-number="22"><span class="co">#&gt; Warning: Removed 8 rows containing missing values (geom_bar).</span></a></code></pre></div>
 <p><img src="a2_Plots_files/figure-html/unnamed-chunk-9-1.png" width="960"></p>
 <p>If you <a href="https://caravagn.github.io/CNAqc/articles/ccf_computation.html">compute Cancer Cell Fractions (CCF) values</a>, you can use <code><a href="../reference/plot_data_histogram.html">plot_data_histogram(x, which = 'CCF')</a></code> as well.</p>
 <div id="segment-specific-vaf-distribution" class="section level2">
@@ -237,7 +256,11 @@
 <p><img src="a2_Plots_files/figure-html/unnamed-chunk-10-1.png" width="1152"></p>
 <p>You can facet your data histograms and obtain a similar layout</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw"><a href="../reference/plot_data_histogram.html">plot_data_histogram</a></span>(x, <span class="dt">which =</span> <span class="st">'VAF'</span>) <span class="op">+</span><span class="st"> </span><span class="kw">facet_grid</span>(karyotype<span class="op">~</span>chr, <span class="dt">scales =</span> <span class="st">'free'</span>)</a>
-<a class="sourceLine" id="cb14-2" data-line-number="2"><span class="co">#&gt; Warning: Removed 88 rows containing missing values (geom_bar).</span></a></code></pre></div>
+<a class="sourceLine" id="cb14-2" data-line-number="2"><span class="co">#&gt; Warning: Ignoring unknown parameters: ylim</span></a>
+<a class="sourceLine" id="cb14-3" data-line-number="3"><span class="co">#&gt; Warning: Ignoring unknown aesthetics: fill</span></a>
+<a class="sourceLine" id="cb14-4" data-line-number="4"><span class="co">#&gt; Scale for 'fill' is already present. Adding another scale for 'fill', which</span></a>
+<a class="sourceLine" id="cb14-5" data-line-number="5"><span class="co">#&gt; will replace the existing scale.</span></a>
+<a class="sourceLine" id="cb14-6" data-line-number="6"><span class="co">#&gt; Warning: Removed 56 rows containing missing values (geom_bar).</span></a></code></pre></div>
 <p><img src="a2_Plots_files/figure-html/unnamed-chunk-11-1.png" width="2880"></p>
 </div>
 <div id="visualising-genome-wide-mutations-data" class="section level2">
@@ -254,7 +277,22 @@
 <a class="sourceLine" id="cb16-4" data-line-number="4">  <span class="kw"><a href="../reference/plot_gw_depth.html">plot_gw_depth</a></span>(x),</a>
 <a class="sourceLine" id="cb16-5" data-line-number="5">  <span class="kw"><a href="../reference/plot_gw_depth.html">plot_gw_depth</a></span>(x, <span class="dt">N =</span> <span class="dv">10000</span>),</a>
 <a class="sourceLine" id="cb16-6" data-line-number="6">  <span class="dt">ncol =</span> <span class="dv">1</span></a>
-<a class="sourceLine" id="cb16-7" data-line-number="7">)</a></code></pre></div>
+<a class="sourceLine" id="cb16-7" data-line-number="7">)</a>
+<a class="sourceLine" id="cb16-8" data-line-number="8"><span class="co">#&gt; Warning: Removed 24 rows containing missing values (geom_rect).</span></a>
+<a class="sourceLine" id="cb16-9" data-line-number="9"><span class="co">#&gt; Warning: Removed 24 rows containing missing values (geom_segment).</span></a>
+<a class="sourceLine" id="cb16-10" data-line-number="10"><span class="co">#&gt; Warning: Removed 1 rows containing missing values (geom_hline).</span></a>
+<a class="sourceLine" id="cb16-11" data-line-number="11"></a>
+<a class="sourceLine" id="cb16-12" data-line-number="12"><span class="co">#&gt; Warning: Removed 1 rows containing missing values (geom_hline).</span></a>
+<a class="sourceLine" id="cb16-13" data-line-number="13"><span class="co">#&gt; Warning: Removed 24 rows containing missing values (geom_rect).</span></a>
+<a class="sourceLine" id="cb16-14" data-line-number="14"><span class="co">#&gt; Warning: Removed 24 rows containing missing values (geom_segment).</span></a>
+<a class="sourceLine" id="cb16-15" data-line-number="15"><span class="co">#&gt; Warning: Removed 1 rows containing missing values (geom_hline).</span></a>
+<a class="sourceLine" id="cb16-16" data-line-number="16"></a>
+<a class="sourceLine" id="cb16-17" data-line-number="17"><span class="co">#&gt; Warning: Removed 1 rows containing missing values (geom_hline).</span></a>
+<a class="sourceLine" id="cb16-18" data-line-number="18"><span class="co">#&gt; Warning: Removed 24 rows containing missing values (geom_rect).</span></a>
+<a class="sourceLine" id="cb16-19" data-line-number="19"><span class="co">#&gt; Warning: Removed 24 rows containing missing values (geom_segment).</span></a>
+<a class="sourceLine" id="cb16-20" data-line-number="20"><span class="co">#&gt; Warning: Removed 1 rows containing missing values (geom_hline).</span></a>
+<a class="sourceLine" id="cb16-21" data-line-number="21"></a>
+<a class="sourceLine" id="cb16-22" data-line-number="22"><span class="co">#&gt; Warning: Removed 1 rows containing missing values (geom_hline).</span></a></code></pre></div>
 <p><img src="a2_Plots_files/figure-html/unnamed-chunk-13-1.png" width="768"></p>
 </div>
 </div>
@@ -274,7 +312,12 @@
 <a class="sourceLine" id="cb17-10" data-line-number="10">  <span class="dt">nrow =</span> <span class="dv">4</span>, </a>
 <a class="sourceLine" id="cb17-11" data-line-number="11">  <span class="dt">rel_heights =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(.<span class="dv">15</span>, <span class="fl">.15</span>, <span class="fl">.15</span>, <span class="fl">.8</span>))</a>
 <a class="sourceLine" id="cb17-12" data-line-number="12"><span class="co">#&gt; Scale for 'fill' is already present. Adding another scale for 'fill', which</span></a>
-<a class="sourceLine" id="cb17-13" data-line-number="13"><span class="co">#&gt; will replace the existing scale.</span></a></code></pre></div>
+<a class="sourceLine" id="cb17-13" data-line-number="13"><span class="co">#&gt; will replace the existing scale.</span></a>
+<a class="sourceLine" id="cb17-14" data-line-number="14"><span class="co">#&gt; Warning: Removed 24 rows containing missing values (geom_rect).</span></a>
+<a class="sourceLine" id="cb17-15" data-line-number="15"><span class="co">#&gt; Warning: Removed 24 rows containing missing values (geom_segment).</span></a>
+<a class="sourceLine" id="cb17-16" data-line-number="16"><span class="co">#&gt; Warning: Removed 1 rows containing missing values (geom_hline).</span></a>
+<a class="sourceLine" id="cb17-17" data-line-number="17"></a>
+<a class="sourceLine" id="cb17-18" data-line-number="18"><span class="co">#&gt; Warning: Removed 1 rows containing missing values (geom_hline).</span></a></code></pre></div>
 <p><img src="a2_Plots_files/figure-html/unnamed-chunk-14-1.png" width="912"></p>
 <p>This is actually done by the default S3 <code>plot</code> function, which includes both segments and data histograms</p>
 </div>
