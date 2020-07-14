@@ -91,7 +91,8 @@ smooth_segments = function(x, maximum_distance = 1e6)
   # Clean up the new segments table,
   x_new = CNAqc::init(x$snvs,
                       smoothed_segments %>% dplyr::select(-segment_id, -n),
-                      purity = x$purity)
+                      purity = x$purity,
+                      ref = x$reference_genome)
   x_new$before_smoothing = x
 
   return(x_new)
