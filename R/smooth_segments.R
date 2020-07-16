@@ -34,9 +34,9 @@ smooth_segments = function(x, maximum_distance = 1e6)
       next
     }
 
-    cat('\n')
-    cli::cli_alert_info("Smoothing {.field {chr}}: {.value {nrow(chr_segments)}} segments.")
-
+    # cat('\n')
+    # cli::cli_alert_info("Smoothing {.field {chr}}: {.value {nrow(chr_segments)}} segments.")
+    cat("Smoothing", crayon::blue(chr), "with", crayon::red(nrow(chr_segments)), "segments: ")
 
     # General case: read every segment, start from 1, index tracks where we
     # start merging, another points moves ahead to detect segments ot merge
@@ -81,11 +81,12 @@ smooth_segments = function(x, maximum_distance = 1e6)
       index = j + 1
     }
 
+    cat("\n")
 
   }
 
   cat('\n')
-  cli::cli_alert_success("Smoothed from {.value {nrow(segments)}} to {.value {nrow(smoothed_segments)}} segments with {.value {maximum_distance}} gap ...")
+  cli::cli_alert_success("Smoothed from {.value {nrow(segments)}} to {.value {nrow(smoothed_segments)}} segments with {.value {maximum_distance}} gap (bases).")
   cli::cli_alert_info("Creating a new CNAqc object. The old object will be retained in the $before_smoothing field.")
 
   # Clean up the new segments table,
