@@ -64,8 +64,35 @@ annotate_drivers_to_histogram = function(x, drivers_list, p, which)
 
   drivers_list$y = L$y.range[2] * .9
 
-  p =
-    p +
+  # This overwrites the fill in p, is generally wrong
+  # p =
+  #   p +
+  #   geom_vline(
+  #     data = drivers_list,
+  #     show.legend = FALSE,
+  #     aes(color = karyotype, xintercept = eval(parse(text = which))),
+  #     linetype = 'dashed',
+  #     size = .3
+  #   ) +
+  #   scale_color_manual(values = CNAqc:::get_karyotypes_colors(unique(drivers_list$karyotype))) +
+  #   geom_text(
+  #     data = drivers_list,
+  #     aes(
+  #       x = eval(parse(text = which)),
+  #       y = y,
+  #       label = driver_label,
+  #       fill = karyotype
+  #     ),
+  #     ylim = c(L$y.range[2] * .9, NA),
+  #     size = 2,
+  #     nudge_y = 0,
+  #     nudge_x = 0,
+  #     show.legend = FALSE
+  #   ) +
+  #     scale_fill_manual(values = CNAqc:::get_karyotypes_colors(unique(drivers_list$karyotype))) +
+  #     coord_cartesian(clip = 'off')
+  
+  p = p +
     geom_vline(
       data = drivers_list,
       show.legend = FALSE,
@@ -74,37 +101,21 @@ annotate_drivers_to_histogram = function(x, drivers_list, p, which)
       size = .3
     ) +
     scale_color_manual(values = CNAqc:::get_karyotypes_colors(unique(drivers_list$karyotype))) +
-    # ggrepel::geom_label_repel(
-    #   data = drivers_list,
-    #   aes(
-    #     x = eval(parse(text = which)),
-    #     y = y,
-    #     label = driver_label,
-    #     # color = karyotype
-    #   ),
-    #   color = 'red',
-    #   ylim = c(L$y.range[2] * .9, NA),
-    #   size = 2,
-    #   nudge_y = 0,
-    #   nudge_x = 0,
-    #   show.legend = FALSE
-    # )
-    geom_text(
+    ggrepel::geom_label_repel(
       data = drivers_list,
       aes(
         x = eval(parse(text = which)),
         y = y,
         label = driver_label,
-        fill = karyotype
       ),
-      ylim = c(L$y.range[2] * .9, NA),
+      color = 'white',
+      ylim = c(0, L$y.range[2] * .9),
       size = 2,
-      nudge_y = 0,
       nudge_x = 0,
       show.legend = FALSE
     ) +
-      scale_fill_manual(values = CNAqc:::get_karyotypes_colors(unique(drivers_list$karyotype))) +
-      coord_cartesian(clip = 'off')
+  coord_cartesian(clip = 'off')
+  
 
 
   return(p)
