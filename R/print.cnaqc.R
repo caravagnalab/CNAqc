@@ -100,7 +100,7 @@ bar_print_console = function(x, top = 5){
       drv = x$snvs %>% dplyr::filter(karyotype == b)
       if('is_driver' %in% colnames(x$snvs))
       {
-        drv = drv %>% dplyr::filter(is_driver) %>% pull(gene)
+        drv = drv %>% dplyr::filter(is_driver) %>% dplyr::pull(driver_label)
 
         if(length(drv) > 0)
           cat('  {', crayon::yellow(paste(drv, collapse = ', ')), '}')
