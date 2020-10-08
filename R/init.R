@@ -76,7 +76,7 @@ init = function(snvs, cna, purity, ref = "GRCh38")
 
   fit$snvs = input$snvs
   fit$cna = input$cna %>%
-    left_join(input$tab, by = 'segment_id')
+    dplyr::left_join(input$tab, by = 'segment_id')
 
   # Counts data
   fit$n_snvs = nrow(fit$snvs)
