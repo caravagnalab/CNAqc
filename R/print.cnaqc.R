@@ -78,6 +78,8 @@ print.cnaqc = function(x, ...)
 
 bar_print_console = function(x, top = 5){
   e = x$n_karyotype %>% sort(decreasing = T)
+  l =  round(x$l_karyotype/10^6, digits = 0)
+  
 
   width = options("width")$width/3 %>% round
   bars = (e/max(e) * width) %>% round
@@ -93,7 +95,7 @@ bar_print_console = function(x, top = 5){
     function(b)
     {
       cat(sprintf(' %*s ', label_width, b))
-      cat(sprintf(' [n = %*s] ', entries_width, e[b]))
+      cat(sprintf(' [n = %*s, L = %*s Mb] ', entries_width, e[b], entries_width, l[b]))
 
       cat(paste(rep("\u25A0", bars[b]), collapse = ''))
 
