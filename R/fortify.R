@@ -40,6 +40,20 @@ fortify_CNA_segments = function(x)
     else
       cli::cli_alert_info("Driver annotation is present in mutation data (is_driver), will be used in plotting.")
   }
+  
+  # Check chromosome format reference
+  if(!all(grepl("chr", x$chr))) 
+  {
+    cli::cli_alert_warning("CNA chromosomes should be in the format 'chr*', I will add a 'chr' prefix.")
+    x = x %>% 
+      rowwise() %>% 
+      mutate(chr = ifelse(
+        !grepl("chr", chr),
+        paste0('chr', chr),
+        chr
+      ))
+  }
+  
 
   return(tibble::as_tibble(x))
   # Supported formats
@@ -88,6 +102,19 @@ fortify_mutation_calls = function(x)
       x = x %>%
         dplyr::mutate(gene = paste(chr, from, to, ref, alt, sep = ':'))
     }
+  }
+  
+  # Check chromosome format reference
+  if(!all(grepl("chr", x$chr))) 
+  {
+    cli::cli_alert_warning("Mutation chromosomes should be in the format 'chr*', I will add a 'chr' prefix.")
+    x = x %>% 
+      rowwise() %>% 
+      mutate(chr = ifelse(
+        !grepl("chr", chr),
+        paste0('chr', chr),
+        chr
+      ))
   }
 
   return(tibble::as_tibble(x))
