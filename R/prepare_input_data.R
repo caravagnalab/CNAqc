@@ -6,7 +6,19 @@ prepare_input_data = function(snvs, cna, tumour_purity)
   stopifnot(tumour_purity > 0 |
               tumour_purity <= 1 | !is.na(tumour_purity))
 
-  snvs = fortify_mutation_calls(snvs)
+  # Input mutations
+  ref_nucleotides = c("A", "C", "T", "G")
+  alt_nucleotides = c("A", "C", "T", "G")
+  
+  snvs = fortify_mutation_calls(snvs) %>% 
+    mutate(
+      type = ifelse(
+        (ref %in% ref_nucleotides) & (alt %in% alt_nucleotides),
+        'SNV',
+        'indel'
+      )
+    )
+
   cna = fortify_CNA_segments(cna) %>%
     mutate(
       segment_id = paste(chr, from, to, Major, minor, CCF, sep = ':')
@@ -48,8 +60,6 @@ prepare_input_data = function(snvs, cna, tumour_purity)
 
   nsnvs = nrow(snvs)
   ncna = nrow(cna)
-
-
 
   # Tabular of mapping per segments (count)
   tab = snvs %>%

@@ -115,7 +115,8 @@ plot_VAF_data = function(x,
            "; VAF < 0.05 (5%) = ",
            sum(x$snvs$VAF < 0.05)
          )) +
-    scale_fill_manual(values = CNAqc:::get_karyotypes_colors(unique(raw_muts$karyotype)))
+    scale_fill_manual(values = CNAqc:::get_karyotypes_colors(unique(raw_muts$karyotype))) +
+    facet_wrap(~type, ncol = 1, scales = 'free_y')
 
 
 }

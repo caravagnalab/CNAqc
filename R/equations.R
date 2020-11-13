@@ -1,4 +1,10 @@
-#
+# Expected VAF for a mutation mapping to a clonal CNA segment
+# with certain minor/ Major alelles, with a number of copies (of the mutation)
+# fixed (either 1 or more), with a sample purity.
+# m - minor allele
+# M - Major allele
+# p - purity
+# mut.allele - mutation multiplicity
 expected_vaf_fun = function(m, M, mut.allele, p)
 {
   P = m+M
@@ -70,7 +76,7 @@ vaf_from_ccf = function(ccf, m, M, p, mut.allele = 1)
   (mut.allele * p * ccf)/((CN-2) * p + 2)
 }
 
-vaf_from_ccf(1, 1, 1, 1, 1)
-vaf_from_ccf(.3, 1, 1, 1, 1)
-vaf_from_ccf(1, 1, 2, 1, 1)
+# vaf_from_ccf(1, 1, 1, 1, 1)
+# vaf_from_ccf(.3, 1, 1, 1, 1)
+# vaf_from_ccf(1, 1, 2, 1, 1)
 

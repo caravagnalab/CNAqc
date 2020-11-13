@@ -54,9 +54,9 @@ init = function(snvs, cna, purity, ref = "GRCh38")
   fit$reference_genome = ref
   cli::cli_alert_info("Using reference genome coordinates for: {.field {ref}}.")
 
-  # Partse input
+  # Parse input
   input = CNAqc:::prepare_input_data(snvs, cna, purity)
-
+  
   # Remove CNA segments with NA Major/minor
   na_allele_Major = sapply(input$cna$Major, is.na)
   na_allele_minor = sapply(input$cna$minor, is.na)
