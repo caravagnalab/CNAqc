@@ -91,7 +91,7 @@ plot_peaks_fit = function(x, k)
       title = paste0("Karyotype ", snvs$karyotype[1]),
       subtitle = paste0('w = ', round(weight, 3), ' (n = ', nrow(snvs), ')'),
       y = 'KDE',
-      x = paste0("VAF (match: ", x$peaks_analysis$matching_strategy, ")")
+      x = bquote("VAF (" * bold(.(x$peaks_analysis$matching_strategy)) * ")")
     ) +
     theme(legend.position = 'bottom')  +
     xlim(0, 1)

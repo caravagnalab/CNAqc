@@ -40,10 +40,17 @@ plot_data_histogram = function(x,
   # By case
   plot_f = CNAqc:::eplot()
 
-  if (which == 'VAF') plot_f = CNAqc:::plot_VAF_data(x, karyotypes = karyotypes)
-  if (which == 'DP') plot_f = CNAqc:::plot_DP_data(x, karyotypes = karyotypes)
-  if (which == 'NV') plot_f = CNAqc:::plot_NV_data(x, karyotypes = karyotypes)
-  if (which == 'CCF') plot_f = CNAqc:::plot_CCF_data(x, karyotypes = karyotypes)
+  if (which == 'VAF') plot_f = CNAqc:::plot_VAF_data(x, karyotypes = karyotypes) + 
+    facet_wrap(~type, ncol = 1, scales = 'free_y')
+  
+  if (which == 'DP') plot_f = CNAqc:::plot_DP_data(x, karyotypes = karyotypes) +
+    facet_wrap(~type, ncol = 1, scales = 'free_y')
+  
+  if (which == 'NV') plot_f = CNAqc:::plot_NV_data(x, karyotypes = karyotypes) +
+    facet_wrap(~type, ncol = 1, scales = 'free_y')
+  
+  if (which == 'CCF') plot_f = CNAqc:::plot_CCF_data(x, karyotypes = karyotypes) +
+    facet_wrap(~type, ncol = 1, scales = 'free_y')
 
   if(!CNAqc:::has_driver_data(x)) return(plot_f)
 
@@ -88,7 +95,7 @@ plot_CCF_data = function(x,
     geom_histogram(binwidth = 0.01) +
     xlim(0, max(ccf_data$CCF, na.rm = T) %>% ceiling) +
     CNAqc:::my_ggplot_theme() +
-    labs(title = paste0("CCF (", meth, ')'),
+    labs(title = bquote("CCF (" * bold(.(meth)) * ')'),
          caption = paste0("n = ", nrow(ccf_data))) +
     scale_fill_manual(values = CNAqc:::get_karyotypes_colors(unique(ccf_data$karyotype)))
 }
@@ -108,17 +115,14 @@ plot_VAF_data = function(x,
     geom_histogram(binwidth = 0.01) +
     xlim(0, 1) +
     CNAqc:::my_ggplot_theme() +
-    labs(title = "Raw VAF",
+    labs(title = "VAF",
          caption = paste0(
            "n = ",
            nrow(raw_muts),
            "; VAF < 0.05 (5%) = ",
            sum(x$snvs$VAF < 0.05)
          )) +
-    scale_fill_manual(values = CNAqc:::get_karyotypes_colors(unique(raw_muts$karyotype))) +
-    facet_wrap(~type, ncol = 1, scales = 'free_y')
-
-
+    scale_fill_manual(values = CNAqc:::get_karyotypes_colors(unique(raw_muts$karyotype))) 
 }
 
 # Plot the same for DP
