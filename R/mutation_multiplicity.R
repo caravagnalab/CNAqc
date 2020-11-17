@@ -567,7 +567,8 @@ plot_mutation_multiplicity_entropy = function(x, karyotype)
   # Mono-peak
   magnitude_plot = class_plot = entropy_plot = ggplot() + geom_blank()
 
-  colors = wesanderson::wes_palette("Royal1", n = 3, type = 'discrete')
+  colors = RColorBrewer::brewer.pal(n = 3, palette = 'Set1')
+  # colors = wesanderson::wes_palette("Royal1", n = 3, type = 'discrete')
 
   if(!(karyotype %in% c('1:1', '1:0')))
   {
@@ -699,7 +700,8 @@ plot_mutation_multiplicity_rough = function(x, karyotype)
   # Mono-peak
   magnitude_plot = class_plot = entropy_plot = ggplot() + geom_blank()
 
-  colors = wesanderson::wes_palette("Zissou1", n = 3, type = 'discrete')[c(1,3)]
+  colors = RColorBrewer::brewer.pal(n = 3, palette = 'Set2')
+  # colors = wesanderson::wes_palette("Zissou1", n = 3, type = 'discrete')[c(1,3)]
 
   # piechart
   ns_counts = sum(is.na(snvs_k$mutation_multiplicity))
@@ -800,7 +802,8 @@ plot_mutation_multiplicity_rough_strip = function(x, karyotype)
   QC = computation$QC_table$QC
 
   # Mono-peak
-  colors = wesanderson::wes_palette("Zissou1", n = 3, type = 'discrete')[c(1,3)]
+  colors = RColorBrewer::brewer.pal(n = 3, palette = 'Set2')
+  # colors = wesanderson::wes_palette("Zissou1", n = 3, type = 'discrete')[c(1,3)]
 
   # Mutation plots
   med_coverage = median(snvs_k$DP, na.rm = TRUE)
@@ -848,7 +851,8 @@ plot_mutation_multiplicity_entropy_strip = function(x, karyotype)
   QC = computation$QC_table$QC
 
   # Mono-peak
-  colors = wesanderson::wes_palette("Royal1", n = 3, type = 'discrete')
+  colors = RColorBrewer::brewer.pal(n = 3, palette = 'Set1')
+  # colors = wesanderson::wes_palette("Royal1", n = 3, type = 'discrete')
 
   # Mutation plots
   med_coverage = median(snvs_k$DP, na.rm = TRUE)

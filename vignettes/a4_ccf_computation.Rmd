@@ -138,7 +138,6 @@ CCF(x) %>% select(VAF, mutation_multiplicity, CCF)
 
 The CCF analysis plot is a `ggpubr`-assembled figure, woith one line per karyotype.
 ```{r,fig.width=11, fig.height=10,warning=F}
-# Tibble
 plot_CCF(x)
 ```
 
