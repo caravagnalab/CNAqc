@@ -257,7 +257,7 @@ peak_detector_closest_hit_match = function(snvs,
     dplyr::bind_cols(Reduce(dplyr::bind_rows, matched_peaks))
 
   matching$offset = matching$peak - matching$x
-  matching$matched = matching$offset <= matching_epsilon
+  matching$matched = abs(matching$offset) <= matching_epsilon
   matching$weight = weight
 
   # Density estimated

@@ -57,3 +57,24 @@
 #'
 "example_dataset_CNAqc"
 
+#' Driver mutations released with the DriverDBv3 database
+#' \url{http://driverdb.tms.cmu.edu.tw/}
+#'
+#' @docType data
+#'
+#' @usage data(DriverDBv3)
+#'
+#' @format A tibble.
+#'
+#' @keywords datasets
+#'
+#' @references ??
+#'
+#' @examples
+#' data(DriverDBv3)
+#' DriverDBv3
+#'
+"DriverDBv3"
+
+
+

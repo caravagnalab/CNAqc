@@ -93,7 +93,7 @@ plot_CCF_data = function(x,
   ggplot(data = ccf_data,
          aes(CCF, fill = karyotype)) +
     geom_histogram(binwidth = 0.01) +
-    xlim(0, max(ccf_data$CCF, na.rm = T) %>% ceiling) +
+    xlim(-0.01, 0.01 + max(ccf_data$CCF, na.rm = T) %>% ceiling) +
     CNAqc:::my_ggplot_theme() +
     labs(title = bquote("CCF (" * bold(.(meth)) * ')'),
          caption = paste0("n = ", nrow(ccf_data))) +
@@ -113,7 +113,7 @@ plot_VAF_data = function(x,
 
   ggplot(data = raw_muts, aes(VAF, fill = karyotype)) +
     geom_histogram(binwidth = 0.01) +
-    xlim(0, 1) +
+    xlim(-0.01, 1.01) +
     CNAqc:::my_ggplot_theme() +
     labs(title = "VAF",
          caption = paste0(

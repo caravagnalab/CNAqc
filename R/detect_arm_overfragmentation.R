@@ -48,9 +48,9 @@ detect_arm_overfragmentation = function(x,
 
   # Extract the counts of segments sizes
   counts = clonal_cna %>%
-    group_by(chr, arm, smaller) %>%
-    summarise(n_short = n()) %>%
-    ungroup()
+    dplyr::group_by(chr, arm, smaller) %>%
+    dplyr::summarise(n_short = n()) %>%
+    dplyr::ungroup()
 
   # Detect overfragmentation exception - no short segments (will not compute)
   if (all(counts$smaller == FALSE)) {
@@ -62,8 +62,8 @@ detect_arm_overfragmentation = function(x,
   if (all(counts$smaller == TRUE))
   {
     counts = counts %>%
-      spread(smaller, n_short) %>%
-      rename(n_short = `TRUE`)
+      tidyr::spread(smaller, n_short) %>%
+      dplyr::rename(n_short = `TRUE`)
 
     # Force this in
     counts$n_long = 0
@@ -71,8 +71,8 @@ detect_arm_overfragmentation = function(x,
   else
   {
     counts = counts %>%
-      spread(smaller, n_short) %>%
-      rename(n_short = `TRUE`, n_long = `FALSE`)
+      tidyr::spread(smaller, n_short) %>%
+      dplyr::rename(n_short = `TRUE`, n_long = `FALSE`)
   }
 
   # NAs are 0s
@@ -88,9 +88,9 @@ detect_arm_overfragmentation = function(x,
 
   # Test only those entries with at least minimum_segments_for_testing segments
   testable = counts %>%
-    mutate(total_segments = n_short + n_long) %>%
-    mutate(testable = total_segments >= minimum_segments_for_testing) %>%
-    arrange(desc(testable), desc(total_segments))
+    dplyr::mutate(total_segments = n_short + n_long) %>%
+    dplyr::mutate(testable = total_segments >= minimum_segments_for_testing) %>%
+    dplyr::arrange(desc(testable), dplyr::desc(total_segments))
 
   # Test p-value
   N_tests = sum(testable$testable)
@@ -100,8 +100,8 @@ detect_arm_overfragmentation = function(x,
   )
 
   testable = testable %>%
-    rowwise() %>%
-    mutate(
+    dplyr::rowwise() %>%
+    dplyr::mutate(
       p_value = frequentist_test_fragmentation(
         n_short,
         n_long,

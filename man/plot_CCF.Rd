@@ -4,14 +4,21 @@
 \alias{plot_CCF}
 \title{Plot the CCF estimates in the data.}
 \usage{
-plot_CCF(x, strip = FALSE)
+plot_CCF(x, strip = FALSE, empty_plot = TRUE, assembly_plot = TRUE)
 }
 \arguments{
 \item{x}{An object of class \code{cnaqc}, where CCF have been computed using
 function `compute_CCF`.}
 
 \item{strip}{If \code{TRUE}, shows little detail and a strip horizontal plot.
-Otherwise it shows a detailed report (multiple rows).}
+Otherwise it shows a detailed report (multiple rows). This parameter is now 
+deprecated.}
+
+\item{empty_plot}{If data for one karyotype is missing, an empty plot is returned.
+Otherwise the plot is not returned (NULL is forwarded).}
+
+\item{assembly_plot}{If \code{TRUE}, a unique figure is returned with all the
+plots assembled. Otherwise a list of plot is returned.}
 }
 \value{
 A `ggpubr` figure of the CCF estimates.

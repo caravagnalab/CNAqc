@@ -401,7 +401,6 @@ mutmult_two_copies_entropy = function(x, karyotype)
       y = x
     )
 
-  xy_peaks
 
   if(nrow(xy_peaks) == 0) {
     cli::cli_alert_danger("No peaks detected for CCF computation, will not compute values for this karyotype.")
@@ -461,7 +460,10 @@ mutmult_two_copies_entropy = function(x, karyotype)
       mutation_multiplicity = case_when(VAF <= lp ~ '1',
                                         VAF > rp ~ '2',
                                         TRUE ~ 'NA'),
-      mutation_multiplicity = as.numeric(mutation_multiplicity),
+      mutation_multiplicity = ifelse(
+        !is.na(mutation_multiplicity) & mutation_multiplicity != "NA",
+        as.numeric(mutation_multiplicity),
+        NA),
       CCF = ifelse(
         !is.na(mutation_multiplicity),
         CNAqc:::ccf_adjustment_fun(VAF, B, A, x$purity, mutation_multiplicity),
@@ -556,344 +558,593 @@ mutmult_two_copies_rough = function(x, karyotype)
 }
 
 
+# plot_mutation_multiplicity_entropy = function(x, karyotype)
+# {
+#    # Process
+#   computation = x$CCF_estimates[[karyotype]]
+#   snvs_k = computation$mutations
+# 
+#   QC = computation$QC_table$QC
+# 
+#   # Mono-peak
+#   magnitude_plot = class_plot = entropy_plot = ggplot() + geom_blank()
+# 
+#   colors = RColorBrewer::brewer.pal(n = 3, name = 'Set1')
+#   # colors = wesanderson::wes_palette("Royal1", n = 3, type = 'discrete')
+# 
+#   if(!(karyotype %in% c('1:1', '1:0')))
+#   {
+#     # Double peaks
+#     joint = computation$params$joint
+# 
+#     lp = computation$params$cuts[1]
+#     rp = computation$params$cuts[2]
+# 
+#     # Entropy plot
+#     entropy_plot = ggplot(joint) +
+#       geom_line(aes(x = x, y = entropy), color = 'black', size = .3) +
+#       geom_vline(
+#         xintercept = c(lp, rp),
+#         color = 'red',
+#         linetype = 'dashed',
+#         size = .3
+#       ) +
+#       CNAqc:::my_ggplot_theme() +
+#       labs(
+#         title = bquote("NA in [" * .(round(lp, 2)) * '; ' * .(round(rp, 2)) * ']'),
+#         y = 'Profile',
+#         x = bquote('Entropy H(x)')
+#       )
+# 
+#   } # end: with multiple peaks
+# 
+#   # piechart
+#   ns_counts = sum(is.na(snvs_k$mutation_multiplicity))
+# 
+#   pieplot = snvs_k %>%
+#     dplyr::group_by(mutation_multiplicity) %>%
+#     dplyr::summarise(n = n()) %>%
+#     dplyr::mutate(mutation_multiplicity = paste0(mutation_multiplicity)) %>%
+#     ggplot(
+#       aes(x = 1, y = n, fill = mutation_multiplicity)
+#     ) +
+#     geom_bar(stat = 'identity') +
+#     CNAqc:::my_ggplot_theme() +
+#     scale_fill_manual(values = colors) +
+#     labs(
+#       y = paste0(''),
+#       title = paste0("Assignments (NA = ", ns_counts, ")")
+#     ) +
+#     coord_polar(theta = 'y') +
+#     theme(
+#       axis.title.y = element_blank(),
+#       axis.ticks.y = element_blank(),
+#       axis.text.y = element_blank()
+#       ) +
+#     guides(color = FALSE, fill = guide_legend('Copies'))
+# 
+# 
+#   # Mutation plots
+#   med_coverage = median(snvs_k$DP, na.rm = TRUE)
+# 
+#   mutation_plot = ggplot(snvs_k, aes(VAF, y = ..count.. / sum(..count..))) +
+#     geom_histogram(binwidth = 0.01, aes(fill = paste(mutation_multiplicity))) +
+#     xlim(0, 1) +
+#     CNAqc:::my_ggplot_theme() +
+#     scale_color_manual(values = colors) +
+#     scale_fill_manual(values = colors) +
+#     guides(color = FALSE, fill = guide_legend('Copies')) +
+#     labs(
+#       y = paste0('Density (', med_coverage, 'x)'),
+#       title = paste0("Mutation multiplicity")
+#     )
+# 
+#   if (!(karyotype %in% c('1:1', '1:0')))
+#   {
+#     lp = computation$params$cuts[1]
+#     rp = computation$params$cuts[2]
+# 
+#     # d_12 = computation$params$d_12
+#     # rg_12 = computation$params$rg_12
+#     expectation = computation$params$expectation
+# 
+#     mutation_plot = mutation_plot +
+#       geom_vline(
+#         data = expectation,
+#         size = .7,
+#         linetype = 'dashed',
+#         color = 'steelblue',
+#         aes(xintercept = peak, color = label)
+#       ) +
+#       geom_vline(
+#         xintercept = c(lp, rp),
+#         color = 'red',
+#         linetype = 'dashed',
+#         size = .3
+#       )
+#     }
+# 
+#   # CCF plots
+#   CCF_plot = ggplot(snvs_k, aes(CCF, y = ..count.. / sum(..count..))) +
+#     geom_histogram(bins = 100, aes(fill = paste(mutation_multiplicity))) +
+#     CNAqc:::my_ggplot_theme() +
+#     scale_color_manual(values = colors) +
+#     scale_fill_manual(values = colors) +
+#     guides(color = FALSE, fill = guide_legend('Copies')) +
+#     labs(y = paste0('Density'),
+#          title = paste0("CCF for ", karyotype)) +
+#     xlim(0, NA)
+# 
+#   # Plot assembly
+#   # panel = ggpubr::ggarrange(mutation_plot, CCF_plot, pieplot, ncol = 3, nrow = 1, common.legend = T, legend = 'bottom')
+# 
+#   figure = cowplot::plot_grid(
+#     qc_plot(CCF_plot, QC),
+#     mutation_plot,
+#     entropy_plot,
+#     pieplot,
+#     align = 'h',
+#     axis = 'b',
+#     ncol = 4
+#   )
+# 
+#   return(figure)
+# }
+
 plot_mutation_multiplicity_entropy = function(x, karyotype)
 {
-   # Process
+  method = x$CCF_estimates[[1]]$QC_table$method
+  
+  # Process
   computation = x$CCF_estimates[[karyotype]]
-  snvs_k = computation$mutations
-
+  snvs_k = computation$mutations %>% 
+    dplyr::mutate(karyotype = paste(karyotype, method))
+  
   QC = computation$QC_table$QC
-
+  
   # Mono-peak
   magnitude_plot = class_plot = entropy_plot = ggplot() + geom_blank()
-
+  
   colors = RColorBrewer::brewer.pal(n = 3, name = 'Set1')
-  # colors = wesanderson::wes_palette("Royal1", n = 3, type = 'discrete')
-
-  if(!(karyotype %in% c('1:1', '1:0')))
-  {
-    # Double peaks
-    joint = computation$params$joint
-
-    lp = computation$params$cuts[1]
-    rp = computation$params$cuts[2]
-
-    # Entropy plot
-    entropy_plot = ggplot(joint) +
-      geom_line(aes(x = x, y = entropy), color = 'black', size = .3) +
-      geom_vline(
-        xintercept = c(lp, rp),
-        color = 'red',
-        linetype = 'dashed',
-        size = .3
-      ) +
-      CNAqc:::my_ggplot_theme() +
-      labs(
-        title = bquote("NA in [" * .(round(lp, 2)) * '; ' * .(round(rp, 2)) * ']'),
-        y = 'Profile',
-        x = bquote('Entropy H(x)')
-      )
-
-  } # end: with multiple peaks
-
-  # piechart
+  
+  # Join long
+  which_ccf = x$CCF_estimates %>% names
+  which_na = x$CCF_estimates %>% names
+  
+  ccf_label = paste0("CCF (",  snvs_k$karyotype[1], ')')
+  
   ns_counts = sum(is.na(snvs_k$mutation_multiplicity))
+  ns_counts = ns_counts / nrow(snvs_k)
+  ns_counts = format(ns_counts * 100, digits = 2)
+  
+  vaf_label = paste0("VAF (", ns_counts, '% NA', ')')
+  
+  join_ln = bind_rows(
+    tibble(
+      value = snvs_k$CCF,
+      Multiplicity = snvs_k$mutation_multiplicity
+    ) %>% mutate(var = ccf_label,
+                 x = row_number()),
+    tibble(
+      value = snvs_k$VAF,
+      Multiplicity = snvs_k$mutation_multiplicity
+    ) %>% mutate(var = vaf_label,
+                 x = row_number())
+  )
+  
+  QC_table = Reduce(bind_rows,
+                    lapply(x$CCF_estimates, function(w)
+                      w$QC_table)) %>%
+    filter(karyotype == !!karyotype) %>%
+    pull(QC)
+  
+  color = 'forestgreen'
+  if (QC_table == "FAIL")
+    color = 'indianred3'
 
-  pieplot = snvs_k %>%
-    dplyr::group_by(mutation_multiplicity) %>%
-    dplyr::summarise(n = n()) %>%
-    dplyr::mutate(mutation_multiplicity = paste0(mutation_multiplicity)) %>%
-    ggplot(
-      aes(x = 1, y = n, fill = mutation_multiplicity)
-    ) +
-    geom_bar(stat = 'identity') +
+  nccf = paste0("(n = ", sum(!is.na(snvs_k$CCF)), ')')
+  caption = bquote(bold(.(karyotype))~ .(nccf))
+  
+  oneplot = ggplot(join_ln, aes(value, y = ..count.. / sum(..count..))) +
+    geom_histogram(bins = 100, aes(fill = factor(Multiplicity))) +
     CNAqc:::my_ggplot_theme() +
-    scale_fill_manual(values = colors) +
-    labs(
-      y = paste0(''),
-      title = paste0("Assignments (NA = ", ns_counts, ")")
-    ) +
-    coord_polar(theta = 'y') +
-    theme(
-      axis.title.y = element_blank(),
-      axis.ticks.y = element_blank(),
-      axis.text.y = element_blank()
-      ) +
-    guides(color = FALSE, fill = guide_legend('Copies'))
-
-
-  # Mutation plots
-  med_coverage = median(snvs_k$DP, na.rm = TRUE)
-
-  mutation_plot = ggplot(snvs_k, aes(VAF, y = ..count.. / sum(..count..))) +
-    geom_histogram(binwidth = 0.01, aes(fill = paste(mutation_multiplicity))) +
-    xlim(0, 1) +
-    CNAqc:::my_ggplot_theme() +
-    scale_color_manual(values = colors) +
-    scale_fill_manual(values = colors) +
-    guides(color = FALSE, fill = guide_legend('Copies')) +
-    labs(
-      y = paste0('Density (', med_coverage, 'x)'),
-      title = paste0("Mutation multiplicity")
-    )
-
-  if (!(karyotype %in% c('1:1', '1:0')))
-  {
-    lp = computation$params$cuts[1]
-    rp = computation$params$cuts[2]
-
-    # d_12 = computation$params$d_12
-    # rg_12 = computation$params$rg_12
-    expectation = computation$params$expectation
-
-    mutation_plot = mutation_plot +
-      geom_vline(
-        data = expectation,
-        size = .7,
-        linetype = 'dashed',
-        color = 'steelblue',
-        aes(xintercept = peak, color = label)
-      ) +
-      geom_vline(
-        xintercept = c(lp, rp),
-        color = 'red',
-        linetype = 'dashed',
-        size = .3
-      )
-    }
-
-  # CCF plots
-  CCF_plot = ggplot(snvs_k, aes(CCF, y = ..count.. / sum(..count..))) +
-    geom_histogram(bins = 100, aes(fill = paste(mutation_multiplicity))) +
-    CNAqc:::my_ggplot_theme() +
-    scale_color_manual(values = colors) +
-    scale_fill_manual(values = colors) +
+    # scale_color_manual(values = colors) +
+    scale_fill_manual(values = colors, na.value = 'gray') +
     guides(color = FALSE, fill = guide_legend('Copies')) +
     labs(y = paste0('Density'),
-         title = paste0("CCF for ", karyotype)) +
-    xlim(0, NA)
-
-  # Plot assembly
-  # panel = ggpubr::ggarrange(mutation_plot, CCF_plot, pieplot, ncol = 3, nrow = 1, common.legend = T, legend = 'bottom')
-
-  figure = cowplot::plot_grid(
-    qc_plot(CCF_plot, QC),
-    mutation_plot,
-    entropy_plot,
-    pieplot,
-    align = 'h',
-    axis = 'b',
-    ncol = 4
-  )
-
-  return(figure)
+         title = caption) +
+    xlim(-0.01, NA) +
+    facet_wrap( ~ var, scales = 'free_x') +
+    # labs(caption = caption) +
+    # theme(plot.title = element_text(color = color)) +
+    theme(strip.background = element_rect(fill = color))
+  
+  
+  #
+  # oneplot +
+  #   ggrepel::geom_label_repel(
+  #     data = ccf_qc %>% mutate(y = delta_points * (row_number()), fill = QC),
+  #     aes(x = x, y = max_y - y, label = paste(karyotype, QC)),
+  #     size = 2,
+  #     # fill = 'red',
+  #     color = 'purple4',
+  #     fill = 'yellow',
+  #     # fill = ifelse(ccf_qc$value == "PASS", "forestgreen", "indianred3"),
+  #     inherit.aes = F
+  #   )
+  
+  if (!(karyotype %in% c('1:1', '1:0')))
+  {
+    max_y = max(ggplot_build(oneplot)$data[[1]]$y)
+    
+    # Double peaks
+    joint = computation$params$joint
+    joint$entropy = joint$entropy / max(joint$entropy)
+    joint$entropy = joint$entropy * max_y
+    
+    lp = computation$params$cuts[1]
+    rp = computation$params$cuts[2]
+    
+    oneplot = oneplot +
+      geom_line(
+        data = joint %>% mutate(var = rev(join_ln$var)[1]),
+        aes(x = x, y = entropy),
+        color = 'azure4',
+        size = .5,
+        inherit.aes = T,
+        linetype = 'longdash'
+      ) +
+      geom_vline(
+        data = data.frame(xintercept = c(lp, rp)) %>% mutate(var = rev(join_ln$var)[1]),
+        aes(xintercept = xintercept),
+        color = 'chocolate2',
+        linetype = 'dashed',
+        size = .3
+      )
+    
+    # TODO: consider ..
+    # expectation = computation$params$expectation
+    #
+    # oneplot +
+    #   geom_vline(
+    #     data = expectation,
+    #     size = .7,
+    #     linetype = 'dashed',
+    #     color = 'steelblue',
+    #     aes(xintercept = peak, color = label)
+    #   ) +
+    #   geom_vline(
+    #     xintercept = c(lp, rp),
+    #     color = 'red',
+    #     linetype = 'dashed',
+    #     size = .3
+    #   )
+    
+  }
+  
+  
+  oneplot
+  
+  return(oneplot)
 }
+
+
+# plot_mutation_multiplicity_rough = function(x, karyotype)
+# {
+#   # Process
+#   computation = x$CCF_estimates[[karyotype]]
+#   snvs_k = computation$mutations
+# 
+#   QC = computation$QC_table$QC
+# 
+#   # Mono-peak
+#   magnitude_plot = class_plot = entropy_plot = ggplot() + geom_blank()
+# 
+#   colors = RColorBrewer::brewer.pal(n = 3, name = 'Set2')
+#   # colors = wesanderson::wes_palette("Zissou1", n = 3, type = 'discrete')[c(1,3)]
+# 
+#   # piechart
+#   ns_counts = sum(is.na(snvs_k$mutation_multiplicity))
+# 
+#   pieplot = snvs_k %>%
+#     dplyr::group_by(mutation_multiplicity) %>%
+#     dplyr::summarise(n = n()) %>%
+#     dplyr::mutate(mutation_multiplicity = paste0(mutation_multiplicity)) %>%
+#     ggplot(
+#       aes(x = 1, y = n, fill = mutation_multiplicity)
+#     ) +
+#     geom_bar(stat = 'identity') +
+#     CNAqc:::my_ggplot_theme() +
+#     scale_fill_manual(values = colors) +
+#     labs(
+#       y = paste0(''),
+#       title = paste0("Assignments (NA = ", ns_counts, ")")
+#     ) +
+#     coord_polar(theta = 'y') +
+#     theme(
+#       axis.title.y = element_blank(),
+#       axis.ticks.y = element_blank(),
+#       axis.text.y = element_blank()
+#     ) +
+#     guides(color = FALSE, fill = guide_legend('Copies'))
+# 
+# 
+#   # Mutation plots
+#   med_coverage = median(snvs_k$DP, na.rm = TRUE)
+#   cuts = computation$params$cuts
+# 
+#   mutation_plot = ggplot(snvs_k, aes(VAF, y = ..count.. / sum(..count..))) +
+#     geom_histogram(binwidth = 0.01, aes(fill = paste(mutation_multiplicity))) +
+#     xlim(0, 1) +
+#     CNAqc:::my_ggplot_theme() +
+#     scale_color_manual(values = colors) +
+#     scale_fill_manual(values = colors) +
+#     guides(color = FALSE, fill = guide_legend('Copies')) +
+#     labs(
+#       y = paste0('Density (', med_coverage, 'x)'),
+#       title = paste0("Mutation multiplicity")
+#     )
+#   if (!(karyotype %in% c('1:1', '1:0')))
+#   {
+#     lp = computation$params$cuts[1]
+#     rp = computation$params$cuts[2]
+# 
+#     # d_12 = computation$params$d_12
+#     # rg_12 = computation$params$rg_12
+#     expectation = computation$params$expectation
+# 
+#     mutation_plot = mutation_plot +
+#       geom_vline(
+#         data = expectation,
+#         size = .7,
+#         linetype = 'dashed',
+#         color = 'steelblue',
+#         aes(xintercept = peak, color = label)
+#       ) +
+#       geom_vline(xintercept = cuts, size = .3, linetype = 'dashed')
+# 
+#   }
+# 
+# 
+#   # CCF plots
+#   CCF_plot = ggplot(snvs_k, aes(CCF, y = ..count.. / sum(..count..))) +
+#     geom_histogram(bins = 100, aes(fill = paste(mutation_multiplicity))) +
+#     CNAqc:::my_ggplot_theme() +
+#     scale_color_manual(values = colors) +
+#     scale_fill_manual(values = colors) +
+#     guides(color = FALSE, fill = guide_legend('Copies')) +
+#     labs(y = paste0('Density'),
+#          title = paste0("CCF for ", karyotype)) +
+#     xlim(0, NA)
+# 
+#   # Plot assembly
+#   # panel = ggpubr::ggarrange(mutation_plot, CCF_plot, pieplot, ncol = 3, nrow = 1, common.legend = T, legend = 'bottom')
+# 
+#   figure = cowplot::plot_grid(
+#     qc_plot(CCF_plot, QC),
+#     mutation_plot,
+#     entropy_plot,
+#     pieplot,
+#     align = 'h',
+#     axis = 'b',
+#     ncol = 4
+#   )
+# 
+#   return(figure)
+# }
 
 plot_mutation_multiplicity_rough = function(x, karyotype)
 {
+  method = x$CCF_estimates[[1]]$QC_table$method
+  
+  # Process
+  computation = x$CCF_estimates[[karyotype]]
+  snvs_k = computation$mutations %>% 
+    dplyr::mutate(karyotype = paste(karyotype, method))
+  
   # Process
   computation = x$CCF_estimates[[karyotype]]
   snvs_k = computation$mutations
-
-  QC = computation$QC_table$QC
-
+  
   # Mono-peak
   magnitude_plot = class_plot = entropy_plot = ggplot() + geom_blank()
-
-  colors = RColorBrewer::brewer.pal(n = 3, name = 'Set2')
-  # colors = wesanderson::wes_palette("Zissou1", n = 3, type = 'discrete')[c(1,3)]
-
-  # piechart
+  
+  colors = RColorBrewer::brewer.pal(n = 3, name = 'Set1')
+  
+  # Join long
+  which_ccf = x$CCF_estimates %>% names
+  which_na = x$CCF_estimates %>% names
+  
+  ccf_label = paste0("CCF (",  snvs_k$karyotype[1], ')')
+  
   ns_counts = sum(is.na(snvs_k$mutation_multiplicity))
-
-  pieplot = snvs_k %>%
-    dplyr::group_by(mutation_multiplicity) %>%
-    dplyr::summarise(n = n()) %>%
-    dplyr::mutate(mutation_multiplicity = paste0(mutation_multiplicity)) %>%
-    ggplot(
-      aes(x = 1, y = n, fill = mutation_multiplicity)
-    ) +
-    geom_bar(stat = 'identity') +
+  ns_counts = ns_counts / nrow(snvs_k)
+  ns_counts = format(ns_counts * 100, digits = 2)
+  
+  vaf_label = paste0("VAF (", ns_counts, '% NA', ')')
+  
+  join_ln = bind_rows(
+    tibble(
+      value = snvs_k$CCF,
+      Multiplicity = snvs_k$mutation_multiplicity
+    ) %>% mutate(var = ccf_label,
+                 x = row_number()),
+    tibble(
+      value = snvs_k$VAF,
+      Multiplicity = snvs_k$mutation_multiplicity
+    ) %>% mutate(var = vaf_label,
+                 x = row_number())
+  )
+  
+  QC_table = Reduce(bind_rows,
+                    lapply(x$CCF_estimates, function(w)
+                      w$QC_table)) %>%
+    filter(karyotype == !!karyotype) %>%
+    pull(QC)
+  
+  color = 'forestgreen'
+  if (QC_table == "FAIL")
+    color = 'indianred3'
+  
+  nccf = paste0("(n = ", sum(!is.na(snvs_k$CCF)), ')')
+  caption = bquote(bold(.(karyotype))~ .(nccf))
+  
+  oneplot = ggplot(join_ln, aes(value, y = ..count.. / sum(..count..))) +
+    geom_histogram(bins = 100, aes(fill = factor(Multiplicity))) +
     CNAqc:::my_ggplot_theme() +
-    scale_fill_manual(values = colors) +
-    labs(
-      y = paste0(''),
-      title = paste0("Assignments (NA = ", ns_counts, ")")
-    ) +
-    coord_polar(theta = 'y') +
-    theme(
-      axis.title.y = element_blank(),
-      axis.ticks.y = element_blank(),
-      axis.text.y = element_blank()
-    ) +
-    guides(color = FALSE, fill = guide_legend('Copies'))
-
-
-  # Mutation plots
-  med_coverage = median(snvs_k$DP, na.rm = TRUE)
-  cuts = computation$params$cuts
-
-  mutation_plot = ggplot(snvs_k, aes(VAF, y = ..count.. / sum(..count..))) +
-    geom_histogram(binwidth = 0.01, aes(fill = paste(mutation_multiplicity))) +
-    xlim(0, 1) +
-    CNAqc:::my_ggplot_theme() +
-    scale_color_manual(values = colors) +
-    scale_fill_manual(values = colors) +
-    guides(color = FALSE, fill = guide_legend('Copies')) +
-    labs(
-      y = paste0('Density (', med_coverage, 'x)'),
-      title = paste0("Mutation multiplicity")
-    )
-  if (!(karyotype %in% c('1:1', '1:0')))
-  {
-    lp = computation$params$cuts[1]
-    rp = computation$params$cuts[2]
-
-    # d_12 = computation$params$d_12
-    # rg_12 = computation$params$rg_12
-    expectation = computation$params$expectation
-
-    mutation_plot = mutation_plot +
-      geom_vline(
-        data = expectation,
-        size = .7,
-        linetype = 'dashed',
-        color = 'steelblue',
-        aes(xintercept = peak, color = label)
-      ) +
-      geom_vline(xintercept = cuts, size = .3, linetype = 'dashed')
-
-  }
-
-
-  # CCF plots
-  CCF_plot = ggplot(snvs_k, aes(CCF, y = ..count.. / sum(..count..))) +
-    geom_histogram(bins = 100, aes(fill = paste(mutation_multiplicity))) +
-    CNAqc:::my_ggplot_theme() +
-    scale_color_manual(values = colors) +
-    scale_fill_manual(values = colors) +
+    # scale_color_manual(values = colors) +
+    scale_fill_manual(values = colors, na.value = 'gray') +
     guides(color = FALSE, fill = guide_legend('Copies')) +
     labs(y = paste0('Density'),
-         title = paste0("CCF for ", karyotype)) +
-    xlim(0, NA)
-
-  # Plot assembly
-  # panel = ggpubr::ggarrange(mutation_plot, CCF_plot, pieplot, ncol = 3, nrow = 1, common.legend = T, legend = 'bottom')
-
-  figure = cowplot::plot_grid(
-    qc_plot(CCF_plot, QC),
-    mutation_plot,
-    entropy_plot,
-    pieplot,
-    align = 'h',
-    axis = 'b',
-    ncol = 4
-  )
-
-  return(figure)
-}
-
-plot_mutation_multiplicity_rough_strip = function(x, karyotype)
-{
-  # Process
-  computation = x$CCF_estimates[[karyotype]]
-  snvs_k = computation$mutations
-
-  QC = computation$QC_table$QC
-
-  # Mono-peak
-  colors = RColorBrewer::brewer.pal(n = 3, name = 'Set2')
-  # colors = wesanderson::wes_palette("Zissou1", n = 3, type = 'discrete')[c(1,3)]
-
-  # Mutation plots
-  med_coverage = median(snvs_k$DP, na.rm = TRUE)
-  cuts = computation$params$cuts
-
-  mutation_plot = ggplot(snvs_k, aes(VAF, y = ..count.. / sum(..count..))) +
-    geom_histogram(binwidth = 0.01, aes(fill = paste(mutation_multiplicity))) +
-    xlim(0, 1) +
-    CNAqc:::my_ggplot_theme() +
-    scale_color_manual(values = colors) +
-    scale_fill_manual(values = colors) +
-    guides(color = FALSE, fill = guide_legend('Copies')) +
-    labs(
-      y = paste0('Density (', med_coverage, 'x)'),
-      title = paste0("Mutation multiplicity ", karyotype)
-    )
+         title = caption) +
+    xlim(-0.01, NA) +
+    facet_wrap( ~ var, scales = 'free_x') +
+    # labs(caption = caption) +
+    # theme(plot.title = element_text(color = color)) +
+    theme(strip.background = element_rect(fill = color))
+  
+  #
+  # oneplot +
+  #   ggrepel::geom_label_repel(
+  #     data = ccf_qc %>% mutate(y = delta_points * (row_number()), fill = QC),
+  #     aes(x = x, y = max_y - y, label = paste(karyotype, QC)),
+  #     size = 2,
+  #     # fill = 'red',
+  #     color = 'purple4',
+  #     fill = 'yellow',
+  #     # fill = ifelse(ccf_qc$value == "PASS", "forestgreen", "indianred3"),
+  #     inherit.aes = F
+  #   )
+  
   if (!(karyotype %in% c('1:1', '1:0')))
   {
-    lp = computation$params$cuts[1]
-    rp = computation$params$cuts[2]
-
-    expectation = computation$params$expectation
-
-    mutation_plot = mutation_plot +
+    expectation = computation$params$cuts
+    
+    oneplot = oneplot +
       geom_vline(
-        data = expectation,
-        size = .7,
+        data = data.frame(x = expectation) %>% mutate(var = rev(join_ln$var)[1]),
+        aes(xintercept = expectation),
+        size = .5,
         linetype = 'dashed',
-        color = 'steelblue',
-        aes(xintercept = peak, color = label)
-      ) +
-      geom_vline(xintercept = cuts, size = .3, linetype = 'dashed')
-
-  }
-
-  return(CNAqc:::qc_plot(mutation_plot, QC))
-}
-
-plot_mutation_multiplicity_entropy_strip = function(x, karyotype)
-{
-  # Process
-  computation = x$CCF_estimates[[karyotype]]
-  snvs_k = computation$mutations
-
-  QC = computation$QC_table$QC
-
-  # Mono-peak
-  colors = RColorBrewer::brewer.pal(n = 3, name = 'Set1')
-  # colors = wesanderson::wes_palette("Royal1", n = 3, type = 'discrete')
-
-  # Mutation plots
-  med_coverage = median(snvs_k$DP, na.rm = TRUE)
-
-  mutation_plot = ggplot(snvs_k, aes(VAF, y = ..count.. / sum(..count..))) +
-    geom_histogram(binwidth = 0.01, aes(fill = paste(mutation_multiplicity))) +
-    xlim(0, 1) +
-    CNAqc:::my_ggplot_theme() +
-    scale_color_manual(values = colors) +
-    scale_fill_manual(values = colors) +
-    guides(color = FALSE, fill = guide_legend('Copies')) +
-    labs(
-      y = paste0('Density (', med_coverage, 'x)'),
-      title = paste0("Mutation multiplicity ", karyotype)
-    )
-
-  if (!(karyotype %in% c('1:1', '1:0')))
-  {
-    lp = computation$params$cuts[1]
-    rp = computation$params$cuts[2]
-
-    expectation = computation$params$expectation
-
-    mutation_plot = mutation_plot +
-      geom_vline(
-        data = expectation,
-        size = .7,
-        linetype = 'dashed',
-        color = 'steelblue',
-        aes(xintercept = peak, color = label)
+        color = 'black',
+        inherit.aes = T
       ) +
       geom_vline(
-        xintercept = c(lp, rp),
-        color = 'red',
+        data = computation$params$expectation %>% mutate(var = rev(join_ln$var)[1]),
+        size = .7,
         linetype = 'dashed',
-        size = .3
-      )
+        color = 'gray',
+        aes(xintercept = peak, color = label)
+      ) 
   }
-
-  return(CNAqc:::qc_plot(mutation_plot, QC))
+  
+  oneplot
+  
+  return(oneplot)
 }
+
+
+# plot_mutation_multiplicity_rough_strip = function(x, karyotype)
+# {
+#   # Process
+#   computation = x$CCF_estimates[[karyotype]]
+#   snvs_k = computation$mutations
+# 
+#   QC = computation$QC_table$QC
+# 
+#   # Mono-peak
+#   colors = RColorBrewer::brewer.pal(n = 3, name = 'Set2')
+#   # colors = wesanderson::wes_palette("Zissou1", n = 3, type = 'discrete')[c(1,3)]
+# 
+#   # Mutation plots
+#   med_coverage = median(snvs_k$DP, na.rm = TRUE)
+#   cuts = computation$params$cuts
+# 
+#   mutation_plot = ggplot(snvs_k, aes(VAF, y = ..count.. / sum(..count..))) +
+#     geom_histogram(binwidth = 0.01, aes(fill = paste(mutation_multiplicity))) +
+#     xlim(0, 1) +
+#     CNAqc:::my_ggplot_theme() +
+#     scale_color_manual(values = colors) +
+#     scale_fill_manual(values = colors) +
+#     guides(color = FALSE, fill = guide_legend('Copies')) +
+#     labs(
+#       y = paste0('Density (', med_coverage, 'x)'),
+#       title = paste0("Mutation multiplicity ", karyotype)
+#     )
+#   if (!(karyotype %in% c('1:1', '1:0')))
+#   {
+#     lp = computation$params$cuts[1]
+#     rp = computation$params$cuts[2]
+# 
+#     expectation = computation$params$expectation
+# 
+#     mutation_plot = mutation_plot +
+#       geom_vline(
+#         data = expectation,
+#         size = .7,
+#         linetype = 'dashed',
+#         color = 'steelblue',
+#         aes(xintercept = peak, color = label)
+#       ) +
+#       geom_vline(xintercept = cuts, size = .3, linetype = 'dashed')
+# 
+#   }
+# 
+#   return(CNAqc:::qc_plot(mutation_plot, QC))
+# }
+
+# plot_mutation_multiplicity_entropy_strip = function(x, karyotype)
+# {
+#   # Process
+#   computation = x$CCF_estimates[[karyotype]]
+#   snvs_k = computation$mutations
+# 
+#   QC = computation$QC_table$QC
+# 
+#   # Mono-peak
+#   colors = RColorBrewer::brewer.pal(n = 3, name = 'Set1')
+#   # colors = wesanderson::wes_palette("Royal1", n = 3, type = 'discrete')
+# 
+#   # Mutation plots
+#   med_coverage = median(snvs_k$DP, na.rm = TRUE)
+# 
+#   mutation_plot = ggplot(snvs_k, aes(VAF, y = ..count.. / sum(..count..))) +
+#     geom_histogram(binwidth = 0.01, aes(fill = paste(mutation_multiplicity))) +
+#     xlim(0, 1) +
+#     CNAqc:::my_ggplot_theme() +
+#     scale_color_manual(values = colors) +
+#     scale_fill_manual(values = colors) +
+#     guides(color = FALSE, fill = guide_legend('Copies')) +
+#     labs(
+#       y = paste0('Density (', med_coverage, 'x)'),
+#       title = paste0("Mutation multiplicity ", karyotype)
+#     )
+# 
+#   if (!(karyotype %in% c('1:1', '1:0')))
+#   {
+#     lp = computation$params$cuts[1]
+#     rp = computation$params$cuts[2]
+# 
+#     expectation = computation$params$expectation
+# 
+#     mutation_plot = mutation_plot +
+#       geom_vline(
+#         data = expectation,
+#         size = .7,
+#         linetype = 'dashed',
+#         color = 'steelblue',
+#         aes(xintercept = peak, color = label)
+#       ) +
+#       geom_vline(
+#         xintercept = c(lp, rp),
+#         color = 'red',
+#         linetype = 'dashed',
+#         size = .3
+#       )
+#   }
+# 
+#   return(CNAqc:::qc_plot(mutation_plot, QC))
+# }
 
 
 # Function to a border to a plot

@@ -85,7 +85,7 @@ analyze_peaks = function(x,
 
   filtered_qc_snvs = qc_snvs %>%
     dplyr::group_by(karyotype) %>%
-    summarise(n = n(), n_proportion = n() / x$n_snvs) %>%
+    dplyr::summarise(n = n(), n_proportion = n() / x$n_snvs, .groups = 'drop') %>%
     dplyr::arrange(desc(n)) %>%
     dplyr::mutate(QC = (n_proportion > min_karyotype_size) & n > min_absolute_karyotype_mutations)
 

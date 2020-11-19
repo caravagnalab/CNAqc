@@ -1,20 +1,20 @@
 expected_vaf_peak = function(major, minor, tumour_purity)
 {
-  require(tidyverse)
-
   karyotype = paste0(major, ':', minor)
   tumour_ploidy = major + minor
   mutation_multiplicities = unique(c(1, major))
+  
+  peaks = sapply(
+    mutation_multiplicities,
+    ascat,
+    tumour_purity = tumour_purity,
+    tumour_ploidy = tumour_ploidy
+  ) %>% unlist()
 
   data.frame(
     mutation_multiplicity = mutation_multiplicities,
     karyotype = karyotype,
-    peak = sapply(
-      mutation_multiplicities,
-      ascat,
-      tumour_purity = tumour_purity,
-      tumour_ploidy = tumour_ploidy
-    ),
+    peak =  peaks,
     stringsAsFactors = FALSE
   ) %>% as_tibble()
 }

@@ -7,6 +7,10 @@
 #'
 #' @param x An object of class \code{cnaqc}, where function \code{analyze_peaks} has
 #' been computed.
+#' @param empty_plot If data for one karyotype is missing, an empty plot is returned.
+#' Otherwise the plot is not returned (NULL is forwarded).
+#' @param assembly_plot If \code{TRUE}, a unique figure is returned with all the
+#' plots assembled. Otherwise a list of plot is returned.
 #'
 #' @return A \code{ggpubr} object for an assembled figure.
 #' @export
@@ -19,63 +23,100 @@
 #'
 #' x = analyze_peaks(x)
 #' plot_peaks_analysis(x)
-plot_peaks_analysis = function(x)
+plot_peaks_analysis = function(x,
+                               empty_plot = TRUE,
+                               assembly_plot = TRUE)
 {
   stopifnot(inherits(x, "cnaqc"))
-
+  
   with_peaks = all(!is.null(x$peaks_analysis))
   if (!with_peaks) {
     warning("Input does not have peaks, see ?peaks_analysis to run peaks analysis.")
     return(CNAqc:::eplot())
   }
-
+  
   karyotypes = x$peaks_analysis$fits %>% names
-
+  
   # Plot each one of the fits
   plots = lapply(karyotypes, function(k) {
     if (all(is.null(x$peaks_analysis$fits[[k]]$matching)))
-      return(CNAqc:::eplot())
-
-    return(suppressWarnings(suppressMessages(plot_peaks_fit(x, k))))
+    {
+      if (empty_plot)
+        return(CNAqc:::eplot())
+      else
+        return(NULL)
+    }
+    
+    return(suppressWarnings(suppressMessages(CNAqc:::plot_peaks_fit(x, k))))
   })
-
+  
+  plots = plots[!sapply(plots, is.null)]
+  if(length(plots) == 0) {
+    cli::cli_alert_warning("Nothing to plot")
+    return(CNAqc:::eplot())
+  }
+  
   # Overall QC
   qc = ifelse(x$peaks_analysis$QC == 'PASS', 'forestgreen', 'indianred3')
-
+  
   # Plots assembly
-  suppressWarnings(suppressMessages(
-    ggpubr::ggarrange(
-      plotlist = plots,
-      nrow = 1,
-      ncol = length(plots)
-    ) +
-      theme(
-        title = element_text(color = qc),
-        panel.border = element_rect(colour = qc,
-                                    fill = NA)
-      )
-  ))
+  if (assembly_plot)
+    plots = suppressWarnings(suppressMessages(
+      ggpubr::ggarrange(
+        plotlist = plots,
+        nrow = 1,
+        ncol = length(plots)
+      ) +
+        theme(
+          plot.title = element_text(color = qc),
+          panel.border = element_rect(colour = qc,
+                                      fill = NA)
+        )
+    ))
+  
+  return(plots)
 }
 
 # Plot a single run results
 plot_peaks_fit = function(x, k)
 {
+  matching = x$peaks_analysis$matching_strategy
+  
   # Required input values
-  snvs = x$snvs %>% dplyr::filter(karyotype == k)
+  snvs = x$snvs %>% 
+    dplyr::filter(karyotype == k) %>% 
+    dplyr::mutate(karyotype = paste0(karyotype, " (", matching,")"))
+  
   den = x$peaks_analysis$fits[[k]]$density
-  expectation = x$peaks_analysis$fits[[k]]$matching
+  expectation = x$peaks_analysis$fits[[k]]$matching %>% 
+    dplyr::mutate(karyotype = paste0(karyotype, " (", matching,")"))
+  
   xy_peaks = x$peaks_analysis$fits[[k]]$xy_peaks
   matching_epsilon = x$peaks_analysis$matching_epsilon
-
+  
   # linear combination of the weight, split by number of peaks to match
   weight = x$peaks_analysis$matches %>%
     dplyr::filter(karyotype == k) %>%
     dplyr::pull(weight) %>%
     sum
-
+  
   # Plots cex for anything that is not the main theme
   cex_opt = getOption('CNAqc_cex', default = 1)
-
+  
+  # Add QC info
+  QC = x$peaks_analysis$matches %>%
+    dplyr::filter(karyotype == k) %>%
+    dplyr::filter(row_number() == 1) %>%
+    dplyr::pull(QC)
+  
+  qc_color = ifelse(QC == "FAIL", "indianred3", 'forestgreen')
+  
+  
+  title = bquote(
+      bold(.(k)) ~
+      .(paste0(' (n = ', nrow(snvs), ', ', round(weight*100, 1),  '%)'))
+  )
+  
   # Plot the data
   plot_data =
     ggplot(data = snvs, aes(VAF)) +
@@ -88,14 +129,15 @@ plot_peaks_fit = function(x, k)
     ) +
     CNAqc:::my_ggplot_theme() +
     labs(
-      title = paste0("Karyotype ", snvs$karyotype[1]),
-      subtitle = paste0('w = ', round(weight, 3), ' (n = ', nrow(snvs), ')'),
+      title = title,
       y = 'KDE',
-      x = bquote("VAF (" * bold(.(x$peaks_analysis$matching_strategy)) * ")")
+      x = "VAF"
     ) +
     theme(legend.position = 'bottom')  +
-    xlim(0, 1)
-
+    xlim(0, 1) +
+    facet_wrap(~karyotype) +
+    theme(strip.background = element_rect(fill = qc_color))
+  
   # Add points for peaks to plot
   plot_data = plot_data +
     geom_point(
@@ -110,7 +152,7 @@ plot_peaks_fit = function(x, k)
     ) +
     scale_shape_manual(values = c(`TRUE` = 1, `FALSE` = 16)) +
     scale_size(range = c(1, 3) * cex_opt)
-
+  
   # Add expectation peaks, and matching colors
   plot_data = plot_data +
     geom_point(
@@ -149,7 +191,7 @@ plot_peaks_fit = function(x, k)
       show.legend = FALSE
     ) +
     scale_color_manual(values = c(`TRUE` = 'forestgreen', `FALSE` = 'red'))
-
+  
   # Annotate the offset number
   plot_data = plot_data +
     ggrepel::geom_text_repel(
@@ -165,26 +207,21 @@ plot_peaks_fit = function(x, k)
       size = 3 * cex_opt,
       show.legend = FALSE
     )
-
-  # Add QC info
-  QC = x$peaks_analysis$matches %>%
-    dplyr::filter(karyotype == k) %>%
-    dplyr::filter(row_number() == 1) %>%
-    dplyr::pull(QC)
-
-  # Function to a border to a plot
-  qc_plot = function(x, QC)
-  {
-    if (is.na(QC))
-      return(x)
-    qc = ifelse(QC == "FAIL", "indianred3", 'forestgreen')
-
-    x +
-      theme(title = element_text(color = qc),
-            panel.border = element_rect(colour = qc,
-                                        fill = NA))
-  }
-
-
-  return(qc_plot(plot_data, QC))
+  
+  # # Function to a border to a plot
+  # qc_plot = function(x, QC)
+  # {
+  #   if (is.na(QC))
+  #     return(x)
+  #   qc = ifelse(QC == "FAIL", "indianred3", 'forestgreen')
+  #   
+  #   x +
+  #     theme(plot.title = element_text(color = qc))
+  # }
+  # 
+  # 
+  # return(qc_plot(plot_data, QC))
+  
+  return(plot_data)
+  
 }

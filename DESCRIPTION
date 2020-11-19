@@ -20,7 +20,8 @@ Description: CNAqc is a package to provide a set of metrics to assess the qualit
 License: GPL
 Encoding: UTF-8
 LazyData: true
-Depends: R (>= 2.1.0)
+Depends: 
+    R (>= 2.10)
 Imports: 
     pio,
     crayon,
