@@ -49,12 +49,19 @@ plot_data_histogram = function(x,
   if (which == 'NV') plot_f = CNAqc:::plot_NV_data(x, karyotypes = karyotypes) +
     facet_wrap(~type, ncol = 1, scales = 'free_y')
   
-  if (which == 'CCF') plot_f = CNAqc:::plot_CCF_data(x, karyotypes = karyotypes) +
-    facet_wrap(~type, ncol = 1, scales = 'free_y')
+  with_CCF = all(!is.null(x$CCF_estimates))
+  if (which == 'CCF') {
+    plot_f = CNAqc:::plot_CCF_data(x, karyotypes = karyotypes) 
+    
+    if(with_CCF) plot_f = plot_f + facet_wrap(~type, ncol = 1, scales = 'free_y')
+  }
 
   if(!CNAqc:::has_driver_data(x)) return(plot_f)
 
   # Drivers
+  if(
+    which != "CCF" | with_CCF
+  )
   plot_f = CNAqc:::annotate_drivers_to_histogram(
     drivers_list = get_drivers(x,  which = ifelse(which %in% c("VAF", "CCF"), which, 'VAF')) %>%
       dplyr::mutate(karyotype = ifelse(

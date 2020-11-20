@@ -62,7 +62,7 @@ annotate_drivers_to_histogram = function(x, drivers_list, p, which)
   # Coordinate of the plot, place label in top part
   L = ggplot_build(p)$layout$panel_params[[1]]
 
-  drivers_list$y = L$y.range[2] * .9
+  drivers_list$y = L$y.range[2] * .7
 
   # This overwrites the fill in p, is generally wrong
   # p =
@@ -105,11 +105,12 @@ annotate_drivers_to_histogram = function(x, drivers_list, p, which)
       data = drivers_list,
       aes(
         x = eval(parse(text = which)),
-        y = y,
+        y =  L$y.range[2] * .5,
         label = driver_label,
       ),
-      color = 'white',
-      ylim = c(0, L$y.range[2] * .9),
+      color = 'black',
+      # ylim = c(0.7, L$y.range[2] * .9),
+      ylim = c(L$y.range[2] * .5, L$y.range[2]),
       size = 2,
       nudge_x = 0,
       show.legend = FALSE

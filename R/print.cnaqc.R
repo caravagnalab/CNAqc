@@ -47,20 +47,54 @@ print.cnaqc = function(x, ...)
 
   if(with_drivers | with_peaks | with_CCF | with_smoothing | with_arm_frag | with_wg_frag) cat('\n')
 
-  if(with_drivers)
-  {
-    nd = x$snvs %>% dplyr::filter(is_driver) %>% nrow()
-    cli::cli_alert_info("Mutations annotated have {.value {nd}} drivers.")
-  }
-
+  # if(with_drivers)
+  # {
+  #   nd = x$snvs %>% dplyr::filter(is_driver) %>% nrow()
+  #   cli::cli_alert_info("Mutations annotated have {.value {nd}} drivers.")
+  # }
+  
+  ppass = function() "{crayon::bgGreen(crayon::black(\" PASS \"))}"
+  pfail = function() "{crayon::bgRed(crayon::white(\" FAIL \"))}"
+  
   if(with_peaks)
   {
-    cli::cli_alert_success("QC via peak detection available, score: {.value {x$peaks_analysis$score}} [match by {.field {x$peaks_analysis$matching_strategy}}].")
-    pio::pioDisp(x$peaks_analysis$matches)
+    if(x$peaks_analysis$QC == "PASS")
+      cli::cli_alert_success("{crayon::bgGreen(crayon::white(\" PASS \"))} QC via {.value {crayon::bold(x$peaks_analysis$matching_strategy)}} peak detection, {.value {crayon::green(paste('q =', x$peaks_analysis$score))}}")
+    else
+      cli::cli_alert_danger("{crayon::bgRed(crayon::white(\" FAIL \"))} QC via {.value {crayon::bold(x$peaks_analysis$matching_strategy)}} peak detection, {.value {crayon::red(paste('q =', x$peaks_analysis$score))}}.")
+    
+    # pio::pioDisp(x$peaks_analysis$matches)
+    
+    x$peaks_analysis$matches %>% 
+      dplyr::group_by(karyotype) %>% 
+      dplyr::summarise(m = paste(
+        QC, 
+        sprintf("%-5s", round(offset, 2)), collapse = ' '), .groups = 'drop') %>% 
+      apply(MARGIN = 1, FUN = function(x)
+        {
+        cli::cli_alert_info("{x['karyotype']} {clisymbols::symbol$arrow_right} {x['m']}")
+      })
   }
 
-  if(with_CCF)
+  if(with_CCF)  
+  {
+    cat("\n")
     cli::cli_alert_success("Cancer Cell Fraction (CCF) data available for karyotypes: {.value {names(x$CCF_estimates)}}.")
+    
+    lapply(x$CCF_estimates,
+           function(l) {
+             l$QC_table
+           }) %>%
+      Reduce(f = bind_rows) %>%
+      apply(1, function(z) {
+        if(z['QC'] == "PASS")
+          cli::cli_alert_success("{crayon::bgGreen(crayon::white(\" PASS \"))} CCF via {.value {crayon::bold(z['method'])}}.")
+        else
+          cli::cli_alert_success("{crayon::bgRed(crayon::white(\" FAIL \"))} CCF via {.value {crayon::bold(z['method'])}}.")
+      })
+  }
+    
+  
 
   if(with_smoothing)
     cli::cli_alert_success("These segments are smoothed; before smoothing there were {.value {x$before_smoothing$n_cna}} segments.")
@@ -73,11 +107,15 @@ print.cnaqc = function(x, ...)
     cond = x$wg_fragmentation$is_overfragmented
     p = round(x$wg_fragmentation$pvalue, 5)
     cli::cli_alert_success("Whole-genome fragmentation analysis: p = {.value {p}}: {.value {ifelse(cond, crayon::red('overfragmented'), crayon::green('not overfragmented'))}}.")
-    }
+  }
+  
+  ppass = function() "{crayon::bgGreen(crayon::black(\" PASS \"))}"
+  pfail = function() "{crayon::bgRed(crayon::white(\" FAIL \"))}"
+  
 }
 
-bar_print_console = function(x, top = 5){
-  e = x$n_karyotype %>% sort(decreasing = T)
+bar_print_console = function(x, top = length(x$n_karyotype)){
+  e = x$n_karyotype %>% sort(decreasing = TRUE)
   l =  round(x$l_karyotype/10^6, digits = 0)
   
 

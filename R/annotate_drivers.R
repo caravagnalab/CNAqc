@@ -25,17 +25,17 @@ annotate_drivers = function(x,
   to_find = x$snvs[[gene_column]][x$snvs[[function_column]] %in% function_entries] %>% sort %>% unique
   
   cli::cli_alert_info("Found exonic mutations in {length(to_find)} genes")
-  print(to_find)
+  # print(to_find)
   
   found = drivers_list %>% 
     filter(driver_gene %in% to_find) %>% 
     pull(driver_gene) %>% 
     unique
   
-  cli::cli_alert_info("{length(found)} found the input list of {length(drivers_list$driver_gene) %>% unique()} genes.")
-  if(length(found) > 0) print(found)
+  cli::cli_alert_info("{length(found)} found in the input list of {length(drivers_list$driver_gene) %>% unique()} genes.")
+  # if(length(found) > 0) print(found)
   
-  if(found == 0) return(x)
+  if(length(found) == 0) return(x)
   
   which_driver = intersect(
     which(x$snvs[[gene_column]] %in% drivers_list$driver_gene),
@@ -44,18 +44,20 @@ annotate_drivers = function(x,
   
   x$snvs$is_driver = FALSE
   x$snvs$is_driver[which_driver] = TRUE
-  
+ 
+  cli::cli_h3('Drivers') 
   x$snvs %>% 
     filter(is_driver) %>% 
     print
   
-  cli::cli_alert_info("Reassembling a new CNAqc object with these drivers")
-  x = CNAqc::init(
-    x$snvs,
-    cna = x$cna,
-    purity = x$purity,
-    ref = x$reference_genome
-  )
+  # cli::cli_alert_info("Reassembling a new CNAqc object with these drivers")
+  # x = CNAqc::init(
+  #   x$snvs,
+  #   cna = x$cna,
+  #   purity = x$purity,
+  #   ref = x$reference_genome
+  # )
   
+  # cli::cli_alert_info("Updating the CNAqc object with these drivers")
   return(x)
 }
