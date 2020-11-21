@@ -42,6 +42,8 @@ peak_detector = function(snvs,
 
   xy_peaks = pks %>%
     dplyr::mutate(discarded = counts_per_bin < sum(hst) * p)
+    dplyr::mutate(discarded = y <= 0.01)
+  
 
   # Handle special case where everything is discarded by including the one
   # with highest value of counts_per_bin (just that).
