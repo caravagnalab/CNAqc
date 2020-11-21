@@ -252,7 +252,7 @@ analyze_peaks = function(x,
   print(assembled_corrections)
 
   # QC overall score
-  QC = ifelse(abs(overall_score) < 2 * matching_epsilon, "PASS", "FAIL")
+  QC = ifelse(abs(overall_score) < matching_epsilon, "PASS", "FAIL")
 
   if (QC == "FAIL")
     cli::cli_alert_danger(
