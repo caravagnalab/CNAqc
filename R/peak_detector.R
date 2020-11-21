@@ -41,7 +41,7 @@ peak_detector = function(snvs,
   pks$counts_per_bin = hst[round(pks$x * 100)]
 
   xy_peaks = pks %>%
-    dplyr::mutate(discarded = counts_per_bin < sum(hst) * p)
+    # dplyr::mutate(discarded = counts_per_bin < sum(hst) * p)
     dplyr::mutate(discarded = y <= 0.01)
   
 
