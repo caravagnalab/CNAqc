@@ -74,8 +74,8 @@ plot_CCF = function(x,
   if (assembly_plot)  
     ccf_plot = ggpubr::ggarrange(
       plotlist = ccf_plot,
-      ncol = 1,
-      nrow = length(ccf_plot)
+      ncol = length(ccf_plot),
+      nrow = 1
     )
   
   return(ccf_plot)
