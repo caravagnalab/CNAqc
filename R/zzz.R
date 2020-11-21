@@ -41,7 +41,6 @@
     cli::cli_alert_success(
       'Loading {.field {pk}}, {.emph \'{pk_l}\'}. Support : {.url { www}}' )
 
-
     options(CNAqc_welcome_message = FALSE)
   }
 
