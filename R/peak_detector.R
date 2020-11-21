@@ -218,8 +218,9 @@ peak_detector_closest_hit_match = function(snvs,
   pks$counts_per_bin = hst[round(pks$x * 100)]
 
   xy_peaks = pks %>%
-    dplyr::mutate(discarded = counts_per_bin < sum(hst) * p)
-
+    # dplyr::mutate(discarded = counts_per_bin < sum(hst) * p)
+    dplyr::mutate(discarded = y <= 0.01)
+  
   # Handle special case where everything is discarded by including the one
   # with highest value of counts_per_bin (just that).
   if(all(xy_peaks$discarded)) {
