@@ -49,6 +49,6 @@
 }
 
 resucitate = function(){
-  devtools::install("~/Documents/Github/CNAqc")
+  devtools::install("~/Documents/Github/CNAqc", dependencies = FALSE)
   devtools::load_all("~/Documents/Github/CNAqc")
 }
