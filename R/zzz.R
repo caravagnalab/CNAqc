@@ -47,3 +47,8 @@
 
   invisible()
 }
+
+resucitate = function(){
+  devtools::install("~/Documents/Github/CNAqc")
+  devtools::load_all("~/Documents/Github/CNAqc")
+}
