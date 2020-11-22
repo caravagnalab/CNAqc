@@ -201,7 +201,7 @@ analyze_peaks = function(x,
       best_peaks = lapply(1:n_bootstrap, pd, n_boot = n_bootstrap)
       best_score = which.min(sapply(best_peaks, function(w)
         w$matching$weight %*% w$matching$offset))
-      best_score = best_score[]
+      best_score = best_score[1]
 
       # Best is returned
       detection = best_peaks[[best_score]]
@@ -252,12 +252,20 @@ analyze_peaks = function(x,
   print(assembled_corrections)
 
   # QC overall score
-  QC = ifelse(abs(overall_score) < matching_epsilon, "PASS", "FAIL")
-
+  # QC = ifelse(abs(overall_score) < matching_epsilon, "PASS", "FAIL")
+  
+  QC = assembled_corrections %>% 
+    dplyr::group_by(QC) %>% 
+    dplyr::summarise(prop = sum(weight)) %>% 
+    dplyr::arrange(desc(prop)) %>% 
+    dplyr::filter(dplyr::row_number() == 1) %>% 
+    dplyr::pull(QC)
+  
   if (QC == "FAIL")
     cli::cli_alert_danger(
       "Peak detection {red('FAIL')} with {.value {red(paste0('r = ', overall_score))}} and tolerance e = {.value {2 * matching_epsilon}}"
     )
+  
   if (QC == "PASS")
     cli::cli_alert_success(
       "Peak detection {green('PASS')} with {.value {green(paste0('r = ', overall_score))}} and tolerance e = {.value {2 * matching_epsilon}}"

@@ -221,6 +221,41 @@ peak_detector_closest_hit_match = function(snvs,
     # dplyr::mutate(discarded = counts_per_bin < sum(hst) * p)
     dplyr::mutate(discarded = y <= 0.01)
   
+  # BMix clustering
+  bm = BMix::bmixfit(
+    data.frame(successes = snvs$NV, trials = snvs$DP),
+    K.BetaBinomials = 0,
+    K.Binomials = 1:4
+  )
+  # plot.bmix(bm, data = data.frame(successes = rc$NV, trials = rc$DP))
+  
+  
+  llxy = NULL
+  for (b in names(bm$B.params))
+  {
+    w_den = which.min(abs(den$x - bm$B.params[b]))
+    tnw = tibble(
+      x = den$x[w_den],
+      y = den$y[w_den],
+      counts_per_bin = bm$pi[b] * (snvs %>% nrow),
+      discarded = FALSE
+    )
+    
+    llxy = llxy %>%
+      bind_rows(tnw)
+  }
+  
+  
+  
+  xy_peaks = xy_peaks %>% bind_rows(llxy)
+  
+  # tibble(
+  # `x`= bm$B.params,
+  # `y` = 
+  # )
+  
+
+  
   # Handle special case where everything is discarded by including the one
   # with highest value of counts_per_bin (just that).
   if(all(xy_peaks$discarded)) {
