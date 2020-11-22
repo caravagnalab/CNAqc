@@ -95,7 +95,7 @@ print.cnaqc = function(x, ...)
       xxx = xx %>% 
         dplyr::filter(karyotype == karyo)
       
-      qc = paste(xxx$QC, sprintf("%-5s", round(xxx$offset, 3)), collapse = ' ')
+      qc = paste(xxx$QC, sprintf("%-7s", round(xxx$offset, 3)), collapse = ' ')
       # qc = paste0("[", xx$karyotype[1], "]",  qc)
       
       n = sprintf("%-5s", x$n_karyotype[karyo])
