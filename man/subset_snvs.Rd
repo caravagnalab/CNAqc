@@ -2,7 +2,7 @@
 % Please edit documentation in R/subsample.R
 \name{subset_snvs}
 \alias{subset_snvs}
-\title{Title}
+\title{Retain only SNVs.}
 \usage{
 subset_snvs(
   x,
@@ -13,13 +13,21 @@ subset_snvs(
 \arguments{
 \item{x}{}
 
-\item{ref_nucleotides}{}
+\item{ref_nucleotides}{What reference alleles to use, default \code{c("A", "C", "T", "G")}.}
 
-\item{alt_nucleotides}{}
+\item{alt_nucleotides}{What alternative alleles to use, default \code{c("A", "C", "T", "G")}.}
 }
 \value{
-
+A new CNAqc dataset created with \code{init}.
 }
 \description{
-Title
+It removes all non-SNVs mutations, re-creaging a new CNAqc
+dataset (all analyses are lost).
+}
+\examples{
+x = init(snvs = example_dataset_CNAqc$snvs, cna = example_dataset_CNAqc$cna, purity = example_dataset_CNAqc$purity)
+print(x)
+
+# no change - they are already SNVs
+print(subset_snvs(x))
 }

@@ -7,7 +7,13 @@
     <loc>caravagn.github.io/CNAqc/reference/CCF.html</loc>
   </url>
   <url>
+    <loc>caravagn.github.io/CNAqc/reference/DriverDBv3.html</loc>
+  </url>
+  <url>
     <loc>caravagn.github.io/CNAqc/reference/analyze_peaks.html</loc>
+  </url>
+  <url>
+    <loc>caravagn.github.io/CNAqc/reference/annotate_drivers.html</loc>
   </url>
   <url>
     <loc>caravagn.github.io/CNAqc/reference/chr_coordinates_GRCh38.html</loc>
@@ -91,10 +97,16 @@
     <loc>caravagn.github.io/CNAqc/reference/subsample.html</loc>
   </url>
   <url>
+    <loc>caravagn.github.io/CNAqc/reference/subset_by_minimum_CCF.html</loc>
+  </url>
+  <url>
     <loc>caravagn.github.io/CNAqc/reference/subset_by_segment_karyotype.html</loc>
   </url>
   <url>
     <loc>caravagn.github.io/CNAqc/reference/subset_by_segment_totalcn.html</loc>
+  </url>
+  <url>
+    <loc>caravagn.github.io/CNAqc/reference/subset_snvs.html</loc>
   </url>
   <url>
     <loc>caravagn.github.io/CNAqc/articles/CNAqc.html</loc>

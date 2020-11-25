@@ -1,5 +1,5 @@
-pandoc: 2.3.1
-pkgdown: 1.4.1
+pandoc: 2.11.0.4
+pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
   CNAqc: CNAqc.html
@@ -9,6 +9,7 @@ articles:
   a4_ccf_computation: a4_ccf_computation.html
   a5_smoothing: a5_smoothing.html
   a6_fragmentation: a6_fragmentation.html
+last_built: 2020-11-25T22:41Z
 urls:
   reference: caravagn.github.io/CNAqc/reference
   article: caravagn.github.io/CNAqc/articles

@@ -17,23 +17,27 @@
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -51,7 +55,6 @@ before.
 The plot can be subset by selecting only data in certain segments,
 identified by the karyotype shortname, and will be coloured accordingly." />
 <meta property="og:image" content="caravagn.github.io/CNAqc/logo.png" />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -69,7 +72,7 @@ identified by the karyotype shortname, and will be coloured accordingly." />
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -101,37 +104,13 @@ identified by the karyotype shortname, and will be coloured accordingly." />
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="../articles/a1_Introduction.html">1. Introduction</a>
-    </li>
-    <li>
-      <a href="../articles/a2_Plots.html">2. Plotting data</a>
-    </li>
-    <li>
-      <a href="../articles/a3_peaks_detection.html">3. QC analysis via peaks detection</a>
-    </li>
-    <li>
-      <a href="../articles/a4_ccf_computation.html">4. Computation of Cancer Cell Fractions</a>
-    </li>
-    <li>
-      <a href="../articles/a5_smoothing.html">5. Smoothing copy number segments</a>
-    </li>
-    <li>
-      <a href="../articles/a6_fragmentation.html">6. Genome fragmentation analysis</a>
-    </li>
-  </ul>
+<li>
+  <a href="../articles/index.html">Articles</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/caravagn/CNAqc">
+  <a href="https://github.com/caravagn/CNAqc/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -164,11 +143,11 @@ before.</p>
 identified by the karyotype shortname, and will be coloured accordingly.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>plot_data_histogram</span>(
-  <span class='no'>x</span>,
-  <span class='kw'>which</span> <span class='kw'>=</span> <span class='st'>"VAF"</span>,
-  <span class='kw'>karyotypes</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"1:0"</span>, <span class='st'>"1:1"</span>, <span class='st'>"2:0"</span>, <span class='st'>"2:1"</span>, <span class='st'>"2:2"</span>)
-)</pre>
+    <pre class="usage"><span class='fu'>plot_data_histogram</span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  which <span class='op'>=</span> <span class='st'>"VAF"</span>,
+  karyotypes <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"1:0"</span>, <span class='st'>"1:1"</span>, <span class='st'>"2:0"</span>, <span class='st'>"2:1"</span>, <span class='st'>"2:2"</span><span class='op'>)</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -194,22 +173,20 @@ identified by the karyotype shortname, and will be coloured accordingly.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>#' data('example_dataset_CNAqc', package = 'CNAqc')</span>
-<span class='no'>x</span> <span class='kw'>=</span> <span class='fu'><a href='init.html'>init</a></span>(<span class='no'>example_dataset_CNAqc</span>$<span class='no'>snvs</span>, <span class='no'>example_dataset_CNAqc</span>$<span class='no'>cna</span>,<span class='no'>example_dataset_CNAqc</span>$<span class='no'>purity</span>)</div><div class='output co'>#&gt; <span style='color: #BBBBBB;background-color: #0000BB;'> [ CNAqc - CNA Quality Check ] 
-#&gt; </span><span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Using reference genome coordinates for: </span><span style='color: #00BB00;'>GRCh38</span><span>.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Drivers are annotated, but 'gene' column is missing, using mutation location.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #BBBB00;'>!</span><span> Missing CCF column from CNA calls, adding CCF = 1 assuming clonal CNA calls.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Input n = 13141 mutations for 267 CNA segments (267 clonal, 0 subclonal)</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #BB0000;'>x</span><span> n = 178 mutations  cannot be mapped to segments and will be removed.</span></div><div class='output co'>#&gt; </div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> Mapped n = 12963 mutations to clonal segments (100% of input)</span></div><div class='input'><span class='fu'>plot_data_histogram</span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Ignoring unknown parameters: ylim</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Ignoring unknown aesthetics: fill</span></div><div class='output co'>#&gt; <span class='message'>Scale for 'fill' is already present. Adding another scale for 'fill', which</span>
-#&gt; <span class='message'>will replace the existing scale.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 8 rows containing missing values (geom_bar).</span></div><div class='img'><img src='plot_data_histogram-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>plot_data_histogram</span>(<span class='no'>x</span>, <span class='kw'>which</span> <span class='kw'>=</span> <span class='st'>'DP'</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Ignoring unknown parameters: ylim</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Ignoring unknown aesthetics: fill</span></div><div class='output co'>#&gt; <span class='message'>Scale for 'fill' is already present. Adding another scale for 'fill', which</span>
-#&gt; <span class='message'>will replace the existing scale.</span></div><div class='img'><img src='plot_data_histogram-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>plot_data_histogram</span>(<span class='no'>x</span>, <span class='kw'>which</span> <span class='kw'>=</span> <span class='st'>'DP'</span>, <span class='kw'>karyotypes</span> <span class='kw'>=</span> <span class='st'>'2:2'</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Ignoring unknown parameters: ylim</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Ignoring unknown aesthetics: fill</span></div><div class='output co'>#&gt; <span class='message'>Scale for 'fill' is already present. Adding another scale for 'fill', which</span>
-#&gt; <span class='message'>will replace the existing scale.</span></div><div class='img'><img src='plot_data_histogram-3.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='no'>x</span> <span class='kw'>=</span> <span class='fu'><a href='compute_CCF.html'>compute_CCF</a></span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; <span class='message'>── Computing mutation multiplicity for karyotype </span><span style='color: #00BB00;'>2:0</span><span> using the entropy method. ───────────────────────────────────────────────────────</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Expected Binomial peak(s) for these calls (1 and 2 copies): 0.445 and 0.89</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Mixing pre/ post aneuploidy: 0.09 and 0.91</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Not assignamble area: [0.631578947368421; 0.723684210526316]</span></div><div class='output co'>#&gt; <span class='message'>── Computing mutation multiplicity for karyotype </span><span style='color: #00BB00;'>2:1</span><span> using the entropy method. ───────────────────────────────────────────────────────</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Expected Binomial peak(s) for these calls (1 and 2 copies): 0.307958477508651 and 0.615916955017301</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Mixing pre/ post aneuploidy: 0.55 and 0.45</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Not assignamble area: [0.423423423423423; 0.504504504504504]</span></div><div class='output co'>#&gt; <span class='message'>── Computing mutation multiplicity for karyotype </span><span style='color: #00BB00;'>2:2</span><span> using the entropy method. ───────────────────────────────────────────────────────</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Expected Binomial peak(s) for these calls (1 and 2 copies): 0.235449735449735 and 0.470899470899471</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Mixing pre/ post aneuploidy: 0.09 and 0.91</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Not assignamble area: [0.290780141843972; 0.368794326241135]</span></div><div class='input'><span class='fu'>plot_data_histogram</span>(<span class='no'>x</span>, <span class='kw'>which</span> <span class='kw'>=</span> <span class='st'>'CCF'</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Ignoring unknown parameters: ylim</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Ignoring unknown aesthetics: fill</span></div><div class='output co'>#&gt; <span class='message'>Scale for 'fill' is already present. Adding another scale for 'fill', which</span>
-#&gt; <span class='message'>will replace the existing scale.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 6 rows containing missing values (geom_bar).</span></div><div class='img'><img src='plot_data_histogram-4.png' alt='' width='700' height='433' /></div></span></pre>
+<span class='va'>x</span> <span class='op'>=</span> <span class='fu'><a href='init.html'>init</a></span><span class='op'>(</span><span class='va'>example_dataset_CNAqc</span><span class='op'>$</span><span class='va'>snvs</span>, <span class='va'>example_dataset_CNAqc</span><span class='op'>$</span><span class='va'>cna</span>,<span class='va'>example_dataset_CNAqc</span><span class='op'>$</span><span class='va'>purity</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span style='color: #BBBBBB;background-color: #0000BB;'> [ CNAqc - CNA Quality Check ] 
+#&gt; </span><span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Using reference genome coordinates for: </span><span style='color: #00BB00;'>GRCh38</span><span>.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Drivers are annotated, but 'gene' column is missing, using mutation location.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #BBBB00;'>!</span><span> Missing CCF column from CNA calls, adding CCF = 1 assuming clonal CNA calls.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Input n = 12963 mutations for 267 CNA segments (267 clonal, 0 subclonal)</span></div><div class='output co'>#&gt; </div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> Mapped n = 12963 mutations to clonal segments (100% of input)</span></div><div class='input'><span class='fu'>plot_data_histogram</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 8 rows containing missing values (geom_bar).</span></div><div class='img'><img src='plot_data_histogram-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>plot_data_histogram</span><span class='op'>(</span><span class='va'>x</span>, which <span class='op'>=</span> <span class='st'>'DP'</span><span class='op'>)</span>
+</div><div class='img'><img src='plot_data_histogram-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>plot_data_histogram</span><span class='op'>(</span><span class='va'>x</span>, which <span class='op'>=</span> <span class='st'>'DP'</span>, karyotypes <span class='op'>=</span> <span class='st'>'2:2'</span><span class='op'>)</span>
+</div><div class='img'><img src='plot_data_histogram-3.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='va'>x</span> <span class='op'>=</span> <span class='fu'><a href='compute_CCF.html'>compute_CCF</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>── Computing mutation multiplicity for karyotype </span><span style='color: #00BB00;'>2:0</span><span> using the entropy method. ─</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Expected Binomial peak(s) for these calls (1 and 2 copies): 0.445 and 0.89</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Mixing pre/ post aneuploidy: 0.09 and 0.91</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Not assignamble area: [0.631578947368421; 0.723684210526316]</span></div><div class='output co'>#&gt; <span class='message'>── Computing mutation multiplicity for karyotype </span><span style='color: #00BB00;'>2:1</span><span> using the entropy method. ─</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Expected Binomial peak(s) for these calls (1 and 2 copies): 0.307958477508651 and 0.615916955017301</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Mixing pre/ post aneuploidy: 0.55 and 0.45</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Not assignamble area: [0.423423423423423; 0.504504504504504]</span></div><div class='output co'>#&gt; <span class='message'>── Computing mutation multiplicity for karyotype </span><span style='color: #00BB00;'>2:2</span><span> using the entropy method. ─</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Expected Binomial peak(s) for these calls (1 and 2 copies): 0.235449735449735 and 0.470899470899471</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Mixing pre/ post aneuploidy: 0.09 and 0.91</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Not assignamble area: [0.290780141843972; 0.368794326241135]</span></div><div class='input'><span class='fu'>plot_data_histogram</span><span class='op'>(</span><span class='va'>x</span>, which <span class='op'>=</span> <span class='st'>'CCF'</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 6 rows containing missing values (geom_bar).</span></div><div class='img'><img src='plot_data_histogram-4.png' alt='' width='700' height='433' /></div></span></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -220,7 +197,7 @@ identified by the karyotype shortname, and will be coloured accordingly.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

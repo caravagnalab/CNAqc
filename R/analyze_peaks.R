@@ -47,6 +47,7 @@
 #'
 #' @import peakPick
 #' @import ggrepel
+#' @import BMix
 #'
 #' @examples
 #' data('example_dataset_CNAqc', package = 'CNAqc')

@@ -29,6 +29,7 @@ Imports:
     ggpubr,
     tidyverse,
     ggrepel,
+    BMix,
     RColorBrewer
 Remotes: caravagn/pio
 RoxygenNote: 7.1.1

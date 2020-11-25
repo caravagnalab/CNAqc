@@ -7,10 +7,10 @@
 analyze_peaks(
   x,
   karyotypes = c("1:0", "1:1", "2:1", "2:0", "2:2"),
-  min_karyotype_size = 0.05,
-  min_absolute_karyotype_mutations = 50,
+  min_karyotype_size = 0,
+  min_absolute_karyotype_mutations = 10,
   p_binsize_peaks = 0.005,
-  matching_epsilon = 0.025,
+  matching_epsilon = 0.03,
   n_bootstrap = 1,
   kernel_adjust = 1,
   matching_strategy = "closest"

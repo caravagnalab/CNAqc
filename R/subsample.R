@@ -109,6 +109,22 @@ subset_by_segment_totalcn = function(x, totalcn)
   )
 }
 
+subset_by_segment_minmutations = function(x, totalcn)
+{
+  if(!inherits(x, "cnaqc")) stop("Not a CNAqc object in input.")
+  
+  cna_calls = x$cna %>%
+    dplyr::mutate(total_cn = Major + minor) %>%
+    dplyr::filter(total_cn %in% totalcn)
+  
+  if(nrow(cna_calls) == 0) stop("There are no calls with these total copy states, cannot subset.")
+  
+  return(
+    CNAqc::init(snvs = x$snvs, cna = cna_calls, purity = x$purity, ref = x$reference_genome)
+  )
+  
+}
+
 #' Title
 #'
 #' @param x 
@@ -181,16 +197,24 @@ subset_by_minimum_CCF = function(x, min_target_CCF = 0.1)
   )
 }
 
-#' Title
+#' Retain only SNVs.
+#' 
+#' @description It removes all non-SNVs mutations, re-creaging a new CNAqc
+#' dataset (all analyses are lost).
 #'
 #' @param x 
-#' @param ref_nucleotides 
-#' @param alt_nucleotides 
+#' @param ref_nucleotides What reference alleles to use, default \code{c("A", "C", "T", "G")}.
+#' @param alt_nucleotides What alternative alleles to use, default \code{c("A", "C", "T", "G")}.
 #'
-#' @return
+#' @return A new CNAqc dataset created with \code{init}.
 #' @export
 #'
 #' @examples
+#' x = init(snvs = example_dataset_CNAqc$snvs, cna = example_dataset_CNAqc$cna, purity = example_dataset_CNAqc$purity)
+#' print(x)
+#' 
+#' # no change - they are already SNVs
+#' print(subset_snvs(x))
 subset_snvs = function(x, ref_nucleotides = c("A", "C", "T", "G"), alt_nucleotides = c("A", "C", "T", "G"))
 {
   subset_snvs = x$snvs %>% 
