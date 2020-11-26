@@ -238,7 +238,7 @@ plot_gw_ccf = function(x, N = 5000, chromosomes = paste0('chr', c(1:22, 'X', 'Y'
     )
 
   bl_plot = CNAqc:::blank_genome(ref = x$reference_genome, chromosomes = chromosomes) +
-    ylim(NA, NA)
+    ylim(-0.1, NA)
 
   # # X-range
   # reference_genome = CNAqc:::get_reference(x$reference_genome)
