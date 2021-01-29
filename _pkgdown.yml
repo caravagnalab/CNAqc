@@ -25,11 +25,13 @@ reference:
   contents:
   - chr_coordinates_hg19
   - chr_coordinates_GRCh38
+  - DriverDBv3
   - example_dataset_CNAqc
 
 - title: Data processing
   desc:  Functions to visualise the data.
   contents:
+  - annotate_drivers
   - init
   - inspect_segment
   - get_drivers
@@ -45,6 +47,8 @@ reference:
   - subsample
   - subset_by_segment_karyotype
   - subset_by_segment_totalcn
+  - subset_by_minimum_CCF
+  - subset_snvs
   - print.cnaqc
   - plot.cnaqc
 
