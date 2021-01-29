@@ -3,18 +3,17 @@ destination: docs
 template:
   params:
     part_of: evoverse
-    footer: Test of my footer
+    footer: G. Caravagna, PhD.
 url:
   caravagn.github.io/CNAqc
+  
+repo:
+  url:
+    home: https://github.com/caravagn/CNAqc/
+    source: https://github.com/caravagn/CNAqc
+    issue: https://github.com/caravagn/CNAqc/issues
+    user: https://github.com/caravagn
 
-articles:
-- title: R Markdown
-  contents:
-  - starts_with("authoring")
-- title: Websites
-  contents:
-  - rmarkdown_websites
-  - rmarkdown_site_generators
 
 authors:
   Giulio Caravagna:

@@ -56,8 +56,32 @@
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
 <li>
-  <a href="../articles/index.html">Articles</a>
+      <a href="../articles/a1_Introduction.html">1. Introduction</a>
+    </li>
+    <li>
+      <a href="../articles/a2_Plots.html">2. Plotting data</a>
+    </li>
+    <li>
+      <a href="../articles/a3_peaks_detection.html">3. QC analysis via peaks detection</a>
+    </li>
+    <li>
+      <a href="../articles/a4_ccf_computation.html">4. Computation of Cancer Cell Fractions</a>
+    </li>
+    <li>
+      <a href="../articles/a5_smoothing.html">5. Smoothing copy number segments</a>
+    </li>
+    <li>
+      <a href="../articles/a6_fragmentation.html">6. Genome fragmentation analysis</a>
+    </li>
+  </ul>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
@@ -84,7 +108,7 @@
       <h1 data-toc-skip>2. Plotting data</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/caravagn/CNAqc/blob/master/vignettes/a2_Plots.Rmd"><code>vignettes/a2_Plots.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/caravagn/CNAqcvignettes/a2_Plots.Rmd"><code>vignettes/a2_Plots.Rmd</code></a></small>
       <div class="hidden name"><code>a2_Plots.Rmd</code></div>
 
     </div>
@@ -93,6 +117,7 @@
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/caravagn/CNAqc">CNAqc</a></span><span class="op">)</span>
+<span class="co">#&gt; ✓ Loading BMix, 'Binomial and Beta-Binomial univariate mixtures'. Support : &lt;https://caravagn.github.io/BMix/&gt;</span>
 <span class="co">#&gt; ✓ Loading CNAqc, 'Copy Number Alteration quality check'. Support : &lt;https://caravagn.github.io/CNAqc/&gt;</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span></code></pre></div>
 <p>We work with the template dataset.</p>
