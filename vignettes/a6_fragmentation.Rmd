@@ -94,7 +94,7 @@ print(x)
 ```
 
 ```{r, fig.width=10, fig.height=12}
-plot_arm_fragmentation(x, zoom = 6)
+plot_arm_fragmentation(x, zoom = 0)
 ```
 
 

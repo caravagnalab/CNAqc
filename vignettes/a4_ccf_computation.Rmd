@@ -137,7 +137,7 @@ CCF(x) %>% select(VAF, mutation_multiplicity, CCF)
 ```
 
 The CCF analysis plot is a `ggpubr`-assembled figure, woith one line per karyotype.
-```{r,fig.width=11, fig.height=10,warning=F}
+```{r,fig.width=11, fig.height=4,warning=F}
 plot_CCF(x)
 ```
 
@@ -166,7 +166,7 @@ print(x_r)
 ```
 
 The data can be accessed in the usual way; the layout of the CCF plots are conceptually the same, but use different colors. The cutoff is annotated in the panel with the mutation multiplicity $m$ assigned to each observed VAF value.
-```{r,fig.width=11, fig.height=10,warning=F}
+```{r,fig.width=11, fig.height=4,warning=F}
 plot_CCF(x_r)
 ```
 
