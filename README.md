@@ -38,7 +38,7 @@ Preprint, 2021.
 
 #### Help and support
 
-## [![](https://img.shields.io/badge/GitHub%20Pages-https://caravagnlab.github.io/CNAqc/-yellow.svg)](https://caravagnlab.github.io/CNAqc)
+## [![](https://img.shields.io/badge/GitHub%20Pages-https://caravagnalab.github.io/CNAqc/-yellow.svg)](https://caravagnalab.github.io/CNAqc)
 
 ### Installation
 
