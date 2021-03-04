@@ -11,30 +11,32 @@ maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www
 <!-- badges: end -->
 
 `CNAqc` is a package that contains different methods to inspect the
-quality, visualise and process absolute Copy Number Alteration (CNA)
-calls generated from bulk sequencing of tumour samples.
+quality, visualise and process allele-specific Copy Number Alteration
+(CNA) calls generated from bulk sequencing of tumour samples, jointly
+with tumour somatic mutations and other covariates.
 
-Methods are available to integrate somatic mutation data of the same
-tumour with CNA segments, tumour purity and ploidy assessment. The
-package provides methods to estimate Cancer Cell Fractions (CCFs)
-normalizing tumour mutation data for copy number states and tumour
-purity. The package contains also statistical tests to identify patterns
-of overfragmentation either in individual chromosome arms or at the
-whole-genome level.
+Methods are available to integrate somatic mutation data with CNA
+segments, tumour purity and ploidy assessment. The package provides
+methods to estimate Cancer Cell Fractions (CCFs) normalizing tumour
+allele frequencies for copy number states and tumour purity. The package
+contains also statistical tests to identify patterns of
+over-fragmentation of chromosome arms.
 
 `CNAqc` is part of the `evoverse` set of [R
 packages](https://caravagn.github.io/evoverse) to implement Cancer
 Evolution analyses.
 
-#### Reference
+#### Citation
 
-The paper that describes the CNAqc method is available as a preprint at
-biorXiv:
+[![](https://img.shields.io/badge/doi-10.1101/2021.02.13.429885-red.svg)](https://doi.org/10.1101/2021.02.13.429885)
 
-*An automated quality checking tool for clonal copy number changes and
-single nucleotide variant calls from high-resolution whole genome
-sequencing* Jacob Househam, William CH Cross and Giulio Caravagna.
-Preprint, 2021.
+If you use `CNAqc`, please cite:
+
+-   *A fully automated approach for quality control of cancer mutations
+    in the era of high-resolution whole genome sequencing* Jacob
+    Househam, William CH Cross and Giulio Caravagna. [biorXiv
+    preprint](https://www.biorxiv.org/content/10.1101/2021.02.13.429885v1.full),
+    2021
 
 #### Help and support
 
