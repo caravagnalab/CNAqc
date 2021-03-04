@@ -19,6 +19,7 @@
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><meta property="og:title" content="7. Example data analysis">
 <meta property="og:description" content="CNAqc">
+<meta property="og:image" content="caravagn.github.io/CNAqc/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -88,7 +89,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/caravagn/CNAqc/">
+  <a href="https://github.com/caravagnalab/CNAqc/">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -103,13 +104,13 @@
 
       
 
-      </header><script src="a7_example_MSeq_files/header-attrs-2.7/header-attrs.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>7. Example data analysis</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/caravagn/CNAqcvignettes/a7_example_MSeq.Rmd"><code>vignettes/a7_example_MSeq.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/caravagnalab/CNAqcvignettes/a7_example_MSeq.Rmd"><code>vignettes/a7_example_MSeq.Rmd</code></a></small>
       <div class="hidden name"><code>a7_example_MSeq.Rmd</code></div>
 
     </div>
@@ -117,14 +118,13 @@
     
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/caravagn/CNAqc">CNAqc</a></span><span class="op">)</span>
-<span class="co">#&gt; ✓ Loading BMix, 'Binomial and Beta-Binomial univariate mixtures'. Support : &lt;https://caravagn.github.io/BMix/&gt;</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/caravagnalab/CNAqc">CNAqc</a></span><span class="op">)</span>
 <span class="co">#&gt; ✓ Loading CNAqc, 'Copy Number Alteration quality check'. Support : &lt;https://caravagn.github.io/CNAqc/&gt;</span>
 
 <span class="co"># Extra packages</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="va"><a href="https://github.com/knausb/vcfR">vcfR</a></span><span class="op">)</span>
-<span class="co">#&gt; Loading required package: vcfR</span>
+<span class="co">#&gt; Carico il pacchetto richiesto: vcfR</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;    *****       ***   vcfR   ***       *****</span>
 <span class="co">#&gt;    This is vcfR 1.12.0 </span>
@@ -137,87 +137,87 @@
 <h1 class="hasAnchor">
 <a href="#mutation-data" class="anchor"></a>Mutation data</h1>
 <p>We download from Github a VCF file for MSeq sample <code>Set06</code>, and load it using the <code>vcfR</code> package.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>VCF_url <span class="ot">=</span> <span class="st">"https://raw.githubusercontent.com/caravagnalab/CNAqc_datasets/main/MSeq_Set06/Mutations/Set.06.WGS.merged_filtered.vcf"</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Download, load and cancel data</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">download.file</span>(VCF_url, <span class="st">"Set.06.WGS.merged_filtered.vcf"</span>,)</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>set6 <span class="ot">=</span> vcfR<span class="sc">::</span><span class="fu">read.vcfR</span>(<span class="st">"Set.06.WGS.merged_filtered.vcf"</span>)</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Scanning file to determine attributes.</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; File attributes:</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   meta lines: 47</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   header_line: 48</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   variant count: 43053</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   column count: 16</span></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>Meta line <span class="dv">47</span> read in.</span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; All meta lines processed.</span></span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; gt matrix initialized.</span></span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Character matrix gt created.</span></span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   Character matrix gt rows: 43053</span></span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   Character matrix gt cols: 16</span></span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   skip: 0</span></span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   nrows: 43053</span></span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   row_num: 0</span></span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>Processed variant <span class="dv">1000</span></span>
-<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>Processed variant <span class="dv">2000</span></span>
-<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>Processed variant <span class="dv">3000</span></span>
-<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>Processed variant <span class="dv">4000</span></span>
-<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>Processed variant <span class="dv">5000</span></span>
-<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>Processed variant <span class="dv">6000</span></span>
-<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>Processed variant <span class="dv">7000</span></span>
-<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>Processed variant <span class="dv">8000</span></span>
-<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>Processed variant <span class="dv">9000</span></span>
-<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>Processed variant <span class="dv">10000</span></span>
-<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>Processed variant <span class="dv">11000</span></span>
-<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>Processed variant <span class="dv">12000</span></span>
-<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>Processed variant <span class="dv">13000</span></span>
-<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>Processed variant <span class="dv">14000</span></span>
-<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>Processed variant <span class="dv">15000</span></span>
-<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>Processed variant <span class="dv">16000</span></span>
-<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>Processed variant <span class="dv">17000</span></span>
-<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>Processed variant <span class="dv">18000</span></span>
-<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>Processed variant <span class="dv">19000</span></span>
-<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>Processed variant <span class="dv">20000</span></span>
-<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>Processed variant <span class="dv">21000</span></span>
-<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>Processed variant <span class="dv">22000</span></span>
-<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>Processed variant <span class="dv">23000</span></span>
-<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>Processed variant <span class="dv">24000</span></span>
-<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>Processed variant <span class="dv">25000</span></span>
-<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>Processed variant <span class="dv">26000</span></span>
-<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>Processed variant <span class="dv">27000</span></span>
-<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>Processed variant <span class="dv">28000</span></span>
-<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>Processed variant <span class="dv">29000</span></span>
-<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>Processed variant <span class="dv">30000</span></span>
-<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>Processed variant <span class="dv">31000</span></span>
-<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>Processed variant <span class="dv">32000</span></span>
-<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a>Processed variant <span class="dv">33000</span></span>
-<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a>Processed variant <span class="dv">34000</span></span>
-<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>Processed variant <span class="dv">35000</span></span>
-<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a>Processed variant <span class="dv">36000</span></span>
-<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a>Processed variant <span class="dv">37000</span></span>
-<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a>Processed variant <span class="dv">38000</span></span>
-<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a>Processed variant <span class="dv">39000</span></span>
-<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a>Processed variant <span class="dv">40000</span></span>
-<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a>Processed variant <span class="dv">41000</span></span>
-<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a>Processed variant <span class="dv">42000</span></span>
-<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a>Processed variant <span class="dv">43000</span></span>
-<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a>Processed variant<span class="sc">:</span> <span class="dv">43053</span></span>
-<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; All variants processed</span></span>
-<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a><span class="fu">file.remove</span>(<span class="st">"Set.06.WGS.merged_filtered.vcf"</span>)</span>
-<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] TRUE</span></span>
-<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a><span class="co"># VCF</span></span>
-<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(set6)</span>
-<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ***** Object of Class vcfR *****</span></span>
-<span id="cb2-76"><a href="#cb2-76" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 7 samples</span></span>
-<span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 24 CHROMs</span></span>
-<span id="cb2-78"><a href="#cb2-78" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 43,053 variants</span></span>
-<span id="cb2-79"><a href="#cb2-79" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Object size: 43.5 Mb</span></span>
-<span id="cb2-80"><a href="#cb2-80" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 0 percent missing data</span></span>
-<span id="cb2-81"><a href="#cb2-81" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; *****        *****         *****</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">VCF_url =<span class="st"> "https://raw.githubusercontent.com/caravagnalab/CNAqc_datasets/main/MSeq_Set06/Mutations/Set.06.WGS.merged_filtered.vcf"</span></a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="co"># Download, load and cancel data</span></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="kw">download.file</span>(VCF_url, <span class="st">"Set.06.WGS.merged_filtered.vcf"</span>,)</a>
+<a class="sourceLine" id="cb2-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb2-6" data-line-number="6">set6 =<span class="st"> </span>vcfR<span class="op">::</span><span class="kw">read.vcfR</span>(<span class="st">"Set.06.WGS.merged_filtered.vcf"</span>)</a>
+<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="co">#&gt; Scanning file to determine attributes.</span></a>
+<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="co">#&gt; File attributes:</span></a>
+<a class="sourceLine" id="cb2-9" data-line-number="9"><span class="co">#&gt;   meta lines: 47</span></a>
+<a class="sourceLine" id="cb2-10" data-line-number="10"><span class="co">#&gt;   header_line: 48</span></a>
+<a class="sourceLine" id="cb2-11" data-line-number="11"><span class="co">#&gt;   variant count: 43053</span></a>
+<a class="sourceLine" id="cb2-12" data-line-number="12"><span class="co">#&gt;   column count: 16</span></a>
+<a class="sourceLine" id="cb2-13" data-line-number="13"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb2-14" data-line-number="14">Meta line <span class="dv">47</span> read in.</a>
+<a class="sourceLine" id="cb2-15" data-line-number="15"><span class="co">#&gt; All meta lines processed.</span></a>
+<a class="sourceLine" id="cb2-16" data-line-number="16"><span class="co">#&gt; gt matrix initialized.</span></a>
+<a class="sourceLine" id="cb2-17" data-line-number="17"><span class="co">#&gt; Character matrix gt created.</span></a>
+<a class="sourceLine" id="cb2-18" data-line-number="18"><span class="co">#&gt;   Character matrix gt rows: 43053</span></a>
+<a class="sourceLine" id="cb2-19" data-line-number="19"><span class="co">#&gt;   Character matrix gt cols: 16</span></a>
+<a class="sourceLine" id="cb2-20" data-line-number="20"><span class="co">#&gt;   skip: 0</span></a>
+<a class="sourceLine" id="cb2-21" data-line-number="21"><span class="co">#&gt;   nrows: 43053</span></a>
+<a class="sourceLine" id="cb2-22" data-line-number="22"><span class="co">#&gt;   row_num: 0</span></a>
+<a class="sourceLine" id="cb2-23" data-line-number="23"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb2-24" data-line-number="24">Processed variant <span class="dv">1000</span></a>
+<a class="sourceLine" id="cb2-25" data-line-number="25">Processed variant <span class="dv">2000</span></a>
+<a class="sourceLine" id="cb2-26" data-line-number="26">Processed variant <span class="dv">3000</span></a>
+<a class="sourceLine" id="cb2-27" data-line-number="27">Processed variant <span class="dv">4000</span></a>
+<a class="sourceLine" id="cb2-28" data-line-number="28">Processed variant <span class="dv">5000</span></a>
+<a class="sourceLine" id="cb2-29" data-line-number="29">Processed variant <span class="dv">6000</span></a>
+<a class="sourceLine" id="cb2-30" data-line-number="30">Processed variant <span class="dv">7000</span></a>
+<a class="sourceLine" id="cb2-31" data-line-number="31">Processed variant <span class="dv">8000</span></a>
+<a class="sourceLine" id="cb2-32" data-line-number="32">Processed variant <span class="dv">9000</span></a>
+<a class="sourceLine" id="cb2-33" data-line-number="33">Processed variant <span class="dv">10000</span></a>
+<a class="sourceLine" id="cb2-34" data-line-number="34">Processed variant <span class="dv">11000</span></a>
+<a class="sourceLine" id="cb2-35" data-line-number="35">Processed variant <span class="dv">12000</span></a>
+<a class="sourceLine" id="cb2-36" data-line-number="36">Processed variant <span class="dv">13000</span></a>
+<a class="sourceLine" id="cb2-37" data-line-number="37">Processed variant <span class="dv">14000</span></a>
+<a class="sourceLine" id="cb2-38" data-line-number="38">Processed variant <span class="dv">15000</span></a>
+<a class="sourceLine" id="cb2-39" data-line-number="39">Processed variant <span class="dv">16000</span></a>
+<a class="sourceLine" id="cb2-40" data-line-number="40">Processed variant <span class="dv">17000</span></a>
+<a class="sourceLine" id="cb2-41" data-line-number="41">Processed variant <span class="dv">18000</span></a>
+<a class="sourceLine" id="cb2-42" data-line-number="42">Processed variant <span class="dv">19000</span></a>
+<a class="sourceLine" id="cb2-43" data-line-number="43">Processed variant <span class="dv">20000</span></a>
+<a class="sourceLine" id="cb2-44" data-line-number="44">Processed variant <span class="dv">21000</span></a>
+<a class="sourceLine" id="cb2-45" data-line-number="45">Processed variant <span class="dv">22000</span></a>
+<a class="sourceLine" id="cb2-46" data-line-number="46">Processed variant <span class="dv">23000</span></a>
+<a class="sourceLine" id="cb2-47" data-line-number="47">Processed variant <span class="dv">24000</span></a>
+<a class="sourceLine" id="cb2-48" data-line-number="48">Processed variant <span class="dv">25000</span></a>
+<a class="sourceLine" id="cb2-49" data-line-number="49">Processed variant <span class="dv">26000</span></a>
+<a class="sourceLine" id="cb2-50" data-line-number="50">Processed variant <span class="dv">27000</span></a>
+<a class="sourceLine" id="cb2-51" data-line-number="51">Processed variant <span class="dv">28000</span></a>
+<a class="sourceLine" id="cb2-52" data-line-number="52">Processed variant <span class="dv">29000</span></a>
+<a class="sourceLine" id="cb2-53" data-line-number="53">Processed variant <span class="dv">30000</span></a>
+<a class="sourceLine" id="cb2-54" data-line-number="54">Processed variant <span class="dv">31000</span></a>
+<a class="sourceLine" id="cb2-55" data-line-number="55">Processed variant <span class="dv">32000</span></a>
+<a class="sourceLine" id="cb2-56" data-line-number="56">Processed variant <span class="dv">33000</span></a>
+<a class="sourceLine" id="cb2-57" data-line-number="57">Processed variant <span class="dv">34000</span></a>
+<a class="sourceLine" id="cb2-58" data-line-number="58">Processed variant <span class="dv">35000</span></a>
+<a class="sourceLine" id="cb2-59" data-line-number="59">Processed variant <span class="dv">36000</span></a>
+<a class="sourceLine" id="cb2-60" data-line-number="60">Processed variant <span class="dv">37000</span></a>
+<a class="sourceLine" id="cb2-61" data-line-number="61">Processed variant <span class="dv">38000</span></a>
+<a class="sourceLine" id="cb2-62" data-line-number="62">Processed variant <span class="dv">39000</span></a>
+<a class="sourceLine" id="cb2-63" data-line-number="63">Processed variant <span class="dv">40000</span></a>
+<a class="sourceLine" id="cb2-64" data-line-number="64">Processed variant <span class="dv">41000</span></a>
+<a class="sourceLine" id="cb2-65" data-line-number="65">Processed variant <span class="dv">42000</span></a>
+<a class="sourceLine" id="cb2-66" data-line-number="66">Processed variant <span class="dv">43000</span></a>
+<a class="sourceLine" id="cb2-67" data-line-number="67">Processed variant<span class="op">:</span><span class="st"> </span><span class="dv">43053</span></a>
+<a class="sourceLine" id="cb2-68" data-line-number="68"><span class="co">#&gt; All variants processed</span></a>
+<a class="sourceLine" id="cb2-69" data-line-number="69"></a>
+<a class="sourceLine" id="cb2-70" data-line-number="70"><span class="kw">file.remove</span>(<span class="st">"Set.06.WGS.merged_filtered.vcf"</span>)</a>
+<a class="sourceLine" id="cb2-71" data-line-number="71"><span class="co">#&gt; [1] TRUE</span></a>
+<a class="sourceLine" id="cb2-72" data-line-number="72"></a>
+<a class="sourceLine" id="cb2-73" data-line-number="73"><span class="co"># VCF</span></a>
+<a class="sourceLine" id="cb2-74" data-line-number="74"><span class="kw">print</span>(set6)</a>
+<a class="sourceLine" id="cb2-75" data-line-number="75"><span class="co">#&gt; ***** Object of Class vcfR *****</span></a>
+<a class="sourceLine" id="cb2-76" data-line-number="76"><span class="co">#&gt; 7 samples</span></a>
+<a class="sourceLine" id="cb2-77" data-line-number="77"><span class="co">#&gt; 24 CHROMs</span></a>
+<a class="sourceLine" id="cb2-78" data-line-number="78"><span class="co">#&gt; 43,053 variants</span></a>
+<a class="sourceLine" id="cb2-79" data-line-number="79"><span class="co">#&gt; Object size: 43.5 Mb</span></a>
+<a class="sourceLine" id="cb2-80" data-line-number="80"><span class="co">#&gt; 0 percent missing data</span></a>
+<a class="sourceLine" id="cb2-81" data-line-number="81"><span class="co">#&gt; *****        *****         *****</span></a></code></pre></div>
 <p>We extract all the information we need, using the tidy data representation format.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># INFO fields </span>
@@ -262,18 +262,18 @@
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">sample_mutations</span><span class="op">)</span>
 <span class="co">#&gt; $Set6_42</span>
 <span class="co">#&gt; # A tibble: 33,245 x 46</span>
-<span class="co">#&gt;    chr     from     to ref     alt       NV    DP    VAF   Key FR     MMLQ   TCR</span>
-<span class="co">#&gt;    &lt;chr&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;int&gt; &lt;chr&gt; &lt;dbl&gt; &lt;int&gt;</span>
-<span class="co">#&gt;  1 chr1   30923  30924 G       T          2    41 0.0488     1 0.42…    37    98</span>
-<span class="co">#&gt;  2 chr1   83906  83907 A       G          1    56 0.0179     2 0.28…    37   132</span>
-<span class="co">#&gt;  3 chr1   83911  83930 AAGAGA… TAGAA…     2    59 0.0339     3 0.07…    37   133</span>
-<span class="co">#&gt;  4 chr1   83933  83934 A       G          1    59 0.0169     4 0.00…   100   141</span>
-<span class="co">#&gt;  5 chr1  137123 137124 T       G          5    44 0.114      5 0.14…    37    87</span>
-<span class="co">#&gt;  6 chr1  797474 797475 G       T          6    75 0.08       6 0.12…    37   222</span>
-<span class="co">#&gt;  7 chr1  809123 809124 G       A          2    92 0.0217     7 0.14…    37   235</span>
-<span class="co">#&gt;  8 chr1  809135 809136 C       T          2    91 0.0220     8 0.14…    37   236</span>
-<span class="co">#&gt;  9 chr1  812625 812642 GCTGTG… TCTGT…     1    90 0.0111     9 0.14…    37   223</span>
-<span class="co">#&gt; 10 chr1  815277 815278 T       C         10    70 0.143     10 0.35…    37   196</span>
+<span class="co">#&gt;    chr     from     to ref   alt      NV    DP    VAF   Key FR     MMLQ   TCR</span>
+<span class="co">#&gt;    &lt;chr&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;int&gt; &lt;chr&gt; &lt;dbl&gt; &lt;int&gt;</span>
+<span class="co">#&gt;  1 chr1   30923  30924 G     T         2    41 0.0488     1 0.42…    37    98</span>
+<span class="co">#&gt;  2 chr1   83906  83907 A     G         1    56 0.0179     2 0.28…    37   132</span>
+<span class="co">#&gt;  3 chr1   83911  83930 AAGA… TAGA…     2    59 0.0339     3 0.07…    37   133</span>
+<span class="co">#&gt;  4 chr1   83933  83934 A     G         1    59 0.0169     4 0.00…   100   141</span>
+<span class="co">#&gt;  5 chr1  137123 137124 T     G         5    44 0.114      5 0.14…    37    87</span>
+<span class="co">#&gt;  6 chr1  797474 797475 G     T         6    75 0.08       6 0.12…    37   222</span>
+<span class="co">#&gt;  7 chr1  809123 809124 G     A         2    92 0.0217     7 0.14…    37   235</span>
+<span class="co">#&gt;  8 chr1  809135 809136 C     T         2    91 0.0220     8 0.14…    37   236</span>
+<span class="co">#&gt;  9 chr1  812625 812642 GCTG… TCTG…     1    90 0.0111     9 0.14…    37   223</span>
+<span class="co">#&gt; 10 chr1  815277 815278 T     C        10    70 0.143     10 0.35…    37   196</span>
 <span class="co">#&gt; # … with 33,235 more rows, and 34 more variables: HP &lt;int&gt;, WE &lt;int&gt;,</span>
 <span class="co">#&gt; #   Source &lt;chr&gt;, FS &lt;chr&gt;, WS &lt;int&gt;, PP &lt;chr&gt;, TR &lt;chr&gt;, NF &lt;chr&gt;, TCF &lt;int&gt;,</span>
 <span class="co">#&gt; #   NR &lt;chr&gt;, TC &lt;int&gt;, END &lt;chr&gt;, MGOF &lt;chr&gt;, SbPval &lt;chr&gt;, START &lt;chr&gt;,</span>
@@ -284,18 +284,18 @@
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $Set6_44</span>
 <span class="co">#&gt; # A tibble: 32,960 x 46</span>
-<span class="co">#&gt;    chr     from     to ref   alt      NV    DP    VAF   Key FR      MMLQ   TCR</span>
-<span class="co">#&gt;    &lt;chr&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;int&gt; &lt;chr&gt;  &lt;dbl&gt; &lt;int&gt;</span>
-<span class="co">#&gt;  1 chr1   30923  30924 G     T         2    20 0.1        1 0.4275    37    98</span>
-<span class="co">#&gt;  2 chr1   83906  83907 A     G         3    39 0.0769     2 0.2857    37   132</span>
-<span class="co">#&gt;  3 chr1   83933  83934 A     G         3    46 0.0652     4 0.0000   100   141</span>
-<span class="co">#&gt;  4 chr1  137123 137124 T     G         1    29 0.0345     5 0.1438    37    87</span>
-<span class="co">#&gt;  5 chr1  797474 797475 G     T         5    78 0.0641     6 0.1291    37   222</span>
-<span class="co">#&gt;  6 chr1  809123 809124 G     A         3    67 0.0448     7 0.1429    37   235</span>
-<span class="co">#&gt;  7 chr1  809135 809136 C     T         2    66 0.0303     8 0.1429    37   236</span>
-<span class="co">#&gt;  8 chr1  815277 815278 T     C         4    70 0.0571    10 0.3569    37   196</span>
-<span class="co">#&gt;  9 chr1  815316 815319 GTT   ATC       3    80 0.0375    11 0.1403    37   191</span>
-<span class="co">#&gt; 10 chr1  819221 819225 GTTA  ATTC      2    55 0.0364    12 0.0715    23   198</span>
+<span class="co">#&gt;    chr     from     to ref   alt      NV    DP    VAF   Key FR     MMLQ   TCR</span>
+<span class="co">#&gt;    &lt;chr&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;int&gt; &lt;chr&gt; &lt;dbl&gt; &lt;int&gt;</span>
+<span class="co">#&gt;  1 chr1   30923  30924 G     T         2    20 0.1        1 0.42…    37    98</span>
+<span class="co">#&gt;  2 chr1   83906  83907 A     G         3    39 0.0769     2 0.28…    37   132</span>
+<span class="co">#&gt;  3 chr1   83933  83934 A     G         3    46 0.0652     4 0.00…   100   141</span>
+<span class="co">#&gt;  4 chr1  137123 137124 T     G         1    29 0.0345     5 0.14…    37    87</span>
+<span class="co">#&gt;  5 chr1  797474 797475 G     T         5    78 0.0641     6 0.12…    37   222</span>
+<span class="co">#&gt;  6 chr1  809123 809124 G     A         3    67 0.0448     7 0.14…    37   235</span>
+<span class="co">#&gt;  7 chr1  809135 809136 C     T         2    66 0.0303     8 0.14…    37   236</span>
+<span class="co">#&gt;  8 chr1  815277 815278 T     C         4    70 0.0571    10 0.35…    37   196</span>
+<span class="co">#&gt;  9 chr1  815316 815319 GTT   ATC       3    80 0.0375    11 0.14…    37   191</span>
+<span class="co">#&gt; 10 chr1  819221 819225 GTTA  ATTC      2    55 0.0364    12 0.07…    23   198</span>
 <span class="co">#&gt; # … with 32,950 more rows, and 34 more variables: HP &lt;int&gt;, WE &lt;int&gt;,</span>
 <span class="co">#&gt; #   Source &lt;chr&gt;, FS &lt;chr&gt;, WS &lt;int&gt;, PP &lt;chr&gt;, TR &lt;chr&gt;, NF &lt;chr&gt;, TCF &lt;int&gt;,</span>
 <span class="co">#&gt; #   NR &lt;chr&gt;, TC &lt;int&gt;, END &lt;chr&gt;, MGOF &lt;chr&gt;, SbPval &lt;chr&gt;, START &lt;chr&gt;,</span>
@@ -306,18 +306,18 @@
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $Set6_45</span>
 <span class="co">#&gt; # A tibble: 32,782 x 46</span>
-<span class="co">#&gt;    chr     from     to ref     alt       NV    DP    VAF   Key FR     MMLQ   TCR</span>
-<span class="co">#&gt;    &lt;chr&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;int&gt; &lt;chr&gt; &lt;dbl&gt; &lt;int&gt;</span>
-<span class="co">#&gt;  1 chr1   30923  30924 G       T          2    42 0.0476     1 0.42…    37    98</span>
-<span class="co">#&gt;  2 chr1   83906  83907 A       G          3    57 0.0526     2 0.28…    37   132</span>
-<span class="co">#&gt;  3 chr1   83911  83930 AAGAGA… TAGAA…     5    57 0.0877     3 0.07…    37   133</span>
-<span class="co">#&gt;  4 chr1   83933  83934 A       G          3    59 0.0508     4 0.00…   100   141</span>
-<span class="co">#&gt;  5 chr1  137123 137124 T       G          3    34 0.0882     5 0.14…    37    87</span>
-<span class="co">#&gt;  6 chr1  797474 797475 G       T          3    64 0.0469     6 0.12…    37   222</span>
-<span class="co">#&gt;  7 chr1  809123 809124 G       A          3    71 0.0423     7 0.14…    37   235</span>
-<span class="co">#&gt;  8 chr1  809135 809136 C       T          3    75 0.04       8 0.14…    37   236</span>
-<span class="co">#&gt;  9 chr1  815277 815278 T       C          9    81 0.111     10 0.35…    37   196</span>
-<span class="co">#&gt; 10 chr1  815316 815319 GTT     ATC        3    89 0.0337    11 0.14…    37   191</span>
+<span class="co">#&gt;    chr     from     to ref   alt      NV    DP    VAF   Key FR     MMLQ   TCR</span>
+<span class="co">#&gt;    &lt;chr&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;int&gt; &lt;chr&gt; &lt;dbl&gt; &lt;int&gt;</span>
+<span class="co">#&gt;  1 chr1   30923  30924 G     T         2    42 0.0476     1 0.42…    37    98</span>
+<span class="co">#&gt;  2 chr1   83906  83907 A     G         3    57 0.0526     2 0.28…    37   132</span>
+<span class="co">#&gt;  3 chr1   83911  83930 AAGA… TAGA…     5    57 0.0877     3 0.07…    37   133</span>
+<span class="co">#&gt;  4 chr1   83933  83934 A     G         3    59 0.0508     4 0.00…   100   141</span>
+<span class="co">#&gt;  5 chr1  137123 137124 T     G         3    34 0.0882     5 0.14…    37    87</span>
+<span class="co">#&gt;  6 chr1  797474 797475 G     T         3    64 0.0469     6 0.12…    37   222</span>
+<span class="co">#&gt;  7 chr1  809123 809124 G     A         3    71 0.0423     7 0.14…    37   235</span>
+<span class="co">#&gt;  8 chr1  809135 809136 C     T         3    75 0.04       8 0.14…    37   236</span>
+<span class="co">#&gt;  9 chr1  815277 815278 T     C         9    81 0.111     10 0.35…    37   196</span>
+<span class="co">#&gt; 10 chr1  815316 815319 GTT   ATC       3    89 0.0337    11 0.14…    37   191</span>
 <span class="co">#&gt; # … with 32,772 more rows, and 34 more variables: HP &lt;int&gt;, WE &lt;int&gt;,</span>
 <span class="co">#&gt; #   Source &lt;chr&gt;, FS &lt;chr&gt;, WS &lt;int&gt;, PP &lt;chr&gt;, TR &lt;chr&gt;, NF &lt;chr&gt;, TCF &lt;int&gt;,</span>
 <span class="co">#&gt; #   NR &lt;chr&gt;, TC &lt;int&gt;, END &lt;chr&gt;, MGOF &lt;chr&gt;, SbPval &lt;chr&gt;, START &lt;chr&gt;,</span>
@@ -328,18 +328,18 @@
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $Set6_46</span>
 <span class="co">#&gt; # A tibble: 33,907 x 46</span>
-<span class="co">#&gt;    chr     from     to ref     alt       NV    DP    VAF   Key FR     MMLQ   TCR</span>
-<span class="co">#&gt;    &lt;chr&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;int&gt; &lt;chr&gt; &lt;dbl&gt; &lt;int&gt;</span>
-<span class="co">#&gt;  1 chr1   30923  30924 G       T          2    22 0.0909     1 0.42…    37    98</span>
-<span class="co">#&gt;  2 chr1   83906  83907 A       G          3    35 0.0857     2 0.28…    37   132</span>
-<span class="co">#&gt;  3 chr1   83933  83934 A       G          6    38 0.158      4 0.00…   100   141</span>
-<span class="co">#&gt;  4 chr1  137123 137124 T       G          1    30 0.0333     5 0.14…    37    87</span>
-<span class="co">#&gt;  5 chr1  797474 797475 G       T          4    65 0.0615     6 0.12…    37   222</span>
-<span class="co">#&gt;  6 chr1  809123 809124 G       A          6    96 0.0625     7 0.14…    37   235</span>
-<span class="co">#&gt;  7 chr1  809135 809136 C       T          5    94 0.0532     8 0.14…    37   236</span>
-<span class="co">#&gt;  8 chr1  812625 812642 GCTGTG… TCTGT…     3    87 0.0345     9 0.14…    37   223</span>
-<span class="co">#&gt;  9 chr1  815277 815278 T       C         10    69 0.145     10 0.35…    37   196</span>
-<span class="co">#&gt; 10 chr1  815316 815319 GTT     ATC        3    85 0.0353    11 0.14…    37   191</span>
+<span class="co">#&gt;    chr     from     to ref   alt      NV    DP    VAF   Key FR     MMLQ   TCR</span>
+<span class="co">#&gt;    &lt;chr&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;int&gt; &lt;chr&gt; &lt;dbl&gt; &lt;int&gt;</span>
+<span class="co">#&gt;  1 chr1   30923  30924 G     T         2    22 0.0909     1 0.42…    37    98</span>
+<span class="co">#&gt;  2 chr1   83906  83907 A     G         3    35 0.0857     2 0.28…    37   132</span>
+<span class="co">#&gt;  3 chr1   83933  83934 A     G         6    38 0.158      4 0.00…   100   141</span>
+<span class="co">#&gt;  4 chr1  137123 137124 T     G         1    30 0.0333     5 0.14…    37    87</span>
+<span class="co">#&gt;  5 chr1  797474 797475 G     T         4    65 0.0615     6 0.12…    37   222</span>
+<span class="co">#&gt;  6 chr1  809123 809124 G     A         6    96 0.0625     7 0.14…    37   235</span>
+<span class="co">#&gt;  7 chr1  809135 809136 C     T         5    94 0.0532     8 0.14…    37   236</span>
+<span class="co">#&gt;  8 chr1  812625 812642 GCTG… TCTG…     3    87 0.0345     9 0.14…    37   223</span>
+<span class="co">#&gt;  9 chr1  815277 815278 T     C        10    69 0.145     10 0.35…    37   196</span>
+<span class="co">#&gt; 10 chr1  815316 815319 GTT   ATC       3    85 0.0353    11 0.14…    37   191</span>
 <span class="co">#&gt; # … with 33,897 more rows, and 34 more variables: HP &lt;int&gt;, WE &lt;int&gt;,</span>
 <span class="co">#&gt; #   Source &lt;chr&gt;, FS &lt;chr&gt;, WS &lt;int&gt;, PP &lt;chr&gt;, TR &lt;chr&gt;, NF &lt;chr&gt;, TCF &lt;int&gt;,</span>
 <span class="co">#&gt; #   NR &lt;chr&gt;, TC &lt;int&gt;, END &lt;chr&gt;, MGOF &lt;chr&gt;, SbPval &lt;chr&gt;, START &lt;chr&gt;,</span>
@@ -350,18 +350,18 @@
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $Set6_47</span>
 <span class="co">#&gt; # A tibble: 32,814 x 46</span>
-<span class="co">#&gt;    chr     from     to ref     alt       NV    DP    VAF   Key FR     MMLQ   TCR</span>
-<span class="co">#&gt;    &lt;chr&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;int&gt; &lt;chr&gt; &lt;dbl&gt; &lt;int&gt;</span>
-<span class="co">#&gt;  1 chr1   30923  30924 G       T          3    12 0.25       1 0.42…    37    98</span>
-<span class="co">#&gt;  2 chr1   83906  83907 A       G          6    41 0.146      2 0.28…    37   132</span>
-<span class="co">#&gt;  3 chr1   83933  83934 A       G          7    39 0.179      4 0.00…   100   141</span>
-<span class="co">#&gt;  4 chr1  137123 137124 T       G          7    38 0.184      5 0.14…    37    87</span>
-<span class="co">#&gt;  5 chr1  797474 797475 G       T          4    68 0.0588     6 0.12…    37   222</span>
-<span class="co">#&gt;  6 chr1  809123 809124 G       A          4    84 0.0476     7 0.14…    37   235</span>
-<span class="co">#&gt;  7 chr1  809135 809136 C       T          2    84 0.0238     8 0.14…    37   236</span>
-<span class="co">#&gt;  8 chr1  812625 812642 GCTGTG… TCTGT…     4    71 0.0563     9 0.14…    37   223</span>
-<span class="co">#&gt;  9 chr1  815277 815278 T       C          6    67 0.0896    10 0.35…    37   196</span>
-<span class="co">#&gt; 10 chr1  815316 815319 GTT     ATC        2    68 0.0294    11 0.14…    37   191</span>
+<span class="co">#&gt;    chr     from     to ref   alt      NV    DP    VAF   Key FR     MMLQ   TCR</span>
+<span class="co">#&gt;    &lt;chr&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;int&gt; &lt;chr&gt; &lt;dbl&gt; &lt;int&gt;</span>
+<span class="co">#&gt;  1 chr1   30923  30924 G     T         3    12 0.25       1 0.42…    37    98</span>
+<span class="co">#&gt;  2 chr1   83906  83907 A     G         6    41 0.146      2 0.28…    37   132</span>
+<span class="co">#&gt;  3 chr1   83933  83934 A     G         7    39 0.179      4 0.00…   100   141</span>
+<span class="co">#&gt;  4 chr1  137123 137124 T     G         7    38 0.184      5 0.14…    37    87</span>
+<span class="co">#&gt;  5 chr1  797474 797475 G     T         4    68 0.0588     6 0.12…    37   222</span>
+<span class="co">#&gt;  6 chr1  809123 809124 G     A         4    84 0.0476     7 0.14…    37   235</span>
+<span class="co">#&gt;  7 chr1  809135 809136 C     T         2    84 0.0238     8 0.14…    37   236</span>
+<span class="co">#&gt;  8 chr1  812625 812642 GCTG… TCTG…     4    71 0.0563     9 0.14…    37   223</span>
+<span class="co">#&gt;  9 chr1  815277 815278 T     C         6    67 0.0896    10 0.35…    37   196</span>
+<span class="co">#&gt; 10 chr1  815316 815319 GTT   ATC       2    68 0.0294    11 0.14…    37   191</span>
 <span class="co">#&gt; # … with 32,804 more rows, and 34 more variables: HP &lt;int&gt;, WE &lt;int&gt;,</span>
 <span class="co">#&gt; #   Source &lt;chr&gt;, FS &lt;chr&gt;, WS &lt;int&gt;, PP &lt;chr&gt;, TR &lt;chr&gt;, NF &lt;chr&gt;, TCF &lt;int&gt;,</span>
 <span class="co">#&gt; #   NR &lt;chr&gt;, TC &lt;int&gt;, END &lt;chr&gt;, MGOF &lt;chr&gt;, SbPval &lt;chr&gt;, START &lt;chr&gt;,</span>
@@ -372,18 +372,18 @@
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $Set6_48</span>
 <span class="co">#&gt; # A tibble: 32,859 x 46</span>
-<span class="co">#&gt;    chr     from     to ref     alt       NV    DP    VAF   Key FR     MMLQ   TCR</span>
-<span class="co">#&gt;    &lt;chr&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;int&gt; &lt;chr&gt; &lt;dbl&gt; &lt;int&gt;</span>
-<span class="co">#&gt;  1 chr1   30923  30924 G       T          3    14 0.214      1 0.42…    37    98</span>
-<span class="co">#&gt;  2 chr1   83906  83907 A       G          2    28 0.0714     2 0.28…    37   132</span>
-<span class="co">#&gt;  3 chr1   83933  83934 A       G          3    36 0.0833     4 0.00…   100   141</span>
-<span class="co">#&gt;  4 chr1  137123 137124 T       G          2    36 0.0556     5 0.14…    37    87</span>
-<span class="co">#&gt;  5 chr1  797474 797475 G       T          6    69 0.0870     6 0.12…    37   222</span>
-<span class="co">#&gt;  6 chr1  809123 809124 G       A          5    76 0.0658     7 0.14…    37   235</span>
-<span class="co">#&gt;  7 chr1  809135 809136 C       T          5    78 0.0641     8 0.14…    37   236</span>
-<span class="co">#&gt;  8 chr1  812625 812642 GCTGTG… TCTGT…     1    62 0.0161     9 0.14…    37   223</span>
-<span class="co">#&gt;  9 chr1  815277 815278 T       C          6    58 0.103     10 0.35…    37   196</span>
-<span class="co">#&gt; 10 chr1  815316 815319 GTT     ATC        4    71 0.0563    11 0.14…    37   191</span>
+<span class="co">#&gt;    chr     from     to ref   alt      NV    DP    VAF   Key FR     MMLQ   TCR</span>
+<span class="co">#&gt;    &lt;chr&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;int&gt; &lt;chr&gt; &lt;dbl&gt; &lt;int&gt;</span>
+<span class="co">#&gt;  1 chr1   30923  30924 G     T         3    14 0.214      1 0.42…    37    98</span>
+<span class="co">#&gt;  2 chr1   83906  83907 A     G         2    28 0.0714     2 0.28…    37   132</span>
+<span class="co">#&gt;  3 chr1   83933  83934 A     G         3    36 0.0833     4 0.00…   100   141</span>
+<span class="co">#&gt;  4 chr1  137123 137124 T     G         2    36 0.0556     5 0.14…    37    87</span>
+<span class="co">#&gt;  5 chr1  797474 797475 G     T         6    69 0.0870     6 0.12…    37   222</span>
+<span class="co">#&gt;  6 chr1  809123 809124 G     A         5    76 0.0658     7 0.14…    37   235</span>
+<span class="co">#&gt;  7 chr1  809135 809136 C     T         5    78 0.0641     8 0.14…    37   236</span>
+<span class="co">#&gt;  8 chr1  812625 812642 GCTG… TCTG…     1    62 0.0161     9 0.14…    37   223</span>
+<span class="co">#&gt;  9 chr1  815277 815278 T     C         6    58 0.103     10 0.35…    37   196</span>
+<span class="co">#&gt; 10 chr1  815316 815319 GTT   ATC       4    71 0.0563    11 0.14…    37   191</span>
 <span class="co">#&gt; # … with 32,849 more rows, and 34 more variables: HP &lt;int&gt;, WE &lt;int&gt;,</span>
 <span class="co">#&gt; #   Source &lt;chr&gt;, FS &lt;chr&gt;, WS &lt;int&gt;, PP &lt;chr&gt;, TR &lt;chr&gt;, NF &lt;chr&gt;, TCF &lt;int&gt;,</span>
 <span class="co">#&gt; #   NR &lt;chr&gt;, TC &lt;int&gt;, END &lt;chr&gt;, MGOF &lt;chr&gt;, SbPval &lt;chr&gt;, START &lt;chr&gt;,</span>
@@ -476,7 +476,7 @@
 <p>Full CNAqc analysis. First we create the object.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># CNAqc data object</span>
-<span class="va">x</span> <span class="op">=</span> <span class="fu">CNAqc</span><span class="fu">::</span><span class="fu">init</span><span class="op">(</span><span class="va">snvs</span>,
+<span class="va">x</span> <span class="op">=</span> <span class="fu">CNAqc</span><span class="fu">::</span><span class="fu"><a href="../reference/init.html">init</a></span><span class="op">(</span><span class="va">snvs</span>,
                 <span class="va">cna</span>,
                 <span class="va">purity</span>,
                 ref <span class="op">=</span> <span class="st">"GRCh38"</span><span class="op">)</span>
@@ -502,10 +502,10 @@
 <p>Show the CNA data for this sample.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">cowplot</span><span class="fu">::</span><span class="fu"><a href="https://wilkelab.org/cowplot/reference/plot_grid.html">plot_grid</a></span><span class="op">(</span>
-  <span class="fu">plot_gw_counts</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>,
-  <span class="fu">plot_gw_vaf</span><span class="op">(</span><span class="va">x</span>, N <span class="op">=</span> <span class="fl">10000</span><span class="op">)</span>,
-  <span class="fu">plot_gw_depth</span><span class="op">(</span><span class="va">x</span>, N <span class="op">=</span> <span class="fl">10000</span><span class="op">)</span>,
-  <span class="fu">plot_segments</span><span class="op">(</span><span class="va">x</span>, highlight <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"1:0"</span>, <span class="st">"1:1"</span>, <span class="st">"2:0"</span>, <span class="st">"2:1"</span>, <span class="st">'2:2'</span><span class="op">)</span><span class="op">)</span>,
+  <span class="fu"><a href="../reference/plot_gw_counts.html">plot_gw_counts</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>,
+  <span class="fu"><a href="../reference/plot_gw_vaf.html">plot_gw_vaf</a></span><span class="op">(</span><span class="va">x</span>, N <span class="op">=</span> <span class="fl">10000</span><span class="op">)</span>,
+  <span class="fu"><a href="../reference/plot_gw_depth.html">plot_gw_depth</a></span><span class="op">(</span><span class="va">x</span>, N <span class="op">=</span> <span class="fl">10000</span><span class="op">)</span>,
+  <span class="fu"><a href="../reference/plot_segments.html">plot_segments</a></span><span class="op">(</span><span class="va">x</span>, highlight <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"1:0"</span>, <span class="st">"1:1"</span>, <span class="st">"2:0"</span>, <span class="st">"2:1"</span>, <span class="st">'2:2'</span><span class="op">)</span><span class="op">)</span>,
   align <span class="op">=</span> <span class="st">'v'</span>, 
   nrow <span class="op">=</span> <span class="fl">4</span>, 
   rel_heights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">.15</span>, <span class="fl">.15</span>, <span class="fl">.15</span>, <span class="fl">.8</span><span class="op">)</span><span class="op">)</span></code></pre></div>
@@ -513,9 +513,9 @@
 <p>Show the mutation data for this sample.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">ggpubr</span><span class="fu">::</span><span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html">ggarrange</a></span><span class="op">(</span>
-  <span class="fu">plot_data_histogram</span><span class="op">(</span><span class="va">x</span>, which <span class="op">=</span> <span class="st">'VAF'</span><span class="op">)</span>,
-  <span class="fu">plot_data_histogram</span><span class="op">(</span><span class="va">x</span>, which <span class="op">=</span> <span class="st">'DP'</span><span class="op">)</span>,
-  <span class="fu">plot_data_histogram</span><span class="op">(</span><span class="va">x</span>, which <span class="op">=</span> <span class="st">'NV'</span><span class="op">)</span>,
+  <span class="fu"><a href="../reference/plot_data_histogram.html">plot_data_histogram</a></span><span class="op">(</span><span class="va">x</span>, which <span class="op">=</span> <span class="st">'VAF'</span><span class="op">)</span>,
+  <span class="fu"><a href="../reference/plot_data_histogram.html">plot_data_histogram</a></span><span class="op">(</span><span class="va">x</span>, which <span class="op">=</span> <span class="st">'DP'</span><span class="op">)</span>,
+  <span class="fu"><a href="../reference/plot_data_histogram.html">plot_data_histogram</a></span><span class="op">(</span><span class="va">x</span>, which <span class="op">=</span> <span class="st">'NV'</span><span class="op">)</span>,
   ncol <span class="op">=</span> <span class="fl">3</span>,
   nrow <span class="op">=</span> <span class="fl">1</span>
   <span class="op">)</span>
@@ -528,61 +528,62 @@
 <p>Perform peak detection and show its results.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Peaks</span>
-<span class="va">x</span> <span class="op">=</span> <span class="fu">CNAqc</span><span class="fu">::</span><span class="fu">analyze_peaks</span><span class="op">(</span><span class="va">x</span>, matching_strategy <span class="op">=</span> <span class="st">'closest'</span><span class="op">)</span>
+<span class="va">x</span> <span class="op">=</span> <span class="fu">CNAqc</span><span class="fu">::</span><span class="fu"><a href="../reference/analyze_peaks.html">analyze_peaks</a></span><span class="op">(</span><span class="va">x</span>, matching_strategy <span class="op">=</span> <span class="st">'closest'</span><span class="op">)</span>
 <span class="co">#&gt; ℹ Requested karyotypes 1:0, 1:1, 2:1, 2:0, and 2:2. Matching strategy closest.</span>
 <span class="co">#&gt; ℹ Found n = 17283 mutations in 1:1, 2:0, 1:0, 2:1 (skipping those with n &lt; 0 mutations).</span>
+<span class="co">#&gt; ✓ Loading BMix, 'Binomial and Beta-Binomial univariate mixtures'. Support : &lt;https://caravagn.github.io/BMix/&gt;</span>
 <span class="co">#&gt;  [ BMix fit ]</span>
 <span class="co">#&gt; ℹ Binomials k_B = 1, 2, 3, and 4, Beta-Binomials k_BB = 0.</span>
 <span class="co">#&gt; ✓ Fits to run, n = 8.</span>
-<span class="co">#&gt; ℹ Bmix best fit completed in 0.02 mins</span>
+<span class="co">#&gt; ℹ Bmix best fit completed in 0.01 mins</span>
 <span class="co">#&gt; ── [ BMix ] My BMix model n = 898 with k = 3 component(s) (3 + 0) ──────────────</span>
-<span class="co">#&gt; ● Clusters: π = 66% [Bin 1], 26% [Bin 2], and 8% [Bin 3], with π &gt; 0.</span>
-<span class="co">#&gt; ● Binomial Bin 1 with mean = 0.0925882983764677.</span>
-<span class="co">#&gt; ● Binomial Bin 2 with mean = 0.539472194293932.</span>
-<span class="co">#&gt; ● Binomial Bin 3 with mean = 0.239279103588842.</span>
-<span class="co">#&gt; ℹ Score(s): ICL = 5435.57.</span>
+<span class="co">#&gt; ● Clusters: π = 67% [Bin 1], 27% [Bin 3], and 6% [Bin 2], with π &gt; 0.</span>
+<span class="co">#&gt; ● Binomial Bin 1 with mean = 0.0944018924816508.</span>
+<span class="co">#&gt; ● Binomial Bin 2 with mean = 0.244920794687648.</span>
+<span class="co">#&gt; ● Binomial Bin 3 with mean = 0.538255907591288.</span>
+<span class="co">#&gt; ℹ Score(s): ICL = 5384.42.</span>
 <span class="co">#&gt;  [ BMix fit ]</span>
 <span class="co">#&gt; ℹ Binomials k_B = 1, 2, 3, and 4, Beta-Binomials k_BB = 0.</span>
 <span class="co">#&gt; ✓ Fits to run, n = 8.</span>
 <span class="co">#&gt; ℹ Bmix best fit completed in 0.22 mins</span>
 <span class="co">#&gt; ── [ BMix ] My BMix model n = 14488 with k = 2 component(s) (2 + 0) ────────────</span>
-<span class="co">#&gt; ● Clusters: π = 58% [Bin 2] and 42% [Bin 1], with π &gt; 0.</span>
-<span class="co">#&gt; ● Binomial Bin 1 with mean = 0.100530470009202.</span>
-<span class="co">#&gt; ● Binomial Bin 2 with mean = 0.34729890110921.</span>
-<span class="co">#&gt; ℹ Score(s): ICL = 101647.62.</span>
+<span class="co">#&gt; ● Clusters: π = 60% [Bin 1] and 40% [Bin 2], with π &gt; 0.</span>
+<span class="co">#&gt; ● Binomial Bin 1 with mean = 0.343258198320555.</span>
+<span class="co">#&gt; ● Binomial Bin 2 with mean = 0.0959965909224226.</span>
+<span class="co">#&gt; ℹ Score(s): ICL = 101408.46.</span>
 <span class="co">#&gt;  [ BMix fit ]</span>
 <span class="co">#&gt; ℹ Binomials k_B = 1, 2, 3, and 4, Beta-Binomials k_BB = 0.</span>
 <span class="co">#&gt; ✓ Fits to run, n = 8.</span>
 <span class="co">#&gt; ℹ Bmix best fit completed in 0.01 mins</span>
 <span class="co">#&gt; ── [ BMix ] My BMix model n = 345 with k = 4 component(s) (4 + 0) ──────────────</span>
-<span class="co">#&gt; ● Clusters: π = 56% [Bin 2], 28% [Bin 3], 12% [Bin 4], and 3% [Bin 1], with π</span>
+<span class="co">#&gt; ● Clusters: π = 56% [Bin 4], 29% [Bin 2], 13% [Bin 3], and 3% [Bin 1], with π</span>
 <span class="co">#&gt;   &gt; 0.</span>
-<span class="co">#&gt; ● Binomial Bin 1 with mean = 0.732798306796814.</span>
-<span class="co">#&gt; ● Binomial Bin 2 with mean = 0.102913640265182.</span>
-<span class="co">#&gt; ● Binomial Bin 3 with mean = 0.272371681988504.</span>
-<span class="co">#&gt; ● Binomial Bin 4 with mean = 0.51166664322114.</span>
-<span class="co">#&gt; ℹ Score(s): ICL = 2606.12.</span>
+<span class="co">#&gt; ● Binomial Bin 1 with mean = 0.766330587713098.</span>
+<span class="co">#&gt; ● Binomial Bin 2 with mean = 0.271479799479545.</span>
+<span class="co">#&gt; ● Binomial Bin 3 with mean = 0.515132689208496.</span>
+<span class="co">#&gt; ● Binomial Bin 4 with mean = 0.102452855041586.</span>
+<span class="co">#&gt; ℹ Score(s): ICL = 2603.88.</span>
 <span class="co">#&gt;  [ BMix fit ]</span>
 <span class="co">#&gt; ℹ Binomials k_B = 1, 2, 3, and 4, Beta-Binomials k_BB = 0.</span>
 <span class="co">#&gt; ✓ Fits to run, n = 8.</span>
 <span class="co">#&gt; ℹ Bmix best fit completed in 0.02 mins</span>
 <span class="co">#&gt; ── [ BMix ] My BMix model n = 1552 with k = 3 component(s) (3 + 0) ─────────────</span>
-<span class="co">#&gt; ● Clusters: π = 60% [Bin 3], 29% [Bin 2], and 11% [Bin 1], with π &gt; 0.</span>
-<span class="co">#&gt; ● Binomial Bin 1 with mean = 0.670562010310431.</span>
-<span class="co">#&gt; ● Binomial Bin 2 with mean = 0.336210610179749.</span>
-<span class="co">#&gt; ● Binomial Bin 3 with mean = 0.101844546159243.</span>
-<span class="co">#&gt; ℹ Score(s): ICL = 10443.66.</span>
+<span class="co">#&gt; ● Clusters: π = 62% [Bin 1], 27% [Bin 2], and 11% [Bin 3], with π &gt; 0.</span>
+<span class="co">#&gt; ● Binomial Bin 1 with mean = 0.105142324133072.</span>
+<span class="co">#&gt; ● Binomial Bin 2 with mean = 0.343240776511629.</span>
+<span class="co">#&gt; ● Binomial Bin 3 with mean = 0.672754605723018.</span>
+<span class="co">#&gt; ℹ Score(s): ICL = 10482.85.</span>
 <span class="co">#&gt; # A tibble: 6 x 12</span>
 <span class="co">#&gt;   mutation_multip… karyotype  peak     x     y counts_per_bin discarded   offset</span>
 <span class="co">#&gt;              &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;          &lt;dbl&gt; &lt;lgl&gt;        &lt;dbl&gt;</span>
-<span class="co">#&gt; 1                1 1:0       0.527 0.540 1.26           236.  FALSE     -0.0129 </span>
-<span class="co">#&gt; 2                1 1:1       0.345 0.347 3.66          8388.  FALSE     -0.00182</span>
-<span class="co">#&gt; 3                1 2:1       0.257 0.273 1.59            98.3 FALSE     -0.0167 </span>
-<span class="co">#&gt; 4                2 2:1       0.513 0.511 0.599           42.5 FALSE      0.00220</span>
-<span class="co">#&gt; 5                1 2:0       0.345 0.34  1.43            19   FALSE      0.00500</span>
-<span class="co">#&gt; 6                2 2:0       0.69  0.671 0.538          167.  FALSE      0.0187 </span>
+<span class="co">#&gt; 1                1 1:0       0.527 0.538 1.26           238.  FALSE     -0.0109 </span>
+<span class="co">#&gt; 2                1 1:1       0.345 0.343 3.68          8656.  FALSE      0.00193</span>
+<span class="co">#&gt; 3                1 2:1       0.257 0.271 1.60            99.3 FALSE     -0.0147 </span>
+<span class="co">#&gt; 4                2 2:1       0.513 0.515 0.606           44.3 FALSE     -0.00194</span>
+<span class="co">#&gt; 5                1 2:0       0.345 0.343 1.42           423.  FALSE      0.00189</span>
+<span class="co">#&gt; 6                2 2:0       0.69  0.673 0.537          164.  FALSE      0.0166 </span>
 <span class="co">#&gt; # … with 4 more variables: matched &lt;lgl&gt;, weight &lt;dbl&gt;, score &lt;dbl&gt;, QC &lt;chr&gt;</span>
-<span class="co">#&gt; ✓ Peak detection PASS with r = -0.00127427486166049 and tolerance e = 0.06</span>
+<span class="co">#&gt; ✓ Peak detection PASS with r = 0.00171350887200241 and tolerance e = 0.06</span>
 
 <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
 <span class="co">#&gt; ── [ CNAqc ]  n = 17283 mutations in 54 segments (54 clonal + 0 subclonal). Geno</span>
@@ -593,15 +594,15 @@
 <span class="co">#&gt;  2:1  [n =   345, L =    43 Mb] ■</span>
 <span class="co">#&gt; ℹ Sample Purity: 69% ~ Ploidy: 2.</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; ──  PASS  Peaks QC closest: % 100 with q = -0.00127427486166049</span>
-<span class="co">#&gt; ℹ 1:0 ~ n = 898   ( 5%) →  PASS  -0.013</span>
-<span class="co">#&gt; ℹ 1:1 ~ n = 14488 (84%) →  PASS  -0.002</span>
-<span class="co">#&gt; ℹ 2:1 ~ n = 345   ( 2%) →  PASS  -0.017   PASS  0.002</span>
-<span class="co">#&gt; ℹ 2:0 ~ n = 1552  ( 9%) →  PASS  0.005    PASS  0.019</span></code></pre></div>
+<span class="co">#&gt; ── ──  PASS   Peaks QC ── closest : % ── 100  with ── q = 0.00171350887200241</span>
+<span class="co">#&gt; ℹ 1:0 ~ n = 898   ( 5%) →  PASS  -0.011</span>
+<span class="co">#&gt; ℹ 1:1 ~ n = 14488 (84%) →  PASS  0.002</span>
+<span class="co">#&gt; ℹ 2:1 ~ n = 345   ( 2%) →  PASS  -0.015   PASS  -0.002</span>
+<span class="co">#&gt; ℹ 2:0 ~ n = 1552  ( 9%) →  PASS  0.002    PASS  0.017</span></code></pre></div>
 <p>For this sample these calls are passed by CNAqc.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Do not assemble plots, and remove karyotypes with no data associated</span>
-<span class="fu">plot_peaks_analysis</span><span class="op">(</span><span class="va">x</span>, empty_plot <span class="op">=</span> <span class="cn">FALSE</span>, assembly_plot <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+<span class="fu"><a href="../reference/plot_peaks_analysis.html">plot_peaks_analysis</a></span><span class="op">(</span><span class="va">x</span>, empty_plot <span class="op">=</span> <span class="cn">FALSE</span>, assembly_plot <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 <span class="co">#&gt; [[1]]</span></code></pre></div>
 <p><img src="a7_example_MSeq_files/figure-html/unnamed-chunk-12-1.png" width="384"></p>
 <pre><code>#&gt; 
@@ -620,7 +621,7 @@
 <p>Perform CCF computation detection with the <code>ENTROPY</code> method.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># CCF</span>
-<span class="va">x</span> <span class="op">=</span> <span class="fu">CNAqc</span><span class="fu">::</span><span class="fu">compute_CCF</span><span class="op">(</span><span class="va">x</span>, method <span class="op">=</span> <span class="st">'ENTROPY'</span><span class="op">)</span>
+<span class="va">x</span> <span class="op">=</span> <span class="fu">CNAqc</span><span class="fu">::</span><span class="fu"><a href="../reference/compute_CCF.html">compute_CCF</a></span><span class="op">(</span><span class="va">x</span>, method <span class="op">=</span> <span class="st">'ENTROPY'</span><span class="op">)</span>
 <span class="co">#&gt; ── Computing mutation multiplicity for single-copy karyotype 1:0 ───────────────</span>
 <span class="co">#&gt; ── Computing mutation multiplicity for single-copy karyotype 1:1 ───────────────</span>
 <span class="co">#&gt; ── Computing mutation multiplicity for karyotype 2:0 using the entropy method. ─</span>
@@ -641,11 +642,11 @@
 <span class="co">#&gt;  2:1  [n =   345, L =    43 Mb] ■</span>
 <span class="co">#&gt; ℹ Sample Purity: 69% ~ Ploidy: 2.</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; ──  PASS  Peaks QC closest: % 100 with q = -0.00127427486166049</span>
-<span class="co">#&gt; ℹ 1:0 ~ n = 898   ( 5%) →  PASS  -0.013</span>
-<span class="co">#&gt; ℹ 1:1 ~ n = 14488 (84%) →  PASS  -0.002</span>
-<span class="co">#&gt; ℹ 2:1 ~ n = 345   ( 2%) →  PASS  -0.017   PASS  0.002</span>
-<span class="co">#&gt; ℹ 2:0 ~ n = 1552  ( 9%) →  PASS  0.005    PASS  0.019</span>
+<span class="co">#&gt; ── ──  PASS   Peaks QC ── closest : % ── 100  with ── q = 0.00171350887200241</span>
+<span class="co">#&gt; ℹ 1:0 ~ n = 898   ( 5%) →  PASS  -0.011</span>
+<span class="co">#&gt; ℹ 1:1 ~ n = 14488 (84%) →  PASS  0.002</span>
+<span class="co">#&gt; ℹ 2:1 ~ n = 345   ( 2%) →  PASS  -0.015   PASS  -0.002</span>
+<span class="co">#&gt; ℹ 2:0 ~ n = 1552  ( 9%) →  PASS  0.002    PASS  0.017</span>
 <span class="co">#&gt; ✓ Cancer Cell Fraction (CCF) data available for karyotypes:1:0, 1:1, 2:0, and 2:1.</span>
 <span class="co">#&gt; ✓  PASS  CCF via ENTROPY.</span>
 <span class="co">#&gt; ✓  PASS  CCF via ENTROPY.</span>
@@ -654,7 +655,7 @@
 <p>CCF can be estimated well for this sample.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Do not assemble plots, and remove karyotypes with no data associated</span>
-<span class="fu">plot_CCF</span><span class="op">(</span><span class="va">x</span>, assembly_plot <span class="op">=</span> <span class="cn">FALSE</span>, empty_plot <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+<span class="fu"><a href="../reference/plot_CCF.html">plot_CCF</a></span><span class="op">(</span><span class="va">x</span>, assembly_plot <span class="op">=</span> <span class="cn">FALSE</span>, empty_plot <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 <span class="co">#&gt; [[1]]</span></code></pre></div>
 <p><img src="a7_example_MSeq_files/figure-html/unnamed-chunk-14-1.png" width="528"></p>
 <pre><code>#&gt; 
@@ -672,7 +673,7 @@
 <a href="#other-analyses" class="anchor"></a>Other analyses</h2>
 <p>Smooth segments with gaps up to 10 megabases (does not affect segments in this sample).</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">x</span> <span class="op">=</span> <span class="fu">CNAqc</span><span class="fu">::</span><span class="fu">smooth_segments</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">x</span> <span class="op">=</span> <span class="fu">CNAqc</span><span class="fu">::</span><span class="fu"><a href="../reference/smooth_segments.html">smooth_segments</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
 <span class="co">#&gt; Smoothing chr1 with 4 segments: </span>
 <span class="co">#&gt; Smoothing chr2 with 2 segments: </span>
 <span class="co">#&gt; Smoothing chr3 with 2 segments: </span>
@@ -714,7 +715,7 @@
 <span class="co">#&gt; ✓ These segments are smoothed; before smoothing there were 54 segments.</span></code></pre></div>
 <p>Perform fragmentation analysis (no excess of short segments in this sample).</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">x</span> <span class="op">=</span> <span class="fu">CNAqc</span><span class="fu">::</span><span class="fu">detect_arm_overfragmentation</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">x</span> <span class="op">=</span> <span class="fu">CNAqc</span><span class="fu">::</span><span class="fu"><a href="../reference/detect_arm_overfragmentation.html">detect_arm_overfragmentation</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
 <span class="co">#&gt; ℹ One-tailed Binomial test: 0 tests, alpha 0.01. Short segments: 0.2% of the reference arm.</span>
 <span class="co">#&gt; ℹ 0 significantly overfragmented chromosome arms (alpha level 0.01).</span>
 
@@ -747,8 +748,8 @@
 <p>Let’s see why this is wrong, using peak detection.</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># CNAqc data object</span>
-<span class="va">x</span> <span class="op">=</span> <span class="fu">CNAqc</span><span class="fu">::</span><span class="fu">init</span><span class="op">(</span><span class="va">snvs</span>, <span class="va">cna</span>, <span class="va">purity</span>, ref <span class="op">=</span> <span class="st">"GRCh38"</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu">CNAqc</span><span class="fu">::</span><span class="fu">analyze_peaks</span><span class="op">(</span>matching_strategy <span class="op">=</span> <span class="st">'closest'</span><span class="op">)</span>
+<span class="va">x</span> <span class="op">=</span> <span class="fu">CNAqc</span><span class="fu">::</span><span class="fu"><a href="../reference/init.html">init</a></span><span class="op">(</span><span class="va">snvs</span>, <span class="va">cna</span>, <span class="va">purity</span>, ref <span class="op">=</span> <span class="st">"GRCh38"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">CNAqc</span><span class="fu">::</span><span class="fu"><a href="../reference/analyze_peaks.html">analyze_peaks</a></span><span class="op">(</span>matching_strategy <span class="op">=</span> <span class="st">'closest'</span><span class="op">)</span>
 <span class="co">#&gt;  [ CNAqc - CNA Quality Check ]</span>
 <span class="co">#&gt; ℹ Using reference genome coordinates for: GRCh38.</span>
 <span class="co">#&gt; ! Missing CCF column from CNA calls, adding CCF = 1 assuming clonal CNA calls.</span>
@@ -763,29 +764,29 @@
 <span class="co">#&gt; ✓ Fits to run, n = 8.</span>
 <span class="co">#&gt; ℹ Bmix best fit completed in 0.01 mins</span>
 <span class="co">#&gt; ── [ BMix ] My BMix model n = 898 with k = 3 component(s) (3 + 0) ──────────────</span>
-<span class="co">#&gt; ● Clusters: π = 68% [Bin 3], 26% [Bin 2], and 6% [Bin 1], with π &gt; 0.</span>
-<span class="co">#&gt; ● Binomial Bin 1 with mean = 0.258644614754977.</span>
-<span class="co">#&gt; ● Binomial Bin 2 with mean = 0.54039818343921.</span>
-<span class="co">#&gt; ● Binomial Bin 3 with mean = 0.094897278400269.</span>
-<span class="co">#&gt; ℹ Score(s): ICL = 5391.62.</span>
+<span class="co">#&gt; ● Clusters: π = 67% [Bin 2], 26% [Bin 1], and 7% [Bin 3], with π &gt; 0.</span>
+<span class="co">#&gt; ● Binomial Bin 1 with mean = 0.540430905222935.</span>
+<span class="co">#&gt; ● Binomial Bin 2 with mean = 0.0938211334043521.</span>
+<span class="co">#&gt; ● Binomial Bin 3 with mean = 0.25532909657947.</span>
+<span class="co">#&gt; ℹ Score(s): ICL = 5388.75.</span>
 <span class="co">#&gt;  [ BMix fit ]</span>
 <span class="co">#&gt; ℹ Binomials k_B = 1, 2, 3, and 4, Beta-Binomials k_BB = 0.</span>
 <span class="co">#&gt; ✓ Fits to run, n = 8.</span>
 <span class="co">#&gt; ℹ Bmix best fit completed in 0.22 mins</span>
 <span class="co">#&gt; ── [ BMix ] My BMix model n = 14268 with k = 2 component(s) (2 + 0) ────────────</span>
-<span class="co">#&gt; ● Clusters: π = 58% [Bin 2] and 42% [Bin 1], with π &gt; 0.</span>
-<span class="co">#&gt; ● Binomial Bin 1 with mean = 0.0993954360663874.</span>
-<span class="co">#&gt; ● Binomial Bin 2 with mean = 0.345758963578536.</span>
-<span class="co">#&gt; ℹ Score(s): ICL = 99062.84.</span>
+<span class="co">#&gt; ● Clusters: π = 59% [Bin 1] and 41% [Bin 2], with π &gt; 0.</span>
+<span class="co">#&gt; ● Binomial Bin 1 with mean = 0.344386995645591.</span>
+<span class="co">#&gt; ● Binomial Bin 2 with mean = 0.0976301870602671.</span>
+<span class="co">#&gt; ℹ Score(s): ICL = 99542.59.</span>
 <span class="co">#&gt; # A tibble: 4 x 12</span>
 <span class="co">#&gt;   mutation_multip… karyotype  peak      x     y counts_per_bin discarded  offset</span>
 <span class="co">#&gt;              &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;          &lt;dbl&gt; &lt;lgl&gt;       &lt;dbl&gt;</span>
-<span class="co">#&gt; 1                1 2:0       0.275 0.259  0.457           54.0 FALSE     0.0159 </span>
+<span class="co">#&gt; 1                1 2:0       0.275 0.255  0.479           59.9 FALSE     0.0198 </span>
 <span class="co">#&gt; 2                2 2:0       0.55  0.54   1.26            13   FALSE     0.01   </span>
-<span class="co">#&gt; 3                1 2:2       0.177 0.0995 3.63          5925.  FALSE     0.0779 </span>
-<span class="co">#&gt; 4                2 2:2       0.355 0.345  3.72          8343.  FALSE     0.00986</span>
+<span class="co">#&gt; 3                1 2:2       0.177 0.0976 3.72          5832.  FALSE     0.0798 </span>
+<span class="co">#&gt; 4                2 2:2       0.355 0.345  3.72          8436.  FALSE     0.00986</span>
 <span class="co">#&gt; # … with 4 more variables: matched &lt;lgl&gt;, weight &lt;dbl&gt;, score &lt;dbl&gt;, QC &lt;chr&gt;</span>
-<span class="co">#&gt; ✓ Peak detection PASS with r = 0.0420493085565272 and tolerance e = 0.06</span>
+<span class="co">#&gt; ✓ Peak detection PASS with r = 0.0430460760799999 and tolerance e = 0.06</span>
 
 <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
 <span class="co">#&gt; ── [ CNAqc ]  n = 17283 mutations in 56 segments (56 clonal + 0 subclonal). Geno</span>
@@ -797,13 +798,13 @@
 <span class="co">#&gt;  4:2  [n =   169, L =    31 Mb]</span>
 <span class="co">#&gt; ℹ Sample Purity: 55% ~ Ploidy: 4.</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; ──  PASS  Peaks QC closest: % 100 with q = 0.0420493085565272</span>
-<span class="co">#&gt; ℹ 2:0 ~ n = 898   ( 6%) →  PASS  0.016    PASS  0.01</span>
-<span class="co">#&gt; ℹ 2:2 ~ n = 14268 (94%) →  PASS  0.078    PASS  0.01</span></code></pre></div>
+<span class="co">#&gt; ── ──  PASS   Peaks QC ── closest : % ── 100  with ── q = 0.0430460760799999</span>
+<span class="co">#&gt; ℹ 2:0 ~ n = 898   ( 6%) →  PASS  0.02     PASS  0.01</span>
+<span class="co">#&gt; ℹ 2:2 ~ n = 14268 (94%) →  PASS  0.08     PASS  0.01</span></code></pre></div>
 <p>For this sample these calls are flagged by CNAqc; note that most of the mutations are mapped to tetraploid segments, but one of the two peaks is completely off. Note the overall coloring is green because most of the mutations are underneath a peak that is passed by CNAqc; however the overall karyotype can be failed because it does not show the expected 2-peaks VAF spectrum for tetraploid SNVs.</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Do not assemble plots, and remove karyotypes with no data associated</span>
-<span class="fu">plot_peaks_analysis</span><span class="op">(</span><span class="va">x</span>, empty_plot <span class="op">=</span> <span class="cn">FALSE</span>, assembly_plot <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+<span class="fu"><a href="../reference/plot_peaks_analysis.html">plot_peaks_analysis</a></span><span class="op">(</span><span class="va">x</span>, empty_plot <span class="op">=</span> <span class="cn">FALSE</span>, assembly_plot <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 <span class="co">#&gt; [[1]]</span></code></pre></div>
 <p><img src="a7_example_MSeq_files/figure-html/unnamed-chunk-19-1.png" width="384"></p>
 <pre><code>#&gt; 
@@ -819,8 +820,8 @@
 <span class="va">purity</span> <span class="op">=</span> <span class="va">Sequenza_bad_calls</span><span class="op">$</span><span class="va">purity</span>
 
 <span class="co"># CNAqc data object</span>
-<span class="va">x</span> <span class="op">=</span> <span class="fu">CNAqc</span><span class="fu">::</span><span class="fu">init</span><span class="op">(</span><span class="va">snvs</span>, <span class="va">cna</span>, <span class="va">purity</span>, ref <span class="op">=</span> <span class="st">"GRCh38"</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu">CNAqc</span><span class="fu">::</span><span class="fu">analyze_peaks</span><span class="op">(</span>matching_strategy <span class="op">=</span> <span class="st">'closest'</span><span class="op">)</span>
+<span class="va">x</span> <span class="op">=</span> <span class="fu">CNAqc</span><span class="fu">::</span><span class="fu"><a href="../reference/init.html">init</a></span><span class="op">(</span><span class="va">snvs</span>, <span class="va">cna</span>, <span class="va">purity</span>, ref <span class="op">=</span> <span class="st">"GRCh38"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">CNAqc</span><span class="fu">::</span><span class="fu"><a href="../reference/analyze_peaks.html">analyze_peaks</a></span><span class="op">(</span>matching_strategy <span class="op">=</span> <span class="st">'closest'</span><span class="op">)</span>
 <span class="co">#&gt;  [ CNAqc - CNA Quality Check ]</span>
 <span class="co">#&gt; ℹ Using reference genome coordinates for: GRCh38.</span>
 <span class="co">#&gt; ! Missing CCF column from CNA calls, adding CCF = 1 assuming clonal CNA calls.</span>
@@ -834,53 +835,54 @@
 <span class="co">#&gt; ℹ Binomials k_B = 1, 2, 3, and 4, Beta-Binomials k_BB = 0.</span>
 <span class="co">#&gt; ✓ Fits to run, n = 8.</span>
 <span class="co">#&gt; ℹ Bmix best fit completed in 0.01 mins</span>
-<span class="co">#&gt; ── [ BMix ] My BMix model n = 898 with k = 2 component(s) (2 + 0) ──────────────</span>
-<span class="co">#&gt; ● Clusters: π = 72% [Bin 1] and 28% [Bin 2], with π &gt; 0.</span>
-<span class="co">#&gt; ● Binomial Bin 1 with mean = 0.103537323580079.</span>
-<span class="co">#&gt; ● Binomial Bin 2 with mean = 0.53080501156401.</span>
-<span class="co">#&gt; ℹ Score(s): ICL = 5448.73.</span>
+<span class="co">#&gt; ── [ BMix ] My BMix model n = 898 with k = 3 component(s) (3 + 0) ──────────────</span>
+<span class="co">#&gt; ● Clusters: π = 68% [Bin 2], 27% [Bin 1], and 6% [Bin 3], with π &gt; 0.</span>
+<span class="co">#&gt; ● Binomial Bin 1 with mean = 0.538058194791145.</span>
+<span class="co">#&gt; ● Binomial Bin 2 with mean = 0.0951471663193317.</span>
+<span class="co">#&gt; ● Binomial Bin 3 with mean = 0.251338750701737.</span>
+<span class="co">#&gt; ℹ Score(s): ICL = 5413.97.</span>
 <span class="co">#&gt;  [ BMix fit ]</span>
 <span class="co">#&gt; ℹ Binomials k_B = 1, 2, 3, and 4, Beta-Binomials k_BB = 0.</span>
 <span class="co">#&gt; ✓ Fits to run, n = 8.</span>
 <span class="co">#&gt; ℹ Bmix best fit completed in 0.21 mins</span>
 <span class="co">#&gt; ── [ BMix ] My BMix model n = 14268 with k = 2 component(s) (2 + 0) ────────────</span>
 <span class="co">#&gt; ● Clusters: π = 59% [Bin 1] and 41% [Bin 2], with π &gt; 0.</span>
-<span class="co">#&gt; ● Binomial Bin 1 with mean = 0.344072690831606.</span>
-<span class="co">#&gt; ● Binomial Bin 2 with mean = 0.0974737642772134.</span>
-<span class="co">#&gt; ℹ Score(s): ICL = 98906.83.</span>
+<span class="co">#&gt; ● Binomial Bin 1 with mean = 0.345086656291761.</span>
+<span class="co">#&gt; ● Binomial Bin 2 with mean = 0.0984529930828135.</span>
+<span class="co">#&gt; ℹ Score(s): ICL = 99052.57.</span>
 <span class="co">#&gt;  [ BMix fit ]</span>
 <span class="co">#&gt; ℹ Binomials k_B = 1, 2, 3, and 4, Beta-Binomials k_BB = 0.</span>
 <span class="co">#&gt; ✓ Fits to run, n = 8.</span>
 <span class="co">#&gt; ℹ Bmix best fit completed in 0.01 mins</span>
 <span class="co">#&gt; ── [ BMix ] My BMix model n = 345 with k = 4 component(s) (4 + 0) ──────────────</span>
-<span class="co">#&gt; ● Clusters: π = 57% [Bin 1], 29% [Bin 3], 12% [Bin 2], and 3% [Bin 4], with π</span>
+<span class="co">#&gt; ● Clusters: π = 56% [Bin 3], 29% [Bin 4], 12% [Bin 1], and 3% [Bin 2], with π</span>
 <span class="co">#&gt;   &gt; 0.</span>
-<span class="co">#&gt; ● Binomial Bin 1 with mean = 0.103839348797082.</span>
-<span class="co">#&gt; ● Binomial Bin 2 with mean = 0.521611199573632.</span>
-<span class="co">#&gt; ● Binomial Bin 3 with mean = 0.277619200640892.</span>
-<span class="co">#&gt; ● Binomial Bin 4 with mean = 0.752083681837896.</span>
-<span class="co">#&gt; ℹ Score(s): ICL = 2614.53.</span>
+<span class="co">#&gt; ● Binomial Bin 1 with mean = 0.518284531841764.</span>
+<span class="co">#&gt; ● Binomial Bin 2 with mean = 0.747389284521391.</span>
+<span class="co">#&gt; ● Binomial Bin 3 with mean = 0.102185049210556.</span>
+<span class="co">#&gt; ● Binomial Bin 4 with mean = 0.272891752367953.</span>
+<span class="co">#&gt; ℹ Score(s): ICL = 2609.26.</span>
 <span class="co">#&gt;  [ BMix fit ]</span>
 <span class="co">#&gt; ℹ Binomials k_B = 1, 2, 3, and 4, Beta-Binomials k_BB = 0.</span>
 <span class="co">#&gt; ✓ Fits to run, n = 8.</span>
 <span class="co">#&gt; ℹ Bmix best fit completed in 0.03 mins</span>
 <span class="co">#&gt; ── [ BMix ] My BMix model n = 1772 with k = 3 component(s) (3 + 0) ─────────────</span>
-<span class="co">#&gt; ● Clusters: π = 60% [Bin 3], 29% [Bin 1], and 11% [Bin 2], with π &gt; 0.</span>
-<span class="co">#&gt; ● Binomial Bin 1 with mean = 0.338203912321878.</span>
-<span class="co">#&gt; ● Binomial Bin 2 with mean = 0.645902916163649.</span>
-<span class="co">#&gt; ● Binomial Bin 3 with mean = 0.102385472512777.</span>
-<span class="co">#&gt; ℹ Score(s): ICL = 12211.28.</span>
+<span class="co">#&gt; ● Clusters: π = 61% [Bin 3], 28% [Bin 1], and 11% [Bin 2], with π &gt; 0.</span>
+<span class="co">#&gt; ● Binomial Bin 1 with mean = 0.341630324304208.</span>
+<span class="co">#&gt; ● Binomial Bin 2 with mean = 0.64502303278413.</span>
+<span class="co">#&gt; ● Binomial Bin 3 with mean = 0.104405395257425.</span>
+<span class="co">#&gt; ℹ Score(s): ICL = 12268.62.</span>
 <span class="co">#&gt; # A tibble: 6 x 12</span>
-<span class="co">#&gt;   mutation_multipl… karyotype  peak     x     y counts_per_bin discarded  offset</span>
-<span class="co">#&gt;               &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;          &lt;dbl&gt; &lt;lgl&gt;       &lt;dbl&gt;</span>
-<span class="co">#&gt; 1                 1 1:0       0.429 0.530 1.25           248.  FALSE     -0.101 </span>
-<span class="co">#&gt; 2                 1 1:1       0.3   0.34  3.73           499   FALSE     -0.04  </span>
-<span class="co">#&gt; 3                 1 2:1       0.231 0.277 1.56            98.7 FALSE     -0.0466</span>
-<span class="co">#&gt; 4                 2 2:1       0.462 0.521 0.615           41.1 FALSE     -0.0596</span>
-<span class="co">#&gt; 5                 1 2:0       0.3   0.339 1.31           519.  FALSE     -0.0392</span>
-<span class="co">#&gt; 6                 2 2:0       0.6   0.645 0.497          194.  FALSE     -0.0453</span>
+<span class="co">#&gt;   mutation_multip… karyotype  peak     x     y counts_per_bin discarded  offset</span>
+<span class="co">#&gt;              &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;          &lt;dbl&gt; &lt;lgl&gt;       &lt;dbl&gt;</span>
+<span class="co">#&gt; 1                1 1:0       0.429 0.538 1.26           238.  FALSE     -0.109 </span>
+<span class="co">#&gt; 2                1 1:1       0.3   0.34  3.73           499   FALSE     -0.04  </span>
+<span class="co">#&gt; 3                1 2:1       0.231 0.273 1.59           101.  FALSE     -0.0425</span>
+<span class="co">#&gt; 4                2 2:1       0.462 0.519 0.612           42.1 FALSE     -0.0575</span>
+<span class="co">#&gt; 5                1 2:0       0.3   0.34  1.31            20   FALSE     -0.04  </span>
+<span class="co">#&gt; 6                2 2:0       0.6   0.645 0.497          195.  FALSE     -0.0453</span>
 <span class="co">#&gt; # … with 4 more variables: matched &lt;lgl&gt;, weight &lt;dbl&gt;, score &lt;dbl&gt;, QC &lt;chr&gt;</span>
-<span class="co">#&gt; x Peak detection FAIL with r = -0.0436768097921264 and tolerance e = 0.06</span>
+<span class="co">#&gt; x Peak detection FAIL with r = -0.0440596069211671 and tolerance e = 0.06</span>
 
 <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
 <span class="co">#&gt; ── [ CNAqc ]  n = 17283 mutations in 56 segments (56 clonal + 0 subclonal). Geno</span>
@@ -891,14 +893,14 @@
 <span class="co">#&gt;  2:1  [n =   345, L =    43 Mb] ■</span>
 <span class="co">#&gt; ℹ Sample Purity: 60% ~ Ploidy: 2.</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; ──  FAIL  Peaks QC closest: % 100 with q = -0.0436768097921264</span>
-<span class="co">#&gt; ℹ 1:0 ~ n = 898   ( 5%) →  FAIL  -0.101</span>
+<span class="co">#&gt; ── ──  FAIL   Peaks QC ── closest : % ── 100  with ── q = -0.0440596069211671</span>
+<span class="co">#&gt; ℹ 1:0 ~ n = 898   ( 5%) →  FAIL  -0.109</span>
 <span class="co">#&gt; ℹ 1:1 ~ n = 14268 (83%) →  FAIL  -0.04</span>
-<span class="co">#&gt; ℹ 2:1 ~ n = 345   ( 2%) →  FAIL  -0.047   FAIL  -0.06</span>
-<span class="co">#&gt; ℹ 2:0 ~ n = 1772  (10%) →  FAIL  -0.039   FAIL  -0.045</span></code></pre></div>
+<span class="co">#&gt; ℹ 2:1 ~ n = 345   ( 2%) →  FAIL  -0.042   FAIL  -0.058</span>
+<span class="co">#&gt; ℹ 2:0 ~ n = 1772  (10%) →  FAIL  -0.04    FAIL  -0.045</span></code></pre></div>
 <p>For this sample these calls are flagged by CNAqc because the purity is off by a <code>~10%</code> factor.</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">plot_peaks_analysis</span><span class="op">(</span><span class="va">x</span>, empty_plot <span class="op">=</span> <span class="cn">FALSE</span>, assembly_plot <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="../reference/plot_peaks_analysis.html">plot_peaks_analysis</a></span><span class="op">(</span><span class="va">x</span>, empty_plot <span class="op">=</span> <span class="cn">FALSE</span>, assembly_plot <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 <span class="co">#&gt; [[1]]</span></code></pre></div>
 <p><img src="a7_example_MSeq_files/figure-html/unnamed-chunk-21-1.png" width="384"></p>
 <pre><code>#&gt; 
@@ -917,7 +919,7 @@
 
 <span class="co">#CNAqc suggested adjustment</span>
 <span class="va">x</span><span class="op">$</span><span class="va">peaks_analysis</span><span class="op">$</span><span class="va">score</span>
-<span class="co">#&gt; [1] -0.04367681</span></code></pre></div>
+<span class="co">#&gt; [1] -0.04405961</span></code></pre></div>
 </div>
   </div>
 
@@ -932,7 +934,7 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by <a href="https://sites.google.com/site/giuliocaravagna/">Giulio Caravagna</a>.</p>
+  <p>Developed by <a href="https://www.caravagnalab.org">Giulio Caravagna</a>.</p>
 </div>
 
 <div class="pkgdown">
