@@ -1,0 +1,315 @@
+---
+title: "7. Example data analysis"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{7. Example data analysis}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
+options(crayon.enabled=FALSE)
+```
+
+```{r setup}
+library(CNAqc)
+
+# Extra packages
+require(dplyr)
+require(vcfR)
+```
+
+We work with MSeq data discussed in the main preprint for `CNAqc`, replicating one analysis for patient `Set06`.
+
+The data we used is hosted at the GitHub repository [caravagnalab/CNAqc_datasets](https://github.com/caravagnalab/CNAqc_datasets).
+
+# Mutation data
+
+We download from Github a VCF file for MSeq sample `Set06`, and load it using the `vcfR` package.
+
+```{r}
+VCF_url = "https://raw.githubusercontent.com/caravagnalab/CNAqc_datasets/main/MSeq_Set06/Mutations/Set.06.WGS.merged_filtered.vcf"
+
+# Download, load and cancel data
+download.file(VCF_url, "Set.06.WGS.merged_filtered.vcf",)
+
+set6 = vcfR::read.vcfR("Set.06.WGS.merged_filtered.vcf")
+
+file.remove("Set.06.WGS.merged_filtered.vcf")
+
+# VCF
+print(set6)
+```
+
+We extract all the information we need, using the tidy data representation format.
+
+```{r, warning=FALSE}
+# INFO fields 
+info_tidy = vcfR::extract_info_tidy(set6)
+
+# Fixed fields (genomic coordinates)
+fix_tidy = set6@fix %>%
+  as_tibble %>%
+  rename(
+    chr = CHROM,
+    from = POS,
+    ref = REF,
+    alt = ALT
+  ) %>%
+  mutate(from = as.numeric(from), to = from + nchar(alt))
+
+# Genotypes
+geno_tidy = vcfR::extract_gt_tidy(set6) %>%
+  group_split(Indiv)
+
+# Sample mutations in the CNAqc format
+sample_mutations = lapply(geno_tidy, function(x) {
+  bind_cols(info_tidy, fix_tidy) %>%
+    full_join(x, by = "Key") %>%
+    mutate(DP = as.numeric(gt_NR), NV = as.numeric(gt_NV)) %>%
+    mutate(VAF = NV / DP) %>%
+    select(chr, from, to, ref, alt, NV, DP, VAF, everything()) %>%
+    filter(!is.na(VAF), VAF > 0)
+})
+
+# A list for all samples available
+names(sample_mutations) = sapply(sample_mutations, function(x) x$Indiv[1])
+sample_mutations = sample_mutations[!is.na(names(sample_mutations))]
+```
+
+
+We have all the somatic mutations called for `Set06`.
+```{r}
+print(sample_mutations)
+```
+
+# Copy Number data
+
+Sequenza calls are available in the same repository. 
+
+We use an extra function to load a solution (so we can easily compare multiple runs etc etc.).
+
+```{r}
+# Load Sequenza output
+load_SQ_output = function(URL, sample, run)
+{
+  # We can directly read them from remote URLs
+  segments_file = paste0(URL, run, '/', sample, '.smoothedSegs.txt')
+  purity_file = paste0(URL, run, '/', sample, '_confints_CP.txt')
+
+  # Get segments
+  segments = readr::read_tsv(segments_file, col_types = readr::cols()) %>%
+    dplyr::rename(
+      chr = chromosome,
+      from = start.pos,
+      to = end.pos,
+      Major = A,
+      minor = B
+    ) %>%
+    dplyr::select(chr, from, to, Major, minor, dplyr::everything())
+
+  # Get purity and ploidy
+  solutions = readr::read_tsv(purity_file, col_types = readr::cols())
+
+  purity = solutions$cellularity[2]
+  ploidy = solutions$ploidy.estimate[2]
+  
+  return(
+    list(
+      segments = segments,
+      purity = purity,
+      ploidy = ploidy
+    )
+  )
+}
+
+```
+
+We can load the calls for 2 solutions of sample `Set6_42`; we begin with our final, good solution.
+
+```{r}
+Sequenza_URL = "https://raw.githubusercontent.com/caravagnalab/CNAqc_datasets/main/MSeq_Set06/Copy%20Number/"
+
+# Final sequenza run (good calls)
+Sequenza_good_calls = load_SQ_output(Sequenza_URL, sample = 'Set6_42', run = 'final')
+
+print(Sequenza_good_calls)
+```
+
+# Calls analysis
+
+For this example we work with mutations found in sample `Set6_42`.
+
+```{r}
+# Single-nucleotide variants with VAF >5%
+snvs = sample_mutations[['Set6_42']] %>% 
+    filter(ref %in% c('A', 'C', "T", 'G'), alt %in% c('A', 'C', "T", 'G')) %>%
+    filter(VAF > 0.05)
+
+# CNA segments and purity
+cna = Sequenza_good_calls$segments
+purity = Sequenza_good_calls$purity
+```
+
+Full CNAqc analysis. First we create the object.
+
+```{r}
+# CNAqc data object
+x = CNAqc::init(snvs,
+                cna,
+                purity,
+                ref = "GRCh38")
+
+print(x)
+```
+
+## Data 
+
+Show the CNA data for this sample.
+
+```{r, fig.width=9.5, fig.height=6, warning=FALSE}
+cowplot::plot_grid(
+  plot_gw_counts(x),
+  plot_gw_vaf(x, N = 10000),
+  plot_gw_depth(x, N = 10000),
+  plot_segments(x, highlight = c("1:0", "1:1", "2:0", "2:1", '2:2')),
+  align = 'v', 
+  nrow = 4, 
+  rel_heights = c(.15, .15, .15, .8))
+```
+
+Show the mutation data for this sample.
+
+```{r, fig.width=11, fig.height=3}
+ggpubr::ggarrange(
+  plot_data_histogram(x, which = 'VAF'),
+  plot_data_histogram(x, which = 'DP'),
+  plot_data_histogram(x, which = 'NV'),
+  ncol = 3,
+  nrow = 1
+  )
+``` 
+
+
+## Peak detection 
+
+Perform peak detection and show its results. 
+```{r}
+# Peaks
+x = CNAqc::analyze_peaks(x, matching_strategy = 'closest')
+
+print(x)
+```
+
+For this sample these calls are passed by CNAqc.
+
+```{r, fig.width=4, fig.height=3.5, warning=F}
+# Do not assemble plots, and remove karyotypes with no data associated
+plot_peaks_analysis(x, empty_plot = FALSE, assembly_plot = FALSE)
+```
+
+## CCF 
+
+Perform CCF computation detection with the `ENTROPY` method.
+```{r}
+# CCF
+x = CNAqc::compute_CCF(x, method = 'ENTROPY')
+
+print(x)
+```
+
+CCF can be estimated well for this sample.
+
+```{r,fig.width=5.5, fig.height=3.5,warning=F}
+# Do not assemble plots, and remove karyotypes with no data associated
+plot_CCF(x, assembly_plot = FALSE, empty_plot = FALSE)
+```
+
+## Other analyses 
+
+Smooth segments with gaps up to 10 megabases (does not affect segments in this sample).
+
+```{r}
+x = CNAqc::smooth_segments(x)
+
+print(x)
+```
+
+Perform fragmentation analysis (no excess of short segments in this sample).
+
+```{r}
+x = CNAqc::detect_arm_overfragmentation(x)
+
+print(x)
+```
+
+
+# Alternative solutions
+
+We show how to discover that a tetraploid solution is not correct.
+
+```{r}
+# Tetraploid solution sequenza  (bad calls)
+Sequenza_bad_calls = load_SQ_output(Sequenza_URL, sample = 'Set6_42', run = 'tetra')
+
+# CNA segments and purity
+cna = Sequenza_bad_calls$segments
+purity = Sequenza_bad_calls$purity
+
+print(Sequenza_bad_calls$ploidy) # Tetraploid
+```
+
+Let's see why this is wrong, using peak detection.
+
+```{r}
+# CNAqc data object
+x = CNAqc::init(snvs, cna, purity, ref = "GRCh38") %>%
+  CNAqc::analyze_peaks(matching_strategy = 'closest')
+
+print(x)
+```
+
+For this sample these calls are flagged by CNAqc; note that most of the mutations are mapped to tetraploid segments, but one of the two peaks is completely off. Note the overall coloring is green because most of the mutations are underneath a peak that is passed by CNAqc; however the overall karyotype can be failed because it does not show the expected 2-peaks VAF spectrum for tetraploid SNVs.
+
+```{r, fig.width=4, fig.height=3.5, warning=F}
+# Do not assemble plots, and remove karyotypes with no data associated
+plot_peaks_analysis(x, empty_plot = FALSE, assembly_plot = FALSE)
+```
+
+We do the same for a low-cellularity one.
+
+```{r}
+# Low cellularity solution sequenza  (bad calls)
+Sequenza_bad_calls = load_SQ_output(Sequenza_URL, sample = 'Set6_42', run = 'lowcell')
+
+# CNA segments and purity
+cna = Sequenza_bad_calls$segments
+purity = Sequenza_bad_calls$purity
+
+# CNAqc data object
+x = CNAqc::init(snvs, cna, purity, ref = "GRCh38") %>%
+  CNAqc::analyze_peaks(matching_strategy = 'closest')
+
+print(x)
+```
+
+For this sample these calls are flagged by CNAqc because the purity is off by a `~10%` factor.
+
+```{r, fig.width=4, fig.height=3.5, warning=F}
+plot_peaks_analysis(x, empty_plot = FALSE, assembly_plot = FALSE)
+```
+
+CNAqc can help increasing the caller purity in this case; the expected adjustment (score from VAF analysis) of 5% would correspond indeed to a purity increase of `10%`.
+ 
+```{r} 
+print(Sequenza_bad_calls$purity - Sequenza_good_calls$purity) # error in these calls
+
+#CNAqc suggested adjustment
+x$peaks_analysis$score
+``` 
+ 
