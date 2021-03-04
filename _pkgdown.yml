@@ -9,15 +9,15 @@ url:
   
 repo:
   url:
-    home: https://github.com/caravagn/CNAqc/
-    source: https://github.com/caravagn/CNAqc
-    issue: https://github.com/caravagn/CNAqc/issues
+    home: https://github.com/caravagnalab/CNAqc/
+    source: https://github.com/caravagnalab/CNAqc
+    issue: https://github.com/caravagnalab/CNAqc/issues
     user: https://github.com/caravagn
 
 
 authors:
   Giulio Caravagna:
-    href: https://sites.google.com/site/giuliocaravagna/
+    href: https://www.caravagnalab.org
 
 reference:
 - title: Available data
