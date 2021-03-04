@@ -90,7 +90,7 @@ annotated NULL is returned." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -125,13 +125,16 @@ annotated NULL is returned." />
     <li>
       <a href="../articles/a6_fragmentation.html">6. Genome fragmentation analysis</a>
     </li>
+    <li>
+      <a href="../articles/a7_example_MSeq.html">7. Example data analysis</a>
+    </li>
   </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/caravagn/CNAqc/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -189,14 +192,14 @@ that can have drivers annotated.</p></td>
 </div><div class='output co'>#&gt; <span style='color: #BBBBBB;background-color: #0000BB;'> [ CNAqc - CNA Quality Check ] 
 #&gt; </span><span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Using reference genome coordinates for: </span><span style='color: #00BB00;'>GRCh38</span><span>.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Drivers are annotated, but 'gene' column is missing, using mutation location.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #BBBB00;'>!</span><span> Missing CCF column from CNA calls, adding CCF = 1 assuming clonal CNA calls.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Input n = 12963 mutations for 267 CNA segments (267 clonal, 0 subclonal)</span></div><div class='output co'>#&gt; </div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> Mapped n = 12963 mutations to clonal segments (100% of input)</span></div><div class='input'>
 <span class='fu'>get_drivers</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 3 x 17</span><span>
-#&gt;   chr     from     to ref   alt   FILTER    DP    NV   VAF ANNOVAR_FUNCTION
-#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>           
-#&gt; </span><span style='color: #555555;'>1</span><span> chr2  1.79</span><span style='color: #555555;'>e</span><span>8 1.79</span><span style='color: #555555;'>e</span><span>8 C     T     PASS     117    77 0.658 exonic          
-#&gt; </span><span style='color: #555555;'>2</span><span> chr16 6.76</span><span style='color: #555555;'>e</span><span>7 6.76</span><span style='color: #555555;'>e</span><span>7 C     T     PASS     120    54 0.45  exonic          
-#&gt; </span><span style='color: #555555;'>3</span><span> chr17 7.58</span><span style='color: #555555;'>e</span><span>6 7.58</span><span style='color: #555555;'>e</span><span>6 G     C     PASS      84    78 0.929 exonic          
-#&gt; </span><span style='color: #555555;'># … with 7 more variables: GENE </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, is_driver </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #555555;'>, driver_label </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,</span><span>
-#&gt; </span><span style='color: #555555;'>#   gene </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, type </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, karyotype </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, segment_id </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span></div></span></pre>
+</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 3 x 17</span><span>
+#&gt;   chr        from       to ref   alt   FILTER    DP    NV   VAF ANNOVAR_FUNCTION
+#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>           
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span> chr2  179</span><span style='text-decoration: underline;'>431</span><span>633   1.79</span><span style='color: #949494;'>e</span><span>8 C     T     PASS     117    77 0.658 exonic          
+#&gt; </span><span style='color: #BCBCBC;'>2</span><span> chr16  67</span><span style='text-decoration: underline;'>646</span><span>006   6.76</span><span style='color: #949494;'>e</span><span>7 C     T     PASS     120    54 0.45  exonic          
+#&gt; </span><span style='color: #BCBCBC;'>3</span><span> chr17   7</span><span style='text-decoration: underline;'>577</span><span>106   7.58</span><span style='color: #949494;'>e</span><span>6 G     C     PASS      84    78 0.929 exonic          
+#&gt; </span><span style='color: #949494;'># … with 7 more variables: GENE &lt;chr&gt;, is_driver &lt;lgl&gt;, driver_label &lt;chr&gt;,</span><span>
+#&gt; </span><span style='color: #949494;'>#   gene &lt;chr&gt;, type &lt;chr&gt;, karyotype &lt;chr&gt;, segment_id &lt;chr&gt;</span><span></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
