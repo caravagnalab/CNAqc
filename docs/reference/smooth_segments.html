@@ -51,6 +51,7 @@
 (absolute copy number), and that are split by at most a certain number
 of nucleotides Delta. The pre-smoothing copy number segments are
 retained in the output computation." />
+<meta property="og:image" content="caravagn.github.io/CNAqc/logo.png" />
 
 
 
@@ -133,7 +134,7 @@ retained in the output computation." />
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/caravagn/CNAqc/">
+  <a href="https://github.com/caravagnalab/CNAqc/">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -152,7 +153,7 @@ retained in the output computation." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Smooth copy number segments.</h1>
-    <small class="dont-index">Source: <a href='https://github.com/caravagn/CNAqcR/smooth_segments.R'><code>R/smooth_segments.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/caravagnalab/CNAqcR/smooth_segments.R'><code>R/smooth_segments.R</code></a></small>
     <div class="hidden name"><code>smooth_segments.Rd</code></div>
     </div>
 
@@ -184,12 +185,38 @@ to join two equivalent copy number segments.</p></td>
     <p>An object of class <code>cnaqc</code>, created by the <code>init</code> function.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>'example_dataset_CNAqc'</span>, package <span class='op'>=</span> <span class='st'>'CNAqc'</span><span class='op'>)</span>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>'example_dataset_CNAqc'</span>, package <span class='op'>=</span> <span class='st'>'CNAqc'</span><span class='op'>)</span>
 <span class='va'>x</span> <span class='op'>=</span> <span class='fu'><a href='init.html'>init</a></span><span class='op'>(</span><span class='va'>example_dataset_CNAqc</span><span class='op'>$</span><span class='va'>snvs</span>, <span class='va'>example_dataset_CNAqc</span><span class='op'>$</span><span class='va'>cna</span>,<span class='va'>example_dataset_CNAqc</span><span class='op'>$</span><span class='va'>purity</span><span class='op'>)</span>
-
+</div><div class='output co'>#&gt; <span style='color: #BBBBBB;background-color: #0000BB;'> [ CNAqc - CNA Quality Check ] 
+#&gt; </span><span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Using reference genome coordinates for: </span><span style='color: #00BB00;'>GRCh38</span><span>.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Drivers are annotated, but 'gene' column is missing, using mutation location.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #BBBB00;'>!</span><span> Missing CCF column from CNA calls, adding CCF = 1 assuming clonal CNA calls.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Input n = 12963 mutations for 267 CNA segments (267 clonal, 0 subclonal)</span></div><div class='output co'>#&gt; </div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> Mapped n = 12963 mutations to clonal segments (100% of input)</span></div><div class='input'>
 <span class='va'>x</span> <span class='op'>=</span> <span class='fu'>smooth_segments</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
-<span class='fu'><a href='plot_smoothing.html'>plot_smoothing</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
-</pre>
+</div><div class='output co'>#&gt; Smoothing </span><span style='color: #0000BB;'>chr1</span><span> with </span><span style='color: #BB0000;'>37</span><span> segments: [1-24] [27-30] [31-33] [34-37] 
+#&gt; Smoothing </span><span style='color: #0000BB;'>chr10</span><span> with </span><span style='color: #BB0000;'>8</span><span> segments: [1-2] [3-4] [5-8] 
+#&gt; Smoothing </span><span style='color: #0000BB;'>chr11</span><span> with </span><span style='color: #BB0000;'>22</span><span> segments: [1-7] [8-9] [10-22] 
+#&gt; Smoothing </span><span style='color: #0000BB;'>chr12</span><span> with </span><span style='color: #BB0000;'>13</span><span> segments: [2-3] [12-13] 
+#&gt; Smoothing </span><span style='color: #0000BB;'>chr14</span><span> with </span><span style='color: #BB0000;'>2</span><span> segments: [1-2] 
+#&gt; Smoothing </span><span style='color: #0000BB;'>chr15</span><span> with </span><span style='color: #BB0000;'>9</span><span> segments: [1-5] [7-9] 
+#&gt; Smoothing </span><span style='color: #0000BB;'>chr16</span><span> with </span><span style='color: #BB0000;'>10</span><span> segments: [1-6] [8-10] 
+#&gt; Smoothing </span><span style='color: #0000BB;'>chr17</span><span> with </span><span style='color: #BB0000;'>10</span><span> segments: [4-5] [6-7] [8-10] 
+#&gt; Smoothing </span><span style='color: #0000BB;'>chr18</span><span> with </span><span style='color: #BB0000;'>8</span><span> segments: [1-2] [3-8] 
+#&gt; Smoothing </span><span style='color: #0000BB;'>chr19</span><span> with </span><span style='color: #BB0000;'>5</span><span> segments: [2-5] 
+#&gt; Smoothing </span><span style='color: #0000BB;'>chr2</span><span> with </span><span style='color: #BB0000;'>18</span><span> segments: [1-8] [10-12] [14-18] 
+#&gt; Smoothing </span><span style='color: #0000BB;'>chr20</span><span> with </span><span style='color: #BB0000;'>9</span><span> segments: [1-3] [4-9] 
+#&gt; Smoothing </span><span style='color: #0000BB;'>chr21</span><span> with </span><span style='color: #BB0000;'>2</span><span> segments: [1-2] 
+#&gt; Smoothing </span><span style='color: #0000BB;'>chr22</span><span> with </span><span style='color: #BB0000;'>3</span><span> segments: 
+#&gt; Smoothing </span><span style='color: #0000BB;'>chr3</span><span> with </span><span style='color: #BB0000;'>19</span><span> segments: [1-7] [8-13] [15-19] 
+#&gt; Smoothing </span><span style='color: #0000BB;'>chr4</span><span> with </span><span style='color: #BB0000;'>8</span><span> segments: [1-4] [5-8] 
+#&gt; Smoothing </span><span style='color: #0000BB;'>chr5</span><span> with </span><span style='color: #BB0000;'>6</span><span> segments: [1-2] [3-5] 
+#&gt; Smoothing </span><span style='color: #0000BB;'>chr6</span><span> with </span><span style='color: #BB0000;'>4</span><span> segments: [1-2] [3-4] 
+#&gt; Smoothing </span><span style='color: #0000BB;'>chr7</span><span> with </span><span style='color: #BB0000;'>46</span><span> segments: [1-5] [9-27] [36-38] [39-41] [43-46] 
+#&gt; Smoothing </span><span style='color: #0000BB;'>chr8</span><span> with </span><span style='color: #BB0000;'>18</span><span> segments: [1-4] [5-11] [12-18] 
+#&gt; Smoothing </span><span style='color: #0000BB;'>chr9</span><span> with </span><span style='color: #BB0000;'>3</span><span> segments: [1-2] 
+#&gt; Smoothing </span><span style='color: #0000BB;'>chrX</span><span> with </span><span style='color: #BB0000;'>6</span><span> segments: [1-2] [3-6] 
+#&gt; </div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> Smoothed from 267 to 87 segments with 1e+06 gap (bases).</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Creating a new CNAqc object. The old object will be retained in the $before_smoothing field.</span></div><div class='output co'>#&gt; </span><span style='color: #BBBBBB;background-color: #0000BB;'> [ CNAqc - CNA Quality Check ] 
+#&gt; </span><span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Using reference genome coordinates for: </span><span style='color: #00BB00;'>GRCh38</span><span>.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Input n = 12963 mutations for 87 CNA segments (87 clonal, 0 subclonal)</span></div><div class='output co'>#&gt; <span class='warning'>Warning: [CNAqc] a karyotype column is present in CNA calls, and will be overwritten</span></div><div class='output co'>#&gt; </div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> Mapped n = 12963 mutations to clonal segments (100% of input)</span></div><div class='input'><span class='fu'><a href='plot_smoothing.html'>plot_smoothing</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>Scale for 'fill' is already present. Adding another scale for 'fill', which</span>
+#&gt; <span class='message'>will replace the existing scale.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Graphs cannot be horizontally aligned unless the axis parameter is set. Placing graphs unaligned.</span></div><div class='output co'>#&gt; <span class='message'>Scale for 'fill' is already present. Adding another scale for 'fill', which</span>
+#&gt; <span class='message'>will replace the existing scale.</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Graphs cannot be horizontally aligned unless the axis parameter is set. Placing graphs unaligned.</span></div><div class='img'><img src='smooth_segments-1.png' alt='' width='700' height='433' /></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -201,7 +228,7 @@ to join two equivalent copy number segments.</p></td>
 
       <footer>
       <div class="copyright">
-  <p>Developed by <a href='https://sites.google.com/site/giuliocaravagna/'>Giulio Caravagna</a>.</p>
+  <p>Developed by <a href='https://www.caravagnalab.org'>Giulio Caravagna</a>.</p>
 </div>
 
 <div class="pkgdown">

@@ -48,6 +48,7 @@
 
 <meta property="og:title" content="Example CNAqc dataset. — example_dataset_CNAqc" />
 <meta property="og:description" content="Example CNAqc dataset." />
+<meta property="og:image" content="caravagn.github.io/CNAqc/logo.png" />
 
 
 
@@ -130,7 +131,7 @@
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/caravagn/CNAqc/">
+  <a href="https://github.com/caravagnalab/CNAqc/">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -149,7 +150,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Example CNAqc dataset.</h1>
-    <small class="dont-index">Source: <a href='https://github.com/caravagn/CNAqcR/data.R'><code>R/data.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/caravagnalab/CNAqcR/data.R'><code>R/data.R</code></a></small>
     <div class="hidden name"><code>example_dataset_CNAqc.Rd</code></div>
     </div>
 
@@ -169,10 +170,48 @@ can be used to run CNAqc analyses.</p>
     <p>??</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>example_dataset_CNAqc</span><span class='op'>)</span>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>example_dataset_CNAqc</span><span class='op'>)</span>
 <span class='va'>example_dataset_CNAqc</span>
-
-</pre>
+</div><div class='output co'>#&gt; $snvs
+#&gt; <span style='color: #555555;'># A tibble: 12,963 x 13</span><span>
+#&gt;    chr     from     to ref   alt   FILTER    DP    NV    VAF ANNOVAR_FUNCTION
+#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>           
+#&gt; </span><span style='color: #555555;'> 1</span><span> chr1  1.03</span><span style='color: #555555;'>e</span><span>6 1.03</span><span style='color: #555555;'>e</span><span>6 T     G     PASS      60     6 0.1    UTR5            
+#&gt; </span><span style='color: #555555;'> 2</span><span> chr1  2.25</span><span style='color: #555555;'>e</span><span>6 2.25</span><span style='color: #555555;'>e</span><span>6 A     C     PASS     127     9 0.070</span><span style='text-decoration: underline;'>9</span><span> intergenic      
+#&gt; </span><span style='color: #555555;'> 3</span><span> chr1  2.46</span><span style='color: #555555;'>e</span><span>6 2.46</span><span style='color: #555555;'>e</span><span>6 G     A     PASS     156    65 0.417  upstream        
+#&gt; </span><span style='color: #555555;'> 4</span><span> chr1  2.73</span><span style='color: #555555;'>e</span><span>6 2.73</span><span style='color: #555555;'>e</span><span>6 T     C     PASS     180    90 0.5    downstream      
+#&gt; </span><span style='color: #555555;'> 5</span><span> chr1  2.76</span><span style='color: #555555;'>e</span><span>6 2.76</span><span style='color: #555555;'>e</span><span>6 C     T     PASS     183    61 0.333  intergenic      
+#&gt; </span><span style='color: #555555;'> 6</span><span> chr1  2.77</span><span style='color: #555555;'>e</span><span>6 2.77</span><span style='color: #555555;'>e</span><span>6 C     T     PASS     203   130 0.640  intergenic      
+#&gt; </span><span style='color: #555555;'> 7</span><span> chr1  2.94</span><span style='color: #555555;'>e</span><span>6 2.94</span><span style='color: #555555;'>e</span><span>6 C     T     PASS     228   132 0.579  intergenic      
+#&gt; </span><span style='color: #555555;'> 8</span><span> chr1  2.98</span><span style='color: #555555;'>e</span><span>6 2.98</span><span style='color: #555555;'>e</span><span>6 C     T     PASS     196    85 0.434  ncRNA_exonic    
+#&gt; </span><span style='color: #555555;'> 9</span><span> chr1  3.39</span><span style='color: #555555;'>e</span><span>6 3.39</span><span style='color: #555555;'>e</span><span>6 T     G     PASS     124     6 0.048</span><span style='text-decoration: underline;'>4</span><span> intronic        
+#&gt; </span><span style='color: #555555;'>10</span><span> chr1  3.50</span><span style='color: #555555;'>e</span><span>6 3.50</span><span style='color: #555555;'>e</span><span>6 G     A     PASS      88    10 0.114  intronic        
+#&gt; </span><span style='color: #555555;'># … with 12,953 more rows, and 3 more variables: GENE </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, is_driver </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #555555;'>,</span><span>
+#&gt; </span><span style='color: #555555;'>#   driver_label </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>
+#&gt; 
+#&gt; $cna
+#&gt; </span><span style='color: #555555;'># A tibble: 267 x 7</span><span>
+#&gt;    chr       from       to  length covRatio Major minor
+#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'> 1</span><span> chr1    </span><span style='text-decoration: underline;'>840</span><span>009  1</span><span style='text-decoration: underline;'>689</span><span>987  </span><span style='text-decoration: underline;'>849</span><span>979     1.19     3     2
+#&gt; </span><span style='color: #555555;'> 2</span><span> chr1   1</span><span style='text-decoration: underline;'>689</span><span>988  1</span><span style='text-decoration: underline;'>815</span><span>015  </span><span style='text-decoration: underline;'>125</span><span>028     1.26     3     2
+#&gt; </span><span style='color: #555555;'> 3</span><span> chr1   1</span><span style='text-decoration: underline;'>815</span><span>016  9</span><span style='text-decoration: underline;'>799</span><span>969 7</span><span style='text-decoration: underline;'>984</span><span>954     1.19     3     2
+#&gt; </span><span style='color: #555555;'> 4</span><span> chr1  10</span><span style='text-decoration: underline;'>479</span><span>910 12</span><span style='text-decoration: underline;'>079</span><span>917 1</span><span style='text-decoration: underline;'>600</span><span>008     1.19     3     2
+#&gt; </span><span style='color: #555555;'> 5</span><span> chr1  12</span><span style='text-decoration: underline;'>079</span><span>917 12</span><span style='text-decoration: underline;'>154</span><span>980   </span><span style='text-decoration: underline;'>75</span><span>064     1.24     3     2
+#&gt; </span><span style='color: #555555;'> 6</span><span> chr1  12</span><span style='text-decoration: underline;'>154</span><span>981 12</span><span style='text-decoration: underline;'>839</span><span>977  </span><span style='text-decoration: underline;'>684</span><span>997     1.19     3     2
+#&gt; </span><span style='color: #555555;'> 7</span><span> chr1  13</span><span style='text-decoration: underline;'>780</span><span>016 17</span><span style='text-decoration: underline;'>790</span><span>026 4</span><span style='text-decoration: underline;'>010</span><span>011     1.19     3     2
+#&gt; </span><span style='color: #555555;'> 8</span><span> chr1  17</span><span style='text-decoration: underline;'>849</span><span>962 21</span><span style='text-decoration: underline;'>080</span><span>067 3</span><span style='text-decoration: underline;'>230</span><span>106     1.19     3     2
+#&gt; </span><span style='color: #555555;'> 9</span><span> chr1  21</span><span style='text-decoration: underline;'>080</span><span>068 21</span><span style='text-decoration: underline;'>559</span><span>998  </span><span style='text-decoration: underline;'>479</span><span>931     1.26     3     2
+#&gt; </span><span style='color: #555555;'>10</span><span> chr1  21</span><span style='text-decoration: underline;'>559</span><span>998 24</span><span style='text-decoration: underline;'>830</span><span>001 3</span><span style='text-decoration: underline;'>270</span><span>004     1.19     3     2
+#&gt; </span><span style='color: #555555;'># … with 257 more rows</span><span>
+#&gt; 
+#&gt; $purity
+#&gt; [1] 0.89
+#&gt; 
+#&gt; $reference
+#&gt; [1] "hg19"
+#&gt; </div><div class='input'>
+</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -184,7 +223,7 @@ can be used to run CNAqc analyses.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by <a href='https://sites.google.com/site/giuliocaravagna/'>Giulio Caravagna</a>.</p>
+  <p>Developed by <a href='https://www.caravagnalab.org'>Giulio Caravagna</a>.</p>
 </div>
 
 <div class="pkgdown">

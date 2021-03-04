@@ -52,6 +52,7 @@ from a `CNAqc` object, after they have been computed using
 function `compute_CCF`. The estimates are pooled
 across the used karyotypes, and extracted from the
 `CCF_estimates` field of the input object." />
+<meta property="og:image" content="caravagn.github.io/CNAqc/logo.png" />
 
 
 
@@ -134,7 +135,7 @@ across the used karyotypes, and extracted from the
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/caravagn/CNAqc/">
+  <a href="https://github.com/caravagnalab/CNAqc/">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -153,7 +154,7 @@ across the used karyotypes, and extracted from the
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Return the available mutation CCF estimates in the data.</h1>
-    <small class="dont-index">Source: <a href='https://github.com/caravagn/CNAqcR/CCF.R'><code>R/CCF.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/caravagnalab/CNAqcR/CCF.R'><code>R/CCF.R</code></a></small>
     <div class="hidden name"><code>CCF.Rd</code></div>
     </div>
 
@@ -183,12 +184,28 @@ function `compute_CCF`.</p></td>
 and CCF values.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>'example_dataset_CNAqc'</span><span class='op'>)</span>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>'example_dataset_CNAqc'</span><span class='op'>)</span>
 <span class='va'>x</span> <span class='op'>=</span> <span class='fu'><a href='init.html'>init</a></span><span class='op'>(</span><span class='va'>example_dataset_CNAqc</span><span class='op'>$</span><span class='va'>snvs</span>, <span class='va'>example_dataset_CNAqc</span><span class='op'>$</span><span class='va'>cna</span>, <span class='va'>example_dataset_CNAqc</span><span class='op'>$</span><span class='va'>purity</span><span class='op'>)</span>
-
+</div><div class='output co'>#&gt; <span style='color: #BBBBBB;background-color: #0000BB;'> [ CNAqc - CNA Quality Check ] 
+#&gt; </span><span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Using reference genome coordinates for: </span><span style='color: #00BB00;'>GRCh38</span><span>.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Drivers are annotated, but 'gene' column is missing, using mutation location.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #BBBB00;'>!</span><span> Missing CCF column from CNA calls, adding CCF = 1 assuming clonal CNA calls.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Input n = 12963 mutations for 267 CNA segments (267 clonal, 0 subclonal)</span></div><div class='output co'>#&gt; </div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> Mapped n = 12963 mutations to clonal segments (100% of input)</span></div><div class='input'>
 <span class='va'>x</span> <span class='op'>=</span> <span class='fu'><a href='compute_CCF.html'>compute_CCF</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
-<span class='fu'>CCF</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
-</pre>
+</div><div class='output co'>#&gt; <span class='message'>── Computing mutation multiplicity for karyotype </span><span style='color: #00BB00;'>2:0</span><span> using the entropy method. ─</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Expected Binomial peak(s) for these calls (1 and 2 copies): 0.445 and 0.89</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Mixing pre/ post aneuploidy: 0.09 and 0.91</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Not assignamble area: [0.631578947368421; 0.723684210526316]</span></div><div class='output co'>#&gt; <span class='message'>── Computing mutation multiplicity for karyotype </span><span style='color: #00BB00;'>2:1</span><span> using the entropy method. ─</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Expected Binomial peak(s) for these calls (1 and 2 copies): 0.307958477508651 and 0.615916955017301</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Mixing pre/ post aneuploidy: 0.55 and 0.45</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Not assignamble area: [0.423423423423423; 0.504504504504504]</span></div><div class='output co'>#&gt; <span class='message'>── Computing mutation multiplicity for karyotype </span><span style='color: #00BB00;'>2:2</span><span> using the entropy method. ─</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Expected Binomial peak(s) for these calls (1 and 2 copies): 0.235449735449735 and 0.470899470899471</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Mixing pre/ post aneuploidy: 0.09 and 0.91</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Not assignamble area: [0.290780141843972; 0.368794326241135]</span></div><div class='input'><span class='fu'>CCF</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 9,122 x 19</span><span>
+#&gt;    chr     from     to ref   alt   FILTER    DP    NV   VAF ANNOVAR_FUNCTION
+#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>           
+#&gt; </span><span style='color: #555555;'> 1</span><span> chr12 5.21</span><span style='color: #555555;'>e</span><span>7 5.21</span><span style='color: #555555;'>e</span><span>7 A     C     PASS      75     6 0.08  intronic        
+#&gt; </span><span style='color: #555555;'> 2</span><span> chr12 5.25</span><span style='color: #555555;'>e</span><span>7 5.25</span><span style='color: #555555;'>e</span><span>7 G     A     PASS      60    53 0.883 intergenic      
+#&gt; </span><span style='color: #555555;'> 3</span><span> chr12 5.34</span><span style='color: #555555;'>e</span><span>7 5.34</span><span style='color: #555555;'>e</span><span>7 C     T     PASS      82    75 0.915 intergenic      
+#&gt; </span><span style='color: #555555;'> 4</span><span> chr12 5.48</span><span style='color: #555555;'>e</span><span>7 5.48</span><span style='color: #555555;'>e</span><span>7 C     T     PASS      86    77 0.895 exonic          
+#&gt; </span><span style='color: #555555;'> 5</span><span> chr12 5.48</span><span style='color: #555555;'>e</span><span>7 5.48</span><span style='color: #555555;'>e</span><span>7 A     T     PASS      72    62 0.861 exonic          
+#&gt; </span><span style='color: #555555;'> 6</span><span> chr12 5.54</span><span style='color: #555555;'>e</span><span>7 5.54</span><span style='color: #555555;'>e</span><span>7 T     A     PASS      85    40 0.471 intergenic      
+#&gt; </span><span style='color: #555555;'> 7</span><span> chr12 5.78</span><span style='color: #555555;'>e</span><span>7 5.78</span><span style='color: #555555;'>e</span><span>7 C     T     PASS      73    62 0.849 intronic        
+#&gt; </span><span style='color: #555555;'> 8</span><span> chr12 5.86</span><span style='color: #555555;'>e</span><span>7 5.86</span><span style='color: #555555;'>e</span><span>7 C     T     PASS      65    51 0.785 intergenic      
+#&gt; </span><span style='color: #555555;'> 9</span><span> chr12 5.86</span><span style='color: #555555;'>e</span><span>7 5.86</span><span style='color: #555555;'>e</span><span>7 T     A     PASS      64    57 0.891 intergenic      
+#&gt; </span><span style='color: #555555;'>10</span><span> chr12 5.90</span><span style='color: #555555;'>e</span><span>7 5.90</span><span style='color: #555555;'>e</span><span>7 G     A     PASS      54    44 0.815 ncRNA_intronic  
+#&gt; </span><span style='color: #555555;'># … with 9,112 more rows, and 9 more variables: GENE </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, is_driver </span><span style='color: #555555;font-style: italic;'>&lt;lgl&gt;</span><span style='color: #555555;'>,</span><span>
+#&gt; </span><span style='color: #555555;'>#   driver_label </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, gene </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, type </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, karyotype </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>,</span><span>
+#&gt; </span><span style='color: #555555;'>#   segment_id </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span style='color: #555555;'>, mutation_multiplicity </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, CCF </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -200,7 +217,7 @@ and CCF values.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by <a href='https://sites.google.com/site/giuliocaravagna/'>Giulio Caravagna</a>.</p>
+  <p>Developed by <a href='https://www.caravagnalab.org'>Giulio Caravagna</a>.</p>
 </div>
 
 <div class="pkgdown">

@@ -49,6 +49,7 @@
 <meta property="og:title" content="Plot a genome-wide histogram of mutation counts. — plot_gw_counts" />
 <meta property="og:description" content="Plot a genome-wide histogram of mutation counts, binned
 every one megabase (10e6 positions according to the hg19 reference)." />
+<meta property="og:image" content="caravagn.github.io/CNAqc/logo.png" />
 
 
 
@@ -131,7 +132,7 @@ every one megabase (10e6 positions according to the hg19 reference)." />
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/caravagn/CNAqc/">
+  <a href="https://github.com/caravagnalab/CNAqc/">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -150,7 +151,7 @@ every one megabase (10e6 positions according to the hg19 reference)." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Plot a genome-wide histogram of mutation counts.</h1>
-    <small class="dont-index">Source: <a href='https://github.com/caravagn/CNAqcR/plot_genome_wide_mutations.R'><code>R/plot_genome_wide_mutations.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/caravagnalab/CNAqcR/plot_genome_wide_mutations.R'><code>R/plot_genome_wide_mutations.R</code></a></small>
     <div class="hidden name"><code>plot_gw_counts.Rd</code></div>
     </div>
 
@@ -179,11 +180,12 @@ every one megabase (10e6 positions according to the hg19 reference).</p>
     <p>A <code>ggplot</code> object.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>'example_dataset_CNAqc'</span>, package <span class='op'>=</span> <span class='st'>'CNAqc'</span><span class='op'>)</span>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>'example_dataset_CNAqc'</span>, package <span class='op'>=</span> <span class='st'>'CNAqc'</span><span class='op'>)</span>
 <span class='va'>x</span> <span class='op'>=</span> <span class='fu'><a href='init.html'>init</a></span><span class='op'>(</span><span class='va'>example_dataset_CNAqc</span><span class='op'>$</span><span class='va'>snvs</span>, <span class='va'>example_dataset_CNAqc</span><span class='op'>$</span><span class='va'>cna</span>,<span class='va'>example_dataset_CNAqc</span><span class='op'>$</span><span class='va'>purity</span><span class='op'>)</span>
-
+</div><div class='output co'>#&gt; <span style='color: #BBBBBB;background-color: #0000BB;'> [ CNAqc - CNA Quality Check ] 
+#&gt; </span><span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Using reference genome coordinates for: </span><span style='color: #00BB00;'>GRCh38</span><span>.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Drivers are annotated, but 'gene' column is missing, using mutation location.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #BBBB00;'>!</span><span> Missing CCF column from CNA calls, adding CCF = 1 assuming clonal CNA calls.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Input n = 12963 mutations for 267 CNA segments (267 clonal, 0 subclonal)</span></div><div class='output co'>#&gt; </div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> Mapped n = 12963 mutations to clonal segments (100% of input)</span></div><div class='input'>
 <span class='fu'>plot_gw_counts</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
-</pre>
+</div><div class='img'><img src='plot_gw_counts-1.png' alt='' width='700' height='433' /></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -195,7 +197,7 @@ every one megabase (10e6 positions according to the hg19 reference).</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by <a href='https://sites.google.com/site/giuliocaravagna/'>Giulio Caravagna</a>.</p>
+  <p>Developed by <a href='https://www.caravagnalab.org'>Giulio Caravagna</a>.</p>
 </div>
 
 <div class="pkgdown">
