@@ -5,8 +5,7 @@ language: r
 cache: packages
 
 r_github_packages:  
-    caravagn/pio
-    caravagn/easypar
-    caravagn/BMix
+    - caravagn/pio
+    - caravagn/BMix
 
 warnings_are_errors: false
