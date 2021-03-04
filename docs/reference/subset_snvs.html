@@ -49,7 +49,6 @@
 <meta property="og:title" content="Retain only SNVs. — subset_snvs" />
 <meta property="og:description" content="It removes all non-SNVs mutations, re-creaging a new CNAqc
 dataset (all analyses are lost)." />
-<meta property="og:image" content="caravagn.github.io/CNAqc/logo.png" />
 
 
 
@@ -89,7 +88,7 @@ dataset (all analyses are lost)." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -124,13 +123,16 @@ dataset (all analyses are lost)." />
     <li>
       <a href="../articles/a6_fragmentation.html">6. Genome fragmentation analysis</a>
     </li>
+    <li>
+      <a href="../articles/a7_example_MSeq.html">7. Example data analysis</a>
+    </li>
   </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/caravagn/CNAqc/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -185,39 +187,12 @@ dataset (all analyses are lost).</p>
     <p>A new CNAqc dataset created with <code>init</code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>x</span> <span class='op'>=</span> <span class='fu'><a href='init.html'>init</a></span><span class='op'>(</span>snvs <span class='op'>=</span> <span class='va'>example_dataset_CNAqc</span><span class='op'>$</span><span class='va'>snvs</span>, cna <span class='op'>=</span> <span class='va'>example_dataset_CNAqc</span><span class='op'>$</span><span class='va'>cna</span>, purity <span class='op'>=</span> <span class='va'>example_dataset_CNAqc</span><span class='op'>$</span><span class='va'>purity</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #BBBBBB;background-color: #0000BB;'> [ CNAqc - CNA Quality Check ] 
-#&gt; </span><span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Using reference genome coordinates for: </span><span style='color: #00BB00;'>GRCh38</span><span>.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Drivers are annotated, but 'gene' column is missing, using mutation location.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #BBBB00;'>!</span><span> Missing CCF column from CNA calls, adding CCF = 1 assuming clonal CNA calls.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Input n = 12963 mutations for 267 CNA segments (267 clonal, 0 subclonal)</span></div><div class='output co'>#&gt; </div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> Mapped n = 12963 mutations to clonal segments (100% of input)</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>── </span><span style='color: #000000;background-color: #BBBB00;'>[ CNAqc ] </span><span> n = 12963 mutations in </span><span style='color: #00BB00;'>267</span><span> segments (267 clonal + 0 subclonal). Ge</span></div><div class='output co'>#&gt; 
-#&gt;    2:2  [n = 7478, L = 1483 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { </span><span style='color: #BBBB00;'>CTCF</span><span> }
-#&gt;    4:2  [n = 1893, L =  331 Mb] ■■■■■■■
-#&gt;    3:2  [n = 1625, L =  357 Mb] ■■■■■■
-#&gt;    2:1  [n = 1563, L =  420 Mb] ■■■■■■  { </span><span style='color: #BBBB00;'>TTN</span><span> }
-#&gt;    3:0  [n =  312, L =  137 Mb] ■
-#&gt;    2:0  [n =   81, L =   39 Mb]   { </span><span style='color: #BBBB00;'>TP53</span><span> }
-#&gt;   16:2  [n =    4, L =    0 Mb] 
-#&gt;   25:2  [n =    2, L =    1 Mb] 
-#&gt;    3:1  [n =    2, L =    1 Mb] 
-#&gt;  106:1  [n =    1, L =    0 Mb] 
-#&gt;   26:2  [n =    1, L =    0 Mb] 
-#&gt;   99:1  [n =    1, L =    0 Mb] 
-#&gt; </div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Sample Purity: 89% ~ Ploidy: 4.</span></div><div class='output co'>#&gt; </div><div class='input'>
+    <pre class="examples"><span class='va'>x</span> <span class='op'>=</span> <span class='fu'><a href='init.html'>init</a></span><span class='op'>(</span>snvs <span class='op'>=</span> <span class='va'>example_dataset_CNAqc</span><span class='op'>$</span><span class='va'>snvs</span>, cna <span class='op'>=</span> <span class='va'>example_dataset_CNAqc</span><span class='op'>$</span><span class='va'>cna</span>, purity <span class='op'>=</span> <span class='va'>example_dataset_CNAqc</span><span class='op'>$</span><span class='va'>purity</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+
 <span class='co'># no change - they are already SNVs</span>
 <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='fu'>subset_snvs</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>── </span><span style='color: #000000;background-color: #BBBB00;'>[ CNAqc ] </span><span> n = 12963 mutations in </span><span style='color: #00BB00;'>267</span><span> segments (267 clonal + 0 subclonal). Ge</span></div><div class='output co'>#&gt; 
-#&gt;    2:2  [n = 7478, L = 1483 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { </span><span style='color: #BBBB00;'>CTCF</span><span> }
-#&gt;    4:2  [n = 1893, L =  331 Mb] ■■■■■■■
-#&gt;    3:2  [n = 1625, L =  357 Mb] ■■■■■■
-#&gt;    2:1  [n = 1563, L =  420 Mb] ■■■■■■  { </span><span style='color: #BBBB00;'>TTN</span><span> }
-#&gt;    3:0  [n =  312, L =  137 Mb] ■
-#&gt;    2:0  [n =   81, L =   39 Mb]   { </span><span style='color: #BBBB00;'>TP53</span><span> }
-#&gt;   16:2  [n =    4, L =    0 Mb] 
-#&gt;   25:2  [n =    2, L =    1 Mb] 
-#&gt;    3:1  [n =    2, L =    1 Mb] 
-#&gt;  106:1  [n =    1, L =    0 Mb] 
-#&gt;   26:2  [n =    1, L =    0 Mb] 
-#&gt;   99:1  [n =    1, L =    0 Mb] 
-#&gt; </div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Sample Purity: 89% ~ Ploidy: 4.</span></div><div class='output co'>#&gt; </div></span></pre>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

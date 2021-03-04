@@ -229,7 +229,7 @@ bar_print_console = function(x, top = length(x$n_karyotype)) {
 #' data('example_dataset_CNAqc', package = 'CNAqc')
 #' x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
 #'
-#' plot(x)
+#' plot.cnaqc(x)
 plot.cnaqc = function(x, ...)
 {
   stopifnot(inherits(x, "cnaqc"))

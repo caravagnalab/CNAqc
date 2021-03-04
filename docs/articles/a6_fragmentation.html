@@ -19,7 +19,6 @@
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><meta property="og:title" content="6. Genome fragmentation analysis">
 <meta property="og:description" content="CNAqc">
-<meta property="og:image" content="caravagn.github.io/CNAqc/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -46,7 +45,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -81,13 +80,16 @@
     <li>
       <a href="../articles/a6_fragmentation.html">6. Genome fragmentation analysis</a>
     </li>
+    <li>
+      <a href="../articles/a7_example_MSeq.html">7. Example data analysis</a>
+    </li>
   </ul>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/caravagn/CNAqc/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -101,8 +103,7 @@
 
       
 
-      </header><script src="a6_fragmentation_files/header-attrs-2.5/header-attrs.js"></script><link href="a6_fragmentation_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
-<script src="a6_fragmentation_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
+      </header><script src="a6_fragmentation_files/header-attrs-2.7/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>6. Genome fragmentation analysis</h1>
@@ -140,7 +141,7 @@
 <p>The fragmentation of a chromosome arm is assessed with a statistical test based on counting the size of the copy number segments mapping to the arm.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># A histogram of segments' lenght</span>
-<span class="fu"><a href="../reference/plot_segment_size_distribution.html">plot_segment_size_distribution</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></code></pre></div>
+<span class="fu">plot_segment_size_distribution</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></code></pre></div>
 <p><img src="a6_fragmentation_files/figure-html/unnamed-chunk-3-1.png" width="288"></p>
 <p><code>CNAqc</code> counts, for every arm with lenght <span class="math inline">\(L\)</span> nucleotides:</p>
 <ul>
@@ -153,7 +154,7 @@
 <p>In this way the test accounts for the difference in lenghts of the chromsome arms; a p-value per arm is reported and adjusted for multiple hyoptheses (Bonferroni).</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Test with default parameters (small segments: &lt; 20% of chromosome arm)</span>
-<span class="va">x</span> <span class="op">=</span> <span class="fu"><a href="../reference/detect_arm_overfragmentation.html">detect_arm_overfragmentation</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
+<span class="va">x</span> <span class="op">=</span> <span class="fu">detect_arm_overfragmentation</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
 <span class="co">#&gt; ℹ One-tailed Binomial test: 8 tests, alpha 0.01. Short segments: 0.2% of the reference arm.</span>
 <span class="co">#&gt; ✓ chr7p,  p = 1.71798691840001e-24 ~ 34 segments, 34 short.</span>
 <span class="co">#&gt; ✓ chr1p,  p = 1.62738995200002e-15 ~ 24 segments, 23 short.</span>
@@ -190,20 +191,20 @@
 <p><span class="math inline">\(J\)</span> is the sum of the variation in total copy number profiles, evaluated among each pair of contiguous segments.</p>
 <p>Significantly overfragmented arms with high <span class="math inline">\(J\)</span> have a “scattered” copy number profile. Those with low <span class="math inline">\(J\)</span> are more uniform, as they show little no copy number change, and can be possibly smoothed (see below).</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/plot_arm_fragmentation.html">plot_arm_fragmentation</a></span><span class="op">(</span><span class="va">x</span>, zoom <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu">plot_arm_fragmentation</span><span class="op">(</span><span class="va">x</span>, zoom <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>
 <span class="co">#&gt; x Increare zoom to see more chromosomes.</span></code></pre></div>
 <p><img src="a6_fragmentation_files/figure-html/unnamed-chunk-5-1.png" width="672"></p>
 <p>Once available, these results appear in any call to <code>plot_segments</code> as annotated purple squares sorrounding the arms.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Default plot has now segments</span>
-<span class="fu"><a href="../reference/plot_segments.html">plot_segments</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
+<span class="fu">plot_segments</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
 <span class="co">#&gt; Scale for 'fill' is already present. Adding another scale for 'fill', which</span>
 <span class="co">#&gt; will replace the existing scale.</span></code></pre></div>
 <p><img src="a6_fragmentation_files/figure-html/unnamed-chunk-6-1.png" width="912"></p>
 <p><a href="https://caravagn.github.io/CNAqc/articles/smoothing.html">Smoothing</a> is a good way to start cleaning up the fragmented sets of arms, as it merges segments that have no karyotype change, and are closer than a certain distance.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Smooth with default parameters</span>
-<span class="va">x</span> <span class="op">=</span> <span class="fu"><a href="../reference/smooth_segments.html">smooth_segments</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
+<span class="va">x</span> <span class="op">=</span> <span class="fu">smooth_segments</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
 <span class="co">#&gt; Smoothing chr1 with 37 segments: [1-24] [27-30] [31-33] [34-37] </span>
 <span class="co">#&gt; Smoothing chr10 with 8 segments: [1-2] [3-4] [5-8] </span>
 <span class="co">#&gt; Smoothing chr11 with 22 segments: [1-7] [8-9] [10-22] </span>
@@ -236,7 +237,7 @@
 <span class="co">#&gt; ✓ Mapped n = 12963 mutations to clonal segments (100% of input)</span>
 
 <span class="co"># Re-compute the fragmentation</span>
-<span class="va">x</span> <span class="op">=</span> <span class="fu"><a href="../reference/detect_arm_overfragmentation.html">detect_arm_overfragmentation</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
+<span class="va">x</span> <span class="op">=</span> <span class="fu">detect_arm_overfragmentation</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
 <span class="co">#&gt; ℹ One-tailed Binomial test: 2 tests, alpha 0.01. Short segments: 0.2% of the reference arm.</span>
 <span class="co">#&gt; ✓ chr7p,  p = 4.52608e-06 ~ 12 segments, 10 short.</span>
 <span class="co">#&gt; ✓ chr12q,  p = 4.19839999999999e-06 ~ 10 segments, 9 short.</span>
@@ -261,7 +262,7 @@
 <span class="co">#&gt; ✓ These segments are smoothed; before smoothing there were 267 segments.</span>
 <span class="co">#&gt; ✓ Arm-level fragmentation analysis: 2 segments overfragmented.</span></code></pre></div>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/plot_arm_fragmentation.html">plot_arm_fragmentation</a></span><span class="op">(</span><span class="va">x</span>, zoom <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu">plot_arm_fragmentation</span><span class="op">(</span><span class="va">x</span>, zoom <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></code></pre></div>
 <p><img src="a6_fragmentation_files/figure-html/unnamed-chunk-8-1.png" width="960"></p>
 </div>
   </div>

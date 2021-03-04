@@ -21,5 +21,5 @@ The default plot is the CNA segments in wide format
 data('example_dataset_CNAqc', package = 'CNAqc')
 x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
 
-plot(x)
+plot.cnaqc(x)
 }

@@ -32,7 +32,7 @@ The plot can be subset by selecting only data in certain segments,
 identified by the karyotype shortname, and will be coloured accordingly.
 }
 \examples{
-#' data('example_dataset_CNAqc', package = 'CNAqc')
+data('example_dataset_CNAqc', package = 'CNAqc')
 x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
 plot_data_histogram(x)
 plot_data_histogram(x, which = 'DP')

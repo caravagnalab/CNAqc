@@ -19,7 +19,6 @@
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><meta property="og:title" content="2. Plotting data">
 <meta property="og:description" content="CNAqc">
-<meta property="og:image" content="caravagn.github.io/CNAqc/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -46,7 +45,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -81,13 +80,16 @@
     <li>
       <a href="../articles/a6_fragmentation.html">6. Genome fragmentation analysis</a>
     </li>
+    <li>
+      <a href="../articles/a7_example_MSeq.html">7. Example data analysis</a>
+    </li>
   </ul>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/caravagn/CNAqc/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -101,8 +103,7 @@
 
       
 
-      </header><script src="a2_Plots_files/header-attrs-2.5/header-attrs.js"></script><link href="a2_Plots_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
-<script src="a2_Plots_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
+      </header><script src="a2_Plots_files/header-attrs-2.7/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>2. Plotting data</h1>
@@ -143,40 +144,40 @@
 <p>Since <code>x</code> has drivers annotated, these are also plot with a colour that reflects their karyotype. Areas in the genome that are mapped to the most prevalent karyotype (here, <code>"2:2"</code>), are shadowed by default.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Default plot</span>
-<span class="fu"><a href="../reference/plot_segments.html">plot_segments</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
+<span class="fu">plot_segments</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
 <span class="co">#&gt; Scale for 'fill' is already present. Adding another scale for 'fill', which</span>
 <span class="co">#&gt; will replace the existing scale.</span></code></pre></div>
 <p><img src="a2_Plots_files/figure-html/unnamed-chunk-3-1.png" width="912"></p>
 <p>An alternative circular layout plot is available (default parameters).</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Circular layout</span>
-<span class="fu"><a href="../reference/plot_segments.html">plot_segments</a></span><span class="op">(</span><span class="va">x</span>, circular <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<span class="fu">plot_segments</span><span class="op">(</span><span class="va">x</span>, circular <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p><img src="a2_Plots_files/figure-html/unnamed-chunk-4-1.png" width="384"></p>
 <div id="custom-segments-plot" class="section level2">
 <h2 class="hasAnchor">
 <a href="#custom-segments-plot" class="anchor"></a>Custom segments plot</h2>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Shadow other karyotypes</span>
-<span class="fu"><a href="../reference/plot_segments.html">plot_segments</a></span><span class="op">(</span><span class="va">x</span>, highlight <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"2:1"</span>, <span class="st">"2:0"</span>, <span class="st">"2:2"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu">labs</span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Annotate different karyotypes"</span><span class="op">)</span>
+<span class="fu">plot_segments</span><span class="op">(</span><span class="va">x</span>, highlight <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"2:1"</span>, <span class="st">"2:0"</span>, <span class="st">"2:2"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu">labs</span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Annotate different karyotypes"</span><span class="op">)</span>
 <span class="co">#&gt; Scale for 'fill' is already present. Adding another scale for 'fill', which</span>
 <span class="co">#&gt; will replace the existing scale.</span></code></pre></div>
 <p><img src="a2_Plots_files/figure-html/unnamed-chunk-5-1.png" width="912"></p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="co"># Subset the genome</span>
-<span class="fu"><a href="../reference/plot_segments.html">plot_segments</a></span><span class="op">(</span><span class="va">x</span>, chromosomes <span class="op">=</span> <span class="st">'chr17'</span><span class="op">)</span> <span class="op">+</span> <span class="fu">labs</span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Chromosome 17 zoom"</span><span class="op">)</span>
+<span class="fu">plot_segments</span><span class="op">(</span><span class="va">x</span>, chromosomes <span class="op">=</span> <span class="st">'chr17'</span><span class="op">)</span> <span class="op">+</span> <span class="fu">labs</span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Chromosome 17 zoom"</span><span class="op">)</span>
 <span class="co">#&gt; Scale for 'fill' is already present. Adding another scale for 'fill', which</span>
 <span class="co">#&gt; will replace the existing scale.</span></code></pre></div>
 <p><img src="a2_Plots_files/figure-html/unnamed-chunk-5-2.png" width="912"></p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/plot_segments.html">plot_segments</a></span><span class="op">(</span><span class="va">x</span>, chromosomes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'chr17'</span>, <span class="st">'chr13'</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu">labs</span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Chromosome 17 and 13 zoom"</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu">plot_segments</span><span class="op">(</span><span class="va">x</span>, chromosomes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'chr17'</span>, <span class="st">'chr13'</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu">labs</span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Chromosome 17 and 13 zoom"</span><span class="op">)</span>
 <span class="co">#&gt; Scale for 'fill' is already present. Adding another scale for 'fill', which</span>
 <span class="co">#&gt; will replace the existing scale.</span></code></pre></div>
 <p><img src="a2_Plots_files/figure-html/unnamed-chunk-5-3.png" width="912"></p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="co"># Total copy number</span>
-<span class="fu"><a href="../reference/plot_segments.html">plot_segments</a></span><span class="op">(</span><span class="va">x</span>, cn <span class="op">=</span> <span class="st">'total'</span><span class="op">)</span> <span class="op">+</span> <span class="fu">labs</span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Total copy number"</span><span class="op">)</span>
+<span class="fu">plot_segments</span><span class="op">(</span><span class="va">x</span>, cn <span class="op">=</span> <span class="st">'total'</span><span class="op">)</span> <span class="op">+</span> <span class="fu">labs</span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Total copy number"</span><span class="op">)</span>
 <span class="co">#&gt; Scale for 'fill' is already present. Adding another scale for 'fill', which</span>
 <span class="co">#&gt; will replace the existing scale.</span></code></pre></div>
 <p><img src="a2_Plots_files/figure-html/unnamed-chunk-5-4.png" width="912"></p>
@@ -187,7 +188,7 @@
 <p>If you want to compare multiple CNA calls that have the same breakpoints using <code>plot_multisample_CNA</code>.</p>
 <p>Here we show it replicating twice <code>x</code>, and making up some changes in <code>x</code>’s calls (rendering some segment diploid).</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">y</span> <span class="op">=</span> <span class="fu">CNAqc</span><span class="fu">::</span><span class="fu"><a href="../reference/init.html">init</a></span><span class="op">(</span>
+<code class="sourceCode R"><span class="va">y</span> <span class="op">=</span> <span class="fu">CNAqc</span><span class="fu">::</span><span class="fu">init</span><span class="op">(</span>
   <span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">snvs</span>, 
   <span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">cna</span> <span class="op">%&gt;%</span>
     <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>
@@ -204,7 +205,7 @@
 <span class="co">#&gt; ✓ Mapped n = 12963 mutations to clonal segments (100% of input)</span>
 
 <span class="co"># Comparative CNA plot</span>
-<span class="fu"><a href="../reference/plot_multisample_CNA.html">plot_multisample_CNA</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>`Original` <span class="op">=</span> <span class="va">x</span>, `Copy` <span class="op">=</span> <span class="va">x</span>, `Faked_diploid` <span class="op">=</span> <span class="va">y</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<span class="fu">plot_multisample_CNA</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>`Original` <span class="op">=</span> <span class="va">x</span>, `Copy` <span class="op">=</span> <span class="va">x</span>, `Faked_diploid` <span class="op">=</span> <span class="va">y</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="a2_Plots_files/figure-html/unnamed-chunk-6-1.png" width="576"></p>
 </div>
 <div id="plotting-segments-summaries" class="section level2">
@@ -220,15 +221,15 @@
 <p>The package uses a pre-set color schema to colour diploid segments in green, LOH segments with blues and amplifications in reds.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">ggpubr</span><span class="fu">::</span><span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html">ggarrange</a></span><span class="op">(</span>
-  <span class="fu"><a href="../reference/plot_karyotypes.html">plot_karyotypes</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>,
-  <span class="fu"><a href="../reference/plot_karyotypes.html">plot_karyotypes</a></span><span class="op">(</span><span class="va">x</span>, type <span class="op">=</span> <span class="st">'number'</span><span class="op">)</span>,
+  <span class="fu">plot_karyotypes</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>,
+  <span class="fu">plot_karyotypes</span><span class="op">(</span><span class="va">x</span>, type <span class="op">=</span> <span class="st">'number'</span><span class="op">)</span>,
   common.legend <span class="op">=</span> <span class="cn">TRUE</span>,
   legend <span class="op">=</span> <span class="st">'bottom'</span>
 <span class="op">)</span></code></pre></div>
 <p><img src="a2_Plots_files/figure-html/unnamed-chunk-7-1.png" width="432"></p>
 <p>You can also plot the segments’ length distribution, which is used to detect fragmentation patterns in the segments.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/plot_segment_size_distribution.html">plot_segment_size_distribution</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu">plot_segment_size_distribution</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></code></pre></div>
 <p><img src="a2_Plots_files/figure-html/unnamed-chunk-8-1.png" width="432"></p>
 </div>
 </div>
@@ -238,27 +239,27 @@
 <p>You have a function to plot all your data histograms</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">ggpubr</span><span class="fu">::</span><span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html">ggarrange</a></span><span class="op">(</span>
-  <span class="fu"><a href="../reference/plot_data_histogram.html">plot_data_histogram</a></span><span class="op">(</span><span class="va">x</span>, which <span class="op">=</span> <span class="st">'VAF'</span><span class="op">)</span>,
-  <span class="fu"><a href="../reference/plot_data_histogram.html">plot_data_histogram</a></span><span class="op">(</span><span class="va">x</span>, which <span class="op">=</span> <span class="st">'DP'</span><span class="op">)</span>,
-  <span class="fu"><a href="../reference/plot_data_histogram.html">plot_data_histogram</a></span><span class="op">(</span><span class="va">x</span>, which <span class="op">=</span> <span class="st">'NV'</span><span class="op">)</span>,
+  <span class="fu">plot_data_histogram</span><span class="op">(</span><span class="va">x</span>, which <span class="op">=</span> <span class="st">'VAF'</span><span class="op">)</span>,
+  <span class="fu">plot_data_histogram</span><span class="op">(</span><span class="va">x</span>, which <span class="op">=</span> <span class="st">'DP'</span><span class="op">)</span>,
+  <span class="fu">plot_data_histogram</span><span class="op">(</span><span class="va">x</span>, which <span class="op">=</span> <span class="st">'NV'</span><span class="op">)</span>,
   ncol <span class="op">=</span> <span class="fl">3</span>,
   nrow <span class="op">=</span> <span class="fl">1</span>
   <span class="op">)</span>
 <span class="co">#&gt; Warning: Removed 8 rows containing missing values (geom_bar).</span></code></pre></div>
 <p><img src="a2_Plots_files/figure-html/unnamed-chunk-9-1.png" width="960"></p>
-<p>If you <a href="https://caravagn.github.io/CNAqc/articles/ccf_computation.html">compute Cancer Cell Fractions (CCF) values</a>, you can use <code><a href="../reference/plot_data_histogram.html">plot_data_histogram(x, which = 'CCF')</a></code> as well.</p>
+<p>If you <a href="https://caravagn.github.io/CNAqc/articles/ccf_computation.html">compute Cancer Cell Fractions (CCF) values</a>, you can use <code>plot_data_histogram(x, which = 'CCF')</code> as well.</p>
 <div id="segment-specific-vaf-distribution" class="section level2">
 <h2 class="hasAnchor">
 <a href="#segment-specific-vaf-distribution" class="anchor"></a>Segment-specific VAF distribution</h2>
 <p>You can inspect the raw VAF distribution per segment, split by chromosome. Each colour represents a distinct segment; we want can use this plot to check that, for every karyotype and chromosome, the VAF distributions are similar.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Default parameters to filter segments are annotatetd in the plot</span>
-<span class="fu"><a href="../reference/inspect_segment.html">inspect_segment</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
+<span class="fu">inspect_segment</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
 <span class="co">#&gt; Warning: Removed 30 rows containing missing values (geom_bar).</span></code></pre></div>
 <p><img src="a2_Plots_files/figure-html/unnamed-chunk-10-1.png" width="1152"></p>
 <p>You can facet your data histograms and obtain a similar layout</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/plot_data_histogram.html">plot_data_histogram</a></span><span class="op">(</span><span class="va">x</span>, which <span class="op">=</span> <span class="st">'VAF'</span><span class="op">)</span> <span class="op">+</span> <span class="fu">facet_grid</span><span class="op">(</span><span class="va">karyotype</span><span class="op">~</span><span class="va">chr</span>, scales <span class="op">=</span> <span class="st">'free'</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu">plot_data_histogram</span><span class="op">(</span><span class="va">x</span>, which <span class="op">=</span> <span class="st">'VAF'</span><span class="op">)</span> <span class="op">+</span> <span class="fu">facet_grid</span><span class="op">(</span><span class="va">karyotype</span><span class="op">~</span><span class="va">chr</span>, scales <span class="op">=</span> <span class="st">'free'</span><span class="op">)</span>
 <span class="co">#&gt; Warning: Removed 56 rows containing missing values (geom_bar).</span></code></pre></div>
 <p><img src="a2_Plots_files/figure-html/unnamed-chunk-11-1.png" width="2880"></p>
 </div>
@@ -268,15 +269,15 @@
 <p>Genome-wide plots that follow the layout of <code>plot_segments</code> are avaiable to view the genome-wide distributions of the number of mutations, their VAF and depth. VAF and depth-plotting functions (scatterplots) can subset the input data to speed up rendering and reduce the size of output files - by default <code>N = 5000</code> points are randomly sampled. Counts plot, instead, bin the genome locations by <em>one megabase</em> (<span class="math inline">\(10^6\)</span> bases).</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># All genome, all data - counts of mutations per megabase</span>
-<span class="fu"><a href="../reference/plot_gw_counts.html">plot_gw_counts</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></code></pre></div>
+<span class="fu">plot_gw_counts</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></code></pre></div>
 <p><img src="a2_Plots_files/figure-html/unnamed-chunk-12-1.png" width="768"></p>
 <p>An example effect of downsampling the data is the following</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Different subsamples</span>
 <span class="fu">ggpubr</span><span class="fu">::</span><span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html">ggarrange</a></span><span class="op">(</span>
-  <span class="fu"><a href="../reference/plot_gw_depth.html">plot_gw_depth</a></span><span class="op">(</span><span class="va">x</span>, N <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span>,
-  <span class="fu"><a href="../reference/plot_gw_depth.html">plot_gw_depth</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>,
-  <span class="fu"><a href="../reference/plot_gw_depth.html">plot_gw_depth</a></span><span class="op">(</span><span class="va">x</span>, N <span class="op">=</span> <span class="fl">10000</span><span class="op">)</span>,
+  <span class="fu">plot_gw_depth</span><span class="op">(</span><span class="va">x</span>, N <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span>,
+  <span class="fu">plot_gw_depth</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>,
+  <span class="fu">plot_gw_depth</span><span class="op">(</span><span class="va">x</span>, N <span class="op">=</span> <span class="fl">10000</span><span class="op">)</span>,
   ncol <span class="op">=</span> <span class="fl">1</span>
 <span class="op">)</span>
 <span class="co">#&gt; Warning: Removed 24 rows containing missing values (geom_rect).</span>
@@ -306,10 +307,10 @@
 <span class="co"># Via cowplot we can align plots on the vertical axis, and stretch their relative</span>
 <span class="co"># height to obtain a nicer layout.</span>
 <span class="fu">cowplot</span><span class="fu">::</span><span class="fu"><a href="https://wilkelab.org/cowplot/reference/plot_grid.html">plot_grid</a></span><span class="op">(</span>
-  <span class="fu"><a href="../reference/plot_gw_counts.html">plot_gw_counts</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>,
-  <span class="fu"><a href="../reference/plot_gw_vaf.html">plot_gw_vaf</a></span><span class="op">(</span><span class="va">x</span>, N <span class="op">=</span> <span class="fl">10000</span><span class="op">)</span>,
-  <span class="fu"><a href="../reference/plot_gw_depth.html">plot_gw_depth</a></span><span class="op">(</span><span class="va">x</span>, N <span class="op">=</span> <span class="fl">10000</span><span class="op">)</span>,
-  <span class="fu"><a href="../reference/plot_segments.html">plot_segments</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>,
+  <span class="fu">plot_gw_counts</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>,
+  <span class="fu">plot_gw_vaf</span><span class="op">(</span><span class="va">x</span>, N <span class="op">=</span> <span class="fl">10000</span><span class="op">)</span>,
+  <span class="fu">plot_gw_depth</span><span class="op">(</span><span class="va">x</span>, N <span class="op">=</span> <span class="fl">10000</span><span class="op">)</span>,
+  <span class="fu">plot_segments</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>,
   align <span class="op">=</span> <span class="st">'v'</span>, 
   nrow <span class="op">=</span> <span class="fl">4</span>, 
   rel_heights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">.15</span>, <span class="fl">.15</span>, <span class="fl">.15</span>, <span class="fl">.8</span><span class="op">)</span><span class="op">)</span>

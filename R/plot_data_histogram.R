@@ -20,7 +20,7 @@
 #' @export
 #'
 #' @examples
-#' #' data('example_dataset_CNAqc', package = 'CNAqc')
+#' data('example_dataset_CNAqc', package = 'CNAqc')
 #' x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
 #' plot_data_histogram(x)
 #' plot_data_histogram(x, which = 'DP')
