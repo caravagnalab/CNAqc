@@ -119,7 +119,11 @@
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/caravagnalab/CNAqc">CNAqc</a></span><span class="op">)</span>
-<span class="co">#&gt; ✔ Loading BMix, 'Binomial and Beta-Binomial univariate mixtures'. Support : &lt;https://caravagn.github.io/BMix/&gt;</span>
+<span class="co">#&gt; Warning: replacing previous import 'cli::num_ansi_colors' by</span>
+<span class="co">#&gt; 'crayon::num_ansi_colors' when loading 'BMix'</span>
+<span class="co">#&gt; Warning: replacing previous import 'crayon::%+%' by 'ggplot2::%+%' when loading</span>
+<span class="co">#&gt; 'BMix'</span>
+<span class="co">#&gt; ✔ Loading BMix, 'Binomial and Beta-Binomial univariate mixtures'. Support : &lt;https://caravagnalab.github.io/BMix/&gt;</span>
 <span class="co">#&gt; ✔ Loading CNAqc, 'Copy Number Alteration quality check'. Support : &lt;https://caravagn.github.io/CNAqc/&gt;</span></code></pre></div>
 <p>We discuss the input format and references used in <code>CNAqc</code>.</p>
 <div id="input-format" class="section level1">
@@ -369,18 +373,18 @@
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $snvs</span>
 <span class="co">#&gt; # A tibble: 5,003 x 17</span>
-<span class="co">#&gt;    chr       from       to ref   alt   FILTER    DP    NV   VAF ANNOVAR_FUNCTION</span>
-<span class="co">#&gt;    &lt;chr&gt;    &lt;dbl&gt;    &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;           </span>
-<span class="co">#&gt;  1 chr2    1.79e8   1.79e8 C     T     PASS     117    77 0.658 exonic          </span>
-<span class="co">#&gt;  2 chr16   6.76e7   6.76e7 C     T     PASS     120    54 0.45  exonic          </span>
-<span class="co">#&gt;  3 chr17   7.58e6   7.58e6 G     C     PASS      84    78 0.929 exonic          </span>
-<span class="co">#&gt;  4 chr19   5.18e7   5.18e7 G     T     PASS     159    71 0.447 ncRNA_intronic  </span>
-<span class="co">#&gt;  5 chr6    1.03e8   1.03e8 G     A     PASS     161    82 0.509 intergenic      </span>
-<span class="co">#&gt;  6 chr16   2.63e7   2.63e7 G     T     PASS     129    65 0.504 intergenic      </span>
-<span class="co">#&gt;  7 chr5    1.00e8   1.00e8 C     T     PASS     156    74 0.474 intergenic      </span>
-<span class="co">#&gt;  8 chr7    5.66e7   5.66e7 A     T     PASS     116    25 0.216 upstream        </span>
-<span class="co">#&gt;  9 chr20   3.17e7   3.17e7 C     T     PASS     112    62 0.554 intergenic      </span>
-<span class="co">#&gt; 10 chr14   4.15e7   4.15e7 G     A     PASS     117    47 0.402 intergenic      </span>
+<span class="co">#&gt;    chr       from      to ref   alt   FILTER    DP    NV    VAF ANNOVAR_FUNCTION</span>
+<span class="co">#&gt;    &lt;chr&gt;    &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;           </span>
+<span class="co">#&gt;  1 chr2    1.79e8  1.79e8 C     T     PASS     117    77 0.658  exonic          </span>
+<span class="co">#&gt;  2 chr16   6.76e7  6.76e7 C     T     PASS     120    54 0.45   exonic          </span>
+<span class="co">#&gt;  3 chr17   7.58e6  7.58e6 G     C     PASS      84    78 0.929  exonic          </span>
+<span class="co">#&gt;  4 chr5    5.43e7  5.43e7 G     T     PASS     126    60 0.476  ncRNA_exonic    </span>
+<span class="co">#&gt;  5 chr6    1.04e8  1.04e8 G     A     PASS     159    66 0.415  intergenic      </span>
+<span class="co">#&gt;  6 chr13   7.27e7  7.27e7 C     A     PASS     171    79 0.462  intergenic      </span>
+<span class="co">#&gt;  7 chr8    9.49e7  9.49e7 C     T     PASS     226   142 0.628  intergenic      </span>
+<span class="co">#&gt;  8 chr1    4.58e6  4.58e6 C     T     PASS     142     8 0.0563 intergenic      </span>
+<span class="co">#&gt;  9 chr5    5.12e7  5.12e7 G     T     PASS     142    76 0.535  intergenic      </span>
+<span class="co">#&gt; 10 chr16   2.46e6  2.46e6 G     A     PASS     166    71 0.428  ncRNA_intronic  </span>
 <span class="co">#&gt; # … with 4,993 more rows, and 7 more variables: GENE &lt;chr&gt;, is_driver &lt;lgl&gt;,</span>
 <span class="co">#&gt; #   driver_label &lt;chr&gt;, gene &lt;chr&gt;, type &lt;chr&gt;, karyotype &lt;chr&gt;,</span>
 <span class="co">#&gt; #   segment_id &lt;chr&gt;</span>
@@ -391,14 +395,14 @@
 <span class="co">#&gt;    &lt;chr&gt;   &lt;int&gt;   &lt;int&gt;  &lt;int&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;           &lt;int&gt;</span>
 <span class="co">#&gt;  1 chr1   8.40e5  1.69e6 8.50e5     1.19     3     2     1 chr1:840009:16…    NA</span>
 <span class="co">#&gt;  2 chr1   1.69e6  1.82e6 1.25e5     1.26     3     2     1 chr1:1689988:1…    NA</span>
-<span class="co">#&gt;  3 chr1   1.82e6  9.80e6 7.98e6     1.19     3     2     1 chr1:1815016:9…    14</span>
-<span class="co">#&gt;  4 chr1   1.05e7  1.21e7 1.60e6     1.19     3     2     1 chr1:10479910:…    NA</span>
+<span class="co">#&gt;  3 chr1   1.82e6  9.80e6 7.98e6     1.19     3     2     1 chr1:1815016:9…     7</span>
+<span class="co">#&gt;  4 chr1   1.05e7  1.21e7 1.60e6     1.19     3     2     1 chr1:10479910:…     1</span>
 <span class="co">#&gt;  5 chr1   1.21e7  1.22e7 7.51e4     1.24     3     2     1 chr1:12079917:…    NA</span>
 <span class="co">#&gt;  6 chr1   1.22e7  1.28e7 6.85e5     1.19     3     2     1 chr1:12154981:…    NA</span>
-<span class="co">#&gt;  7 chr1   1.38e7  1.78e7 4.01e6     1.19     3     2     1 chr1:13780016:…     2</span>
-<span class="co">#&gt;  8 chr1   1.78e7  2.11e7 3.23e6     1.19     3     2     1 chr1:17849962:…     4</span>
+<span class="co">#&gt;  7 chr1   1.38e7  1.78e7 4.01e6     1.19     3     2     1 chr1:13780016:…     3</span>
+<span class="co">#&gt;  8 chr1   1.78e7  2.11e7 3.23e6     1.19     3     2     1 chr1:17849962:…     3</span>
 <span class="co">#&gt;  9 chr1   2.11e7  2.16e7 4.80e5     1.26     3     2     1 chr1:21080068:…    NA</span>
-<span class="co">#&gt; 10 chr1   2.16e7  2.48e7 3.27e6     1.19     3     2     1 chr1:21559998:…     6</span>
+<span class="co">#&gt; 10 chr1   2.16e7  2.48e7 3.27e6     1.19     3     2     1 chr1:21559998:…     5</span>
 <span class="co">#&gt; # … with 257 more rows</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $n_snvs</span>
@@ -415,8 +419,8 @@
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $n_karyotype</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt;   2:2   4:2   3:2   2:1   3:0   2:0  16:2  25:2 106:1  26:2   3:1 </span>
-<span class="co">#&gt;  2892   716   628   604   120    36     2     2     1     1     1 </span>
+<span class="co">#&gt;  2:2  4:2  3:2  2:1  3:0  2:0 16:2 25:2  3:1 99:1 </span>
+<span class="co">#&gt; 2934  698  616  590  122   39    1    1    1    1 </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $purity</span>
 <span class="co">#&gt; [1] 0.89</span>

@@ -121,7 +121,11 @@
 <p><code>CNAqc</code> matches allelic imbalance of CNA segments to the allelic frequencies of somatic mutations. The package implements a karyotype-weighted linear score which uses the distance between data peaks (empirical), and their theoretical expectation. This score accouts for normal plodiy (germline), and tumour purity/ ploidy. The peaks are determined via kernel density estimation and peak-detection heuristics.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/caravagnalab/CNAqc">CNAqc</a></span><span class="op">)</span>
-<span class="co">#&gt; ✔ Loading BMix, 'Binomial and Beta-Binomial univariate mixtures'. Support : &lt;https://caravagn.github.io/BMix/&gt;</span>
+<span class="co">#&gt; Warning: replacing previous import 'cli::num_ansi_colors' by</span>
+<span class="co">#&gt; 'crayon::num_ansi_colors' when loading 'BMix'</span>
+<span class="co">#&gt; Warning: replacing previous import 'crayon::%+%' by 'ggplot2::%+%' when loading</span>
+<span class="co">#&gt; 'BMix'</span>
+<span class="co">#&gt; ✔ Loading BMix, 'Binomial and Beta-Binomial univariate mixtures'. Support : &lt;https://caravagnalab.github.io/BMix/&gt;</span>
 <span class="co">#&gt; ✔ Loading CNAqc, 'Copy Number Alteration quality check'. Support : &lt;https://caravagn.github.io/CNAqc/&gt;</span></code></pre></div>
 <p>We work with the template dataset.</p>
 <pre><code>#&gt;  [ CNAqc - CNA Quality Check ]
@@ -234,46 +238,43 @@
 <span class="co">#&gt;  [ BMix fit ]</span>
 <span class="co">#&gt; ℹ Binomials k_B = 1, 2, 3, and 4, Beta-Binomials k_BB = 0.</span>
 <span class="co">#&gt; ✔ Fits to run, n = 8.</span>
-<span class="co">#&gt; ℹ Bmix best fit completed in 0.05 mins</span>
+<span class="co">#&gt; ℹ Bmix best fit completed in 0.04 mins</span>
 <span class="co">#&gt; ── [ BMix ] My BMix model n = 1563 with k = 3 component(s) (3 + 0) ─────────────</span>
 <span class="co">#&gt; ● Clusters: π = 53% [Bin 3], 43% [Bin 1], and 4% [Bin 2], with π &gt; 0.</span>
-<span class="co">#&gt; ● Binomial Bin 1 with mean = 0.601114062229919.</span>
-<span class="co">#&gt; ● Binomial Bin 2 with mean = 0.0957596171130631.</span>
-<span class="co">#&gt; ● Binomial Bin 3 with mean = 0.305251093630488.</span>
-<span class="co">#&gt; ℹ Score(s): ICL = 12253.31.</span>
+<span class="co">#&gt; ● Binomial Bin 1 with mean = 0.60115000850328.</span>
+<span class="co">#&gt; ● Binomial Bin 2 with mean = 0.103582012886518.</span>
+<span class="co">#&gt; ● Binomial Bin 3 with mean = 0.305842491425399.</span>
+<span class="co">#&gt; ℹ Score(s): ICL = 12316.94.</span>
 <span class="co">#&gt;  [ BMix fit ]</span>
 <span class="co">#&gt; ℹ Binomials k_B = 1, 2, 3, and 4, Beta-Binomials k_BB = 0.</span>
 <span class="co">#&gt; ✔ Fits to run, n = 8.</span>
 <span class="co">#&gt; ℹ Bmix best fit completed in 0 mins</span>
 <span class="co">#&gt; ── [ BMix ] My BMix model n = 81 with k = 3 component(s) (3 + 0) ───────────────</span>
-<span class="co">#&gt; ● Clusters: π = 89% [Bin 2], 9% [Bin 3], and 2% [Bin 1], with π &gt; 0.</span>
-<span class="co">#&gt; ● Binomial Bin 1 with mean = 0.100778278373059.</span>
-<span class="co">#&gt; ● Binomial Bin 2 with mean = 0.885928705870122.</span>
-<span class="co">#&gt; ● Binomial Bin 3 with mean = 0.422641352917061.</span>
-<span class="co">#&gt; ℹ Score(s): ICL = 506.43.</span>
+<span class="co">#&gt; ● Clusters: π = 89% [Bin 1], 9% [Bin 2], and 2% [Bin 3], with π &gt; 0.</span>
+<span class="co">#&gt; ● Binomial Bin 1 with mean = 0.885928705800385.</span>
+<span class="co">#&gt; ● Binomial Bin 2 with mean = 0.422641214035184.</span>
+<span class="co">#&gt; ● Binomial Bin 3 with mean = 0.100776017240411.</span>
+<span class="co">#&gt; ℹ Score(s): ICL = 500.96.</span>
 <span class="co">#&gt;  [ BMix fit ]</span>
 <span class="co">#&gt; ℹ Binomials k_B = 1, 2, 3, and 4, Beta-Binomials k_BB = 0.</span>
 <span class="co">#&gt; ✔ Fits to run, n = 8.</span>
-<span class="co">#&gt; ℹ Bmix best fit completed in 0.31 mins</span>
-<span class="co">#&gt; ── [ BMix ] My BMix model n = 7478 with k = 4 component(s) (4 + 0) ─────────────</span>
-<span class="co">#&gt; ● Clusters: π = 53% [Bin 4], 34% [Bin 2], 9% [Bin 1], and 5% [Bin 3], with π</span>
-<span class="co">#&gt;   &gt; 0.</span>
-<span class="co">#&gt; ● Binomial Bin 1 with mean = 0.227490006584454.</span>
-<span class="co">#&gt; ● Binomial Bin 2 with mean = 0.493349008034858.</span>
-<span class="co">#&gt; ● Binomial Bin 3 with mean = 0.0810077215512083.</span>
-<span class="co">#&gt; ● Binomial Bin 4 with mean = 0.441642803552547.</span>
-<span class="co">#&gt; ℹ Score(s): ICL = 59650.77.</span>
+<span class="co">#&gt; ℹ Bmix best fit completed in 0.18 mins</span>
+<span class="co">#&gt; ── [ BMix ] My BMix model n = 7478 with k = 2 component(s) (2 + 0) ─────────────</span>
+<span class="co">#&gt; ● Clusters: π = 87% [Bin 2] and 13% [Bin 1], with π &gt; 0.</span>
+<span class="co">#&gt; ● Binomial Bin 1 with mean = 0.175000898248255.</span>
+<span class="co">#&gt; ● Binomial Bin 2 with mean = 0.461474757223663.</span>
+<span class="co">#&gt; ℹ Score(s): ICL = 58807.92.</span>
 <span class="co">#&gt; # A tibble: 6 x 12</span>
 <span class="co">#&gt;   mutation_multip… karyotype  peak     x     y counts_per_bin discarded   offset</span>
 <span class="co">#&gt;              &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;          &lt;dbl&gt; &lt;lgl&gt;        &lt;dbl&gt;</span>
-<span class="co">#&gt; 1                1 2:1       0.308 0.306 3.60          831.   FALSE      0.00245</span>
+<span class="co">#&gt; 1                1 2:1       0.308 0.306 3.60          827.   FALSE      0.00245</span>
 <span class="co">#&gt; 2                2 2:1       0.616 0.600 2.94          677.   FALSE      0.0156 </span>
 <span class="co">#&gt; 3                1 2:0       0.445 0.423 0.172           7.00 FALSE      0.0215 </span>
 <span class="co">#&gt; 4                2 2:0       0.89  0.885 7.99           72.0  FALSE      0.00476</span>
 <span class="co">#&gt; 5                1 2:2       0.235 0.24  0.86           65    FALSE     -0.00455</span>
-<span class="co">#&gt; 6                2 2:2       0.471 0.46  8.14          625    FALSE      0.0109 </span>
+<span class="co">#&gt; 6                2 2:2       0.471 0.461 8.14         6492.   FALSE      0.0102 </span>
 <span class="co">#&gt; # … with 4 more variables: matched &lt;lgl&gt;, weight &lt;dbl&gt;, score &lt;dbl&gt;, QC &lt;chr&gt;</span>
-<span class="co">#&gt; ✔ Peak detection PASS with r = 0.00426886204162835 and tolerance e = 0.06</span></code></pre></div>
+<span class="co">#&gt; ✔ Peak detection PASS with r = 0.00397275352525491 and tolerance e = 0.06</span></code></pre></div>
 <p><code>CNAqc</code> analyze LOH regions (A, AA), diploid regions (AB), and amplification regions (AAB, AABB). These correspond to <code>'1:1'</code>, <code>'2:1'</code>, <code>'2:0'</code> and <code>'2:2'</code> in “Major:minor” notation. Karyotypes are subset by their size (normalized for the number of input mutations), and by default karyotypes smaller than 5% of the actual mutational burden are not considered</p>
 <p>A Kernel-density method (unitary adjustment, Gaussian kernel) is used to smooth the data distribution, and the <a href="https://cran.rstudio.com/web/packages/peakPick/index.html">peakPick: Peak Picking Methods Inspired by Biological Data</a> package is used to determine peaks in the smoothed density. Peaks below a mnimum density (noise and miscalled segments) are filtered, and the others are matched to a predefined location with some tolerance (e.g., plus/minus <code>0.5 * epsilon</code>, where <code>epsilon = 0.015</code> is the default).</p>
 <p>Theis analysis produces a set of scores that account for karyotype size and peaks offset, and that can be combined into a linear model to compute an overall QC metrics, called <code>rho</code>.</p>
@@ -375,7 +376,7 @@
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $peaks_analysis</span>
 <span class="co">#&gt; $peaks_analysis$score</span>
-<span class="co">#&gt; [1] 0.004268862</span>
+<span class="co">#&gt; [1] 0.003972754</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $peaks_analysis$fits</span>
 <span class="co">#&gt; $peaks_analysis$fits$`1:0`</span>
@@ -393,7 +394,7 @@
 <span class="co">#&gt; # A tibble: 2 x 10</span>
 <span class="co">#&gt;   mutation_multipl… karyotype  peak     x     y counts_per_bin discarded  offset</span>
 <span class="co">#&gt;               &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;          &lt;dbl&gt; &lt;lgl&gt;       &lt;dbl&gt;</span>
-<span class="co">#&gt; 1                 1 2:1       0.308 0.306  3.60           831. FALSE     0.00245</span>
+<span class="co">#&gt; 1                 1 2:1       0.308 0.306  3.60           827. FALSE     0.00245</span>
 <span class="co">#&gt; 2                 2 2:1       0.616 0.600  2.94           677. FALSE     0.0156 </span>
 <span class="co">#&gt; # … with 2 more variables: matched &lt;lgl&gt;, weight &lt;dbl&gt;</span>
 <span class="co">#&gt; </span>
@@ -414,14 +415,14 @@
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $peaks_analysis$fits$`2:1`$xy_peaks</span>
 <span class="co">#&gt; # A tibble: 6 x 4</span>
-<span class="co">#&gt;        x     y counts_per_bin discarded</span>
-<span class="co">#&gt;    &lt;dbl&gt; &lt;dbl&gt;          &lt;dbl&gt; &lt;lgl&gt;    </span>
-<span class="co">#&gt; 1 0.08   0.27             5   FALSE    </span>
-<span class="co">#&gt; 2 0.3    3.6             78   FALSE    </span>
-<span class="co">#&gt; 3 0.6    2.94            60   FALSE    </span>
-<span class="co">#&gt; 4 0.600  2.94           677.  FALSE    </span>
-<span class="co">#&gt; 5 0.0952 0.259           54.9 FALSE    </span>
-<span class="co">#&gt; 6 0.306  3.60           831.  FALSE    </span>
+<span class="co">#&gt;       x     y counts_per_bin discarded</span>
+<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt;          &lt;dbl&gt; &lt;lgl&gt;    </span>
+<span class="co">#&gt; 1 0.08  0.27             5   FALSE    </span>
+<span class="co">#&gt; 2 0.3   3.6             78   FALSE    </span>
+<span class="co">#&gt; 3 0.6   2.94            60   FALSE    </span>
+<span class="co">#&gt; 4 0.600 2.94           677.  FALSE    </span>
+<span class="co">#&gt; 5 0.104 0.250           59.3 FALSE    </span>
+<span class="co">#&gt; 6 0.306 3.60           827.  FALSE    </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $peaks_analysis$fits$`2:0`</span>
@@ -457,9 +458,9 @@
 <span class="co">#&gt; 3 0.38  0.56            1    FALSE    </span>
 <span class="co">#&gt; 4 0.47  0.79            1    FALSE    </span>
 <span class="co">#&gt; 5 0.87  9               5    FALSE    </span>
-<span class="co">#&gt; 6 0.101 0.199           2.00 FALSE    </span>
-<span class="co">#&gt; 7 0.885 7.99           72.0  FALSE    </span>
-<span class="co">#&gt; 8 0.423 0.172           7.00 FALSE    </span>
+<span class="co">#&gt; 6 0.885 7.99           72.0  FALSE    </span>
+<span class="co">#&gt; 7 0.423 0.172           7.00 FALSE    </span>
+<span class="co">#&gt; 8 0.101 0.199           2.00 FALSE    </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $peaks_analysis$fits$`2:2`</span>
@@ -467,8 +468,8 @@
 <span class="co">#&gt; # A tibble: 2 x 10</span>
 <span class="co">#&gt;   mutation_multip… karyotype  peak     x     y counts_per_bin discarded   offset</span>
 <span class="co">#&gt;              &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;          &lt;dbl&gt; &lt;lgl&gt;        &lt;dbl&gt;</span>
-<span class="co">#&gt; 1                1 2:2       0.235  0.24  0.86             65 FALSE     -0.00455</span>
-<span class="co">#&gt; 2                2 2:2       0.471  0.46  8.14            625 FALSE      0.0109 </span>
+<span class="co">#&gt; 1                1 2:2       0.235 0.24   0.86            65  FALSE     -0.00455</span>
+<span class="co">#&gt; 2                2 2:2       0.471 0.461  8.14          6492. FALSE      0.0102 </span>
 <span class="co">#&gt; # … with 2 more variables: matched &lt;lgl&gt;, weight &lt;dbl&gt;</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $peaks_analysis$fits$`2:2`$density</span>
@@ -487,26 +488,24 @@
 <span class="co">#&gt;  Max.   :1.02410   Max.   :8.138867  </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $peaks_analysis$fits$`2:2`$xy_peaks</span>
-<span class="co">#&gt; # A tibble: 17 x 4</span>
-<span class="co">#&gt;         x     y counts_per_bin discarded</span>
-<span class="co">#&gt;     &lt;dbl&gt; &lt;dbl&gt;          &lt;dbl&gt; &lt;lgl&gt;    </span>
-<span class="co">#&gt;  1 0.11   0.27             20  FALSE    </span>
-<span class="co">#&gt;  2 0.22   0.84             69  FALSE    </span>
-<span class="co">#&gt;  3 0.24   0.86             65  FALSE    </span>
-<span class="co">#&gt;  4 0.46   8.14            625  FALSE    </span>
-<span class="co">#&gt;  5 0.67   0.01              0  TRUE     </span>
-<span class="co">#&gt;  6 0.72   0.02              2  FALSE    </span>
-<span class="co">#&gt;  7 0.75   0.01              2  TRUE     </span>
-<span class="co">#&gt;  8 0.79   0.01              1  TRUE     </span>
-<span class="co">#&gt;  9 0.82   0.01              1  TRUE     </span>
-<span class="co">#&gt; 10 0.85   0.01              1  TRUE     </span>
-<span class="co">#&gt; 11 0.91   0.01              1  TRUE     </span>
-<span class="co">#&gt; 12 0.93   0.01              0  TRUE     </span>
-<span class="co">#&gt; 13 0.97   0.02              0  FALSE    </span>
-<span class="co">#&gt; 14 0.227  0.816           641. FALSE    </span>
-<span class="co">#&gt; 15 0.494  5.89           2541. FALSE    </span>
-<span class="co">#&gt; 16 0.0819 0.400           364. FALSE    </span>
-<span class="co">#&gt; 17 0.441  6.82           3932. FALSE    </span>
+<span class="co">#&gt; # A tibble: 15 x 4</span>
+<span class="co">#&gt;        x     y counts_per_bin discarded</span>
+<span class="co">#&gt;    &lt;dbl&gt; &lt;dbl&gt;          &lt;dbl&gt; &lt;lgl&gt;    </span>
+<span class="co">#&gt;  1 0.11  0.27             20  FALSE    </span>
+<span class="co">#&gt;  2 0.22  0.84             69  FALSE    </span>
+<span class="co">#&gt;  3 0.24  0.86             65  FALSE    </span>
+<span class="co">#&gt;  4 0.46  8.14            625  FALSE    </span>
+<span class="co">#&gt;  5 0.67  0.01              0  TRUE     </span>
+<span class="co">#&gt;  6 0.72  0.02              2  FALSE    </span>
+<span class="co">#&gt;  7 0.75  0.01              2  TRUE     </span>
+<span class="co">#&gt;  8 0.79  0.01              1  TRUE     </span>
+<span class="co">#&gt;  9 0.82  0.01              1  TRUE     </span>
+<span class="co">#&gt; 10 0.85  0.01              1  TRUE     </span>
+<span class="co">#&gt; 11 0.91  0.01              1  TRUE     </span>
+<span class="co">#&gt; 12 0.93  0.01              0  TRUE     </span>
+<span class="co">#&gt; 13 0.97  0.02              0  FALSE    </span>
+<span class="co">#&gt; 14 0.174 0.432           986. FALSE    </span>
+<span class="co">#&gt; 15 0.461 8.14           6492. FALSE    </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; </span>
@@ -514,12 +513,12 @@
 <span class="co">#&gt; # A tibble: 6 x 12</span>
 <span class="co">#&gt;   mutation_multip… karyotype  peak     x     y counts_per_bin discarded   offset</span>
 <span class="co">#&gt;              &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;          &lt;dbl&gt; &lt;lgl&gt;        &lt;dbl&gt;</span>
-<span class="co">#&gt; 1                1 2:1       0.308 0.306 3.60          831.   FALSE      0.00245</span>
+<span class="co">#&gt; 1                1 2:1       0.308 0.306 3.60          827.   FALSE      0.00245</span>
 <span class="co">#&gt; 2                2 2:1       0.616 0.600 2.94          677.   FALSE      0.0156 </span>
 <span class="co">#&gt; 3                1 2:0       0.445 0.423 0.172           7.00 FALSE      0.0215 </span>
 <span class="co">#&gt; 4                2 2:0       0.89  0.885 7.99           72.0  FALSE      0.00476</span>
 <span class="co">#&gt; 5                1 2:2       0.235 0.24  0.86           65    FALSE     -0.00455</span>
-<span class="co">#&gt; 6                2 2:2       0.471 0.46  8.14          625    FALSE      0.0109 </span>
+<span class="co">#&gt; 6                2 2:2       0.471 0.461 8.14         6492.   FALSE      0.0102 </span>
 <span class="co">#&gt; # … with 4 more variables: matched &lt;lgl&gt;, weight &lt;dbl&gt;, score &lt;dbl&gt;, QC &lt;chr&gt;</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $peaks_analysis$matching_strategy</span>
@@ -575,12 +574,12 @@
 <span class="co">#&gt; # A tibble: 6 x 12</span>
 <span class="co">#&gt;   mutation_multip… karyotype  peak     x     y counts_per_bin discarded   offset</span>
 <span class="co">#&gt;              &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;          &lt;dbl&gt; &lt;lgl&gt;        &lt;dbl&gt;</span>
-<span class="co">#&gt; 1                1 2:1       0.308 0.306 3.60          831.   FALSE      0.00245</span>
+<span class="co">#&gt; 1                1 2:1       0.308 0.306 3.60          827.   FALSE      0.00245</span>
 <span class="co">#&gt; 2                2 2:1       0.616 0.600 2.94          677.   FALSE      0.0156 </span>
 <span class="co">#&gt; 3                1 2:0       0.445 0.423 0.172           7.00 FALSE      0.0215 </span>
 <span class="co">#&gt; 4                2 2:0       0.89  0.885 7.99           72.0  FALSE      0.00476</span>
 <span class="co">#&gt; 5                1 2:2       0.235 0.24  0.86           65    FALSE     -0.00455</span>
-<span class="co">#&gt; 6                2 2:2       0.471 0.46  8.14          625    FALSE      0.0109 </span>
+<span class="co">#&gt; 6                2 2:2       0.471 0.461 8.14         6492.   FALSE      0.0102 </span>
 <span class="co">#&gt; # … with 4 more variables: matched &lt;lgl&gt;, weight &lt;dbl&gt;, score &lt;dbl&gt;, QC &lt;chr&gt;</span></code></pre></div>
 <p>The table reports several information. The following might be of some use after the analysis:</p>
 <ul>
