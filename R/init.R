@@ -34,6 +34,8 @@
 #' @import tidyverse
 #' @import pio
 #' @import crayon
+#' @import vcfR
+#' @import clisymbols
 #'
 #' @examples
 #' data('example_dataset_CNAqc', package = 'CNAqc')
@@ -56,7 +58,7 @@ init = function(snvs, cna, purity, ref = "GRCh38")
 
   # Parse input
   input = CNAqc:::prepare_input_data(snvs, cna, purity)
-  
+
   # Remove CNA segments with NA Major/minor
   na_allele_Major = sapply(input$cna$Major, is.na)
   na_allele_minor = sapply(input$cna$minor, is.na)
@@ -89,22 +91,22 @@ init = function(snvs, cna, purity, ref = "GRCh38")
   fit$purity = purity
 
   # Segments length
-  genome_segs_length = fit$cna %>% 
-    dplyr::group_by(Major, minor) %>% 
-    dplyr::summarise(L = sum(length), .groups = 'drop') %>% 
-    dplyr::mutate(karyotype = paste0(Major, ':', minor)) %>% 
+  genome_segs_length = fit$cna %>%
+    dplyr::group_by(Major, minor) %>%
+    dplyr::summarise(L = sum(length), .groups = 'drop') %>%
+    dplyr::mutate(karyotype = paste0(Major, ':', minor)) %>%
     dplyr::arrange(desc(L))
-    
+
   fit$l_karyotype = genome_segs_length$L
   names(fit$l_karyotype ) = genome_segs_length$karyotype
-  
+
   tab_ploidy = fit$cna %>%
     dplyr::group_by(minor, Major) %>%
     dplyr::summarise(n = sum(length)) %>%
     dplyr::arrange(desc(n)) %>%
     dplyr::mutate(karyotype = paste0(Major, ':', minor)) %>%
     dplyr::ungroup()
-  
+
   fit$ploidy = as.numeric(tab_ploidy$minor[1]) + as.numeric(tab_ploidy$Major[1])
   fit$most_prevalent_karyotype = paste0(tab_ploidy$Major[1], ':',  tab_ploidy$minor[1])
   fit$basepairs_by_karyotype = tab_ploidy

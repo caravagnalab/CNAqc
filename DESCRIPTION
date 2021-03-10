@@ -32,6 +32,8 @@ Imports:
     tidyverse,
     ggrepel,
     BMix,
+    vcfR,
+    clisymbols,
     RColorBrewer
 Remotes: 
     caravagn/pio,

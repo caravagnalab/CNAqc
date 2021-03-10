@@ -4,7 +4,7 @@
 \alias{print.cnaqc}
 \title{Print for class \code{'cnaqc'}.}
 \usage{
-\method{print}{cnaqc}(x, ...)
+print.cnaqc(x, ...)
 }
 \arguments{
 \item{x}{An obj of class \code{'cnaqc'}.}
