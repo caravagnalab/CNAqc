@@ -172,7 +172,7 @@ analyze_peaks = function(x,
         run_results = NULL
 
         if(matching_strategy == "rightmost")
-          run_results = CNAqc:::peak_detector(
+          run_results = peak_detector(
             snvs = data_input,
             expectation = expectation,
             tumour_purity = tumour_purity,
@@ -183,7 +183,7 @@ analyze_peaks = function(x,
           )
 
         if(matching_strategy == "closest")
-          run_results = CNAqc:::peak_detector_closest_hit_match(
+          run_results = peak_detector_closest_hit_match(
             snvs = data_input,
             expectation = expectation,
             tumour_purity = tumour_purity,
@@ -254,19 +254,19 @@ analyze_peaks = function(x,
 
   # QC overall score
   # QC = ifelse(abs(overall_score) < matching_epsilon, "PASS", "FAIL")
-  
-  QC = assembled_corrections %>% 
-    dplyr::group_by(QC) %>% 
-    dplyr::summarise(prop = sum(weight)) %>% 
-    dplyr::arrange(desc(prop)) %>% 
-    dplyr::filter(dplyr::row_number() == 1) %>% 
+
+  QC = assembled_corrections %>%
+    dplyr::group_by(QC) %>%
+    dplyr::summarise(prop = sum(weight)) %>%
+    dplyr::arrange(desc(prop)) %>%
+    dplyr::filter(dplyr::row_number() == 1) %>%
     dplyr::pull(QC)
-  
+
   if (QC == "FAIL")
     cli::cli_alert_danger(
       "Peak detection {red('FAIL')} with {.value {red(paste0('r = ', overall_score))}} and tolerance e = {.value {2 * matching_epsilon}}"
     )
-  
+
   if (QC == "PASS")
     cli::cli_alert_success(
       "Peak detection {green('PASS')} with {.value {green(paste0('r = ', overall_score))}} and tolerance e = {.value {2 * matching_epsilon}}"

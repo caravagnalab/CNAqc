@@ -43,7 +43,7 @@ peak_detector = function(snvs,
   xy_peaks = pks %>%
     # dplyr::mutate(discarded = counts_per_bin < sum(hst) * p)
     dplyr::mutate(discarded = y <= 0.01)
-  
+
 
   # Handle special case where everything is discarded by including the one
   # with highest value of counts_per_bin (just that).
@@ -220,7 +220,7 @@ peak_detector_closest_hit_match = function(snvs,
   xy_peaks = pks %>%
     # dplyr::mutate(discarded = counts_per_bin < sum(hst) * p)
     dplyr::mutate(discarded = y <= 0.01)
-  
+
   # BMix clustering
   bm = BMix::bmixfit(
     data.frame(successes = snvs$NV, trials = snvs$DP),
@@ -228,34 +228,35 @@ peak_detector_closest_hit_match = function(snvs,
     K.Binomials = 1:4
   )
   # plot.bmix(bm, data = data.frame(successes = rc$NV, trials = rc$DP))
-  
-  
+
+
   llxy = NULL
   for (b in names(bm$B.params))
   {
     w_den = which.min(abs(den$x - bm$B.params[b]))
+
     tnw = tibble(
       x = den$x[w_den],
       y = den$y[w_den],
-      counts_per_bin = bm$pi[b] * (snvs %>% nrow),
+      # counts_per_bin = bm$pi[b] * (snvs %>% nrow), # Wrong
       discarded = FALSE
     )
-    
+
+    # Counts are counted the same way regardless it is a BMix fit or not.
+    tnw$counts_per_bin = hst[round(tnw$x * 100)]
+
     llxy = llxy %>%
       bind_rows(tnw)
   }
-  
-  
-  
+
   xy_peaks = xy_peaks %>% bind_rows(llxy)
-  
+
   # tibble(
   # `x`= bm$B.params,
-  # `y` = 
+  # `y` =
   # )
-  
 
-  
+
   # Handle special case where everything is discarded by including the one
   # with highest value of counts_per_bin (just that).
   if(all(xy_peaks$discarded)) {
