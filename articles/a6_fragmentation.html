@@ -127,102 +127,19 @@
 <span class="co">#&gt; ✔ Loading CNAqc, 'Copy Number Alteration quality check'. Support : &lt;https://caravagn.github.io/CNAqc/&gt;</span></code></pre></div>
 <p>We work with the template dataset.</p>
 <pre><code>#&gt;  [ CNAqc - CNA Quality Check ]
-#&gt; $reference_genome
-#&gt; [1] "hg19"
 #&gt; 
-#&gt; $snvs
-#&gt; # A tibble: 12,963 x 17
-#&gt;    chr      from      to ref   alt   FILTER    DP    NV    VAF ANNOVAR_FUNCTION
-#&gt;    &lt;chr&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;           
-#&gt;  1 chr1  1027104 1027105 T     G     PASS      60     6 0.1    UTR5            
-#&gt;  2 chr1  2248588 2248589 A     C     PASS     127     9 0.0709 intergenic      
-#&gt;  3 chr1  2461999 2462000 G     A     PASS     156    65 0.417  upstream        
-#&gt;  4 chr1  2727935 2727936 T     C     PASS     180    90 0.5    downstream      
-#&gt;  5 chr1  2763397 2763398 C     T     PASS     183    61 0.333  intergenic      
-#&gt;  6 chr1  2768208 2768209 C     T     PASS     203   130 0.640  intergenic      
-#&gt;  7 chr1  2935590 2935591 C     T     PASS     228   132 0.579  intergenic      
-#&gt;  8 chr1  2980032 2980033 C     T     PASS     196    85 0.434  ncRNA_exonic    
-#&gt;  9 chr1  3387161 3387162 T     G     PASS     124     6 0.0484 intronic        
-#&gt; 10 chr1  3502517 3502518 G     A     PASS      88    10 0.114  intronic        
-#&gt; # … with 12,953 more rows, and 7 more variables: GENE &lt;chr&gt;, is_driver &lt;lgl&gt;,
-#&gt; #   driver_label &lt;chr&gt;, gene &lt;chr&gt;, type &lt;chr&gt;, karyotype &lt;chr&gt;,
-#&gt; #   segment_id &lt;chr&gt;
-#&gt; 
-#&gt; $cna
-#&gt; # A tibble: 267 x 10
-#&gt;    chr      from      to length covRatio Major minor   CCF segment_id          n
-#&gt;    &lt;chr&gt;   &lt;int&gt;   &lt;int&gt;  &lt;int&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;           &lt;int&gt;
-#&gt;  1 chr1   8.40e5  1.69e6 8.50e5     1.19     3     2     1 chr1:840009:16…     1
-#&gt;  2 chr1   1.69e6  1.82e6 1.25e5     1.26     3     2     1 chr1:1689988:1…    NA
-#&gt;  3 chr1   1.82e6  9.80e6 7.98e6     1.19     3     2     1 chr1:1815016:9…    28
-#&gt;  4 chr1   1.05e7  1.21e7 1.60e6     1.19     3     2     1 chr1:10479910:…     1
-#&gt;  5 chr1   1.21e7  1.22e7 7.51e4     1.24     3     2     1 chr1:12079917:…    NA
-#&gt;  6 chr1   1.22e7  1.28e7 6.85e5     1.19     3     2     1 chr1:12154981:…    NA
-#&gt;  7 chr1   1.38e7  1.78e7 4.01e6     1.19     3     2     1 chr1:13780016:…     7
-#&gt;  8 chr1   1.78e7  2.11e7 3.23e6     1.19     3     2     1 chr1:17849962:…    12
-#&gt;  9 chr1   2.11e7  2.16e7 4.80e5     1.26     3     2     1 chr1:21080068:…    NA
-#&gt; 10 chr1   2.16e7  2.48e7 3.27e6     1.19     3     2     1 chr1:21559998:…    11
-#&gt; # … with 257 more rows
-#&gt; 
-#&gt; $n_snvs
-#&gt; [1] 12963
-#&gt; 
-#&gt; $n_cna
-#&gt; [1] 267
-#&gt; 
-#&gt; $n_cna_clonal
-#&gt; [1] 267
-#&gt; 
-#&gt; $n_cna_sbclonal
-#&gt; [1] 0
-#&gt; 
-#&gt; $n_karyotype
-#&gt; 
-#&gt;   2:2   4:2   3:2   2:1   3:0   2:0  16:2  25:2   3:1 106:1  26:2  99:1 
-#&gt;  7478  1893  1625  1563   312    81     4     2     2     1     1     1 
-#&gt; 
-#&gt; $purity
-#&gt; [1] 0.89
-#&gt; 
-#&gt; $l_karyotype
-#&gt;        2:2        2:1        3:2        4:2        3:0        2:0        3:1 
-#&gt; 1482910013  420405440  357172683  331457138  137498772   39372558     527401 
-#&gt;       25:2      106:1        5:0       69:2       26:2       16:2       70:2 
-#&gt;     517926     225714     174002     172894     162913     130712      80103 
-#&gt;       99:1 
-#&gt;      75782 
-#&gt; 
-#&gt; $ploidy
-#&gt; [1] 4
-#&gt; 
-#&gt; $most_prevalent_karyotype
-#&gt; [1] "2:2"
-#&gt; 
-#&gt; $basepairs_by_karyotype
-#&gt; # A tibble: 15 x 4
-#&gt;    minor Major          n karyotype
-#&gt;    &lt;dbl&gt; &lt;dbl&gt;      &lt;int&gt; &lt;chr&gt;    
-#&gt;  1     2     2 1482910013 2:2      
-#&gt;  2     1     2  420405440 2:1      
-#&gt;  3     2     3  357172683 3:2      
-#&gt;  4     2     4  331457138 4:2      
-#&gt;  5     0     3  137498772 3:0      
-#&gt;  6     0     2   39372558 2:0      
-#&gt;  7     1     3     527401 3:1      
-#&gt;  8     2    25     517926 25:2     
-#&gt;  9     1   106     225714 106:1    
-#&gt; 10     0     5     174002 5:0      
-#&gt; 11     2    69     172894 69:2     
-#&gt; 12     2    26     162913 26:2     
-#&gt; 13     2    16     130712 16:2     
-#&gt; 14     2    70      80103 70:2     
-#&gt; 15     1    99      75782 99:1     
-#&gt; 
-#&gt; $most_mutations_karyotype
-#&gt; [1] "2:2"
-#&gt; 
-#&gt; attr(,"class")
-#&gt; [1] "cnaqc"</code></pre>
+#&gt;    2:2  [n = 7478, L = 1483 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { CTCF }
+#&gt;    4:2  [n = 1893, L =  331 Mb] ■■■■■■■
+#&gt;    3:2  [n = 1625, L =  357 Mb] ■■■■■■
+#&gt;    2:1  [n = 1563, L =  420 Mb] ■■■■■■  { TTN }
+#&gt;    3:0  [n =  312, L =  137 Mb] ■
+#&gt;    2:0  [n =   81, L =   39 Mb]   { TP53 }
+#&gt;   16:2  [n =    4, L =    0 Mb] 
+#&gt;   25:2  [n =    2, L =    1 Mb] 
+#&gt;    3:1  [n =    2, L =    1 Mb] 
+#&gt;  106:1  [n =    1, L =    0 Mb] 
+#&gt;   26:2  [n =    1, L =    0 Mb] 
+#&gt;   99:1  [n =    1, L =    0 Mb]</code></pre>
 <div id="fragmentation-of-individual-arms" class="section level3">
 <h3 class="hasAnchor">
 <a href="#fragmentation-of-individual-arms" class="anchor"></a>Fragmentation of individual arms</h3>
@@ -255,133 +172,22 @@
 <span class="co">#&gt; ℹ 8 significantly overfragmented chromosome arms (alpha level 0.01).</span>
 
 <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-<span class="co">#&gt; $reference_genome</span>
-<span class="co">#&gt; [1] "hg19"</span>
+<span class="co">#&gt; ── [ CNAqc ]  n = 12963 mutations in 267 segments (267 clonal + 0 subclonal). Ge</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; $snvs</span>
-<span class="co">#&gt; # A tibble: 12,963 x 17</span>
-<span class="co">#&gt;    chr      from      to ref   alt   FILTER    DP    NV    VAF ANNOVAR_FUNCTION</span>
-<span class="co">#&gt;    &lt;chr&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;           </span>
-<span class="co">#&gt;  1 chr1  1027104 1027105 T     G     PASS      60     6 0.1    UTR5            </span>
-<span class="co">#&gt;  2 chr1  2248588 2248589 A     C     PASS     127     9 0.0709 intergenic      </span>
-<span class="co">#&gt;  3 chr1  2461999 2462000 G     A     PASS     156    65 0.417  upstream        </span>
-<span class="co">#&gt;  4 chr1  2727935 2727936 T     C     PASS     180    90 0.5    downstream      </span>
-<span class="co">#&gt;  5 chr1  2763397 2763398 C     T     PASS     183    61 0.333  intergenic      </span>
-<span class="co">#&gt;  6 chr1  2768208 2768209 C     T     PASS     203   130 0.640  intergenic      </span>
-<span class="co">#&gt;  7 chr1  2935590 2935591 C     T     PASS     228   132 0.579  intergenic      </span>
-<span class="co">#&gt;  8 chr1  2980032 2980033 C     T     PASS     196    85 0.434  ncRNA_exonic    </span>
-<span class="co">#&gt;  9 chr1  3387161 3387162 T     G     PASS     124     6 0.0484 intronic        </span>
-<span class="co">#&gt; 10 chr1  3502517 3502518 G     A     PASS      88    10 0.114  intronic        </span>
-<span class="co">#&gt; # … with 12,953 more rows, and 7 more variables: GENE &lt;chr&gt;, is_driver &lt;lgl&gt;,</span>
-<span class="co">#&gt; #   driver_label &lt;chr&gt;, gene &lt;chr&gt;, type &lt;chr&gt;, karyotype &lt;chr&gt;,</span>
-<span class="co">#&gt; #   segment_id &lt;chr&gt;</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $cna</span>
-<span class="co">#&gt; # A tibble: 267 x 10</span>
-<span class="co">#&gt;    chr      from      to length covRatio Major minor   CCF segment_id          n</span>
-<span class="co">#&gt;    &lt;chr&gt;   &lt;int&gt;   &lt;int&gt;  &lt;int&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;           &lt;int&gt;</span>
-<span class="co">#&gt;  1 chr1   8.40e5  1.69e6 8.50e5     1.19     3     2     1 chr1:840009:16…     1</span>
-<span class="co">#&gt;  2 chr1   1.69e6  1.82e6 1.25e5     1.26     3     2     1 chr1:1689988:1…    NA</span>
-<span class="co">#&gt;  3 chr1   1.82e6  9.80e6 7.98e6     1.19     3     2     1 chr1:1815016:9…    28</span>
-<span class="co">#&gt;  4 chr1   1.05e7  1.21e7 1.60e6     1.19     3     2     1 chr1:10479910:…     1</span>
-<span class="co">#&gt;  5 chr1   1.21e7  1.22e7 7.51e4     1.24     3     2     1 chr1:12079917:…    NA</span>
-<span class="co">#&gt;  6 chr1   1.22e7  1.28e7 6.85e5     1.19     3     2     1 chr1:12154981:…    NA</span>
-<span class="co">#&gt;  7 chr1   1.38e7  1.78e7 4.01e6     1.19     3     2     1 chr1:13780016:…     7</span>
-<span class="co">#&gt;  8 chr1   1.78e7  2.11e7 3.23e6     1.19     3     2     1 chr1:17849962:…    12</span>
-<span class="co">#&gt;  9 chr1   2.11e7  2.16e7 4.80e5     1.26     3     2     1 chr1:21080068:…    NA</span>
-<span class="co">#&gt; 10 chr1   2.16e7  2.48e7 3.27e6     1.19     3     2     1 chr1:21559998:…    11</span>
-<span class="co">#&gt; # … with 257 more rows</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $n_snvs</span>
-<span class="co">#&gt; [1] 12963</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $n_cna</span>
-<span class="co">#&gt; [1] 267</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $n_cna_clonal</span>
-<span class="co">#&gt; [1] 267</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $n_cna_sbclonal</span>
-<span class="co">#&gt; [1] 0</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $n_karyotype</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;   2:2   4:2   3:2   2:1   3:0   2:0  16:2  25:2   3:1 106:1  26:2  99:1 </span>
-<span class="co">#&gt;  7478  1893  1625  1563   312    81     4     2     2     1     1     1 </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $purity</span>
-<span class="co">#&gt; [1] 0.89</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $l_karyotype</span>
-<span class="co">#&gt;        2:2        2:1        3:2        4:2        3:0        2:0        3:1 </span>
-<span class="co">#&gt; 1482910013  420405440  357172683  331457138  137498772   39372558     527401 </span>
-<span class="co">#&gt;       25:2      106:1        5:0       69:2       26:2       16:2       70:2 </span>
-<span class="co">#&gt;     517926     225714     174002     172894     162913     130712      80103 </span>
-<span class="co">#&gt;       99:1 </span>
-<span class="co">#&gt;      75782 </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $ploidy</span>
-<span class="co">#&gt; [1] 4</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $most_prevalent_karyotype</span>
-<span class="co">#&gt; [1] "2:2"</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $basepairs_by_karyotype</span>
-<span class="co">#&gt; # A tibble: 15 x 4</span>
-<span class="co">#&gt;    minor Major          n karyotype</span>
-<span class="co">#&gt;    &lt;dbl&gt; &lt;dbl&gt;      &lt;int&gt; &lt;chr&gt;    </span>
-<span class="co">#&gt;  1     2     2 1482910013 2:2      </span>
-<span class="co">#&gt;  2     1     2  420405440 2:1      </span>
-<span class="co">#&gt;  3     2     3  357172683 3:2      </span>
-<span class="co">#&gt;  4     2     4  331457138 4:2      </span>
-<span class="co">#&gt;  5     0     3  137498772 3:0      </span>
-<span class="co">#&gt;  6     0     2   39372558 2:0      </span>
-<span class="co">#&gt;  7     1     3     527401 3:1      </span>
-<span class="co">#&gt;  8     2    25     517926 25:2     </span>
-<span class="co">#&gt;  9     1   106     225714 106:1    </span>
-<span class="co">#&gt; 10     0     5     174002 5:0      </span>
-<span class="co">#&gt; 11     2    69     172894 69:2     </span>
-<span class="co">#&gt; 12     2    26     162913 26:2     </span>
-<span class="co">#&gt; 13     2    16     130712 16:2     </span>
-<span class="co">#&gt; 14     2    70      80103 70:2     </span>
-<span class="co">#&gt; 15     1    99      75782 99:1     </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $most_mutations_karyotype</span>
-<span class="co">#&gt; [1] "2:2"</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $arm_fragmentation</span>
-<span class="co">#&gt; $arm_fragmentation$table</span>
-<span class="co">#&gt; # A tibble: 41 x 10</span>
-<span class="co">#&gt;    chr   arm   n_long n_short jumps total_segments testable  p_value</span>
-<span class="co">#&gt;    &lt;chr&gt; &lt;chr&gt;  &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;          &lt;dbl&gt; &lt;lgl&gt;       &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 chr7  p          0      34   206             34 TRUE     1.72e-24</span>
-<span class="co">#&gt;  2 chr1  p          1      23     0             24 TRUE     1.63e-15</span>
-<span class="co">#&gt;  3 chr1  q          1      12     5             13 TRUE     4.34e- 8</span>
-<span class="co">#&gt;  4 chr12 q          1      11   414             12 TRUE     2.01e- 7</span>
-<span class="co">#&gt;  5 chr8  p          1      10     0             11 TRUE     9.22e- 7</span>
-<span class="co">#&gt;  6 chr11 q          2      11     0             13 TRUE     1.07e- 6</span>
-<span class="co">#&gt;  7 chr3  q          2      10     2             12 TRUE     4.53e- 6</span>
-<span class="co">#&gt;  8 chr7  q          2      10     3             12 TRUE     4.53e- 6</span>
-<span class="co">#&gt;  9 chr11 p          1       8     0              9 FALSE    1.00e+ 0</span>
-<span class="co">#&gt; 10 chr15 q          2       7     4              9 FALSE    1.00e+ 0</span>
-<span class="co">#&gt; # … with 31 more rows, and 2 more variables: Bonferroni_cutoff &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   significant &lt;lgl&gt;</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $arm_fragmentation$alpha</span>
-<span class="co">#&gt; [1] 0.01</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $arm_fragmentation$N_tests</span>
-<span class="co">#&gt; [1] 8</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $arm_fragmentation$genome_percentage_cutoff</span>
-<span class="co">#&gt; [1] 0.2</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $arm_fragmentation$minimum_segments_for_testing</span>
-<span class="co">#&gt; [1] 10</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; attr(,"class")</span>
-<span class="co">#&gt; [1] "cnaqc"</span></code></pre></div>
+<span class="co">#&gt;    2:2  [n = 7478, L = 1483 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { CTCF }</span>
+<span class="co">#&gt;    4:2  [n = 1893, L =  331 Mb] ■■■■■■■</span>
+<span class="co">#&gt;    3:2  [n = 1625, L =  357 Mb] ■■■■■■</span>
+<span class="co">#&gt;    2:1  [n = 1563, L =  420 Mb] ■■■■■■  { TTN }</span>
+<span class="co">#&gt;    3:0  [n =  312, L =  137 Mb] ■</span>
+<span class="co">#&gt;    2:0  [n =   81, L =   39 Mb]   { TP53 }</span>
+<span class="co">#&gt;   16:2  [n =    4, L =    0 Mb] </span>
+<span class="co">#&gt;   25:2  [n =    2, L =    1 Mb] </span>
+<span class="co">#&gt;    3:1  [n =    2, L =    1 Mb] </span>
+<span class="co">#&gt;  106:1  [n =    1, L =    0 Mb] </span>
+<span class="co">#&gt;   26:2  [n =    1, L =    0 Mb] </span>
+<span class="co">#&gt;   99:1  [n =    1, L =    0 Mb]</span>
+<span class="co">#&gt; ℹ Sample Purity: 89% ~ Ploidy: 4.</span>
+<span class="co">#&gt; ✔ Arm-level fragmentation analysis: 8 segments overfragmented.</span></code></pre></div>
 <p>You can produce a arm-level report for the fragmentation test, with:</p>
 <ul>
 <li>a scatter of the counts per arm, with scaled the p-values;</li>
@@ -443,262 +249,23 @@
 <span class="co">#&gt; ℹ 2 significantly overfragmented chromosome arms (alpha level 0.01).</span>
 
 <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-<span class="co">#&gt; $reference_genome</span>
-<span class="co">#&gt; [1] "hg19"</span>
+<span class="co">#&gt; ── [ CNAqc ]  n = 12963 mutations in 87 segments (87 clonal + 0 subclonal). Geno</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; $snvs</span>
-<span class="co">#&gt; # A tibble: 12,963 x 17</span>
-<span class="co">#&gt;    chr      from      to ref   alt   FILTER    DP    NV    VAF ANNOVAR_FUNCTION</span>
-<span class="co">#&gt;    &lt;chr&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;           </span>
-<span class="co">#&gt;  1 chr1  1027104 1027105 T     G     PASS      60     6 0.1    UTR5            </span>
-<span class="co">#&gt;  2 chr1  2248588 2248589 A     C     PASS     127     9 0.0709 intergenic      </span>
-<span class="co">#&gt;  3 chr1  2461999 2462000 G     A     PASS     156    65 0.417  upstream        </span>
-<span class="co">#&gt;  4 chr1  2727935 2727936 T     C     PASS     180    90 0.5    downstream      </span>
-<span class="co">#&gt;  5 chr1  2763397 2763398 C     T     PASS     183    61 0.333  intergenic      </span>
-<span class="co">#&gt;  6 chr1  2768208 2768209 C     T     PASS     203   130 0.640  intergenic      </span>
-<span class="co">#&gt;  7 chr1  2935590 2935591 C     T     PASS     228   132 0.579  intergenic      </span>
-<span class="co">#&gt;  8 chr1  2980032 2980033 C     T     PASS     196    85 0.434  ncRNA_exonic    </span>
-<span class="co">#&gt;  9 chr1  3387161 3387162 T     G     PASS     124     6 0.0484 intronic        </span>
-<span class="co">#&gt; 10 chr1  3502517 3502518 G     A     PASS      88    10 0.114  intronic        </span>
-<span class="co">#&gt; # … with 12,953 more rows, and 7 more variables: GENE &lt;chr&gt;, is_driver &lt;lgl&gt;,</span>
-<span class="co">#&gt; #   driver_label &lt;chr&gt;, gene &lt;chr&gt;, type &lt;chr&gt;, karyotype &lt;chr&gt;,</span>
-<span class="co">#&gt; #   segment_id &lt;chr&gt;</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $cna</span>
-<span class="co">#&gt; # A tibble: 87 x 10</span>
-<span class="co">#&gt;    chr      from      to  length covRatio Major minor   CCF segment_id         n</span>
-<span class="co">#&gt;    &lt;chr&gt;   &lt;int&gt;   &lt;int&gt;   &lt;int&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;          &lt;int&gt;</span>
-<span class="co">#&gt;  1 chr1   8.40e5  1.21e8  1.20e8    1.19      3     2     1 chr1:840009:1…   402</span>
-<span class="co">#&gt;  2 chr1   1.45e8  1.46e8  8.20e5    1.04      2     2     1 chr1:14492008…    NA</span>
-<span class="co">#&gt;  3 chr1   1.47e8  1.48e8  1.20e6    1.19      3     2     1 chr1:14663001…     2</span>
-<span class="co">#&gt;  4 chr1   1.50e8  1.86e8  3.57e7    1.19      3     2     1 chr1:14981506…   124</span>
-<span class="co">#&gt;  5 chr1   1.86e8  1.95e8  9.59e6    0.729     3     0     1 chr1:18555902…    20</span>
-<span class="co">#&gt;  6 chr1   1.95e8  2.49e8  5.38e7    1.19      3     2     1 chr1:19537336…   169</span>
-<span class="co">#&gt;  7 chr10  1.30e5  3.86e7  3.85e7    0.729     3     0     1 chr10:130013:…    95</span>
-<span class="co">#&gt;  8 chr10  4.24e7  4.62e7  3.75e6    0.729     3     0     1 chr10:4241000…    12</span>
-<span class="co">#&gt;  9 chr10  4.83e7  1.35e8  8.71e7    0.729     3     0     1 chr10:4831017…   185</span>
-<span class="co">#&gt; 10 chr11  1.90e5  4.89e7  4.87e7    0.731     2     1     1 chr11:190010:…   183</span>
-<span class="co">#&gt; # … with 77 more rows</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $n_snvs</span>
-<span class="co">#&gt; [1] 12963</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $n_cna</span>
-<span class="co">#&gt; [1] 87</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $n_cna_clonal</span>
-<span class="co">#&gt; [1] 87</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $n_cna_sbclonal</span>
-<span class="co">#&gt; [1] 0</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $n_karyotype</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;   2:2   4:2   3:2   2:1   3:0   2:0  16:2  25:2   3:1 106:1  26:2  99:1 </span>
-<span class="co">#&gt;  7478  1893  1625  1563   312    81     4     2     2     1     1     1 </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $purity</span>
-<span class="co">#&gt; [1] 0.89</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $l_karyotype</span>
-<span class="co">#&gt;        2:2        2:1        3:2        4:2        3:0        2:0        3:1 </span>
-<span class="co">#&gt; 1493370778  424084287  362333832  332861761  138936099   39404909     527400 </span>
-<span class="co">#&gt;       25:2      106:1        5:0       69:2       26:2       16:2       70:2 </span>
-<span class="co">#&gt;     517923     225713     174001     172892     162912     130711      80102 </span>
-<span class="co">#&gt;       99:1 </span>
-<span class="co">#&gt;      75781 </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $ploidy</span>
-<span class="co">#&gt; [1] 4</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $most_prevalent_karyotype</span>
-<span class="co">#&gt; [1] "2:2"</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $basepairs_by_karyotype</span>
-<span class="co">#&gt; # A tibble: 15 x 4</span>
-<span class="co">#&gt;    minor Major          n karyotype</span>
-<span class="co">#&gt;    &lt;dbl&gt; &lt;dbl&gt;      &lt;int&gt; &lt;chr&gt;    </span>
-<span class="co">#&gt;  1     2     2 1493370778 2:2      </span>
-<span class="co">#&gt;  2     1     2  424084287 2:1      </span>
-<span class="co">#&gt;  3     2     3  362333832 3:2      </span>
-<span class="co">#&gt;  4     2     4  332861761 4:2      </span>
-<span class="co">#&gt;  5     0     3  138936099 3:0      </span>
-<span class="co">#&gt;  6     0     2   39404909 2:0      </span>
-<span class="co">#&gt;  7     1     3     527400 3:1      </span>
-<span class="co">#&gt;  8     2    25     517923 25:2     </span>
-<span class="co">#&gt;  9     1   106     225713 106:1    </span>
-<span class="co">#&gt; 10     0     5     174001 5:0      </span>
-<span class="co">#&gt; 11     2    69     172892 69:2     </span>
-<span class="co">#&gt; 12     2    26     162912 26:2     </span>
-<span class="co">#&gt; 13     2    16     130711 16:2     </span>
-<span class="co">#&gt; 14     2    70      80102 70:2     </span>
-<span class="co">#&gt; 15     1    99      75781 99:1     </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $most_mutations_karyotype</span>
-<span class="co">#&gt; [1] "2:2"</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $before_smoothing</span>
-<span class="co">#&gt; $reference_genome</span>
-<span class="co">#&gt; [1] "hg19"</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $snvs</span>
-<span class="co">#&gt; # A tibble: 12,963 x 17</span>
-<span class="co">#&gt;    chr      from      to ref   alt   FILTER    DP    NV    VAF ANNOVAR_FUNCTION</span>
-<span class="co">#&gt;    &lt;chr&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;           </span>
-<span class="co">#&gt;  1 chr1  1027104 1027105 T     G     PASS      60     6 0.1    UTR5            </span>
-<span class="co">#&gt;  2 chr1  2248588 2248589 A     C     PASS     127     9 0.0709 intergenic      </span>
-<span class="co">#&gt;  3 chr1  2461999 2462000 G     A     PASS     156    65 0.417  upstream        </span>
-<span class="co">#&gt;  4 chr1  2727935 2727936 T     C     PASS     180    90 0.5    downstream      </span>
-<span class="co">#&gt;  5 chr1  2763397 2763398 C     T     PASS     183    61 0.333  intergenic      </span>
-<span class="co">#&gt;  6 chr1  2768208 2768209 C     T     PASS     203   130 0.640  intergenic      </span>
-<span class="co">#&gt;  7 chr1  2935590 2935591 C     T     PASS     228   132 0.579  intergenic      </span>
-<span class="co">#&gt;  8 chr1  2980032 2980033 C     T     PASS     196    85 0.434  ncRNA_exonic    </span>
-<span class="co">#&gt;  9 chr1  3387161 3387162 T     G     PASS     124     6 0.0484 intronic        </span>
-<span class="co">#&gt; 10 chr1  3502517 3502518 G     A     PASS      88    10 0.114  intronic        </span>
-<span class="co">#&gt; # … with 12,953 more rows, and 7 more variables: GENE &lt;chr&gt;, is_driver &lt;lgl&gt;,</span>
-<span class="co">#&gt; #   driver_label &lt;chr&gt;, gene &lt;chr&gt;, type &lt;chr&gt;, karyotype &lt;chr&gt;,</span>
-<span class="co">#&gt; #   segment_id &lt;chr&gt;</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $cna</span>
-<span class="co">#&gt; # A tibble: 267 x 10</span>
-<span class="co">#&gt;    chr      from      to length covRatio Major minor   CCF segment_id          n</span>
-<span class="co">#&gt;    &lt;chr&gt;   &lt;int&gt;   &lt;int&gt;  &lt;int&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;           &lt;int&gt;</span>
-<span class="co">#&gt;  1 chr1   8.40e5  1.69e6 8.50e5     1.19     3     2     1 chr1:840009:16…     1</span>
-<span class="co">#&gt;  2 chr1   1.69e6  1.82e6 1.25e5     1.26     3     2     1 chr1:1689988:1…    NA</span>
-<span class="co">#&gt;  3 chr1   1.82e6  9.80e6 7.98e6     1.19     3     2     1 chr1:1815016:9…    28</span>
-<span class="co">#&gt;  4 chr1   1.05e7  1.21e7 1.60e6     1.19     3     2     1 chr1:10479910:…     1</span>
-<span class="co">#&gt;  5 chr1   1.21e7  1.22e7 7.51e4     1.24     3     2     1 chr1:12079917:…    NA</span>
-<span class="co">#&gt;  6 chr1   1.22e7  1.28e7 6.85e5     1.19     3     2     1 chr1:12154981:…    NA</span>
-<span class="co">#&gt;  7 chr1   1.38e7  1.78e7 4.01e6     1.19     3     2     1 chr1:13780016:…     7</span>
-<span class="co">#&gt;  8 chr1   1.78e7  2.11e7 3.23e6     1.19     3     2     1 chr1:17849962:…    12</span>
-<span class="co">#&gt;  9 chr1   2.11e7  2.16e7 4.80e5     1.26     3     2     1 chr1:21080068:…    NA</span>
-<span class="co">#&gt; 10 chr1   2.16e7  2.48e7 3.27e6     1.19     3     2     1 chr1:21559998:…    11</span>
-<span class="co">#&gt; # … with 257 more rows</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $n_snvs</span>
-<span class="co">#&gt; [1] 12963</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $n_cna</span>
-<span class="co">#&gt; [1] 267</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $n_cna_clonal</span>
-<span class="co">#&gt; [1] 267</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $n_cna_sbclonal</span>
-<span class="co">#&gt; [1] 0</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $n_karyotype</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;   2:2   4:2   3:2   2:1   3:0   2:0  16:2  25:2   3:1 106:1  26:2  99:1 </span>
-<span class="co">#&gt;  7478  1893  1625  1563   312    81     4     2     2     1     1     1 </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $purity</span>
-<span class="co">#&gt; [1] 0.89</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $l_karyotype</span>
-<span class="co">#&gt;        2:2        2:1        3:2        4:2        3:0        2:0        3:1 </span>
-<span class="co">#&gt; 1482910013  420405440  357172683  331457138  137498772   39372558     527401 </span>
-<span class="co">#&gt;       25:2      106:1        5:0       69:2       26:2       16:2       70:2 </span>
-<span class="co">#&gt;     517926     225714     174002     172894     162913     130712      80103 </span>
-<span class="co">#&gt;       99:1 </span>
-<span class="co">#&gt;      75782 </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $ploidy</span>
-<span class="co">#&gt; [1] 4</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $most_prevalent_karyotype</span>
-<span class="co">#&gt; [1] "2:2"</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $basepairs_by_karyotype</span>
-<span class="co">#&gt; # A tibble: 15 x 4</span>
-<span class="co">#&gt;    minor Major          n karyotype</span>
-<span class="co">#&gt;    &lt;dbl&gt; &lt;dbl&gt;      &lt;int&gt; &lt;chr&gt;    </span>
-<span class="co">#&gt;  1     2     2 1482910013 2:2      </span>
-<span class="co">#&gt;  2     1     2  420405440 2:1      </span>
-<span class="co">#&gt;  3     2     3  357172683 3:2      </span>
-<span class="co">#&gt;  4     2     4  331457138 4:2      </span>
-<span class="co">#&gt;  5     0     3  137498772 3:0      </span>
-<span class="co">#&gt;  6     0     2   39372558 2:0      </span>
-<span class="co">#&gt;  7     1     3     527401 3:1      </span>
-<span class="co">#&gt;  8     2    25     517926 25:2     </span>
-<span class="co">#&gt;  9     1   106     225714 106:1    </span>
-<span class="co">#&gt; 10     0     5     174002 5:0      </span>
-<span class="co">#&gt; 11     2    69     172894 69:2     </span>
-<span class="co">#&gt; 12     2    26     162913 26:2     </span>
-<span class="co">#&gt; 13     2    16     130712 16:2     </span>
-<span class="co">#&gt; 14     2    70      80103 70:2     </span>
-<span class="co">#&gt; 15     1    99      75782 99:1     </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $most_mutations_karyotype</span>
-<span class="co">#&gt; [1] "2:2"</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $arm_fragmentation</span>
-<span class="co">#&gt; $arm_fragmentation$table</span>
-<span class="co">#&gt; # A tibble: 41 x 10</span>
-<span class="co">#&gt;    chr   arm   n_long n_short jumps total_segments testable  p_value</span>
-<span class="co">#&gt;    &lt;chr&gt; &lt;chr&gt;  &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;          &lt;dbl&gt; &lt;lgl&gt;       &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 chr7  p          0      34   206             34 TRUE     1.72e-24</span>
-<span class="co">#&gt;  2 chr1  p          1      23     0             24 TRUE     1.63e-15</span>
-<span class="co">#&gt;  3 chr1  q          1      12     5             13 TRUE     4.34e- 8</span>
-<span class="co">#&gt;  4 chr12 q          1      11   414             12 TRUE     2.01e- 7</span>
-<span class="co">#&gt;  5 chr8  p          1      10     0             11 TRUE     9.22e- 7</span>
-<span class="co">#&gt;  6 chr11 q          2      11     0             13 TRUE     1.07e- 6</span>
-<span class="co">#&gt;  7 chr3  q          2      10     2             12 TRUE     4.53e- 6</span>
-<span class="co">#&gt;  8 chr7  q          2      10     3             12 TRUE     4.53e- 6</span>
-<span class="co">#&gt;  9 chr11 p          1       8     0              9 FALSE    1.00e+ 0</span>
-<span class="co">#&gt; 10 chr15 q          2       7     4              9 FALSE    1.00e+ 0</span>
-<span class="co">#&gt; # … with 31 more rows, and 2 more variables: Bonferroni_cutoff &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   significant &lt;lgl&gt;</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $arm_fragmentation$alpha</span>
-<span class="co">#&gt; [1] 0.01</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $arm_fragmentation$N_tests</span>
-<span class="co">#&gt; [1] 8</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $arm_fragmentation$genome_percentage_cutoff</span>
-<span class="co">#&gt; [1] 0.2</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $arm_fragmentation$minimum_segments_for_testing</span>
-<span class="co">#&gt; [1] 10</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; attr(,"class")</span>
-<span class="co">#&gt; [1] "cnaqc"</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $arm_fragmentation</span>
-<span class="co">#&gt; $arm_fragmentation$table</span>
-<span class="co">#&gt; # A tibble: 41 x 10</span>
-<span class="co">#&gt;    chr   arm   n_long n_short jumps total_segments testable    p_value</span>
-<span class="co">#&gt;    &lt;chr&gt; &lt;chr&gt;  &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;          &lt;dbl&gt; &lt;lgl&gt;         &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 chr12 q          1       9   414             10 TRUE     0.00000420</span>
-<span class="co">#&gt;  2 chr7  p          2      10   206             12 TRUE     0.00000453</span>
-<span class="co">#&gt;  3 chr1  q          2       3     5              5 FALSE    1         </span>
-<span class="co">#&gt;  4 chr17 p          3       2     8              5 FALSE    1         </span>
-<span class="co">#&gt;  5 chr7  q          2       3     3              5 FALSE    1         </span>
-<span class="co">#&gt;  6 chr15 q          1       2     4              3 FALSE    1         </span>
-<span class="co">#&gt;  7 chr2  q          2       1     2              3 FALSE    1         </span>
-<span class="co">#&gt;  8 chr22 q          2       1     2              3 FALSE    1         </span>
-<span class="co">#&gt;  9 chr3  q          2       1     2              3 FALSE    1         </span>
-<span class="co">#&gt; 10 chr10 q          1       1     0              2 FALSE    1         </span>
-<span class="co">#&gt; # … with 31 more rows, and 2 more variables: Bonferroni_cutoff &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   significant &lt;lgl&gt;</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $arm_fragmentation$alpha</span>
-<span class="co">#&gt; [1] 0.01</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $arm_fragmentation$N_tests</span>
-<span class="co">#&gt; [1] 2</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $arm_fragmentation$genome_percentage_cutoff</span>
-<span class="co">#&gt; [1] 0.2</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $arm_fragmentation$minimum_segments_for_testing</span>
-<span class="co">#&gt; [1] 10</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; attr(,"class")</span>
-<span class="co">#&gt; [1] "cnaqc"</span></code></pre></div>
+<span class="co">#&gt;    2:2  [n = 7478, L = 1493 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { CTCF }</span>
+<span class="co">#&gt;    4:2  [n = 1893, L =  333 Mb] ■■■■■■■</span>
+<span class="co">#&gt;    3:2  [n = 1625, L =  362 Mb] ■■■■■■</span>
+<span class="co">#&gt;    2:1  [n = 1563, L =  424 Mb] ■■■■■■  { TTN }</span>
+<span class="co">#&gt;    3:0  [n =  312, L =  139 Mb] ■</span>
+<span class="co">#&gt;    2:0  [n =   81, L =   39 Mb]   { TP53 }</span>
+<span class="co">#&gt;   16:2  [n =    4, L =    0 Mb] </span>
+<span class="co">#&gt;   25:2  [n =    2, L =    1 Mb] </span>
+<span class="co">#&gt;    3:1  [n =    2, L =    1 Mb] </span>
+<span class="co">#&gt;  106:1  [n =    1, L =    0 Mb] </span>
+<span class="co">#&gt;   26:2  [n =    1, L =    0 Mb] </span>
+<span class="co">#&gt;   99:1  [n =    1, L =    0 Mb]</span>
+<span class="co">#&gt; ℹ Sample Purity: 89% ~ Ploidy: 4.</span>
+<span class="co">#&gt; ✔ These segments are smoothed; before smoothing there were 267 segments.</span>
+<span class="co">#&gt; ✔ Arm-level fragmentation analysis: 2 segments overfragmented.</span></code></pre></div>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/plot_arm_fragmentation.html">plot_arm_fragmentation</a></span><span class="op">(</span><span class="va">x</span>, zoom <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></code></pre></div>
 <p><img src="a6_fragmentation_files/figure-html/unnamed-chunk-8-1.png" width="960"></p>

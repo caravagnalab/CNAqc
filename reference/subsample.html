@@ -189,199 +189,24 @@ these can be forced to remain.</p>
 #&gt; </span><span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Using reference genome coordinates for: </span><span style='color: #00BB00;'>GRCh38</span><span>.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Drivers are annotated, but 'gene' column is missing, using mutation location.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #BBBB00;'>!</span><span> Missing CCF column from CNA calls, adding CCF = 1 assuming clonal CNA calls.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Input n = 12963 mutations for 267 CNA segments (267 clonal, 0 subclonal)</span></div><div class='output co'>#&gt; </div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✔</span><span> Mapped n = 12963 mutations to clonal segments (100% of input)</span></div><div class='input'>
 <span class='fu'>subsample</span><span class='op'>(</span><span class='va'>x</span>, N <span class='op'>=</span> <span class='fl'>100</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; </span><span style='color: #BBBBBB;background-color: #0000BB;'> [ CNAqc - CNA Quality Check ] 
-#&gt; </span><span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Using reference genome coordinates for: </span><span style='color: #00BB00;'>GRCh38</span><span>.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #BBBB00;'>!</span><span> Missing CCF column from CNA calls, adding CCF = 1 assuming clonal CNA calls.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Input n = 103 mutations for 267 CNA segments (267 clonal, 0 subclonal)</span></div><div class='output co'>#&gt; <span class='warning'>Warning: [CNAqc] a karyotype column is present in CNA calls, and will be overwritten</span></div><div class='output co'>#&gt; </div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✔</span><span> Mapped n = 103 mutations to clonal segments (100% of input)</span></div><div class='output co'>#&gt; $reference_genome
-#&gt; [1] "GRCh38"
-#&gt; 
-#&gt; $snvs
-#&gt; </span><span style='color: #949494;'># A tibble: 103 x 17</span><span>
-#&gt;    chr       from       to ref   alt   FILTER    DP    NV   VAF ANNOVAR_FUNCTION
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>           
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> chr2    1.79</span><span style='color: #949494;'>e</span><span>8   1.79</span><span style='color: #949494;'>e</span><span>8 C     T     PASS     117    77 0.658 exonic          
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> chr16   6.76</span><span style='color: #949494;'>e</span><span>7   6.76</span><span style='color: #949494;'>e</span><span>7 C     T     PASS     120    54 0.45  exonic          
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> chr17   7.58</span><span style='color: #949494;'>e</span><span>6   7.58</span><span style='color: #949494;'>e</span><span>6 G     C     PASS      84    78 0.929 exonic          
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> chr5    1.02</span><span style='color: #949494;'>e</span><span>8   1.02</span><span style='color: #949494;'>e</span><span>8 C     A     PASS     139    61 0.439 upstream        
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> chr7    2.14</span><span style='color: #949494;'>e</span><span>7   2.14</span><span style='color: #949494;'>e</span><span>7 C     T     PASS     652   470 0.721 intergenic      
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> chr11   1.24</span><span style='color: #949494;'>e</span><span>8   1.24</span><span style='color: #949494;'>e</span><span>8 C     T     PASS      99    27 0.273 intergenic      
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> chr13   2.64</span><span style='color: #949494;'>e</span><span>7   2.64</span><span style='color: #949494;'>e</span><span>7 A     T     PASS     142    59 0.415 intronic        
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> chr3    1.56</span><span style='color: #949494;'>e</span><span>8   1.56</span><span style='color: #949494;'>e</span><span>8 C     T     PASS     180    32 0.178 intronic        
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> chr1    1.03</span><span style='color: #949494;'>e</span><span>8   1.03</span><span style='color: #949494;'>e</span><span>8 C     T     PASS     172    63 0.366 intergenic      
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span> chr1    7.51</span><span style='color: #949494;'>e</span><span>7   7.51</span><span style='color: #949494;'>e</span><span>7 C     T     PASS     153    91 0.595 intronic        
-#&gt; </span><span style='color: #949494;'># … with 93 more rows, and 7 more variables: GENE &lt;chr&gt;, is_driver &lt;lgl&gt;,</span><span>
-#&gt; </span><span style='color: #949494;'>#   driver_label &lt;chr&gt;, gene &lt;chr&gt;, type &lt;chr&gt;, karyotype &lt;chr&gt;,</span><span>
-#&gt; </span><span style='color: #949494;'>#   segment_id &lt;chr&gt;</span><span>
-#&gt; 
-#&gt; $cna
-#&gt; </span><span style='color: #949494;'># A tibble: 267 x 10</span><span>
-#&gt;    chr      from      to length covRatio Major minor   CCF segment_id          n
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>   </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>   </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>           </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> chr1   8.40</span><span style='color: #949494;'>e</span><span>5  1.69</span><span style='color: #949494;'>e</span><span>6 8.50</span><span style='color: #949494;'>e</span><span>5     1.19     3     2     1 chr1:840009:16…    </span><span style='color: #BB0000;'>NA</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> chr1   1.69</span><span style='color: #949494;'>e</span><span>6  1.82</span><span style='color: #949494;'>e</span><span>6 1.25</span><span style='color: #949494;'>e</span><span>5     1.26     3     2     1 chr1:1689988:1…    </span><span style='color: #BB0000;'>NA</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> chr1   1.82</span><span style='color: #949494;'>e</span><span>6  9.80</span><span style='color: #949494;'>e</span><span>6 7.98</span><span style='color: #949494;'>e</span><span>6     1.19     3     2     1 chr1:1815016:9…    </span><span style='color: #BB0000;'>NA</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> chr1   1.05</span><span style='color: #949494;'>e</span><span>7  1.21</span><span style='color: #949494;'>e</span><span>7 1.60</span><span style='color: #949494;'>e</span><span>6     1.19     3     2     1 chr1:10479910:…    </span><span style='color: #BB0000;'>NA</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> chr1   1.21</span><span style='color: #949494;'>e</span><span>7  1.22</span><span style='color: #949494;'>e</span><span>7 7.51</span><span style='color: #949494;'>e</span><span>4     1.24     3     2     1 chr1:12079917:…    </span><span style='color: #BB0000;'>NA</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> chr1   1.22</span><span style='color: #949494;'>e</span><span>7  1.28</span><span style='color: #949494;'>e</span><span>7 6.85</span><span style='color: #949494;'>e</span><span>5     1.19     3     2     1 chr1:12154981:…    </span><span style='color: #BB0000;'>NA</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> chr1   1.38</span><span style='color: #949494;'>e</span><span>7  1.78</span><span style='color: #949494;'>e</span><span>7 4.01</span><span style='color: #949494;'>e</span><span>6     1.19     3     2     1 chr1:13780016:…    </span><span style='color: #BB0000;'>NA</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> chr1   1.78</span><span style='color: #949494;'>e</span><span>7  2.11</span><span style='color: #949494;'>e</span><span>7 3.23</span><span style='color: #949494;'>e</span><span>6     1.19     3     2     1 chr1:17849962:…     1
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> chr1   2.11</span><span style='color: #949494;'>e</span><span>7  2.16</span><span style='color: #949494;'>e</span><span>7 4.80</span><span style='color: #949494;'>e</span><span>5     1.26     3     2     1 chr1:21080068:…    </span><span style='color: #BB0000;'>NA</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span> chr1   2.16</span><span style='color: #949494;'>e</span><span>7  2.48</span><span style='color: #949494;'>e</span><span>7 3.27</span><span style='color: #949494;'>e</span><span>6     1.19     3     2     1 chr1:21559998:…    </span><span style='color: #BB0000;'>NA</span><span>
-#&gt; </span><span style='color: #949494;'># … with 257 more rows</span><span>
-#&gt; 
-#&gt; $n_snvs
-#&gt; [1] 103
-#&gt; 
-#&gt; $n_cna
-#&gt; [1] 267
-#&gt; 
-#&gt; $n_cna_clonal
-#&gt; [1] 267
-#&gt; 
-#&gt; $n_cna_sbclonal
-#&gt; [1] 0
-#&gt; 
-#&gt; $n_karyotype
-#&gt; 
-#&gt;  2:2  2:1  4:2  3:2  3:0  2:0 16:2 
-#&gt;   55   17   13   12    3    2    1 
-#&gt; 
-#&gt; $purity
-#&gt; [1] 0.89
-#&gt; 
-#&gt; $l_karyotype
-#&gt;        2:2        2:1        3:2        4:2        3:0        2:0        3:1 
-#&gt; 1482910013  420405440  357172683  331457138  137498772   39372558     527401 
-#&gt;       25:2      106:1        5:0       69:2       26:2       16:2       70:2 
-#&gt;     517926     225714     174002     172894     162913     130712      80103 
-#&gt;       99:1 
-#&gt;      75782 
-#&gt; 
-#&gt; $ploidy
-#&gt; [1] 4
-#&gt; 
-#&gt; $most_prevalent_karyotype
-#&gt; [1] "2:2"
-#&gt; 
-#&gt; $basepairs_by_karyotype
-#&gt; </span><span style='color: #949494;'># A tibble: 15 x 4</span><span>
-#&gt;    minor Major          n karyotype
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>    
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span>     2     2 </span><span style='text-decoration: underline;'>1</span><span>482</span><span style='text-decoration: underline;'>910</span><span>013 2:2      
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span>     1     2  420</span><span style='text-decoration: underline;'>405</span><span>440 2:1      
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span>     2     3  357</span><span style='text-decoration: underline;'>172</span><span>683 3:2      
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span>     2     4  331</span><span style='text-decoration: underline;'>457</span><span>138 4:2      
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span>     0     3  137</span><span style='text-decoration: underline;'>498</span><span>772 3:0      
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span>     0     2   39</span><span style='text-decoration: underline;'>372</span><span>558 2:0      
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span>     1     3     </span><span style='text-decoration: underline;'>527</span><span>401 3:1      
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span>     2    25     </span><span style='text-decoration: underline;'>517</span><span>926 25:2     
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span>     1   106     </span><span style='text-decoration: underline;'>225</span><span>714 106:1    
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span>     0     5     </span><span style='text-decoration: underline;'>174</span><span>002 5:0      
-#&gt; </span><span style='color: #BCBCBC;'>11</span><span>     2    69     </span><span style='text-decoration: underline;'>172</span><span>894 69:2     
-#&gt; </span><span style='color: #BCBCBC;'>12</span><span>     2    26     </span><span style='text-decoration: underline;'>162</span><span>913 26:2     
-#&gt; </span><span style='color: #BCBCBC;'>13</span><span>     2    16     </span><span style='text-decoration: underline;'>130</span><span>712 16:2     
-#&gt; </span><span style='color: #BCBCBC;'>14</span><span>     2    70      </span><span style='text-decoration: underline;'>80</span><span>103 70:2     
-#&gt; </span><span style='color: #BCBCBC;'>15</span><span>     1    99      </span><span style='text-decoration: underline;'>75</span><span>782 99:1     
-#&gt; 
-#&gt; $most_mutations_karyotype
-#&gt; [1] "2:2"
-#&gt; 
-#&gt; attr(,"class")
-#&gt; [1] "cnaqc"</div><div class='input'><span class='fu'>subsample</span><span class='op'>(</span><span class='va'>x</span>, N <span class='op'>=</span> <span class='fl'>1000</span><span class='op'>)</span>
+#&gt; </span><span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Using reference genome coordinates for: </span><span style='color: #00BB00;'>GRCh38</span><span>.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #BBBB00;'>!</span><span> Missing CCF column from CNA calls, adding CCF = 1 assuming clonal CNA calls.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Input n = 103 mutations for 267 CNA segments (267 clonal, 0 subclonal)</span></div><div class='output co'>#&gt; <span class='warning'>Warning: [CNAqc] a karyotype column is present in CNA calls, and will be overwritten</span></div><div class='output co'>#&gt; </div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✔</span><span> Mapped n = 103 mutations to clonal segments (100% of input)</span></div><div class='output co'>#&gt; <span class='message'>── </span><span style='color: #000000;background-color: #BBBB00;'>[ CNAqc ] </span><span> n = 103 mutations in </span><span style='color: #00BB00;'>267</span><span> segments (267 clonal + 0 subclonal). Geno</span></div><div class='output co'>#&gt; 
+#&gt;  2:2  [n = 58, L = 1483 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { </span><span style='color: #BBBB00;'>CTCF</span><span> }
+#&gt;  4:2  [n = 16, L = 331 Mb] ■■■■■■■
+#&gt;  3:2  [n = 13, L = 357 Mb] ■■■■■■
+#&gt;  2:1  [n = 11, L = 420 Mb] ■■■■■  { </span><span style='color: #BBBB00;'>TTN</span><span> }
+#&gt;  3:0  [n =  3, L = 137 Mb] ■
+#&gt;  2:0  [n =  2, L = 39 Mb] ■  { </span><span style='color: #BBBB00;'>TP53</span><span> }
+#&gt; </div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Sample Purity: 89% ~ Ploidy: 4.</span></div><div class='output co'>#&gt; </div><div class='input'><span class='fu'>subsample</span><span class='op'>(</span><span class='va'>x</span>, N <span class='op'>=</span> <span class='fl'>1000</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; </span><span style='color: #BBBBBB;background-color: #0000BB;'> [ CNAqc - CNA Quality Check ] 
-#&gt; </span><span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Using reference genome coordinates for: </span><span style='color: #00BB00;'>GRCh38</span><span>.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #BBBB00;'>!</span><span> Missing CCF column from CNA calls, adding CCF = 1 assuming clonal CNA calls.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Input n = 1003 mutations for 267 CNA segments (267 clonal, 0 subclonal)</span></div><div class='output co'>#&gt; <span class='warning'>Warning: [CNAqc] a karyotype column is present in CNA calls, and will be overwritten</span></div><div class='output co'>#&gt; </div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✔</span><span> Mapped n = 1003 mutations to clonal segments (100% of input)</span></div><div class='output co'>#&gt; $reference_genome
-#&gt; [1] "GRCh38"
-#&gt; 
-#&gt; $snvs
-#&gt; </span><span style='color: #949494;'># A tibble: 1,003 x 17</span><span>
-#&gt;    chr       from       to ref   alt   FILTER    DP    NV   VAF ANNOVAR_FUNCTION
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>           
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> chr2    1.79</span><span style='color: #949494;'>e</span><span>8   1.79</span><span style='color: #949494;'>e</span><span>8 C     T     PASS     117    77 0.658 exonic          
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> chr16   6.76</span><span style='color: #949494;'>e</span><span>7   6.76</span><span style='color: #949494;'>e</span><span>7 C     T     PASS     120    54 0.45  exonic          
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> chr17   7.58</span><span style='color: #949494;'>e</span><span>6   7.58</span><span style='color: #949494;'>e</span><span>6 G     C     PASS      84    78 0.929 exonic          
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> chr3    1.91</span><span style='color: #949494;'>e</span><span>8   1.91</span><span style='color: #949494;'>e</span><span>8 G     T     PASS     196    67 0.342 intergenic      
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> chrX    9.34</span><span style='color: #949494;'>e</span><span>7   9.34</span><span style='color: #949494;'>e</span><span>7 G     A     PASS     152    35 0.230 intergenic      
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> chr1    8.91</span><span style='color: #949494;'>e</span><span>7   8.91</span><span style='color: #949494;'>e</span><span>7 G     A     PASS     188   105 0.559 ncRNA_intronic  
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> chr1    1.74</span><span style='color: #949494;'>e</span><span>8   1.74</span><span style='color: #949494;'>e</span><span>8 T     C     PASS     162    89 0.549 intronic        
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> chrX    1.26</span><span style='color: #949494;'>e</span><span>8   1.26</span><span style='color: #949494;'>e</span><span>8 C     G     PASS     148    69 0.466 intergenic      
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> chr3    7.85</span><span style='color: #949494;'>e</span><span>7   7.85</span><span style='color: #949494;'>e</span><span>7 G     A     PASS     211    63 0.299 intergenic      
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span> chr14   3.87</span><span style='color: #949494;'>e</span><span>7   3.87</span><span style='color: #949494;'>e</span><span>7 C     A     PASS     162    69 0.426 intergenic      
-#&gt; </span><span style='color: #949494;'># … with 993 more rows, and 7 more variables: GENE &lt;chr&gt;, is_driver &lt;lgl&gt;,</span><span>
-#&gt; </span><span style='color: #949494;'>#   driver_label &lt;chr&gt;, gene &lt;chr&gt;, type &lt;chr&gt;, karyotype &lt;chr&gt;,</span><span>
-#&gt; </span><span style='color: #949494;'>#   segment_id &lt;chr&gt;</span><span>
-#&gt; 
-#&gt; $cna
-#&gt; </span><span style='color: #949494;'># A tibble: 267 x 10</span><span>
-#&gt;    chr      from      to length covRatio Major minor   CCF segment_id          n
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>   </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>   </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>           </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> chr1   8.40</span><span style='color: #949494;'>e</span><span>5  1.69</span><span style='color: #949494;'>e</span><span>6 8.50</span><span style='color: #949494;'>e</span><span>5     1.19     3     2     1 chr1:840009:16…    </span><span style='color: #BB0000;'>NA</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> chr1   1.69</span><span style='color: #949494;'>e</span><span>6  1.82</span><span style='color: #949494;'>e</span><span>6 1.25</span><span style='color: #949494;'>e</span><span>5     1.26     3     2     1 chr1:1689988:1…    </span><span style='color: #BB0000;'>NA</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> chr1   1.82</span><span style='color: #949494;'>e</span><span>6  9.80</span><span style='color: #949494;'>e</span><span>6 7.98</span><span style='color: #949494;'>e</span><span>6     1.19     3     2     1 chr1:1815016:9…     2
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> chr1   1.05</span><span style='color: #949494;'>e</span><span>7  1.21</span><span style='color: #949494;'>e</span><span>7 1.60</span><span style='color: #949494;'>e</span><span>6     1.19     3     2     1 chr1:10479910:…    </span><span style='color: #BB0000;'>NA</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> chr1   1.21</span><span style='color: #949494;'>e</span><span>7  1.22</span><span style='color: #949494;'>e</span><span>7 7.51</span><span style='color: #949494;'>e</span><span>4     1.24     3     2     1 chr1:12079917:…    </span><span style='color: #BB0000;'>NA</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> chr1   1.22</span><span style='color: #949494;'>e</span><span>7  1.28</span><span style='color: #949494;'>e</span><span>7 6.85</span><span style='color: #949494;'>e</span><span>5     1.19     3     2     1 chr1:12154981:…    </span><span style='color: #BB0000;'>NA</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> chr1   1.38</span><span style='color: #949494;'>e</span><span>7  1.78</span><span style='color: #949494;'>e</span><span>7 4.01</span><span style='color: #949494;'>e</span><span>6     1.19     3     2     1 chr1:13780016:…     1
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> chr1   1.78</span><span style='color: #949494;'>e</span><span>7  2.11</span><span style='color: #949494;'>e</span><span>7 3.23</span><span style='color: #949494;'>e</span><span>6     1.19     3     2     1 chr1:17849962:…     2
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> chr1   2.11</span><span style='color: #949494;'>e</span><span>7  2.16</span><span style='color: #949494;'>e</span><span>7 4.80</span><span style='color: #949494;'>e</span><span>5     1.26     3     2     1 chr1:21080068:…    </span><span style='color: #BB0000;'>NA</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span> chr1   2.16</span><span style='color: #949494;'>e</span><span>7  2.48</span><span style='color: #949494;'>e</span><span>7 3.27</span><span style='color: #949494;'>e</span><span>6     1.19     3     2     1 chr1:21559998:…    </span><span style='color: #BB0000;'>NA</span><span>
-#&gt; </span><span style='color: #949494;'># … with 257 more rows</span><span>
-#&gt; 
-#&gt; $n_snvs
-#&gt; [1] 1003
-#&gt; 
-#&gt; $n_cna
-#&gt; [1] 267
-#&gt; 
-#&gt; $n_cna_clonal
-#&gt; [1] 267
-#&gt; 
-#&gt; $n_cna_sbclonal
-#&gt; [1] 0
-#&gt; 
-#&gt; $n_karyotype
-#&gt; 
-#&gt;  2:2  4:2  2:1  3:2  3:0  2:0 16:2 
-#&gt;  570  148  131  118   28    7    1 
-#&gt; 
-#&gt; $purity
-#&gt; [1] 0.89
-#&gt; 
-#&gt; $l_karyotype
-#&gt;        2:2        2:1        3:2        4:2        3:0        2:0        3:1 
-#&gt; 1482910013  420405440  357172683  331457138  137498772   39372558     527401 
-#&gt;       25:2      106:1        5:0       69:2       26:2       16:2       70:2 
-#&gt;     517926     225714     174002     172894     162913     130712      80103 
-#&gt;       99:1 
-#&gt;      75782 
-#&gt; 
-#&gt; $ploidy
-#&gt; [1] 4
-#&gt; 
-#&gt; $most_prevalent_karyotype
-#&gt; [1] "2:2"
-#&gt; 
-#&gt; $basepairs_by_karyotype
-#&gt; </span><span style='color: #949494;'># A tibble: 15 x 4</span><span>
-#&gt;    minor Major          n karyotype
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>    
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span>     2     2 </span><span style='text-decoration: underline;'>1</span><span>482</span><span style='text-decoration: underline;'>910</span><span>013 2:2      
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span>     1     2  420</span><span style='text-decoration: underline;'>405</span><span>440 2:1      
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span>     2     3  357</span><span style='text-decoration: underline;'>172</span><span>683 3:2      
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span>     2     4  331</span><span style='text-decoration: underline;'>457</span><span>138 4:2      
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span>     0     3  137</span><span style='text-decoration: underline;'>498</span><span>772 3:0      
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span>     0     2   39</span><span style='text-decoration: underline;'>372</span><span>558 2:0      
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span>     1     3     </span><span style='text-decoration: underline;'>527</span><span>401 3:1      
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span>     2    25     </span><span style='text-decoration: underline;'>517</span><span>926 25:2     
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span>     1   106     </span><span style='text-decoration: underline;'>225</span><span>714 106:1    
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span>     0     5     </span><span style='text-decoration: underline;'>174</span><span>002 5:0      
-#&gt; </span><span style='color: #BCBCBC;'>11</span><span>     2    69     </span><span style='text-decoration: underline;'>172</span><span>894 69:2     
-#&gt; </span><span style='color: #BCBCBC;'>12</span><span>     2    26     </span><span style='text-decoration: underline;'>162</span><span>913 26:2     
-#&gt; </span><span style='color: #BCBCBC;'>13</span><span>     2    16     </span><span style='text-decoration: underline;'>130</span><span>712 16:2     
-#&gt; </span><span style='color: #BCBCBC;'>14</span><span>     2    70      </span><span style='text-decoration: underline;'>80</span><span>103 70:2     
-#&gt; </span><span style='color: #BCBCBC;'>15</span><span>     1    99      </span><span style='text-decoration: underline;'>75</span><span>782 99:1     
-#&gt; 
-#&gt; $most_mutations_karyotype
-#&gt; [1] "2:2"
-#&gt; 
-#&gt; attr(,"class")
-#&gt; [1] "cnaqc"</div></span></pre>
+#&gt; </span><span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Using reference genome coordinates for: </span><span style='color: #00BB00;'>GRCh38</span><span>.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #BBBB00;'>!</span><span> Missing CCF column from CNA calls, adding CCF = 1 assuming clonal CNA calls.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Input n = 1003 mutations for 267 CNA segments (267 clonal, 0 subclonal)</span></div><div class='output co'>#&gt; <span class='warning'>Warning: [CNAqc] a karyotype column is present in CNA calls, and will be overwritten</span></div><div class='output co'>#&gt; </div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✔</span><span> Mapped n = 1003 mutations to clonal segments (100% of input)</span></div><div class='output co'>#&gt; <span class='message'>── </span><span style='color: #000000;background-color: #BBBB00;'>[ CNAqc ] </span><span> n = 1003 mutations in </span><span style='color: #00BB00;'>267</span><span> segments (267 clonal + 0 subclonal). Gen</span></div><div class='output co'>#&gt; 
+#&gt;   2:2  [n = 550, L = 1483 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { </span><span style='color: #BBBB00;'>CTCF</span><span> }
+#&gt;   4:2  [n = 151, L = 331 Mb] ■■■■■■■
+#&gt;   2:1  [n = 140, L = 420 Mb] ■■■■■■■  { </span><span style='color: #BBBB00;'>TTN</span><span> }
+#&gt;   3:2  [n = 130, L = 357 Mb] ■■■■■■
+#&gt;   3:0  [n =  25, L = 137 Mb] ■
+#&gt;   2:0  [n =   6, L =  39 Mb]   { </span><span style='color: #BBBB00;'>TP53</span><span> }
+#&gt;  16:2  [n =   1, L =   0 Mb] 
+#&gt; </div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Sample Purity: 89% ~ Ploidy: 4.</span></div><div class='output co'>#&gt; </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
