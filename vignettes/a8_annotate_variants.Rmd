@@ -77,7 +77,7 @@ if (!requireNamespace("BiocManager", quietly = TRUE))
 #We have to install the corresponding txdb package for transcript annotations
 tx_pkg <-  paste0("TxDb.Hsapiens.UCSC.",reference_genome, ".knownGene")
 if(!require(tx_pkg, character.only = TRUE))
-  BiocManager::install(tx_pkg, site_repository = )
+  BiocManager::install(tx_pkg)
 
 #We have to install also the BS database for the sequences (it may take some time)
 bs_pkg <-  paste0("BSgenome.Hsapiens.UCSC.",reference_genome)
