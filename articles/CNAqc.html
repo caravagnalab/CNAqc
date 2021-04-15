@@ -120,32 +120,17 @@
 <div id="requirements" class="section level3">
 <h3 class="hasAnchor">
 <a href="#requirements" class="anchor"></a>Requirements</h3>
-<p>To analyse a tumour sample with <code>CNAqc</code>, you need:</p>
 <ul>
-<li>mutation calls (SNVs, indels, …);</li>
-<li>absolute CNA segments (clonal/ suclonal copy number calls);</li>
-<li>a tumor purity estimate.</li>
+<li>read counts from somatic mutations (SNVs, indels);</li>
+<li>allele-specific copy number segments (clonal CNAs);</li>
+<li>tumor purity estimate.</li>
 </ul>
-<p>The package uses chromosome coordinates to map mutations to CNAs, and elaborate a number of analysis on the data. These can be used to check the quality (QC) and consistency among the calls, or other other metrics often used to study cancer evolution. Besides genomic coordinates, <code>CNAqc</code> requires standard information on the type of DNA modification; <em>VEP, ANNOVER or other types of annotations are not required</em>.</p>
-<p><strong>Available vignettes:</strong></p>
-<ul>
-<li>
-<a href="https://caravagn.github.io/CNAqc/articles/Introduction.html">1. Introduction (data formats, example dataset)</a>.</li>
-<li>
-<a href="https://caravagn.github.io/CNAqc/articles/Plots.html">2. Plots (data formats, example dataset)</a>.</li>
-<li>
-<a href="https://caravagn.github.io/CNAqc/articles/peaks_detection.html">3. QC purity and ploidy via peak detection</a>.</li>
-<li>
-<a href="https://caravagn.github.io/CNAqc/articles/ccf_computation.html">4. Cancer Cell Fractions computation</a>.</li>
-<li>
-<a href="https://caravagn.github.io/CNAqc/articles/smoothing.html">5. Segments smoothing</a>.</li>
-<li>
-<a href="https://caravagn.github.io/CNAqc/articles/fragmentation.html">6. Genome fragmentation analysis</a>.</li>
-</ul>
+<p><code>CNAqc</code> uses chromosome coordinates for one of the supported references to map mutations to segments. Then, it can elaborate a number of analysis that help quality control the consistency among mutations and CNAs, and re-parametrise callers.</p>
+<p>Example inputs and tool functions are discussed as Articles.</p>
 </div>
-<div id="technical-details" class="section level3">
+<div id="the-model" class="section level3">
 <h3 class="hasAnchor">
-<a href="#technical-details" class="anchor"></a>Technical details</h3>
+<a href="#the-model" class="anchor"></a>The model</h3>
 <p>The following concepts are used to develop <code>CNAqc</code> analyses.</p>
 <p>The <strong>expected Variant Allele Frequency (VAF)</strong> for mutations present in <span class="math inline">\(m\)</span> copies of the tumour genome, when the tumour sample purity is <span class="math inline">\(\pi\)</span> and segment ploidy is <span class="math inline">\(p\)</span> (i.e., total number of copies of the minor and major allele at the mutation locus) are given by <span class="math display">\[
 v = \dfrac{m \pi}{
@@ -153,7 +138,7 @@ v = \dfrac{m \pi}{
 } \, .
 \]</span></p>
 <p>This formula gives as an expectation for the allelic frequency of somatic mutations that map to a certain karyotype (e.g., a triploid <code>2:1</code> segment, or AAB),</p>
-<p>Given VAF, tumour purity and CNA data, <strong>Cancer Cell Fractions (CCF)</strong> values can be computed as</p>
+<p>Given VAF, tumour purity and CNAs, <strong>Cancer Cell Fractions (CCF)</strong> values can be computed as</p>
 <p><span class="math display">\[
 \text{CCF} = 
 \dfrac{

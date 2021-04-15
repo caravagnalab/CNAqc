@@ -262,9 +262,10 @@ H(x) = - p_x \log(p_x)
 <span class="co">#&gt;  9 0.891                     2 1.00 </span>
 <span class="co">#&gt; 10 0.815                     2 0.916</span>
 <span class="co">#&gt; # … with 9,112 more rows</span></code></pre></div>
-<p>The CCF analysis plot is a <code>ggpubr</code>-assembled figure, woith one line per karyotype.</p>
+<p>The CCF analysis plot is a <code>ggpubr</code>-assembled figure, with one line per karyotype.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/plot_CCF.html">plot_CCF</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="co"># We just omit empty plots with empty_plot = FALSE</span>
+<span class="fu"><a href="../reference/plot_CCF.html">plot_CCF</a></span><span class="op">(</span><span class="va">x</span>, empty_plot <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <p><img src="a4_ccf_computation_files/figure-html/unnamed-chunk-5-1.png" width="1056"></p>
 <p>The plot shows the quantities described above; from left to right we have</p>
 <ul>
@@ -316,7 +317,7 @@ H(x) = - p_x \log(p_x)
 <span class="co">#&gt; ✔  PASS  CCF via ROUGH.</span></code></pre></div>
 <p>The data can be accessed in the usual way; the layout of the CCF plots are conceptually the same, but use different colors. The cutoff is annotated in the panel with the mutation multiplicity <span class="math inline">\(m\)</span> assigned to each observed VAF value.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/plot_CCF.html">plot_CCF</a></span><span class="op">(</span><span class="va">x_r</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="../reference/plot_CCF.html">plot_CCF</a></span><span class="op">(</span><span class="va">x_r</span>, empty_plot <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <p><img src="a4_ccf_computation_files/figure-html/unnamed-chunk-8-1.png" width="1056"></p>
 <p>Notice that for karyotype <code>2:0</code> the difference among the mutation multiplicity histograms (second panel) obtained from the two methods is minimal. The difference is also small for triploid mutations (<code>'2:1'</code>). The results for tetraploid mutations is instead quite different, and that’s because there are not many mutations happening after genome doubling (leftmost peak, <span class="math inline">\(m=1\)</span>), and therefore the weighted split of the rough method tends to assign most mutations to the rightmost peak (<span class="math inline">\(m=2\)</span>).</p>
 <p>A visual plot is obtained using the internal function <code>CNAqc:::plot_mutation_multiplicity_rough</code>.</p>
@@ -326,7 +327,7 @@ H(x) = - p_x \log(p_x)
   <span class="fu">CNAqc</span><span class="fu">:::</span><span class="fu">plot_mutation_multiplicity_rough</span><span class="op">(</span><span class="va">x_r</span>, <span class="st">'2:2'</span><span class="op">)</span>,
   nrow <span class="op">=</span> <span class="fl">2</span>
 <span class="op">)</span></code></pre></div>
-<p><img src="a4_ccf_computation_files/figure-html/unnamed-chunk-9-1.png" width="1056"></p>
+<p><img src="a4_ccf_computation_files/figure-html/unnamed-chunk-9-1.png" width="864"></p>
 <p>We can compare the two computed CCF distributions, and observe that the difference in the estimation from karyotype <code>'2:2'</code> creates a small bump at about <code>CCF=0.5</code>.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">ggpubr</span><span class="fu">::</span><span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html">ggarrange</a></span><span class="op">(</span>
@@ -404,7 +405,7 @@ H(x) = - p_x \log(p_x)
   <span class="fu">CNAqc</span><span class="fu">:::</span><span class="fu">plot_mutation_multiplicity_rough</span><span class="op">(</span><span class="va">y_r</span>, <span class="st">'2:2'</span><span class="op">)</span>,
   nrow <span class="op">=</span> <span class="fl">2</span>
 <span class="op">)</span></code></pre></div>
-<p><img src="a4_ccf_computation_files/figure-html/unnamed-chunk-12-1.png" width="1056"></p>
+<p><img src="a4_ccf_computation_files/figure-html/unnamed-chunk-12-1.png" width="864"></p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">ggpubr</span><span class="fu">::</span><span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html">ggarrange</a></span><span class="op">(</span>
   <span class="fu"><a href="../reference/plot_data_histogram.html">plot_data_histogram</a></span><span class="op">(</span><span class="va">y_e</span>, which <span class="op">=</span> <span class="st">'CCF'</span>, karyotypes <span class="op">=</span> <span class="st">'2:2'</span><span class="op">)</span>,

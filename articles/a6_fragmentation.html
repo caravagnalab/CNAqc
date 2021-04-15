@@ -196,9 +196,8 @@
 <p><span class="math inline">\(J\)</span> is the sum of the variation in total copy number profiles, evaluated among each pair of contiguous segments.</p>
 <p>Significantly overfragmented arms with high <span class="math inline">\(J\)</span> have a “scattered” copy number profile. Those with low <span class="math inline">\(J\)</span> are more uniform, as they show little no copy number change, and can be possibly smoothed (see below).</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/plot_arm_fragmentation.html">plot_arm_fragmentation</a></span><span class="op">(</span><span class="va">x</span>, zoom <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>
-<span class="co">#&gt; ✖ Increare zoom to see more chromosomes.</span></code></pre></div>
-<p><img src="a6_fragmentation_files/figure-html/unnamed-chunk-5-1.png" width="672"></p>
+<code class="sourceCode R"><span class="fu"><a href="../reference/plot_arm_fragmentation.html">plot_arm_fragmentation</a></span><span class="op">(</span><span class="va">x</span>, zoom <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></code></pre></div>
+<p><img src="a6_fragmentation_files/figure-html/unnamed-chunk-5-1.png" width="576"></p>
 <p>Once available, these results appear in any call to <code>plot_segments</code> as annotated purple squares sorrounding the arms.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Default plot has now segments</span>
@@ -268,7 +267,7 @@
 <span class="co">#&gt; ✔ Arm-level fragmentation analysis: 2 segments overfragmented.</span></code></pre></div>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/plot_arm_fragmentation.html">plot_arm_fragmentation</a></span><span class="op">(</span><span class="va">x</span>, zoom <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></code></pre></div>
-<p><img src="a6_fragmentation_files/figure-html/unnamed-chunk-8-1.png" width="960"></p>
+<p><img src="a6_fragmentation_files/figure-html/unnamed-chunk-8-1.png" width="576"></p>
 </div>
   </div>
 
