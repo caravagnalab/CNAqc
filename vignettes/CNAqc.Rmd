@@ -18,28 +18,15 @@ options(crayon.enabled=F)
 
 ### Requirements
 
-To analyse a tumour sample with `CNAqc`, you need: 
+* read counts from somatic mutations (SNVs, indels); 
+* allele-specific copy number segments (clonal CNAs);
+* tumor purity estimate.
 
-* mutation calls (SNVs, indels, ...); 
-* absolute CNA segments (clonal/ suclonal copy number calls);
-* a tumor purity estimate.
+`CNAqc` uses chromosome coordinates for one of the supported references to map mutations to segments. Then, it can elaborate a number of analysis that help quality control the consistency among mutations and CNAs, and re-parametrise callers. 
 
-The package uses  chromosome coordinates to map mutations to CNAs, and elaborate a number of analysis on the data.
-These can be used to check the quality (QC) and consistency among the calls, or other other metrics often used to
-study cancer evolution. Besides genomic coordinates, `CNAqc` requires standard information on the
-type of DNA modification; _VEP, ANNOVER or other types of annotations are not required_.   
+Example inputs and tool functions are discussed as Articles.
 
-**Available vignettes:** 
-
-* [1. Introduction (data formats, example dataset)](https://caravagn.github.io/CNAqc/articles/Introduction.html). 
-* [2. Plots (data formats, example dataset)](https://caravagn.github.io/CNAqc/articles/Plots.html). 
-* [3. QC purity and ploidy via peak detection](https://caravagn.github.io/CNAqc/articles/peaks_detection.html). 
-* [4. Cancer Cell Fractions computation](https://caravagn.github.io/CNAqc/articles/ccf_computation.html). 
-* [5. Segments smoothing](https://caravagn.github.io/CNAqc/articles/smoothing.html). 
-* [6. Genome fragmentation analysis](https://caravagn.github.io/CNAqc/articles/fragmentation.html). 
-
-
-### Technical details
+### The model
 
 The following concepts are used to develop `CNAqc` analyses.
 
@@ -52,7 +39,7 @@ v = \dfrac{m \pi}{
 
 This formula gives as an expectation for the allelic frequency of somatic mutations that map to a certain karyotype (e.g., a triploid `2:1` segment, or AAB),
 
-Given VAF, tumour purity and CNA data, **Cancer Cell Fractions (CCF)** values can be computed as
+Given VAF, tumour purity and CNAs, **Cancer Cell Fractions (CCF)** values can be computed as
 
 \[
 \text{CCF} = 
