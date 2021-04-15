@@ -28,7 +28,7 @@
 #'
 #' snvs <- example_dataset_CNAqc$snvs
 #'
-#'snvs_annotated <- annotate_variants(snvs, ref = reference_genome)
+#'snvs_annotated <- annotate_variants(snvs)
 
 annotate_variants <- function(x, ref = "hg19", driver_list = CNAqc::intogen_drivers, polyphen = FALSE, filter_tumor_type = NULL){
 
