@@ -52,7 +52,7 @@ snvs %>%  head
 
 As we can see we already have driver annotated from an external source (ANNOVAR) here, let's get rid of them and then compare what we will found wi our approach
 
-```{r, warning=FALSE}
+```{r, warning=FALSE, message=FALSE}
 
 drivers_true <- snvs %>% filter(is_driver == T) %>% pull(driver_label) %>%  unique
 
@@ -62,7 +62,7 @@ snvs <- snvs %>% select(-is_driver, -driver_label)
 
 The function needs some databases from Bioconductor to annotate correctly the variants
 
-```{r, warning=FALSE}
+```{r, warning=FALSE, message=FALSE}
 
 
 # First we have to find the reference against which we mapped the reads
@@ -75,15 +75,19 @@ if (!requireNamespace("BiocManager", quietly = TRUE))
 
 #We have to install the corresponding txdb package for transcript annotations
 tx_pkg <-  paste0("TxDb.Hsapiens.UCSC.",reference_genome, ".knownGene")
-BiocManager::install(tx_pkg)
+if(!require(tx_pkg, character.only = TRUE))
+  BiocManager::install(tx_pkg)
 
 #We have to install also the BS database for the sequences (it may take some time)
 bs_pkg <-  paste0("BSgenome.Hsapiens.UCSC.",reference_genome)
-BiocManager::install(bs_pkg)
+if(!require(bs_pkg, character.only = TRUE))
+  BiocManager::install(bs_pkg)
 
 # Then those two packages provide usefull utilities to deal with biological databases
-BiocManager::install("Organism.dplyr")
-BiocManager::install("org.Hs.eg.db")
+if(!require("Organism.dplyr", character.only = TRUE))
+  BiocManager::install("Organism.dplyr")
+if(!require("org.Hs.eg.db", character.only = TRUE))
+  BiocManager::install("org.Hs.eg.db")
 
 ```
 # Annotation phase
@@ -92,8 +96,7 @@ Now we have everything we can just run the function andget back our annotated fi
 
 ```{r, warning=FALSE, message=FALSE}
 
-
-snvs_annotated <- annotate_variant(snvs, ref = reference_genome)
+snvs_annotated <- annotate_variants(snvs, ref = reference_genome)
 
 snvs_annotated
 ```
@@ -114,7 +117,7 @@ intogen_ttypes
 
 
 ```{r,  warning=FALSE, message=FALSE}
-snvs_annotated_OV <- annotate_variant(snvs, ref = reference_genome, filter_tumor_type = "OV")
+snvs_annotated_OV <- annotate_variants(snvs, ref = reference_genome, filter_tumor_type = "OV")
 
 snvs_annotated_OV
 ```
@@ -123,7 +126,7 @@ Another option is to supply your list of drivers as a one coloumn `data.frame` u
 
 ```{r,  warning=FALSE, message=FALSE}
 
-snvs_annotated_custom <- annotate_variant(snvs, ref = reference_genome, driver_list = as.data.frame(c("TP53", "CHDS")))
+snvs_annotated_custom <- annotate_variants(snvs, ref = reference_genome, driver_list = as.data.frame(c("TP53", "CHDS")))
 
 snvs_annotated_custom
 ```
