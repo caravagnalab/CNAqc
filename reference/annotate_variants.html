@@ -209,8 +209,78 @@ gene_refAA-&gt;varAA (is NA in case `is_driver` is FALSE).</p>
 
 <span class='va'>snvs</span> <span class='op'>&lt;-</span> <span class='va'>example_dataset_CNAqc</span><span class='op'>$</span><span class='va'>snvs</span>
 
-<span class='va'>snvs_annotated</span> <span class='op'>&lt;-</span> <span class='fu'>annotate_variants</span><span class='op'>(</span><span class='va'>snvs</span>, ref <span class='op'>=</span> <span class='va'>reference_genome</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in paste0("TxDb.Hsapiens.UCSC.", ref, ".knownGene"): object 'reference_genome' not found</span></div></pre>
+<span class='va'>snvs_annotated</span> <span class='op'>&lt;-</span> <span class='fu'>annotate_variants</span><span class='op'>(</span><span class='va'>snvs</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Attaching package: ‘BiocGenerics’</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:parallel’:</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,</span>
+#&gt; <span class='message'>    clusterExport, clusterMap, parApply, parCapply, parLapply,</span>
+#&gt; <span class='message'>    parLapplyLB, parRapply, parSapply, parSapplyLB</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:dplyr’:</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    combine, intersect, setdiff, union</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:stats’:</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    IQR, mad, sd, var, xtabs</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:base’:</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    anyDuplicated, append, as.data.frame, basename, cbind, colnames,</span>
+#&gt; <span class='message'>    dirname, do.call, duplicated, eval, evalq, Filter, Find, get, grep,</span>
+#&gt; <span class='message'>    grepl, intersect, is.unsorted, lapply, Map, mapply, match, mget,</span>
+#&gt; <span class='message'>    order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank,</span>
+#&gt; <span class='message'>    rbind, Reduce, rownames, sapply, setdiff, sort, table, tapply,</span>
+#&gt; <span class='message'>    union, unique, unsplit, which.max, which.min</span></div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Attaching package: ‘S4Vectors’</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:dplyr’:</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    first, rename</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:tidyr’:</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    expand</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:base’:</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    expand.grid</span></div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Attaching package: ‘IRanges’</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:dplyr’:</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    collapse, desc, slice</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:purrr’:</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    reduce</span></div><div class='output co'>#&gt; <span class='message'>Welcome to Bioconductor</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    Vignettes contain introductory material; view with</span>
+#&gt; <span class='message'>    'browseVignettes()'. To cite Bioconductor, see</span>
+#&gt; <span class='message'>    'citation("Biobase")', and for packages 'citation("pkgname")'.</span></div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Attaching package: ‘AnnotationDbi’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:dplyr’:</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    select</span></div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Attaching package: ‘XVector’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:purrr’:</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    compact</span></div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Attaching package: ‘Biostrings’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:base’:</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    strsplit</span></div><div class='output co'>#&gt; </div><div class='output co'>#&gt; <span class='warning'>Warning: GRanges object contains 364 out-of-bound ranges located on sequences</span>
+#&gt; <span class='warning'>  4529, 4631, 4632, 1653, 1654, 1655, 1656, 12192, 12362, 12363, 12364,</span>
+#&gt; <span class='warning'>  12365, 12366, 12367, 12517, 12518, 12519, 12520, 13123, 13124, 13974,</span>
+#&gt; <span class='warning'>  13975, 13976, 13994, 13995, 17007, 17008, 17009, 17010, 17011, 17012,</span>
+#&gt; <span class='warning'>  17014, 17015, 17016, 17793, 18007, 20532, 22527, 22954, 22955, 22956,</span>
+#&gt; <span class='warning'>  23347, 27275, 27276, 28075, 28085, 28893, 29046, 29047, 29242, 31362,</span>
+#&gt; <span class='warning'>  32048, 32050, 33339, 33714, 33715, 32912, 32913, 40960, 40961, 44219,</span>
+#&gt; <span class='warning'>  44220, 44242, 44262, 44263, 44356, 46050, 46054, 46062, 46063, 46064,</span>
+#&gt; <span class='warning'>  46065, 46066, 53476, 53477, 53497, 53498, 59180, 57764, 57766, 61092,</span>
+#&gt; <span class='warning'>  69815, 69930, 70330, 70331, 70332, 77129, 77130, 76239, 76240, 76241,</span>
+#&gt; <span class='warning'>  77987, and 77988. Note that ranges located on a sequence whose length</span>
+#&gt; <span class='warning'>  is unknown (NA) or on a circular sequence are not considered</span>
+#&gt; <span class='warning'>  out-of-bound (use seqlengths() and isCircular() to get the lengths and</span>
+#&gt; <span class='warning'>  circularity flags of the underlying sequences). You can use trim() to</span>
+#&gt; <span class='warning'>  trim these ranges. See ?`trim,GenomicRanges-method` for more</span>
+#&gt; <span class='warning'>  information.</span></div><div class='output co'>#&gt; <span class='message'>'select()' returned many:1 mapping between keys and columns</span></div><div class='output co'>#&gt; <span class='message'>'select()' returned many:1 mapping between keys and columns</span></div><div class='output co'>#&gt; <span class='message'>'select()' returned 1:1 mapping between keys and columns</span></div><div class='output co'>#&gt; <span class='message'>'select()' returned many:1 mapping between keys and columns</span></div><div class='output co'>#&gt; <span class='message'>'select()' returned 1:1 mapping between keys and columns</span></div><div class='output co'>#&gt; <span class='message'>'select()' returned many:1 mapping between keys and columns</span></div><div class='output co'>#&gt; <span class='message'>using temporary cache /var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//Rtmpi4G2L5/BiocFileCache</span></div><div class='output co'>#&gt; <span class='message'>creating 'src_organism' database...</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Ignoring remaining part of query: CREATE INDEX IF NOT EXISTS entrez_accession ON id_accession (entrez);</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Ignoring remaining part of query: CREATE INDEX IF NOT EXISTS entrez_protein ON id_protein (entrez);</span></div><div class='output co'>#&gt; <span class='message'>Joining, by = c("chr", "from", "to")</span></div><div class='output co'>#&gt; <span class='message'>Joining, by = "chr"</span></div><div class='output co'>#&gt; <span class='warning'>Warning: GRanges object contains 315 out-of-bound ranges located on sequences</span>
+#&gt; <span class='warning'>  4529, 4631, 4632, 1653, 1654, 1655, 1656, 12192, 12362, 12363, 12364,</span>
+#&gt; <span class='warning'>  12365, 12366, 12367, 12517, 12518, 12519, 12520, 13123, 13124, 13974,</span>
+#&gt; <span class='warning'>  13975, 13976, 13994, 13995, 17007, 17008, 17009, 17010, 17011, 17012,</span>
+#&gt; <span class='warning'>  17014, 17015, 17016, 17793, 18007, 20532, 22527, 22954, 22955, 22956,</span>
+#&gt; <span class='warning'>  23347, 27275, 27276, 28075, 28085, 28893, 29046, 29047, 29242, 31362,</span>
+#&gt; <span class='warning'>  32048, 32050, 33339, 33714, 33715, 32912, 32913, 40960, 40961, 44219,</span>
+#&gt; <span class='warning'>  44220, 44242, 44262, 44263, 44356, 53476, 53477, 53497, 53498, 59180,</span>
+#&gt; <span class='warning'>  57764, 57766, 61092, 69815, 69930, 70330, 70331, 70332, 77129, 77130,</span>
+#&gt; <span class='warning'>  76239, 76240, 76241, 77987, and 77988. Note that ranges located on a</span>
+#&gt; <span class='warning'>  sequence whose length is unknown (NA) or on a circular sequence are not</span>
+#&gt; <span class='warning'>  considered out-of-bound (use seqlengths() and isCircular() to get the</span>
+#&gt; <span class='warning'>  lengths and circularity flags of the underlying sequences). You can use</span>
+#&gt; <span class='warning'>  trim() to trim these ranges. See ?`trim,GenomicRanges-method` for more</span>
+#&gt; <span class='warning'>  information.</span></div><div class='output co'>#&gt; <span class='message'>Joining, by = c("chr", "from", "to")</span></div><div class='output co'>#&gt; <span class='message'>Joining, by = "gene_symbol"</span></div><div class='output co'>#&gt; <span class='message'>Joining, by = c("chr", "from", "to", "is_driver", "driver_label")</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
