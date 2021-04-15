@@ -1,0 +1,154 @@
+---
+title: "8. Annotatation of SNVs"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{8. Annotatation of SNVs}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
+options(crayon.enabled=FALSE)
+```
+
+```{r setup}
+library(CNAqc)
+
+# Extra packages
+require(dplyr)
+
+#if you use RStudio you will probably have to run this line
+# options(connectionObserver = NULL)
+```
+
+CNAqc also has a number of simple annotation functions that can be useful for giving a preliminary idea of what mutations might be driver events. However, it should be noted that this function provides an overview but does not replace more complex and in-depth analyzes of SNVs.
+Given a SNVs table we in turn annotate:
+* Position of the mutation (coding, intron, fiveUTR, threeUTR, intron, intergenic, spliceSite, promoter)
+* Consequence on the protein for coding mutations (nonsynonymous, synonymous, frameshift, stop) with eventual change in the AA
+* Synonymous mutations are then compared to known driver genes from the intogen database and flagged as drivers
+* Optionally if the dbSNP id is present the PolyPhen score can also be annotated
+
+The annotation phase is heavily based on the [VariantAnnotation] (https://bioconductor.org/packages/release/bioc/html/VariantAnnotation.html) package
+
+
+# Install Required Packages
+
+We will show the functioning with tha example file shipped in CNAqc
+
+```{r}
+# Load template data
+data('example_dataset_CNAqc', package = 'CNAqc')
+
+snvs <- example_dataset_CNAqc$snvs
+
+
+snvs %>%  head
+```
+
+As we can see we already have driver annotated from an external source (ANNOVAR) here, let's get rid of them and then compare what we will found wi our approach
+
+```{r, warning=FALSE}
+
+drivers_true <- snvs %>% filter(is_driver == T) %>% pull(driver_label) %>%  unique
+
+snvs <- snvs %>% select(-is_driver, -driver_label)
+
+```
+
+The function needs some databases from Bioconductor to annotate correctly the variants
+
+```{r, warning=FALSE}
+
+
+# First we have to find the reference against which we mapped the reads
+reference_genome <- example_dataset_CNAqc$reference
+
+# All those packages are distributed in Bioconductor
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+
+#We have to install the corresponding txdb package for transcript annotations
+tx_pkg <-  paste0("TxDb.Hsapiens.UCSC.",reference_genome, ".knownGene")
+BiocManager::install(tx_pkg)
+
+#We have to install also the BS database for the sequences (it may take some time)
+bs_pkg <-  paste0("BSgenome.Hsapiens.UCSC.",reference_genome)
+BiocManager::install(bs_pkg)
+
+# Then those two packages provide usefull utilities to deal with biological databases
+BiocManager::install("Organism.dplyr")
+BiocManager::install("org.Hs.eg.db")
+
+```
+# Annotation phase
+
+Now we have everything we can just run the function andget back our annotated file
+
+```{r, warning=FALSE, message=FALSE}
+
+
+snvs_annotated <- annotate_variant(snvs, ref = reference_genome)
+
+snvs_annotated
+```
+One thing to note is the presence of multiple locations and consequences for a single variant. This happens as we try to annotate the mutations in a transcript-agnostic manner, consequently we report all possible effects and locations for any transcript (separated by a : ). 
+The drivers largely correspond to those previously noted (TP53 and CTCF) with some differences. Obviously using multiple annotations and validation guarantees more precise results. 
+
+
+
+We use the intogen database to annotate drivers, but you can costumize this behaviour in two way. First, drivers are annotated by tumor types, by default
+we use all the drivers but it is possible to specify the cancer type id. A list of tumor types and their codes is available in the package 
+
+```{r}
+data('intogen_ttypes', package = 'CNAqc')
+
+intogen_ttypes
+
+```
+
+
+```{r,  warning=FALSE, message=FALSE}
+snvs_annotated_OV <- annotate_variant(snvs, ref = reference_genome, filter_tumor_type = "OV")
+
+snvs_annotated_OV
+```
+
+Another option is to supply your list of drivers as a one coloumn `data.frame` using the argument `driver_list`.
+
+```{r,  warning=FALSE, message=FALSE}
+
+snvs_annotated_custom <- annotate_variant(snvs, ref = reference_genome, driver_list = as.data.frame(c("TP53", "CHDS")))
+
+snvs_annotated_custom
+```
+
+# Plot
+
+We can finally perform the QC and see how the drivers are actually plotted together with the data distribution
+
+```{r, warning=FALSE, message=FALSE}
+
+x = init(
+  snvs_annotated, 
+  example_dataset_CNAqc$cna,
+  example_dataset_CNAqc$purity,
+  ref = 'hg19'
+  )
+
+ggpubr::ggarrange(
+  plot_data_histogram(x, which = 'VAF'),
+  plot_data_histogram(x, which = 'DP'),
+  plot_data_histogram(x, which = 'NV'),
+  ncol = 3,
+  nrow = 1
+  )
+
+```
+
+
