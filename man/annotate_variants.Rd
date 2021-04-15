@@ -42,5 +42,5 @@ data('example_dataset_CNAqc', package = 'CNAqc')
 
 snvs <- example_dataset_CNAqc$snvs
 
-snvs_annotated <- annotate_variants(snvs, ref = reference_genome)
+snvs_annotated <- annotate_variants(snvs)
 }
