@@ -70,8 +70,8 @@ $J$ is the sum of the variation in total copy number profiles, evaluated among e
 
 Significantly overfragmented arms with high $J$  have a "scattered" copy number profile. Those with low $J$ are more uniform, as they show little no copy number change, and can be possibly smoothed (see below).
 
-```{r, fig.width=7, fig.height=12}
-plot_arm_fragmentation(x, zoom = 3)
+```{r, fig.width=6, fig.height=6}
+plot_arm_fragmentation(x, zoom = 0)
 ```
 
 Once available, these results appear in any call to `plot_segments` as annotated purple squares sorrounding the arms.
@@ -93,7 +93,7 @@ x = detect_arm_overfragmentation(x)
 print(x)
 ```
 
-```{r, fig.width=10, fig.height=12}
+```{r, fig.width=6, fig.height=6}
 plot_arm_fragmentation(x, zoom = 0)
 ```
 

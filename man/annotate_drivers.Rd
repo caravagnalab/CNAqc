@@ -13,12 +13,6 @@ annotate_drivers(
 )
 }
 \arguments{
-\item{x}{}
-
-\item{drivers_list}{}
-
-\item{function_column}{}
-
 \item{gene_column}{}
 }
 \value{

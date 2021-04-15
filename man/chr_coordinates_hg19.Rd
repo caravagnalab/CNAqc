@@ -6,7 +6,7 @@
 \title{Coordinates for hg19 chromosomes.}
 \format{
 A tibble that represents the coordinates for hg19 genome assembly, reporting the chromosome label,
-from and to (chromosome range), the length of the chromosome, the position (start and end) of the 
+from and to (chromosome range), the length of the chromosome, the position (start and end) of the
 centromers.
 }
 \usage{

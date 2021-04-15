@@ -15,6 +15,26 @@ fortify_CNA_segments = function(x)
       "Missing CCF column from CNA calls, adding CCF = 1 assuming clonal CNA calls."
     )
   }
+  else
+    {
+      if(x$CCF %>% is.na() %>% any())
+      {
+        cli::cli_alert_warning(
+          "NAs in the CCF column from CNA calls, removing those."
+        )
+
+        x = x %>% dplyr::filter(!is.na(CCF))
+      }
+
+      if((x$CCF < 1) %>% any())
+      {
+        cli::cli_alert_warning(
+          "Subclonal CNAs are not yet supported, those segments will be removed."
+        )
+
+        x = x %>% dplyr::filter(CCF == 1) %>% distinct(chr, from, to, Major, minor, .keep_all = TRUE)
+      }
+    }
 
   x$from = enforce_numeric(x$from)
   x$to = enforce_numeric(x$to)
@@ -30,6 +50,7 @@ fortify_CNA_segments = function(x)
     )
   }
 
+
   if('is_driver' %in% C)
   {
     if(!("gene" %in% C))
@@ -40,20 +61,20 @@ fortify_CNA_segments = function(x)
     else
       cli::cli_alert_info("Driver annotation is present in mutation data (is_driver), will be used in plotting.")
   }
-  
+
   # Check chromosome format reference
-  if(!all(grepl("chr", x$chr))) 
+  if(!all(grepl("chr", x$chr)))
   {
     cli::cli_alert_warning("CNA chromosomes should be in the format 'chr*', I will add a 'chr' prefix.")
-    x = x %>% 
-      rowwise() %>% 
+    x = x %>%
+      rowwise() %>%
       mutate(chr = ifelse(
         !grepl("chr", chr),
         paste0('chr', chr),
         chr
       ))
   }
-  
+
 
   return(tibble::as_tibble(x))
   # Supported formats
@@ -103,13 +124,13 @@ fortify_mutation_calls = function(x)
         dplyr::mutate(gene = paste(chr, from, to, ref, alt, sep = ':'))
     }
   }
-  
+
   # Check chromosome format reference
-  if(!all(grepl("chr", x$chr))) 
+  if(!all(grepl("chr", x$chr)))
   {
     cli::cli_alert_warning("Mutation chromosomes should be in the format 'chr*', I will add a 'chr' prefix.")
-    x = x %>% 
-      rowwise() %>% 
+    x = x %>%
+      rowwise() %>%
       mutate(chr = ifelse(
         !grepl("chr", chr),
         paste0('chr', chr),
