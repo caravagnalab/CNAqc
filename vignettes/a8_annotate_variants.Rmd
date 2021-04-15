@@ -33,7 +33,7 @@ Given a SNVs table we in turn annotate:
 * Synonymous mutations are then compared to known driver genes from the intogen database and flagged as drivers
 * Optionally if the dbSNP id is present the PolyPhen score can also be annotated
 
-The annotation phase is heavily based on the [VariantAnnotation] (https://bioconductor.org/packages/release/bioc/html/VariantAnnotation.html) package
+The annotation phase is heavily based on the [VariantAnnotation](https://bioconductor.org/packages/release/bioc/html/VariantAnnotation.html) package
 
 
 # Install Required Packages
