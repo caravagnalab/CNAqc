@@ -16,6 +16,9 @@
     <loc>caravagn.github.io/CNAqc/reference/annotate_drivers.html</loc>
   </url>
   <url>
+    <loc>caravagn.github.io/CNAqc/reference/annotate_variants.html</loc>
+  </url>
+  <url>
     <loc>caravagn.github.io/CNAqc/reference/chr_coordinates_GRCh38.html</loc>
   </url>
   <url>
@@ -134,5 +137,8 @@
   </url>
   <url>
     <loc>caravagn.github.io/CNAqc/articles/a7_example_MSeq.html</loc>
+  </url>
+  <url>
+    <loc>caravagn.github.io/CNAqc/articles/a8_annotate_variants.html</loc>
   </url>
 </urlset>
