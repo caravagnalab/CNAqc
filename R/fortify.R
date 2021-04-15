@@ -19,20 +19,22 @@ fortify_CNA_segments = function(x)
     {
       if(x$CCF %>% is.na() %>% any())
       {
-        cli::cli_alert_warning(
+        cli::cli_alert_danger(
           "NAs in the CCF column from CNA calls, removing those."
         )
 
         x = x %>% dplyr::filter(!is.na(CCF))
+        if(nrow(x) == 0) stop("No more CNAs to work with?")
       }
 
       if((x$CCF < 1) %>% any())
       {
-        cli::cli_alert_warning(
+        cli::cli_alert_danger(
           "Subclonal CNAs are not yet supported, those segments will be removed."
         )
 
         x = x %>% dplyr::filter(CCF == 1) %>% distinct(chr, from, to, Major, minor, .keep_all = TRUE)
+        if(nrow(x) == 0) stop("No more CNAs to work with?")
       }
     }
 
@@ -103,9 +105,19 @@ fortify_mutation_calls = function(x)
 
   if(max(c(nchar(x$alt), nchar(x$ref))) > 1)
   {
-    warning(
-      "You are using indels mutation data, just beware that indels count-values aree less reliable than SNVs ones ...."
+    cli::cli_alert_warning(
+      "You are using also indels mutation data, we suggest to trust more SNVs to QC your data ..."
     )
+  }
+
+  if(x[, required_columns] %>% is.na() %>% any()){
+    cli::cli_alert_danger(
+      "NA values in some of the required mutation columns, these will be removed."
+    )
+
+    x = x[complete.cases(x[, required_columns]), ]
+
+    if(nrow(x) == 0) stop("No more mutations to work with?")
   }
 
   x$from = enforce_numeric(x$from)

@@ -1,8 +1,8 @@
 ---
-title: "8. Annotatation of SNVs"
+title: "8. Drivers annotatation"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{8. Annotatation of SNVs}
+  %\VignetteIndexEntry{8. Drivers annotatation}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 options(crayon.enabled=FALSE)
 ```
 
-```{r setup}
+```{r setup, warning=FALSE}
 library(CNAqc)
 
 # Extra packages
@@ -26,20 +26,38 @@ require(dplyr)
 # options(connectionObserver = NULL)
 ```
 
-CNAqc also has a number of simple annotation functions that can be useful for giving a preliminary idea of what mutations might be driver events. However, it should be noted that this function provides an overview but does not replace more complex and in-depth analyzes of SNVs.
-Given a SNVs table we in turn annotate:
+CNAqc  has a number of simple annotation functions that can be useful for giving a preliminary idea of what somatic mutations might be _driver events_. 
 
-1. Position of the mutation (coding, intron, fiveUTR, threeUTR, intron, intergenic, spliceSite, promoter)
-2. Consequence on the protein for coding mutations (nonsynonymous, synonymous, frameshift, stop) with eventual change in the AA
-3. Synonymous mutations are then compared to known driver genes from the intogen database and flagged as drivers
-4. Optionally if the dbSNP id is present the PolyPhen score can also be annotated
+> This function does not replace more complex and in-depth analyzes of mutations.
 
-The annotation phase is heavily based on the [VariantAnnotation](https://bioconductor.org/packages/release/bioc/html/VariantAnnotation.html) package
+Given a table of mutation we annotate:
+
+1. Position of the mutation, any of:
+    - `coding`, 
+    - `intron`, 
+    - `fiveUTR`, 
+    - `threeUTR`,
+    - `intron`,
+    - `intergenic`, 
+    - `spliceSite`, 
+    - `promoter`.
+    
+2. Consequence on the protein for coding mutations (with eventual change in the AA):
+    - `nonsynonymous`, 
+    - `synonymous`, 
+    -  `frameshift`,
+    -  `stop`.
+    
+3. Synonymous mutations are then compared to known driver genes from the [intOGen](https://www.intogen.org/search) database, and flagged as drivers.
+
+4. Optionally if the `dbSNP` id is present the `PolyPhen` score can also be annotated
+
+The annotation phase is heavily based on the [VariantAnnotation](https://bioconductor.org/packages/release/bioc/html/VariantAnnotation.html) package.
 
 
 # Install Required Packages
 
-We will show the functioning with tha example file shipped in CNAqc
+We will show the functioning with tha example file shipped in `CNAqc`
 
 ```{r}
 # Load template data
@@ -47,97 +65,96 @@ data('example_dataset_CNAqc', package = 'CNAqc')
 
 snvs <- example_dataset_CNAqc$snvs
 
-
 snvs %>%  head
 ```
 
-As we can see we already have driver annotated from an external source (ANNOVAR) here, let's get rid of them and then compare what we will found wi our approach
+As we can see we already have driver annotated from an external source ([ANNOVAR](https://annovar.openbioinformatics.org/en/latest/)).
+
+We get rid of them and re-annotate the data.
 
 ```{r, warning=FALSE, message=FALSE}
+# What are drivers (labels)
+drivers_true <- snvs %>% 
+  filter(is_driver == T) %>% 
+  pull(driver_label) %>%  
+  unique
 
-drivers_true <- snvs %>% filter(is_driver == T) %>% pull(driver_label) %>%  unique
-
-snvs <- snvs %>% select(-is_driver, -driver_label)
-
+snvs <- snvs %>% 
+  select(-is_driver, -driver_label)
 ```
 
-The function needs some databases from Bioconductor to annotate correctly the variants
+The function uses databases from Bioconductor to annotate the variants.
 
 ```{r, warning=FALSE, message=FALSE}
-
-
-# First we have to find the reference against which we mapped the reads
+# Reference against which we mapped the reads
 reference_genome <- example_dataset_CNAqc$reference
 
 # All those packages are distributed in Bioconductor
 if (!requireNamespace("BiocManager", quietly = TRUE))
     install.packages("BiocManager", repos="http://cran.us.r-project.org")
 
+# We have to install the corresponding txdb package for transcript annotations
+paste0("TxDb.Hsapiens.UCSC.",reference_genome, ".knownGene") %>% BiocManager::install()
 
-#We have to install the corresponding txdb package for transcript annotations
-tx_pkg <-  paste0("TxDb.Hsapiens.UCSC.",reference_genome, ".knownGene")
-if(!require(tx_pkg, character.only = TRUE))
-  BiocManager::install(tx_pkg)
+# We have to install also the BS database for the sequences (it may take some time)
+paste0("BSgenome.Hsapiens.UCSC.",reference_genome) %>% BiocManager::install()
 
-#We have to install also the BS database for the sequences (it may take some time)
-bs_pkg <-  paste0("BSgenome.Hsapiens.UCSC.",reference_genome)
-if(!require(bs_pkg, character.only = TRUE))
-  BiocManager::install(bs_pkg)
-
-# Then those two packages provide usefull utilities to deal with biological databases
-if(!require("Organism.dplyr", character.only = TRUE))
-  BiocManager::install("Organism.dplyr")
-if(!require("org.Hs.eg.db", character.only = TRUE))
-  BiocManager::install("org.Hs.eg.db")
-
+# Then these two packages provide usefull utilities to deal with biological databases
+"Organsm.dplyr" %>% BiocManager::install()
+"org.Hs.eg.db" %>% BiocManager::install()
 ```
-# Annotation phase
+# Annotation
 
-Now we have everything we can just run the function andget back our annotated file
+Now we have everything to get our annotated file
 
 ```{r, warning=FALSE, message=FALSE}
-
+# Run function
 snvs_annotated <- annotate_variants(snvs, ref = reference_genome)
 
 snvs_annotated
 ```
-One thing to note is the presence of multiple locations and consequences for a single variant. This happens as we try to annotate the mutations in a transcript-agnostic manner, consequently we report all possible effects and locations for any transcript (separated by a : ). 
-The drivers largely correspond to those previously noted (TP53 and CTCF) with some differences. Obviously using multiple annotations and validation guarantees more precise results. 
+One thing to note is the presence of multiple locations and consequences for a single variant. 
 
+This happens as we try to annotate the mutations in a transcript-agnostic manner, consequently we report all possible effects and locations for any transcript (separated by `:`). 
 
+For this cohort, the drivers largely correspond to those previously noted (`TP53` and `CTCF` mutations) with some differences. Obviously using multiple annotations and validation guarantees more precise results. 
 
-We use the intogen database to annotate drivers, but you can costumize this behaviour in two way. First, drivers are annotated by tumor types, by default
-we use all the drivers but it is possible to specify the cancer type id. A list of tumor types and their codes is available in the package 
+`CNAqc` uses a list of driver gene per cancer type from [intOGen](https://www.intogen.org/download) (_Release date 2020.02.01_), matching mutation by gene id (e.g., a missense mutation in `APC`). The list of genes can be pooled from multiple tumor types, or providing a tumour code. 
 
+The list of tumor types and codes is available in the package. 
 ```{r}
 data('intogen_ttypes', package = 'CNAqc')
 
+# intOGen
 intogen_ttypes
-
 ```
 
 
 ```{r,  warning=FALSE, message=FALSE}
-snvs_annotated_OV <- annotate_variants(snvs, ref = reference_genome, filter_tumor_type = "OV")
+# Example: OV is ovarian cancer
+snvs_annotated_OV <- annotate_variants(snvs, 
+                                       ref = reference_genome, 
+                                       filter_tumor_type = "OV")
 
 snvs_annotated_OV
 ```
 
-Another option is to supply your list of drivers as a one coloumn `data.frame` using the argument `driver_list`.
+Another option is to supply a list of drivers in a one-coloumn `data.frame`, via argument `driver_list`.
 
 ```{r,  warning=FALSE, message=FALSE}
-
-snvs_annotated_custom <- annotate_variants(snvs, ref = reference_genome, driver_list = as.data.frame(c("TP53", "CHDS")))
+snvs_annotated_custom <- annotate_variants(snvs,
+                                           ref = reference_genome, 
+                                           driver_list = c("TP53", "CHDS") %>% as.data.frame
+                                           )
 
 snvs_annotated_custom
 ```
 
 # Plot
 
-We can finally perform the QC and see how the drivers are actually plotted together with the data distribution
+We can finally perform QC and plot drivers together with the data distribution.
 
-```{r, warning=FALSE, message=FALSE}
-
+```{r, warning=FALSE, message=FALSE, fig.width=10, fig.height=4}
 x = init(
   snvs_annotated, 
   example_dataset_CNAqc$cna,
