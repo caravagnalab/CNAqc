@@ -28,10 +28,11 @@ require(dplyr)
 
 CNAqc also has a number of simple annotation functions that can be useful for giving a preliminary idea of what mutations might be driver events. However, it should be noted that this function provides an overview but does not replace more complex and in-depth analyzes of SNVs.
 Given a SNVs table we in turn annotate:
-* Position of the mutation (coding, intron, fiveUTR, threeUTR, intron, intergenic, spliceSite, promoter)
-* Consequence on the protein for coding mutations (nonsynonymous, synonymous, frameshift, stop) with eventual change in the AA
-* Synonymous mutations are then compared to known driver genes from the intogen database and flagged as drivers
-* Optionally if the dbSNP id is present the PolyPhen score can also be annotated
+
+1. Position of the mutation (coding, intron, fiveUTR, threeUTR, intron, intergenic, spliceSite, promoter)
+2. Consequence on the protein for coding mutations (nonsynonymous, synonymous, frameshift, stop) with eventual change in the AA
+3. Synonymous mutations are then compared to known driver genes from the intogen database and flagged as drivers
+4. Optionally if the dbSNP id is present the PolyPhen score can also be annotated
 
 The annotation phase is heavily based on the [VariantAnnotation](https://bioconductor.org/packages/release/bioc/html/VariantAnnotation.html) package
 
@@ -70,13 +71,13 @@ reference_genome <- example_dataset_CNAqc$reference
 
 # All those packages are distributed in Bioconductor
 if (!requireNamespace("BiocManager", quietly = TRUE))
-    install.packages("BiocManager")
+    install.packages("BiocManager", repos="http://cran.us.r-project.org")
 
 
 #We have to install the corresponding txdb package for transcript annotations
 tx_pkg <-  paste0("TxDb.Hsapiens.UCSC.",reference_genome, ".knownGene")
 if(!require(tx_pkg, character.only = TRUE))
-  BiocManager::install(tx_pkg)
+  BiocManager::install(tx_pkg, site_repository = )
 
 #We have to install also the BS database for the sequences (it may take some time)
 bs_pkg <-  paste0("BSgenome.Hsapiens.UCSC.",reference_genome)
