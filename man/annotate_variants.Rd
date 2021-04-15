@@ -36,11 +36,12 @@ those in coding regions and we compare them to a set of known drivers.
 }
 \examples{
 
-library(CNAqc)
+\dontrun{library(CNAqc)
 
 data('example_dataset_CNAqc', package = 'CNAqc')
 
 snvs <- example_dataset_CNAqc$snvs
 
-snvs_annotated <- annotate_variants(snvs)
+snvs_annotated <- annotate_variants(snvs)}
+
 }
