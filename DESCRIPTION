@@ -34,14 +34,19 @@ Imports:
     BMix,
     vcfR,
     clisymbols,
-    RColorBrewer
+    RColorBrewer,
+    VariantAnnotation,
+    GenomicRanges
+biocViews:
 Remotes: 
     caravagn/pio,
     caravagn/BMix,
 RoxygenNote: 7.1.1
 Suggests: 
     knitr,
-    rmarkdown
+    rmarkdown,
+    org.Hs.eg.db,
+    Organism.dplyr
 VignetteBuilder: knitr
 URL: https://github.com/caravagnalab/CNAqc
 BugReports: https://github.com/caravagn/CNAqc/issues

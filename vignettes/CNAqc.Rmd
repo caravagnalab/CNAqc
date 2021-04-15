@@ -26,6 +26,17 @@ options(crayon.enabled=F)
 
 Example inputs and tool functions are discussed as Articles.
 
+**Available vignettes:** 
+
+* [1. Introduction (data formats, example dataset)](https://caravagn.github.io/CNAqc/articles/Introduction.html). 
+* [2. Plots (data formats, example dataset)](https://caravagn.github.io/CNAqc/articles/Plots.html). 
+* [3. QC purity and ploidy via peak detection](https://caravagn.github.io/CNAqc/articles/peaks_detection.html). 
+* [4. Cancer Cell Fractions computation](https://caravagn.github.io/CNAqc/articles/ccf_computation.html). 
+* [5. Segments smoothing](https://caravagn.github.io/CNAqc/articles/smoothing.html). 
+* [6. Genome fragmentation analysis](https://caravagn.github.io/CNAqc/articles/fragmentation.html). 
+* [7. MSeq analysis](https://caravagn.github.io/CNAqc/articles/example_MSeq.html). 
+* [8. Annotation of SNVs](https://caravagn.github.io/CNAqc/articles/annotate_variants.html). 
+
 ### The model
 
 The following concepts are used to develop `CNAqc` analyses.
