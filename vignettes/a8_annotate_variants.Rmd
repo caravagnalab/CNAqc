@@ -1,8 +1,8 @@
 ---
-title: "8. Drivers annotatation"
+title: "8. Drivers annotation"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{8. Drivers annotatation}
+  %\VignetteIndexEntry{8. Drivers annotation}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -83,7 +83,8 @@ snvs <- snvs %>%
   select(-is_driver, -driver_label)
 ```
 
-The function uses databases from Bioconductor to annotate the variants.
+The function uses databases from Bioconductor to annotate the variants. Installation of these
+databases might take a bit of time, as ~1GB of data have to be downloaded.
 
 ```{r, warning=FALSE, message=FALSE}
 # Reference against which we mapped the reads
