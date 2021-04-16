@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>8. Drivers annotatation • CNAqc</title>
+<title>8. Drivers annotation • CNAqc</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -17,7 +17,7 @@
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="8. Drivers annotatation">
+<script src="../pkgdown.js"></script><meta property="og:title" content="8. Drivers annotation">
 <meta property="og:description" content="CNAqc">
 <meta property="og:image" content="caravagn.github.io/CNAqc/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -85,7 +85,7 @@
       <a href="../articles/a7_example_MSeq.html">7. Example data analysis</a>
     </li>
     <li>
-      <a href="../articles/a8_annotate_variants.html">8. Drivers annotatation</a>
+      <a href="../articles/a8_annotate_variants.html">8. Drivers annotation</a>
     </li>
   </ul>
 </li>
@@ -110,7 +110,7 @@
       </header><script src="a8_annotate_variants_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>8. Drivers annotatation</h1>
+      <h1 data-toc-skip>8. Drivers annotation</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/caravagnalab/CNAqcvignettes/a8_annotate_variants.Rmd"><code>vignettes/a8_annotate_variants.Rmd</code></a></small>
@@ -206,7 +206,7 @@
 
 <span class="va">snvs</span> <span class="op">&lt;-</span> <span class="va">snvs</span> <span class="op">%&gt;%</span> 
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">is_driver</span>, <span class="op">-</span><span class="va">driver_label</span><span class="op">)</span></code></pre></div>
-<p>The function uses databases from Bioconductor to annotate the variants.</p>
+<p>The function uses databases from Bioconductor to annotate the variants. Installation of these databases might take a bit of time, as ~1GB of data have to be downloaded.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Reference against which we mapped the reads</span>
 <span class="va">reference_genome</span> <span class="op">&lt;-</span> <span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">reference</span>
