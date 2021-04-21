@@ -84,6 +84,7 @@ annotate_variants <- function(x,
 
   inp = NULL
 
+  # Manage input files
   if (inherits(x, 'cnaqc'))
   {
     cli::cli_alert("Preparing annotations for the CNAqc object")
@@ -93,6 +94,17 @@ annotate_variants <- function(x,
   {
     cli::cli_alert("Preparing annotations for a dataframe")
     inp = x
+  }
+
+  # Cancel other annotations
+  if(
+    any(c('is_driver', "driver_label") %in% colnames(inp))
+  )
+  {
+    cli::cli_alert_warning("There are existing annotations in your data, they will be cancelled.")
+    print(inp %>% filter(is_driver))
+
+    inp$is_driver = inp$driver_label = NULL
   }
 
   # Get data and ranges
@@ -230,14 +242,15 @@ annotate_variants <- function(x,
                      by = "gene_symbol")
 
   res <-  res %>%
-    mutate(is_driver = ifelse(
-      is.na(is_driver) |
-        !grepl(location, pattern = "coding") |
-        is.na(consequence) |
-        grepl(consequence, pattern = "^(?!non)synonymous", perl = T),
+    mutate(is_driver =
+             ifelse(
+               is.na(is_driver) |
+                 !grepl(location, pattern = "coding") |
+                 is.na(consequence) |
+                 grepl(consequence, pattern = "^(?!non)synonymous", perl = T),
       FALSE,
-      TRUE
-    )) %>%
+      TRUE)
+    ) %>%
     mutate(driver_label = ifelse(is_driver, driver_label, NA)) %>%  unique()
 
   cli::cli_h3("Found {.green {sum(res$is_driver)}} driver(s)")
@@ -259,20 +272,23 @@ annotate_variants <- function(x,
     }
   }
 
-  final_table = left_join(inp %>% mutate(to = to + 1),
-                          res %>% mutate(to = to + 1), by = c("chr", "from", "to")) %>% dplyr::arrange(-is_driver)
+  final_table = left_join(
+    inp %>% mutate(to = to + 1),
+    res %>% mutate(to = to + 1),
+    by = c("chr", "from", "to")
+    ) %>%
+    dplyr::arrange(-is_driver)
 
 
-  final_table %>% filter(is_driver)
-  res %>% filter(is_driver) %>% mutate(to = to + 1)
-  inp %>% filter(Hugo_Symbol =='VHL')%>% mutate(to = to + 1) %>% dplyr::select(chr, from, to, ref, alt)
+  # final_table %>% filter(is_driver)
+  # res %>% filter(is_driver) %>% mutate(to = to + 1)
+  # inp %>% filter(Hugo_Symbol =='VHL')%>% mutate(to = to + 1) %>% dplyr::select(chr, from, to, ref, alt)
 
   if (inherits(x, 'cnaqc'))
   {
     x$snvs = final_table
     final_table = x
   }
-
 
   return(final_table)
 }
