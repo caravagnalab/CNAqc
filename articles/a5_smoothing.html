@@ -142,7 +142,13 @@
 #&gt;    3:1  [n =    2, L =    1 Mb] 
 #&gt;  106:1  [n =    1, L =    0 Mb] 
 #&gt;   26:2  [n =    1, L =    0 Mb] 
-#&gt;   99:1  [n =    1, L =    0 Mb]</code></pre>
+#&gt;   99:1  [n =    1, L =    0 Mb] 
+#&gt; 
+#&gt; 
+#&gt;          chr      from        to ref alt  DP NV       VAF driver_label is_driver
+#&gt;         chr2 179431633 179431634   C   T 117 77 0.6581197          TTN      TRUE
+#&gt;        chr16  67646006  67646007   C   T 120 54 0.4500000         CTCF      TRUE
+#&gt;        chr17   7577106   7577107   G   C  84 78 0.9285714         TP53      TRUE</code></pre>
 <p>Smoothing works with a simple algorithm that merges, inside each chromosome, all contiguous segments that have the same absolute copy number values (minnor and major allele counts), and are separated by up to <span class="math inline">\(\delta\)</span> base pairs.</p>
 <p>The default value of <span class="math inline">\(\delta = 10^6\)</span> (1 megabase).</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
@@ -163,6 +169,11 @@
 <span class="co">#&gt;   26:2  [n =    1, L =    0 Mb] </span>
 <span class="co">#&gt;   99:1  [n =    1, L =    0 Mb]</span>
 <span class="co">#&gt; ℹ Sample Purity: 89% ~ Ploidy: 4.</span>
+<span class="co">#&gt; ℹ There are 3 annotated driver(s).</span>
+<span class="co">#&gt;          chr      from        to ref alt  DP NV       VAF driver_label is_driver</span>
+<span class="co">#&gt;         chr2 179431633 179431634   C   T 117 77 0.6581197          TTN      TRUE</span>
+<span class="co">#&gt;        chr16  67646006  67646007   C   T 120 54 0.4500000         CTCF      TRUE</span>
+<span class="co">#&gt;        chr17   7577106   7577107   G   C  84 78 0.9285714         TP53      TRUE</span>
 
 <span class="co"># After smoothing</span>
 <span class="va">x</span> <span class="op">=</span> <span class="fu"><a href="../reference/smooth_segments.html">smooth_segments</a></span><span class="op">(</span><span class="va">x</span>, maximum_distance <span class="op">=</span> <span class="fl">1e6</span><span class="op">)</span> <span class="co"># default</span>
@@ -214,6 +225,11 @@
 <span class="co">#&gt;   26:2  [n =    1, L =    0 Mb] </span>
 <span class="co">#&gt;   99:1  [n =    1, L =    0 Mb]</span>
 <span class="co">#&gt; ℹ Sample Purity: 89% ~ Ploidy: 4.</span>
+<span class="co">#&gt; ℹ There are 3 annotated driver(s).</span>
+<span class="co">#&gt;          chr      from        to ref alt  DP NV       VAF driver_label is_driver</span>
+<span class="co">#&gt;         chr2 179431633 179431634   C   T 117 77 0.6581197          TTN      TRUE</span>
+<span class="co">#&gt;        chr16  67646006  67646007   C   T 120 54 0.4500000         CTCF      TRUE</span>
+<span class="co">#&gt;        chr17   7577106   7577107   G   C  84 78 0.9285714         TP53      TRUE</span>
 
 <span class="co"># The new has theoretically smaller segments</span>
 <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
@@ -232,6 +248,11 @@
 <span class="co">#&gt;   26:2  [n =    1, L =    0 Mb] </span>
 <span class="co">#&gt;   99:1  [n =    1, L =    0 Mb]</span>
 <span class="co">#&gt; ℹ Sample Purity: 89% ~ Ploidy: 4.</span>
+<span class="co">#&gt; ℹ There are 3 annotated driver(s).</span>
+<span class="co">#&gt;          chr      from        to ref alt  DP NV       VAF driver_label is_driver</span>
+<span class="co">#&gt;         chr2 179431633 179431634   C   T 117 77 0.6581197          TTN      TRUE</span>
+<span class="co">#&gt;        chr16  67646006  67646007   C   T 120 54 0.4500000         CTCF      TRUE</span>
+<span class="co">#&gt;        chr17   7577106   7577107   G   C  84 78 0.9285714         TP53      TRUE</span>
 <span class="co">#&gt; ✔ These segments are smoothed; before smoothing there were 267 segments.</span></code></pre></div>
 <p>You can visualise the effect of the smoothing automatically using <code>CNAqc</code> functions.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">

@@ -232,6 +232,13 @@
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Run function</span>
 <span class="va">snvs_annotated</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/annotate_variants.html">annotate_variants</a></span><span class="op">(</span><span class="va">snvs</span>, ref <span class="op">=</span> <span class="va">reference_genome</span><span class="op">)</span>
+<span class="co">#&gt; # A tibble: 3 x 10</span>
+<span class="co">#&gt;   chr      from     to gene_symbol location consequence refAA varAA driver_label</span>
+<span class="co">#&gt;   &lt;fct&gt;   &lt;int&gt;  &lt;int&gt; &lt;chr&gt;       &lt;chr&gt;    &lt;chr&gt;       &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;       </span>
+<span class="co">#&gt; 1 chr16  6.76e7 6.76e7 CTCF        coding:… nonsynonym… H     Y     CTCF_H-&gt;Y   </span>
+<span class="co">#&gt; 2 chr17  7.58e6 7.58e6 TP53        intron:… nonsynonym… P     A     TP53_P-&gt;A   </span>
+<span class="co">#&gt; 3 chr19  5.09e7 5.09e7 POLD1       coding   nonsynonym… T     M     POLD1_T-&gt;M  </span>
+<span class="co">#&gt; # … with 1 more variable: is_driver &lt;lgl&gt;</span>
 
 <span class="va">snvs_annotated</span>
 <span class="co">#&gt; # A tibble: 13,129 x 18</span>
@@ -279,6 +286,11 @@
 <span class="va">snvs_annotated_OV</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/annotate_variants.html">annotate_variants</a></span><span class="op">(</span><span class="va">snvs</span>, 
                                        ref <span class="op">=</span> <span class="va">reference_genome</span>, 
                                        filter_tumor_type <span class="op">=</span> <span class="st">"OV"</span><span class="op">)</span>
+<span class="co">#&gt; # A tibble: 1 x 10</span>
+<span class="co">#&gt;   chr      from     to gene_symbol location consequence refAA varAA driver_label</span>
+<span class="co">#&gt;   &lt;fct&gt;   &lt;int&gt;  &lt;int&gt; &lt;chr&gt;       &lt;chr&gt;    &lt;chr&gt;       &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;       </span>
+<span class="co">#&gt; 1 chr17 7577106 7.58e6 TP53        intron:… nonsynonym… P     A     TP53_P-&gt;A   </span>
+<span class="co">#&gt; # … with 1 more variable: is_driver &lt;lgl&gt;</span>
 
 <span class="va">snvs_annotated_OV</span>
 <span class="co">#&gt; # A tibble: 13,129 x 18</span>
@@ -303,6 +315,11 @@
                                            ref <span class="op">=</span> <span class="va">reference_genome</span>, 
                                            driver_list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"TP53"</span>, <span class="st">"CHDS"</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="va">as.data.frame</span>
                                            <span class="op">)</span>
+<span class="co">#&gt; # A tibble: 1 x 10</span>
+<span class="co">#&gt;   chr      from     to gene_symbol location consequence refAA varAA driver_label</span>
+<span class="co">#&gt;   &lt;fct&gt;   &lt;int&gt;  &lt;int&gt; &lt;chr&gt;       &lt;chr&gt;    &lt;chr&gt;       &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;       </span>
+<span class="co">#&gt; 1 chr17 7577106 7.58e6 TP53        intron:… nonsynonym… P     A     TP53_P-&gt;A   </span>
+<span class="co">#&gt; # … with 1 more variable: is_driver &lt;lgl&gt;</span>
 
 <span class="va">snvs_annotated_custom</span>
 <span class="co">#&gt; # A tibble: 13,129 x 18</span>

@@ -144,7 +144,13 @@
 #&gt;    3:1  [n =    2, L =    1 Mb] 
 #&gt;  106:1  [n =    1, L =    0 Mb] 
 #&gt;   26:2  [n =    1, L =    0 Mb] 
-#&gt;   99:1  [n =    1, L =    0 Mb]</code></pre>
+#&gt;   99:1  [n =    1, L =    0 Mb] 
+#&gt; 
+#&gt; 
+#&gt;          chr      from        to ref alt  DP NV       VAF driver_label is_driver
+#&gt;         chr2 179431633 179431634   C   T 117 77 0.6581197          TTN      TRUE
+#&gt;        chr16  67646006  67646007   C   T 120 54 0.4500000         CTCF      TRUE
+#&gt;        chr17   7577106   7577107   G   C  84 78 0.9285714         TP53      TRUE</code></pre>
 <p>Peak detection routines are implemented in function <code>analyze_peaks</code>.</p>
 <p>The idea is as follows: a segment with <span class="math inline">\(m\)</span> and <span class="math inline">\(M\)</span> copies of the minor and major alleles is consistent to mutation data if the VAF distribution peaks at certain values, which we can compute. Profiling then of the VAF distribution with a peak-detection heuristic allows <code>CNAqc</code> to measure the if peaks match. Large deviance suggests usually wrong purity estimation.</p>
 <div id="peak-analysis" class="section level1">
@@ -160,33 +166,30 @@
 <span class="co">#&gt; ✔ Fits to run, n = 8.</span>
 <span class="co">#&gt; ℹ Bmix best fit completed in 0.04 mins</span>
 <span class="co">#&gt; ── [ BMix ] My BMix model n = 1563 with k = 3 component(s) (3 + 0) ─────────────</span>
-<span class="co">#&gt; ● Clusters: π = 53% [Bin 2], 43% [Bin 1], and 4% [Bin 3], with π &gt; 0.</span>
-<span class="co">#&gt; ● Binomial Bin 1 with mean = 0.601414994449281.</span>
-<span class="co">#&gt; ● Binomial Bin 2 with mean = 0.305589888246352.</span>
-<span class="co">#&gt; ● Binomial Bin 3 with mean = 0.0960566837900316.</span>
-<span class="co">#&gt; ℹ Score(s): ICL = 12241.07.</span>
+<span class="co">#&gt; ● Clusters: π = 53% [Bin 3], 43% [Bin 2], and 4% [Bin 1], with π &gt; 0.</span>
+<span class="co">#&gt; ● Binomial Bin 1 with mean = 0.105077133137271.</span>
+<span class="co">#&gt; ● Binomial Bin 2 with mean = 0.601189889698405.</span>
+<span class="co">#&gt; ● Binomial Bin 3 with mean = 0.306039571872606.</span>
+<span class="co">#&gt; ℹ Score(s): ICL = 12241.12.</span>
 <span class="co">#&gt;  [ BMix fit ]</span>
 <span class="co">#&gt; ℹ Binomials k_B = 1, 2, 3, and 4, Beta-Binomials k_BB = 0.</span>
 <span class="co">#&gt; ✔ Fits to run, n = 8.</span>
 <span class="co">#&gt; ℹ Bmix best fit completed in 0 mins</span>
 <span class="co">#&gt; ── [ BMix ] My BMix model n = 81 with k = 3 component(s) (3 + 0) ───────────────</span>
-<span class="co">#&gt; ● Clusters: π = 89% [Bin 3], 9% [Bin 1], and 2% [Bin 2], with π &gt; 0.</span>
-<span class="co">#&gt; ● Binomial Bin 1 with mean = 0.422638818903902.</span>
-<span class="co">#&gt; ● Binomial Bin 2 with mean = 0.100774106539128.</span>
-<span class="co">#&gt; ● Binomial Bin 3 with mean = 0.88592870546594.</span>
-<span class="co">#&gt; ℹ Score(s): ICL = 512.28.</span>
+<span class="co">#&gt; ● Clusters: π = 89% [Bin 3], 9% [Bin 2], and 2% [Bin 1], with π &gt; 0.</span>
+<span class="co">#&gt; ● Binomial Bin 1 with mean = 0.100771615160082.</span>
+<span class="co">#&gt; ● Binomial Bin 2 with mean = 0.422632614682548.</span>
+<span class="co">#&gt; ● Binomial Bin 3 with mean = 0.885928705443731.</span>
+<span class="co">#&gt; ℹ Score(s): ICL = 506.19.</span>
 <span class="co">#&gt;  [ BMix fit ]</span>
 <span class="co">#&gt; ℹ Binomials k_B = 1, 2, 3, and 4, Beta-Binomials k_BB = 0.</span>
 <span class="co">#&gt; ✔ Fits to run, n = 8.</span>
-<span class="co">#&gt; ℹ Bmix best fit completed in 0.22 mins</span>
-<span class="co">#&gt; ── [ BMix ] My BMix model n = 7478 with k = 4 component(s) (4 + 0) ─────────────</span>
-<span class="co">#&gt; ● Clusters: π = 48% [Bin 1], 39% [Bin 3], 9% [Bin 4], and 5% [Bin 2], with π &gt;</span>
-<span class="co">#&gt; 0.</span>
-<span class="co">#&gt; ● Binomial Bin 1 with mean = 0.440783100017222.</span>
-<span class="co">#&gt; ● Binomial Bin 2 with mean = 0.0776183617848511.</span>
-<span class="co">#&gt; ● Binomial Bin 3 with mean = 0.488475541938604.</span>
-<span class="co">#&gt; ● Binomial Bin 4 with mean = 0.227270208222804.</span>
-<span class="co">#&gt; ℹ Score(s): ICL = 59325.34.</span>
+<span class="co">#&gt; ℹ Bmix best fit completed in 0.24 mins</span>
+<span class="co">#&gt; ── [ BMix ] My BMix model n = 7478 with k = 2 component(s) (2 + 0) ─────────────</span>
+<span class="co">#&gt; ● Clusters: π = 87% [Bin 1] and 13% [Bin 2], with π &gt; 0.</span>
+<span class="co">#&gt; ● Binomial Bin 1 with mean = 0.461704914427143.</span>
+<span class="co">#&gt; ● Binomial Bin 2 with mean = 0.176192942264996.</span>
+<span class="co">#&gt; ℹ Score(s): ICL = 58989.89.</span>
 <span class="co">#&gt; # A tibble: 6 x 12</span>
 <span class="co">#&gt;   mutation_multip… karyotype  peak     x     y counts_per_bin discarded   offset</span>
 <span class="co">#&gt;              &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;          &lt;int&gt; &lt;lgl&gt;        &lt;dbl&gt;</span>
@@ -195,9 +198,9 @@
 <span class="co">#&gt; 3                1 2:0       0.445 0.423 0.172              0 FALSE      0.0215 </span>
 <span class="co">#&gt; 4                2 2:0       0.89  0.885 7.99               7 FALSE      0.00476</span>
 <span class="co">#&gt; 5                1 2:2       0.235 0.24  0.86              65 FALSE     -0.00455</span>
-<span class="co">#&gt; 6                2 2:2       0.471 0.46  8.14             625 FALSE      0.0109 </span>
+<span class="co">#&gt; 6                2 2:2       0.471 0.463 8.11             625 FALSE      0.00821</span>
 <span class="co">#&gt; # … with 4 more variables: matched &lt;lgl&gt;, weight &lt;dbl&gt;, score &lt;dbl&gt;, QC &lt;chr&gt;</span>
-<span class="co">#&gt; ✔ Peak detection PASS with r = 0.0041148739213522 and tolerance e = 0.06</span></code></pre></div>
+<span class="co">#&gt; ✔ Peak detection PASS with r = 0.00301416169450624 and tolerance e = 0.06</span></code></pre></div>
 <p><code>CNAqc</code> analyze LOH regions (A, AA), diploid regions (AB), and amplification regions (AAB, AABB). These correspond to <code>'1:1'</code>, <code>'2:1'</code>, <code>'2:0'</code> and <code>'2:2'</code> in “Major:minor” notation. Karyotypes are subset by their size (normalized for the number of input mutations), and by default karyotypes smaller than 5% of the actual mutational burden are not considered</p>
 <p>A Kernel-density method (unitary adjustment, Gaussian kernel) is used to smooth the data distribution, and the <a href="https://cran.rstudio.com/web/packages/peakPick/index.html">peakPick: Peak Picking Methods Inspired by Biological Data</a> package is used to determine peaks in the smoothed density. Peaks below a mnimum density (noise and miscalled segments) are filtered, and the others are matched to a predefined location with some tolerance (e.g., plus/minus <code>0.5 * epsilon</code>, where <code>epsilon = 0.015</code> is the default).</p>
 <p>Theis analysis produces a set of scores that account for karyotype size and peaks offset, and that can be combined into a linear model to compute an overall QC metrics, called <code>rho</code>.</p>
@@ -218,11 +221,16 @@
 <span class="co">#&gt;   26:2  [n =    1, L =    0 Mb] </span>
 <span class="co">#&gt;   99:1  [n =    1, L =    0 Mb]</span>
 <span class="co">#&gt; ℹ Sample Purity: 89% ~ Ploidy: 4.</span>
+<span class="co">#&gt; ℹ There are 3 annotated driver(s).</span>
+<span class="co">#&gt;          chr      from        to ref alt  DP NV       VAF driver_label is_driver</span>
+<span class="co">#&gt;         chr2 179431633 179431634   C   T 117 77 0.6581197          TTN      TRUE</span>
+<span class="co">#&gt;        chr16  67646006  67646007   C   T 120 54 0.4500000         CTCF      TRUE</span>
+<span class="co">#&gt;        chr17   7577106   7577107   G   C  84 78 0.9285714         TP53      TRUE</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; ──  PASS  Peaks QC closest: % 100 with q = 0.0041148739213522</span>
+<span class="co">#&gt; ──  PASS  Peaks QC closest: % 100 with q = 0.00301416169450624</span>
 <span class="co">#&gt; ℹ 2:1 ~ n = 1563  (17%) →  PASS  0.002    PASS  0.014</span>
 <span class="co">#&gt; ℹ 2:0 ~ n = 81    ( 1%) →  PASS  0.022    PASS  0.005</span>
-<span class="co">#&gt; ℹ 2:2 ~ n = 7478  (82%) →  PASS  -0.005   PASS  0.011</span></code></pre></div>
+<span class="co">#&gt; ℹ 2:2 ~ n = 7478  (82%) →  PASS  -0.005   PASS  0.008</span></code></pre></div>
 <p>A summary table is stored inside the named list <code>peaks_analysis</code>.</p>
 </div>
 <div id="plotting-results" class="section level1">
@@ -263,7 +271,7 @@
 <span class="co">#&gt; 3                1 2:0       0.445 0.423 0.172              0 FALSE      0.0215 </span>
 <span class="co">#&gt; 4                2 2:0       0.89  0.885 7.99               7 FALSE      0.00476</span>
 <span class="co">#&gt; 5                1 2:2       0.235 0.24  0.86              65 FALSE     -0.00455</span>
-<span class="co">#&gt; 6                2 2:2       0.471 0.46  8.14             625 FALSE      0.0109 </span>
+<span class="co">#&gt; 6                2 2:2       0.471 0.463 8.11             625 FALSE      0.00821</span>
 <span class="co">#&gt; # … with 4 more variables: matched &lt;lgl&gt;, weight &lt;dbl&gt;, score &lt;dbl&gt;, QC &lt;chr&gt;</span></code></pre></div>
 <p>The table reports several information. The following might be of some use after the analysis:</p>
 <ul>
