@@ -110,7 +110,7 @@ annotate_variants <- function(x,
     )
 
   # VariantAnnotation package
-  cli::cli_process_start("Annotating with {crayon::yellow('VariantAnnotation')}")
+  cli::cli_process_start("Locaring variants with {crayon::yellow('VariantAnnotation')}")
 
   loc <-
     VariantAnnotation::locateVariants(rd, txdb, VariantAnnotation::AllVariants())
@@ -144,6 +144,7 @@ annotate_variants <- function(x,
   loc$gene_symbol <- map[loc$GENEID]
 
   loc_df <- as.data.frame(loc) %>%
+    as_tibble() %>%
     dplyr::mutate(
       segment_id = paste(seqnames, start, end, sep = ":"),
       chr = seqnames,
@@ -155,12 +156,16 @@ annotate_variants <- function(x,
     dplyr::filter(gene_symbol != "NA") %>%
     unique() %>%
     group_by(chr, from, to, gene_symbol) %>%
-    summarize(location = paste(location, collapse = ":")) %>%
+    summarize(location = paste(location, collapse = ":"),
+              .groups = 'keep') %>%
     ungroup()
 
-  input_coding <- dplyr::left_join(loc_df %>%  filter(grepl(location, pattern = "coding")),
-                                   inp,
-                                   by = c("chr", "from", "to"))
+  input_coding <-
+    dplyr::left_join(loc_df %>%  filter(grepl(location, pattern = "coding")),
+                     inp,
+                     by = c("chr", "from", "to"))
+
+  # inp %>% filter(chr == 'chr1', from == 985357)
 
   input_coding <-  dplyr::left_join(
     input_coding,
@@ -216,9 +221,13 @@ annotate_variants <- function(x,
     ) %>%  ungroup()
 
   res <-
-    dplyr::left_join(loc_df, output_coding) %>% mutate(driver_label = paste0(gene_symbol, "_", refAA, "->", varAA))
+    dplyr::left_join(loc_df, output_coding,  by = c("chr", "from", "to")) %>% mutate(
+      driver_label = paste0(gene_symbol, "_", refAA, "->", varAA)
+    )
   res <-
-    dplyr::left_join(res, driver_list %>% dplyr::select(gene_symbol, is_driver))
+    dplyr::left_join(res,
+                     driver_list %>% dplyr::select(gene_symbol, is_driver),
+                     by = "gene_symbol")
 
   res <-  res %>%
     mutate(is_driver = ifelse(
@@ -230,6 +239,10 @@ annotate_variants <- function(x,
       TRUE
     )) %>%
     mutate(driver_label = ifelse(is_driver, driver_label, NA)) %>%  unique()
+
+  cli::cli_h3("Found {.green {sum(res$is_driver)}} driver(s)")
+  print(res %>% filter(is_driver))
+
 
   if (polyphen) {
     # ahaha
@@ -244,14 +257,15 @@ annotate_variants <- function(x,
         )
       )
     }
-
-
-
-
   }
 
+  final_table = left_join(inp %>% mutate(to = to + 1),
+                          res %>% mutate(to = to + 1), by = c("chr", "from", "to")) %>% dplyr::arrange(-is_driver)
 
-  final_table = left_join(x, res %>%  mutate(to = to + 1)) %>% arrange(-is_driver)
+
+  final_table %>% filter(is_driver)
+  res %>% filter(is_driver) %>% mutate(to = to + 1)
+  inp %>% filter(Hugo_Symbol =='VHL')%>% mutate(to = to + 1) %>% dplyr::select(chr, from, to, ref, alt)
 
   if (inherits(x, 'cnaqc'))
   {

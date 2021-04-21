@@ -42,7 +42,7 @@ print.cnaqc = function(x, ...)
   with_smoothing = all(!is.null(x$before_smoothing))
   with_arm_frag = all(!is.null(x$arm_fragmentation))
   with_wg_frag = all(!is.null(x$wg_fragmentation))
-  with_drivers = all(c("gene", "is_driver") %in% colnames(x$snvs))
+  with_drivers = all(c("driver_label", "is_driver") %in% colnames(x$snvs))
 
   cli::cli_alert_info(paste0(
     "Sample Purity: ",
@@ -54,11 +54,21 @@ print.cnaqc = function(x, ...)
       with_CCF | with_smoothing | with_arm_frag | with_wg_frag)
     cat('\n')
 
-  # if(with_drivers)
-  # {
-  #   nd = x$snvs %>% dplyr::filter(is_driver) %>% nrow()
-  #   cli::cli_alert_info("Mutations annotated have {.value {nd}} drivers.")
-  # }
+  if(with_drivers)
+  {
+    nd = x$snvs %>% dplyr::filter(is_driver) %>% nrow()
+    cli::cli_alert_info("There are {.value {nd}} annotated driver(s).")
+
+    w_d = x$snvs %>%
+      dplyr::filter(is_driver) %>%
+      dplyr::select(chr, from, to, ref, alt, DP, NV, VAF, driver_label, is_driver) %>%
+      as.data.frame()
+
+    writeLines(paste0("      ",
+                      capture.output( w_d %>%
+                          print(row.names = F)
+                      )))
+    }
 
   ppass = function()
     "{crayon::bgGreen(crayon::black(\" PASS \"))}"
