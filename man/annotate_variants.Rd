@@ -13,22 +13,22 @@ annotate_variants(
 )
 }
 \arguments{
-\item{x}{a data.frame with coloumns c("chr", "from", "to").}
+\item{x}{a data.frame with columns c("chr", "from", "to").}
 
-\item{driver_list}{a one coloumn data.frame with gene symbols}
+\item{driver_list}{a one column data.frame with gene symbols.}
 
-\item{polyphen}{whete to annotate polyphen scores}
+\item{polyphen}{whether or not to annotate Polyphen scores.}
 
-\item{filter_tumor_type}{filter intogen drivers by tumor type}
+\item{filter_tumor_type}{filter Intogen drivers by tumor type.}
 }
 \value{
-a data.frame with additiona coloumns `location` with the position of the variant in the genome (coding, intron, threeUTR, ...),
-`consequence` with the consequence of coding mutations (synonymous, nonsynonymous, ...), `is_driver` a bool that indicate if the gene is a driver,
+a data.frame with an additional columns `location` reporting the position of the variant in the genome (`coding`, `intron`, `threeUTR`, ...),
+`consequence` with the consequence of coding mutations (`synonymous`, `nonsynonymous`, ...), `is_driver` a boolean that indicates if the gene is a driver,
 `gene_symbol` for the annotated corresponding gene symbol (if the variant is in a gene) and `driver_label` with the driver label written as
-gene_refAA->varAA (is NA in case `is_driver` is FALSE).
+`gene_refAA->varAA` (is `NA` in case `is_driver = FALSE`).
 
-The `chr` coloumn int the input should contain the chr prefix before the chromosome number. The annotation process is based on the package
-\href{https://bioconductor.org/packages/release/bioc/html/VariantAnnotation.html}{VariantAnnotation} check it for more information.
+The `chr` column in the input should contain the chr prefix before the chromosome number. The annotation process is based on the package
+\href{https://bioconductor.org/packages/release/bioc/html/VariantAnnotation.html}{VariantAnnotation}.
 }
 \description{
 The function provides an easy and fast way to annotate SNVs, in particular we annotate the locations of the different mutations, the consequences for
@@ -36,12 +36,14 @@ those in coding regions and we compare them to a set of known drivers.
 }
 \examples{
 
-\dontrun{library(CNAqc)
+\dontrun{
+library(CNAqc)
 
 data('example_dataset_CNAqc', package = 'CNAqc')
 
 snvs <- example_dataset_CNAqc$snvs
 
-snvs_annotated <- annotate_variants(snvs)}
+snvs_annotated <- annotate_variants(snvs)
+}
 
 }

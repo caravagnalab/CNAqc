@@ -1,34 +1,35 @@
 #' Annotate variant in a CNAqc object
 #'
-#' The function provides an easy and fast way to annotate SNVs, in particular we annotate the locations of the different mutations, the consequences for
+#' @description  The function provides an easy and fast way to annotate SNVs, in particular we annotate the locations of the different mutations, the consequences for
 #' those in coding regions and we compare them to a set of known drivers.
 #'
-#' @param x a data.frame with coloumns c("chr", "from", "to").
-#' @param driver_list a one coloumn data.frame with gene symbols
-#' @param polyphen whete to annotate polyphen scores
-#' @param filter_tumor_type filter intogen drivers by tumor type
+#' @param x a data.frame with columns c("chr", "from", "to").
+#' @param driver_list a one column data.frame with gene symbols.
+#' @param polyphen whether or not to annotate Polyphen scores.
+#' @param filter_tumor_type filter Intogen drivers by tumor type.
 #'
-#' @return a data.frame with additiona coloumns `location` with the position of the variant in the genome (coding, intron, threeUTR, ...),
-#' `consequence` with the consequence of coding mutations (synonymous, nonsynonymous, ...), `is_driver` a bool that indicate if the gene is a driver,
+#' @return a data.frame with an additional columns `location` reporting the position of the variant in the genome (`coding`, `intron`, `threeUTR`, ...),
+#' `consequence` with the consequence of coding mutations (`synonymous`, `nonsynonymous`, ...), `is_driver` a boolean that indicates if the gene is a driver,
 #' `gene_symbol` for the annotated corresponding gene symbol (if the variant is in a gene) and `driver_label` with the driver label written as
-#' gene_refAA->varAA (is NA in case `is_driver` is FALSE).
+#' `gene_refAA->varAA` (is `NA` in case `is_driver = FALSE`).
 #'
-#' The `chr` coloumn int the input should contain the chr prefix before the chromosome number. The annotation process is based on the package
-#' \href{https://bioconductor.org/packages/release/bioc/html/VariantAnnotation.html}{VariantAnnotation} check it for more information.
+#' The `chr` column in the input should contain the chr prefix before the chromosome number. The annotation process is based on the package
+#' \href{https://bioconductor.org/packages/release/bioc/html/VariantAnnotation.html}{VariantAnnotation}.
 #'
 #' @export
 #'
 #' @examples
 #'
-#'\dontrun{library(CNAqc)
+#'\dontrun{
+#' library(CNAqc)
 #'
-#'data('example_dataset_CNAqc', package = 'CNAqc')
+#' data('example_dataset_CNAqc', package = 'CNAqc')
 #'
 #' snvs <- example_dataset_CNAqc$snvs
 #'
-#'snvs_annotated <- annotate_variants(snvs)}
+#' snvs_annotated <- annotate_variants(snvs)
+#' }
 #'
-
 annotate_variants <- function(x,
                               ref = "hg19",
                               driver_list = CNAqc::intogen_drivers,

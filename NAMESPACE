@@ -3,7 +3,6 @@
 S3method(print,cnaqc)
 export(CCF)
 export(analyze_peaks)
-export(annotate_drivers)
 export(annotate_variants)
 export(compute_CCF)
 export(detect_arm_overfragmentation)

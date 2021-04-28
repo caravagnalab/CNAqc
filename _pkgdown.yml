@@ -29,9 +29,9 @@ reference:
   - example_dataset_CNAqc
 
 - title: Data processing
-  desc:  Functions to visualise the data.
+  desc:  Functions to manipulate and visualise the data.
   contents:
-  - annotate_drivers
+  - annotate_variants
   - init
   - inspect_segment
   - get_drivers
