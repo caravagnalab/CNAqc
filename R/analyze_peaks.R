@@ -199,7 +199,22 @@ analyze_peaks = function(x,
       # Sample "n_bootstrap" times via the bootstrap
       if(n_bootstrap < 0) n_bootstrap = 1
 
-      best_peaks = lapply(1:n_bootstrap, pd, n_boot = n_bootstrap)
+      # For error handling, we switch to easypar
+      # best_peaks = lapply(1:n_bootstrap, pd, n_boot = n_bootstrap)
+      best_peaks = easypar::run(
+        FUN = pd,
+        PARAMS = lapply(1:n_bootstrap, function(w) data.frame(w = w, n_boot = n_bootstrap)),
+        parallel = FALSE,
+        silent = TRUE,
+        filter_errors = TRUE
+      )
+
+      # Runs for this giving ALL errors are intercepted and an error is raised
+      # https://github.com/caravagnalab/CNAqc/issues/10
+      # Without a better example failure a more intelligent handling is difficult to achieve
+      if(length(best_peaks) == 0)
+        stop("Cannot QC karyotype ", k, " - consider removing that from the input \"karyotypes\" vector.")
+
       best_score = which.min(sapply(best_peaks, function(w)
         w$matching$weight %*% w$matching$offset))
       best_score = best_score[1]

@@ -1,7 +1,7 @@
 Package: CNAqc
 Type: Package
 Title: CNAqc - Copy Number Analysis quality check
-Version: 0.1.0
+Version: 0.1.1
 Author: Giulio Caravagna
 Maintainer: Giulio Caravagna <gcaravagn@gmail.com>
 Authors@R: c(
@@ -36,11 +36,13 @@ Imports:
     clisymbols,
     RColorBrewer,
     VariantAnnotation,
-    GenomicRanges
+    GenomicRanges,
+    easypar
 biocViews:
 Remotes: 
     caravagn/pio,
-    caravagn/BMix,
+    caravagnalab/BMix,
+    caravagn/easypar
 RoxygenNote: 7.1.1
 Suggests: 
     knitr,
@@ -49,4 +51,4 @@ Suggests:
     Organism.dplyr
 VignetteBuilder: knitr
 URL: https://github.com/caravagnalab/CNAqc
-BugReports: https://github.com/caravagn/CNAqc/issues
+BugReports: https://github.com/caravagnalab/CNAqc/issues

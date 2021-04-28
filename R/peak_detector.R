@@ -54,6 +54,10 @@ peak_detector = function(snvs,
       )
   }
 
+  # Again, if the if-clause above did not suffice to find peaks, raise a stop error
+  if(all(xy_peaks$discarded))
+    stop("Cannot find peaks for this karyotype, raising an error (check the data distribution).")
+
   # linear combination of the weight, split by number of peaks to match
   weight = filtered_qc_snvs %>%
     filter(karyotype == snvs$karyotype[1]) %>%
@@ -265,6 +269,11 @@ peak_detector_closest_hit_match = function(snvs,
         discarded = ifelse(counts_per_bin == max(xy_peaks$counts_per_bin), TRUE, discarded)
       )
   }
+
+  # Again, if the if-clause above did not suffice to find peaks, raise a stop error
+  if(all(xy_peaks$discarded))
+    stop("Cannot find peaks for this karyotype, raising an error (check the data distribution).")
+
 
   # linear combination of the weight, split by number of peaks to match
   weight = filtered_qc_snvs %>%

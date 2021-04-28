@@ -36,6 +36,7 @@
 #' @import crayon
 #' @import vcfR
 #' @import clisymbols
+#' @import easypar
 #'
 #' @examples
 #' data('example_dataset_CNAqc', package = 'CNAqc')
