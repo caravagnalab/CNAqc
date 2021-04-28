@@ -81,7 +81,7 @@ those in coding regions and we compare them to a set of known drivers." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CNAqc</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
       </span>
     </div>
 
@@ -176,124 +176,44 @@ those in coding regions and we compare them to a set of known drivers.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>a data.frame with coloumns c("chr", "from", "to").</p></td>
+      <td><p>a data.frame with columns c("chr", "from", "to").</p></td>
     </tr>
     <tr>
       <th>driver_list</th>
-      <td><p>a one coloumn data.frame with gene symbols</p></td>
+      <td><p>a one column data.frame with gene symbols.</p></td>
     </tr>
     <tr>
       <th>polyphen</th>
-      <td><p>whete to annotate polyphen scores</p></td>
+      <td><p>whether or not to annotate Polyphen scores.</p></td>
     </tr>
     <tr>
       <th>filter_tumor_type</th>
-      <td><p>filter intogen drivers by tumor type</p></td>
+      <td><p>filter Intogen drivers by tumor type.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a data.frame with additiona coloumns `location` with the position of the variant in the genome (coding, intron, threeUTR, ...),
-`consequence` with the consequence of coding mutations (synonymous, nonsynonymous, ...), `is_driver` a bool that indicate if the gene is a driver,
+    <p>a data.frame with an additional columns `location` reporting the position of the variant in the genome (`coding`, `intron`, `threeUTR`, ...),
+`consequence` with the consequence of coding mutations (`synonymous`, `nonsynonymous`, ...), `is_driver` a boolean that indicates if the gene is a driver,
 `gene_symbol` for the annotated corresponding gene symbol (if the variant is in a gene) and `driver_label` with the driver label written as
-gene_refAA-&gt;varAA (is NA in case `is_driver` is FALSE).</p>
-<p>The `chr` coloumn int the input should contain the chr prefix before the chromosome number. The annotation process is based on the package
-<a href='https://bioconductor.org/packages/release/bioc/html/VariantAnnotation.html'>VariantAnnotation</a> check it for more information.</p>
+`gene_refAA-&gt;varAA` (is `NA` in case `is_driver = FALSE`).</p>
+<p>The `chr` column in the input should contain the chr prefix before the chromosome number. The annotation process is based on the package
+<a href='https://bioconductor.org/packages/release/bioc/html/VariantAnnotation.html'>VariantAnnotation</a>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/caravagnalab/CNAqc'>CNAqc</a></span><span class='op'>)</span>
+<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/caravagnalab/CNAqc'>CNAqc</a></span><span class='op'>)</span>
 
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>'example_dataset_CNAqc'</span>, package <span class='op'>=</span> <span class='st'>'CNAqc'</span><span class='op'>)</span>
 
 <span class='va'>snvs</span> <span class='op'>&lt;-</span> <span class='va'>example_dataset_CNAqc</span><span class='op'>$</span><span class='va'>snvs</span>
 
 <span class='va'>snvs_annotated</span> <span class='op'>&lt;-</span> <span class='fu'>annotate_variants</span><span class='op'>(</span><span class='va'>snvs</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Attaching package: ‘BiocGenerics’</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:parallel’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,</span>
-#&gt; <span class='message'>    clusterExport, clusterMap, parApply, parCapply, parLapply,</span>
-#&gt; <span class='message'>    parLapplyLB, parRapply, parSapply, parSapplyLB</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:dplyr’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    combine, intersect, setdiff, union</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:stats’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    IQR, mad, sd, var, xtabs</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:base’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    anyDuplicated, append, as.data.frame, basename, cbind, colnames,</span>
-#&gt; <span class='message'>    dirname, do.call, duplicated, eval, evalq, Filter, Find, get, grep,</span>
-#&gt; <span class='message'>    grepl, intersect, is.unsorted, lapply, Map, mapply, match, mget,</span>
-#&gt; <span class='message'>    order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank,</span>
-#&gt; <span class='message'>    rbind, Reduce, rownames, sapply, setdiff, sort, table, tapply,</span>
-#&gt; <span class='message'>    union, unique, unsplit, which.max, which.min</span></div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Attaching package: ‘S4Vectors’</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:dplyr’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    first, rename</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:tidyr’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    expand</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:base’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    expand.grid</span></div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Attaching package: ‘IRanges’</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:dplyr’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    collapse, desc, slice</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:purrr’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    reduce</span></div><div class='output co'>#&gt; <span class='message'>Welcome to Bioconductor</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    Vignettes contain introductory material; view with</span>
-#&gt; <span class='message'>    'browseVignettes()'. To cite Bioconductor, see</span>
-#&gt; <span class='message'>    'citation("Biobase")', and for packages 'citation("pkgname")'.</span></div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Attaching package: ‘AnnotationDbi’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:dplyr’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    select</span></div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Attaching package: ‘XVector’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:purrr’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    compact</span></div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Attaching package: ‘Biostrings’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:base’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    strsplit</span></div><div class='output co'>#&gt; </div><div class='output co'>#&gt; <span class='message'>→ Preparing annotations for a dataframe</span></div><div class='output co'>#&gt; <span class='message'><span style='color: #BBBB00;'>!</span><span> There are existing annotations in your data, they will be cancelled.</span></div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 3 x 13</span><span>
-#&gt;   chr        from       to ref   alt   FILTER    DP    NV   VAF ANNOVAR_FUNCTION
-#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>           
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span> chr2  179</span><span style='text-decoration: underline;'>431</span><span>633   1.79</span><span style='color: #949494;'>e</span><span>8 C     T     PASS     117    77 0.658 exonic          
-#&gt; </span><span style='color: #BCBCBC;'>2</span><span> chr16  67</span><span style='text-decoration: underline;'>646</span><span>006   6.76</span><span style='color: #949494;'>e</span><span>7 C     T     PASS     120    54 0.45  exonic          
-#&gt; </span><span style='color: #BCBCBC;'>3</span><span> chr17   7</span><span style='text-decoration: underline;'>577</span><span>106   7.58</span><span style='color: #949494;'>e</span><span>6 G     C     PASS      84    78 0.929 exonic          
-#&gt; </span><span style='color: #949494;'># … with 3 more variables: GENE &lt;chr&gt;, is_driver &lt;lgl&gt;, driver_label &lt;chr&gt;</span><span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Locaring variants with </span><span style='color: #BBBB00;'>VariantAnnotation</span><span></span></div><div class='output co'>#&gt; <span class='warning'>Warning: GRanges object contains 364 out-of-bound ranges located on sequences</span>
-#&gt; <span class='warning'>  4529, 4631, 4632, 1653, 1654, 1655, 1656, 12192, 12362, 12363, 12364,</span>
-#&gt; <span class='warning'>  12365, 12366, 12367, 12517, 12518, 12519, 12520, 13123, 13124, 13974,</span>
-#&gt; <span class='warning'>  13975, 13976, 13994, 13995, 17007, 17008, 17009, 17010, 17011, 17012,</span>
-#&gt; <span class='warning'>  17014, 17015, 17016, 17793, 18007, 20532, 22527, 22954, 22955, 22956,</span>
-#&gt; <span class='warning'>  23347, 27275, 27276, 28075, 28085, 28893, 29046, 29047, 29242, 31362,</span>
-#&gt; <span class='warning'>  32048, 32050, 33339, 33714, 33715, 32912, 32913, 40960, 40961, 44219,</span>
-#&gt; <span class='warning'>  44220, 44242, 44262, 44263, 44356, 46050, 46054, 46062, 46063, 46064,</span>
-#&gt; <span class='warning'>  46065, 46066, 53476, 53477, 53497, 53498, 59180, 57764, 57766, 61092,</span>
-#&gt; <span class='warning'>  69815, 69930, 70330, 70331, 70332, 77129, 77130, 76239, 76240, 76241,</span>
-#&gt; <span class='warning'>  77987, and 77988. Note that ranges located on a sequence whose length</span>
-#&gt; <span class='warning'>  is unknown (NA) or on a circular sequence are not considered</span>
-#&gt; <span class='warning'>  out-of-bound (use seqlengths() and isCircular() to get the lengths and</span>
-#&gt; <span class='warning'>  circularity flags of the underlying sequences). You can use trim() to</span>
-#&gt; <span class='warning'>  trim these ranges. See ?`trim,GenomicRanges-method` for more</span>
-#&gt; <span class='warning'>  information.</span></div><div class='output co'>#&gt; <span class='message'>'select()' returned many:1 mapping between keys and columns</span></div><div class='output co'>#&gt; <span class='message'>'select()' returned many:1 mapping between keys and columns</span></div><div class='output co'>#&gt; <span class='message'>'select()' returned 1:1 mapping between keys and columns</span></div><div class='output co'>#&gt; <span class='message'>'select()' returned many:1 mapping between keys and columns</span></div><div class='output co'>#&gt; <span class='message'>'select()' returned 1:1 mapping between keys and columns</span></div><div class='output co'>#&gt; <span class='message'>'select()' returned many:1 mapping between keys and columns</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✔</span><span> Locaring variants with </span><span style='color: #BBBB00;'>VariantAnnotation</span><span> ... done</span></div><div class='output co'>#&gt; </div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Sourcing organism</span></div><div class='output co'>#&gt; <span class='message'>using temporary cache /var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpPdUtgb/BiocFileCache</span></div><div class='output co'>#&gt; <span class='message'>creating 'src_organism' database...</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Ignoring remaining part of query: CREATE INDEX IF NOT EXISTS entrez_accession ON id_accession (entrez);</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Ignoring remaining part of query: CREATE INDEX IF NOT EXISTS entrez_protein ON id_protein (entrez);</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✔</span><span> Sourcing organism ... done</span></div><div class='output co'>#&gt; </div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Traslating Entrez ids</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✔</span><span> Traslating Entrez ids ... done</span></div><div class='output co'>#&gt; </div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Transforming data</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✔</span><span> Transforming data ... done</span></div><div class='output co'>#&gt; </div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Predicting coding</span></div><div class='output co'>#&gt; <span class='warning'>Warning: GRanges object contains 315 out-of-bound ranges located on sequences</span>
-#&gt; <span class='warning'>  4529, 4631, 4632, 1653, 1654, 1655, 1656, 12192, 12362, 12363, 12364,</span>
-#&gt; <span class='warning'>  12365, 12366, 12367, 12517, 12518, 12519, 12520, 13123, 13124, 13974,</span>
-#&gt; <span class='warning'>  13975, 13976, 13994, 13995, 17007, 17008, 17009, 17010, 17011, 17012,</span>
-#&gt; <span class='warning'>  17014, 17015, 17016, 17793, 18007, 20532, 22527, 22954, 22955, 22956,</span>
-#&gt; <span class='warning'>  23347, 27275, 27276, 28075, 28085, 28893, 29046, 29047, 29242, 31362,</span>
-#&gt; <span class='warning'>  32048, 32050, 33339, 33714, 33715, 32912, 32913, 40960, 40961, 44219,</span>
-#&gt; <span class='warning'>  44220, 44242, 44262, 44263, 44356, 53476, 53477, 53497, 53498, 59180,</span>
-#&gt; <span class='warning'>  57764, 57766, 61092, 69815, 69930, 70330, 70331, 70332, 77129, 77130,</span>
-#&gt; <span class='warning'>  76239, 76240, 76241, 77987, and 77988. Note that ranges located on a</span>
-#&gt; <span class='warning'>  sequence whose length is unknown (NA) or on a circular sequence are not</span>
-#&gt; <span class='warning'>  considered out-of-bound (use seqlengths() and isCircular() to get the</span>
-#&gt; <span class='warning'>  lengths and circularity flags of the underlying sequences). You can use</span>
-#&gt; <span class='warning'>  trim() to trim these ranges. See ?`trim,GenomicRanges-method` for more</span>
-#&gt; <span class='warning'>  information.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✔</span><span> Predicting coding ... done</span></div><div class='output co'>#&gt; </div><div class='output co'>#&gt; </div><div class='output co'>#&gt; <span class='message'>── Found 3 driver(s) </span></div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 3 x 10</span><span>
-#&gt;   chr      from     to gene_symbol location consequence refAA varAA driver_label
-#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;fct&gt;</span><span>   </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>       </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>       </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>       
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span> chr16  6.76</span><span style='color: #949494;'>e</span><span>7 6.76</span><span style='color: #949494;'>e</span><span>7 CTCF        coding:… nonsynonym… H     Y     CTCF_H-&gt;Y   
-#&gt; </span><span style='color: #BCBCBC;'>2</span><span> chr17  7.58</span><span style='color: #949494;'>e</span><span>6 7.58</span><span style='color: #949494;'>e</span><span>6 TP53        intron:… nonsynonym… P     A     TP53_P-&gt;A   
-#&gt; </span><span style='color: #BCBCBC;'>3</span><span> chr19  5.09</span><span style='color: #949494;'>e</span><span>7 5.09</span><span style='color: #949494;'>e</span><span>7 POLD1       coding   nonsynonym… T     M     POLD1_T-&gt;M  
-#&gt; </span><span style='color: #949494;'># … with 1 more variable: is_driver &lt;lgl&gt;</span><span></div><div class='input'>
-</div></span></pre>
+<span class='op'>}</span>
+
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
