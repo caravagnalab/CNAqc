@@ -10,21 +10,15 @@
 maturing](https://img.shields.io/badge/lifecycle-stable-green.svg)](https://www.tidyverse.org/lifecycle/#stable)
 <!-- badges: end -->
 
-`CNAqc` is a package that contains different methods to inspect the
-quality, visualise and process allele-specific Copy Number Alteration
-(CNA) calls generated from bulk sequencing of tumour samples, jointly
-with tumour somatic mutations and other covariates.
+`CNAqc` contains different methods to assess
+quality of allele-specific Copy Number Alterations
+(CNA), somatic mutations and  purity estimates
+generated from tumour bulk sequencing.
 
-Methods are available to integrate somatic mutation data with CNA
-segments, tumour purity and ploidy assessment. The package provides
-methods to estimate Cancer Cell Fractions (CCFs) normalizing tumour
+The package provides methods to estimate Cancer Cell Fractions (CCFs) normalizing somatic
 allele frequencies for copy number states and tumour purity. The package
 contains also statistical tests to identify patterns of
 over-fragmentation of chromosome arms.
-
-`CNAqc` is part of the `evoverse` set of [R
-packages](https://caravagn.github.io/evoverse) to implement Cancer
-Evolution analyses.
 
 #### Citation
 
