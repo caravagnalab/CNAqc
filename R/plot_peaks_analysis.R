@@ -47,7 +47,7 @@ plot_peaks_analysis = function(x,
         return(NULL)
     }
 
-    return(suppressWarnings(suppressMessages(CNAqc:::plot_peaks_fit(x, k))))
+    return(suppressWarnings(suppressMessages(plot_peaks_fit(x, k))))
   })
 
   plots = plots[!sapply(plots, is.null)]

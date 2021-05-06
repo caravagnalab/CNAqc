@@ -40,10 +40,23 @@ peak_detector = function(snvs,
   hst = hist(snvs$VAF, breaks = seq(0, 1, 0.01), plot = F)$counts
   pks$counts_per_bin = hst[round(pks$x * 100)]
 
+  # xy_peaks = pks %>%
+  #   # dplyr::mutate(discarded = counts_per_bin < sum(hst) * p)
+  #   dplyr::mutate(discarded = y <= 0.01)
+
+  # Heuristic to remove low-density peaks
   xy_peaks = pks %>%
     # dplyr::mutate(discarded = counts_per_bin < sum(hst) * p)
-    dplyr::mutate(discarded = y <= 0.01)
+    dplyr::mutate(discarded = y <= max(pks$y) * (1/20))
 
+
+  if(any(xy_peaks$discarded))
+  {
+    cli::cli_alert_warning("Some peaks have been removed")
+    xy_peaks %>%
+      filter(discarded) %>%
+      print
+  }
 
   # Handle special case where everything is discarded by including the one
   # with highest value of counts_per_bin (just that).
@@ -198,6 +211,10 @@ peak_detector_closest_hit_match = function(snvs,
   den = density(y, kernel = 'gaussian', adjust = kernel_adjust)
   in_range = den$x >= min(y) & den$x <= max(y)
 
+  # den = density(y, kernel = 'gaussian', adjust = 0.5)
+  # plot(den)
+
+
   input_peakdetection = matrix(cbind(x = den$x[in_range], y = den$y[in_range]), ncol = 2)
   colnames(input_peakdetection) = c('x', 'y')
 
@@ -221,9 +238,20 @@ peak_detector_closest_hit_match = function(snvs,
   hst = hist(snvs$VAF, breaks = seq(0, 1, 0.01), plot = F)$counts
   pks$counts_per_bin = hst[round(pks$x * 100)]
 
+  # Heuristic to remove low-density peaks
   xy_peaks = pks %>%
     # dplyr::mutate(discarded = counts_per_bin < sum(hst) * p)
-    dplyr::mutate(discarded = y <= 0.01)
+    dplyr::mutate(discarded = y <= max(pks$y) * (1/20))
+
+
+  if(any(xy_peaks$discarded))
+  {
+    cli::cli_alert_warning("Some peaks have been removed")
+    xy_peaks %>%
+      filter(discarded) %>%
+      print
+  }
+
 
   # BMix clustering
   bm = BMix::bmixfit(
