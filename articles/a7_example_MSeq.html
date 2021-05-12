@@ -537,71 +537,31 @@
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Peaks</span>
 <span class="va">x</span> <span class="op">=</span> <span class="fu">CNAqc</span><span class="fu">::</span><span class="fu"><a href="../reference/analyze_peaks.html">analyze_peaks</a></span><span class="op">(</span><span class="va">x</span>, matching_strategy <span class="op">=</span> <span class="st">'closest'</span><span class="op">)</span>
-<span class="co">#&gt; ℹ Requested karyotypes 1:0, 1:1, 2:1, 2:0, and 2:2. Matching strategy closest.</span>
+<span class="co">#&gt; ℹ Karyotypes 1:0, 1:1, 2:1, 2:0, and 2:2. Matching strategy closest. KDE = TRUE.</span>
 <span class="co">#&gt; ℹ Found n = 17283 mutations in 1:1, 2:0, 1:0, 2:1 (skipping those with n &lt; 0 mutations).</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; ── BMix fit ────────────────────────────────────────────────────────────────────</span>
-<span class="co">#&gt; ℹ Binomials k_B = 1, 2, 3, and 4, Beta-Binomials k_BB = 0; 8 fits to run.</span>
-<span class="co">#&gt; ℹ Bmix best fit completed in 0.02 mins</span>
-<span class="co">#&gt; ── [ BMix ] My BMix model n = 898 with k = 3 component(s) (3 + 0) ──────────────</span>
-<span class="co">#&gt; • Clusters: π = 68% [Bin 1], 26% [Bin 2], and 6% [Bin 3], with π &gt; 0.</span>
-<span class="co">#&gt; • Binomial Bin 1 with mean = 0.0946734280118194.</span>
-<span class="co">#&gt; • Binomial Bin 2 with mean = 0.540822731944176.</span>
-<span class="co">#&gt; • Binomial Bin 3 with mean = 0.263566499906695.</span>
-<span class="co">#&gt; ℹ Score (model selection): ICL = 5366.84.</span>
 <span class="co">#&gt; ! Some peaks have been removed</span>
-<span class="co">#&gt; # A tibble: 2 x 4</span>
-<span class="co">#&gt;       x     y counts_per_bin discarded</span>
-<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt;          &lt;int&gt; &lt;lgl&gt;    </span>
-<span class="co">#&gt; 1  0.68  0.03              6 TRUE     </span>
-<span class="co">#&gt; 2  0.74  0.03              5 TRUE</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; ── BMix fit ────────────────────────────────────────────────────────────────────</span>
-<span class="co">#&gt; ℹ Binomials k_B = 1, 2, 3, and 4, Beta-Binomials k_BB = 0; 8 fits to run.</span>
-<span class="co">#&gt; ℹ Bmix best fit completed in 0.36 mins</span>
-<span class="co">#&gt; ── [ BMix ] My BMix model n = 14488 with k = 2 component(s) (2 + 0) ────────────</span>
-<span class="co">#&gt; • Clusters: π = 59% [Bin 1] and 41% [Bin 2], with π &gt; 0.</span>
-<span class="co">#&gt; • Binomial Bin 1 with mean = 0.344405433556614.</span>
-<span class="co">#&gt; • Binomial Bin 2 with mean = 0.0971858517689169.</span>
-<span class="co">#&gt; ℹ Score (model selection): ICL = 101060.8.</span>
+<span class="co">#&gt; # A tibble: 2 x 5</span>
+<span class="co">#&gt;       x     y counts_per_bin discarded from </span>
+<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt;          &lt;int&gt; &lt;lgl&gt;     &lt;chr&gt;</span>
+<span class="co">#&gt; 1  0.68  0.03              6 TRUE      KDE  </span>
+<span class="co">#&gt; 2  0.74  0.03              5 TRUE      KDE</span>
 <span class="co">#&gt; ! Some peaks have been removed</span>
-<span class="co">#&gt; # A tibble: 1 x 4</span>
-<span class="co">#&gt;       x     y counts_per_bin discarded</span>
-<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt;          &lt;int&gt; &lt;lgl&gt;    </span>
-<span class="co">#&gt; 1  0.81  0.11              0 TRUE</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; ── BMix fit ────────────────────────────────────────────────────────────────────</span>
-<span class="co">#&gt; ℹ Binomials k_B = 1, 2, 3, and 4, Beta-Binomials k_BB = 0; 8 fits to run.</span>
-<span class="co">#&gt; ℹ Bmix best fit completed in 0.01 mins</span>
-<span class="co">#&gt; ── [ BMix ] My BMix model n = 345 with k = 4 component(s) (4 + 0) ──────────────</span>
-<span class="co">#&gt; • Clusters: π = 57% [Bin 1], 28% [Bin 4], 12% [Bin 3], and 3% [Bin 2], with π &gt;</span>
-<span class="co">#&gt; 0.</span>
-<span class="co">#&gt; • Binomial Bin 1 with mean = 0.10478310784444.</span>
-<span class="co">#&gt; • Binomial Bin 2 with mean = 0.752474705972028.</span>
-<span class="co">#&gt; • Binomial Bin 3 with mean = 0.523472977161219.</span>
-<span class="co">#&gt; • Binomial Bin 4 with mean = 0.279464291486719.</span>
-<span class="co">#&gt; ℹ Score (model selection): ICL = 2606.77.</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; ── BMix fit ────────────────────────────────────────────────────────────────────</span>
-<span class="co">#&gt; ℹ Binomials k_B = 1, 2, 3, and 4, Beta-Binomials k_BB = 0; 8 fits to run.</span>
-<span class="co">#&gt; ℹ Bmix best fit completed in 0.04 mins</span>
-<span class="co">#&gt; ── [ BMix ] My BMix model n = 1552 with k = 3 component(s) (3 + 0) ─────────────</span>
-<span class="co">#&gt; • Clusters: π = 61% [Bin 3], 28% [Bin 2], and 11% [Bin 1], with π &gt; 0.</span>
-<span class="co">#&gt; • Binomial Bin 1 with mean = 0.673305258470975.</span>
-<span class="co">#&gt; • Binomial Bin 2 with mean = 0.340216362773046.</span>
-<span class="co">#&gt; • Binomial Bin 3 with mean = 0.102909581237454.</span>
-<span class="co">#&gt; ℹ Score (model selection): ICL = 10384.28.</span>
-<span class="co">#&gt; # A tibble: 6 x 12</span>
-<span class="co">#&gt;   mutation_multip… karyotype  peak     x     y counts_per_bin discarded   offset</span>
-<span class="co">#&gt;              &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;          &lt;int&gt; &lt;lgl&gt;        &lt;dbl&gt;</span>
-<span class="co">#&gt; 1                1 1:0       0.527 0.54  1.26              13 FALSE     -1.33e-2</span>
-<span class="co">#&gt; 2                1 1:1       0.345 0.345 3.67             500 FALSE      5.66e-5</span>
-<span class="co">#&gt; 3                1 2:1       0.257 0.279 1.54               5 FALSE     -2.29e-2</span>
-<span class="co">#&gt; 4                2 2:1       0.513 0.523 0.617              1 FALSE     -1.02e-2</span>
-<span class="co">#&gt; 5                1 2:0       0.345 0.341 1.42              19 FALSE      4.02e-3</span>
-<span class="co">#&gt; 6                2 2:0       0.69  0.673 0.537             12 FALSE      1.66e-2</span>
-<span class="co">#&gt; # … with 4 more variables: matched &lt;lgl&gt;, weight &lt;dbl&gt;, score &lt;dbl&gt;, QC &lt;chr&gt;</span>
-<span class="co">#&gt; ✔ Peak detection PASS with r = -4.95321522684947e-05 and tolerance e = 0.06</span>
+<span class="co">#&gt; # A tibble: 1 x 5</span>
+<span class="co">#&gt;       x     y counts_per_bin discarded from </span>
+<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt;          &lt;int&gt; &lt;lgl&gt;     &lt;chr&gt;</span>
+<span class="co">#&gt; 1  0.81  0.11              0 TRUE      KDE  </span>
+<span class="co">#&gt; # A tibble: 6 x 15</span>
+<span class="co">#&gt;   mutation_multiplic… karyotype  peak     x     y counts_per_bin discarded from </span>
+<span class="co">#&gt;                 &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;          &lt;int&gt; &lt;lgl&gt;     &lt;chr&gt;</span>
+<span class="co">#&gt; 1                   1 1:0       0.527 0.54  1.26              13 FALSE     KDE  </span>
+<span class="co">#&gt; 2                   1 1:1       0.345 0.345 3.67             500 FALSE     BMix </span>
+<span class="co">#&gt; 3                   1 2:1       0.257 0.288 1.47               7 FALSE     BMix </span>
+<span class="co">#&gt; 4                   2 2:1       0.513 0.529 0.621              5 FALSE     BMix </span>
+<span class="co">#&gt; 5                   1 2:0       0.345 0.34  1.43              19 FALSE     KDE  </span>
+<span class="co">#&gt; 6                   2 2:0       0.69  0.671 0.538             12 FALSE     BMix </span>
+<span class="co">#&gt; # … with 7 more variables: offset &lt;dbl&gt;, matched &lt;lgl&gt;, weight &lt;dbl&gt;,</span>
+<span class="co">#&gt; #   epsilon &lt;dbl&gt;, score &lt;dbl&gt;, purity_error &lt;dbl&gt;, QC &lt;chr&gt;</span>
+<span class="co">#&gt; ✔ Peak detection PASS with r = -5.4297189345924e-05 and tolerance e =</span>
 
 <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
 <span class="co">#&gt; ── [ CNAqc ]  n = 17283 mutations in 54 segments (54 clonal + 0 subclonal). Geno</span>
@@ -612,11 +572,11 @@
 <span class="co">#&gt;  2:1  [n =   345, L =    43 Mb] ■</span>
 <span class="co">#&gt; ℹ Sample Purity: 69% ~ Ploidy: 2.</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; ──  PASS  Peaks QC closest: % 100 with q = -4.95321522684947e-05</span>
+<span class="co">#&gt; ──  PASS  Peaks QC closest: % 98 with q = -5.4297189345924e-05</span>
 <span class="co">#&gt; ℹ 1:0 ~ n = 898   ( 5%) →  PASS  -0.013</span>
 <span class="co">#&gt; ℹ 1:1 ~ n = 14488 (84%) →  PASS  0</span>
-<span class="co">#&gt; ℹ 2:1 ~ n = 345   ( 2%) →  PASS  -0.023   PASS  -0.01</span>
-<span class="co">#&gt; ℹ 2:0 ~ n = 1552  ( 9%) →  PASS  0.004    PASS  0.017</span></code></pre></div>
+<span class="co">#&gt; ℹ 2:1 ~ n = 345   ( 2%) →  FAIL  -0.031   FAIL  -0.016</span>
+<span class="co">#&gt; ℹ 2:0 ~ n = 1552  ( 9%) →  PASS  0.005    PASS  0.019</span></code></pre></div>
 <p>For this sample these calls are passed by CNAqc.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Do not assemble plots, and remove karyotypes with no data associated</span>
@@ -660,11 +620,11 @@
 <span class="co">#&gt;  2:1  [n =   345, L =    43 Mb] ■</span>
 <span class="co">#&gt; ℹ Sample Purity: 69% ~ Ploidy: 2.</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; ──  PASS  Peaks QC closest: % 100 with q = -4.95321522684947e-05</span>
+<span class="co">#&gt; ──  PASS  Peaks QC closest: % 98 with q = -5.4297189345924e-05</span>
 <span class="co">#&gt; ℹ 1:0 ~ n = 898   ( 5%) →  PASS  -0.013</span>
 <span class="co">#&gt; ℹ 1:1 ~ n = 14488 (84%) →  PASS  0</span>
-<span class="co">#&gt; ℹ 2:1 ~ n = 345   ( 2%) →  PASS  -0.023   PASS  -0.01</span>
-<span class="co">#&gt; ℹ 2:0 ~ n = 1552  ( 9%) →  PASS  0.004    PASS  0.017</span>
+<span class="co">#&gt; ℹ 2:1 ~ n = 345   ( 2%) →  FAIL  -0.031   FAIL  -0.016</span>
+<span class="co">#&gt; ℹ 2:0 ~ n = 1552  ( 9%) →  PASS  0.005    PASS  0.019</span>
 <span class="co">#&gt; ✔ Cancer Cell Fraction (CCF) data available for karyotypes:1:0, 1:1, 2:0, and 2:1.</span>
 <span class="co">#&gt; ✔  PASS  CCF via ENTROPY.</span>
 <span class="co">#&gt; ✔  PASS  CCF via ENTROPY.</span>
@@ -775,42 +735,24 @@
 <span class="co">#&gt; ℹ Input n = 18858 mutations for 56 CNA segments (56 clonal, 0 subclonal)</span>
 <span class="co">#&gt; ✖ n = 1575 mutations  cannot be mapped to segments and will be removed.</span>
 <span class="co">#&gt; ✔ Mapped n = 17283 mutations to clonal segments (100% of input)</span>
-<span class="co">#&gt; ℹ Requested karyotypes 1:0, 1:1, 2:1, 2:0, and 2:2. Matching strategy closest.</span>
+<span class="co">#&gt; ℹ Karyotypes 1:0, 1:1, 2:1, 2:0, and 2:2. Matching strategy closest. KDE = TRUE.</span>
 <span class="co">#&gt; ℹ Found n = 15166 mutations in 2:2, 2:0 (skipping those with n &lt; 0 mutations).</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; ── BMix fit ────────────────────────────────────────────────────────────────────</span>
-<span class="co">#&gt; ℹ Binomials k_B = 1, 2, 3, and 4, Beta-Binomials k_BB = 0; 8 fits to run.</span>
-<span class="co">#&gt; ℹ Bmix best fit completed in 0.02 mins</span>
-<span class="co">#&gt; ── [ BMix ] My BMix model n = 898 with k = 3 component(s) (3 + 0) ──────────────</span>
-<span class="co">#&gt; • Clusters: π = 68% [Bin 3], 26% [Bin 2], and 6% [Bin 1], with π &gt; 0.</span>
-<span class="co">#&gt; • Binomial Bin 1 with mean = 0.260093506338896.</span>
-<span class="co">#&gt; • Binomial Bin 2 with mean = 0.539937811552839.</span>
-<span class="co">#&gt; • Binomial Bin 3 with mean = 0.0946641377300506.</span>
-<span class="co">#&gt; ℹ Score (model selection): ICL = 5368.82.</span>
 <span class="co">#&gt; ! Some peaks have been removed</span>
-<span class="co">#&gt; # A tibble: 2 x 4</span>
-<span class="co">#&gt;       x     y counts_per_bin discarded</span>
-<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt;          &lt;int&gt; &lt;lgl&gt;    </span>
-<span class="co">#&gt; 1  0.69  0.03              4 TRUE     </span>
-<span class="co">#&gt; 2  0.74  0.03              5 TRUE</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; ── BMix fit ────────────────────────────────────────────────────────────────────</span>
-<span class="co">#&gt; ℹ Binomials k_B = 1, 2, 3, and 4, Beta-Binomials k_BB = 0; 8 fits to run.</span>
-<span class="co">#&gt; ℹ Bmix best fit completed in 0.36 mins</span>
-<span class="co">#&gt; ── [ BMix ] My BMix model n = 14268 with k = 2 component(s) (2 + 0) ────────────</span>
-<span class="co">#&gt; • Clusters: π = 59% [Bin 2] and 41% [Bin 1], with π &gt; 0.</span>
-<span class="co">#&gt; • Binomial Bin 1 with mean = 0.098128241539714.</span>
-<span class="co">#&gt; • Binomial Bin 2 with mean = 0.344590931371441.</span>
-<span class="co">#&gt; ℹ Score (model selection): ICL = 99765.12.</span>
-<span class="co">#&gt; # A tibble: 4 x 12</span>
-<span class="co">#&gt;   mutation_multip… karyotype  peak      x     y counts_per_bin discarded  offset</span>
-<span class="co">#&gt;              &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;          &lt;int&gt; &lt;lgl&gt;       &lt;dbl&gt;</span>
-<span class="co">#&gt; 1                1 2:0       0.275 0.261  0.447              2 FALSE     0.0140 </span>
-<span class="co">#&gt; 2                2 2:0       0.55  0.54   1.26              13 FALSE     0.0100 </span>
-<span class="co">#&gt; 3                1 2:2       0.177 0.0976 3.72             594 FALSE     0.0798 </span>
-<span class="co">#&gt; 4                2 2:2       0.355 0.345  3.72             499 FALSE     0.00986</span>
-<span class="co">#&gt; # … with 4 more variables: matched &lt;lgl&gt;, weight &lt;dbl&gt;, score &lt;dbl&gt;, QC &lt;chr&gt;</span>
-<span class="co">#&gt; ✖ Peak detection FAIL with r = 0.0428730491734835 and tolerance e = 0.06</span>
+<span class="co">#&gt; # A tibble: 2 x 5</span>
+<span class="co">#&gt;       x     y counts_per_bin discarded from </span>
+<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt;          &lt;int&gt; &lt;lgl&gt;     &lt;chr&gt;</span>
+<span class="co">#&gt; 1  0.69  0.03              4 TRUE      KDE  </span>
+<span class="co">#&gt; 2  0.74  0.03              5 TRUE      KDE  </span>
+<span class="co">#&gt; # A tibble: 4 x 15</span>
+<span class="co">#&gt;   mutation_multipli… karyotype  peak      x     y counts_per_bin discarded from </span>
+<span class="co">#&gt;                &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;          &lt;int&gt; &lt;lgl&gt;     &lt;chr&gt;</span>
+<span class="co">#&gt; 1                  1 2:0       0.275 0.103   4.59             61 FALSE     BMix </span>
+<span class="co">#&gt; 2                  2 2:0       0.55  0.54    1.26             13 FALSE     KDE  </span>
+<span class="co">#&gt; 3                  1 2:2       0.177 0.0958  3.80            594 FALSE     BMix </span>
+<span class="co">#&gt; 4                  2 2:2       0.355 0.343   3.73            499 FALSE     BMix </span>
+<span class="co">#&gt; # … with 7 more variables: offset &lt;dbl&gt;, matched &lt;lgl&gt;, weight &lt;dbl&gt;,</span>
+<span class="co">#&gt; #   epsilon &lt;dbl&gt;, score &lt;dbl&gt;, purity_error &lt;dbl&gt;, QC &lt;chr&gt;</span>
+<span class="co">#&gt; ✖ Peak detection FAIL with r = 0.0493076081543511 and tolerance e =</span>
 
 <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
 <span class="co">#&gt; ── [ CNAqc ]  n = 17283 mutations in 56 segments (56 clonal + 0 subclonal). Geno</span>
@@ -822,9 +764,9 @@
 <span class="co">#&gt;  4:2  [n =   169, L =    31 Mb]</span>
 <span class="co">#&gt; ℹ Sample Purity: 55% ~ Ploidy: 4.</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; ──  FAIL  Peaks QC closest: % 94 with q = 0.0428730491734835</span>
-<span class="co">#&gt; ℹ 2:0 ~ n = 898   ( 6%) →  PASS  0.014    PASS  0.01</span>
-<span class="co">#&gt; ℹ 2:2 ~ n = 14268 (94%) →  FAIL  0.08     FAIL  0.01</span></code></pre></div>
+<span class="co">#&gt; ──  FAIL  Peaks QC closest: % 100 with q = 0.0493076081543511</span>
+<span class="co">#&gt; ℹ 2:0 ~ n = 898   ( 6%) →  FAIL  0.172    FAIL  0.01</span>
+<span class="co">#&gt; ℹ 2:2 ~ n = 14268 (94%) →  FAIL  0.082    FAIL  0.012</span></code></pre></div>
 <p>For this sample these calls are flagged by CNAqc; note that most of the mutations are mapped to tetraploid segments, but one of the two peaks is completely off. Note the overall coloring is green because most of the mutations are underneath a peak that is passed by CNAqc; however the overall karyotype can be failed because it does not show the expected 2-peaks VAF spectrum for tetraploid SNVs.</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Do not assemble plots, and remove karyotypes with no data associated</span>
@@ -853,73 +795,31 @@
 <span class="co">#&gt; ℹ Input n = 18858 mutations for 56 CNA segments (56 clonal, 0 subclonal)</span>
 <span class="co">#&gt; ✖ n = 1575 mutations  cannot be mapped to segments and will be removed.</span>
 <span class="co">#&gt; ✔ Mapped n = 17283 mutations to clonal segments (100% of input)</span>
-<span class="co">#&gt; ℹ Requested karyotypes 1:0, 1:1, 2:1, 2:0, and 2:2. Matching strategy closest.</span>
+<span class="co">#&gt; ℹ Karyotypes 1:0, 1:1, 2:1, 2:0, and 2:2. Matching strategy closest. KDE = TRUE.</span>
 <span class="co">#&gt; ℹ Found n = 17283 mutations in 1:1, 2:0, 1:0, 2:1 (skipping those with n &lt; 0 mutations).</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; ── BMix fit ────────────────────────────────────────────────────────────────────</span>
-<span class="co">#&gt; ℹ Binomials k_B = 1, 2, 3, and 4, Beta-Binomials k_BB = 0; 8 fits to run.</span>
-<span class="co">#&gt; ℹ Bmix best fit completed in 0.02 mins</span>
-<span class="co">#&gt; ── [ BMix ] My BMix model n = 898 with k = 3 component(s) (3 + 0) ──────────────</span>
-<span class="co">#&gt; • Clusters: π = 67% [Bin 3], 26% [Bin 1], and 7% [Bin 2], with π &gt; 0.</span>
-<span class="co">#&gt; • Binomial Bin 1 with mean = 0.538371951557452.</span>
-<span class="co">#&gt; • Binomial Bin 2 with mean = 0.243245999585569.</span>
-<span class="co">#&gt; • Binomial Bin 3 with mean = 0.0935278241715858.</span>
-<span class="co">#&gt; ℹ Score (model selection): ICL = 5387.57.</span>
 <span class="co">#&gt; ! Some peaks have been removed</span>
-<span class="co">#&gt; # A tibble: 2 x 4</span>
-<span class="co">#&gt;       x     y counts_per_bin discarded</span>
-<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt;          &lt;int&gt; &lt;lgl&gt;    </span>
-<span class="co">#&gt; 1  0.69  0.03              4 TRUE     </span>
-<span class="co">#&gt; 2  0.74  0.03              5 TRUE</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; ── BMix fit ────────────────────────────────────────────────────────────────────</span>
-<span class="co">#&gt; ℹ Binomials k_B = 1, 2, 3, and 4, Beta-Binomials k_BB = 0; 8 fits to run.</span>
-<span class="co">#&gt; ℹ Bmix best fit completed in 0.35 mins</span>
-<span class="co">#&gt; ── [ BMix ] My BMix model n = 14268 with k = 2 component(s) (2 + 0) ────────────</span>
-<span class="co">#&gt; • Clusters: π = 59% [Bin 2] and 41% [Bin 1], with π &gt; 0.</span>
-<span class="co">#&gt; • Binomial Bin 1 with mean = 0.0988099313477008.</span>
-<span class="co">#&gt; • Binomial Bin 2 with mean = 0.34541053393781.</span>
-<span class="co">#&gt; ℹ Score (model selection): ICL = 99627.42.</span>
+<span class="co">#&gt; # A tibble: 2 x 5</span>
+<span class="co">#&gt;       x     y counts_per_bin discarded from </span>
+<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt;          &lt;int&gt; &lt;lgl&gt;     &lt;chr&gt;</span>
+<span class="co">#&gt; 1  0.69  0.03              4 TRUE      KDE  </span>
+<span class="co">#&gt; 2  0.74  0.03              5 TRUE      KDE</span>
 <span class="co">#&gt; ! Some peaks have been removed</span>
-<span class="co">#&gt; # A tibble: 1 x 4</span>
-<span class="co">#&gt;       x     y counts_per_bin discarded</span>
-<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt;          &lt;int&gt; &lt;lgl&gt;    </span>
-<span class="co">#&gt; 1  0.81  0.11              0 TRUE</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; ── BMix fit ────────────────────────────────────────────────────────────────────</span>
-<span class="co">#&gt; ℹ Binomials k_B = 1, 2, 3, and 4, Beta-Binomials k_BB = 0; 8 fits to run.</span>
-<span class="co">#&gt; ℹ Bmix best fit completed in 0.01 mins</span>
-<span class="co">#&gt; ── [ BMix ] My BMix model n = 345 with k = 4 component(s) (4 + 0) ──────────────</span>
-<span class="co">#&gt; • Clusters: π = 55% [Bin 2], 30% [Bin 1], 13% [Bin 4], and 2% [Bin 3], with π &gt;</span>
-<span class="co">#&gt; 0.</span>
-<span class="co">#&gt; • Binomial Bin 1 with mean = 0.26996135327127.</span>
-<span class="co">#&gt; • Binomial Bin 2 with mean = 0.100437503317003.</span>
-<span class="co">#&gt; • Binomial Bin 3 with mean = 0.773172864771592.</span>
-<span class="co">#&gt; • Binomial Bin 4 with mean = 0.520541374354864.</span>
-<span class="co">#&gt; ℹ Score (model selection): ICL = 2628.31.</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; ── BMix fit ────────────────────────────────────────────────────────────────────</span>
-<span class="co">#&gt; ℹ Binomials k_B = 1, 2, 3, and 4, Beta-Binomials k_BB = 0; 8 fits to run.</span>
-<span class="co">#&gt; ℹ Bmix best fit completed in 0.04 mins</span>
-<span class="co">#&gt; ── [ BMix ] My BMix model n = 1772 with k = 4 component(s) (4 + 0) ─────────────</span>
-<span class="co">#&gt; • Clusters: π = 53% [Bin 4], 22% [Bin 2], 14% [Bin 1], and 11% [Bin 3], with π</span>
-<span class="co">#&gt; &gt; 0.</span>
-<span class="co">#&gt; • Binomial Bin 1 with mean = 0.217118608307777.</span>
-<span class="co">#&gt; • Binomial Bin 2 with mean = 0.365547337005289.</span>
-<span class="co">#&gt; • Binomial Bin 3 with mean = 0.645737170092646.</span>
-<span class="co">#&gt; • Binomial Bin 4 with mean = 0.0943830279971886.</span>
-<span class="co">#&gt; ℹ Score (model selection): ICL = 12373.94.</span>
-<span class="co">#&gt; # A tibble: 6 x 12</span>
-<span class="co">#&gt;   mutation_multipl… karyotype  peak     x     y counts_per_bin discarded  offset</span>
-<span class="co">#&gt;               &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;          &lt;int&gt; &lt;lgl&gt;       &lt;dbl&gt;</span>
-<span class="co">#&gt; 1                 1 1:0       0.429 0.538 1.26              13 FALSE     -0.109 </span>
-<span class="co">#&gt; 2                 1 1:1       0.3   0.34  3.73             499 FALSE     -0.0400</span>
-<span class="co">#&gt; 3                 1 2:1       0.231 0.269 1.62               8 FALSE     -0.0383</span>
-<span class="co">#&gt; 4                 2 2:1       0.462 0.521 0.615              1 FALSE     -0.0596</span>
-<span class="co">#&gt; 5                 1 2:0       0.3   0.34  1.31              20 FALSE     -0.0400</span>
-<span class="co">#&gt; 6                 2 2:0       0.6   0.645 0.497             15 FALSE     -0.0453</span>
-<span class="co">#&gt; # … with 4 more variables: matched &lt;lgl&gt;, weight &lt;dbl&gt;, score &lt;dbl&gt;, QC &lt;chr&gt;</span>
-<span class="co">#&gt; ✖ Peak detection FAIL with r = -0.0440389870995505 and tolerance e = 0.06</span>
+<span class="co">#&gt; # A tibble: 1 x 5</span>
+<span class="co">#&gt;       x     y counts_per_bin discarded from </span>
+<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt;          &lt;int&gt; &lt;lgl&gt;     &lt;chr&gt;</span>
+<span class="co">#&gt; 1  0.81  0.11              0 TRUE      KDE  </span>
+<span class="co">#&gt; # A tibble: 6 x 15</span>
+<span class="co">#&gt;   mutation_multiplic… karyotype  peak     x     y counts_per_bin discarded from </span>
+<span class="co">#&gt;                 &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;          &lt;int&gt; &lt;lgl&gt;     &lt;chr&gt;</span>
+<span class="co">#&gt; 1                   1 1:0       0.429 0.538 1.26              13 FALSE     BMix </span>
+<span class="co">#&gt; 2                   1 1:1       0.3   0.34  3.73             499 FALSE     KDE  </span>
+<span class="co">#&gt; 3                   1 2:1       0.231 0.279 1.54               5 FALSE     BMix </span>
+<span class="co">#&gt; 4                   2 2:1       0.462 0.529 0.621              5 FALSE     BMix </span>
+<span class="co">#&gt; 5                   1 2:0       0.3   0.34  1.31              20 FALSE     KDE  </span>
+<span class="co">#&gt; 6                   2 2:0       0.6   0.645 0.497             15 FALSE     BMix </span>
+<span class="co">#&gt; # … with 7 more variables: offset &lt;dbl&gt;, matched &lt;lgl&gt;, weight &lt;dbl&gt;,</span>
+<span class="co">#&gt; #   epsilon &lt;dbl&gt;, score &lt;dbl&gt;, purity_error &lt;dbl&gt;, QC &lt;chr&gt;</span>
+<span class="co">#&gt; ✖ Peak detection FAIL with r = -0.0442245654940994 and tolerance e =</span>
 
 <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
 <span class="co">#&gt; ── [ CNAqc ]  n = 17283 mutations in 56 segments (56 clonal + 0 subclonal). Geno</span>
@@ -930,10 +830,10 @@
 <span class="co">#&gt;  2:1  [n =   345, L =    43 Mb] ■</span>
 <span class="co">#&gt; ℹ Sample Purity: 60% ~ Ploidy: 2.</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; ──  FAIL  Peaks QC closest: % 100 with q = -0.0440389870995505</span>
+<span class="co">#&gt; ──  FAIL  Peaks QC closest: % 100 with q = -0.0442245654940994</span>
 <span class="co">#&gt; ℹ 1:0 ~ n = 898   ( 5%) →  FAIL  -0.109</span>
 <span class="co">#&gt; ℹ 1:1 ~ n = 14268 (83%) →  FAIL  -0.04</span>
-<span class="co">#&gt; ℹ 2:1 ~ n = 345   ( 2%) →  FAIL  -0.038   FAIL  -0.06</span>
+<span class="co">#&gt; ℹ 2:1 ~ n = 345   ( 2%) →  FAIL  -0.049   FAIL  -0.068</span>
 <span class="co">#&gt; ℹ 2:0 ~ n = 1772  (10%) →  FAIL  -0.04    FAIL  -0.045</span></code></pre></div>
 <p>For this sample these calls are flagged by CNAqc because the purity is off by a <code>~10%</code> factor.</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
@@ -956,7 +856,7 @@
 
 <span class="co">#CNAqc suggested adjustment</span>
 <span class="va">x</span><span class="op">$</span><span class="va">peaks_analysis</span><span class="op">$</span><span class="va">score</span>
-<span class="co">#&gt; [1] -0.04403899</span></code></pre></div>
+<span class="co">#&gt; [1] -0.04422457</span></code></pre></div>
 </div>
   </div>
 
