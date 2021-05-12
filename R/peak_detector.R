@@ -1,6 +1,8 @@
 
 
 
+
+
 peak_detector = function(snvs,
                          expectation,
                          tumour_purity,
@@ -14,50 +16,49 @@ peak_detector = function(snvs,
   # snvs = w %>%
   #   dplyr::sample_n(size = nrow(w), replace = TRUE)
 
-  xy_peaks = NULL
+  xy_peaks = den = NULL
 
-  # Run KDE if required only
+  # Smoothed Gaussian kernel for VAF
+  y = snvs %>% dplyr::pull(VAF)
+
+  den = density(y, kernel = 'gaussian', adjust = kernel_adjust)
+  in_range = den$x >= min(y) & den$x <= max(y)
+
+  input_peakdetection = matrix(cbind(x = den$x[in_range], y = den$y[in_range]), ncol = 2)
+  colnames(input_peakdetection) = c('x', 'y')
+
+  # Test 5 parametrisations of peakPick neighlim
+  pks = Reduce(dplyr::bind_rows,
+               lapply(1:5,
+                      function(n) {
+                        pk = peakPick::peakpick(mat = input_peakdetection, neighlim = n)
+                        input_peakdetection[pk[, 2], , drop = FALSE] %>% as.data.frame()
+                      })) %>%
+    as_tibble() %>%
+    dplyr::arrange(x) %>%
+    dplyr::mutate(x = round(x, 2), y = round(y, 2)) %>%
+    dplyr::distinct(x, .keep_all = TRUE)
+
+
+  # print(pks)
+  hst = hist(snvs$VAF, breaks = seq(0, 1, 0.01), plot = F)$counts
+  pks$counts_per_bin = hst[round(pks$x * 100)]
+
+  # xy_peaks = pks %>%
+  #   # dplyr::mutate(discarded = counts_per_bin < sum(hst) * p)
+  #   dplyr::mutate(discarded = y <= 0.01)
+
+  # Use KDE if required only
   if (KDE)
   {
-    # Smoothed Gaussian kernel for VAF
-    y = snvs %>% dplyr::pull(VAF)
-
-    den = density(y, kernel = 'gaussian', adjust = kernel_adjust)
-    in_range = den$x >= min(y) & den$x <= max(y)
-
-    input_peakdetection = matrix(cbind(x = den$x[in_range], y = den$y[in_range]), ncol = 2)
-    colnames(input_peakdetection) = c('x', 'y')
-
-    # Test 5 parametrisations of peakPick neighlim
-    pks = Reduce(dplyr::bind_rows,
-                 lapply(1:5,
-                        function(n) {
-                          pk = peakPick::peakpick(mat = input_peakdetection, neighlim = n)
-                          input_peakdetection[pk[, 2], , drop = FALSE] %>% as.data.frame()
-                        })) %>%
-      as_tibble() %>%
-      dplyr::arrange(x) %>%
-      dplyr::mutate(x = round(x, 2), y = round(y, 2)) %>%
-      dplyr::distinct(x, .keep_all = TRUE)
-
-
-    # print(pks)
-    hst = hist(snvs$VAF, breaks = seq(0, 1, 0.01), plot = F)$counts
-    pks$counts_per_bin = hst[round(pks$x * 100)]
-
-    # xy_peaks = pks %>%
-    #   # dplyr::mutate(discarded = counts_per_bin < sum(hst) * p)
-    #   dplyr::mutate(discarded = y <= 0.01)
-
     # Heuristic to remove low-density peaks
     xy_peaks = pks %>%
       # dplyr::mutate(discarded = counts_per_bin < sum(hst) * p)
-      dplyr::mutate(discarded = y <= max(pks$y) * (1 / 20))
-
+      dplyr::mutate(discarded = y <= max(pks$y) * (1 / 20), from = 'KDE')
 
     if (any(xy_peaks$discarded))
     {
-      cli::cli_alert_warning("Some peaks have been removed")
+      cli::cli_alert_warning("Some KDE peaks have been removed")
       xy_peaks %>%
         filter(discarded) %>%
         print
@@ -92,7 +93,7 @@ peak_detector = function(snvs,
       bind_rows(tnw)
   }
 
-  xy_peaks = xy_peaks %>% bind_rows(llxy)
+  xy_peaks = xy_peaks %>% bind_rows(llxy %>% mutate(from = 'BMix'))
 
 
   # Handle special case where everything is discarded by including the one
@@ -174,10 +175,11 @@ peak_detector = function(snvs,
   }
 
   expectation = dplyr::bind_cols(expectation, match_xy_peaks) %>%
-    dplyr::mutate(offset = peak - x,
-                  matched = abs(offset) <= matching_epsilon)
+    dplyr::mutate(offset = peak - x)
 
+  expectation$matched = abs(expectation$offset) <= matching_epsilon
   expectation$weight = weight
+  expectation$epsilon = matching_epsilon
 
   # Add expectation peaks, and matching colors
   # plot_data = plot_data +
@@ -243,44 +245,44 @@ peak_detector_closest_hit_match = function(snvs,
                                            p = 0.005,
                                            KDE = FALSE)
 {
-  xy_peaks = NULL
+  xy_peaks = den = NULL
+
+  # Smoothed Gaussian kernel for VAF
+  y = snvs %>% dplyr::pull(VAF)
+
+  den = density(y, kernel = 'gaussian', adjust = kernel_adjust)
+  in_range = den$x >= min(y) & den$x <= max(y)
+
+  # den = density(y, kernel = 'gaussian', adjust = 0.5)
+  # plot(den)
+
+  input_peakdetection = matrix(cbind(x = den$x[in_range], y = den$y[in_range]), ncol = 2)
+  colnames(input_peakdetection) = c('x', 'y')
+
+  # Test 5 parametrisations of peakPick neighlim
+  pks = Reduce(dplyr::bind_rows,
+               lapply(1:5,
+                      function(n) {
+                        pk = peakPick::peakpick(mat = input_peakdetection, neighlim = n)
+                        input_peakdetection[pk[, 2], , drop = FALSE] %>% as.data.frame()
+                      })) %>%
+    as_tibble() %>%
+    dplyr::arrange(x) %>%
+    dplyr::mutate(x = round(x, 2), y = round(y, 2)) %>%
+    dplyr::distinct(x, .keep_all = TRUE)
+
+
+  # print(pks)
+  hst = hist(snvs$VAF, breaks = seq(0, 1, 0.01), plot = F)$counts
+  pks$counts_per_bin = hst[round(pks$x * 100)]
 
   # Run KDE if required only
   if (KDE)
   {
-    # Smoothed Gaussian kernel for VAF
-    y = snvs %>% dplyr::pull(VAF)
-
-    den = density(y, kernel = 'gaussian', adjust = kernel_adjust)
-    in_range = den$x >= min(y) & den$x <= max(y)
-
-    # den = density(y, kernel = 'gaussian', adjust = 0.5)
-    # plot(den)
-
-    input_peakdetection = matrix(cbind(x = den$x[in_range], y = den$y[in_range]), ncol = 2)
-    colnames(input_peakdetection) = c('x', 'y')
-
-    # Test 5 parametrisations of peakPick neighlim
-    pks = Reduce(dplyr::bind_rows,
-                 lapply(1:5,
-                        function(n) {
-                          pk = peakPick::peakpick(mat = input_peakdetection, neighlim = n)
-                          input_peakdetection[pk[, 2], , drop = FALSE] %>% as.data.frame()
-                        })) %>%
-      as_tibble() %>%
-      dplyr::arrange(x) %>%
-      dplyr::mutate(x = round(x, 2), y = round(y, 2)) %>%
-      dplyr::distinct(x, .keep_all = TRUE)
-
-
-    # print(pks)
-    hst = hist(snvs$VAF, breaks = seq(0, 1, 0.01), plot = F)$counts
-    pks$counts_per_bin = hst[round(pks$x * 100)]
-
     # Heuristic to remove low-density peaks
     xy_peaks = pks %>%
       # dplyr::mutate(discarded = counts_per_bin < sum(hst) * p)
-      dplyr::mutate(discarded = y <= max(pks$y) * (1 / 20))
+      dplyr::mutate(discarded = y <= max(pks$y) * (1 / 20), from = 'KDE')
 
 
     if (any(xy_peaks$discarded))
@@ -293,11 +295,14 @@ peak_detector_closest_hit_match = function(snvs,
   }
 
   # BMix clustering
+  # invisible(capture.output(
   bm = BMix::bmixfit(
     data.frame(successes = snvs$NV, trials = snvs$DP),
     K.BetaBinomials = 0,
-    K.Binomials = 1:4
+    K.Binomials = 1:4,
+    silent = TRUE
   )
+  # ))
   # plot.bmix(bm, data = data.frame(successes = rc$NV, trials = rc$DP))
 
 
@@ -318,7 +323,7 @@ peak_detector_closest_hit_match = function(snvs,
       bind_rows(tnw)
   }
 
-  xy_peaks = xy_peaks %>% bind_rows(llxy)
+  xy_peaks = xy_peaks %>% bind_rows(llxy %>% mutate(from = 'BMix'))
 
   # tibble(
   # `x`= bm$B.params,
@@ -376,6 +381,7 @@ peak_detector_closest_hit_match = function(snvs,
   matching$offset = matching$peak - matching$x
   matching$matched = abs(matching$offset) <= matching_epsilon
   matching$weight = weight
+  matching$epsilon = matching_epsilon
 
   # Density estimated
   density = den

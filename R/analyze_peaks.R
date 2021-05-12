@@ -1,12 +1,13 @@
 
 
+
 #' Analyze calls by peak detection.
 #'
 #' @description This function carries out a peak-detection
 #' analysis based on a joint criterion: KDE (package \code{peakPick}) plus
 #' Binomial mixture (package \code{BMix}). This is used to determine if the
-#' clonal mutations - for a given karyotype - have VAF the expected clonal
-#' VAF were the input major and minor alleles and the tumour purity correct.
+#' clonal mutations - for a given karyotype - have VAF close to the expected clonal
+#' VAF, computed from input major and minor alleles and tumour purity.
 #' A score is produced as a linear combination of the distance of the actual
 #' peak to the expected one.
 #'
@@ -64,12 +65,19 @@ analyze_peaks = function(x,
                          min_karyotype_size = 0,
                          min_absolute_karyotype_mutations = 10,
                          p_binsize_peaks = 0.005,
-                         matching_epsilon = 0.03,
+                         matching_epsilon = NULL,
+                         purity_error = 0.05,
                          n_bootstrap = 1,
                          kernel_adjust = 1,
                          matching_strategy = "closest",
-                         KDE = FALSE)
+                         KDE = TRUE)
 {
+  if (!is.null(matching_epsilon)) {
+    stop("matching_epsilon is deprecated - using purity_error = ",
+         purity_error)
+    matching_epsilon = purity_error
+  }
+
   # Check input
   stopifnot(inherits(x, "cnaqc"))
   stopifnot(min_karyotype_size >= 0 & min_karyotype_size < 1)
@@ -85,9 +93,14 @@ analyze_peaks = function(x,
 
   filtered_qc_snvs = qc_snvs %>%
     dplyr::group_by(karyotype) %>%
-    dplyr::summarise(n = n(), n_proportion = n() / x$n_snvs, .groups = 'drop') %>%
+    dplyr::summarise(
+      n = n(),
+      n_proportion = n() / x$n_snvs,
+      .groups = 'drop'
+    ) %>%
     dplyr::arrange(desc(n)) %>%
-    dplyr::mutate(QC = (n_proportion > min_karyotype_size) & n > min_absolute_karyotype_mutations)
+    dplyr::mutate(QC = (n_proportion > min_karyotype_size) &
+                    n > min_absolute_karyotype_mutations)
 
   # Re-normalize karyotype size for the ones with QC = true
   N_total = sum(filtered_qc_snvs %>% filter(QC) %>% pull(n_proportion))
@@ -113,7 +126,9 @@ analyze_peaks = function(x,
   #   )
   # )
 
-  cli::cli_alert_info("Karyotypes {.field {karyotypes}}. Matching strategy {.field {matching_strategy}}. KDE = {.field {KDE}}.")
+  cli::cli_alert_info(
+    "Karyotypes {.field {karyotypes}}. Matching strategy {.field {matching_strategy}}. KDE = {.field {KDE}}."
+  )
 
   cli::cli_alert_info(
     paste0(
@@ -131,7 +146,7 @@ analyze_peaks = function(x,
   )
 
   # Special case, nothing to compute
-  if(n_k == 0) {
+  if (n_k == 0) {
     warning("There are non mutations to detect peaks, returning input object.")
     return(x)
   }
@@ -156,6 +171,11 @@ analyze_peaks = function(x,
       AB = as.numeric(strsplit(k, ':')[[1]])
       expectation = CNAqc:::expected_vaf_peak(AB[1], AB[2], tumour_purity)
 
+      band_matching = delta_vaf_karyo(epsilon_error = purity_error,
+                                      purity = x$purity) %>%
+        dplyr::filter(karyotype == k) %>%
+        pull(delta_vaf)
+
       # Bootstrap function - w is a fake parameter, the N total
       # is used meaning that if N==1 no bootstrap is computed
       pd = function(w, n_boot)
@@ -165,12 +185,12 @@ analyze_peaks = function(x,
 
         # Bootstrap only if multiple samples are required
         data_input = w
-        if(n_boot > 1)
+        if (n_boot > 1)
           data_input = w %>% dplyr::sample_n(size = nrow(w), replace = TRUE)
 
         run_results = NULL
 
-        if(matching_strategy == "rightmost")
+        if (matching_strategy == "rightmost")
           run_results = peak_detector(
             snvs = data_input,
             expectation = expectation,
@@ -178,10 +198,11 @@ analyze_peaks = function(x,
             filtered_qc_snvs = filtered_qc_snvs,
             p = p_binsize_peaks,
             kernel_adjust = kernel_adjust,
-            matching_epsilon = matching_epsilon
+            matching_epsilon = band_matching,
+            KDE = KDE
           )
 
-        if(matching_strategy == "closest")
+        if (matching_strategy == "closest")
           run_results = peak_detector_closest_hit_match(
             snvs = data_input,
             expectation = expectation,
@@ -189,20 +210,23 @@ analyze_peaks = function(x,
             filtered_qc_snvs = filtered_qc_snvs,
             p = p_binsize_peaks,
             kernel_adjust = kernel_adjust,
-            matching_epsilon = matching_epsilon
+            matching_epsilon = band_matching,
+            KDE = KDE
           )
 
         run_results
       }
 
       # Sample "n_bootstrap" times via the bootstrap
-      if(n_bootstrap < 0) n_bootstrap = 1
+      if (n_bootstrap < 0)
+        n_bootstrap = 1
 
       # For error handling, we switch to easypar
       # best_peaks = lapply(1:n_bootstrap, pd, n_boot = n_bootstrap)
       best_peaks = easypar::run(
         FUN = pd,
-        PARAMS = lapply(1:n_bootstrap, function(w) data.frame(w = w, n_boot = n_bootstrap)),
+        PARAMS = lapply(1:n_bootstrap, function(w)
+          data.frame(w = w, n_boot = n_bootstrap)),
         parallel = FALSE,
         silent = TRUE,
         filter_errors = TRUE
@@ -211,8 +235,12 @@ analyze_peaks = function(x,
       # Runs for this giving ALL errors are intercepted and an error is raised
       # https://github.com/caravagnalab/CNAqc/issues/10
       # Without a better example failure a more intelligent handling is difficult to achieve
-      if(length(best_peaks) == 0)
-        stop("Cannot QC karyotype ", k, " - consider removing that from the input \"karyotypes\" vector.")
+      if (length(best_peaks) == 0)
+        stop(
+          "Cannot QC karyotype ",
+          k,
+          " - consider removing that from the input \"karyotypes\" vector."
+        )
 
       best_score = which.min(sapply(best_peaks, function(w)
         w$matching$weight %*% w$matching$offset))
@@ -233,6 +261,7 @@ analyze_peaks = function(x,
                                  lapply(detections, function(w)
                                    w$matching)) %>%
     mutate(score = weight * offset)
+  assembled_corrections$purity_error = purity_error
 
   overall_score = sum(assembled_corrections$score)
 
@@ -300,11 +329,13 @@ analyze_peaks = function(x,
     fits = detections,
     matches = assembled_corrections,
     matching_strategy = matching_strategy,
+    purity_error = purity_error,
     # plots = plots,
     min_karyotype_size = min_karyotype_size,
     p_binsize_peaks = p_binsize_peaks,
-    matching_epsilon = matching_epsilon,
-    QC = QC
+    # matching_epsilon = matching_epsilon,
+    QC = QC,
+    KDE = KDE
   )
 
   return(x)

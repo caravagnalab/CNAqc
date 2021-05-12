@@ -82,6 +82,10 @@ plot_peaks_fit = function(x, k)
 {
   matching = x$peaks_analysis$matching_strategy
 
+  ranges = x$peaks_analysis$matches %>%
+    dplyr::filter(karyotype == k) %>%
+    pull(epsilon)
+
   # Required input values
   snvs = x$snvs %>%
     dplyr::filter(karyotype == k) %>%
@@ -92,7 +96,7 @@ plot_peaks_fit = function(x, k)
     dplyr::mutate(karyotype = paste0(karyotype, " (", matching,")"))
 
   xy_peaks = x$peaks_analysis$fits[[k]]$xy_peaks
-  matching_epsilon = x$peaks_analysis$matching_epsilon
+  purity_error = x$peaks_analysis$purity_error
 
   # linear combination of the weight, split by number of peaks to match
   weight = x$peaks_analysis$matches %>%
@@ -175,8 +179,8 @@ plot_peaks_fit = function(x, k)
     ) +
     annotate(
       geom = 'rect',
-      xmin = expectation$peak - matching_epsilon,
-      xmax = expectation$peak + matching_epsilon,
+      xmin = expectation$peak - expectation$epsilon,
+      xmax = expectation$peak + expectation$epsilon,
       ymin = 0,
       ymax = Inf,
       color = NA,

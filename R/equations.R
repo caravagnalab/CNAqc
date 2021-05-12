@@ -7,7 +7,7 @@
 # mut.allele - mutation multiplicity
 expected_vaf_fun = function(m, M, mut.allele, p)
 {
-  P = m+M
+  P = m + M
 
   expected_mutant_reads = mut.allele * p
   expected_sequencing_depth = 2 * (1 - p) + p * P
@@ -26,7 +26,7 @@ ccf_adjustment_fun = function(v, m, M, p, mut.allele = 1)
   p = as.numeric(p)
   mut.allele = as.numeric(mut.allele)
 
-  v * ((CN-2) * p + 2) / (mut.allele * p)
+  v * ((CN - 2) * p + 2) / (mut.allele * p)
 }
 
 
@@ -41,7 +41,7 @@ purity_estimation_fun = function(v, m, M, mut.allele = 1)
   v = as.numeric(v)
   mut.allele = as.numeric(mut.allele)
 
-  (2 * v)/(mut.allele + v * (2 - CN))
+  (2 * v) / (mut.allele + v * (2 - CN))
 }
 
 # Tetraploid (m = M = 2), VAF 50% -- pure tumour!
@@ -73,10 +73,69 @@ vaf_from_ccf = function(ccf, m, M, p, mut.allele = 1)
   p = as.numeric(p)
   mut.allele = as.numeric(mut.allele)
 
-  (mut.allele * p * ccf)/((CN-2) * p + 2)
+  (mut.allele * p * ccf) / ((CN - 2) * p + 2)
 }
 
 # vaf_from_ccf(1, 1, 1, 1, 1)
 # vaf_from_ccf(.3, 1, 1, 1, 1)
 # vaf_from_ccf(1, 1, 2, 1, 1)
 
+# formula: delta_vaf= 2*multiplicty*epsilon_error/((2+purity(ploidy-2))^2)
+#compute delta_vaf for all karyotypes and multiplicity given epsilon_error and purity
+delta_vaf_karyo = function(epsilon_error, purity)
+{
+  compute_vaf_error <-
+    function(epsilon_error,
+             purity,
+             multiplicity,
+             ploidy) {
+      delta_vaf = (2 * multiplicity * epsilon_error) / ((2 + purity * (ploidy -
+                                                                         2)) ^ 2)
+      return(delta_vaf)
+    }
+
+  delta_10 <-
+    tibble(
+      karyotype = "1:0",
+      multiplicity = 1,
+      delta_vaf = compute_vaf_error(epsilon_error, purity, 1, 1)
+    )
+
+  delta_11 <-
+    tibble(
+      karyotype = "1:1",
+      multiplicity = 1,
+      delta_vaf = compute_vaf_error(epsilon_error, purity, 1, 2)
+    )
+
+  delta_20 <- tibble(
+    karyotype = "2:0",
+    multiplicity = c(1, 2),
+    delta_vaf = c(
+      compute_vaf_error(epsilon_error, purity, 1, 2),
+      compute_vaf_error(epsilon_error, purity, 2, 2)
+    )
+  )
+
+  delta_21 <- tibble(
+    karyotype = "2:1",
+    multiplicity = c(1, 2),
+    delta_vaf = c(
+      compute_vaf_error(epsilon_error, purity, 1, 3),
+      compute_vaf_error(epsilon_error, purity, 2, 3)
+    )
+  )
+
+  delta_22 <- tibble(
+    karyotype = "2:2",
+    multiplicity = c(1, 2),
+    delta_vaf = c(
+      compute_vaf_error(epsilon_error, purity, 1, 4),
+      compute_vaf_error(epsilon_error, purity, 2, 4)
+    )
+  )
+
+  Delta_vaf <- rbind(delta_10, delta_11, delta_20, delta_21, delta_22)
+
+  return(Delta_vaf)
+}
