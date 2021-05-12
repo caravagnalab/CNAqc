@@ -1,16 +1,14 @@
 
 
-#' Analyze CNA calls by peak detection.
+#' Analyze calls by peak detection.
 #'
 #' @description This function carries out a peak-detection
-#' analysis based on KDE and the package \code{peakPick}
-#' in order to determine if the mutations that map to a
-#' certain karyotype have an allelic frequency that is
-#' consistent with the Major and minor alleles of the
-#' segment, and the tumour purity. A score is produced
-#' as a linear combination of the distance of the actual
-#' peak to the expected one, derived with standard equations
-#' for CNA analysis.
+#' analysis based on a joint criterion: KDE (package \code{peakPick}) plus
+#' Binomial mixture (package \code{BMix}). This is used to determine if the
+#' clonal mutations - for a given karyotype - have VAF the expected clonal
+#' VAF were the input major and minor alleles and the tumour purity correct.
+#' A score is produced as a linear combination of the distance of the actual
+#' peak to the expected one.
 #'
 #' @param x An object of class \code{cnaqc}, created by the \code{init} function.
 #' @param karyotypes The list of karyotypes to test. By default LOH regions (A, AA),
@@ -69,7 +67,8 @@ analyze_peaks = function(x,
                          matching_epsilon = 0.03,
                          n_bootstrap = 1,
                          kernel_adjust = 1,
-                         matching_strategy = "closest")
+                         matching_strategy = "closest",
+                         KDE = FALSE)
 {
   # Check input
   stopifnot(inherits(x, "cnaqc"))
@@ -114,7 +113,7 @@ analyze_peaks = function(x,
   #   )
   # )
 
-  cli::cli_alert_info("Requested karyotypes {.field {karyotypes}}. Matching strategy {.field {matching_strategy}}.")
+  cli::cli_alert_info("Karyotypes {.field {karyotypes}}. Matching strategy {.field {matching_strategy}}. KDE = {.field {KDE}}.")
 
   cli::cli_alert_info(
     paste0(
