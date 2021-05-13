@@ -67,6 +67,7 @@ analyze_peaks = function(x,
                          p_binsize_peaks = 0.005,
                          matching_epsilon = NULL,
                          purity_error = 0.05,
+                         VAF_tolerance = 0.015,
                          n_bootstrap = 1,
                          kernel_adjust = 1,
                          matching_strategy = "closest",
@@ -199,6 +200,7 @@ analyze_peaks = function(x,
             p = p_binsize_peaks,
             kernel_adjust = kernel_adjust,
             matching_epsilon = band_matching,
+            VAF_tolerance = VAF_tolerance,
             KDE = KDE
           )
 
@@ -211,6 +213,7 @@ analyze_peaks = function(x,
             p = p_binsize_peaks,
             kernel_adjust = kernel_adjust,
             matching_epsilon = band_matching,
+            VAF_tolerance = VAF_tolerance,
             KDE = KDE
           )
 

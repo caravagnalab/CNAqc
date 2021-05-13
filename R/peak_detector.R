@@ -2,7 +2,7 @@ peak_detector = function(snvs,
                          expectation,
                          tumour_purity,
                          filtered_qc_snvs,
-                         VAF_tolerance = 0,
+                         VAF_tolerance = 0.001,
                          matching_epsilon = 0.015,
                          kernel_adjust = 1,
                          p = 0.005,
@@ -247,6 +247,7 @@ peak_detector_closest_hit_match = function(snvs,
                                            expectation,
                                            tumour_purity,
                                            filtered_qc_snvs,
+                                           VAF_tolerance = 0.001,
                                            matching_epsilon = 0.015,
                                            kernel_adjust = 1,
                                            p = 0.005,
@@ -395,10 +396,10 @@ peak_detector_closest_hit_match = function(snvs,
 
   for (i in  1:nrow(expectation))
     matching$matched[i] = overlap_bands(
-      peak = expectation$x[i],
+      peak = matching$x[i],
       tolerance = VAF_tolerance,
-      left_extremum = expectation$peak[i] - matching_epsilon[i],
-      right_extremum = expectation$peak[i] + matching_epsilon[i]
+      left_extremum = matching$peak[i] - matching_epsilon[i],
+      right_extremum = matching$peak[i] + matching_epsilon[i]
     )
 
   # Density estimated
