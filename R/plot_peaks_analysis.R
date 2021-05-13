@@ -166,6 +166,16 @@ plot_peaks_fit = function(x, k)
       shape = 4,
       show.legend = FALSE
     ) +
+    annotate(
+      geom = 'rect',
+      xmin = expectation$x - expectation$VAF_tolerance,
+      xmax = expectation$x + expectation$VAF_tolerance,
+      ymin = 0,
+      ymax = Inf,
+      color = NA,
+      alpha = .4,
+      fill = 'purple4'
+    ) +
     geom_segment(
       data = expectation,
       aes(

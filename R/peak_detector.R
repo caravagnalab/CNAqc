@@ -1,12 +1,8 @@
-
-
-
-
-
 peak_detector = function(snvs,
                          expectation,
                          tumour_purity,
                          filtered_qc_snvs,
+                         VAF_tolerance = 0,
                          matching_epsilon = 0.015,
                          kernel_adjust = 1,
                          p = 0.005,
@@ -177,9 +173,20 @@ peak_detector = function(snvs,
   expectation = dplyr::bind_cols(expectation, match_xy_peaks) %>%
     dplyr::mutate(offset = peak - x)
 
-  expectation$matched = abs(expectation$offset) <= matching_epsilon
+  # expectation$matched = abs(expectation$offset) <= matching_epsilon
   expectation$weight = weight
   expectation$epsilon = matching_epsilon
+  expectation$VAF_tolerance = VAF_tolerance
+  expectation$matched = NA
+
+  for (i in  1:nrow(expectation))
+    expectation$matched[i] = overlap_bands(
+      peak = expectation$x[i],
+      tolerance = VAF_tolerance,
+      left_extremum = expectation$peak[i] - matching_epsilon[i],
+      right_extremum = expectation$peak[i] + matching_epsilon[i]
+    )
+
 
   # Add expectation peaks, and matching colors
   # plot_data = plot_data +
@@ -379,9 +386,20 @@ peak_detector_closest_hit_match = function(snvs,
     dplyr::bind_cols(Reduce(dplyr::bind_rows, matched_peaks))
 
   matching$offset = matching$peak - matching$x
-  matching$matched = abs(matching$offset) <= matching_epsilon
+  # matching$matched = abs(matching$offset) <= matching_epsilon
   matching$weight = weight
   matching$epsilon = matching_epsilon
+
+  matching$VAF_tolerance = VAF_tolerance
+  matching$matched = NA
+
+  for (i in  1:nrow(expectation))
+    matching$matched[i] = overlap_bands(
+      peak = expectation$x[i],
+      tolerance = VAF_tolerance,
+      left_extremum = expectation$peak[i] - matching_epsilon[i],
+      right_extremum = expectation$peak[i] + matching_epsilon[i]
+    )
 
   # Density estimated
   density = den
@@ -395,3 +413,18 @@ peak_detector_closest_hit_match = function(snvs,
     xy_peaks = xy_peaks
   ))
 }
+
+overlap_bands = function(peak, tolerance, left_extremum, right_extremum)
+{
+  # if(peak + tolerance >= left_extremum & peak + tolerance <= right_extremum)
+  #   return(TRUE)
+  #
+  # if(peak - tolerance >= left_extremum & peak - tolerance <= right_extremum)
+  #   return(TRUE)
+
+  M = max(peak - tolerance, left_extremum) <= min(peak + tolerance, right_extremum)
+
+  return(M)
+}
+
+
