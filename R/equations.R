@@ -144,23 +144,22 @@ delta_vaf_karyo = function(epsilon_error, purity)
 # invert vaf(purity) and compute purity from vaf,ploidy and muliplicity
 
 purity_from_vaf <- function(vaf,ploidy,multiplicty){
-  
+
   purity <- (2*vaf)/(multiplicty + (2-ploidy)*vaf)
-  
+
   return(purity)
-  
+
 }
 
 
 # get vaf,delta_vaf and karyotype(ploidy,multiplicty) and return delta_purity
 
 compute_delta_purity <- function(vaf,delta_vaf,ploidy,multiplicity){
-  
-  
-  delta_purity <- (2*multiplicty*delta_vaf)/((multiplicity + vaf*(2-ploidy))^2)
-  
+
+  delta_purity <- (2*multiplicity*delta_vaf)/((multiplicity + vaf*(2-ploidy))^2)
+
   return(delta_purity)
-  
+
 }
 
 

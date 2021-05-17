@@ -85,18 +85,22 @@ print.cnaqc = function(x, ...)
       dplyr::pull(prop)
     prop = round(prop * 100, digits = 0)
 
+    pur_sc = round(x$peaks_analysis$score, digits = 4)
+    pur_ch = paste0(round(x$peaks_analysis$score * 100, digits = 0), '%')
+
     if (x$peaks_analysis$QC == "PASS")
       cli::cli_h3(
         paste0(
           ppass(),
-          " Peaks QC {crayon::bold(x$peaks_analysis$matching_strategy)}: % {crayon::green(paste0(prop))} with {crayon::green(paste('q =', x$peaks_analysis$score))}"
+          " Peaks QC {crayon::bold(x$peaks_analysis$matching_strategy)}:\
+          {crayon::green(paste0(prop, '%'))}, {crayon::green(paste('\u03bb =', pur_sc))}"
         )
       )
     else
       cli::cli_h3(
         paste0(
           pfail(),
-          " Peaks QC {crayon::bold(x$peaks_analysis$matching_strategy)}: % {crayon::red(paste0(prop))} with {crayon::red(paste('q =', x$peaks_analysis$score))}"
+          " Peaks QC {crayon::bold(x$peaks_analysis$matching_strategy)}: {crayon::red(paste0(prop, '%'))}, {crayon::red(paste('\u03bb =', x$peaks_analysis$score))}"
         )
       )
 

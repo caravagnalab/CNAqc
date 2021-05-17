@@ -170,8 +170,19 @@ peak_detector = function(snvs,
       match_xy_peaks = bind_rows(match_xy_peaks, entry)
   }
 
-  expectation = dplyr::bind_cols(expectation, match_xy_peaks) %>%
-    dplyr::mutate(offset = peak - x)
+  expectation = dplyr::bind_cols(expectation, match_xy_peaks)
+
+  # Distance in VAF space, converted to purity space
+  expectation = expectation %>%
+    mutate(
+      offset_VAF = peak - x, # VAF space
+      offset = compute_delta_purity(
+        vaf = x,
+        delta_vaf = offset_VAF,
+        ploidy = strsplit(snvs$karyotype[1], ':') %>% unlist %>% as.numeric() %>% sum(),
+        multiplicity = mutation_multiplicity
+      )
+    )
 
   # expectation$matched = abs(expectation$offset) <= matching_epsilon
   expectation$weight = weight
@@ -386,7 +397,18 @@ peak_detector_closest_hit_match = function(snvs,
   matching = expectation %>%
     dplyr::bind_cols(Reduce(dplyr::bind_rows, matched_peaks))
 
-  matching$offset = matching$peak - matching$x
+  # Distance in VAF space, converted to purity space
+  matching = matching %>%
+    mutate(
+      offset_VAF = peak - x, # VAF space
+      offset = compute_delta_purity(
+        vaf = x,
+        delta_vaf = offset_VAF,
+        ploidy = strsplit(snvs$karyotype[1], ':') %>% unlist %>% as.numeric() %>% sum(),
+        multiplicity = mutation_multiplicity
+        )
+    )
+
   # matching$matched = abs(matching$offset) <= matching_epsilon
   matching$weight = weight
   matching$epsilon = matching_epsilon
