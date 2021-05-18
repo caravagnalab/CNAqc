@@ -277,7 +277,7 @@ See the vignette to see how to extract and plot the results.</p>
 #&gt; </span><span style='color: #BCBCBC;'> 8</span><span>  0.91  0.01              1 TRUE      KDE  
 #&gt; </span><span style='color: #BCBCBC;'> 9</span><span>  0.93  0.01              0 TRUE      KDE  
 #&gt; </span><span style='color: #BCBCBC;'>10</span><span>  0.97  0.02              0 TRUE      KDE  
-#&gt; </span><span style='color: #949494;'># A tibble: 6 x 16</span><span>
+#&gt; </span><span style='color: #949494;'># A tibble: 6 x 17</span><span>
 #&gt;   mutation_multiplic… karyotype  peak     x     y counts_per_bin discarded from 
 #&gt;                 </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>          </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>
 #&gt; </span><span style='color: #BCBCBC;'>1</span><span>                   1 2:1       0.308 0.306 3.60              59 FALSE     BMix 
@@ -286,9 +286,9 @@ See the vignette to see how to extract and plot the results.</p>
 #&gt; </span><span style='color: #BCBCBC;'>4</span><span>                   2 2:0       0.89  0.885 7.99               7 FALSE     BMix 
 #&gt; </span><span style='color: #BCBCBC;'>5</span><span>                   1 2:2       0.235 0.24  0.86              65 FALSE     KDE  
 #&gt; </span><span style='color: #BCBCBC;'>6</span><span>                   2 2:2       0.471 0.46  8.14             625 FALSE     KDE  
-#&gt; </span><span style='color: #949494;'># … with 8 more variables: offset &lt;dbl&gt;, weight &lt;dbl&gt;, epsilon &lt;dbl&gt;,</span><span>
-#&gt; </span><span style='color: #949494;'>#   VAF_tolerance &lt;dbl&gt;, matched &lt;lgl&gt;, score &lt;dbl&gt;, purity_error &lt;dbl&gt;,</span><span>
-#&gt; </span><span style='color: #949494;'>#   QC &lt;chr&gt;</span><span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✔</span><span> Peak detection </span><span style='color: #00BB00;'>PASS</span><span> with </span><span style='color: #00BB00;'>r = 0.0041148739213522</span><span> and tolerance e = </span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+#&gt; </span><span style='color: #949494;'># … with 9 more variables: offset_VAF &lt;dbl&gt;, offset &lt;dbl&gt;, weight &lt;dbl&gt;,</span><span>
+#&gt; </span><span style='color: #949494;'>#   epsilon &lt;dbl&gt;, VAF_tolerance &lt;dbl&gt;, matched &lt;lgl&gt;, score &lt;dbl&gt;,</span><span>
+#&gt; </span><span style='color: #949494;'>#   purity_error &lt;dbl&gt;, QC &lt;chr&gt;</span><span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✔</span><span> Peak detection </span><span style='color: #00BB00;'>PASS</span><span> with </span><span style='color: #00BB00;'>r = 0.00503623467528875</span><span> and tolerance e = </span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>── </span><span style='color: #000000;background-color: #BBBB00;'>[ CNAqc ] </span><span> n = 12963 mutations in </span><span style='color: #00BB00;'>267</span><span> segments (267 clonal + 0 subclonal). Ge</span></div><div class='output co'>#&gt; 
 #&gt;    2:2  [n = 7478, L = 1483 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { </span><span style='color: #BBBB00;'>CTCF</span><span> }
 #&gt;    4:2  [n = 1893, L =  331 Mb] ■■■■■■■
@@ -305,10 +305,11 @@ See the vignette to see how to extract and plot the results.</p>
 #&gt; </div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Sample Purity: 89% ~ Ploidy: 4.</span></div><div class='output co'>#&gt; </div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> There are 3 annotated driver(s).</span></div><div class='output co'>#&gt;          chr      from        to ref alt  DP NV       VAF driver_label is_driver
 #&gt;         chr2 179431633 179431634   C   T 117 77 0.6581197          TTN      TRUE
 #&gt;        chr16  67646006  67646007   C   T 120 54 0.4500000         CTCF      TRUE
-#&gt;        chr17   7577106   7577107   G   C  84 78 0.9285714         TP53      TRUE</div><div class='output co'>#&gt; </div><div class='output co'>#&gt; <span class='message'>── </span><span style='color: #000000;background-color: #00BB00;'> PASS </span><span> Peaks QC </span><span style='font-weight: bold;'>closest</span><span>: % </span><span style='color: #00BB00;'>100</span><span> with </span><span style='color: #00BB00;'>q = 0.0041148739213522</span><span> </span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> </span><span style='color: #0000BB;'>2:1</span><span> ~ n = 1563  (17%) → </span><span style='color: #000000;background-color: #00BB00;'> PASS </span><span> 0.002   </span><span style='color: #000000;background-color: #00BB00;'> PASS </span><span> 0.014  </span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> </span><span style='color: #0000BB;'>2:0</span><span> ~ n = 81    ( 1%) → </span><span style='color: #000000;background-color: #00BB00;'> PASS </span><span> 0.022   </span><span style='color: #000000;background-color: #00BB00;'> PASS </span><span> 0.005  </span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> </span><span style='color: #0000BB;'>2:2</span><span> ~ n = 7478  (82%) → </span><span style='color: #000000;background-color: #00BB00;'> PASS </span><span> -0.005  </span><span style='color: #000000;background-color: #00BB00;'> PASS </span><span> 0.011  </span></div><div class='input'>
+#&gt;        chr17   7577106   7577107   G   C  84 78 0.9285714         TP53      TRUE</div><div class='output co'>#&gt; </div><div class='output co'>#&gt; <span class='message'>── </span><span style='color: #000000;background-color: #00BB00;'> PASS </span><span> Peaks QC </span><span style='font-weight: bold;'>closest</span><span>:</span>
+#&gt; <span class='message'></span><span style='color: #00BB00;'>100%</span><span>, </span><span style='color: #00BB00;'>λ = 0.005</span><span> </span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> </span><span style='color: #0000BB;'>2:1</span><span> ~ n = 1563  (17%) → </span><span style='color: #000000;background-color: #00BB00;'> PASS </span><span> 0.01    </span><span style='color: #000000;background-color: #00BB00;'> PASS </span><span> 0.028  </span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> </span><span style='color: #0000BB;'>2:0</span><span> ~ n = 81    ( 1%) → </span><span style='color: #000000;background-color: #00BB00;'> PASS </span><span> 0.043   </span><span style='color: #000000;background-color: #00BB00;'> PASS </span><span> 0.005  </span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> </span><span style='color: #0000BB;'>2:2</span><span> ~ n = 7478  (82%) → </span><span style='color: #000000;background-color: #00BB00;'> PASS </span><span> -0.034  </span><span style='color: #000000;background-color: #00BB00;'> PASS </span><span> 0.037  </span></div><div class='input'>
 <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>$</span><span class='va'>peaks_analysis</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; $score
-#&gt; [1] 0.004114874
+#&gt; [1] 0.005036235
 #&gt; 
 #&gt; $fits
 #&gt; $fits$`1:0`
@@ -323,13 +324,13 @@ See the vignette to see how to extract and plot the results.</p>
 #&gt; 
 #&gt; $fits$`2:1`
 #&gt; $fits$`2:1`$matching
-#&gt; </span><span style='color: #949494;'># A tibble: 2 x 13</span><span>
+#&gt; </span><span style='color: #949494;'># A tibble: 2 x 14</span><span>
 #&gt;   mutation_multiplic… karyotype  peak     x     y counts_per_bin discarded from 
 #&gt;                 </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>          </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>
 #&gt; </span><span style='color: #BCBCBC;'>1</span><span>                   1 2:1       0.308 0.306  3.60             59 FALSE     BMix 
 #&gt; </span><span style='color: #BCBCBC;'>2</span><span>                   2 2:1       0.616 0.602  2.94             60 FALSE     BMix 
-#&gt; </span><span style='color: #949494;'># … with 5 more variables: offset &lt;dbl&gt;, weight &lt;dbl&gt;, epsilon &lt;dbl&gt;,</span><span>
-#&gt; </span><span style='color: #949494;'>#   VAF_tolerance &lt;dbl&gt;, matched &lt;lgl&gt;</span><span>
+#&gt; </span><span style='color: #949494;'># … with 6 more variables: offset_VAF &lt;dbl&gt;, offset &lt;dbl&gt;, weight &lt;dbl&gt;,</span><span>
+#&gt; </span><span style='color: #949494;'>#   epsilon &lt;dbl&gt;, VAF_tolerance &lt;dbl&gt;, matched &lt;lgl&gt;</span><span>
 #&gt; 
 #&gt; $fits$`2:1`$density
 #&gt; 
@@ -360,13 +361,13 @@ See the vignette to see how to extract and plot the results.</p>
 #&gt; 
 #&gt; $fits$`2:0`
 #&gt; $fits$`2:0`$matching
-#&gt; </span><span style='color: #949494;'># A tibble: 2 x 13</span><span>
+#&gt; </span><span style='color: #949494;'># A tibble: 2 x 14</span><span>
 #&gt;   mutation_multiplic… karyotype  peak     x     y counts_per_bin discarded from 
 #&gt;                 </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>          </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>
 #&gt; </span><span style='color: #BCBCBC;'>1</span><span>                   1 2:0       0.445 0.423 0.172              0 FALSE     BMix 
 #&gt; </span><span style='color: #BCBCBC;'>2</span><span>                   2 2:0       0.89  0.885 7.99               7 FALSE     BMix 
-#&gt; </span><span style='color: #949494;'># … with 5 more variables: offset &lt;dbl&gt;, weight &lt;dbl&gt;, epsilon &lt;dbl&gt;,</span><span>
-#&gt; </span><span style='color: #949494;'>#   VAF_tolerance &lt;dbl&gt;, matched &lt;lgl&gt;</span><span>
+#&gt; </span><span style='color: #949494;'># … with 6 more variables: offset_VAF &lt;dbl&gt;, offset &lt;dbl&gt;, weight &lt;dbl&gt;,</span><span>
+#&gt; </span><span style='color: #949494;'>#   epsilon &lt;dbl&gt;, VAF_tolerance &lt;dbl&gt;, matched &lt;lgl&gt;</span><span>
 #&gt; 
 #&gt; $fits$`2:0`$density
 #&gt; 
@@ -399,13 +400,13 @@ See the vignette to see how to extract and plot the results.</p>
 #&gt; 
 #&gt; $fits$`2:2`
 #&gt; $fits$`2:2`$matching
-#&gt; </span><span style='color: #949494;'># A tibble: 2 x 13</span><span>
+#&gt; </span><span style='color: #949494;'># A tibble: 2 x 14</span><span>
 #&gt;   mutation_multiplic… karyotype  peak     x     y counts_per_bin discarded from 
 #&gt;                 </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>          </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>
 #&gt; </span><span style='color: #BCBCBC;'>1</span><span>                   1 2:2       0.235  0.24  0.86             65 FALSE     KDE  
 #&gt; </span><span style='color: #BCBCBC;'>2</span><span>                   2 2:2       0.471  0.46  8.14            625 FALSE     KDE  
-#&gt; </span><span style='color: #949494;'># … with 5 more variables: offset &lt;dbl&gt;, weight &lt;dbl&gt;, epsilon &lt;dbl&gt;,</span><span>
-#&gt; </span><span style='color: #949494;'>#   VAF_tolerance &lt;dbl&gt;, matched &lt;lgl&gt;</span><span>
+#&gt; </span><span style='color: #949494;'># … with 6 more variables: offset_VAF &lt;dbl&gt;, offset &lt;dbl&gt;, weight &lt;dbl&gt;,</span><span>
+#&gt; </span><span style='color: #949494;'>#   epsilon &lt;dbl&gt;, VAF_tolerance &lt;dbl&gt;, matched &lt;lgl&gt;</span><span>
 #&gt; 
 #&gt; $fits$`2:2`$density
 #&gt; 
@@ -447,7 +448,7 @@ See the vignette to see how to extract and plot the results.</p>
 #&gt; 
 #&gt; 
 #&gt; $matches
-#&gt; </span><span style='color: #949494;'># A tibble: 6 x 16</span><span>
+#&gt; </span><span style='color: #949494;'># A tibble: 6 x 17</span><span>
 #&gt;   mutation_multiplic… karyotype  peak     x     y counts_per_bin discarded from 
 #&gt;                 </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>          </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>
 #&gt; </span><span style='color: #BCBCBC;'>1</span><span>                   1 2:1       0.308 0.306 3.60              59 FALSE     BMix 
@@ -456,9 +457,9 @@ See the vignette to see how to extract and plot the results.</p>
 #&gt; </span><span style='color: #BCBCBC;'>4</span><span>                   2 2:0       0.89  0.885 7.99               7 FALSE     BMix 
 #&gt; </span><span style='color: #BCBCBC;'>5</span><span>                   1 2:2       0.235 0.24  0.86              65 FALSE     KDE  
 #&gt; </span><span style='color: #BCBCBC;'>6</span><span>                   2 2:2       0.471 0.46  8.14             625 FALSE     KDE  
-#&gt; </span><span style='color: #949494;'># … with 8 more variables: offset &lt;dbl&gt;, weight &lt;dbl&gt;, epsilon &lt;dbl&gt;,</span><span>
-#&gt; </span><span style='color: #949494;'>#   VAF_tolerance &lt;dbl&gt;, matched &lt;lgl&gt;, score &lt;dbl&gt;, purity_error &lt;dbl&gt;,</span><span>
-#&gt; </span><span style='color: #949494;'>#   QC &lt;chr&gt;</span><span>
+#&gt; </span><span style='color: #949494;'># … with 9 more variables: offset_VAF &lt;dbl&gt;, offset &lt;dbl&gt;, weight &lt;dbl&gt;,</span><span>
+#&gt; </span><span style='color: #949494;'>#   epsilon &lt;dbl&gt;, VAF_tolerance &lt;dbl&gt;, matched &lt;lgl&gt;, score &lt;dbl&gt;,</span><span>
+#&gt; </span><span style='color: #949494;'>#   purity_error &lt;dbl&gt;, QC &lt;chr&gt;</span><span>
 #&gt; 
 #&gt; $matching_strategy
 #&gt; [1] "closest"
@@ -497,7 +498,7 @@ See the vignette to see how to extract and plot the results.</p>
 #&gt; </span><span style='color: #BCBCBC;'> 8</span><span>  0.91  0.01              1 TRUE      KDE  
 #&gt; </span><span style='color: #BCBCBC;'> 9</span><span>  0.93  0.01              0 TRUE      KDE  
 #&gt; </span><span style='color: #BCBCBC;'>10</span><span>  0.97  0.02              0 TRUE      KDE  
-#&gt; </span><span style='color: #949494;'># A tibble: 6 x 16</span><span>
+#&gt; </span><span style='color: #949494;'># A tibble: 6 x 17</span><span>
 #&gt;   mutation_multiplic… karyotype  peak     x     y counts_per_bin discarded from 
 #&gt;                 </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>          </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>
 #&gt; </span><span style='color: #BCBCBC;'>1</span><span>                   2 2:1       0.616 0.602  2.94             60 FALSE     BMix 
@@ -506,9 +507,9 @@ See the vignette to see how to extract and plot the results.</p>
 #&gt; </span><span style='color: #BCBCBC;'>4</span><span>                   1 2:0       0.445 0.87   9                 5 FALSE     KDE  
 #&gt; </span><span style='color: #BCBCBC;'>5</span><span>                   2 2:2       0.471 0.461  8.14            625 FALSE     BMix 
 #&gt; </span><span style='color: #BCBCBC;'>6</span><span>                   1 2:2       0.235 0.46   8.14            625 FALSE     KDE  
-#&gt; </span><span style='color: #949494;'># … with 8 more variables: offset &lt;dbl&gt;, weight &lt;dbl&gt;, epsilon &lt;dbl&gt;,</span><span>
-#&gt; </span><span style='color: #949494;'>#   VAF_tolerance &lt;dbl&gt;, matched &lt;lgl&gt;, score &lt;dbl&gt;, purity_error &lt;dbl&gt;,</span><span>
-#&gt; </span><span style='color: #949494;'>#   QC &lt;chr&gt;</span><span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✔</span><span> Peak detection </span><span style='color: #00BB00;'>PASS</span><span> with </span><span style='color: #00BB00;'>r = -0.113569058847062</span><span> and tolerance e = </span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+#&gt; </span><span style='color: #949494;'># … with 9 more variables: offset_VAF &lt;dbl&gt;, offset &lt;dbl&gt;, weight &lt;dbl&gt;,</span><span>
+#&gt; </span><span style='color: #949494;'>#   epsilon &lt;dbl&gt;, VAF_tolerance &lt;dbl&gt;, matched &lt;lgl&gt;, score &lt;dbl&gt;,</span><span>
+#&gt; </span><span style='color: #949494;'>#   purity_error &lt;dbl&gt;, QC &lt;chr&gt;</span><span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✔</span><span> Peak detection </span><span style='color: #00BB00;'>PASS</span><span> with </span><span style='color: #00BB00;'>r = -29.0623856969481</span><span> and tolerance e = </span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>── </span><span style='color: #000000;background-color: #BBBB00;'>[ CNAqc ] </span><span> n = 12963 mutations in </span><span style='color: #00BB00;'>267</span><span> segments (267 clonal + 0 subclonal). Ge</span></div><div class='output co'>#&gt; 
 #&gt;    2:2  [n = 7478, L = 1483 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { </span><span style='color: #BBBB00;'>CTCF</span><span> }
 #&gt;    4:2  [n = 1893, L =  331 Mb] ■■■■■■■
@@ -525,7 +526,8 @@ See the vignette to see how to extract and plot the results.</p>
 #&gt; </div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Sample Purity: 89% ~ Ploidy: 4.</span></div><div class='output co'>#&gt; </div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> There are 3 annotated driver(s).</span></div><div class='output co'>#&gt;          chr      from        to ref alt  DP NV       VAF driver_label is_driver
 #&gt;         chr2 179431633 179431634   C   T 117 77 0.6581197          TTN      TRUE
 #&gt;        chr16  67646006  67646007   C   T 120 54 0.4500000         CTCF      TRUE
-#&gt;        chr17   7577106   7577107   G   C  84 78 0.9285714         TP53      TRUE</div><div class='output co'>#&gt; </div><div class='output co'>#&gt; <span class='message'>── </span><span style='color: #000000;background-color: #00BB00;'> PASS </span><span> Peaks QC </span><span style='font-weight: bold;'>rightmost</span><span>: % </span><span style='color: #00BB00;'>100</span><span> with </span><span style='color: #00BB00;'>q = -0.113569058847062</span><span> </span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> </span><span style='color: #0000BB;'>2:1</span><span> ~ n = 1563  (17%) → </span><span style='color: #000000;background-color: #00BB00;'> PASS </span><span> 0.014   </span><span style='color: #000000;background-color: #00BB00;'> PASS </span><span> -0.292 </span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> </span><span style='color: #0000BB;'>2:0</span><span> ~ n = 81    ( 1%) → </span><span style='color: #000000;background-color: #00BB00;'> PASS </span><span> 0.005   </span><span style='color: #000000;background-color: #00BB00;'> PASS </span><span> -0.425 </span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> </span><span style='color: #0000BB;'>2:2</span><span> ~ n = 7478  (82%) → </span><span style='color: #000000;background-color: #00BB00;'> PASS </span><span> 0.01    </span><span style='color: #000000;background-color: #00BB00;'> PASS </span><span> -0.225 </span></div></span></pre>
+#&gt;        chr17   7577106   7577107   G   C  84 78 0.9285714         TP53      TRUE</div><div class='output co'>#&gt; </div><div class='output co'>#&gt; <span class='message'>── </span><span style='color: #000000;background-color: #00BB00;'> PASS </span><span> Peaks QC </span><span style='font-weight: bold;'>rightmost</span><span>:</span>
+#&gt; <span class='message'></span><span style='color: #00BB00;'>100%</span><span>, </span><span style='color: #00BB00;'>λ = -29.0624</span><span> </span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> </span><span style='color: #0000BB;'>2:1</span><span> ~ n = 1563  (17%) → </span><span style='color: #000000;background-color: #00BB00;'> PASS </span><span> 0.028   </span><span style='color: #000000;background-color: #00BB00;'> PASS </span><span> -3.651 </span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> </span><span style='color: #0000BB;'>2:0</span><span> ~ n = 81    ( 1%) → </span><span style='color: #000000;background-color: #00BB00;'> PASS </span><span> 0.005   </span><span style='color: #000000;background-color: #00BB00;'> PASS </span><span> -0.85  </span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> </span><span style='color: #0000BB;'>2:2</span><span> ~ n = 7478  (82%) → </span><span style='color: #000000;background-color: #00BB00;'> PASS </span><span> 0.035   </span><span style='color: #000000;background-color: #00BB00;'> PASS </span><span> -70.172</span></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
