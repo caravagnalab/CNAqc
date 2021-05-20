@@ -143,9 +143,9 @@ delta_vaf_karyo = function(epsilon_error, purity)
 
 # invert vaf(purity) and compute purity from vaf,ploidy and muliplicity
 
-purity_from_vaf <- function(vaf,ploidy,multiplicty){
+purity_from_vaf <- function(vaf,ploidy,multiplicity){
 
-  purity <- (2*vaf)/(multiplicty + (2-ploidy)*vaf)
+  purity <- (2*vaf)/(multiplicity + (2-ploidy)*vaf)
 
   return(purity)
 
@@ -156,7 +156,15 @@ purity_from_vaf <- function(vaf,ploidy,multiplicty){
 
 compute_delta_purity <- function(vaf,delta_vaf,ploidy,multiplicity){
 
+  if(purity_from_vaf(vaf,ploidy,multiplicity) > 1){
+    
+  warning("Incompatible values of VAF, ploidy and multiplicity: the computed score will be unreliable")
+    
+   }
+  
   delta_purity <- (2*multiplicity*delta_vaf)/((multiplicity + vaf*(2-ploidy))^2)
+  
+  
 
   return(delta_purity)
 
