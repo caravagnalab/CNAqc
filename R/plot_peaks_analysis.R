@@ -37,6 +37,9 @@ plot_peaks_analysis = function(x,
 
   karyotypes = x$peaks_analysis$fits %>% names
 
+  order_karyotypes = c('1:0', '1:1', '2:0', '2:1', '2:2')
+  karyotypes = order_karyotypes[order_karyotypes %in% karyotypes]
+
   # Plot each one of the fits
   plots = lapply(karyotypes, function(k) {
     if (all(is.null(x$peaks_analysis$fits[[k]]$matching)))

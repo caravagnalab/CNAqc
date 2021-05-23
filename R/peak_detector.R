@@ -324,7 +324,6 @@ peak_detector_closest_hit_match = function(snvs,
   # ))
   # plot.bmix(bm, data = data.frame(successes = rc$NV, trials = rc$DP))
 
-
   llxy = NULL
   for (b in names(bm$B.params))
   {
@@ -399,6 +398,7 @@ peak_detector_closest_hit_match = function(snvs,
 
   # Distance in VAF space, converted to purity space
   matching = matching %>%
+    rowwise() %>%
     mutate(
       offset_VAF = peak - x, # VAF space
       offset = compute_delta_purity(

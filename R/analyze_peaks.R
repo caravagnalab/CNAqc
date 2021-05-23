@@ -1,6 +1,3 @@
-
-
-
 #' Analyze calls by peak detection.
 #'
 #' @description This function carries out a peak-detection
@@ -61,7 +58,7 @@
 #' x = analyze_peaks(x, matching_strategy = "rightmost")
 #' print(x)
 analyze_peaks = function(x,
-                         karyotypes = c('1:0', '1:1', '2:1', '2:0', '2:2'),
+                         karyotypes = c('1:0', '1:1', '2:0', '2:1', '2:2'),
                          min_karyotype_size = 0,
                          min_absolute_karyotype_mutations = 10,
                          p_binsize_peaks = 0.005,

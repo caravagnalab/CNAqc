@@ -92,15 +92,14 @@ print.cnaqc = function(x, ...)
       cli::cli_h3(
         paste0(
           ppass(),
-          " Peaks QC {crayon::bold(x$peaks_analysis$matching_strategy)}:\
-          {crayon::green(paste0(prop, '%'))}, {crayon::green(paste('\u03bb =', pur_sc))}"
+          " Peaks QC {crayon::bold(x$peaks_analysis$matching_strategy)}: {crayon::green(paste0(prop, '%'))}, {crayon::green(paste('\u03bb =', pur_sc))}. Purity correction: {.value {pur_ch}}."
         )
       )
     else
       cli::cli_h3(
         paste0(
           pfail(),
-          " Peaks QC {crayon::bold(x$peaks_analysis$matching_strategy)}: {crayon::red(paste0(prop, '%'))}, {crayon::red(paste('\u03bb =', x$peaks_analysis$score))}"
+          " Peaks QC {crayon::bold(x$peaks_analysis$matching_strategy)}: {crayon::red(paste0(prop, '%'))}, {crayon::red(paste('\u03bb =', pur_sc))}. Purity correction: {.value {pur_ch}}."
         )
       )
 
