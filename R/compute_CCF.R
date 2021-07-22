@@ -14,6 +14,8 @@
 #' @param cutoff_QC_PASS Percentage of mutations that can be not-assigned (\code{NA}) in a karyotype.
 #' If the karyotype has more than \code{cutoff_QC_PASS} percentage of non-assigned mutations then
 #' the overall set of CCF calls is failed for the karyotype.
+#' @param muts_per_karyotype Minimum number of mutations that are required to be mapped to a karyotype
+#' in order to compute CCF values (default 25).
 #' @param method Either \code{"ENTROPY"} or \code{"ROUGH"}, to reflect the two different algorithms
 #' to compute CCF. See the package vignette to understand the differences across methods.
 #'
@@ -34,13 +36,15 @@
 #' plot_CCF(x)
 compute_CCF = function(x,
                        karyotypes = c('1:0', '1:1', '2:0', '2:1', '2:2'),
+                       muts_per_karyotype = 25,
                        cutoff_QC_PASS = 0.1,
                        method = 'ENTROPY')
 {
   stopifnot(inherits(x, 'cnaqc'))
   stopifnot(method %in% c('ENTROPY', "ROUGH"))
 
-  nkaryotypes = x$n_karyotype[x$n_karyotype > 25]
+  if(any(x$n_karyotype <= muts_per_karyotype)) warning("Some karyotypes have fewer than", muts_per_karyotype, 'and will not be analysed.')
+  nkaryotypes = x$n_karyotype[x$n_karyotype > muts_per_karyotype]
 
   karyotypes = intersect(karyotypes, nkaryotypes %>% names)
   stopifnot(
