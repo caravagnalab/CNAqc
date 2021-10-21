@@ -162,13 +162,13 @@
 <span class="co">#&gt; ℹ Karyotypes 1:0, 1:1, 2:0, 2:1, and 2:2. Matching strategy closest. KDE = TRUE.</span>
 <span class="co">#&gt; ℹ Found n = 9122 mutations in 2:2, 2:1, 2:0 (skipping those with n &lt; 0 mutations).</span>
 <span class="co">#&gt; ! Some peaks have been removed</span>
-<span class="co">#&gt; # A tibble: 2 x 5</span>
+<span class="co">#&gt; # A tibble: 2 × 5</span>
 <span class="co">#&gt;       x     y counts_per_bin discarded from </span>
 <span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt;          &lt;int&gt; &lt;lgl&gt;     &lt;chr&gt;</span>
 <span class="co">#&gt; 1  0.13   0.3              1 TRUE      KDE  </span>
 <span class="co">#&gt; 2  0.32   0.3              0 TRUE      KDE</span>
 <span class="co">#&gt; ! Some peaks have been removed</span>
-<span class="co">#&gt; # A tibble: 10 x 5</span>
+<span class="co">#&gt; # A tibble: 10 × 5</span>
 <span class="co">#&gt;        x     y counts_per_bin discarded from </span>
 <span class="co">#&gt;    &lt;dbl&gt; &lt;dbl&gt;          &lt;int&gt; &lt;lgl&gt;     &lt;chr&gt;</span>
 <span class="co">#&gt;  1  0.11  0.27             20 TRUE      KDE  </span>
@@ -181,7 +181,7 @@
 <span class="co">#&gt;  8  0.91  0.01              1 TRUE      KDE  </span>
 <span class="co">#&gt;  9  0.93  0.01              0 TRUE      KDE  </span>
 <span class="co">#&gt; 10  0.97  0.02              0 TRUE      KDE  </span>
-<span class="co">#&gt; # A tibble: 6 x 17</span>
+<span class="co">#&gt; # A tibble: 6 × 17</span>
 <span class="co">#&gt;   mutation_multiplic… karyotype  peak     x     y counts_per_bin discarded from </span>
 <span class="co">#&gt;                 &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;          &lt;int&gt; &lt;lgl&gt;     &lt;chr&gt;</span>
 <span class="co">#&gt; 1                   1 2:0       0.445 0.423 0.172              0 FALSE     BMix </span>
@@ -189,11 +189,11 @@
 <span class="co">#&gt; 3                   1 2:1       0.308 0.306 3.60              59 FALSE     BMix </span>
 <span class="co">#&gt; 4                   2 2:1       0.616 0.600 2.94              60 FALSE     BMix </span>
 <span class="co">#&gt; 5                   1 2:2       0.235 0.24  0.86              65 FALSE     KDE  </span>
-<span class="co">#&gt; 6                   2 2:2       0.471 0.480 7.20             606 FALSE     BMix </span>
+<span class="co">#&gt; 6                   2 2:2       0.471 0.461 8.14             625 FALSE     BMix </span>
 <span class="co">#&gt; # … with 9 more variables: offset_VAF &lt;dbl&gt;, offset &lt;dbl&gt;, weight &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   epsilon &lt;dbl&gt;, VAF_tolerance &lt;dbl&gt;, matched &lt;lgl&gt;, score &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   purity_error &lt;dbl&gt;, QC &lt;chr&gt;</span>
-<span class="co">#&gt; ✔ Peak detection PASS with r = -0.0243249769704524 and tolerance e =</span></code></pre></div>
+<span class="co">#&gt; ✔ Peak detection PASS with r = 0.00436728514066676 and tolerance e =</span></code></pre></div>
 <p><code>CNAqc</code> analyze LOH regions (A, AA), diploid regions (AB), and amplification regions (AAB, AABB). These correspond to <code>'1:1'</code>, <code>'2:1'</code>, <code>'2:0'</code> and <code>'2:2'</code> in “Major:minor” notation. Karyotypes are subset by their size (normalized for the number of input mutations), and by default karyotypes smaller than 5% of the actual mutational burden are not considered</p>
 <p>A Kernel-density method (unitary adjustment, Gaussian kernel) is used to smooth the data distribution, and the <a href="https://cran.rstudio.com/web/packages/peakPick/index.html">peakPick: Peak Picking Methods Inspired by Biological Data</a> package is used to determine peaks in the smoothed density. Peaks below a mnimum density (noise and miscalled segments) are filtered, and the others are matched to a predefined location with some tolerance (e.g., plus/minus <code>0.5 * epsilon</code>, where <code>epsilon = 0.015</code> is the default).</p>
 <p>Theis analysis produces a set of scores that account for karyotype size and peaks offset, and that can be combined into a linear model to compute an overall QC metrics, called <code>rho</code>.</p>
@@ -220,10 +220,10 @@
 <span class="co">#&gt;        chr16  67646006  67646007   C   T 120 54 0.4500000         CTCF      TRUE</span>
 <span class="co">#&gt;        chr17   7577106   7577107   G   C  84 78 0.9285714         TP53      TRUE</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; ──  PASS  Peaks QC closest: 100%, λ = -0.0243. Purity correction: -2%.</span>
+<span class="co">#&gt; ──  PASS  Peaks QC closest: 100%, λ = 0.0044. Purity correction: 0%.</span>
 <span class="co">#&gt; ℹ 2:0 ~ n = 81    ( 1%) →  PASS  0.043    PASS  0.005</span>
 <span class="co">#&gt; ℹ 2:1 ~ n = 1563  (17%) →  PASS  0.01     PASS  0.032</span>
-<span class="co">#&gt; ℹ 2:2 ~ n = 7478  (82%) →  PASS  -0.034   PASS  -0.035</span></code></pre></div>
+<span class="co">#&gt; ℹ 2:2 ~ n = 7478  (82%) →  PASS  -0.034   PASS  0.035</span></code></pre></div>
 <p>A summary table is stored inside the named list <code>peaks_analysis</code>.</p>
 </div>
 <div id="plotting-results" class="section level1">
@@ -256,7 +256,7 @@
 <p>The summary technical table is available as <code>peaks_analysis$matches</code> inside <code>x</code>.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">x</span><span class="op">$</span><span class="va">peaks_analysis</span><span class="op">$</span><span class="va">matches</span>
-<span class="co">#&gt; # A tibble: 6 x 17</span>
+<span class="co">#&gt; # A tibble: 6 × 17</span>
 <span class="co">#&gt;   mutation_multiplic… karyotype  peak     x     y counts_per_bin discarded from </span>
 <span class="co">#&gt;                 &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;          &lt;int&gt; &lt;lgl&gt;     &lt;chr&gt;</span>
 <span class="co">#&gt; 1                   1 2:0       0.445 0.423 0.172              0 FALSE     BMix </span>
@@ -264,7 +264,7 @@
 <span class="co">#&gt; 3                   1 2:1       0.308 0.306 3.60              59 FALSE     BMix </span>
 <span class="co">#&gt; 4                   2 2:1       0.616 0.600 2.94              60 FALSE     BMix </span>
 <span class="co">#&gt; 5                   1 2:2       0.235 0.24  0.86              65 FALSE     KDE  </span>
-<span class="co">#&gt; 6                   2 2:2       0.471 0.480 7.20             606 FALSE     BMix </span>
+<span class="co">#&gt; 6                   2 2:2       0.471 0.461 8.14             625 FALSE     BMix </span>
 <span class="co">#&gt; # … with 9 more variables: offset_VAF &lt;dbl&gt;, offset &lt;dbl&gt;, weight &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   epsilon &lt;dbl&gt;, VAF_tolerance &lt;dbl&gt;, matched &lt;lgl&gt;, score &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   purity_error &lt;dbl&gt;, QC &lt;chr&gt;</span></code></pre></div>

@@ -155,7 +155,7 @@
           <span class="va">DP</span>, <span class="va">NV</span>, <span class="va">VAF</span>    <span class="co"># Read counts (depth, number of variant reads, tumour VAF)</span>
           <span class="op">)</span>
   <span class="op">)</span>
-<span class="co">#&gt; # A tibble: 12,963 x 8</span>
+<span class="co">#&gt; # A tibble: 12,963 × 8</span>
 <span class="co">#&gt;    chr      from      to ref   alt      DP    NV    VAF</span>
 <span class="co">#&gt;    &lt;chr&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;</span>
 <span class="co">#&gt;  1 chr1  1027104 1027105 T     G        60     6 0.1   </span>
@@ -181,19 +181,19 @@
           <span class="va">chr</span>, <span class="va">from</span>, <span class="va">to</span>, <span class="va">ref</span>, <span class="va">alt</span>, <span class="va">is_driver</span>, <span class="va">driver_label</span>, <span class="fu">everything</span><span class="op">(</span><span class="op">)</span>
         <span class="op">)</span>
   <span class="op">)</span>
-<span class="co">#&gt; # A tibble: 12,963 x 13</span>
-<span class="co">#&gt;    chr      from     to ref   alt   is_driver driver_label    FILTER    DP    NV</span>
-<span class="co">#&gt;    &lt;chr&gt;   &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;lgl&gt;     &lt;chr&gt;           &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 chr1  1027104 1.03e6 T     G     FALSE     C1orf159(ENST0… PASS      60     6</span>
-<span class="co">#&gt;  2 chr1  2248588 2.25e6 A     C     FALSE     SKI(dist=7030)… PASS     127     9</span>
-<span class="co">#&gt;  3 chr1  2461999 2.46e6 G     A     FALSE     HES5            PASS     156    65</span>
-<span class="co">#&gt;  4 chr1  2727935 2.73e6 T     C     FALSE     RP11-740P5.2    PASS     180    90</span>
-<span class="co">#&gt;  5 chr1  2763397 2.76e6 C     T     FALSE     RP11-740P5.3(d… PASS     183    61</span>
-<span class="co">#&gt;  6 chr1  2768208 2.77e6 C     T     FALSE     RP11-740P5.3(d… PASS     203   130</span>
-<span class="co">#&gt;  7 chr1  2935590 2.94e6 C     T     FALSE     RP11-740P5.3(d… PASS     228   132</span>
-<span class="co">#&gt;  8 chr1  2980032 2.98e6 C     T     FALSE     LINC00982       PASS     196    85</span>
-<span class="co">#&gt;  9 chr1  3387161 3.39e6 T     G     FALSE     ARHGEF16        PASS     124     6</span>
-<span class="co">#&gt; 10 chr1  3502517 3.50e6 G     A     FALSE     MEGF6           PASS      88    10</span>
+<span class="co">#&gt; # A tibble: 12,963 × 13</span>
+<span class="co">#&gt;    chr      from      to ref   alt   is_driver driver_label   FILTER    DP    NV</span>
+<span class="co">#&gt;    &lt;chr&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;lgl&gt;     &lt;chr&gt;          &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt;</span>
+<span class="co">#&gt;  1 chr1  1027104 1027105 T     G     FALSE     C1orf159(ENST… PASS      60     6</span>
+<span class="co">#&gt;  2 chr1  2248588 2248589 A     C     FALSE     SKI(dist=7030… PASS     127     9</span>
+<span class="co">#&gt;  3 chr1  2461999 2462000 G     A     FALSE     HES5           PASS     156    65</span>
+<span class="co">#&gt;  4 chr1  2727935 2727936 T     C     FALSE     RP11-740P5.2   PASS     180    90</span>
+<span class="co">#&gt;  5 chr1  2763397 2763398 C     T     FALSE     RP11-740P5.3(… PASS     183    61</span>
+<span class="co">#&gt;  6 chr1  2768208 2768209 C     T     FALSE     RP11-740P5.3(… PASS     203   130</span>
+<span class="co">#&gt;  7 chr1  2935590 2935591 C     T     FALSE     RP11-740P5.3(… PASS     228   132</span>
+<span class="co">#&gt;  8 chr1  2980032 2980033 C     T     FALSE     LINC00982      PASS     196    85</span>
+<span class="co">#&gt;  9 chr1  3387161 3387162 T     G     FALSE     ARHGEF16       PASS     124     6</span>
+<span class="co">#&gt; 10 chr1  3502517 3502518 G     A     FALSE     MEGF6          PASS      88    10</span>
 <span class="co">#&gt; # … with 12,953 more rows, and 3 more variables: VAF &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   ANNOVAR_FUNCTION &lt;chr&gt;, GENE &lt;chr&gt;</span></code></pre></div>
 <p>These fields are required for <strong>copy number segments</strong>:</p>
@@ -216,7 +216,7 @@
           <span class="va">Major</span>, <span class="va">minor</span>  <span class="co"># Number of copies of major/ and minor allele (B-allele)</span>
         <span class="op">)</span>
   <span class="op">)</span>
-<span class="co">#&gt; # A tibble: 267 x 5</span>
+<span class="co">#&gt; # A tibble: 267 × 5</span>
 <span class="co">#&gt;    chr       from       to Major minor</span>
 <span class="co">#&gt;    &lt;chr&gt;    &lt;int&gt;    &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
 <span class="co">#&gt;  1 chr1    840009  1689987     3     2</span>
@@ -297,22 +297,25 @@
 <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">y_5000</span><span class="op">)</span>
 <span class="co">#&gt; ── [ CNAqc ]  n = 5003 mutations in 267 segments (267 clonal + 0 subclonal). Gen</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt;   2:2  [n = 2885, L = 1483 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { CTCF }</span>
-<span class="co">#&gt;   4:2  [n =  755, L =  331 Mb] ■■■■■■■</span>
-<span class="co">#&gt;   2:1  [n =  602, L =  420 Mb] ■■■■■■  { TTN, TTN }</span>
-<span class="co">#&gt;   3:2  [n =  599, L =  357 Mb] ■■■■■■</span>
-<span class="co">#&gt;   3:0  [n =  129, L =  137 Mb] ■</span>
-<span class="co">#&gt;   2:0  [n =   29, L =   39 Mb]   { TP53 }</span>
-<span class="co">#&gt;  25:2  [n =    2, L =    1 Mb] </span>
+<span class="co">#&gt;   2:2  [n = 2896, L = 1483 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { CTCF, CTCF }</span>
+<span class="co">#&gt;   4:2  [n =  712, L =  331 Mb] ■■■■■■■</span>
+<span class="co">#&gt;   2:1  [n =  632, L =  420 Mb] ■■■■■■  { TTN }</span>
+<span class="co">#&gt;   3:2  [n =  609, L =  357 Mb] ■■■■■■</span>
+<span class="co">#&gt;   3:0  [n =  123, L =  137 Mb] ■</span>
+<span class="co">#&gt;   2:0  [n =   26, L =   39 Mb]   { TP53, TP53 }</span>
 <span class="co">#&gt;  16:2  [n =    1, L =    0 Mb] </span>
-<span class="co">#&gt;   3:1  [n =    1, L =    1 Mb]</span>
+<span class="co">#&gt;  25:2  [n =    1, L =    1 Mb] </span>
+<span class="co">#&gt;  26:2  [n =    1, L =    0 Mb] </span>
+<span class="co">#&gt;   3:1  [n =    1, L =    1 Mb] </span>
+<span class="co">#&gt;  99:1  [n =    1, L =    0 Mb]</span>
 <span class="co">#&gt; ℹ Sample Purity: 89% ~ Ploidy: 4.</span>
-<span class="co">#&gt; ℹ There are 4 annotated driver(s).</span>
+<span class="co">#&gt; ℹ There are 5 annotated driver(s).</span>
 <span class="co">#&gt;          chr      from        to ref alt  DP NV       VAF driver_label is_driver</span>
 <span class="co">#&gt;         chr2 179431633 179431634   C   T 117 77 0.6581197          TTN      TRUE</span>
 <span class="co">#&gt;        chr16  67646006  67646007   C   T 120 54 0.4500000         CTCF      TRUE</span>
 <span class="co">#&gt;        chr17   7577106   7577107   G   C  84 78 0.9285714         TP53      TRUE</span>
-<span class="co">#&gt;         chr2 179431633 179431634   C   T 117 77 0.6581197          TTN      TRUE</span></code></pre></div>
+<span class="co">#&gt;        chr17   7577106   7577107   G   C  84 78 0.9285714         TP53      TRUE</span>
+<span class="co">#&gt;        chr16  67646006  67646007   C   T 120 54 0.4500000         CTCF      TRUE</span></code></pre></div>
 <p>You can also subset data by <em>karyotype of the segments</em>, and by <em>total copy number</em> of the segment. Both subset do not keep drivers that map off the selected segments.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Triploid and copy-neutral LOH segments </span>
@@ -365,7 +368,7 @@
 <p><code>CNAqc</code> contains two coordinates for two reference genomes, <code>hg19</code> and <code>GRCh38</code> (default). For each reference genome the package stores the location of the chromosomes, and their centromers; you can access these data.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">CNAqc</span><span class="fu">:::</span><span class="fu">get_reference</span><span class="op">(</span><span class="st">"hg19"</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 24 x 6</span>
+<span class="co">#&gt; # A tibble: 24 × 6</span>
 <span class="co">#&gt;    chr      length       from         to centromerStart centromerEnd</span>
 <span class="co">#&gt;    &lt;chr&gt;     &lt;int&gt;      &lt;dbl&gt;      &lt;dbl&gt;          &lt;dbl&gt;        &lt;dbl&gt;</span>
 <span class="co">#&gt;  1 chr1  249250621          0  249250621      121535434    124535434</span>
@@ -381,7 +384,7 @@
 <span class="co">#&gt; # … with 14 more rows</span>
 
 <span class="fu">CNAqc</span><span class="fu">:::</span><span class="fu">get_reference</span><span class="op">(</span><span class="st">"GRCh38"</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 24 x 6</span>
+<span class="co">#&gt; # A tibble: 24 × 6</span>
 <span class="co">#&gt;    chr      length       from         to centromerStart centromerEnd</span>
 <span class="co">#&gt;    &lt;chr&gt;     &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;          &lt;dbl&gt;        &lt;dbl&gt;</span>
 <span class="co">#&gt;  1 chr1  248956422          0  248956422      122026459    124849229</span>
