@@ -23,6 +23,15 @@ smooth_segments = function(x, maximum_distance = 1e6)
 {
   segments = x$cna
   smoothed_segments = NULL
+  
+  ncnacl = sum(segments$CCF == 1)
+  ncnasbcl = sum(segments$CCF < 1)
+
+  # Subclonal CNA calls -- raise informative warning
+  if(ncnasbcl > 0)
+    cli::boxx("Subclonal CNAs detected in the dataset, those segments will NOT be removed for the smoothing process.
+Remove them before calling 'CNAqc::init' if you want to smoothe only clonal segments.", col = 'red')
+  
 
   for(chr in unique(segments$chr))
   {

@@ -45,7 +45,8 @@ prepare_input_data = function(snvs, cna, tumour_purity)
 
   # Subclonal CNA calls -- raise informative warning
   if(ncnasbcl > 0)
-    cli::boxx("Subclonal (CCF < 1) CNA calls are in the data, but will not be used for most of the analyses", col = 'red')
+    cli::boxx("Subclonal (CCF < 1) CNA calls are in the data.
+They will be stored in the 'cna' slot of the object, but not be used for the pick detection analysis ", col = 'red')
 
   snvs = map_mutations_to_segments(snvs, cna %>% filter(CCF == 1))
 
