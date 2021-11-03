@@ -183,12 +183,20 @@ to certain karyotypes. Each sample is plot on a lane, like in a donut plot.</p>
     <p>A `ggplot` plot</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>'example_dataset_CNAqc'</span>, package <span class='op'>=</span> <span class='st'>'CNAqc'</span><span class='op'>)</span>
-<span class='va'>x</span> <span class='op'>=</span> <span class='fu'><a href='init.html'>init</a></span><span class='op'>(</span><span class='va'>example_dataset_CNAqc</span><span class='op'>$</span><span class='va'>snvs</span>, <span class='va'>example_dataset_CNAqc</span><span class='op'>$</span><span class='va'>cna</span>, <span class='va'>example_dataset_CNAqc</span><span class='op'>$</span><span class='va'>purity</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #BBBBBB; background-color: #0000BB;'> [ CNAqc - CNA Quality Check ] 
-#&gt; </span></div><div class='output co'>#&gt; <span class='message'><span style='color: #00BBBB;'>ℹ</span> Using reference genome coordinates for: <span style='color: #00BB00;'>GRCh38</span>.</span></div><div class='output co'>#&gt; <span class='message'><span style='color: #00BBBB;'>ℹ</span> Drivers are annotated, but 'gene' column is missing, using mutation location.</span></div><div class='output co'>#&gt; <span class='message'><span style='color: #BBBB00;'>!</span> Missing CCF column from CNA calls, adding CCF = 1 assuming clonal CNA calls.</span></div><div class='output co'>#&gt; <span class='message'><span style='color: #00BBBB;'>ℹ</span> Input n = 12963 mutations for 267 CNA segments (267 clonal, 0 subclonal)</span></div><div class='output co'>#&gt; </div><div class='output co'>#&gt; <span class='message'><span style='color: #00BB00;'>✔</span> Mapped n = 12963 mutations to clonal segments (100% of input)</span></div><div class='input'>
-<span class='fu'>plot_multisample_CNA</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>`S1` <span class='op'>=</span> <span class='va'>x</span>, `S2` <span class='op'>=</span> <span class='va'>x</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='img'><img src='plot_multisample_CNA-1.png' alt='' width='700' height='433' /></div></pre>
+    <pre class="examples"><span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>'example_dataset_CNAqc'</span>, package <span class='op'>=</span> <span class='st'>'CNAqc'</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>x</span> <span class='op'>=</span> <span class='fu'><a href='init.html'>init</a></span><span class='op'>(</span><span class='va'>example_dataset_CNAqc</span><span class='op'>$</span><span class='va'>snvs</span>, <span class='va'>example_dataset_CNAqc</span><span class='op'>$</span><span class='va'>cna</span>, <span class='va'>example_dataset_CNAqc</span><span class='op'>$</span><span class='va'>purity</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BBBBBB; background-color: #0000BB;'> [ CNAqc - CNA Quality Check ] </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> <span style='color: #00BBBB;'>ℹ</span> Using reference genome coordinates for: <span style='color: #00BB00;'>GRCh38</span>.</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> <span style='color: #00BBBB;'>ℹ</span> Drivers are annotated, but 'gene' column is missing, using mutation location.</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> <span style='color: #BBBB00;'>!</span> Missing CCF column from CNA calls, adding CCF = 1 assuming clonal CNA calls.</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> <span style='color: #00BBBB;'>ℹ</span> Input n = 12963 mutations for 267 CNA segments (267 clonal, 0 subclonal)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>✔</span> Mapped n = 12963 mutations to clonal segments (100% of input)</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>plot_multisample_CNA</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>`S1` <span class='op'>=</span> <span class='va'>x</span>, `S2` <span class='op'>=</span> <span class='va'>x</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-plt img'><img src='plot_multisample_CNA-1.png' alt='' width='700' height='433' /></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

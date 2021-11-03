@@ -232,18 +232,18 @@
 <span class="va">info_tidy</span> <span class="op">=</span> <span class="fu">vcfR</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/vcfR/man/vcfR_to_tidy_conversion.html">extract_info_tidy</a></span><span class="op">(</span><span class="va">set6</span><span class="op">)</span>
 
 <span class="co"># Fixed fields (genomic coordinates)</span>
-<span class="va">fix_tidy</span> <span class="op">=</span> <span class="va">set6</span><span class="op">@</span><span class="va">fix</span> <span class="op">%&gt;%</span>
-  <span class="va">as_tibble</span> <span class="op">%&gt;%</span>
+<span class="va">fix_tidy</span> <span class="op">=</span> <span class="va">set6</span><span class="op">@</span><span class="va">fix</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+  <span class="va">as_tibble</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html">rename</a></span><span class="op">(</span>
     chr <span class="op">=</span> <span class="va">CHROM</span>,
     from <span class="op">=</span> <span class="va">POS</span>,
     ref <span class="op">=</span> <span class="va">REF</span>,
     alt <span class="op">=</span> <span class="va">ALT</span>
-  <span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="va">from</span><span class="op">)</span>, to <span class="op">=</span> <span class="va">from</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/nchar.html">nchar</a></span><span class="op">(</span><span class="va">alt</span><span class="op">)</span><span class="op">)</span>
 
 <span class="co"># Genotypes</span>
-<span class="va">geno_tidy</span> <span class="op">=</span> <span class="fu">vcfR</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/vcfR/man/vcfR_to_tidy_conversion.html">extract_gt_tidy</a></span><span class="op">(</span><span class="va">set6</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<span class="va">geno_tidy</span> <span class="op">=</span> <span class="fu">vcfR</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/vcfR/man/vcfR_to_tidy_conversion.html">extract_gt_tidy</a></span><span class="op">(</span><span class="va">set6</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_split.html">group_split</a></span><span class="op">(</span><span class="va">Indiv</span><span class="op">)</span>
 <span class="co">#&gt; Extracting gt element GT</span>
 <span class="co">#&gt; Extracting gt element GQ</span>
@@ -254,11 +254,11 @@
 
 <span class="co"># Sample mutations in the CNAqc format</span>
 <span class="va">sample_mutations</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">geno_tidy</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html">bind_cols</a></span><span class="op">(</span><span class="va">info_tidy</span>, <span class="va">fix_tidy</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">full_join</a></span><span class="op">(</span><span class="va">x</span>, by <span class="op">=</span> <span class="st">"Key"</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>DP <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="va">gt_NR</span><span class="op">)</span>, NV <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="va">gt_NV</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>VAF <span class="op">=</span> <span class="va">NV</span> <span class="op">/</span> <span class="va">DP</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">chr</span>, <span class="va">from</span>, <span class="va">to</span>, <span class="va">ref</span>, <span class="va">alt</span>, <span class="va">NV</span>, <span class="va">DP</span>, <span class="va">VAF</span>, <span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html">everything</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html">bind_cols</a></span><span class="op">(</span><span class="va">info_tidy</span>, <span class="va">fix_tidy</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">full_join</a></span><span class="op">(</span><span class="va">x</span>, by <span class="op">=</span> <span class="st">"Key"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>DP <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="va">gt_NR</span><span class="op">)</span>, NV <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="va">gt_NV</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>VAF <span class="op">=</span> <span class="va">NV</span> <span class="op">/</span> <span class="va">DP</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">chr</span>, <span class="va">from</span>, <span class="va">to</span>, <span class="va">ref</span>, <span class="va">alt</span>, <span class="va">NV</span>, <span class="va">DP</span>, <span class="va">VAF</span>, <span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html">everything</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
     <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">VAF</span><span class="op">)</span>, <span class="va">VAF</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span>
 <span class="op">}</span><span class="op">)</span>
 
@@ -414,14 +414,14 @@
   <span class="va">purity_file</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">URL</span>, <span class="va">run</span>, <span class="st">'/'</span>, <span class="va">sample</span>, <span class="st">'_confints_CP.txt'</span><span class="op">)</span>
 
   <span class="co"># Get segments</span>
-  <span class="va">segments</span> <span class="op">=</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_tsv</a></span><span class="op">(</span><span class="va">segments_file</span>, col_types <span class="op">=</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/cols.html">cols</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="va">segments</span> <span class="op">=</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_tsv</a></span><span class="op">(</span><span class="va">segments_file</span>, col_types <span class="op">=</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/cols.html">cols</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
     <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html">rename</a></span><span class="op">(</span>
       chr <span class="op">=</span> <span class="va">chromosome</span>,
       from <span class="op">=</span> <span class="va">start.pos</span>,
       to <span class="op">=</span> <span class="va">end.pos</span>,
       Major <span class="op">=</span> <span class="va">A</span>,
       minor <span class="op">=</span> <span class="va">B</span>
-    <span class="op">)</span> <span class="op">%&gt;%</span>
+    <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
     <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">chr</span>, <span class="va">from</span>, <span class="va">to</span>, <span class="va">Major</span>, <span class="va">minor</span>, <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html">everything</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 
   <span class="co"># Get purity and ploidy</span>
@@ -474,8 +474,8 @@
 <p>For this example we work with mutations found in sample <code>Set6_42</code>.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Single-nucleotide variants with VAF &gt;5%</span>
-<span class="va">snvs</span> <span class="op">=</span> <span class="va">sample_mutations</span><span class="op">[[</span><span class="st">'Set6_42'</span><span class="op">]</span><span class="op">]</span> <span class="op">%&gt;%</span> 
-    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">ref</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'A'</span>, <span class="st">'C'</span>, <span class="st">"T"</span>, <span class="st">'G'</span><span class="op">)</span>, <span class="va">alt</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'A'</span>, <span class="st">'C'</span>, <span class="st">"T"</span>, <span class="st">'G'</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<span class="va">snvs</span> <span class="op">=</span> <span class="va">sample_mutations</span><span class="op">[[</span><span class="st">'Set6_42'</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">ref</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'A'</span>, <span class="st">'C'</span>, <span class="st">"T"</span>, <span class="st">'G'</span><span class="op">)</span>, <span class="va">alt</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'A'</span>, <span class="st">'C'</span>, <span class="st">"T"</span>, <span class="st">'G'</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
     <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">VAF</span> <span class="op">&gt;</span> <span class="fl">0.05</span><span class="op">)</span>
 
 <span class="co"># CNA segments and purity</span>
@@ -555,15 +555,15 @@
 <span class="co">#&gt;   mutation_multiplic… karyotype  peak     x     y counts_per_bin discarded from </span>
 <span class="co">#&gt;                 &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;          &lt;int&gt; &lt;lgl&gt;     &lt;chr&gt;</span>
 <span class="co">#&gt; 1                   1 1:0       0.527 0.540 1.26              13 FALSE     BMix </span>
-<span class="co">#&gt; 2                   1 1:1       0.345 0.345 3.67             500 FALSE     BMix </span>
-<span class="co">#&gt; 3                   1 2:0       0.345 0.34  1.43              19 FALSE     KDE  </span>
-<span class="co">#&gt; 4                   2 2:0       0.69  0.669 0.539             12 FALSE     BMix </span>
-<span class="co">#&gt; 5                   1 2:1       0.257 0.269 1.62               8 FALSE     BMix </span>
-<span class="co">#&gt; 6                   2 2:1       0.513 0.505 0.586              1 FALSE     BMix </span>
+<span class="co">#&gt; 2                   1 1:1       0.345 0.347 3.66             604 FALSE     BMix </span>
+<span class="co">#&gt; 3                   1 2:0       0.345 0.343 1.42              19 FALSE     BMix </span>
+<span class="co">#&gt; 4                   2 2:0       0.69  0.676 0.535              8 FALSE     BMix </span>
+<span class="co">#&gt; 5                   1 2:1       0.257 0.273 1.59               8 FALSE     BMix </span>
+<span class="co">#&gt; 6                   2 2:1       0.513 0.513 0.603              2 FALSE     BMix </span>
 <span class="co">#&gt; # … with 9 more variables: offset_VAF &lt;dbl&gt;, offset &lt;dbl&gt;, weight &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   epsilon &lt;dbl&gt;, VAF_tolerance &lt;dbl&gt;, matched &lt;lgl&gt;, score &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   purity_error &lt;dbl&gt;, QC &lt;chr&gt;</span>
-<span class="co">#&gt; ✔ Peak detection PASS with r = 0.000593317562825595 and tolerance e =</span>
+<span class="co">#&gt; ✔ Peak detection PASS with r = -0.00342438286500422 and tolerance e =</span>
 
 <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
 <span class="co">#&gt; ── [ CNAqc ]  n = 17283 mutations in 54 segments (54 clonal + 0 subclonal). Geno</span>
@@ -574,11 +574,11 @@
 <span class="co">#&gt;  2:1  [n =   345, L =    43 Mb] ■</span>
 <span class="co">#&gt; ℹ Sample Purity: 69% ~ Ploidy: 2.</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; ──  PASS  Peaks QC closest: 100%, λ = 6e-04. Purity correction: 0%.</span>
+<span class="co">#&gt; ──  PASS  Peaks QC closest: 100%, λ = -0.0034. Purity correction: 0%.</span>
 <span class="co">#&gt; ℹ 1:0 ~ n = 898   ( 5%) →  PASS  -0.011</span>
-<span class="co">#&gt; ℹ 1:1 ~ n = 14488 (84%) →  PASS  0</span>
-<span class="co">#&gt; ℹ 2:0 ~ n = 1552  ( 9%) →  PASS  0.01     PASS  0.021</span>
-<span class="co">#&gt; ℹ 2:1 ~ n = 345   ( 2%) →  PASS  -0.047   PASS  0.015</span></code></pre></div>
+<span class="co">#&gt; ℹ 1:1 ~ n = 14488 (84%) →  PASS  -0.004</span>
+<span class="co">#&gt; ℹ 2:0 ~ n = 1552  ( 9%) →  PASS  0.004    PASS  0.014</span>
+<span class="co">#&gt; ℹ 2:1 ~ n = 345   ( 2%) →  PASS  -0.063   PASS  0</span></code></pre></div>
 <p>For this sample these calls are passed by CNAqc.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Do not assemble plots, and remove karyotypes with no data associated</span>
@@ -622,11 +622,11 @@
 <span class="co">#&gt;  2:1  [n =   345, L =    43 Mb] ■</span>
 <span class="co">#&gt; ℹ Sample Purity: 69% ~ Ploidy: 2.</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; ──  PASS  Peaks QC closest: 100%, λ = 6e-04. Purity correction: 0%.</span>
+<span class="co">#&gt; ──  PASS  Peaks QC closest: 100%, λ = -0.0034. Purity correction: 0%.</span>
 <span class="co">#&gt; ℹ 1:0 ~ n = 898   ( 5%) →  PASS  -0.011</span>
-<span class="co">#&gt; ℹ 1:1 ~ n = 14488 (84%) →  PASS  0</span>
-<span class="co">#&gt; ℹ 2:0 ~ n = 1552  ( 9%) →  PASS  0.01     PASS  0.021</span>
-<span class="co">#&gt; ℹ 2:1 ~ n = 345   ( 2%) →  PASS  -0.047   PASS  0.015</span>
+<span class="co">#&gt; ℹ 1:1 ~ n = 14488 (84%) →  PASS  -0.004</span>
+<span class="co">#&gt; ℹ 2:0 ~ n = 1552  ( 9%) →  PASS  0.004    PASS  0.014</span>
+<span class="co">#&gt; ℹ 2:1 ~ n = 345   ( 2%) →  PASS  -0.063   PASS  0</span>
 <span class="co">#&gt; ✔ Cancer Cell Fraction (CCF) data available for karyotypes:1:0, 1:1, 2:0, and 2:1.</span>
 <span class="co">#&gt; ✔  PASS  CCF via ENTROPY.</span>
 <span class="co">#&gt; ✔  PASS  CCF via ENTROPY.</span>
@@ -728,7 +728,7 @@
 <p>Let’s see why this is wrong, using peak detection.</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># CNAqc data object</span>
-<span class="va">x</span> <span class="op">=</span> <span class="fu">CNAqc</span><span class="fu">::</span><span class="fu"><a href="../reference/init.html">init</a></span><span class="op">(</span><span class="va">snvs</span>, <span class="va">cna</span>, <span class="va">purity</span>, ref <span class="op">=</span> <span class="st">"GRCh38"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<span class="va">x</span> <span class="op">=</span> <span class="fu">CNAqc</span><span class="fu">::</span><span class="fu"><a href="../reference/init.html">init</a></span><span class="op">(</span><span class="va">snvs</span>, <span class="va">cna</span>, <span class="va">purity</span>, ref <span class="op">=</span> <span class="st">"GRCh38"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
   <span class="fu">CNAqc</span><span class="fu">::</span><span class="fu"><a href="../reference/analyze_peaks.html">analyze_peaks</a></span><span class="op">(</span>matching_strategy <span class="op">=</span> <span class="st">'closest'</span><span class="op">)</span>
 <span class="co">#&gt;  [ CNAqc - CNA Quality Check ]</span>
 <span class="co">#&gt; ℹ Using reference genome coordinates for: GRCh38.</span>
@@ -748,14 +748,14 @@
 <span class="co">#&gt; # A tibble: 4 × 17</span>
 <span class="co">#&gt;   mutation_multipli… karyotype  peak      x     y counts_per_bin discarded from </span>
 <span class="co">#&gt;                &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;          &lt;int&gt; &lt;lgl&gt;     &lt;chr&gt;</span>
-<span class="co">#&gt; 1                  1 2:0       0.275 0.251  0.503              4 FALSE     BMix </span>
+<span class="co">#&gt; 1                  1 2:0       0.275 0.245  0.544              4 FALSE     BMix </span>
 <span class="co">#&gt; 2                  2 2:0       0.55  0.54   1.26              13 FALSE     KDE  </span>
-<span class="co">#&gt; 3                  1 2:2       0.177 0.0976 3.72             594 FALSE     BMix </span>
-<span class="co">#&gt; 4                  2 2:2       0.355 0.345  3.72             499 FALSE     BMix </span>
+<span class="co">#&gt; 3                  1 2:2       0.177 0.0958 3.80             594 FALSE     BMix </span>
+<span class="co">#&gt; 4                  2 2:2       0.355 0.343  3.73             499 FALSE     BMix </span>
 <span class="co">#&gt; # … with 9 more variables: offset_VAF &lt;dbl&gt;, offset &lt;dbl&gt;, weight &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   epsilon &lt;dbl&gt;, VAF_tolerance &lt;dbl&gt;, matched &lt;lgl&gt;, score &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   purity_error &lt;dbl&gt;, QC &lt;chr&gt;</span>
-<span class="co">#&gt; ✖ Peak detection FAIL with r = 0.12840748357575 and tolerance e =</span>
+<span class="co">#&gt; ✖ Peak detection FAIL with r = 0.132359695568578 and tolerance e =</span>
 
 <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
 <span class="co">#&gt; ── [ CNAqc ]  n = 17283 mutations in 56 segments (56 clonal + 0 subclonal). Geno</span>
@@ -767,9 +767,9 @@
 <span class="co">#&gt;  4:2  [n =   169, L =    31 Mb]</span>
 <span class="co">#&gt; ℹ Sample Purity: 55% ~ Ploidy: 4.</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; ──  FAIL  Peaks QC closest: 94%, λ = 0.1284. Purity correction: 13%.</span>
-<span class="co">#&gt; ℹ 2:0 ~ n = 898   ( 6%) →  PASS  0.047    PASS  0.01</span>
-<span class="co">#&gt; ℹ 2:2 ~ n = 14268 (94%) →  FAIL  0.246    FAIL  0.023</span></code></pre></div>
+<span class="co">#&gt; ──  FAIL  Peaks QC closest: 94%, λ = 0.1324. Purity correction: 13%.</span>
+<span class="co">#&gt; ℹ 2:0 ~ n = 898   ( 6%) →  PASS  0.059    PASS  0.01</span>
+<span class="co">#&gt; ℹ 2:2 ~ n = 14268 (94%) →  FAIL  0.25     FAIL  0.027</span></code></pre></div>
 <p>For this sample these calls are flagged by CNAqc; note that most of the mutations are mapped to tetraploid segments, but one of the two peaks is completely off. Note the overall coloring is green because most of the mutations are underneath a peak that is passed by CNAqc; however the overall karyotype can be failed because it does not show the expected 2-peaks VAF spectrum for tetraploid SNVs.</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Do not assemble plots, and remove karyotypes with no data associated</span>
@@ -789,7 +789,7 @@
 <span class="va">purity</span> <span class="op">=</span> <span class="va">Sequenza_bad_calls</span><span class="op">$</span><span class="va">purity</span>
 
 <span class="co"># CNAqc data object</span>
-<span class="va">x</span> <span class="op">=</span> <span class="fu">CNAqc</span><span class="fu">::</span><span class="fu"><a href="../reference/init.html">init</a></span><span class="op">(</span><span class="va">snvs</span>, <span class="va">cna</span>, <span class="va">purity</span>, ref <span class="op">=</span> <span class="st">"GRCh38"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<span class="va">x</span> <span class="op">=</span> <span class="fu">CNAqc</span><span class="fu">::</span><span class="fu"><a href="../reference/init.html">init</a></span><span class="op">(</span><span class="va">snvs</span>, <span class="va">cna</span>, <span class="va">purity</span>, ref <span class="op">=</span> <span class="st">"GRCh38"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
   <span class="fu">CNAqc</span><span class="fu">::</span><span class="fu"><a href="../reference/analyze_peaks.html">analyze_peaks</a></span><span class="op">(</span>matching_strategy <span class="op">=</span> <span class="st">'closest'</span><span class="op">)</span>
 <span class="co">#&gt;  [ CNAqc - CNA Quality Check ]</span>
 <span class="co">#&gt; ℹ Using reference genome coordinates for: GRCh38.</span>
@@ -815,16 +815,16 @@
 <span class="co">#&gt; # Rowwise: </span>
 <span class="co">#&gt;   mutation_multiplic… karyotype  peak     x     y counts_per_bin discarded from </span>
 <span class="co">#&gt;                 &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;          &lt;int&gt; &lt;lgl&gt;     &lt;chr&gt;</span>
-<span class="co">#&gt; 1                   1 1:0       0.429 0.540 1.26              13 FALSE     BMix </span>
+<span class="co">#&gt; 1                   1 1:0       0.429 0.538 1.26              13 FALSE     BMix </span>
 <span class="co">#&gt; 2                   1 1:1       0.3   0.34  3.73             499 FALSE     KDE  </span>
 <span class="co">#&gt; 3                   1 2:0       0.3   0.34  1.31              20 FALSE     KDE  </span>
-<span class="co">#&gt; 4                   2 2:0       0.6   0.650 0.500             15 FALSE     BMix </span>
-<span class="co">#&gt; 5                   1 2:1       0.231 0.265 1.64               7 FALSE     BMix </span>
-<span class="co">#&gt; 6                   2 2:1       0.462 0.500 0.576              1 FALSE     BMix </span>
+<span class="co">#&gt; 4                   2 2:0       0.6   0.647 0.499             15 FALSE     BMix </span>
+<span class="co">#&gt; 5                   1 2:1       0.231 0.281 1.53               5 FALSE     BMix </span>
+<span class="co">#&gt; 6                   2 2:1       0.462 0.523 0.617              1 FALSE     BMix </span>
 <span class="co">#&gt; # … with 9 more variables: offset_VAF &lt;dbl&gt;, offset &lt;dbl&gt;, weight &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   epsilon &lt;dbl&gt;, VAF_tolerance &lt;dbl&gt;, matched &lt;lgl&gt;, score &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   purity_error &lt;dbl&gt;, QC &lt;chr&gt;</span>
-<span class="co">#&gt; ✔ Peak detection PASS with r = -0.0795071497951802 and tolerance e =</span>
+<span class="co">#&gt; ✔ Peak detection PASS with r = -0.0804602318645536 and tolerance e =</span>
 
 <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
 <span class="co">#&gt; ── [ CNAqc ]  n = 17283 mutations in 56 segments (56 clonal + 0 subclonal). Geno</span>
@@ -835,11 +835,11 @@
 <span class="co">#&gt;  2:1  [n =   345, L =    43 Mb] ■</span>
 <span class="co">#&gt; ℹ Sample Purity: 60% ~ Ploidy: 2.</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; ──  PASS  Peaks QC closest: 93%, λ = -0.0795. Purity correction: -8%.</span>
-<span class="co">#&gt; ℹ 1:0 ~ n = 898   ( 5%) →  FAIL  -0.094</span>
+<span class="co">#&gt; ──  PASS  Peaks QC closest: 93%, λ = -0.0805. Purity correction: -8%.</span>
+<span class="co">#&gt; ℹ 1:0 ~ n = 898   ( 5%) →  FAIL  -0.092</span>
 <span class="co">#&gt; ℹ 1:1 ~ n = 14268 (83%) →  PASS  -0.08</span>
-<span class="co">#&gt; ℹ 2:0 ~ n = 1772  (10%) →  PASS  -0.08    PASS  -0.05</span>
-<span class="co">#&gt; ℹ 2:1 ~ n = 345   ( 2%) →  FAIL  -0.127   FAIL  -0.069</span></code></pre></div>
+<span class="co">#&gt; ℹ 2:0 ~ n = 1772  (10%) →  PASS  -0.08    PASS  -0.047</span>
+<span class="co">#&gt; ℹ 2:1 ~ n = 345   ( 2%) →  FAIL  -0.197   FAIL  -0.113</span></code></pre></div>
 <p>For this sample these calls are flagged by CNAqc because the purity is off by a <code>~10%</code> factor.</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/plot_peaks_analysis.html">plot_peaks_analysis</a></span><span class="op">(</span><span class="va">x</span>, empty_plot <span class="op">=</span> <span class="cn">FALSE</span>, assembly_plot <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
@@ -861,7 +861,7 @@
 
 <span class="co">#CNAqc suggested adjustment</span>
 <span class="va">x</span><span class="op">$</span><span class="va">peaks_analysis</span><span class="op">$</span><span class="va">score</span>
-<span class="co">#&gt; [1] -0.07950715</span></code></pre></div>
+<span class="co">#&gt; [1] -0.08046023</span></code></pre></div>
 </div>
   </div>
 

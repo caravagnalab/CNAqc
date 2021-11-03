@@ -204,10 +204,10 @@
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">y</span> <span class="op">=</span> <span class="fu">CNAqc</span><span class="fu">::</span><span class="fu"><a href="../reference/init.html">init</a></span><span class="op">(</span>
   <span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">snvs</span>, 
-  <span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">cna</span> <span class="op">%&gt;%</span>
+  <span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">cna</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
     <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>
-      Major <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="va">chr</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"chr3"</span>, <span class="st">"chr4"</span>, <span class="st">"chr1"</span><span class="op">)</span>, <span class="fl">1</span>, <span class="va">Major</span><span class="op">)</span>,
-      minor <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="va">chr</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"chr3"</span>, <span class="st">"chr4"</span>, <span class="st">"chr1"</span><span class="op">)</span>, <span class="fl">1</span>, <span class="va">minor</span><span class="op">)</span>
+      Major <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="va">chr</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"chr3"</span>, <span class="st">"chr4"</span>, <span class="st">"chr1"</span><span class="op">)</span>, <span class="fl">1</span>, <span class="va">Major</span><span class="op">)</span>,
+      minor <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="va">chr</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"chr3"</span>, <span class="st">"chr4"</span>, <span class="st">"chr1"</span><span class="op">)</span>, <span class="fl">1</span>, <span class="va">minor</span><span class="op">)</span>
       <span class="op">)</span>,
   <span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">purity</span>,
   ref <span class="op">=</span> <span class="st">'hg19'</span><span class="op">)</span>
@@ -261,7 +261,7 @@
   <span class="op">)</span>
 <span class="co">#&gt; Warning: Removed 8 rows containing missing values (geom_bar).</span></code></pre></div>
 <p><img src="a2_Plots_files/figure-html/unnamed-chunk-9-1.png" width="960"></p>
-<p>If you <a href="https://caravagn.github.io/CNAqc/articles/ccf_computation.html">compute Cancer Cell Fractions (CCF) values</a>, you can use <code><a href="../reference/plot_data_histogram.html">plot_data_histogram(x, which = 'CCF')</a></code> as well.</p>
+<p>If you <a href="https://caravagn.github.io/CNAqc/articles/ccf_computation.html">compute Cancer Cell Fractions (CCF) values</a>, you can use <code>plot_data_histogram(x, which = 'CCF')</code> as well.</p>
 <div id="segment-specific-vaf-distribution" class="section level2">
 <h2 class="hasAnchor">
 <a href="#segment-specific-vaf-distribution" class="anchor"></a>Segment-specific VAF distribution</h2>

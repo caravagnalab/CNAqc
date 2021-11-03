@@ -184,7 +184,7 @@
 
 <span class="va">snvs</span> <span class="op">&lt;-</span> <span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">snvs</span>
 
-<span class="va">snvs</span> <span class="op">%&gt;%</span>  <span class="va">head</span>
+<span class="va">snvs</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>  <span class="va">head</span>
 <span class="co">#&gt; # A tibble: 6 × 13</span>
 <span class="co">#&gt;   chr      from      to ref   alt   FILTER    DP    NV    VAF ANNOVAR_FUNCTION</span>
 <span class="co">#&gt;   &lt;chr&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;           </span>
@@ -199,12 +199,12 @@
 <p>We get rid of them and re-annotate the data.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># What are drivers (labels)</span>
-<span class="va">drivers_true</span> <span class="op">&lt;-</span> <span class="va">snvs</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">is_driver</span> <span class="op">==</span> <span class="cn">T</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html">pull</a></span><span class="op">(</span><span class="va">driver_label</span><span class="op">)</span> <span class="op">%&gt;%</span>  
+<span class="va">drivers_true</span> <span class="op">&lt;-</span> <span class="va">snvs</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">is_driver</span> <span class="op">==</span> <span class="cn">T</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html">pull</a></span><span class="op">(</span><span class="va">driver_label</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>  
   <span class="va">unique</span>
 
-<span class="va">snvs</span> <span class="op">&lt;-</span> <span class="va">snvs</span> <span class="op">%&gt;%</span> 
+<span class="va">snvs</span> <span class="op">&lt;-</span> <span class="va">snvs</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">is_driver</span>, <span class="op">-</span><span class="va">driver_label</span><span class="op">)</span></code></pre></div>
 <p>The function uses databases from Bioconductor to annotate the variants. Installation of these databases might take a bit of time, as ~1GB of data have to be downloaded.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
@@ -216,20 +216,23 @@
     <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, repos<span class="op">=</span><span class="st">"http://cran.us.r-project.org"</span><span class="op">)</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; The downloaded binary packages are in</span>
-<span class="co">#&gt;  /var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//Rtmp5GF4Mt/downloaded_packages</span>
+<span class="co">#&gt;  /var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpsxgJlg/downloaded_packages</span>
 
 <span class="co"># We have to install the corresponding txdb package for transcript annotations</span>
-<span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"TxDb.Hsapiens.UCSC."</span>,<span class="va">reference_genome</span>, <span class="st">".knownGene"</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html">install</a></span><span class="op">(</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"TxDb.Hsapiens.UCSC."</span>,<span class="va">reference_genome</span>, <span class="st">".knownGene"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html">install</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; The downloaded binary packages are in</span>
-<span class="co">#&gt;  /var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//Rtmp5GF4Mt/downloaded_packages</span>
+<span class="co">#&gt;  /var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpsxgJlg/downloaded_packages</span>
 
 <span class="co"># We have to install also the BS database for the sequences (it may take some time)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"BSgenome.Hsapiens.UCSC."</span>,<span class="va">reference_genome</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html">install</a></span><span class="op">(</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"BSgenome.Hsapiens.UCSC."</span>,<span class="va">reference_genome</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html">install</a></span><span class="op">(</span><span class="op">)</span>
 
 <span class="co"># Then these two packages provide usefull utilities to deal with biological databases</span>
-<span class="st">"Organsm.dplyr"</span> <span class="op">%&gt;%</span> <span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html">install</a></span><span class="op">(</span><span class="op">)</span>
-<span class="st">"org.Hs.eg.db"</span> <span class="op">%&gt;%</span> <span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html">install</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<span class="st">"Organsm.dplyr"</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html">install</a></span><span class="op">(</span><span class="op">)</span>
+<span class="st">"org.Hs.eg.db"</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html">install</a></span><span class="op">(</span><span class="op">)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; The downloaded binary packages are in</span>
+<span class="co">#&gt;  /var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpsxgJlg/downloaded_packages</span></code></pre></div>
 </div>
 <div id="annotation" class="section level1">
 <h1 class="hasAnchor">
@@ -264,7 +267,7 @@
 <span class="co">#&gt; #   location &lt;chr&gt;, consequence &lt;chr&gt;, refAA &lt;chr&gt;, varAA &lt;chr&gt;,</span>
 <span class="co">#&gt; #   driver_label &lt;chr&gt;, is_driver &lt;lgl&gt;</span></code></pre></div>
 <p>One thing to note is the presence of multiple locations and consequences for a single variant.</p>
-<p>This happens as we try to annotate the mutations in a transcript-agnostic manner, consequently we report all possible effects and locations for any transcript (separated by <code><a href="https://rdrr.io/r/base/Colon.html">:</a></code>).</p>
+<p>This happens as we try to annotate the mutations in a transcript-agnostic manner, consequently we report all possible effects and locations for any transcript (separated by <code>:</code>).</p>
 <p>For this cohort, the drivers largely correspond to those previously noted (<code>TP53</code> and <code>CTCF</code> mutations) with some differences. Obviously using multiple annotations and validation guarantees more precise results.</p>
 <p><code>CNAqc</code> uses a list of driver gene per cancer type from <a href="https://www.intogen.org/download">intOGen</a> (<em>Release date 2020.02.01</em>), matching mutation by gene id (e.g., a missense mutation in <code>APC</code>). The list of genes can be pooled from multiple tumor types, or providing a tumour code.</p>
 <p>The list of tumor types and codes is available in the package.</p>
@@ -319,7 +322,7 @@
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">snvs_annotated_custom</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/annotate_variants.html">annotate_variants</a></span><span class="op">(</span><span class="va">snvs</span>,
                                            ref <span class="op">=</span> <span class="va">reference_genome</span>, 
-                                           driver_list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"TP53"</span>, <span class="st">"CHDS"</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="va">as.data.frame</span>
+                                           driver_list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"TP53"</span>, <span class="st">"CHDS"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="va">as.data.frame</span>
                                            <span class="op">)</span>
 <span class="co">#&gt; # A tibble: 1 × 10</span>
 <span class="co">#&gt;   chr      from     to gene_symbol location consequence refAA varAA driver_label</span>
