@@ -6,7 +6,7 @@
 #' CNAqc-based purity-optimisation pipeline for Sequenza CNA calling.
 #'
 #' @description This pipeline implements optimised allele-specific
-#' copy number calling with Sequenza and CNAqc, optimising purity estiamted
+#' copy number calling with Sequenza and CNAqc, optimising purity estimated
 #' from data, and allele-specific segments.
 #'
 #' Requirements:
@@ -27,7 +27,7 @@
 #' gradient. Each run is saved in a folder named \code{run-1}, \code{run-2}, etc.
 #' If at any step a \code{PASS} is obtained via \code{analyse_peaks},
 #' the pipeline stops and a symbolic link (\code{final}) pointing to the correct
-#' Sequenza solution is created. If no runs reaches a \code{PASS}  status, the
+#' Sequenza solution is created. If no run reaches a \code{PASS}  status, the
 #' \code{final} folder is never created but the best reported solution is print
 #' out to screen. Every CNAqc output object containing somatic mutations called by
 #' Sequenza and allele-specific CNAs is available in the specific running folders.
@@ -35,7 +35,7 @@
 #' @note  Ploidy is kept constant by this pipeline, using a possible range of ploidy values
 #' that are specified by the user. If at any time a purity proposal made by CNAqc leads
 #' to inconsistent values (i.e., outside $[0,1]$) the pipeline stops prompting to the user
-#' to adjust manually the rage of \code{ploidy}.
+#' to adjust manually the range of \code{ploidy}.
 #'
 #' @param sample_id The id of the sample.
 #' @param seqz_file
@@ -58,7 +58,7 @@
 #' @return Nothing. If the pipeline could fit a correct purity value then
 #' a \code{final} folder links to the final Sequenza results. Otherwise the best
 #' solution - not final - is reported to screen. If the solution in general can
-#' not be found erorr logs and screen outputs suggest the user how to check,
+#' not be found error logs and screen outputs suggest the user how to check,
 #' manually, how to improve the fits.
 #'
 #' @export
@@ -189,7 +189,7 @@ Sequenza_CNAqc = function(
     if(!(sex %in% c("M", "F")))
       cli::cli_abort("Sex must be either female (F) or male (M).")
 
-    sx = case_when(
+    sx = dplyr::case_when(
       sex == "F" ~ "Female (F)",
       sex == "M" ~ "Male (M)",
     )
@@ -245,6 +245,7 @@ Sequenza_CNAqc = function(
     )
 
   #### If male use chrY, if female don't ####
+  
   is_female <-  sex == "F"
   chromosomes <- paste0("chr", c(1:22, "X"))
 
@@ -273,10 +274,12 @@ Sequenza_CNAqc = function(
   saveRDS(run_params, 'R_logs/logs.rds')
 
   # cli::cli_h2("Extraction of required information [{crayon::blue('sequenza.extract')}]")
+  
   cat("\n")
   cli::cli_process_start("Extraction of required information [{crayon::blue('sequenza.extract')}]")
 
   # Run sequenza.extract - with parameters optimised for Genomics England data (100x tumour WGS + 30X normal WGS)
+  
   seqzExt <- sequenza::sequenza.extract(
     file = seqz_file,
     chromosome.list = chromosomes,
@@ -334,24 +337,25 @@ Sequenza_CNAqc = function(
     cli::cli_process_start("Quality control with CNAqc")
 
     fits = parse_Sequenza_CNAs(out_dir, x = sample_id)
+    
+    fits$mutations = fits$mutations %>% rename(VAF="F", DP="good.reads") %>% 
+      mutate(NV=as.integer(VAF*DP))
 
     # Perform QC, and save RDS
-    cnaqc_obj = init(
+    cnaqc_obj = CNAqc::init(
       snvs = fits$mutations,
       cna = fits$segments,
       purity = fits$purity,
       ref = reference
     ) %>%
-      analyze_peaks(
-        ...
-      )
+      CNAqc::analyze_peaks()
 
     scores = append(scores, cnaqc_obj$peaks_analysis$score)
     cnaqc_objs = append(cnaqc_objs, cnaqc_obj)
 
-    saveRDS(
-      file = paste0(out_dir, '/', sample_id, '_cnaqc.rds')
-    )
+    # saveRDS(
+    #   file = paste0(out_dir, '/', sample_id, '_cnaqc.rds')
+    # )
 
     # QC status
     col_msg = ifelse(cnaqc_obj$peaks_analysis$QC == "PASS", 'green', 'brown')
