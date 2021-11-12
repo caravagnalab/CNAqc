@@ -81,3 +81,7 @@ reference:
   - detect_arm_overfragmentation
   - plot_arm_fragmentation
 
+- title: Pipelines
+  desc:  Pipelines implemented with CNAqc.
+  contents:
+  - Sequenza_CNAqc
