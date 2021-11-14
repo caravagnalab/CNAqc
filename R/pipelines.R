@@ -91,6 +91,7 @@
 #' }
 Sequenza_CNAqc = function(sample_id,
                           seqz_file,
+                          dataframe = NULL,
                           sex,
                           cellularity = c(0.05, 1),
                           ploidy = c(1.8, 5.4),
@@ -309,8 +310,8 @@ Sequenza_CNAqc = function(sample_id,
   
   #### If male use chrY, if female don't ####
   is_female <-  sex == "F"
-  # chromosomes <- paste0(c(1:22, "X"))
-  chromosomes = 1:22
+  chromosomes <- paste0(c(1:22, "X"))
+  # chromosomes = 1:22
   
   if (!as.logical(is_female)) {
     chromosomes <- c(chromosomes, 'Y')
@@ -341,20 +342,22 @@ Sequenza_CNAqc = function(sample_id,
   cli::cli_process_start("Seqz pre-processing [{crayon::blue('sequenza.extract')}]")
   
   # Run sequenza.extract - with parameters optimised for Genomics England data (100x tumour WGS + 30X normal WGS)
-  seqzExt <- sequenza::sequenza.extract(
-    file = seqz_file,
-    chromosome.list = chromosomes,
-    normalization.method = normalization.method,
-    window = window,
-    gamma = gamma,
-    kmin = kmin,
-    min.reads.baf = min.reads.baf,
-    min.reads = min.reads,
-    min.reads.normal = min.reads.normal,
-    max.mut.types = max.mut.types)
+  # seqzExt <- sequenza::sequenza.extract(
+  #   file = seqz_file,
+  #   chromosome.list = chromosomes,
+  #   normalization.method = normalization.method,
+  #   window = window,
+  #   gamma = gamma,
+  #   kmin = kmin,
+  #   min.reads.baf = min.reads.baf,
+  #   min.reads = min.reads,
+  #   min.reads.normal = min.reads.normal,
+  #   max.mut.types = max.mut.types)
   
   cli::cli_process_done()
   
+  # saveRDS(object = seqzExt, "./seqz.rds")
+  seqzExt = readRDS("./seqz.rds")
   # Select only the more reliable autosomes for fitting cellularity and ploidy parameters
   #chr.fit <- 1:22 %>% as.character()
 
@@ -399,6 +402,8 @@ Sequenza_CNAqc = function(sample_id,
     
     # New run - parameters determined by the pipeline
     L_cache_new = sequenza_fit_runner(seqzExt,
+                                      dataframe,
+                                      run = run_index,
                                       is_female,
                                       cellularity,
                                       ploidy,
@@ -431,7 +436,7 @@ Sequenza_CNAqc = function(sample_id,
       
     }
     
-    L = L %>% bind_rows(L, new_proposals)
+    L = L %>% bind_rows(new_proposals)
     
     if (L %>% nrow() == 0)
       break
@@ -456,6 +461,14 @@ Sequenza_CNAqc = function(sample_id,
   )
   
   # Plot all CNAqc results
+  
+  pdf("./cnaqc_reports.pdf", onefile = TRUE)
+  lapply(L_cache$cnaqc, function(x){
+    plot(x)
+  })
+  dev.off()
+  
+  # Save cumulative pipeline results
   
   saveRDS(L_cache, file = "pipeline.rds")
   
@@ -634,6 +647,8 @@ Sequenza_CNAqc = function(sample_id,
 
 
 sequenza_fit_runner = function(seqzExt,
+                               dataframe,
+                               run,
                                is_female,
                                cellularity,
                                ploidy,
@@ -710,7 +725,7 @@ sequenza_fit_runner = function(seqzExt,
   
   
   if (dir.exists(out_dir))
-    cli::cli_alert_warning("REWRITING POROCDIO")
+    cli::cli_alert_warning("Directory {.field {out_dir}} already exists")
   
   dir.create(out_dir)
   
@@ -739,10 +754,18 @@ sequenza_fit_runner = function(seqzExt,
   if (ploidy[2] < 0)
     ploidy[2] = 0.01
   
+  if(run == 1){
+    nbins_cellularity = 100
+    nbins_ploidy = 50
+  }
+  else{
+    nbins_cellularity = 10
+    nbins_ploidy = 10
+  }
   paraSpace <- sequenza::sequenza.fit(
     sequenza.extract = seqzExt,
-    cellularity = seq(cellularity[1], cellularity[2], length.out = 10),
-    ploidy = seq(ploidy[1], ploidy[2], length.out = 10),
+    cellularity = seq(cellularity[1], cellularity[2], length.out = nbins_cellularity),
+    ploidy = seq(ploidy[1], ploidy[2], length.out = nbins_ploidy),
     chromosome.list = chr.fit,
     female = as.logical(is_female)
   )
@@ -768,10 +791,16 @@ sequenza_fit_runner = function(seqzExt,
   
   # Perform QC, and save RDS
   cnaqc_obj = tryCatch({
-    CNAqc::init(
-      snvs = fits$mutations %>%
+    if(!is.null(dataframe)){
+      mutations = dataframe
+    }
+    else{
+      mutations = fits$mutations %>%
         rename(VAF = "F", DP = "good.reads") %>%
-        mutate(NV = as.integer(VAF * DP)),
+        mutate(NV = as.integer(VAF * DP))
+    }
+    CNAqc::init(
+      snvs =  mutations,
       cna = fits$segments,
       purity = fits$purity,
       ref = reference
@@ -804,6 +833,9 @@ sequenza_fit_runner = function(seqzExt,
     sequenza = list(fits),
     cnaqc = list(cnaqc_obj)
   )
+  
+  # Save report plots for all solutions
+  
 }
 
 get_proposals = function(sequenza, cnaqc)
