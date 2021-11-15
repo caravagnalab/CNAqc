@@ -14,25 +14,27 @@
 #'    Instructions to customize these steps are available at
 #'    \url{https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html}
 #'
-#' 2. Then this pipeline (\code{Sequenza_CNAqc}) will optimize CNA calling and purity
-#' estimation using peak detection from CNAqc. Starting from a broad set of initial conditions
-#' for purity (5% to 100%) the pipeline fits cellularity and ploidy values and dumps results.
+#' 2. This pipeline (\code{Sequenza_CNAqc}) optimizes CNA calling and purity
+#' estimations using peak detection from CNAqc. Starting from a broad set of initial conditions
+#' for purity (i\5% to 100\%) the pipeline fits cellularity and ploidy values and dumps results.
 #' Results are then quality controlled by peak detection via CNAqc. The analysis with CNAqc 
 #' can be carried out using either somatic mutations called by Sequenza, or an external set 
-#' of input calls. At every run the best solution by Sequenza is stored in a cache, and up to two alternative 
+#' of input calls. 
+#' 
+#' 3. At every run the best solution by Sequenza is stored in a cache, and up to two alternative 
 #' solutions are generated: one optional by Sequenza, which might propose different exact values for 
 #' cellularity and ploidy; one by CNAqc, adjusting the current cellularity of the best Sequenza 
 #' solution. The alternative solutions are enqueued in a list L of cellularity and ploidy values 
 #' to be tested, based on their presence in the cache. 
 #' 
-#' 3. Until the list L is empty, the point values of cellularity and ploidy are 
-#' tested repeating step 2, using ranges around the proposed values specified by
-#' input parameters. Further refinements steps will restrict the Sequenza purity
-#' range based on the score computed by \code{analyse_peaks}, which determines a purity
+#' 4. Until the list L is empty, the point values of cellularity and ploidy are 
+#' tested repeating step 3, using ranges around the proposed values specified by
+#' input parameters. Further refinement steps will restrict the Sequenza purity
+#' range based on the score computed by \code{analyze_peaks}, which determines a purity
 #' gradient. 
 #' 
-#' 4. Each run is saved in a folder named \code{run-1}, \code{run-2}, etc.
-#' When the list L is empty the pipeline stops and a symbolic link (\code{final}) 
+#' 5. Each run is saved in a folder named \code{run-1}, \code{run-2}, etc.
+#' When the list L is empty the pipeline stops and a symbolic link \code{final} 
 #' pointing to the best Sequenza solution, based on CNAqc score is created. 
 #'
 #' @note If at any time a purity proposal made by CNAqc leads
@@ -65,11 +67,11 @@
 #' list of purity and ploidy pairs to test.
 #' @param ... Optional parameters passed to the \code{analyse_peaks} function
 #' by CNAqc. Tune these to change error tolerance or karyotypes to use for QC.
-#' @return An object of class \code{tibble}, containing for each run its identifier
-#' \code{run}, the proposed values of \code{purity} and \code{ploidy}, the corresponding
-#' CNAqc \code{score} and quality control status \code{QC}, a list containing the
-#' input and output of Sequenza fitting procedure, and the object of class \code{CNAqc}
-#' created by the \code{init} and \code{analyze_peaks} functions.
+#' @return A \code{tibble} containing for each run its number
+#' \code{run}, the solution values of \code{purity} and \code{ploidy}, the corresponding
+#' CNAqc \code{score} and quality control status \code{QC}, a list \code{sequenza} of the
+#' input and output of the Sequenza fitting procedure, and the object of class \code{CNAqc}
+#' created by the \code{init()} and \code{analyze_peaks()} functions.
 #' @export
 #'
 #' @examples
