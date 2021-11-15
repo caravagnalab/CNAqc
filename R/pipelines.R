@@ -16,7 +16,7 @@
 #'
 #' 2. This pipeline (\code{Sequenza_CNAqc}) optimizes CNA calling and purity
 #' estimations using peak detection from CNAqc. Starting from a broad set of initial conditions
-#' for purity (i\5% to 100\%) the pipeline fits cellularity and ploidy values and dumps results.
+#' for purity (5\% to 100\%) the pipeline fits cellularity and ploidy values and dumps results.
 #' Results are then quality controlled by peak detection via CNAqc. The analysis with CNAqc 
 #' can be carried out using either somatic mutations called by Sequenza, or an external set 
 #' of input calls. 
