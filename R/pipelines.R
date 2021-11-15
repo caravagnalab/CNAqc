@@ -91,11 +91,10 @@
 #' }
 Sequenza_CNAqc = function(sample_id,
                           seqz_file,
-                          dataframe = NULL,
+                          mutations = NULL,
                           sex,
                           cellularity = c(0.05, 1),
                           ploidy = c(1.8, 5.4),
-                          max_runs = 3,
                           reference = 'GRCh38',
                           normalization.method = 'median',
                           window = 1e5,
@@ -107,7 +106,6 @@ Sequenza_CNAqc = function(sample_id,
                           max.mut.types = 1,
                           delta_cellularity = 0.05,
                           delta_ploidy = 0.25,
-                          n_grid_cells = 10,
                           verbose = FALSE)
 {
   
@@ -117,7 +115,6 @@ Sequenza_CNAqc = function(sample_id,
                                    sex,
                                    cellularity,
                                    ploidy,
-                                   max_runs,
                                    reference)
   {
     if (!is.character(sample_id))
@@ -154,11 +151,6 @@ Sequenza_CNAqc = function(sample_id,
     
     cli::cli_alert("Testing ploidy (real-valued) in [{.field {ploidy[1]}}, {.field {ploidy[2]}}]")
     
-    if (!(max_runs %>% is.numeric()))
-      cli::cli_abort("Maximum number of runs should be numeric.")
-    
-    cli::cli_alert("Testing maximum {.field {max_runs}} purity adjustments with CNAqc")
-    
     if (!(reference %>% is.character()) |
         !(reference %in% c("GRCh38", "GRCh37", "hg19")))
       cli::cli_abort("Reference must be any of GRCh38 or hg19/GRCh37.")
@@ -166,130 +158,6 @@ Sequenza_CNAqc = function(sample_id,
     cli::cli_alert("Reference genome: {.field {reference}}")
   }
   
-  # Auxiliary function: check if solution is already in cache
-  # inCache = function(L, cellularity, ploidy, delta_c, delta_p)
-  # {
-  #   check = FALSE
-  #
-  #   if(L %>% length == 0) return(check)
-  #
-  #   x = lapply(
-  #     L %>% seq_along,
-  #     function(i)
-  #     {
-  #       curr_c = L[[i]][[1]]
-  #       curr_p = L[[i]][[2]]
-  #
-  #       if(abs(cellularity-curr_c) <= delta_c & abs(ploidy-curr_p) <= delta_p) {
-  #         check = TRUE
-  #       }
-  #       check
-  #     }
-  #   )
-  #
-  #   return(any(unlist(x))==TRUE)
-  #
-  # }
-  
-  # Auxiliary function: Sequenza fit
-  # Sequenza_fit = function(seqzExt, sample_id, out_dir, chr.fit, is_female, L, L_cache, delta_c, delta_p, nbins){
-  #
-  #   ## Extract proposed purity and ploidy
-  #   cellularity = L[[1]][1]
-  #   ploidy = L[[1]][2]
-  #
-  #   ## Transfer proposed solution from TODO list to cache
-  #   L = tail(L, length(L)-1)
-  #   L_cache = append(L_cache, list(c(cellularity, ploidy)))
-  #
-  #   ## Sequenza fit in given grid interval
-  #   paraSpace <- sequenza::sequenza.fit(
-  #     sequenza.extract = seqzExt,
-  #     cellularity = seq(cellularity-delta_c, cellularity+delta_c, 2*delta_c/nbins),
-  #     ploidy = seq(ploidy-delta_p, ploidy+delta_p, 2*delta_p/nbins),
-  #     chromosome.list = chr.fit,
-  #     female = as.logical(is_female)
-  #   )
-  #
-  #   sequenza::sequenza.results(
-  #     sequenza.extract = seqzExt,
-  #     cp.table = paraSpace,
-  #     sample.id = sample_id,
-  #     out.dir = out_dir,
-  #     female = as.logical(is_female)
-  #   )
-  #
-  #   cli::cli_process_done()
-  #
-  #   # Parse outputs
-  #   cat("\n")
-  #   cli::cli_process_start("Quality control with CNAqc")
-  #
-  #   fits = parse_Sequenza_CNAs(out_dir, x = sample_id)
-  #
-  #   ## Quality Check fit
-  #   cnaqc_obj = CNAqc::init(
-  #     snvs = fits$mutations %>%
-  #       rename(VAF="F", DP="good.reads") %>%
-  #       mutate(NV=as.integer(VAF*DP)),
-  #     cna = fits$segments,
-  #     purity = fits$purity[1],
-  #     ref = reference
-  #   ) %>%
-  #     CNAqc::analyze_peaks()
-  #
-  #   if(!is.null(cnaqc_obj$peaks_analysis)){
-  #     # QC status
-  #     col_msg = ifelse(cnaqc_obj$peaks_analysis$QC == "PASS", 'green', 'brown')
-  #     txt_msg = ifelse(cnaqc_obj$peaks_analysis$QC == "PASS",
-  #     "CNAqc QC PASS, will stop running Sequenza",
-  #     "CNAqc QC FAIL, needs to re-run Sequenza")
-  #
-  #     cat("\n")
-  #     cat(cli::boxx(
-  #       txt_msg,
-  #       padding = 1,
-  #       float = 'center',
-  #       background_col = col_msg
-  #     ))
-  #     cat("\n")
-  #
-  #     print(cnaqc_obj)
-  #
-  #     purity = fits$purity[1]
-  #     ploidy = fits$ploidy[1]
-  #
-  #     adjusted_purity = (purity + cnaqc_obj$peaks_analysis$score) %>% round(2)
-  #
-  #     ## Update solutions cache
-  #     if(!inCache(L_cache, adjusted_purity, ploidy, delta_c, delta_p)){
-  #       ### Constrain purity in range [0,1]
-  #       if(adjusted_purity < 0 | adjusted_purity > 1)
-  #       {
-  #         cli::cli_alert_danger("Proposed purity {.value {adjusted_purity}} is outside \\
-  #                      range [0,1] and will not be used.")
-  #       }
-  #       else{
-  #
-  #         L = append(L, list(c(adjusted_purity, ploidy)))}
-  #     }
-  #     }
-  #
-  #
-  #
-  #   if(nrow(fits$alternative_solutions) > 1){
-  #     for(i in seq(1, fits$alternative_solutions %>% nrow())){
-  #       alt_purity = fits$alternative_solutions[i,]$cellularity
-  #       alt_ploidy = fits$alternative_solutions[i,]$ploidy
-  #       if(!inCache(L_cache, alt_purity, alt_ploidy, delta_cellularity, delta_ploidy)){ L = append(L, list(c(alt_purity,alt_ploidy)))}
-  #     }
-  #   }
-  #
-  #   out = list(L, L_cache, cnaqc_obj)
-  #
-  #   return(out)
-  #
-  # }
   
   #### Check for Sequenza library ####
   if (!require(sequenza)) {
@@ -304,7 +172,6 @@ Sequenza_CNAqc = function(sample_id,
     sex = sex,
     cellularity = cellularity,
     ploidy = ploidy,
-    max_runs = max_runs,
     reference = reference
   )
   
@@ -330,12 +197,8 @@ Sequenza_CNAqc = function(sample_id,
     min.reads.baf = min.reads.baf,
     min.reads = min.reads,
     min.reads.normal = min.reads.normal,
-    max.mut.types = max.mut.types,
-    max_runs = max_runs
-  )
-  
-  # dir.create('R_logs')
-  # saveRDS(run_params, 'R_logs/logs.rds')
+    max.mut.types = max.mut.types
+    )
   
   # cli::cli_h2("Extraction of required information [{crayon::blue('sequenza.extract')}]")
   cat("\n")
@@ -358,23 +221,6 @@ Sequenza_CNAqc = function(sample_id,
   
   # saveRDS(object = seqzExt, "./seqz.rds")
   seqzExt = readRDS("./seqz.rds")
-  # Select only the more reliable autosomes for fitting cellularity and ploidy parameters
-  #chr.fit <- 1:22 %>% as.character()
-
-  # # Obtain proposals
-  # new_proposals = get_proposals(
-  #   sequenza = L_cache$sequenza[[nrow(L_cache)]],
-  #   cnaqc =  L_cache$cnaqc[[nrow(L_cache)]]
-  #   )
-  #
-  # # Check them against the L_cache, create a list to go for
-  # L = filter_proposals(
-  #   L_cache,
-  #   new_proposals,
-  #   delta_cellularity,
-  #   delta_ploidy
-  #   )
-  #
   
   run_index = 0
   L_cache = L = NULL
@@ -402,7 +248,7 @@ Sequenza_CNAqc = function(sample_id,
     
     # New run - parameters determined by the pipeline
     L_cache_new = sequenza_fit_runner(seqzExt,
-                                      dataframe,
+                                      mutations,
                                       run = run_index,
                                       is_female,
                                       cellularity,
@@ -461,193 +307,26 @@ Sequenza_CNAqc = function(sample_id,
   )
   
   # Plot all CNAqc results
-  
-  pdf("./cnaqc_reports.pdf", onefile = TRUE)
-  lapply(L_cache$cnaqc, function(x){
-    plot(x)
+  pdf("./cnaqc_reports.pdf", onefile = TRUE, width = 18, height = 10)  
+  lapply(L_cache$cnaqc %>% seq_along, function(x){
+    ggpubr::ggarrange(
+      plot_segments(L_cache$cnaqc[[x]], highlight = c('2:0', '2:1', '2:2', '1:1', '1:0'))+
+        ggtitle(paste("Run", x)),
+      plot_peaks_analysis(L_cache$cnaqc[[x]]),
+      ncol = 1) %>% print()
   })
   dev.off()
-  
+
   # Save cumulative pipeline results
-  
   saveRDS(L_cache, file = "pipeline.rds")
   
   # Return summary table
   return(L_cache)
 }
 
-# scores = append(scores, cnaqc_obj$peaks_analysis$score)
-# cnaqc_objs = append(cnaqc_objs, cnaqc_obj)
-
-
-# for(i in 1:max_runs){
-#
-#   #### Fit cellularity and ploidy parameters - this is where CNAqc is involved ####
-#   out_dir = paste0('run-', i)
-#   dir.create(out_dir)
-#
-#   cat("\n")
-#   cli::cli_process_start("Run {.field {i}} of fit [{crayon::blue('sequenza.fit')}]")
-#
-#   # Run sequenza.fit
-#   paraSpace <- sequenza::sequenza.fit(
-#     sequenza.extract = seqzExt,
-#     cellularity = seq(cellularity[1], cellularity[2], 0.01),
-#     ploidy = seq(ploidy[1], ploidy[2], 0.1),
-#     chromosome.list = chr.fit,
-#     female = as.logical(is_female)
-#     )
-#
-#   # Dump results
-#   sequenza::sequenza.results(
-#     sequenza.extract = seqzExt,
-#     cp.table = paraSpace,
-#     sample.id = sample_id,
-#     out.dir = out_dir,
-#     female = as.logical(is_female)
-#     )
-#
-#   cli::cli_process_done()
-#
-#   # Parse outputs
-#   cat("\n")
-#   cli::cli_process_start("Quality control with CNAqc")
-#
-#   fits = parse_Sequenza_CNAs(out_dir, x = sample_id)
-#
-#   fits$mutations = fits$mutations %>% rename(VAF="F", DP="good.reads") %>%
-#     mutate(NV=as.integer(VAF*DP))
-#
-#   # Perform QC, and save RDS
-#   cnaqc_obj = CNAqc::init(
-#     snvs = fits$mutations,
-#     cna = fits$segments,
-#     purity = fits$purity,
-#     ref = reference
-#   ) %>%
-#     CNAqc::analyze_peaks()
-#
-#   # scores = append(scores, cnaqc_obj$peaks_analysis$score)
-#   # cnaqc_objs = append(cnaqc_objs, cnaqc_obj)
-#
-#   # Perform QC with alternative solution
-#   if (check_alternative){
-#
-#     if (length(fits$alternative_solutions$cellularity) > 1){
-#
-#       alt_purity = fits$alternative_solutions$cellularity[2]
-#       alt_ploidy = fits$alternative_solutions$ploidy[2]
-#
-#
-#
-#       alt_cnaqc_obj = CNAqc::init(
-#         snvs = fits$mutations,
-#         cna = fits$segments,
-#         purity = alt_purity,
-#         ref = reference
-#       ) %>%
-#         CNAqc::analyze_peaks()
-#
-#       score = cnaqc_obj$peaks_analysis$score
-#       alt_score = alt_cnaqc_obj$peaks_analysis$score
-#
-#         if (alt_score > score) {
-#           cli::cli_alert(
-#             "Sequenza alternative solution yields better quality score than optimal one:\\
-#             {.value {alt_score}} versus {.value {score}}. \\
-#             Proceed using the alternative solution."
-#           )
-#           cnaqc_obj = alt_cnaqc_obj
-#           }
-#       }
-#   }
-#
-#   saveRDS(object = cnaqc_obj,
-#           file = paste0(out_dir, '/', sample_id, '_cnaqc.rds'))
-#
-#   scores = append(scores, cnaqc_obj$peaks_analysis$score)
-#   cnaqc_objs = append(cnaqc_objs, cnaqc_obj)
-#
-#   # QC status
-#   col_msg = ifelse(cnaqc_obj$peaks_analysis$QC == "PASS", 'green', 'brown')
-#   txt_msg = ifelse(cnaqc_obj$peaks_analysis$QC == "PASS",
-#   "CNAqc QC PASS, will stop running Sequenza",
-#   "CNAqc QC FAIL, needs to re-run Sequenza")
-#
-#   cat("\n")
-#   cat(cli::boxx(
-#     txt_msg,
-#     padding = 1,
-#     float = 'center',
-#     background_col = col_msg
-#   ))
-#   cat("\n")
-#
-#   print(cnaqc_obj)
-#   cli::cli_process_done()
-#
-#   if(cnaqc_obj$peaks_analysis$QC == "PASS")
-#   {
-#     QC_PASS = TRUE
-#     break
-#   }
-#   else
-#   {
-#     # Purity adjustments
-#     proposed_purity = fits$purity
-#     adjusted_purity = (proposed_purity + cnaqc_obj$peaks_analysis$score) %>% round(2)
-#
-#     # Special case, adjusted purity is incompatible with reality
-#     # so we stop, raise an error, and ask to change ploidy
-#     if(adjusted_purity < 0 | adjusted_purity > 1)
-#     {
-#       cli::cli_alert_danger("Proposed purity {.value {adjusted_purity}} is outside \\
-#                      range [0,1] and cannot be used. Please consider \\
-#                      adjusting input ploidy and re-running.")
-#       break
-#     }
-#
-#     old_cellularity = cellularity %>% round(2)
-#     cellularity = c(
-#       adjusted_purity - 0.05/i,
-#       adjusted_purity + 0.05/i
-#     ) %>% round(2)
-#
-#     cli::cli_alert(
-#       "Cellularity was [{.value {old_cellularity[1]}}, {.value {old_cellularity[2]}}] \\
-#       adjusted to [{.value {cellularity[1]}}, {.value {cellularity[2]}}] \\
-#       -> CNAqc prediction {.field {adjusted_purity*100}%}."
-#     )
-#   }
-# }
-
-# Summary
-# if(QC_PASS)
-# {
-#   cli::cli_alert_success(
-#     "Joint Seqeuenza/CNAqc analysis succesfull. The symbolic link  \\
-#     {crayon::blue('final')} will point to the best result obtained so."
-#   )
-#
-#   cnaqc_objs[[length(cnaqc_objs)]] %>% print
-#
-#   R.utils::createLink(link = 'final', target = out_dir)
-# }
-# else
-# {
-#   cli::cli_alert_danger(
-#     "Joint Seqeuenza/CNAqc analysis unsuccesfull. Consider re-running
-#     manually this sample. \n \\
-#     The best result obtained so far is."
-#   )
-#
-#   best_fit = which.min(scores)
-#   cnaqc_objs[[best_fit]] %>% print
-# }
-
-
+## Auxiliary function: Sequenza extract and fit data
 sequenza_fit_runner = function(seqzExt,
-                               dataframe,
+                               mutations,
                                run,
                                is_female,
                                cellularity,
@@ -730,6 +409,7 @@ sequenza_fit_runner = function(seqzExt,
   dir.create(out_dir)
   
   chr.fit = seqzExt$chromosomes %>% unique()
+  # Select only the more reliable autosomes for fitting cellularity and ploidy parameters
   chr.fit = chr.fit[!(chr.fit %in% c('X', 'Y', 'chrX', 'chrY'))]
   
   cat("\n")
@@ -791,13 +471,18 @@ sequenza_fit_runner = function(seqzExt,
   
   # Perform QC, and save RDS
   cnaqc_obj = tryCatch({
-    if(!is.null(dataframe)){
-      mutations = dataframe
-    }
-    else{
+    if(is.null(mutations)){
+      cat("\n")
+      cli::cli_alert("Using Sequenza mutation calls")
+      cat("\n")
       mutations = fits$mutations %>%
         rename(VAF = "F", DP = "good.reads") %>%
         mutate(NV = as.integer(VAF * DP))
+    }
+    else{
+      cat("\n")
+      cli::cli_alert("Using the input set {.field {mutations}} as mutation calls")
+      cat("\n")
     }
     CNAqc::init(
       snvs =  mutations,
@@ -833,9 +518,6 @@ sequenza_fit_runner = function(seqzExt,
     sequenza = list(fits),
     cnaqc = list(cnaqc_obj)
   )
-  
-  # Save report plots for all solutions
-  
 }
 
 get_proposals = function(sequenza, cnaqc)
