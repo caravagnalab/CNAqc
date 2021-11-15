@@ -101,7 +101,7 @@ paste0("TxDb.Hsapiens.UCSC.",reference_genome, ".knownGene") %>% BiocManager::in
 paste0("BSgenome.Hsapiens.UCSC.",reference_genome) %>% BiocManager::install()
 
 # Then these two packages provide usefull utilities to deal with biological databases
-"Organsm.dplyr" %>% BiocManager::install()
+"Organism.dplyr" %>% BiocManager::install()
 "org.Hs.eg.db" %>% BiocManager::install()
 ```
 # Annotation

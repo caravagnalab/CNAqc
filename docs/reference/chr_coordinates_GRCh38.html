@@ -48,7 +48,7 @@
 
 <meta property="og:title" content="Coordinates for GRCh38 chromosomes. — chr_coordinates_GRCh38" />
 <meta property="og:description" content="Coordinates for GRCh38 chromosomes." />
-<meta property="og:image" content="caravagn.github.io/CNAqc/logo.png" />
+<meta property="og:image" content="caravagnalab.github.io/CNAqc/logo.png" />
 
 
 
@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CNAqc</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
       </span>
     </div>
 
@@ -126,6 +126,9 @@
     <li>
       <a href="../articles/a7_example_MSeq.html">7. Example data analysis</a>
     </li>
+    <li>
+      <a href="../articles/a8_annotate_variants.html">8. Drivers annotation</a>
+    </li>
   </ul>
 </li>
       </ul>
@@ -164,30 +167,31 @@
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
     <p>A tibble that represents the coordinates for GRCh38 genome assembly, reporting the chromosome label,
-from and to (chromosome range), the length of the chromosome, the position (start and end) of the 
+from and to (chromosome range), the length of the chromosome, the position (start and end) of the
 centromers.</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>GRCh38</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>chr_coordinates_GRCh38</span><span class='op'>)</span>
-<span class='va'>chr_coordinates_GRCh38</span>
-</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 24 x 6</span><span>
-#&gt;    chr      length       from         to centromerStart centromerEnd
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>          </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>        </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> chr1  248</span><span style='text-decoration: underline;'>956</span><span>422          0  248</span><span style='text-decoration: underline;'>956</span><span>422      122</span><span style='text-decoration: underline;'>026</span><span>459    124</span><span style='text-decoration: underline;'>849</span><span>229
-#&gt; </span><span style='color: #555555;'> 2</span><span> chr2  242</span><span style='text-decoration: underline;'>193</span><span>529  248</span><span style='text-decoration: underline;'>956</span><span>422  491</span><span style='text-decoration: underline;'>149</span><span>951      341</span><span style='text-decoration: underline;'>144</span><span>567    341</span><span style='text-decoration: underline;'>144</span><span>567
-#&gt; </span><span style='color: #555555;'> 3</span><span> chr3  198</span><span style='text-decoration: underline;'>295</span><span>559  491</span><span style='text-decoration: underline;'>149</span><span>951  689</span><span style='text-decoration: underline;'>445</span><span>510      581</span><span style='text-decoration: underline;'>922</span><span>409    582</span><span style='text-decoration: underline;'>703</span><span>370
-#&gt; </span><span style='color: #555555;'> 4</span><span> chr4  190</span><span style='text-decoration: underline;'>214</span><span>555  689</span><span style='text-decoration: underline;'>445</span><span>510  879</span><span style='text-decoration: underline;'>660</span><span>065      739</span><span style='text-decoration: underline;'>157</span><span>571    739</span><span style='text-decoration: underline;'>157</span><span>571
-#&gt; </span><span style='color: #555555;'> 5</span><span> chr5  181</span><span style='text-decoration: underline;'>538</span><span>259  879</span><span style='text-decoration: underline;'>660</span><span>065 </span><span style='text-decoration: underline;'>1</span><span>061</span><span style='text-decoration: underline;'>198</span><span>324      926</span><span style='text-decoration: underline;'>145</span><span>965    929</span><span style='text-decoration: underline;'>381</span><span>368
-#&gt; </span><span style='color: #555555;'> 6</span><span> chr6  170</span><span style='text-decoration: underline;'>805</span><span>979 </span><span style='text-decoration: underline;'>1</span><span>061</span><span style='text-decoration: underline;'>198</span><span>324 </span><span style='text-decoration: underline;'>1</span><span>232</span><span style='text-decoration: underline;'>004</span><span>303     </span><span style='text-decoration: underline;'>1</span><span>119</span><span style='text-decoration: underline;'>752</span><span>212   </span><span style='text-decoration: underline;'>1</span><span>119</span><span style='text-decoration: underline;'>752</span><span>212
-#&gt; </span><span style='color: #555555;'> 7</span><span> chr7  159</span><span style='text-decoration: underline;'>345</span><span>973 </span><span style='text-decoration: underline;'>1</span><span>232</span><span style='text-decoration: underline;'>004</span><span>303 </span><span style='text-decoration: underline;'>1</span><span>391</span><span style='text-decoration: underline;'>350</span><span>276     </span><span style='text-decoration: underline;'>1</span><span>290</span><span style='text-decoration: underline;'>173</span><span>956   </span><span style='text-decoration: underline;'>1</span><span>293</span><span style='text-decoration: underline;'>382</span><span>091
-#&gt; </span><span style='color: #555555;'> 8</span><span> chr8  145</span><span style='text-decoration: underline;'>138</span><span>636 </span><span style='text-decoration: underline;'>1</span><span>391</span><span style='text-decoration: underline;'>350</span><span>276 </span><span style='text-decoration: underline;'>1</span><span>536</span><span style='text-decoration: underline;'>488</span><span>912     </span><span style='text-decoration: underline;'>1</span><span>435</span><span style='text-decoration: underline;'>384</span><span>020   </span><span style='text-decoration: underline;'>1</span><span>435</span><span style='text-decoration: underline;'>384</span><span>020
-#&gt; </span><span style='color: #555555;'> 9</span><span> chr9  138</span><span style='text-decoration: underline;'>394</span><span>717 </span><span style='text-decoration: underline;'>1</span><span>536</span><span style='text-decoration: underline;'>488</span><span>912 </span><span style='text-decoration: underline;'>1</span><span>674</span><span style='text-decoration: underline;'>883</span><span>629     </span><span style='text-decoration: underline;'>1</span><span>579</span><span style='text-decoration: underline;'>878</span><span>547   </span><span style='text-decoration: underline;'>1</span><span>579</span><span style='text-decoration: underline;'>878</span><span>547
-#&gt; </span><span style='color: #555555;'>10</span><span> chr10 133</span><span style='text-decoration: underline;'>797</span><span>422 </span><span style='text-decoration: underline;'>1</span><span>674</span><span style='text-decoration: underline;'>883</span><span>629 </span><span style='text-decoration: underline;'>1</span><span>808</span><span style='text-decoration: underline;'>681</span><span>051     </span><span style='text-decoration: underline;'>1</span><span>714</span><span style='text-decoration: underline;'>570</span><span>311   </span><span style='text-decoration: underline;'>1</span><span>716</span><span style='text-decoration: underline;'>429</span><span>449
-#&gt; </span><span style='color: #555555;'># … with 14 more rows</span><span></div><div class='input'>
-</div></span></pre>
+    <pre class="examples"><span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>chr_coordinates_GRCh38</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>chr_coordinates_GRCh38</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 24 × 6</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    chr      length       from         to centromerStart centromerEnd</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>          <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>        <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 1</span> chr1  248<span style='text-decoration: underline;'>956</span>422          0  248<span style='text-decoration: underline;'>956</span>422      122<span style='text-decoration: underline;'>026</span>459    124<span style='text-decoration: underline;'>849</span>229</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 2</span> chr2  242<span style='text-decoration: underline;'>193</span>529  248<span style='text-decoration: underline;'>956</span>422  491<span style='text-decoration: underline;'>149</span>951      341<span style='text-decoration: underline;'>144</span>567    341<span style='text-decoration: underline;'>144</span>567</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 3</span> chr3  198<span style='text-decoration: underline;'>295</span>559  491<span style='text-decoration: underline;'>149</span>951  689<span style='text-decoration: underline;'>445</span>510      581<span style='text-decoration: underline;'>922</span>409    582<span style='text-decoration: underline;'>703</span>370</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 4</span> chr4  190<span style='text-decoration: underline;'>214</span>555  689<span style='text-decoration: underline;'>445</span>510  879<span style='text-decoration: underline;'>660</span>065      739<span style='text-decoration: underline;'>157</span>571    739<span style='text-decoration: underline;'>157</span>571</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 5</span> chr5  181<span style='text-decoration: underline;'>538</span>259  879<span style='text-decoration: underline;'>660</span>065 <span style='text-decoration: underline;'>1</span>061<span style='text-decoration: underline;'>198</span>324      926<span style='text-decoration: underline;'>145</span>965    929<span style='text-decoration: underline;'>381</span>368</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 6</span> chr6  170<span style='text-decoration: underline;'>805</span>979 <span style='text-decoration: underline;'>1</span>061<span style='text-decoration: underline;'>198</span>324 <span style='text-decoration: underline;'>1</span>232<span style='text-decoration: underline;'>004</span>303     <span style='text-decoration: underline;'>1</span>119<span style='text-decoration: underline;'>752</span>212   <span style='text-decoration: underline;'>1</span>119<span style='text-decoration: underline;'>752</span>212</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 7</span> chr7  159<span style='text-decoration: underline;'>345</span>973 <span style='text-decoration: underline;'>1</span>232<span style='text-decoration: underline;'>004</span>303 <span style='text-decoration: underline;'>1</span>391<span style='text-decoration: underline;'>350</span>276     <span style='text-decoration: underline;'>1</span>290<span style='text-decoration: underline;'>173</span>956   <span style='text-decoration: underline;'>1</span>293<span style='text-decoration: underline;'>382</span>091</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 8</span> chr8  145<span style='text-decoration: underline;'>138</span>636 <span style='text-decoration: underline;'>1</span>391<span style='text-decoration: underline;'>350</span>276 <span style='text-decoration: underline;'>1</span>536<span style='text-decoration: underline;'>488</span>912     <span style='text-decoration: underline;'>1</span>435<span style='text-decoration: underline;'>384</span>020   <span style='text-decoration: underline;'>1</span>435<span style='text-decoration: underline;'>384</span>020</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 9</span> chr9  138<span style='text-decoration: underline;'>394</span>717 <span style='text-decoration: underline;'>1</span>536<span style='text-decoration: underline;'>488</span>912 <span style='text-decoration: underline;'>1</span>674<span style='text-decoration: underline;'>883</span>629     <span style='text-decoration: underline;'>1</span>579<span style='text-decoration: underline;'>878</span>547   <span style='text-decoration: underline;'>1</span>579<span style='text-decoration: underline;'>878</span>547</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>10</span> chr10 133<span style='text-decoration: underline;'>797</span>422 <span style='text-decoration: underline;'>1</span>674<span style='text-decoration: underline;'>883</span>629 <span style='text-decoration: underline;'>1</span>808<span style='text-decoration: underline;'>681</span>051     <span style='text-decoration: underline;'>1</span>714<span style='text-decoration: underline;'>570</span>311   <span style='text-decoration: underline;'>1</span>716<span style='text-decoration: underline;'>429</span>449</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># … with 14 more rows</span></span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

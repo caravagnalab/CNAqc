@@ -47,7 +47,7 @@
 
 
 <meta property="og:title" content="Function reference" />
-<meta property="og:image" content="caravagn.github.io/CNAqc/logo.png" />
+<meta property="og:image" content="caravagnalab.github.io/CNAqc/logo.png" />
 
 
 
@@ -79,7 +79,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CNAqc</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
       </span>
     </div>
 
@@ -124,6 +124,9 @@
     </li>
     <li>
       <a href="../articles/a7_example_MSeq.html">7. Example data analysis</a>
+    </li>
+    <li>
+      <a href="../articles/a8_annotate_variants.html">8. Drivers annotation</a>
     </li>
   </ul>
 </li>
@@ -201,7 +204,7 @@
       <tr>
         <th colspan="2">
           <h2 id="section-data-processing" class="hasAnchor"><a href="#section-data-processing" class="anchor"></a>Data processing</h2>
-          <p class="section-desc"><p>Functions to visualise the data.</p></p>
+          <p class="section-desc"><p>Functions to manipulate and visualise the data.</p></p>
         </th>
       </tr>
       
@@ -212,9 +215,9 @@
       <tr>
         
         <td>
-          <p><code><a href="annotate_drivers.html">annotate_drivers()</a></code> </p>
+          <p><code><a href="annotate_variants.html">annotate_variants()</a></code> </p>
         </td>
-        <td><p>Title</p></td>
+        <td><p>Annotate variant in a CNAqc object</p></td>
       </tr><tr>
         
         <td>
@@ -320,13 +323,13 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="print.cnaqc.html">print(<i>&lt;cnaqc&gt;</i>)</a></code> </p>
+          <p><code><a href="print.cnaqc.html">print.cnaqc()</a></code> </p>
         </td>
         <td><p>Print for class <code>'cnaqc'</code>.</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="plot.cnaqc.html">plot(<i>&lt;cnaqc&gt;</i>)</a></code> </p>
+          <p><code><a href="plot.cnaqc.html">plot.cnaqc()</a></code> </p>
         </td>
         <td><p>Plot for class <code>'cnaqc'</code>.</p></td>
       </tr>
@@ -347,7 +350,7 @@
         <td>
           <p><code><a href="analyze_peaks.html">analyze_peaks()</a></code> </p>
         </td>
-        <td><p>Analyze CNA calls by peak detection.</p></td>
+        <td><p>Analyze calls by peak detection.</p></td>
       </tr><tr>
         
         <td>
@@ -447,6 +450,25 @@
           <p><code><a href="plot_arm_fragmentation.html">plot_arm_fragmentation()</a></code> </p>
         </td>
         <td><p>Plot patterns of arm level fragmentation.</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-pipelines" class="hasAnchor"><a href="#section-pipelines" class="anchor"></a>Pipelines</h2>
+          <p class="section-desc"><p>Pipelines implemented with CNAqc.</p></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="Sequenza_CNAqc.html">Sequenza_CNAqc()</a></code> </p>
+        </td>
+        <td><p>CNAqc-based purity-optimisation pipeline for Sequenza CNA calling.</p></td>
       </tr>
     </tbody>
     </table>

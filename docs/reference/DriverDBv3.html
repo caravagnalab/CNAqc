@@ -51,7 +51,7 @@ http://driverdb.tms.cmu.edu.tw/ — DriverDBv3 • CNAqc</title>
 http://driverdb.tms.cmu.edu.tw/ — DriverDBv3" />
 <meta property="og:description" content="Driver mutations released with the DriverDBv3 database
 http://driverdb.tms.cmu.edu.tw/" />
-<meta property="og:image" content="caravagn.github.io/CNAqc/logo.png" />
+<meta property="og:image" content="caravagnalab.github.io/CNAqc/logo.png" />
 
 
 
@@ -83,7 +83,7 @@ http://driverdb.tms.cmu.edu.tw/" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CNAqc</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
       </span>
     </div>
 
@@ -128,6 +128,9 @@ http://driverdb.tms.cmu.edu.tw/" />
     </li>
     <li>
       <a href="../articles/a7_example_MSeq.html">7. Example data analysis</a>
+    </li>
+    <li>
+      <a href="../articles/a8_annotate_variants.html">8. Drivers annotation</a>
     </li>
   </ul>
 </li>
@@ -174,24 +177,25 @@ http://driverdb.tms.cmu.edu.tw/" />
     <p>??</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>DriverDBv3</span><span class='op'>)</span>
-<span class='va'>DriverDBv3</span>
-</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 719 x 3</span><span>
-#&gt; </span><span style='color: #555555;'># Groups:   driver_gene [471]</span><span>
-#&gt;    driver_gene cancer                                        n_tools
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>       </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>                                           </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> ABCA10      Breast_invasive_carcinoma(TCGA,US)                  5
-#&gt; </span><span style='color: #555555;'> 2</span><span> ACTB        Bladder_urothelial_carcinoma(TCGA,US)               5
-#&gt; </span><span style='color: #555555;'> 3</span><span> ACVR1B      Colon_adenocarcinoma(TCGA,US)                       4
-#&gt; </span><span style='color: #555555;'> 4</span><span> ACVR2A      Colon_adenocarcinoma(TCGA,US)                       6
-#&gt; </span><span style='color: #555555;'> 5</span><span> ACVR2A      Stomach_adenocarcinoma(TCGA,US)                     6
-#&gt; </span><span style='color: #555555;'> 6</span><span> ACVR2A      Uterine_corpus_endometrial_carcinoma(TCGA,US)       5
-#&gt; </span><span style='color: #555555;'> 7</span><span> ADAMTS16    Colon_adenocarcinoma(TCGA,US)                       4
-#&gt; </span><span style='color: #555555;'> 8</span><span> ADGRV1      Glioblastoma_multiforme(TCGA,US)                    4
-#&gt; </span><span style='color: #555555;'> 9</span><span> AFP         Lung_adenocarcinoma(TCGA,US)                        4
-#&gt; </span><span style='color: #555555;'>10</span><span> AGAP4       Prostate_adenocarcinoma(TCGA,US)                    4
-#&gt; </span><span style='color: #555555;'># … with 709 more rows</span><span></div><div class='input'>
-</div></span></pre>
+    <pre class="examples"><span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>DriverDBv3</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>DriverDBv3</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 719 × 3</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># Groups:   driver_gene [471]</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    driver_gene cancer                                        n_tools</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>       <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>                                           <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 1</span> ABCA10      Breast_invasive_carcinoma(TCGA,US)                  5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 2</span> ACTB        Bladder_urothelial_carcinoma(TCGA,US)               5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 3</span> ACVR1B      Colon_adenocarcinoma(TCGA,US)                       4</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 4</span> ACVR2A      Colon_adenocarcinoma(TCGA,US)                       6</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 5</span> ACVR2A      Stomach_adenocarcinoma(TCGA,US)                     6</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 6</span> ACVR2A      Uterine_corpus_endometrial_carcinoma(TCGA,US)       5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 7</span> ADAMTS16    Colon_adenocarcinoma(TCGA,US)                       4</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 8</span> ADGRV1      Glioblastoma_multiforme(TCGA,US)                    4</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 9</span> AFP         Lung_adenocarcinoma(TCGA,US)                        4</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>10</span> AGAP4       Prostate_adenocarcinoma(TCGA,US)                    4</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># … with 709 more rows</span></span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

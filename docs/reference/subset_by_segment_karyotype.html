@@ -49,7 +49,7 @@
 <meta property="og:title" content="Subset calls by segments' karyotype. — subset_by_segment_karyotype" />
 <meta property="og:description" content="For an object already created, it subsets the calls to those that involve
 segments with a certain karyotype." />
-<meta property="og:image" content="caravagn.github.io/CNAqc/logo.png" />
+<meta property="og:image" content="caravagnalab.github.io/CNAqc/logo.png" />
 
 
 
@@ -81,7 +81,7 @@ segments with a certain karyotype." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CNAqc</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
       </span>
     </div>
 
@@ -126,6 +126,9 @@ segments with a certain karyotype." />
     </li>
     <li>
       <a href="../articles/a7_example_MSeq.html">7. Example data analysis</a>
+    </li>
+    <li>
+      <a href="../articles/a8_annotate_variants.html">8. Drivers annotation</a>
     </li>
   </ul>
 </li>
@@ -181,19 +184,56 @@ segments with a certain karyotype.</p>
     <p>An object of class <code>cnaqc</code>, created by the <code>init</code> function.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>'example_dataset_CNAqc'</span>, package <span class='op'>=</span> <span class='st'>'CNAqc'</span><span class='op'>)</span>
-<span class='va'>x</span> <span class='op'>=</span> <span class='fu'><a href='init.html'>init</a></span><span class='op'>(</span><span class='va'>example_dataset_CNAqc</span><span class='op'>$</span><span class='va'>snvs</span>, <span class='va'>example_dataset_CNAqc</span><span class='op'>$</span><span class='va'>cna</span>,<span class='va'>example_dataset_CNAqc</span><span class='op'>$</span><span class='va'>purity</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #BBBBBB;background-color: #0000BB;'> [ CNAqc - CNA Quality Check ] 
-#&gt; </span><span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Using reference genome coordinates for: </span><span style='color: #00BB00;'>GRCh38</span><span>.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Drivers are annotated, but 'gene' column is missing, using mutation location.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #BBBB00;'>!</span><span> Missing CCF column from CNA calls, adding CCF = 1 assuming clonal CNA calls.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Input n = 12963 mutations for 267 CNA segments (267 clonal, 0 subclonal)</span></div><div class='output co'>#&gt; </div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> Mapped n = 12963 mutations to clonal segments (100% of input)</span></div><div class='input'>
-<span class='fu'>subset_by_segment_karyotype</span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>'2:2'</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; </span><span style='color: #BBBBBB;background-color: #0000BB;'> [ CNAqc - CNA Quality Check ] 
-#&gt; </span><span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Using reference genome coordinates for: </span><span style='color: #00BB00;'>GRCh38</span><span>.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #BBBB00;'>!</span><span> Missing CCF column from CNA calls, adding CCF = 1 assuming clonal CNA calls.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Input n = 12963 mutations for 80 CNA segments (80 clonal, 0 subclonal)</span></div><div class='output co'>#&gt; <span class='warning'>Warning: [CNAqc] a karyotype column is present in CNA calls, and will be overwritten</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #BB0000;'>x</span><span> n = 5485 mutations  cannot be mapped to segments and will be removed.</span></div><div class='output co'>#&gt; </div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> Mapped n = 7478 mutations to clonal segments (100% of input)</span></div><div class='output co'>#&gt; <span class='message'>── </span><span style='color: #000000;background-color: #BBBB00;'>[ CNAqc ] </span><span> n = 7478 mutations in </span><span style='color: #00BB00;'>80</span><span> segments (80 clonal + 0 subclonal). Genom</span></div><div class='output co'>#&gt; 
-#&gt;  2:2  [n = 7478, L = 1483 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { </span><span style='color: #BBBB00;'>CTCF</span><span> }
-#&gt; </div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Sample Purity: 89% ~ Ploidy: 4.</span></div><div class='output co'>#&gt; </div><div class='input'><span class='fu'>subset_by_segment_karyotype</span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>'2:1'</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; </span><span style='color: #BBBBBB;background-color: #0000BB;'> [ CNAqc - CNA Quality Check ] 
-#&gt; </span><span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Using reference genome coordinates for: </span><span style='color: #00BB00;'>GRCh38</span><span>.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #BBBB00;'>!</span><span> Missing CCF column from CNA calls, adding CCF = 1 assuming clonal CNA calls.</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Input n = 12963 mutations for 49 CNA segments (49 clonal, 0 subclonal)</span></div><div class='output co'>#&gt; <span class='warning'>Warning: [CNAqc] a karyotype column is present in CNA calls, and will be overwritten</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #BB0000;'>x</span><span> n = 11400 mutations  cannot be mapped to segments and will be removed.</span></div><div class='output co'>#&gt; </div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BB00;'>✓</span><span> Mapped n = 1563 mutations to clonal segments (100% of input)</span></div><div class='output co'>#&gt; <span class='message'>── </span><span style='color: #000000;background-color: #BBBB00;'>[ CNAqc ] </span><span> n = 1563 mutations in </span><span style='color: #00BB00;'>49</span><span> segments (49 clonal + 0 subclonal). Genom</span></div><div class='output co'>#&gt; 
-#&gt;  2:1  [n = 1563, L =  420 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { </span><span style='color: #BBBB00;'>TTN</span><span> }
-#&gt; </div><div class='output co'>#&gt; <span class='message'></span><span style='color: #00BBBB;'>ℹ</span><span> Sample Purity: 89% ~ Ploidy: 3.</span></div><div class='output co'>#&gt; </div></span></pre>
+    <pre class="examples"><span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>'example_dataset_CNAqc'</span>, package <span class='op'>=</span> <span class='st'>'CNAqc'</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>x</span> <span class='op'>=</span> <span class='fu'><a href='init.html'>init</a></span><span class='op'>(</span><span class='va'>example_dataset_CNAqc</span><span class='op'>$</span><span class='va'>snvs</span>, <span class='va'>example_dataset_CNAqc</span><span class='op'>$</span><span class='va'>cna</span>,<span class='va'>example_dataset_CNAqc</span><span class='op'>$</span><span class='va'>purity</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BBBBBB; background-color: #0000BB;'> [ CNAqc - CNA Quality Check ] </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> <span style='color: #00BBBB;'>ℹ</span> Using reference genome coordinates for: <span style='color: #00BB00;'>GRCh38</span>.</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> <span style='color: #00BBBB;'>ℹ</span> Drivers are annotated, but 'gene' column is missing, using mutation location.</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> <span style='color: #BBBB00;'>!</span> Missing CCF column from CNA calls, adding CCF = 1 assuming clonal CNA calls.</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> <span style='color: #00BBBB;'>ℹ</span> Input n = 12963 mutations for 267 CNA segments (267 clonal, 0 subclonal)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>✓</span> Mapped n = 12963 mutations to clonal segments (100% of input)</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>subset_by_segment_karyotype</span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>'2:2'</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BBBBBB; background-color: #0000BB;'> [ CNAqc - CNA Quality Check ] </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> <span style='color: #00BBBB;'>ℹ</span> Using reference genome coordinates for: <span style='color: #00BB00;'>GRCh38</span>.</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> <span style='color: #BBBB00;'>!</span> Missing CCF column from CNA calls, adding CCF = 1 assuming clonal CNA calls.</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> <span style='color: #00BBBB;'>ℹ</span> Input n = 12963 mutations for 80 CNA segments (80 clonal, 0 subclonal)</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>[CNAqc] a karyotype column is present in CNA calls, and will be overwritten</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> <span style='color: #BB0000;'>x</span> n = 5485 mutations  cannot be mapped to segments and will be removed.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>✓</span> Mapped n = 7478 mutations to clonal segments (100% of input)</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> ── <span style='color: #000000; background-color: #BBBB00;'>[ CNAqc ] </span> n = 7478 mutations in <span style='color: #00BB00;'>80</span> segments (80 clonal + 0 subclonal). Genom</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  2:2  [n = 7478, L = 1483 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { <span style='color: #BBBB00;'>CTCF</span> }</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> <span style='color: #00BBBB;'>ℹ</span> Sample Purity: 89% ~ Ploidy: 4.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> <span style='color: #00BBBB;'>ℹ</span> There are 1 annotated driver(s).</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          chr     from       to ref alt  DP NV  VAF driver_label is_driver</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        chr16 67646006 67646007   C   T 120 54 0.45         CTCF      TRUE</span>
+<span class='r-in'><span class='fu'>subset_by_segment_karyotype</span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>'2:1'</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BBBBBB; background-color: #0000BB;'> [ CNAqc - CNA Quality Check ] </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> <span style='color: #00BBBB;'>ℹ</span> Using reference genome coordinates for: <span style='color: #00BB00;'>GRCh38</span>.</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> <span style='color: #BBBB00;'>!</span> Missing CCF column from CNA calls, adding CCF = 1 assuming clonal CNA calls.</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> <span style='color: #00BBBB;'>ℹ</span> Input n = 12963 mutations for 49 CNA segments (49 clonal, 0 subclonal)</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>[CNAqc] a karyotype column is present in CNA calls, and will be overwritten</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> <span style='color: #BB0000;'>x</span> n = 11400 mutations  cannot be mapped to segments and will be removed.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>✓</span> Mapped n = 1563 mutations to clonal segments (100% of input)</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> ── <span style='color: #000000; background-color: #BBBB00;'>[ CNAqc ] </span> n = 1563 mutations in <span style='color: #00BB00;'>49</span> segments (49 clonal + 0 subclonal). Genom</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  2:1  [n = 1563, L =  420 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { <span style='color: #BBBB00;'>TTN</span> }</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> <span style='color: #00BBBB;'>ℹ</span> Sample Purity: 89% ~ Ploidy: 3.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> <span style='color: #00BBBB;'>ℹ</span> There are 1 annotated driver(s).</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         chr      from        to ref alt  DP NV       VAF driver_label is_driver</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        chr2 179431633 179431634   C   T 117 77 0.6581197          TTN      TRUE</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

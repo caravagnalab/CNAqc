@@ -2,6 +2,7 @@
 
 S3method(print,cnaqc)
 export(CCF)
+export(Sequenza_CNAqc)
 export(analyze_peaks)
 export(annotate_variants)
 export(compute_CCF)

@@ -2,18 +2,21 @@
 % Please edit documentation in R/analyze_peaks.R
 \name{analyze_peaks}
 \alias{analyze_peaks}
-\title{Analyze CNA calls by peak detection.}
+\title{Analyze calls by peak detection.}
 \usage{
 analyze_peaks(
   x,
-  karyotypes = c("1:0", "1:1", "2:1", "2:0", "2:2"),
+  karyotypes = c("1:0", "1:1", "2:0", "2:1", "2:2"),
   min_karyotype_size = 0,
   min_absolute_karyotype_mutations = 10,
   p_binsize_peaks = 0.005,
-  matching_epsilon = 0.03,
+  matching_epsilon = NULL,
+  purity_error = 0.05,
+  VAF_tolerance = 0.015,
   n_bootstrap = 1,
   kernel_adjust = 1,
-  matching_strategy = "closest"
+  matching_strategy = "closest",
+  KDE = TRUE
 )
 }
 \arguments{
@@ -60,14 +63,12 @@ See the vignette to see how to extract and plot the results.
 }
 \description{
 This function carries out a peak-detection
-analysis based on KDE and the package \code{peakPick}
-in order to determine if the mutations that map to a
-certain karyotype have an allelic frequency that is
-consistent with the Major and minor alleles of the
-segment, and the tumour purity. A score is produced
-as a linear combination of the distance of the actual
-peak to the expected one, derived with standard equations
-for CNA analysis.
+analysis based on a joint criterion: KDE (package \code{peakPick}) plus
+Binomial mixture (package \code{BMix}). This is used to determine if the
+clonal mutations - for a given karyotype - have VAF close to the expected clonal
+VAF, computed from input major and minor alleles and tumour purity.
+A score is produced as a linear combination of the distance of the actual
+peak to the expected one.
 }
 \examples{
 data('example_dataset_CNAqc', package = 'CNAqc')
