@@ -84,4 +84,4 @@ reference:
 - title: Pipelines
   desc:  Pipelines implemented with CNAqc.
   contents:
-  - pipelines.R
+  - Sequenza_CNAqc.R
