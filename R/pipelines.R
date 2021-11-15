@@ -1,8 +1,3 @@
-#
-#
-
-
-
 #' CNAqc-based purity-optimisation pipeline for Sequenza CNA calling.
 #'
 #' @description This pipeline implements optimised allele-specific
@@ -20,47 +15,61 @@
 #'    \url{https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html}
 #'
 #' 2. Then this pipeline (\code{Sequenza_CNAqc}) will optimize CNA calling and purity
-#' estiamtion using peak detection from CNAqc. A maximum number of attempts
-#' \code{max_runs} is attempted, starting from a broad set of initial conditions
-#' for purity (5% to 100%). Further refinements steps will restrict the Sequenza purity
+#' estimation using peak detection from CNAqc. Starting from a broad set of initial conditions
+#' for purity (5% to 100%) the pipeline fits cellularity and ploidy values and dumps results.
+#' Results are then quality controlled by peak detection via CNAqc. The analysis with CNAqc 
+#' can be carried out using either somatic mutations called by Sequenza, or an external set 
+#' of input calls. At every run the best solution by Sequenza is stored in a cache, and up to two alternative 
+#' solutions are generated: one optional by Sequenza, which might propose different exact values for 
+#' cellularity and ploidy; one by CNAqc, adjusting the current cellularity of the best Sequenza 
+#' solution. The alternative solutions are enqueued in a list L of cellularity and ploidy values 
+#' to be tested, based on their presence in the cache. 
+#' 
+#' 3. Until the list L is empty, the point values of cellularity and ploidy are 
+#' tested repeating step 2, using ranges around the proposed values specified by
+#' input parameters. Further refinements steps will restrict the Sequenza purity
 #' range based on the score computed by \code{analyse_peaks}, which determines a purity
-#' gradient. Each run is saved in a folder named \code{run-1}, \code{run-2}, etc.
-#' If at any step a \code{PASS} is obtained via \code{analyse_peaks},
-#' the pipeline stops and a symbolic link (\code{final}) pointing to the correct
-#' Sequenza solution is created. If no run reaches a \code{PASS}  status, the
-#' \code{final} folder is never created but the best reported solution is print
-#' out to screen. Every CNAqc output object containing somatic mutations called by
-#' Sequenza and allele-specific CNAs is available in the specific running folders.
+#' gradient. 
+#' 
+#' 4. Each run is saved in a folder named \code{run-1}, \code{run-2}, etc.
+#' When the list L is empty the pipeline stops and a symbolic link (\code{final}) 
+#' pointing to the best Sequenza solution, based on CNAqc score is created. 
 #'
-#' @note  Ploidy is kept constant by this pipeline, using a possible range of ploidy values
-#' that are specified by the user. If at any time a purity proposal made by CNAqc leads
+#' @note If at any time a purity proposal made by CNAqc leads
 #' to inconsistent values (i.e., outside $[0,1]$) the pipeline stops prompting to the user
 #' to adjust manually the range of \code{ploidy}.
 #'
 #' @param sample_id The id of the sample.
-#' @param seqz_file
-#' @param sex
-#' @param cellularity
-#' @param ploidy
-#' @param max_runs
-#' @param reference
-#' @param normalization.method
-#' @param window
-#' @param gamma
-#' @param kmin
-#' @param min.reads.baf
-#' @param min.reads
-#' @param min.reads.normal
-#' @param max.mut.types
+#' @param seqz_file A binned \code{.seqz} file.
+#' @param mutations If not NULL (default), an external set of mutation calls,
+#' in tibble format. Must include colummns "chr", "from", "to", "NV", "NR", "VAF".
+#' @param sex Sex of the patient from whom the sample is drawn.
+#' @param cellularity Input to \code{sequenza.fit}, see \link{https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html}.
+#' @param ploidy Input to \code{sequenza.fit}, see \link{https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html}. 
+#' @param reference Reference genome among supported by CNAqc (GRCh38 or hg19/GRCh37).
+#' @param normalization.method Input to \code{sequenza.extract}, see \link{https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html}.
+#' @param window Input to \code{sequenza.extract}, see \link{https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html}.
+#' @param gamma Input to \code{sequenza.extract}, see \link{https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html}.
+#' @param kmin Input to \code{sequenza.extract}, see \link{https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html}.
+#' @param min.reads.baf Input to \code{sequenza.extract}, see \link{https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html}.
+#' @param min.reads Input to \code{sequenza.extract}, see \link{https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html}.
+#' @param min.reads.normal Input to \code{sequenza.extract}, see \link{https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html}.
+#' @param max.mut.types Input to \code{sequenza.extract}, see \link{https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html}.
+#' @param delta_cellularity When a proposed solution of purity and ploidy is tested,
+#' Sequenza is run on an interval of purity centered at the proposed value, of half 
+#' width \code{delta_cellularity}.
+#' @param delta_ploidy When a proposed solution of purity and ploidy is tested,
+#' Sequenza is run on an interval of ploidy centered at the proposed value, of half 
+#' width \code{delta_ploidy}.
+#' @param verbose If TRUE (default FALSE) at each Sequenza fitting step, print the updated
+#' list of purity and ploidy pairs to test.
 #' @param ... Optional parameters passed to the \code{analyse_peaks} function
 #' by CNAqc. Tune these to change error tolerance or karyotypes to use for QC.
-#'
-#' @return Nothing. If the pipeline could fit a correct purity value then
-#' a \code{final} folder links to the final Sequenza results. Otherwise the best
-#' solution - not final - is reported to screen. If the solution in general can
-#' not be found error logs and screen outputs suggest the user how to check,
-#' manually, how to improve the fits.
-#'
+#' @return An object of class \code{tibble}, containing for each run its identifier
+#' \code{run}, the proposed values of \code{purity} and \code{ploidy}, the corresponding
+#' CNAqc \code{score} and quality control status \code{QC}, a list containing the
+#' input and output of Sequenza fitting procedure, and the object of class \code{CNAqc}
+#' created by the \code{init} and \code{analyze_peaks} functions.
 #' @export
 #'
 #' @examples
@@ -203,24 +212,22 @@ Sequenza_CNAqc = function(sample_id,
   # cli::cli_h2("Extraction of required information [{crayon::blue('sequenza.extract')}]")
   cat("\n")
   cli::cli_process_start("Seqz pre-processing [{crayon::blue('sequenza.extract')}]")
+  cat("\n")
   
   # Run sequenza.extract - with parameters optimised for Genomics England data (100x tumour WGS + 30X normal WGS)
-  # seqzExt <- sequenza::sequenza.extract(
-  #   file = seqz_file,
-  #   chromosome.list = chromosomes,
-  #   normalization.method = normalization.method,
-  #   window = window,
-  #   gamma = gamma,
-  #   kmin = kmin,
-  #   min.reads.baf = min.reads.baf,
-  #   min.reads = min.reads,
-  #   min.reads.normal = min.reads.normal,
-  #   max.mut.types = max.mut.types)
+  seqzExt <- sequenza::sequenza.extract(
+    file = seqz_file,
+    chromosome.list = chromosomes,
+    normalization.method = normalization.method,
+    window = window,
+    gamma = gamma,
+    kmin = kmin,
+    min.reads.baf = min.reads.baf,
+    min.reads = min.reads,
+    min.reads.normal = min.reads.normal,
+    max.mut.types = max.mut.types)
   
   cli::cli_process_done()
-  
-  # saveRDS(object = seqzExt, "./seqz.rds")
-  seqzExt = readRDS("./seqz.rds")
   
   run_index = 0
   L_cache = L = NULL
@@ -290,7 +297,7 @@ Sequenza_CNAqc = function(sample_id,
   
   # End of pipeline
   best_fit = which.min(L_cache$score %>% abs())
-  qc_status = L_cache$PASS[best_fit]
+  qc_status = L_cache$QC[best_fit]
   
   cli::cli_h2("Best fit with score {.field {L_cache$score[best_fit]}} and QC {.field {qc_status}}")
   
@@ -514,7 +521,7 @@ sequenza_fit_runner = function(seqzExt,
     purity = purity,
     ploidy = ploidy,
     score = cnaqc_obj$peaks_analysis$score,
-    PASS = cnaqc_obj$peaks_analysis$QC,
+    QC = cnaqc_obj$peaks_analysis$QC,
     sequenza = list(fits),
     cnaqc = list(cnaqc_obj)
   )
