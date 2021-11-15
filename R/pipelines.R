@@ -46,17 +46,17 @@
 #' @param mutations If not NULL (default), an external set of mutation calls,
 #' in tibble format. Must include colummns "chr", "from", "to", "NV", "NR", "VAF".
 #' @param sex Sex of the patient from whom the sample is drawn.
-#' @param cellularity Input to \code{sequenza.fit}, see \link{https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html}.
-#' @param ploidy Input to \code{sequenza.fit}, see \link{https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html}. 
+#' @param cellularity Input to \code{sequenza.fit}, see \url{https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html}.
+#' @param ploidy Input to \code{sequenza.fit}, see \url{https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html}. 
 #' @param reference Reference genome among supported by CNAqc (GRCh38 or hg19/GRCh37).
-#' @param normalization.method Input to \code{sequenza.extract}, see \link{https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html}.
-#' @param window Input to \code{sequenza.extract}, see \link{https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html}.
-#' @param gamma Input to \code{sequenza.extract}, see \link{https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html}.
-#' @param kmin Input to \code{sequenza.extract}, see \link{https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html}.
-#' @param min.reads.baf Input to \code{sequenza.extract}, see \link{https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html}.
-#' @param min.reads Input to \code{sequenza.extract}, see \link{https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html}.
-#' @param min.reads.normal Input to \code{sequenza.extract}, see \link{https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html}.
-#' @param max.mut.types Input to \code{sequenza.extract}, see \link{https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html}.
+#' @param normalization.method Input to \code{sequenza.extract}, see \url{https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html}.
+#' @param window Input to \code{sequenza.extract}, see \url{https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html}.
+#' @param gamma Input to \code{sequenza.extract}, see \url{https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html}.
+#' @param kmin Input to \code{sequenza.extract}, see \url{https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html}.
+#' @param min.reads.baf Input to \code{sequenza.extract}, see \url{https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html}.
+#' @param min.reads Input to \code{sequenza.extract}, see \url{https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html}.
+#' @param min.reads.normal Input to \code{sequenza.extract}, see \url{https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html}.
+#' @param max.mut.types Input to \code{sequenza.extract}, see \url{https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html}.
 #' @param delta_cellularity When a proposed solution of purity and ploidy is tested,
 #' Sequenza is run on an interval of purity centered at the proposed value, of half 
 #' width \code{delta_cellularity}.
