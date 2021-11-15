@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Analyze CNA calls by peak detection. — analyze_peaks • CNAqc</title>
+<title>Analyze calls by peak detection. — analyze_peaks • CNAqc</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,16 +46,14 @@
 
 
 
-<meta property="og:title" content="Analyze CNA calls by peak detection. — analyze_peaks" />
+<meta property="og:title" content="Analyze calls by peak detection. — analyze_peaks" />
 <meta property="og:description" content="This function carries out a peak-detection
-analysis based on KDE and the package peakPick
-in order to determine if the mutations that map to a
-certain karyotype have an allelic frequency that is
-consistent with the Major and minor alleles of the
-segment, and the tumour purity. A score is produced
-as a linear combination of the distance of the actual
-peak to the expected one, derived with standard equations
-for CNA analysis." />
+analysis based on a joint criterion: KDE (package peakPick) plus
+Binomial mixture (package BMix). This is used to determine if the
+clonal mutations - for a given karyotype - have VAF close to the expected clonal
+VAF, computed from input major and minor alleles and tumour purity.
+A score is produced as a linear combination of the distance of the actual
+peak to the expected one." />
 <meta property="og:image" content="caravagnalab.github.io/CNAqc/logo.png" />
 
 
@@ -160,33 +158,34 @@ for CNA analysis." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Analyze CNA calls by peak detection.</h1>
+    <h1>Analyze calls by peak detection.</h1>
     <small class="dont-index">Source: <a href='https://github.com/caravagnalab/CNAqcR/analyze_peaks.R'><code>R/analyze_peaks.R</code></a></small>
     <div class="hidden name"><code>analyze_peaks.Rd</code></div>
     </div>
 
     <div class="ref-description">
     <p>This function carries out a peak-detection
-analysis based on KDE and the package <code>peakPick</code>
-in order to determine if the mutations that map to a
-certain karyotype have an allelic frequency that is
-consistent with the Major and minor alleles of the
-segment, and the tumour purity. A score is produced
-as a linear combination of the distance of the actual
-peak to the expected one, derived with standard equations
-for CNA analysis.</p>
+analysis based on a joint criterion: KDE (package <code>peakPick</code>) plus
+Binomial mixture (package <code>BMix</code>). This is used to determine if the
+clonal mutations - for a given karyotype - have VAF close to the expected clonal
+VAF, computed from input major and minor alleles and tumour purity.
+A score is produced as a linear combination of the distance of the actual
+peak to the expected one.</p>
     </div>
 
     <pre class="usage"><span class='fu'>analyze_peaks</span><span class='op'>(</span>
   <span class='va'>x</span>,
-  karyotypes <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"1:0"</span>, <span class='st'>"1:1"</span>, <span class='st'>"2:1"</span>, <span class='st'>"2:0"</span>, <span class='st'>"2:2"</span><span class='op'>)</span>,
+  karyotypes <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"1:0"</span>, <span class='st'>"1:1"</span>, <span class='st'>"2:0"</span>, <span class='st'>"2:1"</span>, <span class='st'>"2:2"</span><span class='op'>)</span>,
   min_karyotype_size <span class='op'>=</span> <span class='fl'>0</span>,
   min_absolute_karyotype_mutations <span class='op'>=</span> <span class='fl'>10</span>,
   p_binsize_peaks <span class='op'>=</span> <span class='fl'>0.005</span>,
-  matching_epsilon <span class='op'>=</span> <span class='fl'>0.03</span>,
+  matching_epsilon <span class='op'>=</span> <span class='cn'>NULL</span>,
+  purity_error <span class='op'>=</span> <span class='fl'>0.05</span>,
+  VAF_tolerance <span class='op'>=</span> <span class='fl'>0.015</span>,
   n_bootstrap <span class='op'>=</span> <span class='fl'>1</span>,
   kernel_adjust <span class='op'>=</span> <span class='fl'>1</span>,
-  matching_strategy <span class='op'>=</span> <span class='st'>"closest"</span>
+  matching_strategy <span class='op'>=</span> <span class='st'>"closest"</span>,
+  KDE <span class='op'>=</span> <span class='cn'>TRUE</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>

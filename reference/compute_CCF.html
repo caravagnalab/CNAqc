@@ -174,6 +174,7 @@ plot of the report of this analysis.</p>
     <pre class="usage"><span class='fu'>compute_CCF</span><span class='op'>(</span>
   <span class='va'>x</span>,
   karyotypes <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"1:0"</span>, <span class='st'>"1:1"</span>, <span class='st'>"2:0"</span>, <span class='st'>"2:1"</span>, <span class='st'>"2:2"</span><span class='op'>)</span>,
+  muts_per_karyotype <span class='op'>=</span> <span class='fl'>25</span>,
   cutoff_QC_PASS <span class='op'>=</span> <span class='fl'>0.1</span>,
   method <span class='op'>=</span> <span class='st'>"ENTROPY"</span>
 <span class='op'>)</span></pre>
@@ -188,6 +189,11 @@ plot of the report of this analysis.</p>
     <tr>
       <th>karyotypes</th>
       <td><p>The karyotypes to use, this package supports only <code>c('2:1', '2:0', '2:2')</code>.</p></td>
+    </tr>
+    <tr>
+      <th>muts_per_karyotype</th>
+      <td><p>Minimum number of mutations that are required to be mapped to a karyotype
+in order to compute CCF values (default 25).</p></td>
     </tr>
     <tr>
       <th>cutoff_QC_PASS</th>
