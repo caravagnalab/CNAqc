@@ -107,7 +107,7 @@
 
       
 
-      </header><script src="a8_annotate_variants_files/header-attrs-2.11/header-attrs.js"></script><div class="row">
+      </header><script src="a8_annotate_variants_files/header-attrs-2.9/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>8. Drivers annotation</h1>
@@ -185,7 +185,7 @@
 <span class="va">snvs</span> <span class="op">&lt;-</span> <span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">snvs</span>
 
 <span class="va">snvs</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>  <span class="va">head</span>
-<span class="co">#&gt; # A tibble: 6 × 13</span>
+<span class="co">#&gt; # A tibble: 6 x 13</span>
 <span class="co">#&gt;   chr      from      to ref   alt   FILTER    DP    NV    VAF ANNOVAR_FUNCTION</span>
 <span class="co">#&gt;   &lt;chr&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;           </span>
 <span class="co">#&gt; 1 chr1  1027104 1027105 T     G     PASS      60     6 0.1    UTR5            </span>
@@ -225,7 +225,7 @@
 <span class="st">"Organism.dplyr"</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html">install</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; The downloaded binary packages are in</span>
-<span class="co">#&gt;  /var/folders/3r/skn01f891371v23slgshtfy40000gp/T//RtmpOB4OSC/downloaded_packages</span>
+<span class="co">#&gt;  /var/folders/sl/05pffc0d0cq78xp7txf0yqy00000gp/T//RtmpmMy4lY/downloaded_packages</span>
 <span class="st">"org.Hs.eg.db"</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html">install</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="annotation" class="section level1">
@@ -235,7 +235,7 @@
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Run function</span>
 <span class="va">snvs_annotated</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/annotate_variants.html">annotate_variants</a></span><span class="op">(</span><span class="va">snvs</span>, ref <span class="op">=</span> <span class="va">reference_genome</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 3 × 10</span>
+<span class="co">#&gt; # A tibble: 3 x 10</span>
 <span class="co">#&gt;   chr      from     to gene_symbol location consequence refAA varAA driver_label</span>
 <span class="co">#&gt;   &lt;fct&gt;   &lt;int&gt;  &lt;int&gt; &lt;chr&gt;       &lt;chr&gt;    &lt;chr&gt;       &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;       </span>
 <span class="co">#&gt; 1 chr16  6.76e7 6.76e7 CTCF        coding   nonsynonym… H     Y     CTCF_H-&gt;Y   </span>
@@ -244,7 +244,7 @@
 <span class="co">#&gt; # … with 1 more variable: is_driver &lt;lgl&gt;</span>
 
 <span class="va">snvs_annotated</span>
-<span class="co">#&gt; # A tibble: 15,676 × 18</span>
+<span class="co">#&gt; # A tibble: 15,676 x 18</span>
 <span class="co">#&gt;    chr       from      to ref   alt   FILTER    DP    NV    VAF ANNOVAR_FUNCTION</span>
 <span class="co">#&gt;    &lt;chr&gt;    &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;           </span>
 <span class="co">#&gt;  1 chr16 67646006  6.76e7 C     T     PASS     120    54 0.45   exonic          </span>
@@ -270,7 +270,7 @@
 
 <span class="co"># intOGen</span>
 <span class="va">intogen_ttypes</span>
-<span class="co">#&gt; # A tibble: 66 × 2</span>
+<span class="co">#&gt; # A tibble: 66 x 2</span>
 <span class="co">#&gt;    cancer_name                           intogen_code</span>
 <span class="co">#&gt;    &lt;chr&gt;                                 &lt;chr&gt;       </span>
 <span class="co">#&gt;  1 Adrenocortical carcinoma              ACC         </span>
@@ -289,14 +289,14 @@
 <span class="va">snvs_annotated_OV</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/annotate_variants.html">annotate_variants</a></span><span class="op">(</span><span class="va">snvs</span>, 
                                        ref <span class="op">=</span> <span class="va">reference_genome</span>, 
                                        filter_tumor_type <span class="op">=</span> <span class="st">"OV"</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 1 × 10</span>
+<span class="co">#&gt; # A tibble: 1 x 10</span>
 <span class="co">#&gt;   chr      from     to gene_symbol location consequence refAA varAA driver_label</span>
 <span class="co">#&gt;   &lt;fct&gt;   &lt;int&gt;  &lt;int&gt; &lt;chr&gt;       &lt;chr&gt;    &lt;chr&gt;       &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;       </span>
 <span class="co">#&gt; 1 chr17 7577106 7.58e6 TP53        coding:… nonsynonym… P     A     TP53_P-&gt;A   </span>
 <span class="co">#&gt; # … with 1 more variable: is_driver &lt;lgl&gt;</span>
 
 <span class="va">snvs_annotated_OV</span>
-<span class="co">#&gt; # A tibble: 15,676 × 18</span>
+<span class="co">#&gt; # A tibble: 15,676 x 18</span>
 <span class="co">#&gt;    chr      from      to ref   alt   FILTER    DP    NV    VAF ANNOVAR_FUNCTION</span>
 <span class="co">#&gt;    &lt;chr&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;           </span>
 <span class="co">#&gt;  1 chr17 7577106 7577107 G     C     PASS      84    78 0.929  exonic          </span>
@@ -318,14 +318,14 @@
                                            ref <span class="op">=</span> <span class="va">reference_genome</span>, 
                                            driver_list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"TP53"</span>, <span class="st">"CHDS"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="va">as.data.frame</span>
                                            <span class="op">)</span>
-<span class="co">#&gt; # A tibble: 1 × 10</span>
+<span class="co">#&gt; # A tibble: 1 x 10</span>
 <span class="co">#&gt;   chr      from     to gene_symbol location consequence refAA varAA driver_label</span>
 <span class="co">#&gt;   &lt;fct&gt;   &lt;int&gt;  &lt;int&gt; &lt;chr&gt;       &lt;chr&gt;    &lt;chr&gt;       &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;       </span>
 <span class="co">#&gt; 1 chr17 7577106 7.58e6 TP53        coding:… nonsynonym… P     A     TP53_P-&gt;A   </span>
 <span class="co">#&gt; # … with 1 more variable: is_driver &lt;lgl&gt;</span>
 
 <span class="va">snvs_annotated_custom</span>
-<span class="co">#&gt; # A tibble: 15,676 × 18</span>
+<span class="co">#&gt; # A tibble: 15,676 x 18</span>
 <span class="co">#&gt;    chr      from      to ref   alt   FILTER    DP    NV    VAF ANNOVAR_FUNCTION</span>
 <span class="co">#&gt;    &lt;chr&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;           </span>
 <span class="co">#&gt;  1 chr17 7577106 7577107 G     C     PASS      84    78 0.929  exonic          </span>

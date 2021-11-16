@@ -269,13 +269,13 @@ See the vignette to see how to extract and plot the results.</p>
 <span class='r-msg co'><span class='r-pr'>#&gt;</span> <span style='color: #00BBBB;'>ℹ</span> Karyotypes <span style='color: #00BB00;'>1:0</span>, <span style='color: #00BB00;'>1:1</span>, <span style='color: #00BB00;'>2:0</span>, <span style='color: #00BB00;'>2:1</span>, and <span style='color: #00BB00;'>2:2</span>. Matching strategy <span style='color: #00BB00;'>closest</span>. KDE = <span style='color: #00BB00;'>TRUE</span>.</span>
 <span class='r-msg co'><span class='r-pr'>#&gt;</span> <span style='color: #00BBBB;'>ℹ</span> Found n = 9122 mutations in 2:2, 2:1, 2:0 (skipping those with n &lt; 0 mutations).</span>
 <span class='r-msg co'><span class='r-pr'>#&gt;</span> <span style='color: #BBBB00;'>!</span> Some peaks have been removed</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 2 × 5</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 2 x 5</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>       x     y counts_per_bin discarded from </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>          <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;lgl&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>1</span>  0.13   0.3              1 TRUE      KDE  </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>2</span>  0.32   0.3              0 TRUE      KDE  </span>
 <span class='r-msg co'><span class='r-pr'>#&gt;</span> <span style='color: #BBBB00;'>!</span> Some peaks have been removed</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 10 × 5</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 10 x 5</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>        x     y counts_per_bin discarded from </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>          <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;lgl&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 1</span>  0.11  0.27             20 TRUE      KDE  </span>
@@ -288,19 +288,19 @@ See the vignette to see how to extract and plot the results.</p>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 8</span>  0.91  0.01              1 TRUE      KDE  </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 9</span>  0.93  0.01              0 TRUE      KDE  </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>10</span>  0.97  0.02              0 TRUE      KDE  </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 6 × 17</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 6 x 17</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   mutation_multiplic… karyotype  peak     x     y counts_per_bin discarded from </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>                 <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>          <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;lgl&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>1</span>                   1 2:0       0.445 0.423 0.172              0 FALSE     BMix </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>2</span>                   2 2:0       0.89  0.885 7.99               7 FALSE     BMix </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>3</span>                   1 2:1       0.308 0.306 3.60              59 FALSE     BMix </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>4</span>                   2 2:1       0.616 0.600 2.94              60 FALSE     BMix </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>3</span>                   1 2:1       0.308 0.307 3.60              59 FALSE     BMix </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>4</span>                   2 2:1       0.616 0.602 2.94              60 FALSE     BMix </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>5</span>                   1 2:2       0.235 0.24  0.86              65 FALSE     KDE  </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>6</span>                   2 2:2       0.471 0.461 8.14             625 FALSE     BMix </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>6</span>                   2 2:2       0.471 0.463 8.11             625 FALSE     BMix </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># … with 9 more variables: offset_VAF &lt;dbl&gt;, offset &lt;dbl&gt;, weight &lt;dbl&gt;,</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'>#   epsilon &lt;dbl&gt;, VAF_tolerance &lt;dbl&gt;, matched &lt;lgl&gt;, score &lt;dbl&gt;,</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'>#   purity_error &lt;dbl&gt;, QC &lt;chr&gt;</span></span>
-<span class='r-msg co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>✓</span> Peak detection <span style='color: #00BB00;'>PASS</span> with <span style='color: #00BB00;'>r = 0.00436728514066676</span> and tolerance e = </span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>✓</span> Peak detection <span style='color: #00BB00;'>PASS</span> with <span style='color: #00BB00;'>r = 0.000739884902244746</span> and tolerance e = </span>
 <span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></span>
 <span class='r-msg co'><span class='r-pr'>#&gt;</span> ── <span style='color: #000000; background-color: #BBBB00;'>[ CNAqc ] </span> n = 12963 mutations in <span style='color: #00BB00;'>267</span> segments (267 clonal + 0 subclonal). Ge</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
@@ -325,14 +325,14 @@ See the vignette to see how to extract and plot the results.</p>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>        chr16  67646006  67646007   C   T 120 54 0.4500000         CTCF      TRUE</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>        chr17   7577106   7577107   G   C  84 78 0.9285714         TP53      TRUE</span>
 <span class='r-msg co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-msg co'><span class='r-pr'>#&gt;</span> ── <span style='color: #000000; background-color: #00BB00;'> PASS </span> Peaks QC <span style='font-weight: bold;'>closest</span>: <span style='color: #00BB00;'>100%</span>, <span style='color: #00BB00;'>λ = 0.0044</span>. Purity correction: 0%. </span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> ── <span style='color: #000000; background-color: #00BB00;'> PASS </span> Peaks QC <span style='font-weight: bold;'>closest</span>: <span style='color: #00BB00;'>100%</span>, <span style='color: #00BB00;'>λ = 7e-04</span>. Purity correction: 0%. </span>
 <span class='r-msg co'><span class='r-pr'>#&gt;</span> <span style='color: #00BBBB;'>ℹ</span> <span style='color: #0000BB;'>2:0</span> ~ n = 81    ( 1%) → <span style='color: #000000; background-color: #00BB00;'> PASS </span> 0.043   <span style='color: #000000; background-color: #00BB00;'> PASS </span> 0.005  </span>
-<span class='r-msg co'><span class='r-pr'>#&gt;</span> <span style='color: #00BBBB;'>ℹ</span> <span style='color: #0000BB;'>2:1</span> ~ n = 1563  (17%) → <span style='color: #000000; background-color: #00BB00;'> PASS </span> 0.01    <span style='color: #000000; background-color: #00BB00;'> PASS </span> 0.032  </span>
-<span class='r-msg co'><span class='r-pr'>#&gt;</span> <span style='color: #00BBBB;'>ℹ</span> <span style='color: #0000BB;'>2:2</span> ~ n = 7478  (82%) → <span style='color: #000000; background-color: #00BB00;'> PASS </span> -0.034  <span style='color: #000000; background-color: #00BB00;'> PASS </span> 0.035  </span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> <span style='color: #00BBBB;'>ℹ</span> <span style='color: #0000BB;'>2:1</span> ~ n = 1563  (17%) → <span style='color: #000000; background-color: #00BB00;'> PASS </span> 0.003   <span style='color: #000000; background-color: #00BB00;'> PASS </span> 0.028  </span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> <span style='color: #00BBBB;'>ℹ</span> <span style='color: #0000BB;'>2:2</span> ~ n = 7478  (82%) → <span style='color: #000000; background-color: #00BB00;'> PASS </span> -0.034  <span style='color: #000000; background-color: #00BB00;'> PASS </span> 0.028  </span>
 <span class='r-in'></span>
 <span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>$</span><span class='va'>peaks_analysis</span><span class='op'>)</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> $score</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0.004367285</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] 0.0007398849</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> $fits</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> $fits$`1:0`</span>
@@ -347,7 +347,7 @@ See the vignette to see how to extract and plot the results.</p>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> $fits$`2:0`</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> $fits$`2:0`$matching</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 2 × 14</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 2 x 14</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># Rowwise: </span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   mutation_multiplic… karyotype  peak     x     y counts_per_bin discarded from </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>                 <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>          <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;lgl&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span></span>
@@ -372,7 +372,7 @@ See the vignette to see how to extract and plot the results.</p>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>  Max.   :1.0346   Max.   :9.001287  </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> $fits$`2:0`$xy_peaks</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 8 × 5</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 8 x 5</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>       x     y counts_per_bin discarded from </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>          <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;lgl&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>1</span> 0.13  0.3                1 TRUE      KDE  </span>
@@ -387,12 +387,12 @@ See the vignette to see how to extract and plot the results.</p>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> $fits$`2:1`</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> $fits$`2:1`$matching</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 2 × 14</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 2 x 14</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># Rowwise: </span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   mutation_multiplic… karyotype  peak     x     y counts_per_bin discarded from </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>                 <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>          <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;lgl&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>1</span>                   1 2:1       0.308 0.306  3.60             59 FALSE     BMix </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>2</span>                   2 2:1       0.616 0.600  2.94             60 FALSE     BMix </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>1</span>                   1 2:1       0.308 0.307  3.60             59 FALSE     BMix </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>2</span>                   2 2:1       0.616 0.602  2.94             60 FALSE     BMix </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># … with 6 more variables: offset_VAF &lt;dbl&gt;, offset &lt;dbl&gt;, weight &lt;dbl&gt;,</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'>#   epsilon &lt;dbl&gt;, VAF_tolerance &lt;dbl&gt;, matched &lt;lgl&gt;</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
@@ -412,25 +412,25 @@ See the vignette to see how to extract and plot the results.</p>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>  Max.   : 0.86270   Max.   :3.60365  </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> $fits$`2:1`$xy_peaks</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 6 × 5</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 6 x 5</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>       x     y counts_per_bin discarded from </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>          <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;lgl&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>1</span> 0.08  0.27               5 FALSE     KDE  </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>2</span> 0.3   3.6               78 FALSE     KDE  </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>3</span> 0.6   2.94              60 FALSE     KDE  </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>4</span> 0.306 3.60              59 FALSE     BMix </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>5</span> 0.600 2.94              60 FALSE     BMix </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>6</span> 0.101 0.254              3 FALSE     BMix </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>4</span> 0.602 2.94              60 FALSE     BMix </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>5</span> 0.307 3.60              59 FALSE     BMix </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>6</span> 0.106 0.248              2 FALSE     BMix </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> $fits$`2:2`</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> $fits$`2:2`$matching</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 2 × 14</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 2 x 14</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># Rowwise: </span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   mutation_multiplic… karyotype  peak     x     y counts_per_bin discarded from </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>                 <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>          <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;lgl&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>1</span>                   1 2:2       0.235 0.24   0.86             65 FALSE     KDE  </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>2</span>                   2 2:2       0.471 0.461  8.14            625 FALSE     BMix </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>2</span>                   2 2:2       0.471 0.463  8.11            625 FALSE     BMix </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># … with 6 more variables: offset_VAF &lt;dbl&gt;, offset &lt;dbl&gt;, weight &lt;dbl&gt;,</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'>#   epsilon &lt;dbl&gt;, VAF_tolerance &lt;dbl&gt;, matched &lt;lgl&gt;</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
@@ -450,7 +450,7 @@ See the vignette to see how to extract and plot the results.</p>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>  Max.   :1.02410   Max.   :8.138867  </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> $fits$`2:2`$xy_peaks</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 15 × 5</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 15 x 5</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>        x     y counts_per_bin discarded from </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>          <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;lgl&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 1</span> 0.11  0.27              20 TRUE      KDE  </span>
@@ -466,21 +466,21 @@ See the vignette to see how to extract and plot the results.</p>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>11</span> 0.91  0.01               1 TRUE      KDE  </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>12</span> 0.93  0.01               0 TRUE      KDE  </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>13</span> 0.97  0.02               0 TRUE      KDE  </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>14</span> 0.461 8.14             625 FALSE     BMix </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>15</span> 0.174 0.432             27 FALSE     BMix </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>14</span> 0.463 8.11             625 FALSE     BMix </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>15</span> 0.176 0.447             33 FALSE     BMix </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> $matches</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 6 × 17</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 6 x 17</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   mutation_multiplic… karyotype  peak     x     y counts_per_bin discarded from </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>                 <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>          <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;lgl&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>1</span>                   1 2:0       0.445 0.423 0.172              0 FALSE     BMix </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>2</span>                   2 2:0       0.89  0.885 7.99               7 FALSE     BMix </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>3</span>                   1 2:1       0.308 0.306 3.60              59 FALSE     BMix </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>4</span>                   2 2:1       0.616 0.600 2.94              60 FALSE     BMix </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>3</span>                   1 2:1       0.308 0.307 3.60              59 FALSE     BMix </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>4</span>                   2 2:1       0.616 0.602 2.94              60 FALSE     BMix </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>5</span>                   1 2:2       0.235 0.24  0.86              65 FALSE     KDE  </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>6</span>                   2 2:2       0.471 0.461 8.14             625 FALSE     BMix </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>6</span>                   2 2:2       0.471 0.463 8.11             625 FALSE     BMix </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># … with 9 more variables: offset_VAF &lt;dbl&gt;, offset &lt;dbl&gt;, weight &lt;dbl&gt;,</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'>#   epsilon &lt;dbl&gt;, VAF_tolerance &lt;dbl&gt;, matched &lt;lgl&gt;, score &lt;dbl&gt;,</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'>#   purity_error &lt;dbl&gt;, QC &lt;chr&gt;</span></span>
@@ -509,7 +509,7 @@ See the vignette to see how to extract and plot the results.</p>
 <span class='r-msg co'><span class='r-pr'>#&gt;</span> <span style='color: #00BBBB;'>ℹ</span> Karyotypes <span style='color: #00BB00;'>1:0</span>, <span style='color: #00BB00;'>1:1</span>, <span style='color: #00BB00;'>2:0</span>, <span style='color: #00BB00;'>2:1</span>, and <span style='color: #00BB00;'>2:2</span>. Matching strategy <span style='color: #00BB00;'>rightmost</span>. KDE = <span style='color: #00BB00;'>TRUE</span>.</span>
 <span class='r-msg co'><span class='r-pr'>#&gt;</span> <span style='color: #00BBBB;'>ℹ</span> Found n = 9122 mutations in 2:2, 2:1, 2:0 (skipping those with n &lt; 0 mutations).</span>
 <span class='r-msg co'><span class='r-pr'>#&gt;</span> <span style='color: #BBBB00;'>!</span> Some KDE peaks have been removed</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 2 × 5</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 2 x 5</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>       x     y counts_per_bin discarded from </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>          <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;lgl&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>1</span>  0.13   0.3              1 TRUE      KDE  </span>
@@ -517,7 +517,7 @@ See the vignette to see how to extract and plot the results.</p>
 <span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>the condition has length &gt; 1 and only the first element will be used</span>
 <span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>the condition has length &gt; 1 and only the first element will be used</span>
 <span class='r-msg co'><span class='r-pr'>#&gt;</span> <span style='color: #BBBB00;'>!</span> Some KDE peaks have been removed</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 10 × 5</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 10 x 5</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>        x     y counts_per_bin discarded from </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>          <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;lgl&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 1</span>  0.11  0.27             20 TRUE      KDE  </span>
@@ -531,19 +531,19 @@ See the vignette to see how to extract and plot the results.</p>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 9</span>  0.93  0.01              0 TRUE      KDE  </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>10</span>  0.97  0.02              0 TRUE      KDE  </span>
 <span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>the condition has length &gt; 1 and only the first element will be used</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 6 × 17</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 6 x 17</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   mutation_multiplic… karyotype  peak     x     y counts_per_bin discarded from </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>                 <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>          <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;lgl&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>1</span>                   2 2:0       0.89  0.885  7.99              7 FALSE     BMix </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>2</span>                   1 2:0       0.445 0.87   9                 5 FALSE     KDE  </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>3</span>                   2 2:1       0.616 0.602  2.94             60 FALSE     BMix </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>4</span>                   1 2:1       0.308 0.6    2.94             60 FALSE     KDE  </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>5</span>                   2 2:2       0.471 0.482  7.02            606 FALSE     BMix </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>5</span>                   2 2:2       0.471 0.461  8.14            625 FALSE     BMix </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>6</span>                   1 2:2       0.235 0.46   8.14            625 FALSE     KDE  </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># … with 9 more variables: offset_VAF &lt;dbl&gt;, offset &lt;dbl&gt;, weight &lt;dbl&gt;,</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'>#   epsilon &lt;dbl&gt;, VAF_tolerance &lt;dbl&gt;, matched &lt;lgl&gt;, score &lt;dbl&gt;,</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'>#   purity_error &lt;dbl&gt;, QC &lt;chr&gt;</span></span>
-<span class='r-msg co'><span class='r-pr'>#&gt;</span> <span style='color: #BB0000;'>x</span> Peak detection <span style='color: #BB0000;'>FAIL</span> with <span style='color: #BB0000;'>r = -29.0941892605788</span> and tolerance e = </span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> <span style='color: #00BB00;'>✓</span> Peak detection <span style='color: #00BB00;'>PASS</span> with <span style='color: #00BB00;'>r = -29.0623856969481</span> and tolerance e = </span>
 <span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></span>
 <span class='r-msg co'><span class='r-pr'>#&gt;</span> ── <span style='color: #000000; background-color: #BBBB00;'>[ CNAqc ] </span> n = 12963 mutations in <span style='color: #00BB00;'>267</span> segments (267 clonal + 0 subclonal). Ge</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
@@ -568,10 +568,10 @@ See the vignette to see how to extract and plot the results.</p>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>        chr16  67646006  67646007   C   T 120 54 0.4500000         CTCF      TRUE</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>        chr17   7577106   7577107   G   C  84 78 0.9285714         TP53      TRUE</span>
 <span class='r-msg co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-msg co'><span class='r-pr'>#&gt;</span> ── <span style='color: #BBBBBB; background-color: #BB0000;'> FAIL </span> Peaks QC <span style='font-weight: bold;'>rightmost</span>: <span style='color: #BB0000;'>82%</span>, <span style='color: #BB0000;'>λ = -29.0942</span>. Purity correction: -2909%. </span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> ── <span style='color: #000000; background-color: #00BB00;'> PASS </span> Peaks QC <span style='font-weight: bold;'>rightmost</span>: <span style='color: #00BB00;'>100%</span>, <span style='color: #00BB00;'>λ = -29.0624</span>. Purity correction: -2906%. </span>
 <span class='r-msg co'><span class='r-pr'>#&gt;</span> <span style='color: #00BBBB;'>ℹ</span> <span style='color: #0000BB;'>2:0</span> ~ n = 81    ( 1%) → <span style='color: #000000; background-color: #00BB00;'> PASS </span> 0.005   <span style='color: #000000; background-color: #00BB00;'> PASS </span> -0.85  </span>
 <span class='r-msg co'><span class='r-pr'>#&gt;</span> <span style='color: #00BBBB;'>ℹ</span> <span style='color: #0000BB;'>2:1</span> ~ n = 1563  (17%) → <span style='color: #000000; background-color: #00BB00;'> PASS </span> 0.028   <span style='color: #000000; background-color: #00BB00;'> PASS </span> -3.651 </span>
-<span class='r-msg co'><span class='r-pr'>#&gt;</span> <span style='color: #00BBBB;'>ℹ</span> <span style='color: #0000BB;'>2:2</span> ~ n = 7478  (82%) → <span style='color: #BBBBBB; background-color: #BB0000;'> FAIL </span> -0.043  <span style='color: #BBBBBB; background-color: #BB0000;'> FAIL </span> -70.172</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> <span style='color: #00BBBB;'>ℹ</span> <span style='color: #0000BB;'>2:2</span> ~ n = 7478  (82%) → <span style='color: #000000; background-color: #00BB00;'> PASS </span> 0.035   <span style='color: #000000; background-color: #00BB00;'> PASS </span> -70.172</span>
 </pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

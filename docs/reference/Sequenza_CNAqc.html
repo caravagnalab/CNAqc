@@ -57,23 +57,24 @@ Requirements:
    c. Post-process by binning the original seqz file:
 Instructions to customize these steps are available at
    https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html
-2. Then this pipeline (Sequenza_CNAqc) will optimize CNA calling and purity
-estimation using peak detection from CNAqc. Starting from a broad set of initial conditions
-for purity (5
+2. This pipeline (Sequenza_CNAqc) optimizes CNA calling and purity
+estimations using peak detection from CNAqc. Starting from a broad set of initial conditions
+for purity (5% to 100%) the pipeline fits cellularity and ploidy values and dumps results.
 Results are then quality controlled by peak detection via CNAqc. The analysis with CNAqc 
 can be carried out using either somatic mutations called by Sequenza, or an external set 
-of input calls. At every run the best solution by Sequenza is stored in a cache, and up to two alternative 
+of input calls.
+3. At every run the best solution by Sequenza is stored in a cache, and up to two alternative 
 solutions are generated: one optional by Sequenza, which might propose different exact values for 
 cellularity and ploidy; one by CNAqc, adjusting the current cellularity of the best Sequenza 
 solution. The alternative solutions are enqueued in a list L of cellularity and ploidy values 
 to be tested, based on their presence in the cache.
-3. Until the list L is empty, the point values of cellularity and ploidy are 
-tested repeating step 2, using ranges around the proposed values specified by
-input parameters. Further refinements steps will restrict the Sequenza purity
-range based on the score computed by analyse_peaks, which determines a purity
+4. Until the list L is empty, the point values of cellularity and ploidy are 
+tested repeating step 3, using ranges around the proposed values specified by
+input parameters. Further refinement steps will restrict the Sequenza purity
+range based on the score computed by analyze_peaks, which determines a purity
 gradient.
-4. Each run is saved in a folder named run-1, run-2, etc.
-When the list L is empty the pipeline stops and a symbolic link (final) 
+5. Each run is saved in a folder named run-1, run-2, etc.
+When the list L is empty the pipeline stops and a symbolic link final 
 pointing to the best Sequenza solution, based on CNAqc score is created." />
 <meta property="og:image" content="caravagnalab.github.io/CNAqc/logo.png" />
 
@@ -195,23 +196,24 @@ from data, and allele-specific segments.</p>
    c. Post-process by binning the original seqz file:</p>
 <p>Instructions to customize these steps are available at
    <a href='https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html'>https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html</a></p>
-<p>2. Then this pipeline (<code>Sequenza_CNAqc</code>) will optimize CNA calling and purity
-estimation using peak detection from CNAqc. Starting from a broad set of initial conditions
-for purity (5<!-- % to 100%) the pipeline fits cellularity and ploidy values and dumps results. -->
+<p>2. This pipeline (<code>Sequenza_CNAqc</code>) optimizes CNA calling and purity
+estimations using peak detection from CNAqc. Starting from a broad set of initial conditions
+for purity (5% to 100%) the pipeline fits cellularity and ploidy values and dumps results.
 Results are then quality controlled by peak detection via CNAqc. The analysis with CNAqc 
 can be carried out using either somatic mutations called by Sequenza, or an external set 
-of input calls. At every run the best solution by Sequenza is stored in a cache, and up to two alternative 
+of input calls.</p>
+<p>3. At every run the best solution by Sequenza is stored in a cache, and up to two alternative 
 solutions are generated: one optional by Sequenza, which might propose different exact values for 
 cellularity and ploidy; one by CNAqc, adjusting the current cellularity of the best Sequenza 
 solution. The alternative solutions are enqueued in a list L of cellularity and ploidy values 
 to be tested, based on their presence in the cache.</p>
-<p>3. Until the list L is empty, the point values of cellularity and ploidy are 
-tested repeating step 2, using ranges around the proposed values specified by
-input parameters. Further refinements steps will restrict the Sequenza purity
-range based on the score computed by <code>analyse_peaks</code>, which determines a purity
+<p>4. Until the list L is empty, the point values of cellularity and ploidy are 
+tested repeating step 3, using ranges around the proposed values specified by
+input parameters. Further refinement steps will restrict the Sequenza purity
+range based on the score computed by <code>analyze_peaks</code>, which determines a purity
 gradient.</p>
-<p>4. Each run is saved in a folder named <code>run-1</code>, <code>run-2</code>, etc.
-When the list L is empty the pipeline stops and a symbolic link (<code>final</code>) 
+<p>5. Each run is saved in a folder named <code>run-1</code>, <code>run-2</code>, etc.
+When the list L is empty the pipeline stops and a symbolic link <code>final</code> 
 pointing to the best Sequenza solution, based on CNAqc score is created.</p>
     </div>
 
@@ -258,11 +260,11 @@ in tibble format. Must include colummns "chr", "from", "to", "NV", "NR", "VAF".<
     </tr>
     <tr>
       <th>cellularity</th>
-      <td><p>Input to <code>sequenza.fit</code>, see https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html.</p></td>
+      <td><p>Input to <code>sequenza.fit</code>, see <a href='https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html'>https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html</a>.</p></td>
     </tr>
     <tr>
       <th>ploidy</th>
-      <td><p>Input to <code>sequenza.fit</code>, see https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html.</p></td>
+      <td><p>Input to <code>sequenza.fit</code>, see <a href='https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html'>https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html</a>.</p></td>
     </tr>
     <tr>
       <th>reference</th>
@@ -270,35 +272,35 @@ in tibble format. Must include colummns "chr", "from", "to", "NV", "NR", "VAF".<
     </tr>
     <tr>
       <th>normalization.method</th>
-      <td><p>Input to <code>sequenza.extract</code>, see https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html.</p></td>
+      <td><p>Input to <code>sequenza.extract</code>, see <a href='https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html'>https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html</a>.</p></td>
     </tr>
     <tr>
       <th>window</th>
-      <td><p>Input to <code>sequenza.extract</code>, see https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html.</p></td>
+      <td><p>Input to <code>sequenza.extract</code>, see <a href='https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html'>https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html</a>.</p></td>
     </tr>
     <tr>
       <th>gamma</th>
-      <td><p>Input to <code>sequenza.extract</code>, see https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html.</p></td>
+      <td><p>Input to <code>sequenza.extract</code>, see <a href='https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html'>https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html</a>.</p></td>
     </tr>
     <tr>
       <th>kmin</th>
-      <td><p>Input to <code>sequenza.extract</code>, see https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html.</p></td>
+      <td><p>Input to <code>sequenza.extract</code>, see <a href='https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html'>https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html</a>.</p></td>
     </tr>
     <tr>
       <th>min.reads.baf</th>
-      <td><p>Input to <code>sequenza.extract</code>, see https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html.</p></td>
+      <td><p>Input to <code>sequenza.extract</code>, see <a href='https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html'>https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html</a>.</p></td>
     </tr>
     <tr>
       <th>min.reads</th>
-      <td><p>Input to <code>sequenza.extract</code>, see https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html.</p></td>
+      <td><p>Input to <code>sequenza.extract</code>, see <a href='https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html'>https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html</a>.</p></td>
     </tr>
     <tr>
       <th>min.reads.normal</th>
-      <td><p>Input to <code>sequenza.extract</code>, see https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html.</p></td>
+      <td><p>Input to <code>sequenza.extract</code>, see <a href='https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html'>https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html</a>.</p></td>
     </tr>
     <tr>
       <th>max.mut.types</th>
-      <td><p>Input to <code>sequenza.extract</code>, see https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html.</p></td>
+      <td><p>Input to <code>sequenza.extract</code>, see <a href='https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html'>https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html</a>.</p></td>
     </tr>
     <tr>
       <th>delta_cellularity</th>
@@ -326,11 +328,11 @@ by CNAqc. Tune these to change error tolerance or karyotypes to use for QC.</p><
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>An object of class <code>tibble</code>, containing for each run its identifier
-<code>run</code>, the proposed values of <code>purity</code> and <code>ploidy</code>, the corresponding
-CNAqc <code>score</code> and quality control status <code>QC</code>, a list containing the
-input and output of Sequenza fitting procedure, and the object of class <code>CNAqc</code>
-created by the <code>init</code> and <code>analyze_peaks</code> functions.</p>
+    <p>A <code>tibble</code> containing for each run its number
+<code>run</code>, the solution values of <code>purity</code> and <code>ploidy</code>, the corresponding
+CNAqc <code>score</code> and quality control status <code>QC</code>, a list <code>sequenza</code> of the
+input and output of the Sequenza fitting procedure, and the object of class <code>CNAqc</code>
+created by the <code><a href='init.html'>init()</a></code> and <code><a href='analyze_peaks.html'>analyze_peaks()</a></code> functions.</p>
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
     <p>If at any time a purity proposal made by CNAqc leads

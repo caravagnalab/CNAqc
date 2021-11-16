@@ -107,7 +107,7 @@
 
       
 
-      </header><script src="a4_ccf_computation_files/header-attrs-2.11/header-attrs.js"></script><div class="row">
+      </header><script src="a4_ccf_computation_files/header-attrs-2.9/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>4. Computation of Cancer Cell Fractions</h1>
@@ -262,7 +262,7 @@ H(x) = - p_x \log(p_x)
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Tibble</span>
 <span class="fu"><a href="../reference/CCF.html">CCF</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">VAF</span>, <span class="va">mutation_multiplicity</span>, <span class="va">CCF</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 9,122 × 3</span>
+<span class="co">#&gt; # A tibble: 9,122 x 3</span>
 <span class="co">#&gt;      VAF mutation_multiplicity   CCF</span>
 <span class="co">#&gt;    &lt;dbl&gt;                 &lt;dbl&gt; &lt;dbl&gt;</span>
 <span class="co">#&gt;  1 0.08                      1 0.180</span>
@@ -384,7 +384,7 @@ H(x) = - p_x \log(p_x)
 <span class="co">#&gt; ℹ Mutations per peak: n = 717, n = 6412. The hard cut is t = 0.259130119839897.</span>
 
 <span class="fu"><a href="../reference/CCF.html">CCF</a></span><span class="op">(</span><span class="va">y_e</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">CCF</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 7,018 × 19</span>
+<span class="co">#&gt; # A tibble: 7,018 x 19</span>
 <span class="co">#&gt;    chr      from      to ref   alt   FILTER    DP    NV    VAF ANNOVAR_FUNCTION</span>
 <span class="co">#&gt;    &lt;chr&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;           </span>
 <span class="co">#&gt;  1 chr4    54939   54940 C     A     PASS   431.   26.4 0.0613 intronic        </span>
@@ -401,7 +401,7 @@ H(x) = - p_x \log(p_x)
 <span class="co">#&gt; #   driver_label &lt;chr&gt;, gene &lt;chr&gt;, type &lt;chr&gt;, karyotype &lt;chr&gt;,</span>
 <span class="co">#&gt; #   segment_id &lt;chr&gt;, mutation_multiplicity &lt;dbl&gt;, CCF &lt;dbl&gt;</span>
 <span class="fu"><a href="../reference/CCF.html">CCF</a></span><span class="op">(</span><span class="va">y_r</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">CCF</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 7,478 × 19</span>
+<span class="co">#&gt; # A tibble: 7,478 x 19</span>
 <span class="co">#&gt;    chr      from      to ref   alt   FILTER    DP    NV    VAF ANNOVAR_FUNCTION</span>
 <span class="co">#&gt;    &lt;chr&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;           </span>
 <span class="co">#&gt;  1 chr4    54939   54940 C     A     PASS   431.   26.4 0.0613 intronic        </span>
