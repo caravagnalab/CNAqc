@@ -72,23 +72,22 @@
 #' CNAqc \code{score} and quality control status \code{QC}, a list \code{sequenza} of the
 #' input and output of the Sequenza fitting procedure, and the object of class \code{CNAqc}
 #' created by the \code{init()} and \code{analyze_peaks()} functions.
-#' @export
 #'
 #' @examples
-#' \donotrun{
+#' \dontrun{
 #'
-#' # Make some example based on https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html
+#' # Install Sequenza package from https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html
 #' install.packages("sequenza")
 #'
 #' # Outside R
-#' # pip install sequenza-utils
+#' pip install sequenza-utils
 #'
 #' # Process a FASTA file to produce a GC Wiggle track file
-#' # sequenza−utils gc_wiggle −w 50 --fasta hg19.fa -o hg19.gc50Base.wig.gz
+#' sequenza−utils gc_wiggle −w 50 --fasta hg19.fa -o hg19.gc50Base.wig.gz
 #'
 #' # Process BAM and Wiggle files to produce a seqz file
-#' # sequenza−utils bam2seqz -n normal.bam -t tumor.bam --fasta hg19.fa \
-#' # -gc hg19.gc50Base.wig.gz -o out.seqz.gz
+#' sequenza−utils bam2seqz -n normal.bam -t tumor.bam --fasta hg19.fa \
+#' -gc hg19.gc50Base.wig.gz -o out.seqz.gz
 #'
 #' # Post-process by binning the original seqz file:
 #' sequenza−utils seqz_binning --seqz out.seqz.gz -w 50 -o out small.seqz.gz
@@ -97,9 +96,27 @@
 #' Sequenza_CNAqc(
 #'    sample_id = 'tumour',
 #'    seqz_file = 'small.seqz.gz', # Binned file
-#'    sex = "F" # if female
+#'    mutations = dataset$mutations, # If using an external set of mutations
+#'    sex = "F", # If female
+#'    cellularity = c(0.05, 1),
+#'    ploidy = c(1.8, 5.4),
+#'    reference = 'GRCh38',
+#'    normalization.method = 'median',
+#'    window = 1e5,
+#'    gamma = 280,
+#'    kmin = 300,
+#'    min.reads.baf = 50,
+#'    min.reads = 50,
+#'    min.reads.normal = 15,
+#'    max.mut.types = 1,
+#'    delta_cellularity = 0.05,
+#'    delta_ploidy = 0.25,
+#'    verbose = TRUE)
 #' )
 #' }
+#'
+#' @export
+
 Sequenza_CNAqc = function(sample_id,
                           seqz_file,
                           mutations = NULL,
