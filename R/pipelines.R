@@ -72,7 +72,8 @@
 #' CNAqc \code{score} and quality control status \code{QC}, a list \code{sequenza} of the
 #' input and output of the Sequenza fitting procedure, and the object of class \code{CNAqc}
 #' created by the \code{init()} and \code{analyze_peaks()} functions.
-#'
+#' @export
+#' 
 #' @examples
 #' \dontrun{
 #'
@@ -113,8 +114,6 @@
 #'    delta_ploidy = 0.25,
 #'    verbose = TRUE)
 #' }
-#'
-#' @export
 
 Sequenza_CNAqc = function(sample_id,
                           seqz_file,
