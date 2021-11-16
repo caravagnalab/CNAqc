@@ -112,7 +112,6 @@
 #'    delta_cellularity = 0.05,
 #'    delta_ploidy = 0.25,
 #'    verbose = TRUE)
-#' )
 #' }
 #'
 #' @export
