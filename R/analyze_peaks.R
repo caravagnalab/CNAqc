@@ -46,8 +46,8 @@
 #' @import BMix
 #'
 #' @examples
-#' data('example_dataset_CNAqc', package = 'CNAqc')
-#' x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+# data('example_dataset_CNAqc', package = 'CNAqc')
+# x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
 #'
 #' x = analyze_peaks(x)
 #' print(x)
@@ -60,7 +60,7 @@
 analyze_peaks = function(x,
                          karyotypes = c('1:0', '1:1', '2:0', '2:1', '2:2'),
                          min_karyotype_size = 0,
-                         min_absolute_karyotype_mutations = 10,
+                         min_absolute_karyotype_mutations = 100,
                          p_binsize_peaks = 0.005,
                          matching_epsilon = NULL,
                          purity_error = 0.05,
@@ -75,6 +75,10 @@ analyze_peaks = function(x,
          purity_error)
     matching_epsilon = purity_error
   }
+
+  # Generalised peak analysis
+  cli::cli_h1("Peak analysis: sample-level QC with common karyotypes")
+  cat("\n")
 
   # Check input
   stopifnot(inherits(x, "cnaqc"))
@@ -307,12 +311,12 @@ analyze_peaks = function(x,
 
   if (QC == "FAIL")
     cli::cli_alert_danger(
-      "Peak detection {red('FAIL')} with {.value {red(paste0('r = ', overall_score))}} and tolerance e = {.value {2 * matching_epsilon}}"
+      "Peak detection {red('FAIL')} with {.value {red(paste0('r = ', overall_score))}} and tolerance e = {.value {2 * purity_error}}"
     )
 
   if (QC == "PASS")
     cli::cli_alert_success(
-      "Peak detection {green('PASS')} with {.value {green(paste0('r = ', overall_score))}} and tolerance e = {.value {2 * matching_epsilon}}"
+      "Peak detection {green('PASS')} with {.value {green(paste0('r = ', overall_score))}} and tolerance e = {.value {2 * purity_error}}"
     )
 
   # Plots assembly
@@ -337,6 +341,17 @@ analyze_peaks = function(x,
     QC = QC,
     KDE = KDE
   )
+
+  # Generalised peak analysis
+  cli::cli_h1("Peak analysis: QC with general karyotypes")
+  cat("\n")
+
+  x = x %>% analyze_peaks_general(
+    n_min = min_absolute_karyotype_mutations,
+    epsilon = purity_error/2,
+    kernel_adjust = kernel_adjust,
+    n_bootstrap = n_bootstrap
+    )
 
   return(x)
 }

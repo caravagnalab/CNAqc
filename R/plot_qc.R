@@ -159,14 +159,13 @@ plot_qc = function(x)
 
   stopifnot(inherits(x, "cnaqc"))
 
-
   xqc = compute_QC_table(x)
 
   QC_table = xqc$QC_table
   pPASS = xqc$percentage_PASS
   NA_tests = xqc$NA_tests
 
-  QC_table %>%
+  top_table = QC_table %>%
     ggplot(aes(x = karyotype, y = type, fill = paste(QC))) +
     facet_wrap(~paste0("QC (% of PASS is ", pPASS, '%, - NA tests are ', NA_tests, '%)')) +
     geom_tile(aes(width = .8, height = .8)) +
@@ -178,7 +177,23 @@ plot_qc = function(x)
     CNAqc:::my_ggplot_theme() +
     labs(x = NULL, y = NULL, title = "CNAqc summary QC ") +
     guides(fill = guide_legend('QC (NA not available)'))
+
+  secondary_table = ggplot() + labs(title = "Secondary peaks")
+  if(!is.null(x$peaks_analysis$general))
+    secondary_table = secondary_table +
+      geom_tile(
+        data = x$peaks_analysis$general$expected_peaks,
+        aes(y = karyotype, x = multiplicity, fill = matched)
+      ) +
+      CNAqc:::my_ggplot_theme() +
+      scale_fill_manual(
+        values = c(`FALSE` = 'indianred3', `TRUE` = 'forestgreen')
+      ) +
+    facet_wrap(~"General peaks")
+
+  cowplot::plot_grid(top_table, secondary_table, axis = 'tb', align = 'h')
 }
+
 
 compute_QC_table = function(x)
 {

@@ -1,7 +1,3 @@
-#
-#
-
-
 
 #' CNAqc-based purity-optimisation pipeline for Sequenza CNA calling.
 #'
@@ -110,7 +106,7 @@ Sequenza_CNAqc = function(sample_id,
                           n_grid_cells = 10,
                           verbose = FALSE)
 {
-  
+
   # Auxiliary function: Sequenza check input parameters
   Sequenza_check_inputs = function(sample_id,
                                    seqzFile,
@@ -122,50 +118,50 @@ Sequenza_CNAqc = function(sample_id,
   {
     if (!is.character(sample_id))
       cli::cli_abort("Unrecogniseable sample id, will not proceed.")
-    
+
     cli::cli_alert("Sample id: {.field {sample_id}}")
-    
+
     if (!file.exists(seqzFile))
       cli::cli_abort("File {.field {seqzFile}} does not exist, will not proceed.")
-    
+
     sz = format(object.size(seqzFile), units = "auto")
     cli::cli_alert("Sequenza seqz file: {.value \"{seqzFile}\"} [{.field {sz}}]")
-    
+
     if (!(sex %in% c("M", "F")))
       cli::cli_abort("Sex must be either female (F) or male (M).")
-    
+
     sx = dplyr::case_when(sex == "F" ~ "Female (F)",
                           sex == "M" ~ "Male (M)",)
     cli::cli_alert("Sample sex: {.field {sx}}")
-    
+
     if ((cellularity %>% length() != 2) |
         !(cellularity[1] %>% is.numeric()) |
         !(cellularity[2] %>% is.numeric()))
       cli::cli_abort("Cellularity needs to be a numeric vector with two values.")
-    
+
     cli::cli_alert(
       "Testing cellularity (%) in [{.field {cellularity[1]}}, {.field {cellularity[2]}}]"
     )
-    
+
     if ((ploidy %>% length() != 2) |
         !(ploidy[1] %>% is.numeric()) |
         !(ploidy[2] %>% is.numeric()))
       cli::cli_abort("Ploidy needs to be a numeric vector with two values.")
-    
+
     cli::cli_alert("Testing ploidy (real-valued) in [{.field {ploidy[1]}}, {.field {ploidy[2]}}]")
-    
+
     if (!(max_runs %>% is.numeric()))
       cli::cli_abort("Maximum number of runs should be numeric.")
-    
+
     cli::cli_alert("Testing maximum {.field {max_runs}} purity adjustments with CNAqc")
-    
+
     if (!(reference %>% is.character()) |
         !(reference %in% c("GRCh38", "GRCh37", "hg19")))
       cli::cli_abort("Reference must be any of GRCh38 or hg19/GRCh37.")
-    
+
     cli::cli_alert("Reference genome: {.field {reference}}")
   }
-  
+
   # Auxiliary function: check if solution is already in cache
   # inCache = function(L, cellularity, ploidy, delta_c, delta_p)
   # {
@@ -190,7 +186,7 @@ Sequenza_CNAqc = function(sample_id,
   #   return(any(unlist(x))==TRUE)
   #
   # }
-  
+
   # Auxiliary function: Sequenza fit
   # Sequenza_fit = function(seqzExt, sample_id, out_dir, chr.fit, is_female, L, L_cache, delta_c, delta_p, nbins){
   #
@@ -290,14 +286,14 @@ Sequenza_CNAqc = function(sample_id,
   #   return(out)
   #
   # }
-  
+
   #### Check for Sequenza library ####
   if (!require(sequenza)) {
     cli::cli_abort("The R Sequenza package is not installed, will not proceed.")
   }
-  
+
   cli::cli_h1("Sequenza CNA calling wrapper with CNAqc")
-  
+
   Sequenza_check_inputs(
     sample_id = sample_id,
     seqzFile = seqz_file,
@@ -307,16 +303,16 @@ Sequenza_CNAqc = function(sample_id,
     max_runs = max_runs,
     reference = reference
   )
-  
+
   #### If male use chrY, if female don't ####
   is_female <-  sex == "F"
   chromosomes <- paste0(c(1:22, "X"))
   # chromosomes = 1:22
-  
+
   if (!as.logical(is_female)) {
     chromosomes <- c(chromosomes, 'Y')
   }
-  
+
   #### Parameters that will be logged as RDS ####
   run_params = list(
     sample_id = sample_id,
@@ -333,14 +329,14 @@ Sequenza_CNAqc = function(sample_id,
     max.mut.types = max.mut.types,
     max_runs = max_runs
   )
-  
+
   # dir.create('R_logs')
   # saveRDS(run_params, 'R_logs/logs.rds')
-  
+
   # cli::cli_h2("Extraction of required information [{crayon::blue('sequenza.extract')}]")
   cat("\n")
   cli::cli_process_start("Seqz pre-processing [{crayon::blue('sequenza.extract')}]")
-  
+
   # Run sequenza.extract - with parameters optimised for Genomics England data (100x tumour WGS + 30X normal WGS)
   # seqzExt <- sequenza::sequenza.extract(
   #   file = seqz_file,
@@ -353,9 +349,9 @@ Sequenza_CNAqc = function(sample_id,
   #   min.reads = min.reads,
   #   min.reads.normal = min.reads.normal,
   #   max.mut.types = max.mut.types)
-  
+
   cli::cli_process_done()
-  
+
   # saveRDS(object = seqzExt, "./seqz.rds")
   seqzExt = readRDS("./seqz.rds")
   # Select only the more reliable autosomes for fitting cellularity and ploidy parameters
@@ -375,31 +371,31 @@ Sequenza_CNAqc = function(sample_id,
   #   delta_ploidy
   #   )
   #
-  
+
   run_index = 0
   L_cache = L = NULL
-  
+
   repeat {
-    
+
     if(verbose)
     {
       cli::cli_alert("List of parameters to test")
       print(L)
     }
-      
+
     run_index = run_index + 1
-    
+
     # Handle a new run - special case for the first run
     if (run_index > 1)
     {
       L_head = L %>% filter(row_number() == 1)
       L = L %>% filter(row_number() > 1)
-      
+
       # First run - parameters determined by the user
       cellularity = L_head$cellularity + c(-delta_cellularity, delta_cellularity)
       ploidy = L_head$ploidy + c(-delta_ploidy, delta_ploidy)
     }
-    
+
     # New run - parameters determined by the pipeline
     L_cache_new = sequenza_fit_runner(seqzExt,
                                       dataframe,
@@ -410,13 +406,13 @@ Sequenza_CNAqc = function(sample_id,
                                       sample_id,
                                       out_dir = paste0("run_", run_index),
                                       reference = reference)
-    
+
     L_cache = L_cache %>% bind_rows(L_cache_new)
-    
+
     # Obtain proposals
     new_proposals = get_proposals(sequenza = L_cache$sequenza[[nrow(L_cache)]],
                                   cnaqc = L_cache$cnaqc[[nrow(L_cache)]])
-    
+
     # Check them against the L_cache, create a list to go for
     new_proposals = filter_proposals(
       L_cache = L_cache,
@@ -424,54 +420,54 @@ Sequenza_CNAqc = function(sample_id,
       delta_c = delta_cellularity,
       delta_p = delta_ploidy
     )
-    
-    
+
+
     if(verbose)
     {
       cli::cli_alert("New proposal")
       print(new_proposals)
-      
+
       cli::cli_alert("Cached evaluations")
       print(L_cache)
-      
+
     }
-    
+
     L = L %>% bind_rows(new_proposals)
-    
+
     if (L %>% nrow() == 0)
       break
   }
-  
+
   # End of pipeline
   best_fit = which.min(L_cache$score %>% abs())
   qc_status = L_cache$PASS[best_fit]
-  
+
   cli::cli_h2("Best fit with score {.field {L_cache$score[best_fit]}} and QC {.field {qc_status}}")
-  
+
   if(qc_status == "FAIL")
     cli::cli_alert_danger("")
   else
     cli::cli_alert_success("")
-  
+
   R.utils::createLink(
     link = 'final',
     target = L_cache$run[best_fit],
     skip = FALSE,
     overwrite = TRUE
   )
-  
+
   # Plot all CNAqc results
-  
+
   pdf("./cnaqc_reports.pdf", onefile = TRUE)
   lapply(L_cache$cnaqc, function(x){
     plot(x)
   })
   dev.off()
-  
+
   # Save cumulative pipeline results
-  
+
   saveRDS(L_cache, file = "pipeline.rds")
-  
+
   # Return summary table
   return(L_cache)
 }
@@ -664,19 +660,19 @@ sequenza_fit_runner = function(seqzExt,
     mutations_file = paste0(out, '/', x, "_mutations.txt")
     purity_file = paste0(out, '/', x, "_confints_CP.txt")
     alternatives_file = paste0(out, '/', x, "_alternative_solutions.txt")
-    
+
     if (!file.exists(segments_file))
       stop(paste0("Missing required segments file: ", segments_file))
-    
+
     if (!file.exists(mutations_file))
       stop(paste0("Missing required mutations file: ", mutations_file))
-    
+
     if (!file.exists(purity_file))
       stop(paste0("Missing required solutions file: ", purity_file))
-    
+
     if (!file.exists(alternatives_file))
       stop(paste0("Missing alternative solutions file: ", alternatives_file))
-    
+
     # Segments data -- with CNAq format conversion which is used in evoverse
     segments = readr::read_tsv(segments_file, col_types = readr::cols()) %>%
       dplyr::rename(
@@ -687,7 +683,7 @@ sequenza_fit_runner = function(seqzExt,
         minor = B
       ) %>%
       dplyr::select(chr, from, to, Major, minor, dplyr::everything())
-    
+
     # Mutations data -- with CNAq format conversion which is used in evoverse
     mutations = readr::read_tsv(mutations_file, col_types = readr::cols()) %>%
       dplyr::rename(chr = chromosome,
@@ -701,16 +697,16 @@ sequenza_fit_runner = function(seqzExt,
       ) %>%
       dplyr::mutate(to = from + nchar(alt)) %>%
       dplyr::select(chr, from, to, ref, alt, dplyr::everything())
-    
+
     # Solution data
     solutions = readr::read_tsv(purity_file, col_types = readr::cols())
-    
+
     purity = solutions$cellularity[2]
     ploidy = solutions$ploidy.estimate[2]
-    
+
     # Alternative solutions data
     alternative_solutions = readr::read_tsv(alternatives_file, col_types = readr::cols())
-    
+
     fits = list()
     fits$input = x
     fits$out = out
@@ -719,41 +715,41 @@ sequenza_fit_runner = function(seqzExt,
     fits$purity = purity
     fits$ploidy = ploidy
     fits$alternative_solutions = alternative_solutions
-    
+
     return(fits)
   }
-  
-  
+
+
   if (dir.exists(out_dir))
     cli::cli_alert_warning("Directory {.field {out_dir}} already exists")
-  
+
   dir.create(out_dir)
-  
+
   chr.fit = seqzExt$chromosomes %>% unique()
   chr.fit = chr.fit[!(chr.fit %in% c('X', 'Y', 'chrX', 'chrY'))]
-  
+
   cat("\n")
   cli::cli_process_start(
     "Sequenza fit via CNAqc [{crayon::blue('sequenza.fit')}] - cellularity {.value {cellularity}}, ploidy {.value {ploidy}}"
   )
   cat("\n")
-  
+
   # Run of sequenza.fit
   if (cellularity[1] < 0)
     cellularity[1] = 0.01
   if (cellularity[1] > 1)
     cellularity[1] = 1
-  
+
   if (cellularity[2] < 0)
     cellularity[2] = 0.01
   if (cellularity[2] > 1)
     cellularity[2] = 1
-  
+
   if (ploidy[1] < 0)
     ploidy[1] = 0.01
   if (ploidy[2] < 0)
     ploidy[2] = 0.01
-  
+
   if(run == 1){
     nbins_cellularity = 100
     nbins_ploidy = 50
@@ -769,7 +765,7 @@ sequenza_fit_runner = function(seqzExt,
     chromosome.list = chr.fit,
     female = as.logical(is_female)
   )
-  
+
   # Dump results
   sequenza::sequenza.results(
     sequenza.extract = seqzExt,
@@ -778,17 +774,17 @@ sequenza_fit_runner = function(seqzExt,
     out.dir = out_dir,
     female = as.logical(is_female)
   )
-  
+
   cat("\n")
   cli::cli_process_done()
-  
+
   # Parse outputs
   cat("\n")
   cli::cli_process_start("Quality control with CNAqc: {.field {out_dir}}")
   cat("\n")
-  
+
   fits = parse_Sequenza_CNAs(out_dir, x = sample_id)
-  
+
   # Perform QC, and save RDS
   cnaqc_obj = tryCatch({
     if(!is.null(dataframe)){
@@ -812,17 +808,17 @@ sequenza_fit_runner = function(seqzExt,
     print(e)
     cli::cli_abort("CNAqc generated errors and cannot run on this sample. Aborting the pipeline.")
   })
-  
+
   purity = fits$purity[1]
   ploidy = fits$ploidy[1]
-  
+
   # show to screen
   print(cnaqc_obj)
-  
+
   cat("\n")
   cli::cli_process_done()
-  
-  
+
+
   # L_cache = append(L_cache, list(c(purity,ploidy)))
   tibble(
     run = out_dir,
@@ -833,20 +829,20 @@ sequenza_fit_runner = function(seqzExt,
     sequenza = list(fits),
     cnaqc = list(cnaqc_obj)
   )
-  
+
   # Save report plots for all solutions
-  
+
 }
 
 get_proposals = function(sequenza, cnaqc)
 {
   sqz = sequenza$alternative_solutions %>% select(-SLPP)
-  
+
   cnq = tibble(
     cellularity = cnaqc$purity + cnaqc$peaks_analysis$score,
     ploidy = sequenza$ploidy
   )
-  
+
   bind_rows(sqz,
             cnq) %>%
     dplyr::filter(cellularity <= 1 & cellularity > 0)
@@ -858,15 +854,15 @@ filter_proposals = function(L_cache,
                             delta_ploidy)
 {
   bitmask = c()
-  
+
   for (i in 1:nrow(new_proposals))
   {
     cellularity_cache = abs(L_cache$purity - new_proposals$cellularity[i]) > delta_cellularity
     ploidy_cache = abs(L_cache$ploidy - new_proposals$ploidy[i]) > delta_ploidy
-    
+
     bitmask = c(bitmask, all(cellularity_cache | ploidy_cache))
   }
-  
+
   new_proposals %>%
     dplyr::filter(bitmask)
 }

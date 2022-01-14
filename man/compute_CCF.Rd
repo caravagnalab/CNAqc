@@ -7,6 +7,7 @@
 compute_CCF(
   x,
   karyotypes = c("1:0", "1:1", "2:0", "2:1", "2:2"),
+  muts_per_karyotype = 25,
   cutoff_QC_PASS = 0.1,
   method = "ENTROPY"
 )
@@ -15,6 +16,9 @@ compute_CCF(
 \item{x}{An object of class \code{cnaqc}, created by the \code{init} function.}
 
 \item{karyotypes}{The karyotypes to use, this package supports only \code{c('2:1', '2:0', '2:2')}.}
+
+\item{muts_per_karyotype}{Minimum number of mutations that are required to be mapped to a karyotype
+in order to compute CCF values (default 25).}
 
 \item{cutoff_QC_PASS}{Percentage of mutations that can be not-assigned (\code{NA}) in a karyotype.
 If the karyotype has more than \code{cutoff_QC_PASS} percentage of non-assigned mutations then
