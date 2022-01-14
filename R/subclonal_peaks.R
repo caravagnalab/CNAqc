@@ -485,8 +485,8 @@
 #'
 #' x = init(x$mutations,)
 #'
-
-# x = readRDS("~/Downloads/8888e808-594b-4c76-b2e4-62aa56736f7c.rds")
+#
+# x = readRDS("~/Downloads/f48c3c82-bebe-4b8e-909e-e1a51a7142ec.rds")
 # x = init(x$mutations, x$cna, x$metadata$purity)
-# x = x %>% analyze_peaks()
-
+# x = x %>% analyze_peaks(n_bootstrap = 10)
+# plot_peaks_analysis(x, what = 'general')
