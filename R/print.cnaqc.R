@@ -170,6 +170,78 @@ print.cnaqc = function(x, ...)
         )
       )
     }
+
+    # Subclonal
+    nsegs =  x$peaks_analysis$subclonal$expected_peaks$segment_id %>% unique %>% length()
+    nlin = x$peaks_analysis$subclonal$expected_peaks %>%
+      filter(model == 'linear', matched) %>% nrow()
+    nlin_f = x$peaks_analysis$subclonal$expected_peaks %>%
+      filter(model == 'linear', !matched) %>% nrow()
+
+    nbr = x$peaks_analysis$subclonal$expected_peaks %>%
+      filter(model == 'branching', matched) %>% nrow()
+    nbr_f = x$peaks_analysis$subclonal$expected_peaks %>%
+      filter(model == 'branching', !matched) %>% nrow()
+
+    cli::cli_h3(
+      paste(
+        "Subclonal peak QC ({.field {nsegs}} segments):",
+        crayon::bold("linear"),
+        ppass(), nlin, pfail(), nlin_f,
+        "~",
+        crayon::bold("branching"),
+        ppass(), nbr, pfail(), nbr_f,
+        "- epsilon = {.value {x$peaks_analysis$subclonal$params$epsilon}}."
+      )
+    )
+
+    S_table = x$peaks_analysis$subclonal$summary
+    S_table$size = strsplit(S_table$segment_id, split = '\\n') %>%
+      sapply(function(x) x[[2]])
+    S_table$clones = strsplit(S_table$segment_id, split = '\\n') %>%
+      sapply(function(x) x[[3]])
+    S_table$segment_id = strsplit(S_table$segment_id, split = '\\n') %>%
+      sapply(function(x) x[[1]]) %>%
+      strsplit(split = ' ') %>%
+      sapply(function(x) { paste(x[1], x[2], sep = '@') })
+
+    for (s in S_table$segment_id %>% unique())
+    {
+      hb = S_table %>%
+        filter(segment_id == s) %>%
+        pull(prop) %>%
+        length() == 1
+
+      bp = S_table %>%
+        filter(segment_id == s) %>%
+        mutate(prop = prop * 100) %>%
+        pull(prop) %>%
+        round(0) %>%
+        paste0('%')
+
+      bm = S_table %>%
+        filter(segment_id == s) %>%
+        pull(model)
+
+      qc = ifelse(hb,
+                  crayon::green(paste(bm, bp, collapse = ', ')),
+                  paste(bm, bp, collapse = ', '))
+
+      n = S_table %>% filter(segment_id == s) %>% pull(size)
+      n = sprintf("%20s", n)
+      cl = S_table %>% filter(segment_id == s) %>% pull(clones)
+      cl = sprintf("%17s", cl)
+
+      cli::cli_alert_info(
+        paste0(
+          crayon::blue(sprintf("%17s", s)),
+          " ~ {n[1]} {crayon::yellow(cl[1])} {clisymbols::symbol$arrow_right} ",
+          qc,
+          ""
+        )
+      )
+
+    }
   }
 
   if (with_CCF)

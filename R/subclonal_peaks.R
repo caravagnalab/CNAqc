@@ -532,7 +532,7 @@ analyze_peaks_subclonal = function(x,
     group_by(segment_id) %>%
     filter(prop == max(prop)) %>%
     select(segment_id, model, prop) %>%
-    mutate(prop = paste0(model, ' (', round(prop * 100, 0), '%)')) %>%
+    # mutate(prop = paste0(model, ' (', round(prop * 100, 0), '%)')) %>%
     ungroup()
 
   # Results
