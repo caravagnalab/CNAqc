@@ -346,12 +346,39 @@ analyze_peaks = function(x,
   cli::cli_h1("Peak analysis: QC with general karyotypes")
   cat("\n")
 
+  w = x$n_karyotype[!(x$n_karyotype %>% names() %in% karyotypes)]
+  w = w[w > min_absolute_karyotype_mutations]
+
+  cli::cli_alert_info(
+      "Karyotypes {.field {names(w)}} with >{.field {min_absolute_karyotype_mutations}} mutation. Using epsilon = {.field {purity_error}}."
+    )
+
   x = x %>% analyze_peaks_general(
     n_min = min_absolute_karyotype_mutations,
-    epsilon = purity_error/2,
+    epsilon = purity_error,
     kernel_adjust = kernel_adjust,
     n_bootstrap = n_bootstrap
     )
 
+  x$peaks_analysis$general$summary %>%
+    print()
+
+
+
+  # Subclonal CNAs peak analysis
+  cli::cli_h1("Peak analysis: subclonal CNAs")
+  cat("\n")
+
+  x = x %>% analyze_peaks_subclonal(
+    n_min = min_absolute_karyotype_mutations,
+    epsilon = purity_error,
+    kernel_adjust = kernel_adjust,
+    n_bootstrap = n_bootstrap
+  )
+
+  x$peaks_analysis$subclonal$summary %>%
+    print()
+
   return(x)
 }
+

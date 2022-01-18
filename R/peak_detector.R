@@ -1,3 +1,5 @@
+##########################################
+# Peak detection for simple karyotypes (more sofisticated algorithm) - rightmost peak matching
 peak_detector = function(snvs,
                          expectation,
                          tumour_purity,
@@ -254,6 +256,8 @@ peak_detector = function(snvs,
   ))
 }
 
+##########################################
+# Peak detection for simple karyotypes (more sofisticated algorithm) - closest peak matching
 peak_detector_closest_hit_match = function(snvs,
                                            expectation,
                                            tumour_purity,
@@ -436,6 +440,8 @@ peak_detector_closest_hit_match = function(snvs,
   ))
 }
 
+##########################################
+# Auxiliary functions  peak-matching for simple karyotypes
 overlap_bands = function(peak, tolerance, left_extremum, right_extremum)
 {
   # if(peak + tolerance >= left_extremum & peak + tolerance <= right_extremum)
@@ -449,4 +455,39 @@ overlap_bands = function(peak, tolerance, left_extremum, right_extremum)
   return(M)
 }
 
+##########################################
+# KDE-based pure peak detection (for general karyptypes and subclonal CNAs)
+simple_peak_detector = function(mutations, kernel_adjust){
+  xy_peaks = den = NULL
+
+  # Smoothed Gaussian kernel for VAF
+  y = mutations %>% dplyr::pull(VAF)
+
+  den = density(y, kernel = 'gaussian', adjust = kernel_adjust, na.rm = T)
+  in_range = den$x >= min(y, na.rm = T) & den$x <= max(y, na.rm = T)
+
+  input_peakdetection = matrix(cbind(x = den$x[in_range], y = den$y[in_range]), ncol = 2)
+  colnames(input_peakdetection) = c('x', 'y')
+
+  # Test 5 parametrisations of peakPick neighlim
+  pks = Reduce(dplyr::bind_rows,
+               lapply(1:5,
+                      function(n) {
+                        pk = peakPick::peakpick(mat = input_peakdetection, neighlim = n)
+                        input_peakdetection[pk[, 2], , drop = FALSE] %>% as.data.frame()
+                      })) %>%
+    as_tibble() %>%
+    dplyr::arrange(x) %>%
+    dplyr::mutate(x = round(x, 2), y = round(y, 2)) %>%
+    dplyr::distinct(x, .keep_all = TRUE)
+
+  hst = hist(mutations$VAF, breaks = seq(0, 1, 0.01), plot = F)$counts
+  pks$counts_per_bin = hst[round(pks$x * 100)]
+
+  # Heuristic to remove low-density peaks
+  pks = pks %>%
+    dplyr::mutate(discarded = y <= max(pks$y) * (1 / 20), from = 'KDE')
+
+  return(list(peaks = pks, density = den))
+}
 

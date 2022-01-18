@@ -22,7 +22,7 @@ print.cnaqc = function(x, ...)
   cli::cli_rule(
     paste(
       crayon::bgYellow(crayon::black("[ CNAqc ] ")),
-      'n = {.value {x$n_snvs}} mutations in {.field {x$n_cna}} segments ({.value {x$n_cna_clonal}} clonal + {.value {x$n_cna_sbclonal}} subclonal). Genome reference: {.field {x$reference_genome}}.'
+      '{.field {x$n_snvs}} mutations in {.field {x$n_cna}} segments ({.field {x$n_cna_clonal}} clonal, {.field {x$n_cna_subclonal}} subclonal). Genome reference: {.field {x$reference_genome}}.'
     )
   )
 
@@ -32,8 +32,15 @@ print.cnaqc = function(x, ...)
   # names(head(x$n_karyotype)), ')', collapse = '; ')))
 
   # cli::cli_alert_info(paste0("Mutation mapping (up to top 5): "))
+
+  cli::cli_h3("Clonal CNAs")
   cat('\n')
-  bar_print_console(x)
+  bar_print_console(x, top = 10)
+  cat('\n')
+
+  cli::cli_h3("Subclonal CNAs")
+  cat('\n')
+  bar_print_console_scl(x, top = 10)
   cat('\n')
 
   # Available analyses
@@ -57,7 +64,7 @@ print.cnaqc = function(x, ...)
   if(with_drivers)
   {
     nd = x$snvs %>% dplyr::filter(is_driver) %>% nrow()
-    cli::cli_alert_info("There are {.value {nd}} annotated driver(s).")
+    cli::cli_alert_info("There are {.value {nd}} annotated driver(s) mapped to clonal CNAs.")
 
     w_d = x$snvs %>%
       dplyr::filter(is_driver) %>%
@@ -117,7 +124,7 @@ print.cnaqc = function(x, ...)
       n = sprintf("%-5s", x$n_karyotype[karyo])
       p = x$n_karyotype[karyo] / sum(x$n_karyotype[xx$karyotype %>% unique])
       p = format(p * 100, digits = 0)
-      p = sprintf("%2s", p)
+      p = sprintf("%3s", p)
 
       cli::cli_alert_info(
         paste0(
@@ -128,6 +135,40 @@ print.cnaqc = function(x, ...)
         )
       )
 
+    }
+
+    # General karyotypes
+    gen =  x$peaks_analysis$general$summary %>%
+      ungroup() %>%
+      mutate(prop = round(n/sum(n) * 100, 0))
+
+    n_matched =  gen$matched %>% sum
+    n_mismatched =  gen$mismatched %>% sum
+
+    cli::cli_h3(
+      paste(
+        "General peak QC ({.field {sum(gen$n)}} mutations):", ppass(), n_matched, pfail(), n_mismatched, "- epsilon = {.value {x$peaks_analysis$general$params$epsilon}}."
+      )
+    )
+
+    for(i in 1:nrow(gen))
+    {
+      qc = paste(
+        sprintf("%-7s", paste(ppass(), gen$matched[i])),
+        sprintf("%-7s", paste(pfail(), gen$mismatched[i]))
+      )
+
+      n = sprintf("%-5s", gen$n[i])
+      p = sprintf("%3s", gen$prop[i])
+
+      cli::cli_alert_info(
+        paste0(
+          crayon::blue(gen$karyotype[i]),
+          " ~ n = {n} ({p}%) {clisymbols::symbol$arrow_right} ",
+          qc,
+          ""
+        )
+      )
     }
   }
 
@@ -186,6 +227,7 @@ print.cnaqc = function(x, ...)
 
 }
 
+
 bar_print_console = function(x, top = length(x$n_karyotype)) {
   e = x$n_karyotype %>% sort(decreasing = TRUE)
   l =  round(x$l_karyotype / 10 ^ 6, digits = 0)
@@ -223,6 +265,41 @@ bar_print_console = function(x, top = length(x$n_karyotype)) {
 
                cat("\n")
              })
+}
+
+
+
+bar_print_console_scl = function(x, top = nrow(x$cna_subclonal))
+{
+  max_bars = 10
+
+  L_table =  x$cna_subclonal %>%
+    mutate(Mb = round(length/1e6, 2), CCF = round(CCF, 2), bars = n/max(n) * max_bars)  %>%
+    arrange(desc(n)) %>%
+    filter(row_number() <= top)
+
+  label_width = 30
+
+  max_n_digits = 1 + (nchar(L_table$n) %>% max)
+  max_L_digits = 1 + (nchar(L_table$Mb) %>% max)
+
+  for(i in 1:nrow(L_table))
+  {
+    cat(sprintf('%*s ', 15, paste(L_table$chr[i],  L_table$from[i], sep = '@')))
+    cat(sprintf(' [n = %*s, L = %*s Mb] ',
+                max_n_digits,
+                L_table$n[i],
+                max_L_digits,
+                L_table$Mb[i]))
+
+    # str = paste0(L_table$karyotype[i], " (", L_table$CCF[i] ,") - ", L_table$karyotype_2[i],  " (", 1 - L_table$CCF[i] ,") ")
+    cat(sprintf('%*s ', 12, paste0(L_table$karyotype[i], " (", L_table$CCF[i] ,")")))
+    cat(sprintf('%*s ', 12, paste0(L_table$karyotype_2[i], " (", 1-L_table$CCF[i] ,")")))
+
+    cat(paste(rep("\u25A0", L_table$bars[i]), collapse = ''))
+    cat('\n')
+  }
+
 }
 
 

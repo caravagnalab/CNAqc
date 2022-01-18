@@ -14,6 +14,275 @@ expected_vaf_fun = function(m, M, mut.allele, p)
   expected_mutant_reads / expected_sequencing_depth
 }
 
+# Expected VAF for a general peak, using expected_vaf_fun
+expectations_generalised = function(m, M, p, karyotype = NULL)
+{
+  if(!is.null(karyotype))
+  {
+    karyotype = strsplit(karyotype, ':')[[1]]
+    m = karyotype[2] %>% as.numeric()
+    M = karyotype[1] %>% as.numeric()
+  }
+
+  minor_peaks = lapply(1:m, function(i){
+    data.frame(
+      minor = m,
+      Major = M,
+      ploidy = m + M,
+      multiplicity = i,
+      purity = p,
+      peak = expected_vaf_fun(m, M, mut.allele = i, p)
+    )
+  })
+
+  Major_peaks = lapply(1:M, function(i){
+    data.frame(
+      minor = m,
+      Major = M,
+      ploidy = m + M,
+      multiplicity = i,
+      purity = p,
+      peak = expected_vaf_fun(m, M, mut.allele = i, p)
+    )
+  })
+
+  return(
+    bind_rows(
+      Reduce(bind_rows, minor_peaks),
+      Reduce(bind_rows, Major_peaks)
+    ) %>%
+      distinct() %>%
+      mutate(karyotype = paste(Major, minor, sep = ':')) %>%
+      filter(multiplicity > 0)
+  )
+}
+
+# Expectations for subclonal peaks - linear evolution model
+expectations_subclonal_linear = function(CCF_1, karyotype_1, karyotype_2, purity)
+{
+  CCF_2 = 1 - CCF_1
+  ploidy_1 = strsplit(karyotype_1, ":")[[1]] %>% as.numeric() %>% sum
+  ploidy_2 = strsplit(karyotype_2, ":")[[1]] %>% as.numeric() %>% sum
+
+  peak1 = peak2 = peak3 = peak4 = peak5 = NA
+  role1 = role2 = role3 = role4 = role5 = NA
+
+  # Equations - denominator is always the same
+  den = 2 * (1 - purity) + ploidy_1 * CCF_1 * purity + ploidy_2 * CCF_2 *
+    purity
+
+  if ((karyotype_1 == "1:0" & karyotype_2 == "1:1") |
+      (karyotype_1 == "1:1" & karyotype_2 == "1:0"))
+  {
+    # 1:0 1:1 - 1:1 1:0
+    peak1 = ((1 * CCF_1 + 1 * CCF_2) * purity) / den
+    peak2 = ((1 * CCF_1) * purity) / den
+    peak3 = ((1 * CCF_2) * purity) / den
+
+    role1 = 'shared'
+    role2 = role3 = 'private'
+  }
+
+  if (karyotype_1 == "1:0" & karyotype_2 == "2:1")
+  {
+    # 1:0 2:1
+    peak1 = ((1 * CCF_1 + 2 * CCF_2) * purity) / den
+    peak2 = ((1 * CCF_1 + 1 * CCF_2) * purity) / den
+    peak3 = ((1 * CCF_1) * purity) / den
+    peak4 = ((1 * CCF_2) * purity) / den
+
+    role1 = role2 = 'shared'
+    role3 = role4 = 'private'
+  }
+
+  if (karyotype_1 == "2:1" & karyotype_2 == "1:0")
+  {
+    # 2:1 1:0
+    peak1 = ((2 * CCF_1 + 1 * CCF_2) * purity) / den
+    peak2 = ((1 * CCF_1 + 1 * CCF_2) * purity) / den
+    peak3 = ((1 * CCF_1) * purity) / den
+    peak4 = ((1 * CCF_2) * purity) / den
+
+    role1 = role2 = 'shared'
+    role3 = role4 = 'private'
+  }
+
+  # 1:0 2: - 2:2 1:0 I think they can be modelled as independent events
+
+  if (karyotype_1 == "1:1" & karyotype_2 == "2:1")
+  {
+    # 1:1 2:1
+    peak1 = ((1 * CCF_1 + 2 * CCF_2) * purity) / den
+    peak2 = ((1 * CCF_1) * purity) / den
+    peak3 = ((1 * CCF_2) * purity) / den
+
+    role1 = 'shared'
+    role2 = role3 = 'private'
+  }
+
+  if (karyotype_1 == "2:1" & karyotype_2 == "1:1")
+  {
+    # 2:1 1:1
+    peak1 = ((1 * CCF_2 + 2 * CCF_1) * purity) / den
+    peak2 = ((1 * CCF_1) * purity) / den
+    peak3 = ((1 * CCF_2) * purity) / den
+
+    role1 = 'shared'
+    role2 = role3 = 'private'
+  }
+
+  if (karyotype_1 == "1:1" & karyotype_2 == "2:0")
+  {
+    # 1:1 2:0
+    peak1 = ((1 * CCF_1 + 2 * CCF_2) * purity) / den
+    peak2 = ((1 * CCF_1) * purity) / den
+    peak3 = ((1 * CCF_2) * purity) / den
+
+    role1 = 'shared'
+    role2 = role3 = 'private'
+  }
+
+  if (karyotype_1 == "2:0" & karyotype_2 == "1:1")
+  {
+    # 2:0 1:1
+    peak1 = ((1 * CCF_2 + 2 * CCF_1) * purity) / den
+    peak2 = ((1 * CCF_1) * purity) / den
+    peak3 = ((1 * CCF_2) * purity) / den
+
+    role1 = 'shared'
+    role2 = role3 = 'private'
+  }
+
+  if (karyotype_1 == "2:1" & karyotype_2 == "2:2")
+  {
+    # 2:1 2:2
+    peak1 = ((2 * CCF_1 + 2 * CCF_2) * purity) / den
+    peak2 = ((1 * CCF_1 + 1 * CCF_2) * purity) / den
+    peak3 = ((1 * CCF_1 + 2 * CCF_2) * purity) / den
+    peak4 = ((1 * CCF_1) * purity) / den
+    peak5 = ((1 * CCF_2) * purity) / den
+
+    role1 = role2 = role3 = 'shared'
+    role4 = role5 = 'private'
+  }
+
+  if (karyotype_1 == "2:2" & karyotype_2 == "2:1")
+  {
+    # 2:2 2:1
+    peak1 = ((2 * CCF_1 + 2 * CCF_2) * purity) / den
+    peak2 = ((1 * CCF_1 + 1 * CCF_2) * purity) / den
+    peak3 = ((1 * CCF_2 + 2 * CCF_1) * purity) / den
+    peak4 = ((1 * CCF_1) * purity) / den
+    peak5 = ((1 * CCF_2) * purity) / den
+
+    role1 = role2 = role3 = 'shared'
+    role4 = role5 = 'private'
+  }
+
+  if ((karyotype_1 == "2:1" &
+       karyotype_2 == "2:0") |
+      (karyotype_1 == "2:0" & karyotype_2 == "2:1"))
+  {
+    # 2:1 2:0 - 2:0 2:1
+    peak1 = ((2 * CCF_1 + 2 * CCF_2) * purity) / den
+    peak2 = ((1 * CCF_1 + 1 * CCF_2) * purity) / den
+    peak3 = ((1 * CCF_1) * purity) / den
+    peak4 = ((1 * CCF_2) * purity) / den
+
+    role1 = role2 = 'shared'
+    role3 = role4 = 'private'
+  }
+
+  if ((karyotype_1 == "2:2" &
+       karyotype_2 == "2:0") |
+      (karyotype_1 == "2:0" & karyotype_2 == "2:2"))
+  {
+    # 2:2, 2:0 - 2:0 2:2
+    peak1 = ((2 * CCF_1 + 2 * CCF_2) * purity) / den
+    peak2 = ((1 * CCF_1 + 1 * CCF_2) * purity) / den
+    peak3 = ((1 * CCF_1) * purity) / den
+    peak4 = ((1 * CCF_2) * purity) / den
+
+    role1 = role2 = 'shared'
+    role3 = role4 = 'private'
+  }
+
+  df = data.frame(
+    karyotype_1 = karyotype_1,
+    karyotype_2 = karyotype_2,
+    CCF_1 = CCF_1,
+    CCF_2 = CCF_2,
+    peak = c(peak1, peak2, peak3, peak4, peak5),
+    role = c(role1, role2, role3, role4, role5)
+  )
+
+  df = df[complete.cases(df), ]
+
+  return(df)
+}
+
+# Expectations for subclonal peaks - branching evolution model
+expectations_subclonal_branching = function(CCF_1, karyotype_1, karyotype_2, purity)
+{
+  CCF_2 = 1 - CCF_1
+
+  # Subclones ploidies
+  ploidy_1 = strsplit(karyotype_1, ':')[[1]] %>% as.numeric() %>% sum # p_1
+  ploidy_2 = strsplit(karyotype_2, ':')[[1]] %>% as.numeric() %>% sum # p_2
+
+  # Multiplicities expected - m_i_j ~ multiplicity j in clone i
+  m_1_1 = m_1_2 = 1
+  m_2_1 = m_2_2 =  2
+
+  # Common denominator
+  denominator =
+    (1 - purity) * 2 +
+    ploidy_1 * CCF_1 * purity +
+    ploidy_2 * CCF_2 * purity
+
+  # Numerator subclones -  v_i_j ~ reads from peak at multiplicity j in clone i
+  v_1_1 = m_1_1 * CCF_1 * purity
+  v_2_1 = m_2_1 * CCF_1 * purity
+
+  v_1_2 = m_1_2 * CCF_2 * purity
+  v_2_2 = m_2_2 * CCF_2 * purity
+
+  # VAF peaks subclones ~ peak at multiplicity j in clone i
+  peak_1_1 = v_1_1 / denominator
+  peak_2_1 = v_2_1 / denominator
+
+  peak_1_2 = v_1_2 / denominator
+  peak_2_2 = v_2_2 / denominator
+
+  # Filter unused peaks
+  if (karyotype_1 %in% c("1:0", "1:1"))
+    peak_2_1 = NA
+  if (karyotype_2 %in% c("1:0", "1:1"))
+    peak_2_2 = NA
+
+  df = data.frame(
+    karyotype_1 = karyotype_1,
+    karyotype_2 = karyotype_2,
+    CCF_1 = CCF_1,
+    CCF_2 = CCF_2,
+    peak = c(peak_1_1, peak_2_1, peak_1_2, peak_2_2),
+    role = 'private'
+  )
+
+  df[complete.cases(df), ]
+}
+
+# Expectations for subclonal peaks - all models
+expectations_subclonal = function(CCF_1, karyotype_1, karyotype_2, purity)
+{
+  expectations_subclonal_linear(CCF_1, karyotype_1, karyotype_2, purity) %>%
+    mutate(model = 'linear') %>%
+    bind_rows(
+      expectations_subclonal_branching(CCF_1, karyotype_1, karyotype_2, purity) %>%
+        mutate(model = 'branching')
+    )
+}
+
 # Compute CCF values from mutation multiplicity
 # m - minor allele
 # M - Major allele
@@ -142,7 +411,6 @@ delta_vaf_karyo = function(epsilon_error, purity)
 
 
 # invert vaf(purity) and compute purity from vaf,ploidy and muliplicity
-
 purity_from_vaf <- function(vaf,ploidy,multiplicity){
 
   purity <- (2*vaf)/(multiplicity + (2-ploidy)*vaf)
@@ -153,18 +421,17 @@ purity_from_vaf <- function(vaf,ploidy,multiplicity){
 
 
 # get vaf,delta_vaf and karyotype(ploidy,multiplicty) and return delta_purity
-
 compute_delta_purity <- function(vaf,delta_vaf,ploidy,multiplicity){
 
-  if(purity_from_vaf(vaf,ploidy,multiplicity) > 1){
-    
-  warning("Incompatible values of VAF, ploidy and multiplicity: the computed score will be unreliable")
-    
-   }
-  
+  if (purity_from_vaf(vaf, ploidy, multiplicity) > 1) {
+    warning(
+      "Incompatible VAF, ploidy and multiplicity: the computed score might be unreliable"
+    )
+  }
+
   delta_purity <- (2*multiplicity*delta_vaf)/((multiplicity + vaf*(2-ploidy))^2)
-  
-  
+
+
 
   return(delta_purity)
 

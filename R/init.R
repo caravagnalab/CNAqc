@@ -61,37 +61,39 @@ init = function(snvs, cna, purity, ref = "GRCh38")
   input = prepare_input_data(snvs, cna, purity)
 
   # Remove CNA segments with NA Major/minor
-  na_allele_Major = sapply(input$cna$Major, is.na)
-  na_allele_minor = sapply(input$cna$minor, is.na)
-  na_allele = na_allele_Major | na_allele_minor
-
-  discarded_cna = input$cna[na_allele, , drop = FALSE]
-
-  if(nrow(discarded_cna) > 0)
-  {
-    cat(crayon::red("\n[CNAqc] CNA calls: the following segments have Major/ minor alleles in non-numeric format or NAs, and will be removed\n"))
-    pio::pioDisp(discarded_cna)
-
-    input$cna = input$cna[!na_allele, , drop = FALSE]
-  }
-
-  # TODO -- check NA chrom/from and to, and the same for SNVs
+  # na_allele_Major = sapply(input$cna_clonal$Major, is.na)
+  # na_allele_minor = sapply(input$cna_clonal$minor, is.na)
+  # na_allele = na_allele_Major | na_allele_minor
+  #
+  # discarded_cna = input$cna[na_allele, , drop = FALSE]
+  # if(nrow(discarded_cna) > 0)
+  # {
+  #   cat(crayon::red("\n[CNAqc] CNA calls: the following segments have Major/ minor alleles in non-numeric format or NAs, and will be removed\n"))
+  #   pio::pioDisp(discarded_cna)
+  #
+  #   input$cna = input$cna[!na_allele, , drop = FALSE]
+  # }
 
   fit$snvs = input$snvs
-  fit$cna = input$cna %>%
+  fit$cna = input$cna_clonal %>%
     dplyr::left_join(input$tab, by = 'segment_id')
+  fit$cna_subclonal = input$cna_subclonal
+  fit$has_subclonal_CNA = !all(is.null(input$cna_subclonal))
 
   # Counts data
-  fit$n_snvs = nrow(fit$snvs)
-  fit$n_cna = nrow(fit$cna)
+  if(!fit$has_subclonal_CNA)
+    fit$n_snvs = nrow(fit$snvs)
+  else
+    fit$n_snvs = nrow(fit$snvs)  + sapply(fit$cna_subclonal$mutations, nrow) %>% sum()
 
-  fit$n_cna_clonal = sum(fit$cna$CCF == 1)
-  fit$n_cna_sbclonal = sum(fit$cna$CCF < 1)
+  fit$n_cna_clonal = nrow(fit$cna)
+  fit$n_cna_subclonal = ifelse(is.null(fit$cna_subclonal), 0, nrow(fit$cna_subclonal))
+  fit$n_cna = fit$n_cna_clonal + fit$n_cna_subclonal
 
   fit$n_karyotype = sort(table(fit$snvs$karyotype), decreasing = T)
   fit$purity = purity
 
-  # Segments length
+  # Segments length (clonal)
   genome_segs_length = fit$cna %>%
     dplyr::group_by(Major, minor) %>%
     dplyr::summarise(L = sum(length), .groups = 'drop') %>%

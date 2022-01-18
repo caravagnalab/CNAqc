@@ -2,73 +2,111 @@ fortify_CNA_segments = function(x)
 {
   C = colnames(x)
 
-  required_columns = c('chr', 'from', 'to', 'Major', 'minor')
+  if(!is.data.frame(x)) stop("CNAs must be in dataframe format.")
 
-  if (!all(required_columns %in% C))
-    stop("Bad Copy Number format, see the manual.")
-
+  # CCF column
   if (!('CCF' %in% C))
   {
     x$CCF = 1
+    C = colnames(x)
 
     cli::cli_alert_warning(
-      "Missing CCF column from CNA calls, adding CCF = 1 assuming clonal CNA calls."
+      "CNAs have no CCF, assuming clonal CNAs (CCF = 1)."
     )
   }
+
+  # Test for subclonal
+  has_subclonal = (x$CCF < 1) %>% any(na.rm = TRUE)
+  if(has_subclonal) cli::cli_alert_info("{.field {sum(x$CCF < 1, na.rm = TRUE)}} subclonal CNAs detected in the data.")
+
+  # Check all other columns
+  required_columns = c('chr', 'from', 'to', 'Major', 'minor', "CCF")
+  if(has_subclonal) required_columns = c(required_columns, "Major_2", "minor_2")
+
+  if (!all(required_columns %in% C))
+    stop(cli::format_error("Bad CNA format; required columns are {.field {required_columns}}."))
+
+  # Split
+  clonal = x %>% dplyr::filter(CCF == 1) %>% distinct(chr, from, to, Major, minor, .keep_all = TRUE)
+
+  if(has_subclonal)
+    subclonal = x %>% dplyr::filter(CCF < 1) %>% distinct(chr, from, to, Major, minor, Major_2, minor_2, .keep_all = TRUE)
   else
+    subclonal = NULL
+
+  # Check NA cases - clonal
+  with_NA_clonal = !complete.cases(clonal[, c('chr', 'from', 'to', 'Major', 'minor', "CCF"), drop = FALSE])
+
+  if(any(with_NA_clonal))
+  {
+    nna = sum(with_NA_clonal)
+
+    cli::cli_alert_danger("{.field {sum(with_NA_clonal)}} NA entrie(s) in clonal CNAs; segments will be removed.")
+
+    clonal = clonal[!with_NA_clonal, ]
+
+    if(nrow(clonal) == 0) stop("No more CNAs to work with?")
+  }
+
+  # Check NA cases - subclonal
+  if(has_subclonal)
+  {
+    with_NA_subclonal = !complete.cases(subclonal[, c('chr', 'from', 'to', 'Major', 'minor', "CCF", "Major_2", "minor_2"), drop = FALSE])
+
+    if(any(with_NA_subclonal))
     {
-      if(x$CCF %>% is.na() %>% any())
-      {
-        cli::cli_alert_danger(
-          "NAs in the CCF column from CNA calls, removing those."
-        )
+      cli::cli_alert_danger("{.field {sum(with_NA_subclonal)}} NA entrie(s) in subclonal CNAs; segments will be removed.")
 
-        x = x %>% dplyr::filter(!is.na(CCF))
-        if(nrow(x) == 0) stop("No more CNAs to work with?")
-      }
-
-      if((x$CCF < 1) %>% any())
-      {
-        cli::cli_alert_danger(
-          "Subclonal CNAs are not yet supported, those segments will be removed."
-        )
-
-        x = x %>% dplyr::filter(CCF == 1) %>% distinct(chr, from, to, Major, minor, .keep_all = TRUE)
-        if(nrow(x) == 0) stop("No more CNAs to work with?")
-      }
+      subclonal = subclonal[!with_NA_subclonal, ]
+      if(nrow(subclonal) == 0) has_subclonal = FALSE
     }
+  }
 
-  x$from = enforce_numeric(x$from)
-  x$to = enforce_numeric(x$to)
-  x$Major = enforce_numeric(x$Major)
-  x$minor = enforce_numeric(x$minor)
+
+  # Enforce correct data types
+  clonal$from = enforce_numeric(clonal$from)
+  clonal$to = enforce_numeric(clonal$to)
+  clonal$Major = enforce_numeric(clonal$Major)
+  clonal$minor = enforce_numeric(clonal$minor)
+
+  if(has_subclonal) {
+    subclonal$Major_2 = enforce_numeric(subclonal$Major_2)
+    subclonal$minor_2 = enforce_numeric(subclonal$minor_2)
+  }
+
+  # if(has_subclonal)
+  # {
+  #   x$Major_2 = enforce_numeric(x$Major_2)
+  #   x$minor_2 = enforce_numeric(x$minor_2)
+  # }
 
   if (!('length' %in% C))
   {
-    x = x %>% dplyr::mutate(length = to - from)
+    clonal = clonal %>% dplyr::mutate(length = to - from)
+    if(has_subclonal) subclonal  = subclonal  %>% dplyr::mutate(length = to - from)
 
     cli::cli_alert_warning(
-      "Missing segments length from CNA calls, adding it to CNA calls."
+      "Added segments length (in basepairs) to CNA segments."
     )
   }
 
-
-  if('is_driver' %in% C)
-  {
-    if(!("gene" %in% C))
-    {
-      x = x %>% dplyr::mutate(gene = paste(chr, from, to, ref, alt, sep = ':'))
-      cli::cli_alert_info("Driver annotation is present in mutation data (is_driver) but a gene column is missing, genome coordinates will be used in plotting.")
-    }
-    else
-      cli::cli_alert_info("Driver annotation is present in mutation data (is_driver), will be used in plotting.")
-  }
+  # if('is_driver' %in% C)
+  # {
+  #   if(!("gene" %in% C))
+  #   {
+  #     x = x %>% dplyr::mutate(gene = paste(chr, from, to, ref, alt, sep = ':'))
+  #     cli::cli_alert_info("Driver annotation is present in mutation data (is_driver) but a gene column is missing, genome coordinates will be used in plotting.")
+  #   }
+  #   else
+  #     cli::cli_alert_info("Driver annotation is present in mutation data (is_driver), will be used in plotting.")
+  # }
 
   # Check chromosome format reference
-  if(!all(grepl("chr", x$chr)))
+  if(!all(grepl("chr", clonal$chr)))
   {
-    cli::cli_alert_warning("CNA chromosomes should be in the format 'chr*', I will add a 'chr' prefix.")
-    x = x %>%
+    cli::cli_alert_warning("Formatting clonal CNA chromosome annotation as 'chr*'.")
+
+    clonal = clonal %>%
       rowwise() %>%
       mutate(chr = ifelse(
         !grepl("chr", chr),
@@ -77,8 +115,20 @@ fortify_CNA_segments = function(x)
       ))
   }
 
+  if(!all(grepl("chr", subclonal$chr)))
+  {
+    cli::cli_alert_warning("Formatting subclonal CNA chromosome annotation as 'chr*'.")
 
-  return(tibble::as_tibble(x))
+    subclonal = subclonal %>%
+      rowwise() %>%
+      mutate(chr = ifelse(
+        !grepl("chr", chr),
+        paste0('chr', chr),
+        chr
+      ))
+  }
+
+  return(list(clonal = clonal, subclonal = subclonal))
   # Supported formats
   # alt_chr = c('chr', 'chromosome', 'Chromosome')
   # alt_from = c('from', 'pos', 'start', 'Start')
@@ -106,7 +156,7 @@ fortify_mutation_calls = function(x)
   if(max(c(nchar(x$alt), nchar(x$ref))) > 1)
   {
     cli::cli_alert_warning(
-      "You are using also indels mutation data, we suggest to trust more SNVs to QC your data ..."
+      "Detected indels mutation; do not forget to rely more on SNVs for data QC."
     )
   }
 
