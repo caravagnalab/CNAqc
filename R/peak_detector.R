@@ -56,10 +56,10 @@ peak_detector = function(snvs,
 
     if (any(xy_peaks$discarded))
     {
-      cli::cli_alert_warning("Some KDE peaks have been removed")
-      xy_peaks %>%
-        filter(discarded) %>%
-        print
+      # cli::cli_alert_warning("Some KDE peaks have been removed")
+      # xy_peaks %>%
+      #   filter(discarded) %>%
+      #   print
     }
 
   }

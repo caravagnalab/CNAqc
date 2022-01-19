@@ -366,18 +366,21 @@ analyze_peaks = function(x,
 
 
   # Subclonal CNAs peak analysis
-  cli::cli_h1("Peak analysis: subclonal CNAs")
-  cat("\n")
+  if(x$n_cna_subclonal > 0)
+  {
+    cli::cli_h1("Peak analysis: subclonal CNAs")
+    cat("\n")
 
-  x = x %>% analyze_peaks_subclonal(
-    n_min = min_absolute_karyotype_mutations,
-    epsilon = purity_error,
-    kernel_adjust = kernel_adjust,
-    n_bootstrap = n_bootstrap
-  )
+    x = x %>% analyze_peaks_subclonal(
+      n_min = min_absolute_karyotype_mutations,
+      epsilon = purity_error,
+      kernel_adjust = kernel_adjust,
+      n_bootstrap = n_bootstrap
+    )
 
-  x$peaks_analysis$subclonal$summary %>%
-    print()
+    x$peaks_analysis$subclonal$summary %>%
+      print()
+  }
 
   return(x)
 }

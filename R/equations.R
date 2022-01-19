@@ -275,12 +275,13 @@ expectations_subclonal_branching = function(CCF_1, karyotype_1, karyotype_2, pur
 # Expectations for subclonal peaks - all models
 expectations_subclonal = function(CCF_1, karyotype_1, karyotype_2, purity)
 {
-  expectations_subclonal_linear(CCF_1, karyotype_1, karyotype_2, purity) %>%
-    mutate(model = 'linear') %>%
-    bind_rows(
-      expectations_subclonal_branching(CCF_1, karyotype_1, karyotype_2, purity) %>%
-        mutate(model = 'branching')
-    )
+  el = expectations_subclonal_linear(CCF_1, karyotype_1, karyotype_2, purity)
+  if(nrow(el) > 0) el = el %>% mutate(model = 'linear')
+
+  es = expectations_subclonal_branching(CCF_1, karyotype_1, karyotype_2, purity)
+  if(nrow(es) > 0) es = es %>% mutate(model = 'branching')
+
+  bind_rows(el, es)
 }
 
 # Compute CCF values from mutation multiplicity
