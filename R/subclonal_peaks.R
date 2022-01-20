@@ -453,12 +453,11 @@ analyze_peaks_subclonal = function(x,
   expected_peaks = lapply(1:nrow(subclonal_calls),
                           function(i)
                           {
-
                             expectations_subclonal(
                               subclonal_calls$CCF[i],
                               karyotype_1 = subclonal_calls$karyotype[i],
                               karyotype_2 = subclonal_calls$karyotype_2[i],
-                              purity = purity
+                              purity = x$purity
                             ) %>%
                               mutate(segment_id = (subclonal_mutations$segment_id %>% unique)[i])
                           }) %>%
