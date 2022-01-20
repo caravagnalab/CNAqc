@@ -141,37 +141,40 @@ print.cnaqc = function(x, ...)
     }
 
     # General karyotypes
-    gen =  x$peaks_analysis$general$summary %>%
-      ungroup() %>%
-      mutate(prop = round(n/sum(n) * 100, 0))
-
-    n_matched =  gen$matched %>% sum
-    n_mismatched =  gen$mismatched %>% sum
-
-    cli::cli_h3(
-      paste(
-        "General peak QC ({.field {sum(gen$n)}} mutations):", ppass(), n_matched, pfail(), n_mismatched, "- epsilon = {.value {x$peaks_analysis$general$params$epsilon}}."
-      )
-    )
-
-    for(i in 1:nrow(gen))
+    if('general' %in% (x$peaks_analysis %>% names))
     {
-      qc = paste(
-        sprintf("%-7s", paste(ppass(), gen$matched[i])),
-        sprintf("%-7s", paste(pfail(), gen$mismatched[i]))
-      )
+      gen =  x$peaks_analysis$general$summary %>%
+        ungroup() %>%
+        mutate(prop = round(n/sum(n) * 100, 0))
 
-      n = sprintf("%-5s", gen$n[i])
-      p = sprintf("%3s", gen$prop[i])
+      n_matched =  gen$matched %>% sum
+      n_mismatched =  gen$mismatched %>% sum
 
-      cli::cli_alert_info(
-        paste0(
-          crayon::blue(gen$karyotype[i]),
-          " ~ n = {n} ({p}%) {clisymbols::symbol$arrow_right} ",
-          qc,
-          ""
+      cli::cli_h3(
+        paste(
+          "General peak QC ({.field {sum(gen$n)}} mutations):", ppass(), n_matched, pfail(), n_mismatched, "- epsilon = {.value {x$peaks_analysis$general$params$epsilon}}."
         )
       )
+
+      for(i in 1:nrow(gen))
+      {
+        qc = paste(
+          sprintf("%-7s", paste(ppass(), gen$matched[i])),
+          sprintf("%-7s", paste(pfail(), gen$mismatched[i]))
+        )
+
+        n = sprintf("%-5s", gen$n[i])
+        p = sprintf("%3s", gen$prop[i])
+
+        cli::cli_alert_info(
+          paste0(
+            crayon::blue(gen$karyotype[i]),
+            " ~ n = {n} ({p}%) {clisymbols::symbol$arrow_right} ",
+            qc,
+            ""
+          )
+        )
+      }
     }
 
     # Subclonal
