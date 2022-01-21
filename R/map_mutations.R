@@ -6,7 +6,7 @@ map_mutations_to_clonal_segments = function(snvs, cna)
   snvs$karyotype = NA
   snvs$segment_id = NA
 
-  pb <- progress_estimated(nrow(cna), min_time = 2)
+  pb <- progress_estimated(nrow(cna), min_time = 0)
 
   for(i in 1:nrow(cna))
   {
@@ -66,7 +66,7 @@ map_mutations_to_subclonal_segments = function(mutations, cna_subclonal)
   # Map mutations to the actual segments
   cna_subclonal$mutations = NULL
 
-  pb <- progress_estimated(nrow(cna_subclonal), min_time = 2)
+  pb <- progress_estimated(nrow(cna_subclonal), min_time = 0)
 
   for (i in 1:nrow(cna_subclonal))
   {
