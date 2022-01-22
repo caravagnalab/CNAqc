@@ -107,7 +107,31 @@ expectations_subclonal_linear = function(CCF_1, karyotype_1, karyotype_2, purity
     role3 = role4 = 'private'
   }
 
-  # 1:0 2: - 2:2 1:0 I think they can be modelled as independent events
+  
+  if (karyotype_1 == "1:0" & karyotype_2 == "2:2")
+  {
+     # 1:0 2:2 
+    peak1 = ((1 * CCF_1 + 2 * CCF_2) * purity) / den
+    peak2 = ((1 * CCF_1) * purity) / den
+    peak3 = ((1 * CCF_2) * purity) / den
+    peak4 = ((2 * CCF_2) * purity) / den
+
+    role1 = 'shared'
+    role2 = role3 = role4 = 'private'
+  }
+  
+  if (karyotype_1 == "2:2" & karyotype_2 == "1:0")
+  {
+     # 2:2 1:0
+    peak1 = ((2 * CCF_1 + 1 * CCF_2) * purity) / den
+    peak2 = ((1 * CCF_1) * purity) / den
+    peak3 = ((1 * CCF_2) * purity) / den
+    peak4 = ((2 * CCF_1) * purity) / den
+
+    role1 = 'shared'
+    role2 = role3 = role4 = 'private'
+  }
+
 
   if (karyotype_1 == "1:1" & karyotype_2 == "2:1")
   {
@@ -118,6 +142,30 @@ expectations_subclonal_linear = function(CCF_1, karyotype_1, karyotype_2, purity
 
     role1 = 'shared'
     role2 = role3 = 'private'
+  }
+  
+  if (karyotype_1 == "1:0" & karyotype_2 == "2:0")
+  {
+    # 1:0 2:0
+    peak1 = ((1 * CCF_1 + 2 * CCF_2) * purity) / den
+    peak2 = ((1 * CCF_1) * purity) / den
+    peak3 = ((2 * CCF_1) * purity) / den
+    peak4 = ((1 * CCF_2) * purity) / den
+
+    role1 = 'shared'
+    role2 = role3 = role4 = 'private'
+  }
+  
+  if (karyotype_1 == "2:0" & karyotype_2 == "1:0")
+  {
+    # 2:0 1:0
+    peak1 = ((2 * CCF_1 + 1 * CCF_2) * purity) / den
+    peak2 = ((1 * CCF_1) * purity) / den
+    peak3 = ((2 * CCF_2) * purity) / den
+    peak4 = ((1 * CCF_2) * purity) / den
+
+    role1 = 'shared'
+    role2 = role3 = role4 = 'private'
   }
 
   if (karyotype_1 == "2:1" & karyotype_2 == "1:1")
@@ -151,6 +199,30 @@ expectations_subclonal_linear = function(CCF_1, karyotype_1, karyotype_2, purity
 
     role1 = 'shared'
     role2 = role3 = 'private'
+  }
+  
+  if (karyotype_1 == "1:1" & karyotype_2 == "2:2")
+  {
+    # 1:1 2:2
+    peak1 = ((1 * CCF_1 + 2 * CCF_2) * purity) / den
+    peak2 = ((1 * CCF_1) * purity) / den
+    peak3 = ((1 * CCF_2) * purity) / den
+    peak3 = ((2 * CCF_2) * purity) / den
+
+    role1 = 'shared'
+    role2 = role3 = role4= 'private'
+  }
+  
+   if (karyotype_1 == "2:2" & karyotype_2 == "1:1")
+  {
+    # 2:2 1:1
+    peak1 = ((2 * CCF_1 + 1 * CCF_2) * purity) / den
+    peak2 = ((1 * CCF_1) * purity) / den
+    peak3 = ((1 * CCF_2) * purity) / den
+    peak3 = ((2 * CCF_1) * purity) / den
+
+    role1 = 'shared'
+    role2 = role3 = role4= 'private'
   }
 
   if (karyotype_1 == "2:1" & karyotype_2 == "2:2")
@@ -281,9 +353,7 @@ expectations_subclonal = function(CCF_1, karyotype_1, karyotype_2, purity)
   es = expectations_subclonal_branching(CCF_1, karyotype_1, karyotype_2, purity)
   if(nrow(es) > 0) es = es %>% mutate(model = 'branching')
 
-  if(nrow(el) > 0 & nrow(es) > 0) return(bind_rows(el, es))
-  if(nrow(el) == 0) return(es)
-  if(nrow(es) == 0) return(esl)
+  bind_rows(el, es)
 }
 
 # Compute CCF values from mutation multiplicity
