@@ -8,7 +8,7 @@ analyze_peaks(
   x,
   karyotypes = c("1:0", "1:1", "2:0", "2:1", "2:2"),
   min_karyotype_size = 0,
-  min_absolute_karyotype_mutations = 10,
+  min_absolute_karyotype_mutations = 100,
   p_binsize_peaks = 0.005,
   matching_epsilon = NULL,
   purity_error = 0.05,
@@ -71,8 +71,6 @@ A score is produced as a linear combination of the distance of the actual
 peak to the expected one.
 }
 \examples{
-data('example_dataset_CNAqc', package = 'CNAqc')
-x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
 
 x = analyze_peaks(x)
 print(x)

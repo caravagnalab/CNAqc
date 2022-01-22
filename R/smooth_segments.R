@@ -23,7 +23,7 @@ smooth_segments = function(x, maximum_distance = 1e6)
 {
   segments = x$cna
   smoothed_segments = NULL
-  
+
   ncnacl = sum(segments$CCF == 1)
   ncnasbcl = sum(segments$CCF < 1)
 
@@ -31,7 +31,7 @@ smooth_segments = function(x, maximum_distance = 1e6)
   if(ncnasbcl > 0)
     cli::boxx("Subclonal CNAs detected in the dataset, those segments will NOT be removed for the smoothing process.
 Remove them before calling 'CNAqc::init' if you want to smoothe only clonal segments.", col = 'red')
-  
+
 
   for(chr in unique(segments$chr))
   {
@@ -98,9 +98,14 @@ Remove them before calling 'CNAqc::init' if you want to smoothe only clonal segm
   cli::cli_alert_success("Smoothed from {.value {nrow(segments)}} to {.value {nrow(smoothed_segments)}} segments with {.value {maximum_distance}} gap (bases).")
   cli::cli_alert_info("Creating a new CNAqc object. The old object will be retained in the $before_smoothing field.")
 
+  clonal_CNA = smoothed_segments %>% dplyr::select(-segment_id, -n)
+  subclonal_CNA = x$cna_subclona %>% dplyr::select(-segment_id, -n, -analysed)
+
+  cna = bind_rows(clonal_CNA, subclonal_CNA)%>% dplyr::select(-starts_with('karyotype'), -mutations)
+
   # Clean up the new segments table,
   x_new = CNAqc::init(x$snvs,
-                      smoothed_segments %>% dplyr::select(-segment_id, -n),
+                      cna,
                       purity = x$purity,
                       ref = x$reference_genome)
   x_new$before_smoothing = x

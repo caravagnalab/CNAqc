@@ -281,7 +281,9 @@ expectations_subclonal = function(CCF_1, karyotype_1, karyotype_2, purity)
   es = expectations_subclonal_branching(CCF_1, karyotype_1, karyotype_2, purity)
   if(nrow(es) > 0) es = es %>% mutate(model = 'branching')
 
-  bind_rows(el, es)
+  if(nrow(el) > 0 & nrow(es) > 0) return(bind_rows(el, es))
+  if(nrow(el) == 0) return(es)
+  if(nrow(es) == 0) return(esl)
 }
 
 # Compute CCF values from mutation multiplicity

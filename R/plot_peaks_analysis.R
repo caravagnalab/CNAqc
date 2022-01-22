@@ -364,9 +364,9 @@ plot_peaks_fit_subclonal = function(x)
     CNAqc:::my_ggplot_theme()
 
   if(subclonal_mutations$segment_id %>% unique() %>% length() > 5)
-    pl = pl + facet_wrap(segment_id~model)
+    pl = pl + facet_wrap(segment_id~model, scales = 'free_y')
   else
-    pl = pl + facet_grid(model ~ segment_id)
+    pl = pl + facet_grid(model ~ segment_id, scales = 'free_y')
 
   pl +
     geom_rect(

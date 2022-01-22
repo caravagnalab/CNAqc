@@ -76,8 +76,8 @@ init = function(snvs, cna, purity, ref = "GRCh38")
 
   fit$snvs = input$snvs
   fit$cna = input$cna_clonal %>%
-    dplyr::left_join(input$tab, by = 'segment_id')
-  fit$cna_subclonal = input$cna_subclonal
+    dplyr::left_join(input$tab, by = 'segment_id') %>% as_tibble()
+  fit$cna_subclonal = input$cna_subclonal %>% as_tibble()
   fit$has_subclonal_CNA = !all(is.null(input$cna_subclonal))
 
   # Counts data
