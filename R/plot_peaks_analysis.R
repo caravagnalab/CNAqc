@@ -360,13 +360,14 @@ plot_peaks_fit_subclonal = function(x)
   pl = bind_rows(s1,s2) %>%
     ggplot()  +
     geom_histogram(aes(x = VAF, y = ..density..), binwidth = 0.01, fill = 'gray') +
-    xlim(0, 1) +
+    xlim(-0.1, 1.1) +
     CNAqc:::my_ggplot_theme()
 
   if(subclonal_mutations$segment_id %>% unique() %>% length() > 5)
     pl = pl + facet_wrap(segment_id~model, scales = 'free_y')
   else
-    pl = pl + facet_grid(model ~ segment_id, scales = 'free_y')
+    pl = pl + facet_grid(segment_id~model, scales = 'free_y') +
+    theme(strip.text.y.right = element_text(angle = 0))
 
   pl +
     geom_rect(

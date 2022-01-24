@@ -309,10 +309,10 @@ peak_detector_closest_hit_match = function(snvs,
 
     if (any(xy_peaks$discarded))
     {
-      cli::cli_alert_warning("Some peaks have been removed")
-      xy_peaks %>%
-        filter(discarded) %>%
-        print
+      # cli::cli_alert_warning("Some peaks have been removed")
+      # xy_peaks %>%
+      #   filter(discarded) %>%
+      #   print
     }
   }
 

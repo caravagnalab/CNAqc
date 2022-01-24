@@ -63,10 +63,28 @@ plot_segments = function(x,
   # =-=-=-=-=-=-=-=-=-=-=-=-
   # Draw Segments
   # =-=-=-=-=-=-=-=-=-=-=-=-
-  base_plot = CNAqc:::add_segments_to_plot(
+  base_plot = add_segments_to_plot(
     segments = segments %>% dplyr::filter(total <= max_Y_height),
     base_plot = base_plot,
     cn = cn)
+
+  # Extract subclonal segments
+  subclonal_segments = NULL
+  if (!is.null(x$cna_subclonal) & nrow(x$cna_subclonal) > 0)
+  {
+    subclonal_segments = x$cna_subclonal %>%
+      dplyr::filter(chr %in% chromosomes)
+
+    if (nrow(subclonal_segments) > 0)
+    {
+      base_plot = add_subclonal_segments_to_plot(
+        segments = subclonal_segments %>%
+          relative_to_absolute_coordinates(x = x),
+        base_plot = base_plot,
+        cn = cn
+      )
+    }
+  }
 
   # Fragmentation ~ add some annotation to hihglight that
   if (!is.null(x$arm_fragmentation))

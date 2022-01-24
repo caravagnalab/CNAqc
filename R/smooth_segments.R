@@ -99,9 +99,16 @@ Remove them before calling 'CNAqc::init' if you want to smoothe only clonal segm
   cli::cli_alert_info("Creating a new CNAqc object. The old object will be retained in the $before_smoothing field.")
 
   clonal_CNA = smoothed_segments %>% dplyr::select(-segment_id, -n)
-  subclonal_CNA = x$cna_subclona %>% dplyr::select(-segment_id, -n, -analysed)
 
-  cna = bind_rows(clonal_CNA, subclonal_CNA)%>% dplyr::select(-starts_with('karyotype'), -mutations)
+  subclonal_CNA = NULL
+  if(!is.null(x$cna_subclonal) & nrow(x$cna_subclonal) > 0)
+  {
+    subclonal_CNA = x$cna_subclonal %>% dplyr::select(-segment_id, -n, -analysed)
+    cna = bind_rows(clonal_CNA, subclonal_CNA)%>% dplyr::select(-starts_with('karyotype'), -mutations)
+  }
+  else
+    cna = clonal_CNA %>% dplyr::select(-starts_with('karyotype'))
+
 
   # Clean up the new segments table,
   x_new = CNAqc::init(x$snvs,

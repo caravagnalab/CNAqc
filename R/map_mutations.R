@@ -6,12 +6,18 @@ map_mutations_to_clonal_segments = function(snvs, cna)
   snvs$karyotype = NA
   snvs$segment_id = NA
 
-  pb <- progress_estimated(nrow(cna), min_time = 0)
+  # pb <- progress_estimated(nrow(cna), min_time = 0)
+
+  pb = progress::progress_bar$new(format = paste0(" ▣ :spin [:bar] :percent [ETA :eta] ▶ :elapsedfull"),
+                                  total = nrow(cna), clear = TRUE, complete = "~", incomplete = " ",
+                                  current = ">", width = 90)
 
   for(i in 1:nrow(cna))
   {
     # setTxtProgressBar(pb, i)
-    pb$tick()$print()
+    # pb$tick()$print()
+    pb$tick()
+
 
     mappable = which(
       snvs$chr == cna$chr[i] &
@@ -66,11 +72,15 @@ map_mutations_to_subclonal_segments = function(mutations, cna_subclonal)
   # Map mutations to the actual segments
   cna_subclonal$mutations = NULL
 
-  pb <- progress_estimated(nrow(cna_subclonal), min_time = 0)
+  # pb <- progress_estimated(nrow(cna_subclonal), min_time = 0)
+  pb = progress::progress_bar$new(format = paste0(" ▣ :spin [:bar] :percent [ETA :eta] ▶ :elapsedfull"),
+                                  total = nrow(cna_subclonal), clear = TRUE, complete = "~", incomplete = " ",
+                                  current = ">", width = 90)
 
   for (i in 1:nrow(cna_subclonal))
   {
-    pb$tick()$print()
+    # pb$tick()$print()
+    pb$tick()
 
     cna_subclonal$mutations[i] = mutations %>%
       dplyr::filter(chr == cna_subclonal$chr[i],
