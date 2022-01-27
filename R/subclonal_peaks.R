@@ -450,18 +450,37 @@ analyze_peaks_subclonal = function(x,
     Reduce(f = bind_rows)
 
   # Expectations for subclonal peaks
-  expected_peaks = lapply(1:nrow(subclonal_calls),
-                          function(i)
-                          {
-                            expectations_subclonal(
-                              CCF_1 = subclonal_calls$CCF[i],
-                              karyotype_1 = subclonal_calls$karyotype[i],
-                              karyotype_2 = subclonal_calls$karyotype_2[i],
-                              purity = x$purity
-                            ) %>%
-                              mutate(segment_id = (subclonal_mutations$segment_id %>% unique)[i])
-                          }) %>%
-    Reduce(f = bind_rows)
+  # expected_peaks = lapply(1:nrow(subclonal_calls),
+  #                         function(i)
+  #                         {
+  #                           print(i)
+  #                           expectations_subclonal(
+  #                             starting = x$most_prevalent_karyotype,
+  #                             CCF_1 = subclonal_calls$CCF[i],
+  #                             karyotype_1 = subclonal_calls$karyotype[i],
+  #                             karyotype_2 = subclonal_calls$karyotype_2[i],
+  #                             purity = x$purity
+  #                           ) %>%
+  #                             mutate(segment_id = (subclonal_mutations$segment_id %>% unique)[i])
+  #                         }) %>%
+  #   Reduce(f = bind_rows)
+
+  expected_peaks = easypar::run(
+    FUN = function(i) {
+      expectations_subclonal(
+        starting = x$most_prevalent_karyotype,
+        CCF_1 = subclonal_calls$CCF[i],
+        karyotype_1 = subclonal_calls$karyotype[i],
+        karyotype_2 = subclonal_calls$karyotype_2[i],
+        purity = x$purity
+      ) %>%
+        mutate(segment_id = (subclonal_mutations$segment_id %>% unique)[i])
+    },
+    PARAMS = lapply(1:nrow(subclonal_calls), list),
+    parallel = FALSE
+  )
+
+  expected_peaks = Reduce(bind_rows, expected_peaks)
 
   # Data peaks and densities
   data_fit = easypar::run(
@@ -519,21 +538,40 @@ analyze_peaks_subclonal = function(x,
     d_i = data_peaks %>%
       filter(segment_id == expected_peaks$segment_id[i])
 
-    return(any(abs(d_i$x - t_i) < epsilon))
+    return(any(abs(d_i$x - t_i) <= epsilon))
   })
 
   # Decide the mode of evolution if possible
-  decision_table = expected_peaks %>%
-    group_by(segment_id, model, matched) %>%
-    summarise(n = n()) %>%
-    mutate(prop = n/sum(n)) %>%
-    filter(matched) %>%
-    arrange(segment_id, model, prop %>% desc) %>%
-    group_by(segment_id) %>%
-    filter(prop == max(prop)) %>%
-    select(segment_id, model, prop) %>%
-    # mutate(prop = paste0(model, ' (', round(prop * 100, 0), '%)')) %>%
-    ungroup()
+  decision_table = NULL
+
+  for(s in expected_peaks$segment_id %>% unique){
+    rankings = expected_peaks %>%
+      filter(segment_id == s) %>%
+      group_by(model_id) %>%
+      summarise(prop = sum(matched == TRUE)/n()) %>%
+      arrange(desc(prop))
+
+    best_choice = rankings %>% filter(prop == rankings$prop[1]) %>% pull(model_id)
+
+    rankings = rankings %>%
+      filter(model_id %in% best_choice) %>%
+      mutate(segment_id = s, model = ifelse(grepl("|", model_id), "branching", "linear")) %>%
+      select(segment_id, model_id, model, prop)
+
+    decision_table = bind_rows(decision_table, rankings)
+  }
+
+  # decision_table = expected_peaks %>%
+  #   group_by(segment_id, model_id, matched, .drop = 'none') %>%
+  #   summarise(n = n(), .groups = 'keep') %>%
+  #   mutate(prop = n/sum(n)) %>%
+  #   filter(matched) %>%
+  #   arrange(segment_id, model_id, prop %>% desc) %>%
+  #   group_by(segment_id, .drop = 'none') %>%
+  #   filter(prop == max(prop)) %>%
+  #   select(segment_id, model, model_id, prop) %>%
+  #   # mutate(prop = paste0(model, ' (', round(prop * 100, 0), '%)')) %>%
+  #   ungroup()
 
   # Results
   x$peaks_analysis$subclonal$params = list(n_min = n_min,

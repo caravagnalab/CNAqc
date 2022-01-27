@@ -353,6 +353,57 @@ plot_peaks_fit_subclonal = function(x)
   subclonal_mutations = x$peaks_analysis$subclonal$mutations
   epsilon =  x$peaks_analysis$subclonal$params$epsilon
 
+  plot_model_id = function(segment_id)
+  {
+    this_model_peaks = expected_peaks %>% filter(segment_id == !!segment_id)
+
+    subclonal_mutations %>%
+      filter(segment_id == !!segment_id) %>%
+      ggplot()  +
+      geom_histogram(aes(x = VAF, y = ..density..), binwidth = 0.01, fill = 'gray') +
+      xlim(-0.1, 1.1) +
+      CNAqc:::my_ggplot_theme() +
+      geom_rect(
+        data = data.frame(
+          xmin = this_model_peaks$peak - epsilon,
+          xmax = this_model_peaks$peak + epsilon,
+          ymin = 0,
+          ymax = Inf,
+          model = this_model_peaks$model,
+          matched = this_model_peaks$matched,
+          model_id = this_model_peaks$segment_id
+        ),
+        aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = matched),
+        inherit.aes = FALSE,
+        alpha = .3
+      ) +
+      scale_color_manual(
+        values = c(`FALSE` = 'indianred3', `TRUE` = 'forestgreen')
+      ) +
+      scale_fill_manual(
+        values = c(`FALSE` = 'indianred3', `TRUE` = 'forestgreen')
+      ) +
+      geom_line(data = data_densities %>% filter(segment_id == !!segment_id),
+                aes(x = x, y = y),
+                inherit.aes = FALSE) +
+      geom_point(data = data_peaks%>% filter(segment_id == !!segment_id),
+                 aes(x = x, y = y)) +
+      geom_vline(data = expected_peaks %>% filter(segment_id == !!segment_id),
+                 aes(xintercept = peak, linetype = role, color = matched)) +
+      facet_grid(model~model_id)
+
+    if(subclonal_mutations$segment_id %>% unique() %>% length() > 5)
+      pl = pl + facet_wrap(segment_id~model, scales = 'free_y')
+    else
+      pl = pl + facet_grid(segment_id~model, scales = 'free_y') +
+      theme(strip.text.y.right = element_text(angle = 0))
+
+    pl +
+
+  }
+
+    # what_model= expected_peaks$model_id %>% unique()
+
   # plotting
   s1 = subclonal_mutations %>% mutate(model = 'branching')
   s2 = subclonal_mutations %>% mutate(model = 'linear')
