@@ -219,12 +219,37 @@ branching_evolution = function(starting, left, right, CCF_1, purity)
 
 }
 
-branching_evolution("1:1", "1:0", "2:1", .4, 1)
+                        linear_evolution = function(starting, first_child, second_child, CCF_1, purity)
+{
+  start = initial_state(starting)
+  first_children = start %>% evolve(first_child) # generate tibble with possible first children
+  second_children = lapply(first_children, function(x) evolve(x, second_child))
+    for (i in 1:length(first_children)){
+    second = first_children[[i]] %>% evolve(second_child)
+    second_children[[i]]<- second
+    }
+  
+  solutions = lapply(first_children %>% seq_along, function(i) {
+    second_children[[i]] %>% lapply(function(y) {
+      get_peaks(clone_1 = first_children[[i]],
+                clone_2 = y,
+                CCF_1,
+                purity)
+    })
+  }) %>% unlist(recursive=FALSE)
+  
+  solutions_id = lapply(solutions, function(x) x$peak %>% paste(collapse= ';'))
+  solutions = solutions[!duplicated(solutions_id)]
+  # 
+  lapply(solutions, function(x){
+    x$genotype_initial = start %>% get_alleles() %>% sort() %>% paste(collapse = '')
+    x$model = 'linear'
+    x %>% mutate(role = ifelse(is.na(karyotype_1) | is.na(karyotype_2), "private", 'shared'))
+  })
+  # 
 
-branching_evolution("2:1", "1:0", "2:2", .4, 1)
+}
 
-
-branching_evolution("1:1", "1:0", "3:2", .4, 1)
 
 
 
