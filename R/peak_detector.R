@@ -464,7 +464,8 @@ simple_peak_detector = function(mutations, kernel_adjust){
   y = mutations %>% dplyr::pull(VAF)
 
   den = density(y, kernel = 'gaussian', adjust = kernel_adjust, na.rm = T)
-  in_range = den$x >= min(y, na.rm = T) & den$x <= max(y, na.rm = T)
+  # in_range = den$x >= min(y, na.rm = T) & den$x <= max(y, na.rm = T)
+  in_range = TRUE
 
   input_peakdetection = matrix(cbind(x = den$x[in_range], y = den$y[in_range]), ncol = 2)
   colnames(input_peakdetection) = c('x', 'y')
@@ -479,7 +480,15 @@ simple_peak_detector = function(mutations, kernel_adjust){
     as_tibble() %>%
     dplyr::arrange(x) %>%
     dplyr::mutate(x = round(x, 2), y = round(y, 2)) %>%
-    dplyr::distinct(x, .keep_all = TRUE)
+    dplyr::distinct(x, .keep_all = TRUE) %>%
+    dplyr::mutate(
+      x = case_when(
+        x > 1 & x < 1.01 ~ 1,
+        x < 0 & x > -0.01 ~ 0,
+        TRUE ~ x
+      ),
+    ) %>%
+    dplyr::filter(x <= 1, x >= 0)
 
   hst = hist(mutations$VAF, breaks = seq(0, 1, 0.01), plot = F)$counts
   pks$counts_per_bin = hst[round(pks$x * 100)]
