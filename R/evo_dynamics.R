@@ -219,7 +219,7 @@ branching_evolution = function(starting, left, right, CCF_1, purity)
 
 }
 
-                        linear_evolution = function(starting, first_child, second_child, CCF_1, purity)
+linear_evolution = function(starting, first_child, second_child, CCF_1, purity)
 {
   start = initial_state(starting)
   first_children = start %>% evolve(first_child) # generate tibble with possible first children
