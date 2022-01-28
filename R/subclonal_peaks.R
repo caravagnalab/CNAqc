@@ -468,8 +468,8 @@ analyze_peaks_subclonal = function(x,
   expected_peaks = easypar::run(
     FUN = function(i) {
 
-      oo = expectations_subclonal(
-        starting = "1:1",
+      expectations_subclonal(
+        starting = x$most_prevalent_karyotype,
         CCF_1 = subclonal_calls$CCF[i],
         karyotype_1 = subclonal_calls$karyotype[i],
         karyotype_2 = subclonal_calls$karyotype_2[i],
@@ -477,28 +477,37 @@ analyze_peaks_subclonal = function(x,
       ) %>%
         mutate(segment_id = (subclonal_mutations$segment_id %>% unique)[i])
 
-      to = tt = NULL
-      if(x$most_prevalent_karyotype == "2:1")
-        to = expectations_subclonal(
-          starting = "2:1",
-          CCF_1 = subclonal_calls$CCF[i],
-          karyotype_1 = subclonal_calls$karyotype[i],
-          karyotype_2 = subclonal_calls$karyotype_2[i],
-          purity = x$purity
-        ) %>%
-          mutate(segment_id = (subclonal_mutations$segment_id %>% unique)[i])
-
-      if(x$most_prevalent_karyotype == "2:2")
-        tt = expectations_subclonal(
-          starting = "2:2",
-          CCF_1 = subclonal_calls$CCF[i],
-          karyotype_1 = subclonal_calls$karyotype[i],
-          karyotype_2 = subclonal_calls$karyotype_2[i],
-          purity = x$purity
-        ) %>%
-          mutate(segment_id = (subclonal_mutations$segment_id %>% unique)[i])
-
-      oo = bind_rows(oo, to, tt)
+      # oo = expectations_subclonal(
+      #   starting = "1:1",
+      #   CCF_1 = subclonal_calls$CCF[i],
+      #   karyotype_1 = subclonal_calls$karyotype[i],
+      #   karyotype_2 = subclonal_calls$karyotype_2[i],
+      #   purity = x$purity
+      # ) %>%
+      #   mutate(segment_id = (subclonal_mutations$segment_id %>% unique)[i])
+      #
+      # to = tt = NULL
+      # if(x$most_prevalent_karyotype == "2:1")
+      #   to = expectations_subclonal(
+      #     starting = "2:1",
+      #     CCF_1 = subclonal_calls$CCF[i],
+      #     karyotype_1 = subclonal_calls$karyotype[i],
+      #     karyotype_2 = subclonal_calls$karyotype_2[i],
+      #     purity = x$purity
+      #   ) %>%
+      #     mutate(segment_id = (subclonal_mutations$segment_id %>% unique)[i])
+      #
+      # if(x$most_prevalent_karyotype == "2:2")
+      #   tt = expectations_subclonal(
+      #     starting = "2:2",
+      #     CCF_1 = subclonal_calls$CCF[i],
+      #     karyotype_1 = subclonal_calls$karyotype[i],
+      #     karyotype_2 = subclonal_calls$karyotype_2[i],
+      #     purity = x$purity
+      #   ) %>%
+      #     mutate(segment_id = (subclonal_mutations$segment_id %>% unique)[i])
+      #
+      # oo = bind_rows(oo, to, tt)
 
       # expectations_subclonal(
       #   starting = x$most_prevalent_karyotype,
