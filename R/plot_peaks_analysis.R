@@ -106,7 +106,10 @@ plot_peaks_analysis = function(x,
       return(CNAqc:::eplot())
     }
 
-    return(plot_peaks_fit_subclonal(x))
+    pl = plot_peaks_fit_subclonal(x)
+    if(assembly_plot) pl = ggpubr::ggarrange(plotlist = pl, ncol = 1, nrow = length(pl))
+
+    return(pl)
   }
 
 }
@@ -356,27 +359,55 @@ plot_peaks_fit_subclonal = function(x)
   plot_model_id = function(segment_id)
   {
     this_model_peaks = expected_peaks %>% filter(segment_id == !!segment_id)
+    this_model_ids = this_model_peaks$model_id %>% unique
 
-    subclonal_mutations %>%
+    rank_models = decision_table %>%
       filter(segment_id == !!segment_id) %>%
+      arrange(desc(prop)) %>%
+      pull(model_id)
+
+    rank_models = c(rank_models, setdiff(this_model_ids, rank_models))
+
+    which_best = decision_table %>%
+      filter(segment_id == !!segment_id) %>%
+      arrange(desc(prop))
+    which_best = which_best %>% filter(prop == which_best$prop[1]) %>% pull(model_id)
+
+    strip_colors = rep("gray", rank_models %>% length())
+    names(strip_colors) = rank_models
+    strip_colors[which_best] = "goldenrod3"
+
+    rep_muts = lapply(this_model_ids, function(x){
+      subclonal_mutations %>%
+        mutate(model_id = x, model = ifelse(grepl('->', x), "linear", 'branching'))
+    }) %>% Reduce(f = bind_rows)
+
+    rep_muts %>%
       ggplot()  +
       geom_histogram(aes(x = VAF, y = ..density..), binwidth = 0.01, fill = 'gray') +
       xlim(-0.1, 1.1) +
       CNAqc:::my_ggplot_theme() +
       geom_rect(
-        data = data.frame(
-          xmin = this_model_peaks$peak - epsilon,
-          xmax = this_model_peaks$peak + epsilon,
-          ymin = 0,
-          ymax = Inf,
-          model = this_model_peaks$model,
-          matched = this_model_peaks$matched,
-          model_id = this_model_peaks$segment_id
-        ),
-        aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = matched),
+        data = this_model_peaks,
+        aes(xmin = peak - epsilon, xmax = peak + epsilon,  fill = matched),
         inherit.aes = FALSE,
-        alpha = .3
+        alpha = .3,
+        ymin = 0, ymax = Inf
       ) +
+      # geom_rect(
+      #   data = data.frame(
+      #     xmin = this_model_peaks$peak - epsilon,
+      #     xmax = this_model_peaks$peak + epsilon,
+      #     ymin = 0,
+      #     ymax = Inf,
+      #     model = this_model_peaks$model,
+      #     matched = this_model_peaks$matched,
+      #     model_id = this_model_peaks$model_id
+      #   ),
+      #   aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = matched),
+      #   inherit.aes = FALSE,
+      #   alpha = .3
+      # ) +
       scale_color_manual(
         values = c(`FALSE` = 'indianred3', `TRUE` = 'forestgreen')
       ) +
@@ -390,62 +421,64 @@ plot_peaks_fit_subclonal = function(x)
                  aes(x = x, y = y)) +
       geom_vline(data = expected_peaks %>% filter(segment_id == !!segment_id),
                  aes(xintercept = peak, linetype = role, color = matched)) +
-      facet_grid(model~model_id)
+      facet_wrap(~factor(model_id, levels = rank_models)) +
+      labs(title = segment_id %>% gsub(pattern = '\n', replacement = ' '))
+      # theme(strip.background = element_rect(fill=strip_colors))
 
-    if(subclonal_mutations$segment_id %>% unique() %>% length() > 5)
-      pl = pl + facet_wrap(segment_id~model, scales = 'free_y')
-    else
-      pl = pl + facet_grid(segment_id~model, scales = 'free_y') +
-      theme(strip.text.y.right = element_text(angle = 0))
 
-    pl +
-
+    # if(subclonal_mutations$segment_id %>% unique() %>% length() > 5)
+    #   pl = pl + facet_wrap(segment_id~model, scales = 'free_y')
+    # else
+    #   pl = pl + facet_grid(segment_id~model, scales = 'free_y') +
+    #   theme(strip.text.y.right = element_text(angle = 0))
   }
+
+  decision_table$segment_id %>% unique() %>% lapply(plot_model_id)
 
     # what_model= expected_peaks$model_id %>% unique()
 
   # plotting
-  s1 = subclonal_mutations %>% mutate(model = 'branching')
-  s2 = subclonal_mutations %>% mutate(model = 'linear')
-
-  pl = bind_rows(s1,s2) %>%
-    ggplot()  +
-    geom_histogram(aes(x = VAF, y = ..density..), binwidth = 0.01, fill = 'gray') +
-    xlim(-0.1, 1.1) +
-    CNAqc:::my_ggplot_theme()
-
-  if(subclonal_mutations$segment_id %>% unique() %>% length() > 5)
-    pl = pl + facet_wrap(segment_id~model, scales = 'free_y')
-  else
-    pl = pl + facet_grid(segment_id~model, scales = 'free_y') +
-    theme(strip.text.y.right = element_text(angle = 0))
-
-  pl +
-    geom_rect(
-      data = data.frame(
-        xmin = expected_peaks$peak - epsilon,
-        xmax = expected_peaks$peak + epsilon,
-        ymin = 0,
-        ymax = Inf,
-        model = expected_peaks$model,
-        matched = expected_peaks$matched,
-        segment_id = expected_peaks$segment_id
-      ),
-      aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = matched),
-      inherit.aes = FALSE,
-      alpha = .3
-    ) +
-    scale_color_manual(
-      values = c(`FALSE` = 'indianred3', `TRUE` = 'forestgreen')
-    ) +
-    scale_fill_manual(
-      values = c(`FALSE` = 'indianred3', `TRUE` = 'forestgreen')
-    ) +
-    geom_line(data = data_densities,
-              aes(x = x, y = y),
-              inherit.aes = FALSE) +
-    geom_point(data = data_peaks,
-               aes(x = x, y = y)) +
-    geom_vline(data = expected_peaks,
-               aes(xintercept = peak, linetype = role, color = matched))
+  # s1 = subclonal_mutations %>% mutate(model = 'branching')
+  # s2 = subclonal_mutations %>% mutate(model = 'linear')
+  #
+  # pl = bind_rows(s1,s2) %>%
+  #   ggplot()  +
+  #   geom_histogram(aes(x = VAF, y = ..density..), binwidth = 0.01, fill = 'gray') +
+  #   xlim(-0.1, 1.1) +
+  #   CNAqc:::my_ggplot_theme()
+  #
+  # if(subclonal_mutations$segment_id %>% unique() %>% length() > 5)
+  #   pl = pl + facet_wrap(segment_id~model, scales = 'free_y')
+  # else
+  #   pl = pl + facet_grid(segment_id~model, scales = 'free_y') +
+  #   theme(strip.text.y.right = element_text(angle = 0))
+  #
+  # pl +
+  #   geom_rect(
+  #     data = data.frame(
+  #       xmin = expected_peaks$peak - epsilon,
+  #       xmax = expected_peaks$peak + epsilon,
+  #       ymin = 0,
+  #       ymax = Inf,
+  #       model = expected_peaks$model,
+  #       matched = expected_peaks$matched,
+  #       segment_id = expected_peaks$segment_id
+  #     ),
+  #     aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = matched),
+  #     inherit.aes = FALSE,
+  #     alpha = .3
+  #   ) +
+  #   scale_color_manual(
+  #     values = c(`FALSE` = 'indianred3', `TRUE` = 'forestgreen')
+  #   ) +
+  #   scale_fill_manual(
+  #     values = c(`FALSE` = 'indianred3', `TRUE` = 'forestgreen')
+  #   ) +
+  #   geom_line(data = data_densities,
+  #             aes(x = x, y = y),
+  #             inherit.aes = FALSE) +
+  #   geom_point(data = data_peaks,
+  #              aes(x = x, y = y)) +
+  #   geom_vline(data = expected_peaks,
+  #              aes(xintercept = peak, linetype = role, color = matched))
 }

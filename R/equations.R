@@ -518,7 +518,7 @@ expectations_subclonal = function(starting, CCF_1, karyotype_1, karyotype_2, pur
       table()
 
     m_c1 = clone_1 %>% get_mutations() %>% table() %>% as_tibble() %>%
-      mutate(x = n *CCF_1,
+      mutate(x = n * CCF_1,
              karyotype_1 = clone_1 %>% as_karyotype(),
              genotype_1 = clone_1 %>% get_alleles() %>% sort() %>% paste(collapse = '')
       )
