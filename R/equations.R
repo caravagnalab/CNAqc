@@ -537,7 +537,7 @@ expectations_subclonal = function(starting, CCF_1, karyotype_1, karyotype_2, pur
     m_c1 %>%
       full_join(m_c2, by = 'mutation', suffix = c('.clone_1', '.clone_2')) %>%
       replace_na(list(n.clone_1 = 0, x.clone_1 = 0, n.clone_2 = 0, x.clone_2 = 0)) %>%
-      mutate(peak = x.clone_1 + x.clone_2) %>%
+      mutate(peak = (x.clone_1 + x.clone_2)*purity) %>%
       distinct(peak, .keep_all = TRUE) %>%
       mutate(peak = peak/denominator) %>%
       select(mutation, karyotype_1, genotype_1, karyotype_2, genotype_2, n.clone_1, n.clone_2, peak) %>%
