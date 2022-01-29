@@ -107,7 +107,13 @@ plot_peaks_analysis = function(x,
     }
 
     pl = plot_peaks_fit_subclonal(x)
-    if(assembly_plot) pl = ggpubr::ggarrange(plotlist = pl, ncol = 1, nrow = length(pl))
+    if(assembly_plot)
+      pl = ggpubr::ggarrange(
+        plotlist = pl,
+        ncol = 1,
+        nrow = length(pl),
+        common.legend = TRUE,
+        legend = 'bottom')
 
     return(pl)
   }
@@ -381,6 +387,9 @@ plot_peaks_fit_subclonal = function(x)
       subclonal_mutations %>%
         mutate(model_id = x, model = ifelse(grepl('->', x), "linear", 'branching'))
     }) %>% Reduce(f = bind_rows)
+
+    # rep_muts$model_id
+
 
     rep_muts %>%
       ggplot()  +

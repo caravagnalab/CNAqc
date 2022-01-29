@@ -240,173 +240,174 @@
 # subclonal_CNAs$Major_2 = 2
 # subclonal_CNAs$minor_2 = 2
 
-analyse_subclonal_peaks = function(x, mutations, subclonal_CNAs, epsilon)
-{
-  # stopifnot(inherits(x, 'cnaqc'))
-  #
-  # # Format subclonal_CNAs
-  # req_names = c("chr",
-  #               "from",
-  #               "to",
-  #               "CCF_1",
-  #               "CCF_2",
-  #               "Major_1",
-  #               "minor_1",
-  #               "Major_2",
-  #               "minor_2")
-  # missing_names = setdiff(req_names, colnames(subclonal_CNAs))
-  #
-  # if (length(missing_names) > 0)
-  # {
-  #   cli::cli_alert_danger(
-  #     "The following columns are missing from your subclonal CNAs table: {.field {missing_names}}."
-  #   )
-  #   return(x)
-  # }
-  #
-  # # Format mutations
-  # req_names = c("chr", "from", "to", "VAF")
-  # missing_names = setdiff(req_names, colnames(mutations))
-  #
-  # if (length(missing_names) > 0)
-  # {
-  #   cli::cli_alert_danger(
-  #     "The following columns are missing from your mutations table: {.field {missing_names}}."
-  #   )
-  #   return(x)
-  # }
-  #
-  # # Map all input - retain only supported peaks
-  # cli::cli_h1("Peak analysis for subclonal CNAs")
-  #
-  # supported_peaks = c("1:0", "1:1", "2:0", "2:1", "2:2")
-  #
-  # subclonal_CNAs = subclonal_CNAs %>%
-  #   mutate(
-  #     karyotype_1 = paste(Major_1, minor_1, sep = ':'),
-  #     karyotype_2 = paste(Major_2, minor_2, sep = ':'),
-  #     analysed =
-  #       (karyotype_1 %in% supported_peaks) &
-  #       (karyotype_2 %in% supported_peaks)
-  #   )
-  #
-  # if (any(!subclonal_CNAs$analysed))
-  # {
-  #   cli::cli_alert_warning(
-  #     "The following segments have subclonal CNAs that are not supported by CNAqc and will be rejected."
-  #   )
-  #   subclonal_CNAs %>% dplyr::filter(!analysed) %>% print()
-  #   subclonal_CNAs = subclonal_CNAs %>% dplyr::filter(analysed)
-  # }
-  #
-  # # Map mutations to the actual segments
-  # subclonal_CNAs$mutations = NULL
-  # for (i in 1:nrow(subclonal_CNAs))
-  # {
-  #   subclonal_CNAs$mutations[i] = mutations %>%
-  #     dplyr::filter(chr == subclonal_CNAs$chr[i],
-  #                   from  >= subclonal_CNAs$from[i],
-  #                   to <= subclonal_CNAs$to[i]) %>% list()
-  # }
-  #
-  # if (any(sapply(subclonal_CNAs$mutations, nrow) >= 1))
-  # {
-  #   to_remove = subclonal_CNAs[sapply(subclonal_CNAs$mutations, nrow) >= 1,]
-  #   cli::cli_alert_warning("The following subclonal CNAs have <=1 mutations mapped and will not be analysed")
-  #   to_remove %>% print()
-  #
-  #   subclonal_CNAs = subclonal_CNAs[sapply(subclonal_CNAs$mutations, nrow) >
-  #                                     1,]
-  # }
-
-  # Actual analysis
-  all_fits_plots = all_fits_table =  NULL
-
-  for (j in 1:nrow(subclonal_CNAs))
-  {
-    this_fit = subclonal_peak_detector_closest_hit_match(
-      mutations = subclonal_CNAs$mutations[[j]],
-      CCF_1 = subclonal_CNAs$CCF_1[j],
-      CCF_2 = subclonal_CNAs$CCF_2[j],
-      karyotype_1 = subclonal_CNAs$karyotype_1[j],
-      karyotype_2 = subclonal_CNAs$karyotype_2[j],
-      chr = subclonal_CNAs$chr[j],
-      from = subclonal_CNAs$from[j],
-      to = subclonal_CNAs$to[j],
-      purity = x$purity,
-      epsilon = 0.03
-    )
-
-    all_fits_plots = append(all_fits_plots, list(this_fit$plot))
-    all_fits_table = append(all_fits_table, list(this_fit$table))
-  }
-
-  # Assembly plots
-  all_fits_table = Reduce(bind_rows, all_fits_table) %>%
-    mutate(id = paste(chr, from, to, sep = ":"))
-
-  tab_heatmap = ggplot(all_fits_table) +
-    geom_tile(aes(y = id,
-                  x = multiplicity,
-                  fill = matched),
-              width = .8,
-              height = .8) +
-    scale_fill_manual(values = c(
-      `TRUE` = 'forestgreen',
-      `FALSE` = 'indianred',
-      `NA` = 'gray'
-    )) +
-    facet_wrap( ~ clone) +
-    CNAqc:::my_ggplot_theme() +
-    scale_y_discrete(limits = all_fits_table$id %>% unique %>% gtools::mixedsort(decreasing = TRUE)) +
-    scale_x_discrete(limits = c(1:2) %>% paste) +
-    guides(fill = guide_legend(ncol = 1))
-
-  karyo_colors = CNAqc:::get_karyotypes_colors(all_fits_table$karyotype %>% unique)
-  karyo_colors = karyo_colors[all_fits_table$karyotype %>% unique]
-
-  karyo_heatmap = ggplot(all_fits_table) +
-    geom_tile(aes(y = id,
-                  x = clone,
-                  fill = karyotype),
-              width = .8,
-              height = .8) +
-    scale_fill_manual(values = karyo_colors) +
-    CNAqc:::my_ggplot_theme() +
-    scale_y_discrete(limits = all_fits_table$id %>% unique %>% gtools::mixedsort(decreasing = TRUE)) +
-    guides(fill = guide_legend(ncol = 2)) +
-    theme(axis.text.y = element_blank()) +
-    labs(y = NULL)
-
-
-  size_barplot = all_fits_table %>%
-    ggplot() +
-    geom_bar(aes(x = id, fill = clone, CCF),
-             stat = 'identity',
-             width = .8) +
-    coord_flip()  +
-    scale_x_discrete(limits = all_fits_table$id %>% unique %>% gtools::mixedsort(decreasing = TRUE)) +
-    CNAqc:::my_ggplot_theme() +
-    theme(axis.text.y = element_blank()) +
-    labs(x = NULL, y = "Proportion") +
-    guides(fill = guide_legend(ncol = 1))
-
-  figure = cowplot::plot_grid(
-    tab_heatmap,
-    karyo_heatmap,
-    size_barplot,
-    rel_widths = c(1, .2, .3),
-    axis = 'tb',
-    align = 'h',
-    ncol = 3,
-    nrow = 1
-  )
-
-  x$subclonal = list(figure = list(figure = figure, fits = all_fits_plots),
-                     calls = subclonal_CNAs,)
-
-  return(x)
-}
+# analyse_subclonal_peaks = function(x, mutations, subclonal_CNAs, epsilon)
+# {
+#   # stopifnot(inherits(x, 'cnaqc'))
+#   #
+#   # # Format subclonal_CNAs
+#   # req_names = c("chr",
+#   #               "from",
+#   #               "to",
+#   #               "CCF_1",
+#   #               "CCF_2",
+#   #               "Major_1",
+#   #               "minor_1",
+#   #               "Major_2",
+#   #               "minor_2")
+#   # missing_names = setdiff(req_names, colnames(subclonal_CNAs))
+#   #
+#   # if (length(missing_names) > 0)
+#   # {
+#   #   cli::cli_alert_danger(
+#   #     "The following columns are missing from your subclonal CNAs table: {.field {missing_names}}."
+#   #   )
+#   #   return(x)
+#   # }
+#   #
+#   # # Format mutations
+#   # req_names = c("chr", "from", "to", "VAF")
+#   # missing_names = setdiff(req_names, colnames(mutations))
+#   #
+#   # if (length(missing_names) > 0)
+#   # {
+#   #   cli::cli_alert_danger(
+#   #     "The following columns are missing from your mutations table: {.field {missing_names}}."
+#   #   )
+#   #   return(x)
+#   # }
+#   #
+#   # # Map all input - retain only supported peaks
+#   # cli::cli_h1("Peak analysis for subclonal CNAs")
+#   #
+#   # supported_peaks = c("1:0", "1:1", "2:0", "2:1", "2:2")
+#   #
+#   # subclonal_CNAs = subclonal_CNAs %>%
+#   #   mutate(
+#   #     karyotype_1 = paste(Major_1, minor_1, sep = ':'),
+#   #     karyotype_2 = paste(Major_2, minor_2, sep = ':'),
+#   #     analysed =
+#   #       (karyotype_1 %in% supported_peaks) &
+#   #       (karyotype_2 %in% supported_peaks)
+#   #   )
+#   #
+#   # if (any(!subclonal_CNAs$analysed))
+#   # {
+#   #   cli::cli_alert_warning(
+#   #     "The following segments have subclonal CNAs that are not supported by CNAqc and will be rejected."
+#   #   )
+#   #   subclonal_CNAs %>% dplyr::filter(!analysed) %>% print()
+#   #   subclonal_CNAs = subclonal_CNAs %>% dplyr::filter(analysed)
+#   # }
+#   #
+#   # # Map mutations to the actual segments
+#   # subclonal_CNAs$mutations = NULL
+#   # for (i in 1:nrow(subclonal_CNAs))
+#   # {
+#   #   subclonal_CNAs$mutations[i] = mutations %>%
+#   #     dplyr::filter(chr == subclonal_CNAs$chr[i],
+#   #                   from  >= subclonal_CNAs$from[i],
+#   #                   to <= subclonal_CNAs$to[i]) %>% list()
+#   # }
+#   #
+#   # if (any(sapply(subclonal_CNAs$mutations, nrow) >= 1))
+#   # {
+#   #   to_remove = subclonal_CNAs[sapply(subclonal_CNAs$mutations, nrow) >= 1,]
+#   #   cli::cli_alert_warning("The following subclonal CNAs have <=1 mutations mapped and will not be analysed")
+#   #   to_remove %>% print()
+#   #
+#   #   subclonal_CNAs = subclonal_CNAs[sapply(subclonal_CNAs$mutations, nrow) >
+#   #                                     1,]
+#   # }
+#
+#   # Actual analysis
+#   all_fits_plots = all_fits_table =  NULL
+#
+#   for (j in 1:nrow(subclonal_CNAs))
+#   {
+#     this_fit = subclonal_peak_detector_closest_hit_match(
+#       mutations = subclonal_CNAs$mutations[[j]],
+#       CCF_1 = subclonal_CNAs$CCF_1[j],
+#       CCF_2 = subclonal_CNAs$CCF_2[j],
+#       karyotype_1 = subclonal_CNAs$karyotype_1[j],
+#       karyotype_2 = subclonal_CNAs$karyotype_2[j],
+#       chr = subclonal_CNAs$chr[j],
+#       from = subclonal_CNAs$from[j],
+#       to = subclonal_CNAs$to[j],
+#       purity = x$purity,
+#       epsilon = 0.03
+#     )
+#
+#     all_fits_plots = append(all_fits_plots, list(this_fit$plot))
+#     all_fits_table = append(all_fits_table, list(this_fit$table))
+#   }
+#
+#   # Assembly plots
+#   all_fits_table = Reduce(bind_rows, all_fits_table) %>%
+#     mutate(id = paste(chr, from, to, sep = ":"))
+#
+#   tab_heatmap = ggplot(all_fits_table) +
+#     geom_tile(aes(y = id,
+#                   x = multiplicity,
+#                   fill = matched),
+#               width = .8,
+#               height = .8) +
+#     scale_fill_manual(values = c(
+#       `TRUE` = 'forestgreen',
+#       `FALSE` = 'indianred',
+#       `NA` = 'gray'
+#     )) +
+#     facet_wrap(~ clone) +
+#     CNAqc:::my_ggplot_theme() +
+#     scale_y_discrete(limits = all_fits_table$id %>% unique %>% gtools::mixedsort(decreasing = TRUE)) +
+#     scale_x_discrete(limits = c(1:2) %>% paste) +
+#     guides(fill = guide_legend(ncol = 1))
+#
+#   karyo_colors = CNAqc:::get_karyotypes_colors(all_fits_table$karyotype %>% unique)
+#   karyo_colors = karyo_colors[all_fits_table$karyotype %>% unique]
+#
+#   karyo_heatmap = ggplot(all_fits_table) +
+#     geom_tile(aes(y = id,
+#                   x = clone,
+#                   fill = karyotype),
+#               width = .8,
+#               height = .8) +
+#     scale_fill_manual(values = karyo_colors) +
+#     CNAqc:::my_ggplot_theme() +
+#     scale_y_discrete(limits = all_fits_table$id %>% unique %>% gtools::mixedsort(decreasing = TRUE)) +
+#     guides(fill = guide_legend(ncol = 2)) +
+#     theme(axis.text.y = element_blank()) +
+#     labs(y = NULL)
+#
+#
+#   size_barplot = all_fits_table %>%
+#     ggplot() +
+#     geom_bar(aes(x = id, fill = clone, CCF),
+#              stat = 'identity',
+#              width = .8) +
+#     coord_flip()  +
+#     scale_x_discrete(limits = all_fits_table$id %>% unique %>% gtools::mixedsort(decreasing = TRUE)) +
+#     CNAqc:::my_ggplot_theme() +
+#     theme(axis.text.y = element_blank()) +
+#     labs(x = NULL, y = "Proportion") +
+#     guides(fill = guide_legend(ncol = 1))
+#
+#   figure = cowplot::plot_grid(
+#     tab_heatmap,
+#     karyo_heatmap,
+#     size_barplot,
+#     rel_widths = c(1, .2, .3),
+#     axis = 'tb',
+#     align = 'h',
+#     ncol = 3,
+#     nrow = 1
+#   )
+#
+#   x$subclonal = list(figure = list(figure = figure, fits = all_fits_plots),
+#                      calls = subclonal_CNAs,
+#   )
+#
+#   return(x)
+# }
 
 analyze_peaks_subclonal = function(x,
                                    epsilon = 0.025,
@@ -465,6 +466,7 @@ analyze_peaks_subclonal = function(x,
   #                         }) %>%
   #   Reduce(f = bind_rows)
 
+  cli::cli_alert("Computing evolution models for subclonal CNAs")
   expected_peaks = easypar::run(
     FUN = function(i) {
 
@@ -544,10 +546,22 @@ analyze_peaks_subclonal = function(x,
           Reduce(f = bind_rows) %>%
           distinct(x, .keep_all = TRUE)
 
+        # Adjust peaks height based on KDE of s_run (first run)
+        target_density = s_run$density$x
+
+        sb_run = sb_run %>%
+          dplyr::rowwise() %>%
+          dplyr::mutate(
+            which_x = which.min(abs(target_density - x)),
+            y = s_run$density$y[which_x]) %>%
+          dplyr::select(-which_x)
+
         s_run$peaks = s_run$peaks %>%
           bind_rows(sb_run) %>%
           distinct(x, .keep_all = TRUE)
       }
+
+
       return(s_run)
     },
     PARAMS = lapply(1:nrow(subclonal_calls), list),
@@ -597,11 +611,21 @@ analyze_peaks_subclonal = function(x,
 
     rankings = rankings %>%
       filter(model_id %in% best_choice) %>%
-      mutate(segment_id = s, model = ifelse(grepl("|", model_id), "branching", "linear")) %>%
+      mutate(segment_id = s, model = ifelse(grepl("\\|", model_id), "branching", "linear")) %>%
       select(segment_id, model_id, model, prop)
 
     decision_table = bind_rows(decision_table, rankings)
   }
+
+
+  decision_table$size = strsplit(decision_table$segment_id, split = '\\n') %>%
+    sapply(function(x) x[[2]])
+  decision_table$clones = strsplit(decision_table$segment_id, split = '\\n') %>%
+    sapply(function(x) x[[3]])
+  decision_table$segment_id = strsplit(decision_table$segment_id, split = '\\n') %>%
+    sapply(function(x) x[[1]]) %>%
+    strsplit(split = ' ') %>%
+    sapply(function(x) { paste(x[1], x[2], sep = '@') })
 
   # decision_table = expected_peaks %>%
   #   group_by(segment_id, model_id, matched, .drop = 'none') %>%

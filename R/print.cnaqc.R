@@ -40,7 +40,7 @@ print.cnaqc = function(x, ...)
 
   if(x$n_cna_subclonal > 0)
   {
-    cli::cli_h3("Subclonal CNAs")
+    cli::cli_h3("Subclonal CNAs (showing up to 10 segments)")
     cat('\n')
     bar_print_console_scl(x, top = 10)
     cat('\n')
@@ -85,6 +85,7 @@ print.cnaqc = function(x, ...)
   pfail = function()
     "{crayon::bgRed(crayon::white(\" FAIL \"))}"
 
+
   if (with_peaks)
   {
     prop = x$peaks_analysis$matches %>%
@@ -99,19 +100,21 @@ print.cnaqc = function(x, ...)
     pur_ch = paste0(round(x$peaks_analysis$score * 100, digits = 0), '%')
 
     if (x$peaks_analysis$QC == "PASS")
-      cli::cli_h3(
+      cli::cli_h1(
         paste0(
           ppass(),
           " Peaks QC {crayon::bold(x$peaks_analysis$matching_strategy)}: {crayon::green(paste0(prop, '%'))}, {crayon::green(paste('\u03bb =', pur_sc))}. Purity correction: {.value {pur_ch}}."
         )
       )
     else
-      cli::cli_h3(
+      cli::cli_h1(
         paste0(
           pfail(),
           " Peaks QC {crayon::bold(x$peaks_analysis$matching_strategy)}: {crayon::red(paste0(prop, '%'))}, {crayon::red(paste('\u03bb =', pur_sc))}. Purity correction: {.value {pur_ch}}."
         )
       )
+
+    cat('\n')
 
     xx = x$peaks_analysis$matches %>%
       dplyr::mutate(QC = ifelse(QC == "PASS", ppass(), pfail()))
@@ -150,11 +153,12 @@ print.cnaqc = function(x, ...)
       n_matched =  gen$matched %>% sum
       n_mismatched =  gen$mismatched %>% sum
 
-      cli::cli_h3(
+      cli::cli_h1(
         paste(
           "General peak QC ({.field {sum(gen$n)}} mutations):", ppass(), n_matched, pfail(), n_mismatched, "- epsilon = {.value {x$peaks_analysis$general$params$epsilon}}."
         )
       )
+      cat('\n')
 
       for(i in 1:nrow(gen))
       {
@@ -182,9 +186,11 @@ print.cnaqc = function(x, ...)
     {
       nsegs =  x$peaks_analysis$subclonal$expected_peaks$segment_id %>% unique %>% length()
 
-      general_table = x$peaks_analysis$subclonal$summary %>% filter(prop > 0) %>%
+      general_table = x$peaks_analysis$subclonal$summary %>%
+        # filter(prop > 0) %>%
         group_by(segment_id) %>%
-        summarise(BR = sum(model == 'branching'), LI = sum(model == 'linear'))
+        summarise(BR = sum(model == 'branching' & prop > 0), LI = sum(model == 'linear'& prop > 0)) %>%
+        arrange(BR %>% desc, LI %>% desc)
 
       certainly_linear = general_table %>% filter(BR == 0, LI > 0) %>% nrow()
       certainly_branching = general_table %>% filter(BR > 0, LI == 0) %>% nrow()
@@ -192,135 +198,97 @@ print.cnaqc = function(x, ...)
 
       all_bad = nsegs - (certainly_linear + certainly_branching + ambiguous)
 
-      cli::cli_h3(
+      numcol = function(x)
+      {
+        if(x == 0) return(crayon::red("{0}"))
+        return(paste("{.field {", eval(parse(text=x)), "}}"))
+      }
+
+      cli::cli_h1(
         paste(
-          "Subclonal peak QC ({.field {nsegs}} segments):",
-          crayon::bold("linear"), certainly_linear,
-          crayon::bold("branching"), certainly_branching,
-          crayon::bold("linear/branching"), ambiguous,
-          crayon::bold("none"), all_bad,
+          "Subclonal peaks QC ({.field {nsegs}} segments, initial state {.field {x$most_prevalent_karyotype}}):",
+          crayon::underline("linear"), certainly_linear %>% numcol(),
+          crayon::underline("branching"), certainly_branching%>% numcol(),
+          crayon::underline("either"), ambiguous%>% numcol(),
+          crayon::underline("no support"), all_bad%>% numcol(),
           "- epsilon = {.value {x$peaks_analysis$subclonal$params$epsilon}}."
         )
       )
 
-      # hb = S_table %>%
-      #   filter(segment_id == s) %>%
-      #   pull(prop) %>%
-      #   length() == 1
-      #
-      # bp = S_table %>%
-      #   filter(segment_id == s) %>%
-      #   mutate(prop = prop * 100) %>%
-      #   pull(prop) %>%
-      #   round(0) %>%
-      #   paste0('%')
-      #
-      # bm = S_table %>%
-      #   filter(segment_id == s) %>%
-      #   pull(model)
-      #
-      # qc = ifelse(hb,
-      #             crayon::green(paste(bm, bp, collapse = ', ')),
-      #             paste(bm, bp, collapse = ', '))
-      #
-      # n = S_table %>% filter(segment_id == s) %>% pull(size)
-      # n = sprintf("%20s", n)
-      # cl = S_table %>% filter(segment_id == s) %>% pull(clones)
-      # cl = sprintf("%17s", cl)
-      #
-      # cli::cli_alert_info(
-      #   paste0(
-      #     crayon::blue(sprintf("%17s", s)),
-      #     " ~ {n[1]} {crayon::yellow(cl[1])} {clisymbols::symbol$arrow_right} ",
-      #     qc,
-      #     ""
-      #   )
-      # )
+      puncertain = function()
+        "{crayon::bgYellow(crayon::white(\" UNKNOWN \"))}"
 
-      my_print = function(s){
+      my_print = function(s, b){
+       # cat(s)
 
-         x$peaks_analysis$subclonal$expected_peaks %>%
-           filter(segment_id == s)
-        #
-        # hb = S_table %>%
-        #   filter(segment_id == s) %>%
-        #   pull(prop) %>%
-        #   length() == 1
-        #
-        # bp = S_table %>%
-        #   filter(segment_id == s) %>%
-        #   mutate(prop = prop * 100) %>%
-        #   pull(prop) %>%
-        #   round(0) %>%
-        #   paste0('%')
-        #
-        # bm = S_table %>%
-        #   filter(segment_id == s) %>%
-        #   pull(model)
-        #
-        # qc = ifelse(hb,
-        #             crayon::green(paste(bm, bp, collapse = ', ')),
-        #             paste(bm, bp, collapse = ', '))
-        #
-        # n = S_table %>% filter(segment_id == s) %>% pull(size)
-        # n = sprintf("%20s", n)
-        # cl = S_table %>% filter(segment_id == s) %>% pull(clones)
-        # cl = sprintf("%17s", cl)
-        #
-        # cli::cli_alert_info(
-        #   paste0(
-        #     crayon::blue(sprintf("%17s", s)),
-        #     " ~ {n[1]} {crayon::yellow(cl[1])} {clisymbols::symbol$arrow_right} ",
-        #     qc,
-        #     ""
-        #   )
-        # )
+        hb = x$peaks_analysis$subclonal$summary %>%
+          filter(segment_id == s) %>%
+          arrange(desc(prop)) %>%
+          mutate(prop = prop * 100) %>%
+          mutate(prop = case_when(
+            prop == 0 ~ crayon::red('0'),
+            prop == 100 ~ crayon::green('100'),
+            TRUE ~ crayon::yellow(prop)
+          )) %>%
+          mutate(label = paste0(model_id, " [", prop, "]")) %>%
+          pull(label) %>%
+          paste(collapse = '; ')
+
+
+        n = x$peaks_analysis$subclonal$summary %>% filter(segment_id == s) %>% filter(row_number() == 1) %>% pull(size)
+        cl = x$peaks_analysis$subclonal$summary %>% filter(segment_id == s) %>% filter(row_number() == 1) %>% pull(clones)
+        cl = strsplit(cl, ' ')[[1]]
+        cl = paste0(cl[1], ' (', cl[2] %>% as.numeric *100, ') + ', cl[3], ' (', cl[4] %>% as.numeric * 100, ')')
+        cl = sprintf("%17s", cl)
+
+        cli::cli_alert_info(
+          paste0(
+            crayon::blue(sprintf(paste0("%", b, 's'), s)),
+            " ~ {n[1]} {crayon::yellow(cl)} : ",
+            hb,
+            ""
+          )
+        )
       }
 
-      S_table = x$peaks_analysis$subclonal$summary
-      S_table$size = strsplit(S_table$segment_id, split = '\\n') %>%
-        sapply(function(x) x[[2]])
-      S_table$clones = strsplit(S_table$segment_id, split = '\\n') %>%
-        sapply(function(x) x[[3]])
-      S_table$segment_id = strsplit(S_table$segment_id, split = '\\n') %>%
-        sapply(function(x) x[[1]]) %>%
-        strsplit(split = ' ') %>%
-        sapply(function(x) { paste(x[1], x[2], sep = '@') })
+      ml = general_table$segment_id %>% nchar() %>% max
 
       if(certainly_linear > 0)
       {
-        cli::cli_h2(paste(ppass(), "Linear models"))
+        cli::cli_h3(paste(ppass(), "Linear models"))
 
-        general_table %>% filter(BR == 0, LI > 0) %>%
-          lapply(my_print)
+        general_table %>%
+          filter(BR == 0, LI > 0) %>%
+          pull(segment_id) %>%
+          lapply(my_print, b = ml)
       }
 
       if(certainly_branching > 0)
       {
-        cli::cli_h2(paste(ppass(), "Branching models"))
+        cli::cli_h3(paste(ppass(), "Branching models"))
 
         general_table %>%
           filter(BR > 0, LI == 0) %>%
           pull(segment_id) %>%
-          lapply(my_print)
+          lapply(my_print, b = ml)
       }
 
       if(ambiguous > 0)
       {
-        cli::cli_h2("Ambiguous models")
+        cli::cli_h3(paste(puncertain(), "Either branching or linear models"))
 
         general_table %>% filter(BR > 0, LI > 0) %>%
           pull(segment_id) %>%
-          lapply(my_print)
+          lapply(my_print, b = ml)
       }
 
       if(all_bad > 0)
       {
-        cli::cli_h2(paste(pfail(), "Bad models"))
+        cli::cli_h3(paste(pfail(), "Bad models"))
 
-        all_ids = x$peaks_analysis$subclonal$summary$segment_id %>% unique()
-        setdiff(all_ids, general_table$segment_id) %>%
-          lapply(my_print)
+        general_table %>% filter(BR == 0, LI == 0) %>%
+          pull(segment_id) %>%
+          lapply(my_print, b = ml)
       }
 
       # nlin = x$peaks_analysis$subclonal$expected_peaks %>%
