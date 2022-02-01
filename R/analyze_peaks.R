@@ -68,7 +68,8 @@ analyze_peaks = function(x,
                          n_bootstrap = 1,
                          kernel_adjust = 1,
                          matching_strategy = "closest",
-                         KDE = TRUE)
+                         KDE = TRUE,
+                         starting_state_subclonal_evolution = x$most_prevalent_karyotype)
 {
   if (!is.null(matching_epsilon)) {
     stop("matching_epsilon is deprecated - using purity_error = ",
@@ -381,7 +382,8 @@ analyze_peaks = function(x,
       n_min = min_absolute_karyotype_mutations,
       epsilon = purity_error,
       kernel_adjust = kernel_adjust,
-      n_bootstrap = n_bootstrap
+      n_bootstrap = n_bootstrap,
+      starting_state = starting_state_subclonal_evolution
     )
 
     if(!is.null(x$peaks_analysis$subclonal))

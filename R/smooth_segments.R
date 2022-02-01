@@ -100,6 +100,7 @@ Remove them before calling 'CNAqc::init' if you want to smoothe only clonal segm
 
   clonal_CNA = smoothed_segments %>% dplyr::select(-segment_id, -n)
 
+  # Extract subclonal CNAs
   subclonal_CNA = NULL
   if(!is.null(x$cna_subclonal) & nrow(x$cna_subclonal) > 0)
   {
@@ -109,9 +110,15 @@ Remove them before calling 'CNAqc::init' if you want to smoothe only clonal segm
   else
     cna = clonal_CNA %>% dplyr::select(-starts_with('karyotype'))
 
+  # Extract mutations mapped to subclonal CNAs
+  subclonal_mutations_CNA = NULL
+  if(!is.null(x$cna_subclonal) & nrow(x$cna_subclonal) > 0)
+    subclonal_mutations_CNA = Reduce(bind_rows, x$cna_subclonal$mutations)
+
+  muattions = bind_rows(x$snvs, subclonal_mutations_CNA)
 
   # Clean up the new segments table,
-  x_new = CNAqc::init(x$snvs,
+  x_new = CNAqc::init(muattions,
                       cna,
                       purity = x$purity,
                       ref = x$reference_genome)

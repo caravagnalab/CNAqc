@@ -4,7 +4,7 @@ fortify_CNA_segments = function(x)
 
   if(!is.data.frame(x)) stop("CNAs must be in dataframe format.")
 
-  # CCF column
+  # CCF column missing
   if (!('CCF' %in% C))
   {
     x$CCF = 1
@@ -12,6 +12,17 @@ fortify_CNA_segments = function(x)
 
     cli::cli_alert_warning(
       "CNAs have no CCF, assuming clonal CNAs (CCF = 1)."
+    )
+  }
+
+  # CCF column all NA
+  if (x$CCF %>% is.na() %>% all)
+  {
+    x$CCF = 1
+    C = colnames(x)
+
+    cli::cli_alert_warning(
+      "CNAs have NA in all CCF entries, assuming clonal CNAs (CCF = 1)."
     )
   }
 

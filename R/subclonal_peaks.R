@@ -413,7 +413,8 @@ analyze_peaks_subclonal = function(x,
                                    epsilon = 0.025,
                                    n_min = 100,
                                    n_bootstrap = 5,
-                                   kernel_adjust = 1)
+                                   kernel_adjust = 1,
+                                   starting_state = '1:1')
 {
   if (is.null(x$cna_subclonal) | nrow(x$cna_subclonal) == 0)
     return(x)
@@ -471,7 +472,7 @@ analyze_peaks_subclonal = function(x,
     FUN = function(i) {
 
       expectations_subclonal(
-        starting = x$most_prevalent_karyotype,
+        starting = starting_state,
         CCF_1 = subclonal_calls$CCF[i],
         karyotype_1 = subclonal_calls$karyotype[i],
         karyotype_2 = subclonal_calls$karyotype_2[i],
@@ -617,15 +618,19 @@ analyze_peaks_subclonal = function(x,
     decision_table = bind_rows(decision_table, rankings)
   }
 
+  splitter = function(x)
+  {
+    x$size = strsplit(x$segment_id, split = '\\n') %>%
+      sapply(function(x) x[[2]])
+    x$clones = strsplit(x$segment_id, split = '\\n') %>%
+      sapply(function(x) x[[3]])
+    x$segment_id = strsplit(x$segment_id, split = '\\n') %>%
+      sapply(function(x) x[[1]]) %>%
+      strsplit(split = ' ') %>%
+      sapply(function(x) { paste(x[1], x[2], sep = '@') })
 
-  decision_table$size = strsplit(decision_table$segment_id, split = '\\n') %>%
-    sapply(function(x) x[[2]])
-  decision_table$clones = strsplit(decision_table$segment_id, split = '\\n') %>%
-    sapply(function(x) x[[3]])
-  decision_table$segment_id = strsplit(decision_table$segment_id, split = '\\n') %>%
-    sapply(function(x) x[[1]]) %>%
-    strsplit(split = ' ') %>%
-    sapply(function(x) { paste(x[1], x[2], sep = '@') })
+    x
+  }
 
   # decision_table = expected_peaks %>%
   #   group_by(segment_id, model_id, matched, .drop = 'none') %>%
@@ -643,12 +648,11 @@ analyze_peaks_subclonal = function(x,
   x$peaks_analysis$subclonal$params = list(n_min = n_min,
                                          epsilon = epsilon,
                                          n_bootstrap = n_bootstrap)
-  x$peaks_analysis$subclonal$expected_peaks = expected_peaks
-  x$peaks_analysis$subclonal$data_peaks = data_peaks
-  x$peaks_analysis$subclonal$data_densities = data_densities
-  x$peaks_analysis$subclonal$data_densities = data_densities
-  x$peaks_analysis$subclonal$mutations = subclonal_mutations
-  x$peaks_analysis$subclonal$summary = decision_table
+  x$peaks_analysis$subclonal$expected_peaks = expected_peaks %>% splitter
+  x$peaks_analysis$subclonal$data_peaks = data_peaks %>% splitter
+  x$peaks_analysis$subclonal$data_densities = data_densities%>% splitter
+  x$peaks_analysis$subclonal$mutations = subclonal_mutations %>% splitter
+  x$peaks_analysis$subclonal$summary = decision_table %>% splitter
 
   return(x)
 }

@@ -390,6 +390,10 @@ plot_peaks_fit_subclonal = function(x)
 
     # rep_muts$model_id
 
+    this_title = decision_table %>%
+      filter(segment_id == !!segment_id) %>%
+      filter(row_number() == 1) %>%
+      select(segment_id, size, clones) %>% unlist() %>% paste(collapse = ' ')
 
     rep_muts %>%
       ggplot()  +
@@ -431,7 +435,7 @@ plot_peaks_fit_subclonal = function(x)
       geom_vline(data = expected_peaks %>% filter(segment_id == !!segment_id),
                  aes(xintercept = peak, linetype = role, color = matched)) +
       facet_wrap(~factor(model_id, levels = rank_models)) +
-      labs(title = segment_id %>% gsub(pattern = '\n', replacement = ' '))
+      labs(title = this_title)
       # theme(strip.background = element_rect(fill=strip_colors))
 
 
