@@ -89,11 +89,18 @@ prepare_input_data = function(snvs, cna, tumour_purity)
     {
     cna_subclonal = map_mutations_to_subclonal_segments(mutations = all_mutations, cna_subclonal)
 
-    # cat("\n")
-    nsubcl = sapply(cna_subclonal$mutations, nrow) %>% sum
-    cli::cli_alert_success(
-      "{.field {nsubcl}} mutations ampped to subclonal CNAs."
-    )
+    if(nrow(cna_subclonal) == 0)
+    {
+      cna_subclonal = NULL
+      cli::cli_alert_info("No mutations mapped to subclonal CNAs.")
+    }
+    else
+    {
+      nsubcl = sapply(cna_subclonal$mutations, nrow) %>% sum
+      cli::cli_alert_success(
+        "{.field {nsubcl}} mutations mapped to subclonal CNAs."
+      )
+    }
   }
 
   return(list(snvs = snvs, cna_clonal = cna_clonal, cna_subclonal = cna_subclonal, tab = tab))
