@@ -71,6 +71,11 @@ analyze_peaks = function(x,
                          KDE = TRUE,
                          starting_state_subclonal_evolution = x$most_prevalent_karyotype)
 {
+  zero <- str_split(x$most_prevalent_karyotype, ':') %>% unlist() 
+  if ('0' %in% zero){
+    starting_state_subclonal_evolution<- '1:1'
+  }
+
   if (!is.null(matching_epsilon)) {
     stop("matching_epsilon is deprecated - using purity_error = ",
          purity_error)
