@@ -170,6 +170,8 @@ analyze_peaks = function(x,
     }
     else
     {
+      cli::cli_alert("Fitting {.field {k}} from {.field {x$n_karyotype[k]}} mutations - {.field {n_bootstrap}} bootstrap(s).")
+
       # The other ones are actually checked
       AB = as.numeric(strsplit(k, ':')[[1]])
       expectation = CNAqc:::expected_vaf_peak(AB[1], AB[2], tumour_purity)
