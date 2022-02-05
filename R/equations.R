@@ -347,6 +347,18 @@ expectations_generalised = function(m, M, p, karyotype = NULL)
 # Expectations for subclonal peaks - all models
 expectations_subclonal = function(starting, CCF_1, karyotype_1, karyotype_2, purity)
 {
+  any_LOH = (strsplit(starting, split = ':')[[1]] == "0") %>% any
+
+  no_LOH1 = (strsplit(karyotype_1, split = ':')[[1]] != "0") %>% all
+  no_LOH2 = (strsplit(karyotype_2, split = ':')[[1]] != "0") %>% all
+
+  if(no_LOH1 | no_LOH2)
+  {
+    cli::cli_abort("No evolution model can reach {.field {karyotype_1}} /
+    {.field {karyotype_2}} from {.field {starting}}.
+                   Rerun with with different parameters, aborting!")
+  }
+
   # el = expectations_subclonal_linear(CCF_1, karyotype_1, karyotype_2, purity)
   # if(nrow(el) > 0) el = el %>% mutate(model = 'linear')
   #
