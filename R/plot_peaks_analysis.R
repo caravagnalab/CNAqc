@@ -385,6 +385,7 @@ plot_peaks_fit_subclonal = function(x)
 
     rep_muts = lapply(this_model_ids, function(x){
       subclonal_mutations %>%
+        filter(segment_id == !!segment_id) %>%
         mutate(model_id = x, model = ifelse(grepl('->', x), "linear", 'branching'))
     }) %>% Reduce(f = bind_rows)
 

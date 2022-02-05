@@ -451,6 +451,8 @@ analyze_peaks_subclonal = function(x,
                                }) %>%
     Reduce(f = bind_rows)
 
+  all_segments = subclonal_mutations$segment_id %>% unique()
+
   # Expectations for subclonal peaks
   # expected_peaks = lapply(1:nrow(subclonal_calls),
   #                         function(i)
@@ -467,7 +469,7 @@ analyze_peaks_subclonal = function(x,
   #                         }) %>%
   #   Reduce(f = bind_rows)
 
-  cli::cli_alert("Computing evolution models for subclonal CNAs")
+  cli::cli_alert("Computing evolution models for subclonal CNAs - starting from {.field {starting_state}}")
   expected_peaks = easypar::run(
     FUN = function(i) {
 
@@ -527,6 +529,8 @@ analyze_peaks_subclonal = function(x,
 
   expected_peaks = Reduce(bind_rows, expected_peaks)
 
+  all(expected_peaks$segment_id %>% unique() %in% all_segments)
+
   # Data peaks and densities
   data_fit = easypar::run(
     FUN = function(i) {
@@ -561,12 +565,11 @@ analyze_peaks_subclonal = function(x,
           bind_rows(sb_run) %>%
           distinct(x, .keep_all = TRUE)
       }
-
-
       return(s_run)
     },
     PARAMS = lapply(1:nrow(subclonal_calls), list),
-    parallel = FALSE
+    parallel = FALSE,
+    filter_errors = FALSE
   )
 
   # Densities
