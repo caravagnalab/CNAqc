@@ -352,7 +352,7 @@ expectations_subclonal = function(starting, CCF_1, karyotype_1, karyotype_2, pur
   no_LOH1 = (strsplit(karyotype_1, split = ':')[[1]] != "0") %>% all
   no_LOH2 = (strsplit(karyotype_2, split = ':')[[1]] != "0") %>% all
 
-  if(no_LOH1 | no_LOH2)
+  if(any_LOH & (no_LOH1 | no_LOH2))
   {
     cli::cli_abort("No evolution model can reach {.field {karyotype_1}} /
     {.field {karyotype_2}} from {.field {starting}}.
