@@ -720,20 +720,20 @@ delta_vaf_karyo = function(epsilon_error, purity)
   delta_10 <-
     tibble(
       karyotype = "1:0",
-      multiplicity = 1,
+      mutation_multiplicity = 1,
       delta_vaf = compute_vaf_error(epsilon_error, purity, 1, 1)
     )
 
   delta_11 <-
     tibble(
       karyotype = "1:1",
-      multiplicity = 1,
+      mutation_multiplicity = 1,
       delta_vaf = compute_vaf_error(epsilon_error, purity, 1, 2)
     )
 
   delta_20 <- tibble(
     karyotype = "2:0",
-    multiplicity = c(1, 2),
+    mutation_multiplicity = c(1, 2),
     delta_vaf = c(
       compute_vaf_error(epsilon_error, purity, 1, 2),
       compute_vaf_error(epsilon_error, purity, 2, 2)
@@ -742,7 +742,7 @@ delta_vaf_karyo = function(epsilon_error, purity)
 
   delta_21 <- tibble(
     karyotype = "2:1",
-    multiplicity = c(1, 2),
+    mutation_multiplicity = c(1, 2),
     delta_vaf = c(
       compute_vaf_error(epsilon_error, purity, 1, 3),
       compute_vaf_error(epsilon_error, purity, 2, 3)
@@ -751,7 +751,7 @@ delta_vaf_karyo = function(epsilon_error, purity)
 
   delta_22 <- tibble(
     karyotype = "2:2",
-    multiplicity = c(1, 2),
+    mutation_multiplicity = c(1, 2),
     delta_vaf = c(
       compute_vaf_error(epsilon_error, purity, 1, 4),
       compute_vaf_error(epsilon_error, purity, 2, 4)
