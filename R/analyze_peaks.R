@@ -87,8 +87,8 @@ analyze_peaks = function(x,
   stopifnot(is.numeric(kernel_adjust))
   stopifnot(matching_strategy %in% c("closest", "rightmost"))
 
-  # Common peaks analysis
-  cli::cli_h1("Peak analysis: sample-level QC with common karyotypes")
+  # Common peaks analysis - they must be in the sample
+  cli::cli_h1("Peak analysis: simple CNAs")
   cat("\n")
 
   x = x %>% analyze_peaks_common(
@@ -103,7 +103,7 @@ analyze_peaks = function(x,
   )
 
   # Generalised peak analysis
-  cli::cli_h1("Peak analysis: QC with general karyotypes")
+  cli::cli_h1("Peak analysis: complex CNAs")
   cat("\n")
 
   w = x$n_karyotype[!(x$n_karyotype %>% names() %in% karyotypes)]
