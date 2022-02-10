@@ -37,13 +37,14 @@ plot_segments = function(x,
   stopifnot(inherits(x, 'cnaqc'))
 
   # Circular layout
-  if (circular)
-    return(plot_segments_circular(x, chromosomes = chromosomes))
+  if (circular){
+    base_plot = plot_segments_circular(x, chromosomes = chromosomes)} else{
 
   # Standard plot -- baseline genome reference
-  base_plot = CNAqc:::blank_genome(chromosomes = chromosomes,
+    base_plot = CNAqc:::blank_genome(chromosomes = chromosomes,
                                    ref = x$reference_genome,
                                    ...)
+  }
 
   # Segments
   segments = x$cna %>%
@@ -168,12 +169,13 @@ plot_segments = function(x,
   # =-=-=-=-=-=-=-=-=-=-=-=-
   # Breakpoints annotations
   # =-=-=-=-=-=-=-=-=-=-=-=-
-  base_plot = CNAqc:::add_breakpoints_to_plot(segments, base_plot, max_Y_height)
+  base_plot = CNAqc:::add_breakpoints_to_plot(segments, base_plot, max_Y_height, circular)
 
   # =-=-=-=-=-=-=-=-=-=-=-=-
   # Drivers annotations
   # =-=-=-=-=-=-=-=-=-=-=-=-
   drivers_list = CNAqc:::get_drivers(x, chromosomes = chromosomes)
+  if(!circular)
   base_plot = CNAqc:::add_drivers_to_segment_plot(x, drivers_list = drivers_list, base_plot)
 
 
