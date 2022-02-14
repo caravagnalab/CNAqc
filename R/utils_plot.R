@@ -212,7 +212,7 @@ add_shadow_to_plot = function(segments, base_plot,  highlight)
   return(base_plot)
 }
 
-add_breakpoints_to_plot = function(segments, base_plot, max_Y_height)
+add_breakpoints_to_plot = function(segments, base_plot, max_Y_height, circular)
 {
   # Capped off segments too high to render the plot readable
   off_plot = segments %>% dplyr::filter(total > max_Y_height)
@@ -252,8 +252,10 @@ add_breakpoints_to_plot = function(segments, base_plot, max_Y_height)
   # Minimum height of the plot
   L = ggplot_build(base_plot)$layout$panel_params[[1]]
 
-  if (L$y.range[2] <= 5) {
-    base_plot = base_plot + ylim(-0.5, 5)
+  if(!circular){
+    if (L$y.range[2] <= 5) {
+      base_plot = base_plot + ylim(-0.5, 5)
+    }
   }
 
 
