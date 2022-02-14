@@ -16,7 +16,8 @@ analyze_peaks(
   n_bootstrap = 1,
   kernel_adjust = 1,
   matching_strategy = "closest",
-  KDE = TRUE
+  KDE = TRUE,
+  starting_state_subclonal_evolution = "1:1"
 )
 }
 \arguments{

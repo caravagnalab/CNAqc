@@ -95,5 +95,22 @@
 #'
 "DriverDBv3"
 
+#' Data (simulation performance) from the trainig set to auto-tune epsilon.
+#'
+#' @docType data
+#'
+#' @usage data(fpr_test)
+#'
+#' @format A tibble.
+#'
+#' @keywords datasets
+#'
+#' @references
+#'
+#' @examples
+#' data(fpr_test)
+#' fpr_test
+#'
+"fpr_test"
 
 
