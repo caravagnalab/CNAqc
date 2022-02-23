@@ -16,15 +16,15 @@ knitr::opts_chunk$set(
 options(crayon.enabled=F)
 ```
 
-### Requirements
 
-* read counts from somatic mutations (SNVs, indels); 
-* allele-specific copy number segments (clonal CNAs);
+
+CNAqc requires in input
+
+* read counts from somatic mutations such as single-nucleotide variants (SNVs) or insertion-deletions (indels); 
+* allele-specific copy number segments (CNAs), for both clonal and subclonal segments;
 * tumor purity estimate.
 
-`CNAqc` uses chromosome coordinates for one of the supported references to map mutations to segments. Then, it can elaborate a number of analysis that help quality control the consistency among mutations and CNAs, and re-parametrise callers. 
-
-Example inputs and tool functions are discussed as Articles.
+CNAqc uses chromosome coordinates the supported references (GRCh38 and hg19) to map mutations to segments. Then, the tool can elaborate a number of analysis that help quality control the consistency among mutations, CNAs and tumour purity (see Articles).
 
 ### The model
 

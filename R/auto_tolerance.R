@@ -16,7 +16,7 @@ auto_tolerance = function(
   epsilon_range = c(0.01, 0.08)
 )
 {
-  fpr_test = CNAqc::fpr_test
+  fpr_test = CNAqc::fpr_test %>% filter(purity != .60)
 
   fake_ret = list(
     epsilon_range = 0.01,
@@ -59,6 +59,12 @@ auto_tolerance = function(
   fpr_test = fpr_test %>%
     mutate(key = paste0(coverage, ":", purity))
 
+  # fpr_test %>%
+  #   filter(coverage == 60) %>%
+  #   ggplot(aes(x=epsilon_tolerance, y = FPR, color = purity %>% paste())) +
+  #   geom_point() +
+  #   geom_smooth(method = 'lm')
+
   # Stat smooth data - create linear functions
   ggp_data = fpr_test %>%
     group_split(key) %>%
@@ -71,6 +77,9 @@ auto_tolerance = function(
       # y = mx + q
       q = fit$coefficients[1] %>% as.numeric()
       m = fit$coefficients[2] %>% as.numeric()
+
+      # plot(w$epsilon_tolerance, w$FPR)
+      # points(w$epsilon_tolerance, m * (w$epsilon_tolerance) + q, col = 'red', pch = 11)
 
       # x = (y - q)/m
       inv_fun = function(FPR) {
@@ -96,23 +105,28 @@ auto_tolerance = function(
           )
           return(epsilon_range[2])
         }
+
         eval
       }
 
-      inv_fun
+      w[1,] %>%
+        select(coverage, purity) %>%
+        mutate(epsilon = inv_fun(fpr))
     })
 
-  names(ggp_data) = fpr_test$key %>% unique
+  regression_data = Reduce(f = bind_rows, ggp_data)
+
+  # names(ggp_data) = fpr_test$key %>% unique
 
   # Evaluate regression test - inverse function
   cli::cli_alert("Inverting training from regression; requireing epsilon in range {.field [{epsilon_range[1]} - {epsilon_range[2]}]}.")
 
-  regression_data = tidyr::expand_grid(coverage = fpr_test$coverage %>% unique,
-                                       purity = fpr_test$purity %>% unique) %>%
-    mutate(fun = ggp_data[paste0(coverage, ':', purity)])
-
-  regression_data$fun_x = sapply(regression_data$fun, function(f)
-    f(fpr) %>% round(4))
+  # regression_data = tidyr::expand_grid(coverage = fpr_test$coverage %>% unique,
+  #                                      purity = fpr_test$purity %>% unique) %>%
+  #   mutate(fun = ggp_data[paste0(coverage, ':', purity)])
+  #
+  # regression_data$fun_x = sapply(regression_data$fun, function(f)
+  #   f(fpr) %>% round(4))
 
   # Tile plot
   reg_plot2 = regression_data %>%
@@ -128,7 +142,7 @@ auto_tolerance = function(
     geom_tile(aes(
       x = coverage,
       y = purity,
-      fill = fun_x,
+      fill = epsilon,
       width = 0.9,
       height = 0.9
     )) +
@@ -152,7 +166,7 @@ auto_tolerance = function(
         akima::interp(
           regression_data$purity,
           regression_data$coverage,
-          regression_data$fun_x,
+          regression_data$epsilon,
           xo = purity,
           yo = coverage,
           linear = TRUE,
@@ -185,7 +199,7 @@ auto_tolerance = function(
   point_estimate = akima::interp(
     regression_data$purity,
     regression_data$coverage,
-    regression_data$fun_x,
+    regression_data$epsilon,
     xo = purity,
     yo = coverage,
     linear = TRUE,

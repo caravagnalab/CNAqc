@@ -414,12 +414,18 @@ expectations_subclonal = function(starting, CCF_1, karyotype_1, karyotype_2, pur
       n_allele = gsub(x = which_allele, 'A', "") %>% gsub(pattern = 'B', replacement = "") %>%
         as.numeric()
 
+      # New allele can be +1, unless there are other alleles with larger number
       new_allele = paste(maj_min, n_allele + 1, sep = '')
+
+      while(new_allele %in% (copy_state %>% get_alleles())) {
+        n_allele = n_allele + 1
+        new_allele = paste(maj_min, n_allele + 1, sep = '')
+      }
 
       new_entry = copy_state %>% filter(allele == which_allele)
       new_entry$allele = new_allele
 
-      copy_state %>% bind_rows(new_entry)
+      copy_state %>% bind_rows(new_entry) %>% arrange(allele)
     }
 
     copy_state %>%
@@ -433,7 +439,7 @@ expectations_subclonal = function(starting, CCF_1, karyotype_1, karyotype_2, pur
     {
       mutations_allele = copy_state %>% get_mutations(allele = which_allele)
 
-      copy_state %>% filter(allele != which_allele)
+      copy_state %>% filter(allele != which_allele) %>% arrange(allele)
     }
 
     copy_state %>%
@@ -449,10 +455,20 @@ expectations_subclonal = function(starting, CCF_1, karyotype_1, karyotype_2, pur
     {
       ni_allele = substr(copy_state$allele[i], 2, nchar(copy_state$allele[i])) %>% as.numeric
       ci_allele = substr(copy_state$allele[i], 0, 1)
-      copy_of$allele[i] = paste0(ci_allele, ni_allele + 1)
+
+      # New allele can be +1, unless there are other alleles with larger number
+      new_t = paste0(ci_allele, ni_allele + 1)
+
+      while(new_t %in% (copy_state %>% bind_rows(copy_of) %>%  get_alleles()) %>% unique) {
+        ni_allele = ni_allele + 1
+        new_t = paste0(ci_allele, ni_allele + 1)
+      }
+
+      copy_of$allele[i] = new_t
+      # copy_of$allele[i] = paste0(ci_allele, ni_allele + 1)
     }
 
-    copy_state %>% bind_rows(copy_of) %>% list()
+    copy_state %>% bind_rows(copy_of) %>% arrange(allele) %>%  list()
   }
 
   # Multiplicity
@@ -478,12 +494,20 @@ expectations_subclonal = function(starting, CCF_1, karyotype_1, karyotype_2, pur
   {
     if(copy_state %>% as_karyotype() == target) return(copy_state %>% mutation() %>% list())
 
+    cap = (target %>% strsplit(split = ':'))[[1]] %>% as.numeric %>% sum
+    cap = 2 * cap
+
     current_state = original_state = list(copy_state)
 
     repeat{
       amp_new_state = lapply(current_state, amplify) %>% unlist(recursive = FALSE)
       del_new_state = lapply(current_state, delete) %>% unlist(recursive = FALSE)
       wgs_new_state = lapply(current_state, genome_double) %>% unlist(recursive = FALSE)
+
+      # Filter by capping
+      amp_new_state = amp_new_state[sapply(amp_new_state, as_ploidy) <= cap]
+      del_new_state = del_new_state[sapply(del_new_state, as_ploidy) <= cap]
+      wgs_new_state = wgs_new_state[sapply(wgs_new_state, as_ploidy) <= cap]
 
       current_state = amp_new_state %>%
         append(del_new_state) %>%
