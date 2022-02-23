@@ -22,9 +22,12 @@ library(CNAqc)
 require(dplyr)
 ```
 
-We work with the template dataset. 
 
-```{r echo=FALSE, results=TRUE, message=FALSE}
+# Plotting copy number segments
+
+All plotting functions use `ggplot` and multi-panel figures assembled with either `ggpubr` and `cowplot`. We work with the template dataset. 
+
+```{r echo=TRUE, results=TRUE}
 # Dataset available with the package 
 data('example_dataset_CNAqc', package = 'CNAqc')
 x = CNAqc::init(
@@ -36,10 +39,6 @@ x = CNAqc::init(
 print(x)
 ```
 
-
-# Plotting copy number segments
-
-All plotting functions use `ggplot` and multi-panel figures assembled with either `ggpubr` and `cowplot`.
 
 Function `plot_segments` plots all the genome, annotating in the caption summmary statistics. By default, it plots the major and minor alleles for each segment as red and blue bars. In the bottom, each circle annotates a breakpoint in the segments; grays are breakpoints of samples that are shown in the plot. Since by default this plot has limited y-axis,  breakpoints of segments outside the plot (e.g. very high amplifications) are in black.
 
@@ -56,6 +55,7 @@ An alternative circular layout plot is available (default parameters).
 plot_segments(x, circular = TRUE)
 ```
 
+
 ## Custom segments plot
 
 ```{r, fig.width=9.5, fig.height=3}
@@ -68,6 +68,18 @@ plot_segments(x, chromosomes = c('chr17', 'chr13')) + labs(title = "Chromosome 1
 
 # Total copy number
 plot_segments(x, cn = 'total') + labs(title = "Total copy number")
+```
+
+## Subclonal CNAs
+
+To show subclonal copy numbers we need to use the PCAWG object released with the package.
+
+```{r echo=TRUE, results=TRUE}
+print(CNAqc::example_PCAWG)
+```
+Note that the segments of each subclone have different colours; the CCF is not reporte from this plot.
+```{r, fig.width=9.5, fig.height=3}
+plot_segments(CNAqc::example_PCAWG)
 ```
 
 ## Comparing multiple calls
@@ -88,7 +100,7 @@ y = CNAqc::init(
   ref = 'hg19')
 
 # Comparative CNA plot
-plot_multisample_CNA(list(`Original` = x, `Copy` = x, `Faked_diploid` = y))
+plot_multisample_CNA(list(`Original` = x, `Copy` = x, `Faked_diploid` = y, `PCAWG` = CNAqc::example_PCAWG))
 ```
 
 ## Plotting segments summaries
