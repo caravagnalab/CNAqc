@@ -132,11 +132,19 @@
 <div id="input-format" class="section level1">
 <h1 class="hasAnchor">
 <a href="#input-format" class="anchor"></a>Input format</h1>
-<p>You need to provide data for <em>somatic mutations</em>, <em>copy number segments</em> and <em>tumour purity</em>. The package comes with a template dataset available.</p>
+<p><em>CNAqc notation:</em></p>
+<ul>
+<li><p><code>Major:minor</code> denotes a CNA segments with <code>Major</code>/<code>minor</code> copies of the major/minor allele. We sometimes call <code>"1:1"</code> the karyotype or the copy state of a segment.</p></li>
+<li><p>Clonal denotes something (a CNA, or a mutaiton) that is found at clonality 100% or, so to say, in all tumour cells; subclonal is something that is found in a subset of the tumour cells.</p></li>
+</ul>
+<div id="somatic-mutations" class="section level2">
+<h2 class="hasAnchor">
+<a href="#somatic-mutations" class="anchor"></a>Somatic mutations</h2>
+<p>You need to provide data for <em>somatic mutations</em>, <em>copy number segments</em> and <em>tumour purity</em>; CNAqc comes with a template dataset.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Load template data</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">'example_dataset_CNAqc'</span>, package <span class="op">=</span> <span class="st">'CNAqc'</span><span class="op">)</span></code></pre></div>
-<p>These fields are required for <strong>mutation</strong> calls:</p>
+<p>These fields are required for somatic mutations:</p>
 <ul>
 <li>the mutation location, as <code>chr</code>, <code>from</code>, <code>to</code>.</li>
 <li>the mutation reference and alternative alleles <code>ref</code> and <code>alt</code>;</li>
@@ -169,10 +177,12 @@
 <span class="co">#&gt;  9 chr1  3387161 3387162 T     G       124     6 0.0484</span>
 <span class="co">#&gt; 10 chr1  3502517 3502518 G     A        88    10 0.114 </span>
 <span class="co">#&gt; # … with 12,953 more rows</span></code></pre></div>
-<p>Optionally, you can annotate also <em>driver mutations</em>:</p>
+<p>Optionally, you can annotate also <em>driver mutations</em> by adding the following columns to your data:</p>
 <ul>
-<li>whether the mutation is a driver, using a boolean flag <code>is_driver</code>;</li>
-<li>a <code>driver_label</code> reportin the label to show in the plots with drivers.</li>
+<li>
+<code>is_driver</code>: whether the mutation is a driver, or not;</li>
+<li>
+<code>driver_label</code>: the label to be shown in the plots that report also drivers (e.g., <code>BRAF V600E</code> could be a label).</li>
 </ul>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span>
@@ -196,16 +206,37 @@
 <span class="co">#&gt; 10 chr1  3502517 3502518 G     A     FALSE     MEGF6          PASS      88    10</span>
 <span class="co">#&gt; # … with 12,953 more rows, and 3 more variables: VAF &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   ANNOVAR_FUNCTION &lt;chr&gt;, GENE &lt;chr&gt;</span></code></pre></div>
-<p>These fields are required for <strong>copy number segments</strong>:</p>
+</div>
+<div id="copy-number-segments" class="section level2">
+<h2 class="hasAnchor">
+<a href="#copy-number-segments" class="anchor"></a>Copy number segments</h2>
+<p>CNAqc distinguishes between 3 types of CNAs:</p>
+<ul>
+<li>clonal simple CNAs:
+<ul>
+<li>any clonal <code>"1:0"</code> (loss of heterzygosity, LOH), <code>"2:0"</code> (copy neutral LOH), <code>"1:1"</code> (diploid heterozygous), <code>"2:1"</code> (trisomy) and <code>"2:2"</code> (tetraploidy);</li>
+</ul>
+</li>
+<li>clonal complex CNAs:
+<ul>
+<li>any other clonal CNA that is not simple;</li>
+</ul>
+</li>
+<li>subclonal CNAs:
+<ul>
+<li>any mixture of 2 subclones, where each one of the subclones is defined by a simple CNA.</li>
+</ul>
+</li>
+</ul>
+<p>A fixed set of colours is used to identify the simple CNAs, and these fields are required for all types of <strong>copy number segments</strong>:</p>
 <ul>
 <li>the segment location, as <code>chr</code>, <code>from</code> and <code>to</code>;</li>
 <li>the segment absolute number of copies of the major and minor alleles, as <code>Major</code> and <code>minor</code>;</li>
 </ul>
-<p>In <code>CNAqc</code> format, a diploid balanced segment has <code>Major = minor = 1</code> and will be shortly denoted as <em>karyotype</em> <code>1:1</code>. Similarly, a tetraploid segment has <code>Major = minor = 2</code> and <em>karyotype</em> <code>2:2</code>. A fixed set of colours is used to identify the main karyotypes supported by <code>CNAqc</code>: <code>"1:0"</code>, <code>"2:0"</code>, <code>"1:1"</code>, <code>"2:1"</code> and <code>"2:2"</code>.</p>
-<p>Optionally, you can annotate also annotate the Cancer Cell Fraction (CCF) <code>CCF</code> for each segment:</p>
+<p>Optionally, you can annotate also annotate the Cancer Cell Fraction (CCF) <code>CCF</code> for each segment (the clonality of the segment, which is returned only by callers that support subclonal segments):</p>
 <ul>
 <li>segments with <code>CCF = 1</code> are <em>clonal</em>, otherwise <em>subclonal</em>;</li>
-<li>by default, if missing, all segments are assumed to be clonal and assigned <code>CCF = 1</code>. Some computations subset only clonal copy number segments (see the manual of each function).</li>
+<li>by default, if missing, all segments are assumed to be clonal and assigned <code>CCF = 1</code>. Some computations might subset only clonal CNAs (see the manual of each function).</li>
 </ul>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Example input CNA</span>
@@ -230,17 +261,29 @@
 <span class="co">#&gt;  9 chr1  21080068 21559998     3     2</span>
 <span class="co">#&gt; 10 chr1  21559998 24830001     3     2</span>
 <span class="co">#&gt; # … with 257 more rows</span></code></pre></div>
-<p>Tumour <strong>purity</strong>, defined as the percentage of reads coming from tumour cells), which must be a value in <span class="math inline">\([0, 1]\)</span>.</p>
+<p>If you wish to use subclonal CNAs, further columns are required.</p>
+<ul>
+<li>
+<code>Major_2</code> and <code>minor_2</code> reporting the e major and minor alleles for the second clone.</li>
+</ul>
+<p>The model captures a mixture of two subclones, one with segment <code>Major:minor</code> and CCF <code>CCF</code> (which is compulsory), and another with segment <code>Major_2:minor_2</code> and CCF <code>1 - CCF</code>.</p>
+<p>The values of <code>Major_2</code> and <code>minor_2</code> for clonal segments (<code>CCF = 1</code>) can be <code>NA</code> and will not be used.</p>
+</div>
+<div id="tumour-purity" class="section level2">
+<h2 class="hasAnchor">
+<a href="#tumour-purity" class="anchor"></a>Tumour purity</h2>
+<p>Tumour <em>purity</em>, defined as the percentage of reads coming from tumour cells must be a value in <span class="math inline">\([0, 1]\)</span>.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Example purity</span>
 <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">purity</span><span class="op">)</span>
 <span class="co">#&gt; [1] 0.89</span></code></pre></div>
-<p><strong>Note</strong> In the current implementation no use of subclonal copy number segments is done. Most function compute statics only with clonal copy number segments.</p>
+</div>
 <div id="initialisation-of-a-new-dataset" class="section level2">
 <h2 class="hasAnchor">
 <a href="#initialisation-of-a-new-dataset" class="anchor"></a>Initialisation of a new dataset</h2>
 <p>To use <code>CNAqc</code>, you need to initialize a <code>cnaqc</code> S3 object with the initialisation function <code>init</code>.</p>
-<p>This function will check input formats, and will map mutations to CNA segments. This call does not subset the data, unless there are errors with respect to the required formats. It is required to explicit the reference genome for the assembly (see below).</p>
+<p>This function will check input formats, and will map mutations to CNA segments. This function does not subset the data and retains all and only the mutations that map on top of a CNA segment.</p>
+<p>When you create a dataset it is required to explicit the reference genome for the assembly (see below).</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Use SNVs, CNAs and tumour purity (hg19 reference, see below)</span>
 <span class="va">x</span> <span class="op">=</span> <span class="fu"><a href="../reference/init.html">init</a></span><span class="op">(</span>
@@ -256,7 +299,7 @@
 <span class="co">#&gt; ! CNAs have no CCF, assuming clonal CNAs (CCF = 1).</span>
 <span class="co">#&gt; ✓ Fortified CNAs for 267 segments: 267 clonal and 0 subclonal.</span>
 <span class="co">#&gt; ✓ 12963 mutations mapped to clonal CNAs.</span></code></pre></div>
-<p>The summary of <code>x</code> can be <code>print</code> to see the number of mutations per karyotype, sorted by size.</p>
+<p>The summary of <code>x</code> can be <code>print</code> to provide a number of usefull information.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
 <span class="co">#&gt; ── [ CNAqc ]  12963 mutations in 267 segments (267 clonal, 0 subclonal). Genome</span>
@@ -301,18 +344,21 @@
 <span class="co">#&gt; </span>
 <span class="co">#&gt; ── Clonal CNAs</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt;  2:2  [n = 2922, L = 1483 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { CTCF }</span>
-<span class="co">#&gt;  4:2  [n =  698, L =  331 Mb] ■■■■■■</span>
-<span class="co">#&gt;  2:1  [n =  618, L =  420 Mb] ■■■■■■  { TTN }</span>
-<span class="co">#&gt;  3:2  [n =  612, L =  357 Mb] ■■■■■■</span>
-<span class="co">#&gt;  3:0  [n =  123, L =  137 Mb] ■</span>
-<span class="co">#&gt;  2:0  [n =   29, L =   39 Mb]   { TP53 }</span>
-<span class="co">#&gt;  3:1  [n =    1, L =    1 Mb]</span>
+<span class="co">#&gt;   2:2  [n = 2861, L = 1483 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { CTCF }</span>
+<span class="co">#&gt;   4:2  [n =  744, L =  331 Mb] ■■■■■■■</span>
+<span class="co">#&gt;   2:1  [n =  628, L =  420 Mb] ■■■■■■  { TTN }</span>
+<span class="co">#&gt;   3:2  [n =  611, L =  357 Mb] ■■■■■■</span>
+<span class="co">#&gt;   3:0  [n =  121, L =  137 Mb] ■</span>
+<span class="co">#&gt;   2:0  [n =   34, L =   39 Mb]   { TP53, TP53 }</span>
+<span class="co">#&gt;  25:2  [n =    2, L =    1 Mb] </span>
+<span class="co">#&gt;  16:2  [n =    1, L =    0 Mb] </span>
+<span class="co">#&gt;   3:1  [n =    1, L =    1 Mb]</span>
 <span class="co">#&gt; ℹ Sample Purity: 89% ~ Ploidy: 4.</span>
-<span class="co">#&gt; ℹ There are 3 annotated driver(s) mapped to clonal CNAs.</span>
+<span class="co">#&gt; ℹ There are 4 annotated driver(s) mapped to clonal CNAs.</span>
 <span class="co">#&gt;          chr      from        to ref alt  DP NV       VAF driver_label is_driver</span>
 <span class="co">#&gt;         chr2 179431633 179431634   C   T 117 77 0.6581197          TTN      TRUE</span>
 <span class="co">#&gt;        chr16  67646006  67646007   C   T 120 54 0.4500000         CTCF      TRUE</span>
+<span class="co">#&gt;        chr17   7577106   7577107   G   C  84 78 0.9285714         TP53      TRUE</span>
 <span class="co">#&gt;        chr17   7577106   7577107   G   C  84 78 0.9285714         TP53      TRUE</span></code></pre></div>
 <p>You can also subset data by <em>karyotype of the segments</em>, and by <em>total copy number</em> of the segment. Both subset do not keep drivers that map off the selected segments.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">

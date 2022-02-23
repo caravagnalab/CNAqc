@@ -25,14 +25,22 @@ We discuss the input format and references used in `CNAqc`.
 
 # Input format
 
-You need to provide data for _somatic mutations_, _copy number segments_ and _tumour purity_. The package comes with a template dataset available.
+_CNAqc notation:_
+
+- `Major:minor` denotes a CNA segments with `Major`/`minor` copies of the major/minor allele. We sometimes call `"1:1"` the karyotype or the copy state of a segment.
+
+- Clonal denotes something (a CNA, or a mutaiton) that is found at clonality 100% or, so to say, in all tumour cells; subclonal is something that is found in a subset of the tumour cells.
+
+## Somatic mutations
+
+You need to provide data for _somatic mutations_, _copy number segments_ and _tumour purity_; CNAqc comes with a template dataset.
 
 ```{r}
 # Load template data
 data('example_dataset_CNAqc', package = 'CNAqc')
 ```
 
-These fields are required for **mutation** calls:
+These fields are required for somatic mutations:
 
 * the mutation location, as `chr`, `from`, `to`. 
 * the mutation reference and alternative alleles `ref` and `alt`;
@@ -54,10 +62,10 @@ print(
   )
 ```
 
-Optionally, you can annotate also _driver mutations_:
+Optionally, you can annotate also _driver mutations_ by adding the following columns to your data:
 
-* whether the mutation is a driver, using a boolean flag `is_driver`;
-* a `driver_label` reportin the label to show in the plots with drivers.
+* `is_driver`: whether the mutation is a driver, or not;
+* `driver_label`:  the label to be shown in the plots that report also drivers (e.g., `BRAF V600E` could be a label).
 
 ```{r}
 print(
@@ -68,18 +76,26 @@ print(
   )
 ```
 
-These fields are required for **copy number segments**:
+## Copy number segments
+
+CNAqc distinguishes between 3 types of CNAs:
+
+* clonal simple CNAs:
+  * any clonal `"1:0"` (loss of heterzygosity, LOH), `"2:0"` (copy neutral LOH), `"1:1"` (diploid heterozygous), `"2:1"` (trisomy) and `"2:2"` (tetraploidy);
+* clonal complex CNAs:
+  * any other clonal CNA that is not simple;
+* subclonal CNAs:
+  * any mixture of 2 subclones, where each one of the subclones is defined by a simple CNA.
+
+A fixed set of colours is used to identify the simple CNAs, and these fields are required for all types of  **copy number segments**:
 
 * the segment location, as `chr`, `from` and `to`;
 * the segment absolute number of copies of the major and minor alleles, as `Major` and `minor`;
 
-In `CNAqc` format, a diploid balanced segment has `Major = minor = 1` and will be shortly denoted as *karyotype* `1:1`. Similarly, a tetraploid segment has `Major = minor = 2` and *karyotype* `2:2`. A fixed set of colours is used to identify the main karyotypes supported by `CNAqc`: `"1:0"`, `"2:0"`, `"1:1"`, `"2:1"` and `"2:2"`. 
-
-Optionally, you can annotate also annotate the Cancer Cell Fraction (CCF) `CCF` for each segment:
+Optionally, you can annotate also annotate the Cancer Cell Fraction (CCF) `CCF` for each segment (the clonality of the segment, which is returned only by callers that support subclonal segments):
 
 * segments with `CCF = 1` are _clonal_, otherwise _subclonal_;
-* by default, if missing, all segments are assumed to be clonal and assigned `CCF = 1`. Some computations subset only clonal copy number segments (see the manual of each function).
-
+* by default, if missing, all segments are assumed to be clonal and assigned `CCF = 1`. Some computations might subset only clonal CNAs (see the manual of each function).
 
 ```{r}
 # Example input CNA
@@ -91,21 +107,32 @@ print(
         )
   )
 ```
-Tumour **purity**, defined as the percentage of reads coming from tumour cells), which must be a value in $[0, 1]$.
+
+If you wish to use subclonal CNAs, further columns are required.
+
+* `Major_2` and `minor_2` reporting the e major and minor alleles for the second clone.
+
+The model captures a mixture of two subclones, one with segment `Major:minor` and CCF `CCF` (which is compulsory), and another with segment `Major_2:minor_2` and CCF `1 - CCF`.
+
+The values of `Major_2` and `minor_2` for clonal segments (`CCF = 1`) can be `NA` and will not be used.
+
+
+## Tumour purity
+
+Tumour _purity_, defined as the percentage of reads coming from tumour cells must be a value in $[0, 1]$.
 
 ```{r}
 # Example purity
 print(example_dataset_CNAqc$purity)
 ```
 
-**Note** In the current implementation no use of subclonal copy number segments is done. Most function compute statics only with clonal copy number segments.
-
 ## Initialisation of a new dataset
 
 To use `CNAqc`, you need to initialize a `cnaqc` S3 object with the initialisation function `init`.
 
-This function will check input formats, and will map mutations to CNA segments. This call does not subset the data, unless there are errors with respect to the required formats. It is required to explicit the reference genome for the
-assembly (see below).
+This function will check input formats, and will map mutations to CNA segments. This function does not subset the data and retains all and only the mutations that map on top of a CNA segment.
+
+When you create a dataset it is required to explicit the reference genome for the assembly (see below).
 
 ```{r}
 # Use SNVs, CNAs and tumour purity (hg19 reference, see below)
@@ -117,7 +144,7 @@ x = init(
   )
 ```
 
-The summary of `x` can be `print` to see the number of mutations per karyotype, sorted by size.
+The summary of `x` can be `print` to provide a number of usefull information.
 ```{r}
 print(x)
 ```
@@ -125,7 +152,7 @@ print(x)
 
 ## Subsetting data
 
-You can _subset randomly_ the data; if drivers are annotated, they can be forced to say in.
+You can _subset randomly_ the data; if drivers are annotated, they can be forced to stay in.
 
 ```{r, fig.width=4, fig.height=4}
 y_5000 = subsample(x, N = 5000, keep_drivers = TRUE)
@@ -134,7 +161,10 @@ y_5000 = subsample(x, N = 5000, keep_drivers = TRUE)
 print(y_5000)
 ```
 
-You can also subset data by _karyotype of the segments_, and by _total copy number_ of the segment. Both subset do not keep drivers that map off the selected segments.
+You can also subset data by _karyotype of the segments_, and by _total copy number_ of the segment. 
+
+Both subset functions do not keep drivers that map off from the selected segments.
+
 ```{r, fig.width=4, fig.height=4}
 # Triploid and copy-neutral LOH segments 
 y_tripl_cnloh = subset_by_segment_karyotype(x, karyotypes = c('2:1', '2:0'))
