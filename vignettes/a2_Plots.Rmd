@@ -39,6 +39,7 @@ x = CNAqc::init(
 print(x)
 ```
 
+## Segments plots
 
 Function `plot_segments` plots all the genome, annotating in the caption summmary statistics. By default, it plots the major and minor alleles for each segment as red and blue bars. In the bottom, each circle annotates a breakpoint in the segments; grays are breakpoints of samples that are shown in the plot. Since by default this plot has limited y-axis,  breakpoints of segments outside the plot (e.g. very high amplifications) are in black.
 
@@ -55,8 +56,7 @@ An alternative circular layout plot is available (default parameters).
 plot_segments(x, circular = TRUE)
 ```
 
-
-## Custom segments plot
+### Custom segments plot
 
 ```{r, fig.width=9.5, fig.height=3}
 # Shadow other karyotypes
@@ -70,23 +70,24 @@ plot_segments(x, chromosomes = c('chr17', 'chr13')) + labs(title = "Chromosome 1
 plot_segments(x, cn = 'total') + labs(title = "Total copy number")
 ```
 
-## Subclonal CNAs
+### Subclonal CNAs
 
 To show subclonal copy numbers we need to use the PCAWG object released with the package.
 
 ```{r echo=TRUE, results=TRUE}
 print(CNAqc::example_PCAWG)
 ```
-Note that the segments of each subclone have different colours; the CCF is not reporte from this plot.
+Note that the segments of each subclone have different colours; the CCF is not reported in this plot.
 ```{r, fig.width=9.5, fig.height=3}
 plot_segments(CNAqc::example_PCAWG)
 ```
 
+
 ## Comparing multiple calls
 
-If you want to compare multiple CNA calls that have the same breakpoints using `plot_multisample_CNA`. 
+If you want to compare multiple CNAqc objects you can use `plot_multisample_CNA`.  Here we show it by combining twice `x` with some changes in its calls, and putting together another sample.
 
-Here we show it replicating twice `x`, and making up some changes in `x`'s calls (rendering some segment diploid).
+This type of plot shows only clonal CNAs.
 
 ```{r, fig.width=6, fig.height=6}
 y = CNAqc::init(
@@ -105,12 +106,12 @@ plot_multisample_CNA(list(`Original` = x, `Copy` = x, `Faked_diploid` = y, `PCAW
 
 ## Plotting segments summaries
 
-A summary plot of CNA calls is available via function `plot_karyotypes`. This function implements two visualizations:
+`plot_karyotypes` gives two visualizations, based on its parameter `type`:
 
 * `type = 'percentage'`, reporting the proportion of genome covered by each karyotypes (default);
 * `type = 'number'`, reporting the counts of segments per karyotype.
 
-The package uses a pre-set color schema to colour diploid segments in green, LOH segments with blues and amplifications in reds.
+The package uses a pre-set color schema to colour simple CNAs.
 
 ```{r, fig.width=4.5, fig.height=4}
 ggpubr::ggarrange(
@@ -128,6 +129,8 @@ plot_segment_size_distribution(x)
 
 # Plotting mutations
 
+## Data histograms
+
 You have a function to plot all your data histograms
 
 ```{r, fig.width=10, fig.height=4}
@@ -142,7 +145,7 @@ ggpubr::ggarrange(
 
 If you [compute Cancer Cell Fractions (CCF) values](https://caravagn.github.io/CNAqc/articles/ccf_computation.html), you can use `plot_data_histogram(x, which = 'CCF')` as well.
 
-## Segment-specific VAF distribution
+## Segment-specific VAFs 
 
 You can inspect the raw VAF distribution per segment, split by chromosome. Each colour represents a distinct segment; we want can use this plot to check that, for every karyotype and chromosome, the VAF distributions are similar.
 ```{r, fig.width=12, fig.height=4}
@@ -155,7 +158,7 @@ You can facet your data histograms and obtain a similar layout
 plot_data_histogram(x, which = 'VAF') + facet_grid(karyotype~chr, scales = 'free')
 ```
 
-## Visualising genome-wide mutations data
+## Genome-wide mutation data
 
 Genome-wide plots that follow the layout of `plot_segments` are avaiable to view the genome-wide distributions of the number of mutations, their VAF and depth. VAF and depth-plotting functions (scatterplots) can subset the input data to speed up rendering and reduce the size of output files - by default `N = 5000` points are randomly sampled. 
 Counts plot, instead, bin the genome locations by _one megabase_ ($10^6$ bases).
@@ -177,7 +180,7 @@ ggpubr::ggarrange(
 ```
 
 
-# Plotting all data
+# Combined plots
 
 A one-summary plot can be easily assembled combining the above functions and functions from `cowplot` or other ggplot-manipulation packages.
 

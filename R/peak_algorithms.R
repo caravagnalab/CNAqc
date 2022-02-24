@@ -64,8 +64,8 @@ analyze_peaks_common = function(x,
 
   names(data_fits) = x$snvs %>%
     filter(karyotype %in% analysis) %>%
-    pull(karyotype) %>%
-    unique()
+    group_split(karyotype) %>%
+    sapply(function(e) e$karyotype[1])
 
   # Weights by karyotype
   analysis_weight = x$n_karyotype[names(x$n_karyotype) %in% analysis]
