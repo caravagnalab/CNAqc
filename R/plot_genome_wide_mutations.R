@@ -18,9 +18,16 @@ plot_gw_counts = function(x, chromosomes = paste0('chr', c(1:22, 'X', 'Y')))
 {
   stopifnot(inherits(x, 'cnaqc'))
 
+  mutations = x$snvs %>% dplyr::filter(chr %in% chromosomes)
+
+  if(x$n_cna_subclonal > 0)
+  {
+    mutations = mutations %>% bind_rows(x$cna_subclonal$mutations %>% Reduce(f = bind_rows))
+  }
+
   mutations = CNAqc:::relative_to_absolute_coordinates(
     x,
-    x$snvs %>% dplyr::filter(chr %in% chromosomes))
+    mutations)
 
   bl_plot = CNAqc:::blank_genome(ref = x$reference_genome, chromosomes = chromosomes)
 
@@ -71,9 +78,13 @@ plot_gw_depth = function(x, N = 5000, chromosomes = paste0('chr', c(1:22, 'X', '
 {
   stopifnot(inherits(x, 'cnaqc'))
 
-  mutations = CNAqc:::relative_to_absolute_coordinates(
-    x,
-    x$snvs %>% dplyr::filter(chr %in% chromosomes))
+  mutations = x$snvs %>% dplyr::filter(chr %in% chromosomes)
+
+  if(x$n_cna_subclonal > 0)
+  {
+    mutations = mutations %>% bind_rows(x$cna_subclonal$mutations %>% Reduce(f = bind_rows))
+  }
+
 
   bl_plot = CNAqc:::blank_genome(ref = x$reference_genome, chromosomes = chromosomes)
 
@@ -147,9 +158,13 @@ plot_gw_vaf = function(x, N = 5000, chromosomes = paste0('chr', c(1:22, 'X', 'Y'
 {
   stopifnot(inherits(x, 'cnaqc'))
 
-  mutations = CNAqc:::relative_to_absolute_coordinates(
-    x,
-    x$snvs %>% dplyr::filter(chr %in% chromosomes))
+  mutations = x$snvs %>% dplyr::filter(chr %in% chromosomes)
+
+  if(x$n_cna_subclonal > 0)
+  {
+    mutations = mutations %>% bind_rows(x$cna_subclonal$mutations %>% Reduce(f = bind_rows))
+  }
+
 
   bl_plot = CNAqc:::blank_genome(ref = x$reference_genome, chromosomes = chromosomes)
 

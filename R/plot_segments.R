@@ -37,13 +37,16 @@ plot_segments = function(x,
   stopifnot(inherits(x, 'cnaqc'))
 
   # Circular layout
-  if (circular){
-    base_plot = plot_segments_circular(x, chromosomes = chromosomes)} else{
+  if (circular) {
+    base_plot = plot_segments_circular(x, chromosomes = chromosomes)
 
-  # Standard plot -- baseline genome reference
+    return(base_plot)
+  }
+  else{
+    # Standard plot -- baseline genome reference
     base_plot = CNAqc:::blank_genome(chromosomes = chromosomes,
-                                   ref = x$reference_genome,
-                                   ...)
+                                     ref = x$reference_genome,
+                                     ...)
   }
 
   # Segments
