@@ -227,20 +227,26 @@ analyze_peaks_general = function(x,
            kernel_adjust = kernel_adjust,
            n_bootstrap = n_bootstrap)
 
-  data_densities = lapply(data_fit %>% seq_along,
+  names(data_fit) = x$snvs %>%
+    filter(karyotype %in% analysis) %>%
+    group_split(karyotype) %>%
+    sapply(function(e) e$karyotype[1])
+
+
+  data_densities = lapply(data_fit %>% names,
                           function(f) {
                             data.frame(
                               x = data_fit[[f]]$density$x,
                               y = data_fit[[f]]$density$y,
-                              karyotype = analysis[f]
+                              karyotype = f
                             )
                           }) %>%
     Reduce(f = bind_rows)
 
-  data_peaks = lapply(data_fit %>% seq_along,
+  data_peaks = lapply(data_fit %>% names,
                       function(f) {
                         data_fit[[f]]$peaks %>%
-                          mutate(karyotype = analysis[f])
+                          mutate(karyotype = f)
                       }) %>%
     Reduce(f = bind_rows)
 
