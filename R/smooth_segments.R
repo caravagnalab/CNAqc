@@ -24,18 +24,16 @@ smooth_segments = function(x, maximum_distance = 1e6)
   segments = x$cna
   smoothed_segments = NULL
 
-  ncnacl = sum(segments$CCF == 1)
-  ncnasbcl = sum(segments$CCF < 1)
-
   # Subclonal CNA calls -- raise informative warning
-  if(ncnasbcl > 0)
-    cli::boxx("Subclonal CNAs detected in the dataset, those segments will NOT be removed for the smoothing process.
-Remove them before calling 'CNAqc::init' if you want to smoothe only clonal segments.", col = 'red')
-
+  if(x$n_cna_subclonal > 0)
+    cli::boxx("Subclonal CNAs will not be smoothed!", col = 'red')
 
   for(chr in unique(segments$chr))
   {
     chr_segments = segments %>% filter(chr == !!chr)
+    chr_segments_subc = x$cna_subclonal %>% filter(chr == !!chr)
+
+    chr_segments = chr_segments %>% bind_rows(chr_segments_subc) %>% arrange(from)
 
     # Special case, one segment
     if(nrow(chr_segments) == 1) {
@@ -45,7 +43,9 @@ Remove them before calling 'CNAqc::init' if you want to smoothe only clonal segm
 
     # cat('\n')
     # cli::cli_alert_info("Smoothing {.field {chr}}: {.value {nrow(chr_segments)}} segments.")
-    cat("Smoothing", crayon::blue(chr), "with", crayon::red(nrow(chr_segments)), "segments: ")
+    # cat("Smoothing", crayon::blue(chr), "with", crayon::red(nrow(chr_segments)), "segments: ")
+
+    cat("\u2192", crayon::blue(chr),  crayon::red(nrow(chr_segments)), "-")
 
     # General case: read every segment, start from 1, index tracks where we
     # start merging, another points moves ahead to detect segments ot merge
@@ -65,6 +65,11 @@ Remove them before calling 'CNAqc::init' if you want to smoothe only clonal segm
         # Stop if end of list
         if(j == nrow(chr_segments)) break
 
+        is_subclonal_next = !is.na(chr_segments$Major_2[j+1]) & !is.na(chr_segments$minor_2[j+1])
+        is_subclonal_this = !is.na(chr_segments$Major_2[j]) & !is.na(chr_segments$minor_2[j])
+
+        if(is_subclonal_next | is_subclonal_this) break
+
         separation = (chr_segments$from[j + 1] - chr_segments$to[j]) < maximum_distance
         minor_match = chr_segments$minor[j + 1] == chr_segments$minor[j]
         Major_match = chr_segments$Major[j + 1] == chr_segments$Major[j]
@@ -75,7 +80,7 @@ Remove them before calling 'CNAqc::init' if you want to smoothe only clonal segm
       }
 
       # cli::cli_alert("Smoothed segments from {.field {index}} to {.value {j}}")
-      if(j > index) cat(paste0("[", index, '-',j, '] '))
+      # if(j > index) cat(paste0("[", index, '-',j, '] '))
 
       # ending here, j is the index of the last segment we merge (inclusive)
       template$to = chr_segments$to[j]
@@ -90,38 +95,45 @@ Remove them before calling 'CNAqc::init' if you want to smoothe only clonal segm
       index = j + 1
     }
 
-    cat("\n")
+    cat(crayon::green((smoothed_segments$chr %>% table())[chr]), "@")
 
+
+    cat("\n")
   }
 
   cat('\n')
   cli::cli_alert_success("Smoothed from {.value {nrow(segments)}} to {.value {nrow(smoothed_segments)}} segments with {.value {maximum_distance}} gap (bases).")
   cli::cli_alert_info("Creating a new CNAqc object. The old object will be retained in the $before_smoothing field.")
 
-  clonal_CNA = smoothed_segments %>% dplyr::select(-segment_id, -n)
+  smoothed_segments = smoothed_segments %>% dplyr::select(-starts_with('karyotype'), -mutations, -segment_id, -n)
+
+  # clonal_CNA = smoothed_segments %>% dplyr::select(-segment_id, -n)
 
   # Extract subclonal CNAs
-  subclonal_CNA = NULL
-  if(!is.null(x$cna_subclonal) & nrow(x$cna_subclonal) > 0)
-  {
-    subclonal_CNA = x$cna_subclonal %>% dplyr::select(-segment_id, -n, -analysed)
-    cna = bind_rows(clonal_CNA, subclonal_CNA)%>% dplyr::select(-starts_with('karyotype'), -mutations)
-  }
-  else
-    cna = clonal_CNA %>% dplyr::select(-starts_with('karyotype'))
+  # subclonal_CNA = NULL
+  # if(!is.null(x$cna_subclonal) & nrow(x$cna_subclonal) > 0)
+  # {
+  #   subclonal_CNA = x$cna_subclonal %>% dplyr::select(-segment_id, -n, -analysed)
+  #   cna = bind_rows(clonal_CNA, subclonal_CNA) %>% dplyr::select(-starts_with('karyotype'), -mutations)
+  # }
+  # else
+  #   cna = clonal_CNA %>% dplyr::select(-starts_with('karyotype'))
 
   # Extract mutations mapped to subclonal CNAs
-  subclonal_mutations_CNA = NULL
-  if(!is.null(x$cna_subclonal) & nrow(x$cna_subclonal) > 0)
-    subclonal_mutations_CNA = Reduce(bind_rows, x$cna_subclonal$mutations)
+  # subclonal_mutations_CNA = NULL
+  # if(!is.null(x$cna_subclonal) & nrow(x$cna_subclonal) > 0)
+  #   subclonal_mutations_CNA = Reduce(bind_rows, x$cna_subclonal$mutations)
+  #
+  # muattions = bind_rows(x$snvs, subclonal_mutations_CNA)
 
-  muattions = bind_rows(x$snvs, subclonal_mutations_CNA)
 
   # Clean up the new segments table,
-  x_new = CNAqc::init(muattions,
-                      cna,
-                      purity = x$purity,
-                      ref = x$reference_genome)
+  x_new = CNAqc::init(
+    x %>% Mutations(),
+    smoothed_segments,
+    purity = x$purity,
+    ref = x$reference_genome)
+
   x_new$before_smoothing = x
 
   return(x_new)

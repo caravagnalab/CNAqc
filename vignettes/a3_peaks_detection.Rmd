@@ -77,7 +77,7 @@ plot_peaks_analysis(x, what = 'general')
 ```
 The plot reports dashed lines for expected peaks (for mutation with multiplicity from 1 to the maximum of the Major/minor allele counts), and dots for each data peak.The colours green/red report the QC status for each peak; with these CNAs no karyotype-level or sample-level scores are produced.
 
-# Subclonal CNAs 
+##  Subclonal CNAs 
 
 The QC procedure for these CNAs uses only the kernel density estimation (as for complex CNAs), and considers 2 subclones with distinct mixing proportions. Differently from clonal CNAs, however, here the analysis is carried out at the level of each segment (without pooling segments with the same karyotypes) so to support callers that report segment-specific CCF values (e.g., Battenberg).
 
@@ -85,9 +85,6 @@ The QC procedure for these CNAs uses only the kernel density estimation (as for 
 plot_peaks_analysis(x, what = 'subclonal')
 ```
 The visual layout of this plot is the same of complex clonal CNAs; not that the facet reports the distinct evolutionary models that have been generated to QC subclonal CNAs.
-
-## Per-chromosome analysis
-
 
 
 # Summary results
@@ -118,7 +115,12 @@ x$peaks_analysis$QC
 
 You can visually summarise QC results for all the analyses available in CNAqc (peaks-based and [CCF-based](https://caravagn.github.io/CNAqc/articles/ccf_computation.html)).
 
-```{r, fig.width=6, fig.height=6, message=F, warning=F}
+```{r, fig.width=6, fig.height=10, message=F, warning=F}
 plot_qc(x)
 ```
+
+
+# Per-chromosome analysis
+
+CNAqc analyses can be run per chromosome. First, split your data by chromosome using function `split_by_chromosome`, and then run the analysis for every chromosome. 
 

@@ -19,6 +19,7 @@
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><meta property="og:title" content="4. Computation of Cancer Cell Fractions">
 <meta property="og:description" content="CNAqc">
+<meta property="og:image" content="caravagnalab.github.io/CNAqc/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -37,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CNAqc</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
       </span>
     </div>
 
@@ -83,12 +84,15 @@
     <li>
       <a href="../articles/a7_example_MSeq.html">7. Example data analysis</a>
     </li>
+    <li>
+      <a href="../articles/a8_annotate_variants.html">8. Drivers annotation</a>
+    </li>
   </ul>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/caravagn/CNAqc/">
+  <a href="https://github.com/caravagnalab/CNAqc/">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -103,107 +107,175 @@
 
       
 
-      </header><script src="a4_ccf_computation_files/header-attrs-2.7/header-attrs.js"></script><div class="row">
+      </header><script src="a4_ccf_computation_files/header-attrs-2.11/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>4. Computation of Cancer Cell Fractions</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/caravagn/CNAqcvignettes/a4_ccf_computation.Rmd"><code>vignettes/a4_ccf_computation.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/caravagnalab/CNAqcvignettes/a4_ccf_computation.Rmd"><code>vignettes/a4_ccf_computation.Rmd</code></a></small>
       <div class="hidden name"><code>a4_ccf_computation.Rmd</code></div>
 
     </div>
 
     
     
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/caravagn/CNAqc">CNAqc</a></span><span class="op">)</span>
-<span class="co">#&gt; ✓ Loading BMix, 'Binomial and Beta-Binomial univariate mixtures'. Support : &lt;https://caravagn.github.io/BMix/&gt;</span>
-<span class="co">#&gt; ✓ Loading CNAqc, 'Copy Number Alteration quality check'. Support : &lt;https://caravagn.github.io/CNAqc/&gt;</span></code></pre></div>
-<p><code>CNAqc</code> provides a function to compute mutation’s Cancer Cell Fractions (CCFs): <code>compute_CCF</code>. We suggest to use these to compare CCF estimates obtained with other tools, for instance, or to compute de novo CCF values.</p>
-<p>The process of computing CCF values requires the computation of the <em>“mutation multiplicity”</em>, namely the number of copies of a mutation in a certain copy number segment. This is a difficult task that harmonize the data accounting for tumour purity, and CNAs. Errors in this task propagate errors in CCF estimates, and downstream analyses.</p>
-<p>For this reason, <code>CNAqc</code>:</p>
-<ul>
-<li>limits the CCF computations to karyotypes that are usually “easier”. These are <code>'2:1'</code>, <code>'2:0'</code> and <code>'2:2'</code> (Major:minor, e.g., <code>'2:1</code>’ could be written as <code>AAB</code>), where a mutation is present in one or two copies if we assume that the aneuploidy state is directly achieved from a diploid genome;</li>
-<li>limits the CCF computations to clonal copy number segments.</li>
-</ul>
-<p>The computation can be done in two different ways:</p>
-<ul>
-<li>from the entropy of a simplified model for the data distribution that seek to ensure low-uncertainty CCF estimates</li>
-<li>or just using a dynamic cut computed from the data.</li>
-</ul>
-<p>By design, the latter is more rough but can work also in conditions of low-quality data, where the former method would have no power to detect strongly supported CCF estimates</p>
-<div id="mutation-multiplicity-using-entropy" class="section level1">
+<div id="phasing-mutations" class="section level1">
 <h1 class="hasAnchor">
-<a href="#mutation-multiplicity-using-entropy" class="anchor"></a>Mutation multiplicity using entropy</h1>
-<p>To get CCF values, we use the <a href="https://caravagn.github.io/CNAqc/articles/CNAqc.html">relation between VAF, mutation multiplicity and tumour purity</a> to determine the value of <span class="math inline">\(m\)</span> from the observed <span class="math inline">\(v\)</span>, the karyotype and tumour purity.</p>
-<div id="class-mixture" class="section level2">
+<a href="#phasing-mutations" class="anchor"></a>Phasing mutations</h1>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/caravagnalab/CNAqc">CNAqc</a></span><span class="op">)</span>
+<span class="co">#&gt; Warning: replacing previous import 'cli::num_ansi_colors' by</span>
+<span class="co">#&gt; 'crayon::num_ansi_colors' when loading 'BMix'</span>
+<span class="co">#&gt; Warning: replacing previous import 'crayon::%+%' by 'ggplot2::%+%' when loading</span>
+<span class="co">#&gt; 'BMix'</span>
+<span class="co">#&gt; ✓ Loading BMix, 'Binomial and Beta-Binomial univariate mixtures'. Support : &lt;https://caravagnalab.github.io/BMix/&gt;</span>
+<span class="co">#&gt; Warning: package 'tidyr' was built under R version 4.0.5</span>
+<span class="co">#&gt; Warning: package 'readr' was built under R version 4.0.5</span>
+<span class="co">#&gt; Warning: package 'dplyr' was built under R version 4.0.5</span>
+<span class="co">#&gt; Warning: package 'crayon' was built under R version 4.0.5</span>
+<span class="co">#&gt; ✓ Loading CNAqc, 'Copy Number Alteration quality check'. Support : &lt;https://caravagn.github.io/CNAqc/&gt;</span></code></pre></div>
+<p>CNAqc can compute Cancer Cell Fractions (CCFs) using function <code>compute_CCF</code>, which can be used to compare CCF estimates obtained with other tools (e.g., DPClust, Ccube, etc.). The main advantage of CNAqc is reporting uncertainty/ unreliability of a CCF estimate.</p>
+<p>To compute CCFs CNAqc computes the <em>mutation multiplicity</em> for every mutation (we call this task <em>phasing</em>): this is defined as the number of copies of a mutation in a certain copy number segment This is a difficult task that harmonize the data accounting for tumour purity, and CNAs; phasing errors propagate in CCF estimates and downstream analyses.</p>
+<p>CNAqc restricts CCF computation to simple clonal CNA segments, and offers two algorithms to phase mutations. When CCFs are computed the S3 <code>print</code> method reports the relevant information.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"example_PCAWG"</span>, package <span class="op">=</span> <span class="st">'CNAqc'</span><span class="op">)</span>
+
+<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">example_PCAWG</span><span class="op">)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;   2:1  [n = 88422, L =   692 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■</span>
+<span class="co">#&gt;   3:2  [n = 58384, L =   417 Mb] ■■■■■■■■■■■■■■■■■■  { BRAF }</span>
+<span class="co">#&gt;   3:1  [n = 48704, L =   380 Mb] ■■■■■■■■■■■■■■■</span>
+<span class="co">#&gt;   3:0  [n = 26622, L =   360 Mb] ■■■■■■■■  { CDKN2A }</span>
+<span class="co">#&gt;   2:2  [n = 25290, L =   253 Mb] ■■■■■■■■</span>
+<span class="co">#&gt;   3:3  [n = 16790, L =   115 Mb] ■■■■■</span>
+<span class="co">#&gt;   2:0  [n =  5374, L =    67 Mb] ■■</span>
+<span class="co">#&gt;   4:0  [n =  1752, L =    22 Mb] ■  { TP53 }</span>
+<span class="co">#&gt;   4:2  [n =  1441, L =    11 Mb] </span>
+<span class="co">#&gt;   1:1  [n =   855, L =     9 Mb] </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  chr11@55700000  [n =  10468, L =  78.75 Mb]   2:1 (0.21)   2:2 (0.79) ■■■■■■■■■■</span>
+<span class="co">#&gt;  chr11@17365005  [n =   5389, L =  31.55 Mb]   2:1 (0.21)   2:2 (0.79) ■■■■■</span>
+<span class="co">#&gt;   chr11@5372292  [n =   1014, L =  11.99 Mb]   2:1 (0.21)   2:2 (0.79) </span>
+<span class="co">#&gt;    chr11@202253  [n =    610, L =   5.17 Mb]   2:1 (0.22)   2:2 (0.78) </span>
+<span class="co">#&gt;  chr11@48918601  [n =    542, L =   2.68 Mb]   2:1 (0.25)   2:2 (0.75) </span>
+<span class="co">#&gt;   chr6@82432583  [n =    301, L =   1.81 Mb]   2:1 (0.19)   2:2 (0.81) </span>
+<span class="co">#&gt;  chr11@51600000  [n =    290, L =    4.1 Mb]   2:1 (0.26)   2:2 (0.74) </span>
+<span class="co">#&gt;   chr6@81896364  [n =     69, L =   0.54 Mb]   2:1 (0.19)   2:2 (0.81) </span>
+<span class="co">#&gt;   chr6@93956180  [n =     41, L =   0.11 Mb]    2:1 (0.2)    2:2 (0.8) </span>
+<span class="co">#&gt;   chr8@42633277  [n =     13, L =   0.26 Mb]   2:1 (0.28)   2:2 (0.72) </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;          chr      from        to ref alt DP NV       VAF driver_label is_driver</span>
+<span class="co">#&gt;        chr17   7577082   7577082   C   T 78 70 0.8974359         TP53      TRUE</span>
+<span class="co">#&gt;         chr7 140453136 140453136   A   T 95 54 0.5684211         BRAF      TRUE</span>
+<span class="co">#&gt;         chr9  21971120  21971120   G   A 23 14 0.6086957       CDKN2A      TRUE</span></code></pre></div>
+<div id="entropy-based" class="section level2">
 <h2 class="hasAnchor">
-<a href="#class-mixture" class="anchor"></a>2-class mixture</h2>
-<p>In this setup, <code>CNAqc</code> uses a statistical model with two Binomial distributions for the mutations happening before, and after aneuploudy. The density of these Binomial distributions are:</p>
+<a href="#entropy-based" class="anchor"></a>Entropy-based</h2>
+<p>The entropy-based approach to compute CCFs is the more advanced available in CNAqc, and the only one that provides CCF uncertainty estimation.</p>
+<p>The idea is to use the entropy of a mixture model for the data distribution in order to detect low-uncertainty CCF estimates. Two Binomial distributions are used for the mutations happening before, and after aneuploidy. The density of these Binomial distributions are:</p>
 <ul>
-<li>peaked at <span class="math inline">\(v_1\)</span> for <span class="math inline">\(m = 1\)</span> (after aneuploidy) and <span class="math inline">\(v_2\)</span> for <span class="math inline">\(m = 2\)</span> (before aneuploidy).</li>
-<li>computed on the domain <span class="math inline">\([0, 1]\)</span>, after translating the read counts into VAFs. The number of trials of the Binomial process is set to the median coverage <span class="math inline">\(n\)</span> of the observed mutations that map to the segments under investigation (e.g., the triploid <code>'2:1'</code> segments);</li>
+<li>peaked at <span class="math inline">\(v_1\)</span>/<span class="math inline">\(v_2\)</span> for <span class="math inline">\(m = 1\)</span> (after CNA) and <span class="math inline">\(m = 2\)</span> (before CNA); <span class="math inline">\(v_i\)</span> are peaks determined as in peak-analysis procedures’.’</li>
+<li>computed on the domain <span class="math inline">\([0, 1]\)</span>, after translating read counts into VAFs. The number of trials of the Binomial process is set to the median coverage <span class="math inline">\(n\)</span> of the observed mutations that map to the segments under investigation.</li>
 </ul>
-<p>The assumptions in <code>CNAqc</code> are that 1) overdispersion of coverage is small to justify a Binomial (instead of a Beta-Binomial), and that 2) trials are well-represented by the median of the observed coverage.</p>
-<p><code>CNAqc</code> computes two Binomial densities <span class="math inline">\(\text{Bin}_1\)</span> and <span class="math inline">\(\text{Bin}_2\)</span> over the set of values <span class="math inline">\([0; n]\)</span> with <span class="math inline">\(n\)</span> number of trials and success probability <span class="math inline">\(v_i\)</span>, i.e. <span class="math display">\[
+<p>The assumptions of CNAqc are that:</p>
+<ul>
+<li>coverage overdispersion is small to justify a Binomial instead of a Beta-Binomial;</li>
+<li>trials are well-represented by the median of the observed coverage.</li>
+</ul>
+<p><strong>Mixture construction.</strong> CNAqc computes two Binomial densities <span class="math inline">\(\text{Bin}_1\)</span> and <span class="math inline">\(\text{Bin}_2\)</span> over the set of values <span class="math inline">\([0; n]\)</span> with <span class="math inline">\(n\)</span> number of trials and success probability <span class="math inline">\(v_i\)</span>, i.e. <span class="math display">\[
 \text{Bin}_i = p(s \mid n; v_i)
-\]</span> as the probability of finding <span class="math inline">\(s\)</span> reads with the mutant allele at out of <span class="math inline">\(n\)</span> (median depth), assuming the mutation expected frequency is <span class="math inline">\(v_i\)</span> (notice that <span class="math inline">\(v_i\)</span> includes the effect of tumour purity).</p>
-<p>To finalize the densities of this mixed model <code>CNAqc</code> determines the absolute proportions of this mixture, which are used to scale the two theoretical Binomial densities. This process can be done in different ways; <code>CNAqc</code> uses a simple heuristic that counts how many mutations fall below the area of each Binomial density. The heuristics computes the 1% and 99% quantiles of those distributions, determing two ranges <span class="math inline">\(I_1 = [v_1^1; v_1^{99}]\)</span> and <span class="math inline">\(I_2 = [v_2^1; v_2^{99}]\)</span> so that:</p>
+\]</span> as the probability of finding <span class="math inline">\(s\)</span> reads with the mutant allele at out of <span class="math inline">\(n\)</span> (median depth), assuming the mutation expected frequency is <span class="math inline">\(v_i\)</span> (recall that <span class="math inline">\(v_i\)</span> includes the effect of tumour purity).</p>
+<p>To finalize the densities of this mixture CNAqc determines the proportions of the mutations per component; this is done by counting how many mutations fall below the area of each Binomial density, as defined by the 1% and 99% quantile of the components distribution. Two ranges <span class="math inline">\(I_1 = [v_1^1; v_1^{99}]\)</span> and <span class="math inline">\(I_2 = [v_2^1; v_2^{99}]\)</span> are computed so that:</p>
 <ul>
 <li>
 <span class="math inline">\(n_1\)</span> are the number of mutations with VAF in <span class="math inline">\(I_1\)</span>;</li>
 <li>
 <span class="math inline">\(n_2\)</span> are the number of mutations with VAF in <span class="math inline">\(I_2\)</span>;</li>
 </ul>
-<p>Notice that these two intervals might overlap (i.e., it could be that <span class="math inline">\(v_1^{99} &gt; v_2^{1}\)</span>). Also, note that mutations with VAF smaller than the smallest interval point (<span class="math inline">\(I_1 &lt; v_1^1\)</span>), which are putative <em>neutral tail</em> mutations, are not counted in <span class="math inline">\(n_1\)</span> (the mutations accrued after aneuploidy). This is correct, because they are subclonal; see more on the <em>analysis of evolutionary data including neutral evolution</em> with the <a href="">mobster package</a>).</p>
-<p>The counts are normalized to create a complete 2-components Binomial density mixture <span class="math display">\[
+<p>Notice that the intervals might overlap (i.e., <span class="math inline">\(v_1^{99} &gt; v_2^{1}\)</span>). Also, note that mutations with VAF below the smallest interval point (<span class="math inline">\(I_1 &lt; v_1^1\)</span>) are subclonal and not counted in <span class="math inline">\(n_1\)</span>, i.e., the mutations accrued after the CNA. The counts are normalized to create a complete two components Binomial density mixture <span class="math display">\[
 M = \mu_1 * \text{Bin}_1 + (1 - \mu_1) * \text{Bin}_2
 \]</span> where <span class="math inline">\(\mu_1 = n_1/(n_1+n_2)\)</span> and <span class="math inline">\(\mu_2 = 1 - \mu_1\)</span> are the normalized proportions.</p>
-</div>
-<div id="entropy-based-assignments" class="section level2">
-<h2 class="hasAnchor">
-<a href="#entropy-based-assignments" class="anchor"></a>Entropy-based assignments</h2>
-<p>Assigning mutation multiplicities is particularly difficult at the crossing of the two Binomial densities. Mutations “in between” the densities <span class="math inline">\(\text{Bin}_1\)</span> and <span class="math inline">\(\text{Bin}_1\)</span> cpuld have multiplicity <span class="math inline">\(m=1\)</span> or <span class="math inline">\(m=2\)</span>, and might be misassigned. This error determines “fake bumps” in the CCF distribution, often well above value 1; these type of errors are tricky to detect as they might look like both miscalled copy-number segments or false clonal architectures.</p>
-<p><code>CNAqc</code> can use a new entropy-based heuristic to assess wether it is possible to confidently assigne <span class="math inline">\(m\)</span> to each VAF value; the heuristic <em>is not parametrised</em>.</p>
-<p>Mutations with VAF below <span class="math inline">\(v_1\)</span> are assumed to be present in one copy (<span class="math inline">\(m=1\)</span>), those above <span class="math inline">\(v_2\)</span> in two copies (<span class="math inline">\(m=2\)</span>). Note that this argument implicitely assumes that we are working with clonal copy number calls, a simplyfying assumption.</p>
-<p><code>CNAqc</code> uses the entropy <span class="math inline">\(H(x)\)</span> for VAF value <span class="math inline">\(x\)</span> as defined from the mixture’s latent variables to determine mutation multiplicities <span class="math display">\[
+<p><strong>Entropy-based assignments.</strong></p>
+<p>Assigning mutation multiplicities is particularly difficult at the crossing of the two Binomial densities. Mutations “in between” the densities <span class="math inline">\(\text{Bin}_1\)</span> and <span class="math inline">\(\text{Bin}_1\)</span> could have multiplicity <span class="math inline">\(m=1\)</span> or <span class="math inline">\(m=2\)</span>, and might be mis-assigned. This error, if not corrected for, determines fake peaks in the CCF distribution which might be either confounded for miscalled copy-number segments or false <a href="https://caravagnalab.github.io/mobster/">subclonal expansions</a>.</p>
+<p>CNAqc uses an entropy-based heuristic to assess whether it is possible to confidently assign <span class="math inline">\(m\)</span> to each VAF value. Mutations with VAF below <span class="math inline">\(v_1\)</span> are in one copy (<span class="math inline">\(m=1\)</span>), those above <span class="math inline">\(v_2\)</span> in two copies (<span class="math inline">\(m=2\)</span>). CNAqc uses the entropy <span class="math inline">\(H(x)\)</span> <span class="math display">\[
 H(x) = - p_x \log(p_x)
-\]</span> where <span class="math inline">\(p_x\)</span> is the value of the mixture density at <span class="math inline">\(x\)</span>.</p>
-<p>Peaks and flexes in the entropy profile allow to identify those subranges of values where one of the two densities is dominated by the other, and therefore the value of <span class="math inline">\(m\)</span> can be estimated confidently. This consists in finding two peaks <span class="math inline">\(\rho_1\)</span> and <span class="math inline">\(\rho_2\)</span> and setting <span class="math inline">\(m=1\)</span> for <span class="math inline">\(x &lt; \rho_1\)</span>, <span class="math inline">\(m=2\)</span> for <span class="math inline">\(x &gt; \rho_2\)</span>, and <code>NA</code> for <span class="math inline">\(\rho_1 \leq x \leq \rho_2\)</span>. Values for <span class="math inline">\(\rho_i\)</span> are found using the <a href="https://cran.rstudio.com/web/packages/peakPick/index.html">peakPick: Peak Picking Methods Inspired by Biological Data</a> package.</p>
-<p>A kayotype analysed in this way is considered <code>PASS</code> is at most <code>p%</code> (default <code>10%</code>) mutations are not assignable (<code>CCF = NA</code>).</p>
+\]</span> for VAF value <span class="math inline">\(x\)</span> as defined from the mixture’s latent variables to determine mutation multiplicities, where <span class="math inline">\(p_x\)</span> is the value of the mixture density at <span class="math inline">\(x\)</span>.</p>
+<p>Peaks in <span class="math inline">\(H(x)\)</span> identify VAF ranges where one of the two densities is dominated by the other, and therefore the value of <span class="math inline">\(m\)</span> can be estimated confidently. This consists in finding two peaks <span class="math inline">\(\rho_1\)</span> and <span class="math inline">\(\rho_2\)</span> and setting <span class="math inline">\(m=1\)</span> for <span class="math inline">\(x &lt; \rho_1\)</span>, <span class="math inline">\(m=2\)</span> for <span class="math inline">\(x &gt; \rho_2\)</span>, and <code>NA</code> for <span class="math inline">\(\rho_1 \leq x \leq \rho_2\)</span>. Values for <span class="math inline">\(\rho_i\)</span> are found using <a href="https://cran.rstudio.com/web/packages/peakPick/index.html">peakPick</a> as for QC metrics.</p>
+<p>CNAqc computes a QC score for CCFs; a karyotype is considered <code>PASS</code> is less than <code>p%</code> (default <code>10%</code>) mutations are not assignable (<code>CCF = NA</code>). The computation results can be plot.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># We do not assemble the fits</span>
+<span class="fu"><a href="../reference/plot_CCF.html">plot_CCF</a></span><span class="op">(</span><span class="va">example_PCAWG</span>, assembly_plot <span class="op">=</span> <span class="cn">F</span><span class="op">)</span>
+<span class="co">#&gt; [[1]]</span></code></pre></div>
+<p><img src="a4_ccf_computation_files/figure-html/unnamed-chunk-3-1.png" width="576"></p>
+<pre><code>#&gt; 
+#&gt; [[2]]</code></pre>
+<p><img src="a4_ccf_computation_files/figure-html/unnamed-chunk-3-2.png" width="576"></p>
+<pre><code>#&gt; 
+#&gt; [[3]]</code></pre>
+<p><img src="a4_ccf_computation_files/figure-html/unnamed-chunk-3-3.png" width="576"></p>
+<pre><code>#&gt; 
+#&gt; [[4]]</code></pre>
+<p><img src="a4_ccf_computation_files/figure-html/unnamed-chunk-3-4.png" width="576"></p>
+<pre><code>#&gt; 
+#&gt; [[5]]</code></pre>
+<p><img src="a4_ccf_computation_files/figure-html/unnamed-chunk-3-5.png" width="576"> The plot shows the quantities described above; from left to right we have</p>
+<ul>
+<li>the CCF histogram, coloured by mutation multiplicity <span class="math inline">\(m\)</span>;</li>
+<li>the histogram of the input VAF, coloured by mutation multiplicity <span class="math inline">\(m\)</span>. In this plot the range between the red dashed lines represent the areas where it is not possible to compute reliably CCF values;</li>
+<li>the entropy profile <span class="math inline">\(H(x)\)</span>. Here notice that the points we seek to identify are those where <span class="math inline">\(H(x)\)</span> peaks higher (indeed matched). The width of the entropy peak that determines un-assignable mutations is proportional to the variance of the counts, and therefore the sequencing coverage;</li>
+<li>the proportion of mutations assigned for each value of <span class="math inline">\(m\)</span>, and those unassigned.</li>
+</ul>
+<p>The rightmost CCF histogram plot is also surrounded by a green or red square to reflect QC status of <code>PASS</code> (green) or <code>FAIL</code> (red).</p>
 </div>
-</div>
-<div id="mutation-multiplicity-using-the-raw-data" class="section level1">
-<h1 class="hasAnchor">
-<a href="#mutation-multiplicity-using-the-raw-data" class="anchor"></a>Mutation multiplicity using the raw data</h1>
-<p>To get CCF values in this case we use a more rough method. With a setup similar to the above, when we have computed the 2-class Binomial mixture, we use means of the Binomial distributions to determine a hard split of the data.</p>
-<p>We define <span class="math inline">\(p_1\)</span> and <span class="math inline">\(p_2\)</span> the two means. The midpoint would be centred at <span class="math inline">\(\hat{p} = p1 + (p_2-p_1)/2\)</span>, we shift it proportionally to size (<span class="math inline">\(n_i\)</span>) of the mixture components <span class="math display">\[
+<div id="hard-cut-based" class="section level2">
+<h2 class="hasAnchor">
+<a href="#hard-cut-based" class="anchor"></a>Hard-cut based</h2>
+<p>A method is available to compute CCFs regardless of the entropy <span class="math inline">\(H(x)\)</span>. When we have computed the 2-class Binomial mixture, CNAqc uses the means of the parameters of the Binomial distributions to determine a hard split of the data.</p>
+<p>Define <span class="math inline">\(p_1\)</span> and <span class="math inline">\(p_2\)</span> the two means; the midpoint would be centered at <span class="math inline">\(\hat{p} = p1 + (p_2-p_1)/2\)</span>, we shift it proportionally to size (<span class="math inline">\(n_i\)</span>) of the mixture components <span class="math display">\[
 \hat{p} = p_1 + (p_2 - p_1) * \mu_1
 \]</span> where <span class="math inline">\(\mu_1 = n_1/(n_1+n_2)\)</span> is the normalized proportions.</p>
-<p>We set <span class="math inline">\(m=1\)</span> for <span class="math inline">\(x \leq \hat{p}\)</span>, and <span class="math inline">\(m=2\)</span> otherwise. Since there are no <code>NA</code> assignments, the computation is always scored <code>PASS</code> for quality check.</p>
+<p>We set <span class="math inline">\(m=1\)</span> for <span class="math inline">\(x \leq \hat{p}\)</span>, and <span class="math inline">\(m=2\)</span> otherwise. Since there are no <code>NA</code> assignments, the computation is always scored <code>PASS</code> for QC purposes; for this reason this computation is more “rough” than the one based on entropy.</p>
 </div>
-<div id="example-entropy-computation" class="section level1">
+</div>
+<div id="example-computation" class="section level1">
 <h1 class="hasAnchor">
-<a href="#example-entropy-computation" class="anchor"></a>Example entropy computation</h1>
+<a href="#example-computation" class="anchor"></a>Example computation</h1>
 <p>We work with the template dataset.</p>
-<pre><code>#&gt;  [ CNAqc - CNA Quality Check ]
-#&gt; 
-#&gt;    2:2  [n = 7478, L = 1483 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { CTCF }
-#&gt;    4:2  [n = 1893, L =  331 Mb] ■■■■■■■
-#&gt;    3:2  [n = 1625, L =  357 Mb] ■■■■■■
-#&gt;    2:1  [n = 1563, L =  420 Mb] ■■■■■■  { TTN }
-#&gt;    3:0  [n =  312, L =  137 Mb] ■
-#&gt;    2:0  [n =   81, L =   39 Mb]   { TP53 }
-#&gt;   16:2  [n =    4, L =    0 Mb] 
-#&gt;   25:2  [n =    2, L =    1 Mb] 
-#&gt;    3:1  [n =    2, L =    1 Mb] 
-#&gt;  106:1  [n =    1, L =    0 Mb] 
-#&gt;   26:2  [n =    1, L =    0 Mb] 
-#&gt;   99:1  [n =    1, L =    0 Mb]</code></pre>
-<p>We run function <code>compute_CCF</code> to obtain the full analysis of CCF values. Without parameters (or with <code>method = 'ENTROPY'</code>), we use the entropy method and all supported karyotypes (default).</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">x</span> <span class="op">=</span> <span class="fu">compute_CCF</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Dataset available with the package </span>
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">'example_dataset_CNAqc'</span>, package <span class="op">=</span> <span class="st">'CNAqc'</span><span class="op">)</span>
+
+<span class="va">x</span> <span class="op">=</span> <span class="fu">CNAqc</span><span class="fu">::</span><span class="fu"><a href="../reference/init.html">init</a></span><span class="op">(</span>
+  <span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">snvs</span>, 
+  <span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">cna</span>,
+  <span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">purity</span>,
+  ref <span class="op">=</span> <span class="st">'hg19'</span><span class="op">)</span>
+<span class="co">#&gt;  [ CNAqc - CNA Quality Check ]</span>
+
+<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;    2:2  [n = 7478, L = 1483 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { CTCF }</span>
+<span class="co">#&gt;    4:2  [n = 1893, L =  331 Mb] ■■■■■■■</span>
+<span class="co">#&gt;    3:2  [n = 1625, L =  357 Mb] ■■■■■■</span>
+<span class="co">#&gt;    2:1  [n = 1563, L =  420 Mb] ■■■■■■  { TTN }</span>
+<span class="co">#&gt;    3:0  [n =  312, L =  137 Mb] ■</span>
+<span class="co">#&gt;    2:0  [n =   81, L =   39 Mb]   { TP53 }</span>
+<span class="co">#&gt;   16:2  [n =    4, L =    0 Mb] </span>
+<span class="co">#&gt;   25:2  [n =    2, L =    1 Mb] </span>
+<span class="co">#&gt;    3:1  [n =    2, L =    1 Mb] </span>
+<span class="co">#&gt;  106:1  [n =    1, L =    0 Mb] </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;          chr      from        to ref alt  DP NV       VAF driver_label is_driver</span>
+<span class="co">#&gt;         chr2 179431633 179431634   C   T 117 77 0.6581197          TTN      TRUE</span>
+<span class="co">#&gt;        chr16  67646006  67646007   C   T 120 54 0.4500000         CTCF      TRUE</span>
+<span class="co">#&gt;        chr17   7577106   7577107   G   C  84 78 0.9285714         TP53      TRUE</span></code></pre></div>
+<p>We run function <code>compute_CCF</code>. Without parameters (or with <code>method = 'ENTROPY'</code>), we use the entropy method. We note that in general one should check peaks-based QC and use only karyotypes that pass that analysis; for this sample, all of them pass.</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">x</span> <span class="op">=</span> <span class="fu"><a href="../reference/compute_CCF.html">compute_CCF</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
 <span class="co">#&gt; ── Computing mutation multiplicity for karyotype 2:0 using the entropy method. ─</span>
 <span class="co">#&gt; ℹ Expected Binomial peak(s) for these calls (1 and 2 copies): 0.445 and 0.89</span>
 <span class="co">#&gt; ℹ Mixing pre/ post aneuploidy: 0.09 and 0.91</span>
@@ -219,7 +291,9 @@ H(x) = - p_x \log(p_x)
 
 <span class="co"># Print new object, it informs us of the available computation</span>
 <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-<span class="co">#&gt; ── [ CNAqc ]  n = 12963 mutations in 267 segments (267 clonal + 0 subclonal). Ge</span>
+<span class="co">#&gt; ── [ CNAqc ]  12963 mutations in 267 segments (267 clonal, 0 subclonal). Genome</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; ── Clonal CNAs</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;    2:2  [n = 7478, L = 1483 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { CTCF }</span>
 <span class="co">#&gt;    4:2  [n = 1893, L =  331 Mb] ■■■■■■■</span>
@@ -230,20 +304,22 @@ H(x) = - p_x \log(p_x)
 <span class="co">#&gt;   16:2  [n =    4, L =    0 Mb] </span>
 <span class="co">#&gt;   25:2  [n =    2, L =    1 Mb] </span>
 <span class="co">#&gt;    3:1  [n =    2, L =    1 Mb] </span>
-<span class="co">#&gt;  106:1  [n =    1, L =    0 Mb] </span>
-<span class="co">#&gt;   26:2  [n =    1, L =    0 Mb] </span>
-<span class="co">#&gt;   99:1  [n =    1, L =    0 Mb]</span>
+<span class="co">#&gt;  106:1  [n =    1, L =    0 Mb]</span>
 <span class="co">#&gt; ℹ Sample Purity: 89% ~ Ploidy: 4.</span>
+<span class="co">#&gt; ℹ There are 3 annotated driver(s) mapped to clonal CNAs.</span>
+<span class="co">#&gt;          chr      from        to ref alt  DP NV       VAF driver_label is_driver</span>
+<span class="co">#&gt;         chr2 179431633 179431634   C   T 117 77 0.6581197          TTN      TRUE</span>
+<span class="co">#&gt;        chr16  67646006  67646007   C   T 120 54 0.4500000         CTCF      TRUE</span>
+<span class="co">#&gt;        chr17   7577106   7577107   G   C  84 78 0.9285714         TP53      TRUE</span>
 <span class="co">#&gt; ✓ Cancer Cell Fraction (CCF) data available for karyotypes:2:0, 2:1, and 2:2.</span>
 <span class="co">#&gt; ✓  PASS  CCF via ENTROPY.</span>
 <span class="co">#&gt; ✓  PASS  CCF via ENTROPY.</span>
 <span class="co">#&gt; ✓  PASS  CCF via ENTROPY.</span></code></pre></div>
-<p>We can visually inspect the CCF estimates for the computed karyotypes. We can do that accessing the field <code>x$CCF_estimates</code> which contains the data and a plot reporting the result of the analysis, or using the getter functions <code>CCF</code> and two plotting functions</p>
-<p>The tibble of the data reports the computed values in column <code>"CCF"</code>, and in column <code>"mutation multiplicity"</code>.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<p>A tibble of CCF values (getter function <code>CCF</code>) reports the computed values in column <code>"CCF"</code>, and in column <code>"mutation multiplicity"</code>.</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Tibble</span>
-<span class="fu">CCF</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">VAF</span>, <span class="va">mutation_multiplicity</span>, <span class="va">CCF</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 9,122 x 3</span>
+<span class="fu"><a href="../reference/CCF.html">CCF</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">VAF</span>, <span class="va">mutation_multiplicity</span>, <span class="va">CCF</span><span class="op">)</span>
+<span class="co">#&gt; # A tibble: 9,122 × 3</span>
 <span class="co">#&gt;      VAF mutation_multiplicity   CCF</span>
 <span class="co">#&gt;    &lt;dbl&gt;                 &lt;dbl&gt; &lt;dbl&gt;</span>
 <span class="co">#&gt;  1 0.08                      1 0.180</span>
@@ -257,28 +333,18 @@ H(x) = - p_x \log(p_x)
 <span class="co">#&gt;  9 0.891                     2 1.00 </span>
 <span class="co">#&gt; 10 0.815                     2 0.916</span>
 <span class="co">#&gt; # … with 9,112 more rows</span></code></pre></div>
-<p>The CCF analysis plot is a <code>ggpubr</code>-assembled figure, woith one line per karyotype.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">plot_CCF</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></code></pre></div>
-<p><img src="a4_ccf_computation_files/figure-html/unnamed-chunk-5-1.png" width="1056"></p>
-<p>The plot shows the quantities described above; from left to right we have</p>
-<ul>
-<li>the CCF histogram, coloured by mutation multiplicity <span class="math inline">\(m\)</span>;</li>
-<li>the histogram of the input VAF, coloured by mutation multiplicity <span class="math inline">\(m\)</span>. In this plot the range between the red dashed lines represent the areas where it is not possible to compute reliably CCF values;</li>
-<li>the entropy profile <span class="math inline">\(H(x)\)</span>. Here notice that the points we seek to identify are those where <span class="math inline">\(H(x)\)</span> peaks higher (indeed matched). The width of the entropy peak that determines unassignable mutations is proportional to the variance of the counts, and therefore the sequencing coverage;</li>
-<li>the porportion of mutations assigned for each value of <span class="math inline">\(m\)</span>, and those unassigned.</li>
-</ul>
-<p>The rightmost CCF histogram plot is also sourrounded by a green or red square to reflect QC status of <code>PASS</code> (green) or <code>FAIL</code> (red).</p>
+<p>Fit plot as above.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># We just omit empty plots with empty_plot = FALSE</span>
+<span class="fu"><a href="../reference/plot_CCF.html">plot_CCF</a></span><span class="op">(</span><span class="va">x</span>, empty_plot <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+<p><img src="a4_ccf_computation_files/figure-html/unnamed-chunk-7-1.png" width="1056"></p>
 <p>The CCF histogram can be computed with <code>plot_data_histogram</code>, specifying <code>CCF</code> as parameter.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">plot_data_histogram</span><span class="op">(</span><span class="va">x</span>, which <span class="op">=</span> <span class="st">'CCF'</span><span class="op">)</span></code></pre></div>
-<p><img src="a4_ccf_computation_files/figure-html/unnamed-chunk-6-1.png" width="384"></p>
-<div id="comparison-with-the-rough-computation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#comparison-with-the-rough-computation" class="anchor"></a>Comparison with the rough computation</h2>
-<p>We work with the same data as above, <code>x</code>.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">x_r</span> <span class="op">=</span> <span class="fu">compute_CCF</span><span class="op">(</span><span class="va">x</span>, method <span class="op">=</span> <span class="st">'ROUGH'</span><span class="op">)</span>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/plot_data_histogram.html">plot_data_histogram</a></span><span class="op">(</span><span class="va">x</span>, which <span class="op">=</span> <span class="st">'CCF'</span><span class="op">)</span></code></pre></div>
+<p><img src="a4_ccf_computation_files/figure-html/unnamed-chunk-8-1.png" width="384"></p>
+<p>We can compare the two CCF methods on the same data.</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">x_r</span> <span class="op">=</span> <span class="fu"><a href="../reference/compute_CCF.html">compute_CCF</a></span><span class="op">(</span><span class="va">x</span>, method <span class="op">=</span> <span class="st">'ROUGH'</span><span class="op">)</span>
 <span class="co">#&gt; ── Computing mutation multiplicity for karyotype 2:0 using raw VAF cuts. ───────</span>
 <span class="co">#&gt; ℹ Expected Binomial peak(s) for these calls (1 and 2 copies): 0.445 and 0.89.</span>
 <span class="co">#&gt; ℹ Mutations per peak: n = 7, n = 68. The hard cut is t = 0.486533333333333.</span>
@@ -290,7 +356,9 @@ H(x) = - p_x \log(p_x)
 <span class="co">#&gt; ℹ Mutations per peak: n = 649, n = 6205. The hard cut is t = 0.257744290207086.</span>
 
 <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">x_r</span><span class="op">)</span>
-<span class="co">#&gt; ── [ CNAqc ]  n = 12963 mutations in 267 segments (267 clonal + 0 subclonal). Ge</span>
+<span class="co">#&gt; ── [ CNAqc ]  12963 mutations in 267 segments (267 clonal, 0 subclonal). Genome</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; ── Clonal CNAs</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;    2:2  [n = 7478, L = 1483 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { CTCF }</span>
 <span class="co">#&gt;    4:2  [n = 1893, L =  331 Mb] ■■■■■■■</span>
@@ -301,65 +369,68 @@ H(x) = - p_x \log(p_x)
 <span class="co">#&gt;   16:2  [n =    4, L =    0 Mb] </span>
 <span class="co">#&gt;   25:2  [n =    2, L =    1 Mb] </span>
 <span class="co">#&gt;    3:1  [n =    2, L =    1 Mb] </span>
-<span class="co">#&gt;  106:1  [n =    1, L =    0 Mb] </span>
-<span class="co">#&gt;   26:2  [n =    1, L =    0 Mb] </span>
-<span class="co">#&gt;   99:1  [n =    1, L =    0 Mb]</span>
+<span class="co">#&gt;  106:1  [n =    1, L =    0 Mb]</span>
 <span class="co">#&gt; ℹ Sample Purity: 89% ~ Ploidy: 4.</span>
+<span class="co">#&gt; ℹ There are 3 annotated driver(s) mapped to clonal CNAs.</span>
+<span class="co">#&gt;          chr      from        to ref alt  DP NV       VAF driver_label is_driver</span>
+<span class="co">#&gt;         chr2 179431633 179431634   C   T 117 77 0.6581197          TTN      TRUE</span>
+<span class="co">#&gt;        chr16  67646006  67646007   C   T 120 54 0.4500000         CTCF      TRUE</span>
+<span class="co">#&gt;        chr17   7577106   7577107   G   C  84 78 0.9285714         TP53      TRUE</span>
 <span class="co">#&gt; ✓ Cancer Cell Fraction (CCF) data available for karyotypes:2:0, 2:1, and 2:2.</span>
 <span class="co">#&gt; ✓  PASS  CCF via ROUGH.</span>
 <span class="co">#&gt; ✓  PASS  CCF via ROUGH.</span>
 <span class="co">#&gt; ✓  PASS  CCF via ROUGH.</span></code></pre></div>
 <p>The data can be accessed in the usual way; the layout of the CCF plots are conceptually the same, but use different colors. The cutoff is annotated in the panel with the mutation multiplicity <span class="math inline">\(m\)</span> assigned to each observed VAF value.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">plot_CCF</span><span class="op">(</span><span class="va">x_r</span><span class="op">)</span></code></pre></div>
-<p><img src="a4_ccf_computation_files/figure-html/unnamed-chunk-8-1.png" width="1056"></p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/plot_CCF.html">plot_CCF</a></span><span class="op">(</span><span class="va">x_r</span>, empty_plot <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+<p><img src="a4_ccf_computation_files/figure-html/unnamed-chunk-10-1.png" width="1056"></p>
 <p>Notice that for karyotype <code>2:0</code> the difference among the mutation multiplicity histograms (second panel) obtained from the two methods is minimal. The difference is also small for triploid mutations (<code>'2:1'</code>). The results for tetraploid mutations is instead quite different, and that’s because there are not many mutations happening after genome doubling (leftmost peak, <span class="math inline">\(m=1\)</span>), and therefore the weighted split of the rough method tends to assign most mutations to the rightmost peak (<span class="math inline">\(m=2\)</span>).</p>
 <p>A visual plot is obtained using the internal function <code>CNAqc:::plot_mutation_multiplicity_rough</code>.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">ggpubr</span><span class="fu">::</span><span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html">ggarrange</a></span><span class="op">(</span>
   <span class="fu">CNAqc</span><span class="fu">:::</span><span class="fu">plot_mutation_multiplicity_entropy</span><span class="op">(</span><span class="va">x</span>, <span class="st">'2:2'</span><span class="op">)</span>,
   <span class="fu">CNAqc</span><span class="fu">:::</span><span class="fu">plot_mutation_multiplicity_rough</span><span class="op">(</span><span class="va">x_r</span>, <span class="st">'2:2'</span><span class="op">)</span>,
   nrow <span class="op">=</span> <span class="fl">2</span>
 <span class="op">)</span></code></pre></div>
-<p><img src="a4_ccf_computation_files/figure-html/unnamed-chunk-9-1.png" width="1056"></p>
+<p><img src="a4_ccf_computation_files/figure-html/unnamed-chunk-11-1.png" width="864"></p>
 <p>We can compare the two computed CCF distributions, and observe that the difference in the estimation from karyotype <code>'2:2'</code> creates a small bump at about <code>CCF=0.5</code>.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">ggpubr</span><span class="fu">::</span><span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html">ggarrange</a></span><span class="op">(</span>
-  <span class="fu">plot_data_histogram</span><span class="op">(</span><span class="va">x</span>, which <span class="op">=</span> <span class="st">'CCF'</span><span class="op">)</span>,
-  <span class="fu">plot_data_histogram</span><span class="op">(</span><span class="va">x_r</span>, which <span class="op">=</span> <span class="st">'CCF'</span><span class="op">)</span>,
+  <span class="fu"><a href="../reference/plot_data_histogram.html">plot_data_histogram</a></span><span class="op">(</span><span class="va">x</span>, which <span class="op">=</span> <span class="st">'CCF'</span><span class="op">)</span>,
+  <span class="fu"><a href="../reference/plot_data_histogram.html">plot_data_histogram</a></span><span class="op">(</span><span class="va">x_r</span>, which <span class="op">=</span> <span class="st">'CCF'</span><span class="op">)</span>,
   nrow <span class="op">=</span> <span class="fl">1</span>
 <span class="op">)</span></code></pre></div>
-<p><img src="a4_ccf_computation_files/figure-html/unnamed-chunk-10-1.png" width="768"></p>
-</div>
-<div id="decreasing-sequencing-coverage" class="section level2">
+<p><img src="a4_ccf_computation_files/figure-html/unnamed-chunk-12-1.png" width="768"></p>
+<div id="decreasing-coverage" class="section level2">
 <h2 class="hasAnchor">
-<a href="#decreasing-sequencing-coverage" class="anchor"></a>Decreasing sequencing coverage</h2>
+<a href="#decreasing-coverage" class="anchor"></a>Decreasing coverage</h2>
 <p>Because these are high-quality data, the results between methods are quite similar. This is however not always true.</p>
 <p>The uncertainty from the entropy method stems from the variance of the mixture components. Because these are Binomial distributions, the variance depends on the number of trials, so the sequencing coverage.</p>
 <p>If we take the data of <code>x</code> and just scale by a constant the read counts, we preserve the same VAF distribution but increase the variance because we decrease coverage. Let’s see this in practice retaining <code>70%</code> of the actual read counts.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">x_s</span> <span class="op">=</span> <span class="fu">init</span><span class="op">(</span>
-  <span class="va">x</span><span class="op">$</span><span class="va">snvs</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>DP <span class="op">=</span> <span class="va">DP</span> <span class="op">*</span> <span class="fl">.6</span>, NV <span class="op">=</span> <span class="va">NV</span> <span class="op">*</span> <span class="fl">.6</span><span class="op">)</span>,
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">x_s</span> <span class="op">=</span> <span class="fu"><a href="../reference/init.html">init</a></span><span class="op">(</span>
+  <span class="va">x</span><span class="op">$</span><span class="va">snvs</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>DP <span class="op">=</span> <span class="va">DP</span> <span class="op">*</span> <span class="fl">.6</span>, NV <span class="op">=</span> <span class="va">NV</span> <span class="op">*</span> <span class="fl">.6</span><span class="op">)</span>,
   <span class="va">x</span><span class="op">$</span><span class="va">cna</span>,
   <span class="va">x</span><span class="op">$</span><span class="va">purity</span><span class="op">)</span>
 <span class="co">#&gt;  [ CNAqc - CNA Quality Check ]</span>
 <span class="co">#&gt; ℹ Using reference genome coordinates for: GRCh38.</span>
-<span class="co">#&gt; ℹ Input n = 12963 mutations for 267 CNA segments (267 clonal, 0 subclonal)</span>
-<span class="co">#&gt; ✓ Mapped n = 12963 mutations to clonal segments (100% of input)</span>
+<span class="co">#&gt; ✓ Fortified calls for 12963 somatic mutations: 12963 SNVs (100%) and 0 indels.</span>
+<span class="co">#&gt; ✓ Fortified CNAs for 267 segments: 267 clonal and 0 subclonal.</span>
+<span class="co">#&gt; ✓ 12963 mutations mapped to clonal CNAs.</span>
 
 <span class="co"># Recompute CCF values</span>
-<span class="va">y_e</span> <span class="op">=</span> <span class="fu">compute_CCF</span><span class="op">(</span><span class="va">x_s</span>, method <span class="op">=</span> <span class="st">'ENTROPY'</span>, karyotypes <span class="op">=</span> <span class="st">'2:2'</span><span class="op">)</span>
+<span class="va">y_e</span> <span class="op">=</span> <span class="fu"><a href="../reference/compute_CCF.html">compute_CCF</a></span><span class="op">(</span><span class="va">x_s</span>, method <span class="op">=</span> <span class="st">'ENTROPY'</span>, karyotypes <span class="op">=</span> <span class="st">'2:2'</span><span class="op">)</span>
 <span class="co">#&gt; ── Computing mutation multiplicity for karyotype 2:2 using the entropy method. ─</span>
 <span class="co">#&gt; ℹ Expected Binomial peak(s) for these calls (1 and 2 copies): 0.235449735449735 and 0.470899470899471</span>
 <span class="co">#&gt; ℹ Mixing pre/ post aneuploidy: 0.1 and 0.9</span>
 <span class="co">#&gt; ℹ Not assignamble area: [0.258823529411765; 0.388235294117647]</span>
-<span class="va">y_r</span> <span class="op">=</span> <span class="fu">compute_CCF</span><span class="op">(</span><span class="va">x_s</span>, method <span class="op">=</span> <span class="st">'ROUGH'</span>, karyotypes <span class="op">=</span> <span class="st">'2:2'</span><span class="op">)</span>
+<span class="va">y_r</span> <span class="op">=</span> <span class="fu"><a href="../reference/compute_CCF.html">compute_CCF</a></span><span class="op">(</span><span class="va">x_s</span>, method <span class="op">=</span> <span class="st">'ROUGH'</span>, karyotypes <span class="op">=</span> <span class="st">'2:2'</span><span class="op">)</span>
 <span class="co">#&gt; ── Computing mutation multiplicity for karyotype 2:2 using raw VAF cuts. ───────</span>
 <span class="co">#&gt; ℹ Expected Binomial peak(s) for these calls (1 and 2 copies): 0.235449735449735 and 0.470899470899471.</span>
 <span class="co">#&gt; ℹ Mutations per peak: n = 717, n = 6412. The hard cut is t = 0.259130119839897.</span>
 
-<span class="fu">CCF</span><span class="op">(</span><span class="va">y_e</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">CCF</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 7,018 x 19</span>
+<span class="fu"><a href="../reference/CCF.html">CCF</a></span><span class="op">(</span><span class="va">y_e</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">CCF</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; # A tibble: 7,018 × 19</span>
 <span class="co">#&gt;    chr      from      to ref   alt   FILTER    DP    NV    VAF ANNOVAR_FUNCTION</span>
 <span class="co">#&gt;    &lt;chr&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;           </span>
 <span class="co">#&gt;  1 chr4    54939   54940 C     A     PASS   431.   26.4 0.0613 intronic        </span>
@@ -375,8 +446,8 @@ H(x) = - p_x \log(p_x)
 <span class="co">#&gt; # … with 7,008 more rows, and 9 more variables: GENE &lt;chr&gt;, is_driver &lt;lgl&gt;,</span>
 <span class="co">#&gt; #   driver_label &lt;chr&gt;, gene &lt;chr&gt;, type &lt;chr&gt;, karyotype &lt;chr&gt;,</span>
 <span class="co">#&gt; #   segment_id &lt;chr&gt;, mutation_multiplicity &lt;dbl&gt;, CCF &lt;dbl&gt;</span>
-<span class="fu">CCF</span><span class="op">(</span><span class="va">y_r</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">CCF</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 7,478 x 19</span>
+<span class="fu"><a href="../reference/CCF.html">CCF</a></span><span class="op">(</span><span class="va">y_r</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">CCF</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; # A tibble: 7,478 × 19</span>
 <span class="co">#&gt;    chr      from      to ref   alt   FILTER    DP    NV    VAF ANNOVAR_FUNCTION</span>
 <span class="co">#&gt;    &lt;chr&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;           </span>
 <span class="co">#&gt;  1 chr4    54939   54940 C     A     PASS   431.   26.4 0.0613 intronic        </span>
@@ -393,20 +464,20 @@ H(x) = - p_x \log(p_x)
 <span class="co">#&gt; #   driver_label &lt;chr&gt;, gene &lt;chr&gt;, type &lt;chr&gt;, karyotype &lt;chr&gt;,</span>
 <span class="co">#&gt; #   segment_id &lt;chr&gt;, mutation_multiplicity &lt;dbl&gt;, CCF &lt;dbl&gt;</span></code></pre></div>
 <p>Observe that there are about 400 less mutations with CCF values when we run the entropy method.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">ggpubr</span><span class="fu">::</span><span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html">ggarrange</a></span><span class="op">(</span>
   <span class="fu">CNAqc</span><span class="fu">:::</span><span class="fu">plot_mutation_multiplicity_entropy</span><span class="op">(</span><span class="va">y_e</span>, <span class="st">'2:2'</span><span class="op">)</span>,
   <span class="fu">CNAqc</span><span class="fu">:::</span><span class="fu">plot_mutation_multiplicity_rough</span><span class="op">(</span><span class="va">y_r</span>, <span class="st">'2:2'</span><span class="op">)</span>,
   nrow <span class="op">=</span> <span class="fl">2</span>
 <span class="op">)</span></code></pre></div>
-<p><img src="a4_ccf_computation_files/figure-html/unnamed-chunk-12-1.png" width="1056"></p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<p><img src="a4_ccf_computation_files/figure-html/unnamed-chunk-14-1.png" width="864"></p>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">ggpubr</span><span class="fu">::</span><span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html">ggarrange</a></span><span class="op">(</span>
-  <span class="fu">plot_data_histogram</span><span class="op">(</span><span class="va">y_e</span>, which <span class="op">=</span> <span class="st">'CCF'</span>, karyotypes <span class="op">=</span> <span class="st">'2:2'</span><span class="op">)</span>,
-  <span class="fu">plot_data_histogram</span><span class="op">(</span><span class="va">y_r</span>, which <span class="op">=</span> <span class="st">'CCF'</span>, karyotypes <span class="op">=</span> <span class="st">'2:2'</span><span class="op">)</span>,
+  <span class="fu"><a href="../reference/plot_data_histogram.html">plot_data_histogram</a></span><span class="op">(</span><span class="va">y_e</span>, which <span class="op">=</span> <span class="st">'CCF'</span>, karyotypes <span class="op">=</span> <span class="st">'2:2'</span><span class="op">)</span>,
+  <span class="fu"><a href="../reference/plot_data_histogram.html">plot_data_histogram</a></span><span class="op">(</span><span class="va">y_r</span>, which <span class="op">=</span> <span class="st">'CCF'</span>, karyotypes <span class="op">=</span> <span class="st">'2:2'</span><span class="op">)</span>,
   nrow <span class="op">=</span> <span class="fl">1</span>
 <span class="op">)</span></code></pre></div>
-<p><img src="a4_ccf_computation_files/figure-html/unnamed-chunk-13-1.png" width="768"></p>
+<p><img src="a4_ccf_computation_files/figure-html/unnamed-chunk-15-1.png" width="768"></p>
 </div>
 </div>
   </div>
@@ -422,7 +493,7 @@ H(x) = - p_x \log(p_x)
 
 
       <footer><div class="copyright">
-  <p>Developed by <a href="https://sites.google.com/site/giuliocaravagna/">Giulio Caravagna</a>.</p>
+  <p>Developed by <a href="https://www.caravagnalab.org">Giulio Caravagna</a>.</p>
 </div>
 
 <div class="pkgdown">

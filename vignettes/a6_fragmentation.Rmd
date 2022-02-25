@@ -20,6 +20,12 @@ options(crayon.enabled=FALSE)
 library(CNAqc)
 ```
 
+
+### Fragmentation of individual arms
+
+The fragmentation of a chromosome arm is assessed with a statistical test based on counting
+the size of the copy number segments mapping to the arm. This analysis works only at the level of clonal CNAs.
+
 We work with the template dataset. 
 
 ```{r echo=FALSE, results=TRUE, message=FALSE}
@@ -35,10 +41,6 @@ print(x)
 ```
 
 
-### Fragmentation of individual arms
-
-The fragmentation of a chromosome arm is assessed with a statistical test based on counting
-the size of the copy number segments mapping to the arm. 
 
 ```{r, fig.width=3, fig.height=3}
 # A histogram of segments' lenght
