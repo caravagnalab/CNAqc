@@ -26,6 +26,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -38,18 +40,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CNAqc</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.1</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="../articles/CNAqc.html">Get started</a>
 </li>
@@ -87,12 +83,15 @@
     <li>
       <a href="../articles/a8_annotate_variants.html">8. Drivers annotation</a>
     </li>
+    <li>
+      <a href="../articles/a9_automatic.html">9. Automatic CNA calling</a>
+    </li>
   </ul>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/caravagnalab/CNAqc/">
+  <a href="https://github.com/caravagnalab/CNAqc/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -107,19 +106,26 @@
 
       
 
-      </header><script src="CNAqc_files/header-attrs-2.11/header-attrs.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>CNAqc</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/caravagnalab/CNAqcvignettes/CNAqc.Rmd"><code>vignettes/CNAqc.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/caravagnalab/CNAqcvignettes/CNAqc.Rmd" class="external-link"><code>vignettes/CNAqc.Rmd</code></a></small>
       <div class="hidden name"><code>CNAqc.Rmd</code></div>
 
     </div>
 
     
     
+<div class="section level2">
+<h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
+</h2>
+<p><img src="logo_summary.png" alt="CNAqc Input/Output" width="650"><br><em>CNAqc Input/Output</em></p>
+<div class="section level3">
+<h3 id="summary">Summary<a class="anchor" aria-label="anchor" href="#summary"></a>
+</h3>
 <p>CNAqc requires in input</p>
 <ul>
 <li>read counts from somatic mutations such as single-nucleotide variants (SNVs) or insertion-deletions (indels);</li>
@@ -127,45 +133,92 @@
 <li>tumor purity estimate.</li>
 </ul>
 <p>CNAqc uses chromosome coordinates the supported references (GRCh38 and hg19) to map mutations to segments. Then, the tool can elaborate a number of analysis that help quality control the consistency among mutations, CNAs and tumour purity (see Articles).</p>
-<div id="the-model" class="section level3">
-<h3 class="hasAnchor">
-<a href="#the-model" class="anchor"></a>The model</h3>
-<p>The following concepts are used to develop <code>CNAqc</code> analyses.</p>
-<p>The <strong>expected Variant Allele Frequency (VAF)</strong> for mutations present in <span class="math inline">\(m\)</span> copies of the tumour genome, when the tumour sample purity is <span class="math inline">\(\pi\)</span> and segment ploidy is <span class="math inline">\(p\)</span> (i.e., total number of copies of the minor and major allele at the mutation locus) are given by <span class="math display">\[
-v = \dfrac{m \pi}{
-2 (1 - \pi) + \pi p 
+<p>CNAqc can be used to:</p>
+<ol style="list-style-type: decimal">
+<li>quality control (QC) concordance across the input mutations, CNAs and purity;</li>
+<li>select among alternative tumour segmentations and purity/ ploidy estimates;</li>
+<li>optimize CNA calling with automatic QC procedures leveraging the Sequenza copy number caller;</li>
+<li>estimate the Cancer Cell Fractions (CCFs) values of the input variants, and estimate their uncertainty;</li>
+<li>identify patterns of over-fragmentation of chromosome arms;</li>
+<li>smooth and subset segments with various filters;</li>
+<li>annotate putative driver mutations among the input variants, using VariantAnnotation.</li>
+</ol>
+</div>
+<div class="section level3">
+<h3 id="the-model">The model<a class="anchor" aria-label="anchor" href="#the-model"></a>
+</h3>
+<p>The following concepts are used to develop CNAqc</p>
+<div class="section level4">
+<h4 id="vaf-peaks">VAF peaks<a class="anchor" aria-label="anchor" href="#vaf-peaks"></a>
+</h4>
+<p><img src="peaks.png" alt="CNAqc Input/Output" width="650"><br><em>Expected VAF peaks for mutations mapped to diploid heterozygous and triploid clonal CNAs (at purity <span class="math inline">\(\pi=1\)</span>).</em></p>
+<p><strong>Variant Allele Frequency (VAF) peaks for clonal CNAs.</strong> Consider:</p>
+<ul>
+<li>mutations present in a percentage <span class="math inline">\(0&lt;c&lt;1\)</span> of tumour cells, sitting on a segment <span class="math inline">\(nA:nB\)</span>;</li>
+<li>tumour purity <span class="math inline">\(\pi\)</span>;</li>
+<li>a healthy diploid normal;</li>
+</ul>
+<p>Since the proportion of all reads from the tumour is <span class="math inline">\(\pi(n_A+n_B)\)</span>, and from the normal is <span class="math inline">\(2(1-\pi)\)</span>. Then, muations present in <span class="math inline">\(m\)</span> copies of the tumour genome should peak at VAF value <span class="math display">\[
+v_m(c) = \dfrac{m \pi c}{
+2 (1 - \pi) + \pi (n_A+n_B)
 } \, .
 \]</span></p>
-<p>This formula gives as an expectation for the allelic frequency of somatic mutations that map to a certain karyotype (e.g., a triploid <code>2:1</code> segment, or AAB),</p>
-<p>Given VAF, tumour purity and CNAs, <strong>Cancer Cell Fractions (CCF)</strong> values can be computed as</p>
+<p><strong>Variant Allele Frequency (VAF) peaks for subclonal CNAs.</strong> Consider a mixture of 2 subclones with segments <span class="math inline">\(n_{A,1}:n_{B,1}\)</span> and <span class="math inline">\(n_{A,2}:n_{B,2}\)</span>, proportions <span class="math inline">\(\rho_1\)</span> and <span class="math inline">\(\rho_2\)</span> (<span class="math inline">\(\rho_1+\rho_2=1\)</span>).</p>
+<p>The expected peak for a shared mutation with multiplicity <span class="math inline">\(m_1\)</span>/ <span class="math inline">\(m_2\)</span> in the first/ second subclone is <span class="math display">\[
+v_{m_1,m_2} = \dfrac{
+(m_1\rho_1 + m_2\rho_2) \pi
+}
+{
+2 (1 - \pi) + \pi [(n_{A,1}+n_{B,1})\rho_1 + (n_{A,2}+n_{B,2})\rho_2]
+} \, .
+\]</span></p>
+<p>The expected peak for a private mutation with multiplicity <span class="math inline">\(m\)</span> in subclone <span class="math inline">\(i\)</span> is <span class="math display">\[
+v_{m_i} = \dfrac{
+m\rho_i \pi
+}
+{
+2 (1 - \pi) + \pi [(n_{A,1}+n_{B,1})\rho_1 + (n_{A,2}+n_{B,2})\rho_2]
+} \, .
+\]</span></p>
+</div>
+<div class="section level4">
+<h4 id="ccfs">CCFs<a class="anchor" aria-label="anchor" href="#ccfs"></a>
+</h4>
+<p><strong>Cancer Cell Fractions (CCF).</strong> Given VAF, tumour purity and CNAs, CCF values can be computed as</p>
 <p><span class="math display">\[
-\text{CCF} = 
+c = 
 \dfrac{
 v[
-(p - 2)\pi + 2
+(n_a+n_B - 2)\pi + 2
 ]
 }
 {
 m \pi
 }
-\]</span> where <span class="math inline">\(p\)</span> is total segment ploidy (e.g., 3 for a <code>2:1</code> state).</p>
+\]</span></p>
+</div>
+</div>
 </div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
 
-      </div>
+        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
+    </nav>
+</div>
 
 </div>
 
 
 
       <footer><div class="copyright">
-  <p>Developed by <a href="https://www.caravagnalab.org">Giulio Caravagna</a>.</p>
+  <p></p>
+<p>Developed by <a href="https://www.caravagnalab.org" class="external-link">Giulio Caravagna</a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
       </footer>
@@ -173,6 +226,8 @@ m \pi
 
   
 
+
+  
 
   </body>
 </html>

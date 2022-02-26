@@ -304,7 +304,8 @@ subset_snvs = function(x,
 #'
 #' split_by_chromosome(example_PCAWG)
 split_by_chromosome = function(x,
-                               chromosomes = paste0('chr', c(1:22, 'X', 'Y')),)
+                               chromosomes = paste0('chr', c(1:22, 'X', 'Y'))
+                               )
 {
   stopifnot(inherits(x, 'cnaqc'))
 

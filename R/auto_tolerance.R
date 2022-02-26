@@ -1,14 +1,24 @@
-#' Title
+#' Determine the optimal error tolerance based on data
 #'
-#' @param purity
-#' @param coverage
-#' @param fpr
-#' @param epsilon_range
+#' @description Regression has been used to measure the rate of false positives
+#' from simulated tumours with variable coverage and purity. This allows to determine
+#' an optimal valut of $\epsilon$, parameter `purity_error` of function
+#' \code{analyze_peaks}.
 #'
-#' @return
+#' @param purity Data purity (putative).
+#' @param coverage Data coverage.
+#' @param fpr Desired false positive rate.
+#' @param epsilon_range Range of values to constrain $epsilon$.
+#'
+#' @return The $\epsilon$ value estimated from data, constrained to be in
+#' `epsilon_range`, in order to limit the false positive rate to be `fpr`.
+#'
+#' @importFrom  gtools mixedsort
+#'
 #' @export
 #'
 #' @examples
+#' auto_tolerance(.3, 90)
 auto_tolerance = function(
   purity,
   coverage,
@@ -57,7 +67,7 @@ auto_tolerance = function(
 
   # We can work and regress the input
   fpr_test = fpr_test %>%
-    mutate(key = paste0(coverage, ":", purity))
+    dplyr::mutate(key = paste0(coverage, ":", purity))
 
   # fpr_test %>%
   #   filter(coverage == 60) %>%
@@ -67,12 +77,12 @@ auto_tolerance = function(
 
   # Stat smooth data - create linear functions
   ggp_data = fpr_test %>%
-    group_split(key) %>%
+    dplyr::group_split(key) %>%
     lapply(function(w)
     {
       fit  <-
         glm(FPR ~ epsilon_tolerance,
-            data = w %>% select(epsilon_tolerance, FPR))
+            data = w %>%  dplyr::select(epsilon_tolerance, FPR))
 
       # y = mx + q
       q = fit$coefficients[1] %>% as.numeric()
@@ -110,8 +120,8 @@ auto_tolerance = function(
       }
 
       w[1,] %>%
-        select(coverage, purity) %>%
-        mutate(epsilon = inv_fun(fpr))
+        dplyr::select(coverage, purity) %>%
+        dplyr::mutate(epsilon = inv_fun(fpr))
     })
 
   regression_data = Reduce(f = bind_rows, ggp_data)
@@ -130,7 +140,7 @@ auto_tolerance = function(
 
   # Tile plot
   reg_plot2 = regression_data %>%
-    mutate(coverage = factor(
+    dplyr::mutate(coverage = factor(
       coverage,
       levels = gtools::mixedsort(regression_data$coverage %>% unique)
     )) %>%

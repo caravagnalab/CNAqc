@@ -21,18 +21,23 @@ authors:
 
 reference:
 - title: Available data
-  desc:  Reference and template dataset included in the package.
+  desc:  References and datasets included in the package.
   contents:
   - chr_coordinates_hg19
   - chr_coordinates_GRCh38
+  - gene_coordinates_GRCh38
   - DriverDBv3
   - example_dataset_CNAqc
+  - example_PCAWG
+  - fpr_test
 
 - title: Data processing
   desc:  Functions to manipulate and visualise the data.
   contents:
   - annotate_variants
   - init
+  - Mutations
+  - CNA
   - inspect_segment
   - get_drivers
   - plot_segment_size_distribution
@@ -44,6 +49,7 @@ reference:
   - plot_segments
   - plot_multisample_CNA
   - plot_icon_CNA
+  - split_by_chromosome
   - subsample
   - subset_by_segment_karyotype
   - subset_by_segment_totalcn
@@ -57,6 +63,7 @@ reference:
   desc:  Analysis of CNA calls by peak detection.
   contents:
   - analyze_peaks
+  - auto_tolerance
   - plot_peaks_analysis
   - plot_qc
 
@@ -85,3 +92,4 @@ reference:
   desc:  Pipelines implemented with CNAqc.
   contents:
   - Sequenza_CNAqc
+  - parse_Battenberg

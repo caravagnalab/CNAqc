@@ -6,7 +6,7 @@
 \title{Example CNAqc dataset.}
 \format{
 A list of snvs, cna and purity value that
-can be used to run CNAqc analyses.
+can be used with CNAqc. This tumour does not contain subclonal CNAs.
 }
 \usage{
 data(example_dataset_CNAqc)
@@ -18,8 +18,5 @@ Example CNAqc dataset.
 data(example_dataset_CNAqc)
 example_dataset_CNAqc
 
-}
-\references{
-??
 }
 \keyword{datasets}
