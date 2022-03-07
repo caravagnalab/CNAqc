@@ -84,3 +84,4 @@ Note that when CNAqc flags as PASS a solution that is visited for the first time
 At the end of the runs all the solutions identified are scored by CNAqc and reported with a PASS/FAIL status associated; the pipeline always indicates the best among the tested ones, based on the assigned quality score.
 
 
+

@@ -26,6 +26,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -38,18 +40,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CNAqc</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.1</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="../articles/CNAqc.html">Get started</a>
 </li>
@@ -57,7 +53,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -87,12 +83,15 @@
     <li>
       <a href="../articles/a8_annotate_variants.html">8. Drivers annotation</a>
     </li>
+    <li>
+      <a href="../articles/a9_automatic.html">9. Automatic CNA calling</a>
+    </li>
   </ul>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/caravagnalab/CNAqc/">
+  <a href="https://github.com/caravagnalab/CNAqc/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -107,13 +106,13 @@
 
       
 
-      </header><script src="a1_Introduction_files/header-attrs-2.11/header-attrs.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>1. Introduction</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/caravagnalab/CNAqcvignettes/a1_Introduction.Rmd"><code>vignettes/a1_Introduction.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/caravagnalab/CNAqcvignettes/a1_Introduction.Rmd" class="external-link"><code>vignettes/a1_Introduction.Rmd</code></a></small>
       <div class="hidden name"><code>a1_Introduction.Rmd</code></div>
 
     </div>
@@ -121,29 +120,33 @@
     
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/caravagnalab/CNAqc">CNAqc</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/caravagnalab/CNAqc" class="external-link">CNAqc</a></span><span class="op">)</span>
 <span class="co">#&gt; Warning: replacing previous import 'cli::num_ansi_colors' by</span>
 <span class="co">#&gt; 'crayon::num_ansi_colors' when loading 'BMix'</span>
 <span class="co">#&gt; Warning: replacing previous import 'crayon::%+%' by 'ggplot2::%+%' when loading</span>
 <span class="co">#&gt; 'BMix'</span>
-<span class="co">#&gt; ✓ Loading BMix, 'Binomial and Beta-Binomial univariate mixtures'. Support : &lt;https://caravagnalab.github.io/BMix/&gt;</span>
-<span class="co">#&gt; ✓ Loading CNAqc, 'Copy Number Alteration quality check'. Support : &lt;https://caravagn.github.io/CNAqc/&gt;</span></code></pre></div>
+<span class="co">#&gt; <span style="color: #00BB00;">✓</span> Loading <span style="color: #00BB00;">BMix</span>, <span style="font-style: italic;">'Binomial and Beta-Binomial univariate mixtures'</span>. Support : <span style="color: #0000BB; font-style: italic;">&lt;https://caravagnalab.github.io/BMix/&gt;</span></span>
+<span class="co">#&gt; Warning: package 'tidyr' was built under R version 4.0.5</span>
+<span class="co">#&gt; Warning: package 'readr' was built under R version 4.0.5</span>
+<span class="co">#&gt; Warning: package 'dplyr' was built under R version 4.0.5</span>
+<span class="co">#&gt; Warning: package 'crayon' was built under R version 4.0.5</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✓</span> Loading <span style="color: #00BB00;">CNAqc</span>, <span style="font-style: italic;">'Copy Number Alteration quality check'</span>. Support : <span style="color: #0000BB; font-style: italic;">&lt;https://caravagn.github.io/CNAqc/&gt;</span></span></code></pre></div>
 <p>We discuss the input format and references used in <code>CNAqc</code>.</p>
-<div id="input-format" class="section level1">
-<h1 class="hasAnchor">
-<a href="#input-format" class="anchor"></a>Input format</h1>
+<div class="section level2">
+<h2 id="input-format">Input format<a class="anchor" aria-label="anchor" href="#input-format"></a>
+</h2>
 <p><em>CNAqc notation:</em></p>
 <ul>
 <li><p><code>Major:minor</code> denotes a CNA segments with <code>Major</code>/<code>minor</code> copies of the major/minor allele. We sometimes call <code>"1:1"</code> the karyotype or the copy state of a segment.</p></li>
 <li><p>Clonal denotes something (a CNA, or a mutaiton) that is found at clonality 100% or, so to say, in all tumour cells; subclonal is something that is found in a subset of the tumour cells.</p></li>
 </ul>
-<div id="somatic-mutations" class="section level2">
-<h2 class="hasAnchor">
-<a href="#somatic-mutations" class="anchor"></a>Somatic mutations</h2>
+<div class="section level3">
+<h3 id="somatic-mutations">Somatic mutations<a class="anchor" aria-label="anchor" href="#somatic-mutations"></a>
+</h3>
 <p>You need to provide data for <em>somatic mutations</em>, <em>copy number segments</em> and <em>tumour purity</em>; CNAqc comes with a template dataset.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Load template data</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">'example_dataset_CNAqc'</span>, package <span class="op">=</span> <span class="st">'CNAqc'</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">'example_dataset_CNAqc'</span>, package <span class="op">=</span> <span class="st">'CNAqc'</span><span class="op">)</span></code></pre></div>
 <p>These fields are required for somatic mutations:</p>
 <ul>
 <li>the mutation location, as <code>chr</code>, <code>from</code>, <code>to</code>.</li>
@@ -155,7 +158,7 @@
 <p>Chromosome names and alleles should be in character format; chromosomes must be in the format <code>chr1</code>, <code>chr2</code>, etc..</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Example input SNVs</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span>
+<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span>
   <span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">snvs</span> <span class="op">%&gt;%</span> 
         <span class="fu">select</span><span class="op">(</span>
           <span class="va">chr</span>, <span class="va">from</span>, <span class="va">to</span>, <span class="co"># Genomic coordinates</span>
@@ -163,20 +166,20 @@
           <span class="va">DP</span>, <span class="va">NV</span>, <span class="va">VAF</span>    <span class="co"># Read counts (depth, number of variant reads, tumour VAF)</span>
           <span class="op">)</span>
   <span class="op">)</span>
-<span class="co">#&gt; # A tibble: 12,963 × 8</span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 12,963 × 8</span></span>
 <span class="co">#&gt;    chr      from      to ref   alt      DP    NV    VAF</span>
-<span class="co">#&gt;    &lt;chr&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 chr1  1027104 1027105 T     G        60     6 0.1   </span>
-<span class="co">#&gt;  2 chr1  2248588 2248589 A     C       127     9 0.0709</span>
-<span class="co">#&gt;  3 chr1  2461999 2462000 G     A       156    65 0.417 </span>
-<span class="co">#&gt;  4 chr1  2727935 2727936 T     C       180    90 0.5   </span>
-<span class="co">#&gt;  5 chr1  2763397 2763398 C     T       183    61 0.333 </span>
-<span class="co">#&gt;  6 chr1  2768208 2768209 C     T       203   130 0.640 </span>
-<span class="co">#&gt;  7 chr1  2935590 2935591 C     T       228   132 0.579 </span>
-<span class="co">#&gt;  8 chr1  2980032 2980033 C     T       196    85 0.434 </span>
-<span class="co">#&gt;  9 chr1  3387161 3387162 T     G       124     6 0.0484</span>
-<span class="co">#&gt; 10 chr1  3502517 3502518 G     A        88    10 0.114 </span>
-<span class="co">#&gt; # … with 12,953 more rows</span></code></pre></div>
+<span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> chr1  1<span style="text-decoration: underline;">027</span>104 1<span style="text-decoration: underline;">027</span>105 T     G        60     6 0.1   </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> chr1  2<span style="text-decoration: underline;">248</span>588 2<span style="text-decoration: underline;">248</span>589 A     C       127     9 0.070<span style="text-decoration: underline;">9</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> chr1  2<span style="text-decoration: underline;">461</span>999 2<span style="text-decoration: underline;">462</span>000 G     A       156    65 0.417 </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> chr1  2<span style="text-decoration: underline;">727</span>935 2<span style="text-decoration: underline;">727</span>936 T     C       180    90 0.5   </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> chr1  2<span style="text-decoration: underline;">763</span>397 2<span style="text-decoration: underline;">763</span>398 C     T       183    61 0.333 </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> chr1  2<span style="text-decoration: underline;">768</span>208 2<span style="text-decoration: underline;">768</span>209 C     T       203   130 0.640 </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> chr1  2<span style="text-decoration: underline;">935</span>590 2<span style="text-decoration: underline;">935</span>591 C     T       228   132 0.579 </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> chr1  2<span style="text-decoration: underline;">980</span>032 2<span style="text-decoration: underline;">980</span>033 C     T       196    85 0.434 </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> chr1  3<span style="text-decoration: underline;">387</span>161 3<span style="text-decoration: underline;">387</span>162 T     G       124     6 0.048<span style="text-decoration: underline;">4</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">10</span> chr1  3<span style="text-decoration: underline;">502</span>517 3<span style="text-decoration: underline;">502</span>518 G     A        88    10 0.114 </span>
+<span class="co">#&gt; <span style="color: #949494;"># … with 12,953 more rows</span></span></code></pre></div>
 <p>Optionally, you can annotate also <em>driver mutations</em> by adding the following columns to your data:</p>
 <ul>
 <li>
@@ -185,31 +188,31 @@
 <code>driver_label</code>: the label to be shown in the plots that report also drivers (e.g., <code>BRAF V600E</code> could be a label).</li>
 </ul>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span>
   <span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">snvs</span> <span class="op">%&gt;%</span> 
         <span class="fu">select</span><span class="op">(</span>
           <span class="va">chr</span>, <span class="va">from</span>, <span class="va">to</span>, <span class="va">ref</span>, <span class="va">alt</span>, <span class="va">is_driver</span>, <span class="va">driver_label</span>, <span class="fu">everything</span><span class="op">(</span><span class="op">)</span>
         <span class="op">)</span>
   <span class="op">)</span>
-<span class="co">#&gt; # A tibble: 12,963 × 13</span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 12,963 × 13</span></span>
 <span class="co">#&gt;    chr      from      to ref   alt   is_driver driver_label   FILTER    DP    NV</span>
-<span class="co">#&gt;    &lt;chr&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;lgl&gt;     &lt;chr&gt;          &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 chr1  1027104 1027105 T     G     FALSE     C1orf159(ENST… PASS      60     6</span>
-<span class="co">#&gt;  2 chr1  2248588 2248589 A     C     FALSE     SKI(dist=7030… PASS     127     9</span>
-<span class="co">#&gt;  3 chr1  2461999 2462000 G     A     FALSE     HES5           PASS     156    65</span>
-<span class="co">#&gt;  4 chr1  2727935 2727936 T     C     FALSE     RP11-740P5.2   PASS     180    90</span>
-<span class="co">#&gt;  5 chr1  2763397 2763398 C     T     FALSE     RP11-740P5.3(… PASS     183    61</span>
-<span class="co">#&gt;  6 chr1  2768208 2768209 C     T     FALSE     RP11-740P5.3(… PASS     203   130</span>
-<span class="co">#&gt;  7 chr1  2935590 2935591 C     T     FALSE     RP11-740P5.3(… PASS     228   132</span>
-<span class="co">#&gt;  8 chr1  2980032 2980033 C     T     FALSE     LINC00982      PASS     196    85</span>
-<span class="co">#&gt;  9 chr1  3387161 3387162 T     G     FALSE     ARHGEF16       PASS     124     6</span>
-<span class="co">#&gt; 10 chr1  3502517 3502518 G     A     FALSE     MEGF6          PASS      88    10</span>
-<span class="co">#&gt; # … with 12,953 more rows, and 3 more variables: VAF &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   ANNOVAR_FUNCTION &lt;chr&gt;, GENE &lt;chr&gt;</span></code></pre></div>
+<span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> chr1  1<span style="text-decoration: underline;">027</span>104 1<span style="text-decoration: underline;">027</span>105 T     G     FALSE     C1orf159(ENST… PASS      60     6</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> chr1  2<span style="text-decoration: underline;">248</span>588 2<span style="text-decoration: underline;">248</span>589 A     C     FALSE     SKI(dist=7030… PASS     127     9</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> chr1  2<span style="text-decoration: underline;">461</span>999 2<span style="text-decoration: underline;">462</span>000 G     A     FALSE     HES5           PASS     156    65</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> chr1  2<span style="text-decoration: underline;">727</span>935 2<span style="text-decoration: underline;">727</span>936 T     C     FALSE     RP11-740P5.2   PASS     180    90</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> chr1  2<span style="text-decoration: underline;">763</span>397 2<span style="text-decoration: underline;">763</span>398 C     T     FALSE     RP11-740P5.3(… PASS     183    61</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> chr1  2<span style="text-decoration: underline;">768</span>208 2<span style="text-decoration: underline;">768</span>209 C     T     FALSE     RP11-740P5.3(… PASS     203   130</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> chr1  2<span style="text-decoration: underline;">935</span>590 2<span style="text-decoration: underline;">935</span>591 C     T     FALSE     RP11-740P5.3(… PASS     228   132</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> chr1  2<span style="text-decoration: underline;">980</span>032 2<span style="text-decoration: underline;">980</span>033 C     T     FALSE     LINC00982      PASS     196    85</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> chr1  3<span style="text-decoration: underline;">387</span>161 3<span style="text-decoration: underline;">387</span>162 T     G     FALSE     ARHGEF16       PASS     124     6</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">10</span> chr1  3<span style="text-decoration: underline;">502</span>517 3<span style="text-decoration: underline;">502</span>518 G     A     FALSE     MEGF6          PASS      88    10</span>
+<span class="co">#&gt; <span style="color: #949494;"># … with 12,953 more rows, and 3 more variables: VAF &lt;dbl&gt;,</span></span>
+<span class="co">#&gt; <span style="color: #949494;">#   ANNOVAR_FUNCTION &lt;chr&gt;, GENE &lt;chr&gt;</span></span></code></pre></div>
 </div>
-<div id="copy-number-segments" class="section level2">
-<h2 class="hasAnchor">
-<a href="#copy-number-segments" class="anchor"></a>Copy number segments</h2>
+<div class="section level3">
+<h3 id="copy-number-segments">Copy number segments<a class="anchor" aria-label="anchor" href="#copy-number-segments"></a>
+</h3>
 <p>CNAqc distinguishes between 3 types of CNAs:</p>
 <ul>
 <li>clonal simple CNAs:
@@ -240,27 +243,27 @@
 </ul>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Example input CNA</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span>
+<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span>
   <span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">cna</span> <span class="op">%&gt;%</span> 
         <span class="fu">select</span><span class="op">(</span>
           <span class="va">chr</span>, <span class="va">from</span>, <span class="va">to</span>, <span class="co"># Genomic coordinates</span>
           <span class="va">Major</span>, <span class="va">minor</span>  <span class="co"># Number of copies of major/ and minor allele (B-allele)</span>
         <span class="op">)</span>
   <span class="op">)</span>
-<span class="co">#&gt; # A tibble: 267 × 5</span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 267 × 5</span></span>
 <span class="co">#&gt;    chr       from       to Major minor</span>
-<span class="co">#&gt;    &lt;chr&gt;    &lt;int&gt;    &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 chr1    840009  1689987     3     2</span>
-<span class="co">#&gt;  2 chr1   1689988  1815015     3     2</span>
-<span class="co">#&gt;  3 chr1   1815016  9799969     3     2</span>
-<span class="co">#&gt;  4 chr1  10479910 12079917     3     2</span>
-<span class="co">#&gt;  5 chr1  12079917 12154980     3     2</span>
-<span class="co">#&gt;  6 chr1  12154981 12839977     3     2</span>
-<span class="co">#&gt;  7 chr1  13780016 17790026     3     2</span>
-<span class="co">#&gt;  8 chr1  17849962 21080067     3     2</span>
-<span class="co">#&gt;  9 chr1  21080068 21559998     3     2</span>
-<span class="co">#&gt; 10 chr1  21559998 24830001     3     2</span>
-<span class="co">#&gt; # … with 257 more rows</span></code></pre></div>
+<span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> chr1    <span style="text-decoration: underline;">840</span>009  1<span style="text-decoration: underline;">689</span>987     3     2</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> chr1   1<span style="text-decoration: underline;">689</span>988  1<span style="text-decoration: underline;">815</span>015     3     2</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> chr1   1<span style="text-decoration: underline;">815</span>016  9<span style="text-decoration: underline;">799</span>969     3     2</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> chr1  10<span style="text-decoration: underline;">479</span>910 12<span style="text-decoration: underline;">079</span>917     3     2</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> chr1  12<span style="text-decoration: underline;">079</span>917 12<span style="text-decoration: underline;">154</span>980     3     2</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> chr1  12<span style="text-decoration: underline;">154</span>981 12<span style="text-decoration: underline;">839</span>977     3     2</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> chr1  13<span style="text-decoration: underline;">780</span>016 17<span style="text-decoration: underline;">790</span>026     3     2</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> chr1  17<span style="text-decoration: underline;">849</span>962 21<span style="text-decoration: underline;">080</span>067     3     2</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> chr1  21<span style="text-decoration: underline;">080</span>068 21<span style="text-decoration: underline;">559</span>998     3     2</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">10</span> chr1  21<span style="text-decoration: underline;">559</span>998 24<span style="text-decoration: underline;">830</span>001     3     2</span>
+<span class="co">#&gt; <span style="color: #949494;"># … with 257 more rows</span></span></code></pre></div>
 <p>If you wish to use subclonal CNAs, further columns are required.</p>
 <ul>
 <li>
@@ -269,18 +272,18 @@
 <p>The model captures a mixture of two subclones, one with segment <code>Major:minor</code> and CCF <code>CCF</code> (which is compulsory), and another with segment <code>Major_2:minor_2</code> and CCF <code>1 - CCF</code>.</p>
 <p>The values of <code>Major_2</code> and <code>minor_2</code> for clonal segments (<code>CCF = 1</code>) can be <code>NA</code> and will not be used.</p>
 </div>
-<div id="tumour-purity" class="section level2">
-<h2 class="hasAnchor">
-<a href="#tumour-purity" class="anchor"></a>Tumour purity</h2>
+<div class="section level3">
+<h3 id="tumour-purity">Tumour purity<a class="anchor" aria-label="anchor" href="#tumour-purity"></a>
+</h3>
 <p>Tumour <em>purity</em>, defined as the percentage of reads coming from tumour cells must be a value in <span class="math inline">\([0, 1]\)</span>.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Example purity</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">purity</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">purity</span><span class="op">)</span>
 <span class="co">#&gt; [1] 0.89</span></code></pre></div>
 </div>
-<div id="initialisation-of-a-new-dataset" class="section level2">
-<h2 class="hasAnchor">
-<a href="#initialisation-of-a-new-dataset" class="anchor"></a>Initialisation of a new dataset</h2>
+<div class="section level3">
+<h3 id="initialisation-of-a-new-dataset">Initialisation of a new dataset<a class="anchor" aria-label="anchor" href="#initialisation-of-a-new-dataset"></a>
+</h3>
 <p>To use <code>CNAqc</code>, you need to initialize a <code>cnaqc</code> S3 object with the initialisation function <code>init</code>.</p>
 <p>This function will check input formats, and will map mutations to CNA segments. This function does not subset the data and retains all and only the mutations that map on top of a CNA segment.</p>
 <p>When you create a dataset it is required to explicit the reference genome for the assembly (see below).</p>
@@ -292,164 +295,171 @@
   <span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">purity</span>,
   ref <span class="op">=</span> <span class="st">'hg19'</span>
   <span class="op">)</span>
-<span class="co">#&gt;  [ CNAqc - CNA Quality Check ]</span>
-<span class="co">#&gt; ℹ Using reference genome coordinates for: hg19.</span>
-<span class="co">#&gt; ℹ Drivers are annotated, but 'gene' column is missing, using mutation location.</span>
-<span class="co">#&gt; ✓ Fortified calls for 12963 somatic mutations: 12963 SNVs (100%) and 0 indels.</span>
-<span class="co">#&gt; ! CNAs have no CCF, assuming clonal CNAs (CCF = 1).</span>
-<span class="co">#&gt; ✓ Fortified CNAs for 267 segments: 267 clonal and 0 subclonal.</span>
-<span class="co">#&gt; ✓ 12963 mutations mapped to clonal CNAs.</span></code></pre></div>
+<span class="co">#&gt; <span style="color: #BBBBBB; background-color: #0000BB;"> [ CNAqc - CNA Quality Check ] </span></span>
+<span class="co"><span style="color: #BBBBBB; background-color: #0000BB;">#&gt; </span></span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Using reference genome coordinates for: <span style="color: #00BB00;">hg19</span>.</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Drivers are annotated, but 'gene' column is missing, using mutation location.</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✓</span> Fortified calls for <span style="color: #00BB00;">12963</span> somatic mutations: <span style="color: #00BB00;">12963</span> SNVs (<span style="color: #00BB00;">100%</span>) and <span style="color: #00BB00;">0</span> indels.</span>
+<span class="co">#&gt; <span style="color: #BBBB00;">!</span> CNAs have no CCF, assuming clonal CNAs (CCF = 1).</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✓</span> Fortified CNAs for <span style="color: #00BB00;">267</span> segments: <span style="color: #00BB00;">267</span> clonal and <span style="color: #00BB00;">0</span> subclonal.</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✓</span> <span style="color: #00BB00;">12963</span> mutations mapped to clonal CNAs.</span></code></pre></div>
 <p>The summary of <code>x</code> can be <code>print</code> to provide a number of usefull information.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-<span class="co">#&gt; ── [ CNAqc ]  12963 mutations in 267 segments (267 clonal, 0 subclonal). Genome</span>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
+<span class="co">#&gt; ── <span style="color: #000000; background-color: #BBBB00;">[ CNAqc ] </span> <span style="color: #00BB00;">12963</span> mutations in <span style="color: #00BB00;">267</span> segments (<span style="color: #00BB00;">267</span> clonal, <span style="color: #00BB00;">0</span> subclonal). Genome</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; ── Clonal CNAs</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt;    2:2  [n = 7478, L = 1483 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { CTCF }</span>
+<span class="co">#&gt;    2:2  [n = 7478, L = 1483 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { <span style="color: #BBBB00;">CTCF</span> }</span>
 <span class="co">#&gt;    4:2  [n = 1893, L =  331 Mb] ■■■■■■■</span>
 <span class="co">#&gt;    3:2  [n = 1625, L =  357 Mb] ■■■■■■</span>
-<span class="co">#&gt;    2:1  [n = 1563, L =  420 Mb] ■■■■■■  { TTN }</span>
+<span class="co">#&gt;    2:1  [n = 1563, L =  420 Mb] ■■■■■■  { <span style="color: #BBBB00;">TTN</span> }</span>
 <span class="co">#&gt;    3:0  [n =  312, L =  137 Mb] ■</span>
-<span class="co">#&gt;    2:0  [n =   81, L =   39 Mb]   { TP53 }</span>
+<span class="co">#&gt;    2:0  [n =   81, L =   39 Mb]   { <span style="color: #BBBB00;">TP53</span> }</span>
 <span class="co">#&gt;   16:2  [n =    4, L =    0 Mb] </span>
 <span class="co">#&gt;   25:2  [n =    2, L =    1 Mb] </span>
 <span class="co">#&gt;    3:1  [n =    2, L =    1 Mb] </span>
 <span class="co">#&gt;  106:1  [n =    1, L =    0 Mb]</span>
-<span class="co">#&gt; ℹ Sample Purity: 89% ~ Ploidy: 4.</span>
-<span class="co">#&gt; ℹ There are 3 annotated driver(s) mapped to clonal CNAs.</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample Purity: 89% ~ Ploidy: 4.</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> There are 3 annotated driver(s) mapped to clonal CNAs.</span>
 <span class="co">#&gt;          chr      from        to ref alt  DP NV       VAF driver_label is_driver</span>
 <span class="co">#&gt;         chr2 179431633 179431634   C   T 117 77 0.6581197          TTN      TRUE</span>
 <span class="co">#&gt;        chr16  67646006  67646007   C   T 120 54 0.4500000         CTCF      TRUE</span>
 <span class="co">#&gt;        chr17   7577106   7577107   G   C  84 78 0.9285714         TP53      TRUE</span></code></pre></div>
 </div>
-<div id="subsetting-data" class="section level2">
-<h2 class="hasAnchor">
-<a href="#subsetting-data" class="anchor"></a>Subsetting data</h2>
-<p>You can <em>subset randomly</em> the data; if drivers are annotated, they can be forced to say in.</p>
+<div class="section level3">
+<h3 id="subsetting-data">Subsetting data<a class="anchor" aria-label="anchor" href="#subsetting-data"></a>
+</h3>
+<p>You can <em>subset randomly</em> the data; if drivers are annotated, they can be forced to stay in.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">y_5000</span> <span class="op">=</span> <span class="fu"><a href="../reference/subsample.html">subsample</a></span><span class="op">(</span><span class="va">x</span>, N <span class="op">=</span> <span class="fl">5000</span>, keep_drivers <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="co">#&gt;  [ CNAqc - CNA Quality Check ]</span>
-<span class="co">#&gt; ℹ Using reference genome coordinates for: GRCh38.</span>
-<span class="co">#&gt; ✓ Fortified calls for 5003 somatic mutations: 5003 SNVs (100%) and 0 indels.</span>
-<span class="co">#&gt; ! CNAs have no CCF, assuming clonal CNAs (CCF = 1).</span>
-<span class="co">#&gt; ✓ Fortified CNAs for 267 segments: 267 clonal and 0 subclonal.</span>
+<span class="co">#&gt; <span style="color: #BBBBBB; background-color: #0000BB;"> [ CNAqc - CNA Quality Check ] </span></span>
+<span class="co"><span style="color: #BBBBBB; background-color: #0000BB;">#&gt; </span></span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Using reference genome coordinates for: <span style="color: #00BB00;">GRCh38</span>.</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✓</span> Fortified calls for <span style="color: #00BB00;">5003</span> somatic mutations: <span style="color: #00BB00;">5003</span> SNVs (<span style="color: #00BB00;">100%</span>) and <span style="color: #00BB00;">0</span> indels.</span>
+<span class="co">#&gt; <span style="color: #BBBB00;">!</span> CNAs have no CCF, assuming clonal CNAs (CCF = 1).</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✓</span> Fortified CNAs for <span style="color: #00BB00;">267</span> segments: <span style="color: #00BB00;">267</span> clonal and <span style="color: #00BB00;">0</span> subclonal.</span>
 <span class="co">#&gt; Warning in map_mutations_to_clonal_segments(snvs, cna_clonal): [CNAqc] a</span>
 <span class="co">#&gt; karyotype column is present in CNA calls, and will be overwritten</span>
-<span class="co">#&gt; ✓ 5003 mutations mapped to clonal CNAs.</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✓</span> <span style="color: #00BB00;">5003</span> mutations mapped to clonal CNAs.</span>
 
 <span class="co"># 5000 + the ranomd entries that we sampled before</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">y_5000</span><span class="op">)</span>
-<span class="co">#&gt; ── [ CNAqc ]  5003 mutations in 267 segments (267 clonal, 0 subclonal). Genome r</span>
+<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">y_5000</span><span class="op">)</span>
+<span class="co">#&gt; ── <span style="color: #000000; background-color: #BBBB00;">[ CNAqc ] </span> <span style="color: #00BB00;">5003</span> mutations in <span style="color: #00BB00;">267</span> segments (<span style="color: #00BB00;">267</span> clonal, <span style="color: #00BB00;">0</span> subclonal). Genome r</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; ── Clonal CNAs</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt;   2:2  [n = 2861, L = 1483 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { CTCF }</span>
-<span class="co">#&gt;   4:2  [n =  744, L =  331 Mb] ■■■■■■■</span>
-<span class="co">#&gt;   2:1  [n =  628, L =  420 Mb] ■■■■■■  { TTN }</span>
-<span class="co">#&gt;   3:2  [n =  611, L =  357 Mb] ■■■■■■</span>
-<span class="co">#&gt;   3:0  [n =  121, L =  137 Mb] ■</span>
-<span class="co">#&gt;   2:0  [n =   34, L =   39 Mb]   { TP53, TP53 }</span>
-<span class="co">#&gt;  25:2  [n =    2, L =    1 Mb] </span>
-<span class="co">#&gt;  16:2  [n =    1, L =    0 Mb] </span>
-<span class="co">#&gt;   3:1  [n =    1, L =    1 Mb]</span>
-<span class="co">#&gt; ℹ Sample Purity: 89% ~ Ploidy: 4.</span>
-<span class="co">#&gt; ℹ There are 4 annotated driver(s) mapped to clonal CNAs.</span>
+<span class="co">#&gt;    2:2  [n = 2942, L = 1483 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { <span style="color: #BBBB00;">CTCF, CTCF</span> }</span>
+<span class="co">#&gt;    4:2  [n =  708, L =  331 Mb] ■■■■■■</span>
+<span class="co">#&gt;    3:2  [n =  625, L =  357 Mb] ■■■■■■</span>
+<span class="co">#&gt;    2:1  [n =  595, L =  420 Mb] ■■■■■  { <span style="color: #BBBB00;">TTN</span> }</span>
+<span class="co">#&gt;    3:0  [n =   95, L =  137 Mb] ■</span>
+<span class="co">#&gt;    2:0  [n =   32, L =   39 Mb]   { <span style="color: #BBBB00;">TP53, TP53</span> }</span>
+<span class="co">#&gt;   16:2  [n =    2, L =    0 Mb] </span>
+<span class="co">#&gt;  106:1  [n =    1, L =    0 Mb] </span>
+<span class="co">#&gt;   25:2  [n =    1, L =    1 Mb] </span>
+<span class="co">#&gt;   26:2  [n =    1, L =    0 Mb]</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample Purity: 89% ~ Ploidy: 4.</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> There are 5 annotated driver(s) mapped to clonal CNAs.</span>
 <span class="co">#&gt;          chr      from        to ref alt  DP NV       VAF driver_label is_driver</span>
 <span class="co">#&gt;         chr2 179431633 179431634   C   T 117 77 0.6581197          TTN      TRUE</span>
 <span class="co">#&gt;        chr16  67646006  67646007   C   T 120 54 0.4500000         CTCF      TRUE</span>
 <span class="co">#&gt;        chr17   7577106   7577107   G   C  84 78 0.9285714         TP53      TRUE</span>
-<span class="co">#&gt;        chr17   7577106   7577107   G   C  84 78 0.9285714         TP53      TRUE</span></code></pre></div>
-<p>You can also subset data by <em>karyotype of the segments</em>, and by <em>total copy number</em> of the segment. Both subset do not keep drivers that map off the selected segments.</p>
+<span class="co">#&gt;        chr17   7577106   7577107   G   C  84 78 0.9285714         TP53      TRUE</span>
+<span class="co">#&gt;        chr16  67646006  67646007   C   T 120 54 0.4500000         CTCF      TRUE</span></code></pre></div>
+<p>You can also subset data by <em>karyotype of the segments</em>, and by <em>total copy number</em> of the segment.</p>
+<p>Both subset functions do not keep drivers that map off from the selected segments.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Triploid and copy-neutral LOH segments </span>
-<span class="va">y_tripl_cnloh</span> <span class="op">=</span> <span class="fu"><a href="../reference/subset_by_segment_karyotype.html">subset_by_segment_karyotype</a></span><span class="op">(</span><span class="va">x</span>, karyotypes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'2:1'</span>, <span class="st">'2:0'</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt;  [ CNAqc - CNA Quality Check ]</span>
-<span class="co">#&gt; ℹ Using reference genome coordinates for: hg19.</span>
-<span class="co">#&gt; ✓ Fortified calls for 12963 somatic mutations: 12963 SNVs (100%) and 0 indels.</span>
-<span class="co">#&gt; ! CNAs have no CCF, assuming clonal CNAs (CCF = 1).</span>
-<span class="co">#&gt; ✓ Fortified CNAs for 58 segments: 58 clonal and 0 subclonal.</span>
+<span class="va">y_tripl_cnloh</span> <span class="op">=</span> <span class="fu"><a href="../reference/subset_by_segment_karyotype.html">subset_by_segment_karyotype</a></span><span class="op">(</span><span class="va">x</span>, karyotypes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'2:1'</span>, <span class="st">'2:0'</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; <span style="color: #BBBBBB; background-color: #0000BB;"> [ CNAqc - CNA Quality Check ] </span></span>
+<span class="co"><span style="color: #BBBBBB; background-color: #0000BB;">#&gt; </span></span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Using reference genome coordinates for: <span style="color: #00BB00;">hg19</span>.</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✓</span> Fortified calls for <span style="color: #00BB00;">12963</span> somatic mutations: <span style="color: #00BB00;">12963</span> SNVs (<span style="color: #00BB00;">100%</span>) and <span style="color: #00BB00;">0</span> indels.</span>
+<span class="co">#&gt; <span style="color: #BBBB00;">!</span> CNAs have no CCF, assuming clonal CNAs (CCF = 1).</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✓</span> Fortified CNAs for <span style="color: #00BB00;">58</span> segments: <span style="color: #00BB00;">58</span> clonal and <span style="color: #00BB00;">0</span> subclonal.</span>
 <span class="co">#&gt; Warning in map_mutations_to_clonal_segments(snvs, cna_clonal): [CNAqc] a</span>
 <span class="co">#&gt; karyotype column is present in CNA calls, and will be overwritten</span>
-<span class="co">#&gt; ✓ 1644 mutations mapped to clonal CNAs.</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✓</span> <span style="color: #00BB00;">1644</span> mutations mapped to clonal CNAs.</span>
 
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">y_tripl_cnloh</span><span class="op">)</span>
-<span class="co">#&gt; ── [ CNAqc ]  1644 mutations in 58 segments (58 clonal, 0 subclonal). Genome ref</span>
+<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">y_tripl_cnloh</span><span class="op">)</span>
+<span class="co">#&gt; ── <span style="color: #000000; background-color: #BBBB00;">[ CNAqc ] </span> <span style="color: #00BB00;">1644</span> mutations in <span style="color: #00BB00;">58</span> segments (<span style="color: #00BB00;">58</span> clonal, <span style="color: #00BB00;">0</span> subclonal). Genome ref</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; ── Clonal CNAs</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt;  2:1  [n = 1563, L =  420 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { TTN }</span>
-<span class="co">#&gt;  2:0  [n =   81, L =   39 Mb] ■  { TP53 }</span>
-<span class="co">#&gt; ℹ Sample Purity: 89% ~ Ploidy: 3.</span>
-<span class="co">#&gt; ℹ There are 2 annotated driver(s) mapped to clonal CNAs.</span>
+<span class="co">#&gt;  2:1  [n = 1563, L =  420 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { <span style="color: #BBBB00;">TTN</span> }</span>
+<span class="co">#&gt;  2:0  [n =   81, L =   39 Mb] ■  { <span style="color: #BBBB00;">TP53</span> }</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample Purity: 89% ~ Ploidy: 3.</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> There are 2 annotated driver(s) mapped to clonal CNAs.</span>
 <span class="co">#&gt;          chr      from        to ref alt  DP NV       VAF driver_label is_driver</span>
 <span class="co">#&gt;         chr2 179431633 179431634   C   T 117 77 0.6581197          TTN      TRUE</span>
 <span class="co">#&gt;        chr17   7577106   7577107   G   C  84 78 0.9285714         TP53      TRUE</span>
 
 <span class="co"># Two and four copies</span>
-<span class="va">y_2_4</span> <span class="op">=</span> <span class="fu"><a href="../reference/subset_by_segment_totalcn.html">subset_by_segment_totalcn</a></span><span class="op">(</span><span class="va">x</span>, totalcn <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt;  [ CNAqc - CNA Quality Check ]</span>
-<span class="co">#&gt; ℹ Using reference genome coordinates for: hg19.</span>
-<span class="co">#&gt; ✓ Fortified calls for 12963 somatic mutations: 12963 SNVs (100%) and 0 indels.</span>
-<span class="co">#&gt; ✓ Fortified CNAs for 90 segments: 90 clonal and 0 subclonal.</span>
+<span class="va">y_2_4</span> <span class="op">=</span> <span class="fu"><a href="../reference/subset_by_segment_totalcn.html">subset_by_segment_totalcn</a></span><span class="op">(</span><span class="va">x</span>, totalcn <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; <span style="color: #BBBBBB; background-color: #0000BB;"> [ CNAqc - CNA Quality Check ] </span></span>
+<span class="co"><span style="color: #BBBBBB; background-color: #0000BB;">#&gt; </span></span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Using reference genome coordinates for: <span style="color: #00BB00;">hg19</span>.</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✓</span> Fortified calls for <span style="color: #00BB00;">12963</span> somatic mutations: <span style="color: #00BB00;">12963</span> SNVs (<span style="color: #00BB00;">100%</span>) and <span style="color: #00BB00;">0</span> indels.</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✓</span> Fortified CNAs for <span style="color: #00BB00;">90</span> segments: <span style="color: #00BB00;">90</span> clonal and <span style="color: #00BB00;">0</span> subclonal.</span>
 <span class="co">#&gt; Warning in map_mutations_to_clonal_segments(snvs, cna_clonal): [CNAqc] a</span>
 <span class="co">#&gt; karyotype column is present in CNA calls, and will be overwritten</span>
-<span class="co">#&gt; ✓ 7561 mutations mapped to clonal CNAs.</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✓</span> <span style="color: #00BB00;">7561</span> mutations mapped to clonal CNAs.</span>
 
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">y_2_4</span><span class="op">)</span>
-<span class="co">#&gt; ── [ CNAqc ]  7561 mutations in 90 segments (90 clonal, 0 subclonal). Genome ref</span>
+<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">y_2_4</span><span class="op">)</span>
+<span class="co">#&gt; ── <span style="color: #000000; background-color: #BBBB00;">[ CNAqc ] </span> <span style="color: #00BB00;">7561</span> mutations in <span style="color: #00BB00;">90</span> segments (<span style="color: #00BB00;">90</span> clonal, <span style="color: #00BB00;">0</span> subclonal). Genome ref</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; ── Clonal CNAs</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt;  2:2  [n = 7478, L = 1483 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { CTCF }</span>
-<span class="co">#&gt;  2:0  [n =   81, L =   39 Mb]   { TP53 }</span>
+<span class="co">#&gt;  2:2  [n = 7478, L = 1483 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { <span style="color: #BBBB00;">CTCF</span> }</span>
+<span class="co">#&gt;  2:0  [n =   81, L =   39 Mb]   { <span style="color: #BBBB00;">TP53</span> }</span>
 <span class="co">#&gt;  3:1  [n =    2, L =    1 Mb]</span>
-<span class="co">#&gt; ℹ Sample Purity: 89% ~ Ploidy: 4.</span>
-<span class="co">#&gt; ℹ There are 2 annotated driver(s) mapped to clonal CNAs.</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample Purity: 89% ~ Ploidy: 4.</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> There are 2 annotated driver(s) mapped to clonal CNAs.</span>
 <span class="co">#&gt;          chr     from       to ref alt  DP NV       VAF driver_label is_driver</span>
 <span class="co">#&gt;        chr16 67646006 67646007   C   T 120 54 0.4500000         CTCF      TRUE</span>
 <span class="co">#&gt;        chr17  7577106  7577107   G   C  84 78 0.9285714         TP53      TRUE</span></code></pre></div>
 </div>
-<div id="reference-genome-coordinates" class="section level2">
-<h2 class="hasAnchor">
-<a href="#reference-genome-coordinates" class="anchor"></a>Reference genome coordinates</h2>
+<div class="section level3">
+<h3 id="reference-genome-coordinates">Reference genome coordinates<a class="anchor" aria-label="anchor" href="#reference-genome-coordinates"></a>
+</h3>
 <p><code>CNAqc</code> contains two coordinates for two reference genomes, <code>hg19</code> and <code>GRCh38</code> (default). For each reference genome the package stores the location of the chromosomes, and their centromers; you can access these data.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">CNAqc</span><span class="fu">:::</span><span class="fu">get_reference</span><span class="op">(</span><span class="st">"hg19"</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 24 × 6</span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 24 × 6</span></span>
 <span class="co">#&gt;    chr      length       from         to centromerStart centromerEnd</span>
-<span class="co">#&gt;    &lt;chr&gt;     &lt;int&gt;      &lt;dbl&gt;      &lt;dbl&gt;          &lt;dbl&gt;        &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 chr1  249250621          0  249250621      121535434    124535434</span>
-<span class="co">#&gt;  2 chr2  243199373  249250621  492449994      341576792    344576792</span>
-<span class="co">#&gt;  3 chr3  198022430  492449994  690472424      582954848    585954848</span>
-<span class="co">#&gt;  4 chr4  191154276  690472424  881626700      740132541    743132541</span>
-<span class="co">#&gt;  5 chr5  180915260  881626700 1062541960      928032341    931032341</span>
-<span class="co">#&gt;  6 chr6  171115067 1062541960 1233657027     1121372126   1124372126</span>
-<span class="co">#&gt;  7 chr7  159138663 1233657027 1392795690     1291711358   1294711358</span>
-<span class="co">#&gt;  8 chr8  146364022 1392795690 1539159712     1436634577   1439634577</span>
-<span class="co">#&gt;  9 chr9  141213431 1539159712 1680373143     1586527391   1589527391</span>
-<span class="co">#&gt; 10 chr10 135534747 1680373143 1815907890     1719628078   1722628078</span>
-<span class="co">#&gt; # … with 14 more rows</span>
+<span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> chr1  249<span style="text-decoration: underline;">250</span>621          0  249<span style="text-decoration: underline;">250</span>621      121<span style="text-decoration: underline;">535</span>434    124<span style="text-decoration: underline;">535</span>434</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> chr2  243<span style="text-decoration: underline;">199</span>373  249<span style="text-decoration: underline;">250</span>621  492<span style="text-decoration: underline;">449</span>994      341<span style="text-decoration: underline;">576</span>792    344<span style="text-decoration: underline;">576</span>792</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> chr3  198<span style="text-decoration: underline;">022</span>430  492<span style="text-decoration: underline;">449</span>994  690<span style="text-decoration: underline;">472</span>424      582<span style="text-decoration: underline;">954</span>848    585<span style="text-decoration: underline;">954</span>848</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> chr4  191<span style="text-decoration: underline;">154</span>276  690<span style="text-decoration: underline;">472</span>424  881<span style="text-decoration: underline;">626</span>700      740<span style="text-decoration: underline;">132</span>541    743<span style="text-decoration: underline;">132</span>541</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> chr5  180<span style="text-decoration: underline;">915</span>260  881<span style="text-decoration: underline;">626</span>700 <span style="text-decoration: underline;">1</span>062<span style="text-decoration: underline;">541</span>960      928<span style="text-decoration: underline;">032</span>341    931<span style="text-decoration: underline;">032</span>341</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> chr6  171<span style="text-decoration: underline;">115</span>067 <span style="text-decoration: underline;">1</span>062<span style="text-decoration: underline;">541</span>960 <span style="text-decoration: underline;">1</span>233<span style="text-decoration: underline;">657</span>027     <span style="text-decoration: underline;">1</span>121<span style="text-decoration: underline;">372</span>126   <span style="text-decoration: underline;">1</span>124<span style="text-decoration: underline;">372</span>126</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> chr7  159<span style="text-decoration: underline;">138</span>663 <span style="text-decoration: underline;">1</span>233<span style="text-decoration: underline;">657</span>027 <span style="text-decoration: underline;">1</span>392<span style="text-decoration: underline;">795</span>690     <span style="text-decoration: underline;">1</span>291<span style="text-decoration: underline;">711</span>358   <span style="text-decoration: underline;">1</span>294<span style="text-decoration: underline;">711</span>358</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> chr8  146<span style="text-decoration: underline;">364</span>022 <span style="text-decoration: underline;">1</span>392<span style="text-decoration: underline;">795</span>690 <span style="text-decoration: underline;">1</span>539<span style="text-decoration: underline;">159</span>712     <span style="text-decoration: underline;">1</span>436<span style="text-decoration: underline;">634</span>577   <span style="text-decoration: underline;">1</span>439<span style="text-decoration: underline;">634</span>577</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> chr9  141<span style="text-decoration: underline;">213</span>431 <span style="text-decoration: underline;">1</span>539<span style="text-decoration: underline;">159</span>712 <span style="text-decoration: underline;">1</span>680<span style="text-decoration: underline;">373</span>143     <span style="text-decoration: underline;">1</span>586<span style="text-decoration: underline;">527</span>391   <span style="text-decoration: underline;">1</span>589<span style="text-decoration: underline;">527</span>391</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">10</span> chr10 135<span style="text-decoration: underline;">534</span>747 <span style="text-decoration: underline;">1</span>680<span style="text-decoration: underline;">373</span>143 <span style="text-decoration: underline;">1</span>815<span style="text-decoration: underline;">907</span>890     <span style="text-decoration: underline;">1</span>719<span style="text-decoration: underline;">628</span>078   <span style="text-decoration: underline;">1</span>722<span style="text-decoration: underline;">628</span>078</span>
+<span class="co">#&gt; <span style="color: #949494;"># … with 14 more rows</span></span>
 
 <span class="fu">CNAqc</span><span class="fu">:::</span><span class="fu">get_reference</span><span class="op">(</span><span class="st">"GRCh38"</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 24 × 6</span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 24 × 6</span></span>
 <span class="co">#&gt;    chr      length       from         to centromerStart centromerEnd</span>
-<span class="co">#&gt;    &lt;chr&gt;     &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;          &lt;dbl&gt;        &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 chr1  248956422          0  248956422      122026459    124849229</span>
-<span class="co">#&gt;  2 chr2  242193529  248956422  491149951      341144567    341144567</span>
-<span class="co">#&gt;  3 chr3  198295559  491149951  689445510      581922409    582703370</span>
-<span class="co">#&gt;  4 chr4  190214555  689445510  879660065      739157571    739157571</span>
-<span class="co">#&gt;  5 chr5  181538259  879660065 1061198324      926145965    929381368</span>
-<span class="co">#&gt;  6 chr6  170805979 1061198324 1232004303     1119752212   1119752212</span>
-<span class="co">#&gt;  7 chr7  159345973 1232004303 1391350276     1290173956   1293382091</span>
-<span class="co">#&gt;  8 chr8  145138636 1391350276 1536488912     1435384020   1435384020</span>
-<span class="co">#&gt;  9 chr9  138394717 1536488912 1674883629     1579878547   1579878547</span>
-<span class="co">#&gt; 10 chr10 133797422 1674883629 1808681051     1714570311   1716429449</span>
-<span class="co">#&gt; # … with 14 more rows</span></code></pre></div>
+<span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> chr1  248<span style="text-decoration: underline;">956</span>422          0  248<span style="text-decoration: underline;">956</span>422      122<span style="text-decoration: underline;">026</span>459    124<span style="text-decoration: underline;">849</span>229</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> chr2  242<span style="text-decoration: underline;">193</span>529  248<span style="text-decoration: underline;">956</span>422  491<span style="text-decoration: underline;">149</span>951      341<span style="text-decoration: underline;">144</span>567    341<span style="text-decoration: underline;">144</span>567</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> chr3  198<span style="text-decoration: underline;">295</span>559  491<span style="text-decoration: underline;">149</span>951  689<span style="text-decoration: underline;">445</span>510      581<span style="text-decoration: underline;">922</span>409    582<span style="text-decoration: underline;">703</span>370</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> chr4  190<span style="text-decoration: underline;">214</span>555  689<span style="text-decoration: underline;">445</span>510  879<span style="text-decoration: underline;">660</span>065      739<span style="text-decoration: underline;">157</span>571    739<span style="text-decoration: underline;">157</span>571</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> chr5  181<span style="text-decoration: underline;">538</span>259  879<span style="text-decoration: underline;">660</span>065 <span style="text-decoration: underline;">1</span>061<span style="text-decoration: underline;">198</span>324      926<span style="text-decoration: underline;">145</span>965    929<span style="text-decoration: underline;">381</span>368</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> chr6  170<span style="text-decoration: underline;">805</span>979 <span style="text-decoration: underline;">1</span>061<span style="text-decoration: underline;">198</span>324 <span style="text-decoration: underline;">1</span>232<span style="text-decoration: underline;">004</span>303     <span style="text-decoration: underline;">1</span>119<span style="text-decoration: underline;">752</span>212   <span style="text-decoration: underline;">1</span>119<span style="text-decoration: underline;">752</span>212</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> chr7  159<span style="text-decoration: underline;">345</span>973 <span style="text-decoration: underline;">1</span>232<span style="text-decoration: underline;">004</span>303 <span style="text-decoration: underline;">1</span>391<span style="text-decoration: underline;">350</span>276     <span style="text-decoration: underline;">1</span>290<span style="text-decoration: underline;">173</span>956   <span style="text-decoration: underline;">1</span>293<span style="text-decoration: underline;">382</span>091</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> chr8  145<span style="text-decoration: underline;">138</span>636 <span style="text-decoration: underline;">1</span>391<span style="text-decoration: underline;">350</span>276 <span style="text-decoration: underline;">1</span>536<span style="text-decoration: underline;">488</span>912     <span style="text-decoration: underline;">1</span>435<span style="text-decoration: underline;">384</span>020   <span style="text-decoration: underline;">1</span>435<span style="text-decoration: underline;">384</span>020</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> chr9  138<span style="text-decoration: underline;">394</span>717 <span style="text-decoration: underline;">1</span>536<span style="text-decoration: underline;">488</span>912 <span style="text-decoration: underline;">1</span>674<span style="text-decoration: underline;">883</span>629     <span style="text-decoration: underline;">1</span>579<span style="text-decoration: underline;">878</span>547   <span style="text-decoration: underline;">1</span>579<span style="text-decoration: underline;">878</span>547</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">10</span> chr10 133<span style="text-decoration: underline;">797</span>422 <span style="text-decoration: underline;">1</span>674<span style="text-decoration: underline;">883</span>629 <span style="text-decoration: underline;">1</span>808<span style="text-decoration: underline;">681</span>051     <span style="text-decoration: underline;">1</span>714<span style="text-decoration: underline;">570</span>311   <span style="text-decoration: underline;">1</span>716<span style="text-decoration: underline;">429</span>449</span>
+<span class="co">#&gt; <span style="color: #949494;"># … with 14 more rows</span></span></code></pre></div>
 <p>The reference genomes can be specified as a parameter once you create a <code>CNAqc</code> object. Coordinates are used to translate relative to absolute genome coordinates of somatic mutations and CNA segments; this is done only when plotting the data. Note that mapping of mutations to CNA segments is independent of the reference genome, and it will work as far as both mutation and CNA segments are mapped to the same reference.</p>
 <p>You can use a hidden function to plot a reference, and make it explicit with a title.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="fu">CNAqc</span><span class="fu">:::</span><span class="fu">blank_genome</span><span class="op">(</span>ref <span class="op">=</span> <span class="st">'hg19'</span><span class="op">)</span> <span class="op">+</span> <span class="fu">labs</span><span class="op">(</span>title <span class="op">=</span> <span class="st">"HG19 genome reference"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">CNAqc</span><span class="fu">:::</span><span class="fu">blank_genome</span><span class="op">(</span>ref <span class="op">=</span> <span class="st">'hg19'</span><span class="op">)</span> <span class="op">+</span> <span class="fu">labs</span><span class="op">(</span>title <span class="op">=</span> <span class="st">"HG19 genome reference"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="a1_Introduction_files/figure-html/unnamed-chunk-12-1.png" width="912"></p>
 </div>
 </div>
@@ -466,11 +476,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by <a href="https://www.caravagnalab.org">Giulio Caravagna</a>.</p>
+  <p></p>
+<p>Developed by <a href="https://www.caravagnalab.org" class="external-link">Giulio Caravagna</a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
       </footer>
@@ -478,6 +490,8 @@
 
   
 
+
+  
 
   </body>
 </html>

@@ -26,6 +26,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -38,18 +40,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CNAqc</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.1</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="../articles/CNAqc.html">Get started</a>
 </li>
@@ -57,7 +53,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -87,12 +83,15 @@
     <li>
       <a href="../articles/a8_annotate_variants.html">8. Drivers annotation</a>
     </li>
+    <li>
+      <a href="../articles/a9_automatic.html">9. Automatic CNA calling</a>
+    </li>
   </ul>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/caravagnalab/CNAqc/">
+  <a href="https://github.com/caravagnalab/CNAqc/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -107,13 +106,13 @@
 
       
 
-      </header><script src="a2_Plots_files/header-attrs-2.11/header-attrs.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>2. Plotting data</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/caravagnalab/CNAqcvignettes/a2_Plots.Rmd"><code>vignettes/a2_Plots.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/caravagnalab/CNAqcvignettes/a2_Plots.Rmd" class="external-link"><code>vignettes/a2_Plots.Rmd</code></a></small>
       <div class="hidden name"><code>a2_Plots.Rmd</code></div>
 
     </div>
@@ -121,59 +120,63 @@
     
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/caravagnalab/CNAqc">CNAqc</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/caravagnalab/CNAqc" class="external-link">CNAqc</a></span><span class="op">)</span>
 <span class="co">#&gt; Warning: replacing previous import 'cli::num_ansi_colors' by</span>
 <span class="co">#&gt; 'crayon::num_ansi_colors' when loading 'BMix'</span>
 <span class="co">#&gt; Warning: replacing previous import 'crayon::%+%' by 'ggplot2::%+%' when loading</span>
 <span class="co">#&gt; 'BMix'</span>
-<span class="co">#&gt; ✓ Loading BMix, 'Binomial and Beta-Binomial univariate mixtures'. Support : &lt;https://caravagnalab.github.io/BMix/&gt;</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✓</span> Loading <span style="color: #00BB00;">BMix</span>, <span style="font-style: italic;">'Binomial and Beta-Binomial univariate mixtures'</span>. Support : <span style="color: #0000BB; font-style: italic;">&lt;https://caravagnalab.github.io/BMix/&gt;</span></span>
 <span class="co">#&gt; Warning: package 'tidyr' was built under R version 4.0.5</span>
 <span class="co">#&gt; Warning: package 'readr' was built under R version 4.0.5</span>
 <span class="co">#&gt; Warning: package 'dplyr' was built under R version 4.0.5</span>
 <span class="co">#&gt; Warning: package 'crayon' was built under R version 4.0.5</span>
-<span class="co">#&gt; ✓ Loading CNAqc, 'Copy Number Alteration quality check'. Support : &lt;https://caravagn.github.io/CNAqc/&gt;</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span></code></pre></div>
-<div id="plotting-copy-number-segments" class="section level1">
-<h1 class="hasAnchor">
-<a href="#plotting-copy-number-segments" class="anchor"></a>Plotting copy number segments</h1>
+<span class="co">#&gt; <span style="color: #00BB00;">✓</span> Loading <span style="color: #00BB00;">CNAqc</span>, <span style="font-style: italic;">'Copy Number Alteration quality check'</span>. Support : <span style="color: #0000BB; font-style: italic;">&lt;https://caravagn.github.io/CNAqc/&gt;</span></span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></code></pre></div>
+<div class="section level2">
+<h2 id="plotting-copy-number-segments">Plotting copy number segments<a class="anchor" aria-label="anchor" href="#plotting-copy-number-segments"></a>
+</h2>
 <p>All plotting functions use <code>ggplot</code> and multi-panel figures assembled with either <code>ggpubr</code> and <code>cowplot</code>. We work with the template dataset.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Dataset available with the package </span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">'example_dataset_CNAqc'</span>, package <span class="op">=</span> <span class="st">'CNAqc'</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">'example_dataset_CNAqc'</span>, package <span class="op">=</span> <span class="st">'CNAqc'</span><span class="op">)</span>
 <span class="va">x</span> <span class="op">=</span> <span class="fu">CNAqc</span><span class="fu">::</span><span class="fu"><a href="../reference/init.html">init</a></span><span class="op">(</span>
   <span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">snvs</span>, 
   <span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">cna</span>,
   <span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">purity</span>,
   ref <span class="op">=</span> <span class="st">'hg19'</span><span class="op">)</span>
-<span class="co">#&gt;  [ CNAqc - CNA Quality Check ]</span>
-<span class="co">#&gt; ℹ Using reference genome coordinates for: hg19.</span>
-<span class="co">#&gt; ℹ Drivers are annotated, but 'gene' column is missing, using mutation location.</span>
-<span class="co">#&gt; ✓ Fortified calls for 12963 somatic mutations: 12963 SNVs (100%) and 0 indels.</span>
-<span class="co">#&gt; ! CNAs have no CCF, assuming clonal CNAs (CCF = 1).</span>
-<span class="co">#&gt; ✓ Fortified CNAs for 267 segments: 267 clonal and 0 subclonal.</span>
-<span class="co">#&gt; ✓ 12963 mutations mapped to clonal CNAs.</span>
+<span class="co">#&gt; <span style="color: #BBBBBB; background-color: #0000BB;"> [ CNAqc - CNA Quality Check ] </span></span>
+<span class="co"><span style="color: #BBBBBB; background-color: #0000BB;">#&gt; </span></span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Using reference genome coordinates for: <span style="color: #00BB00;">hg19</span>.</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Drivers are annotated, but 'gene' column is missing, using mutation location.</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✓</span> Fortified calls for <span style="color: #00BB00;">12963</span> somatic mutations: <span style="color: #00BB00;">12963</span> SNVs (<span style="color: #00BB00;">100%</span>) and <span style="color: #00BB00;">0</span> indels.</span>
+<span class="co">#&gt; <span style="color: #BBBB00;">!</span> CNAs have no CCF, assuming clonal CNAs (CCF = 1).</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✓</span> Fortified CNAs for <span style="color: #00BB00;">267</span> segments: <span style="color: #00BB00;">267</span> clonal and <span style="color: #00BB00;">0</span> subclonal.</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✓</span> <span style="color: #00BB00;">12963</span> mutations mapped to clonal CNAs.</span>
 
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-<span class="co">#&gt; ── [ CNAqc ]  12963 mutations in 267 segments (267 clonal, 0 subclonal). Genome</span>
+<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
+<span class="co">#&gt; ── <span style="color: #000000; background-color: #BBBB00;">[ CNAqc ] </span> <span style="color: #00BB00;">12963</span> mutations in <span style="color: #00BB00;">267</span> segments (<span style="color: #00BB00;">267</span> clonal, <span style="color: #00BB00;">0</span> subclonal). Genome</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; ── Clonal CNAs</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt;    2:2  [n = 7478, L = 1483 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { CTCF }</span>
+<span class="co">#&gt;    2:2  [n = 7478, L = 1483 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { <span style="color: #BBBB00;">CTCF</span> }</span>
 <span class="co">#&gt;    4:2  [n = 1893, L =  331 Mb] ■■■■■■■</span>
 <span class="co">#&gt;    3:2  [n = 1625, L =  357 Mb] ■■■■■■</span>
-<span class="co">#&gt;    2:1  [n = 1563, L =  420 Mb] ■■■■■■  { TTN }</span>
+<span class="co">#&gt;    2:1  [n = 1563, L =  420 Mb] ■■■■■■  { <span style="color: #BBBB00;">TTN</span> }</span>
 <span class="co">#&gt;    3:0  [n =  312, L =  137 Mb] ■</span>
-<span class="co">#&gt;    2:0  [n =   81, L =   39 Mb]   { TP53 }</span>
+<span class="co">#&gt;    2:0  [n =   81, L =   39 Mb]   { <span style="color: #BBBB00;">TP53</span> }</span>
 <span class="co">#&gt;   16:2  [n =    4, L =    0 Mb] </span>
 <span class="co">#&gt;   25:2  [n =    2, L =    1 Mb] </span>
 <span class="co">#&gt;    3:1  [n =    2, L =    1 Mb] </span>
 <span class="co">#&gt;  106:1  [n =    1, L =    0 Mb]</span>
-<span class="co">#&gt; ℹ Sample Purity: 89% ~ Ploidy: 4.</span>
-<span class="co">#&gt; ℹ There are 3 annotated driver(s) mapped to clonal CNAs.</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample Purity: 89% ~ Ploidy: 4.</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> There are 3 annotated driver(s) mapped to clonal CNAs.</span>
 <span class="co">#&gt;          chr      from        to ref alt  DP NV       VAF driver_label is_driver</span>
 <span class="co">#&gt;         chr2 179431633 179431634   C   T 117 77 0.6581197          TTN      TRUE</span>
 <span class="co">#&gt;        chr16  67646006  67646007   C   T 120 54 0.4500000         CTCF      TRUE</span>
 <span class="co">#&gt;        chr17   7577106   7577107   G   C  84 78 0.9285714         TP53      TRUE</span></code></pre></div>
+<div class="section level3">
+<h3 id="segments-plots">Segments plots<a class="anchor" aria-label="anchor" href="#segments-plots"></a>
+</h3>
 <p>Function <code>plot_segments</code> plots all the genome, annotating in the caption summmary statistics. By default, it plots the major and minor alleles for each segment as red and blue bars. In the bottom, each circle annotates a breakpoint in the segments; grays are breakpoints of samples that are shown in the plot. Since by default this plot has limited y-axis, breakpoints of segments outside the plot (e.g. very high amplifications) are in black.</p>
 <p>Since <code>x</code> has drivers annotated, these are also plot with a colour that reflects their karyotype. Areas in the genome that are mapped to the most prevalent karyotype (here, <code>"2:2"</code>), are shadowed by default.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
@@ -187,12 +190,12 @@
 <code class="sourceCode R"><span class="co"># Circular layout</span>
 <span class="fu"><a href="../reference/plot_segments.html">plot_segments</a></span><span class="op">(</span><span class="va">x</span>, circular <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p><img src="a2_Plots_files/figure-html/unnamed-chunk-4-1.png" width="384"></p>
-<div id="custom-segments-plot" class="section level2">
-<h2 class="hasAnchor">
-<a href="#custom-segments-plot" class="anchor"></a>Custom segments plot</h2>
+<div class="section level4">
+<h4 id="custom-segments-plot">Custom segments plot<a class="anchor" aria-label="anchor" href="#custom-segments-plot"></a>
+</h4>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Shadow other karyotypes</span>
-<span class="fu"><a href="../reference/plot_segments.html">plot_segments</a></span><span class="op">(</span><span class="va">x</span>, highlight <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"2:1"</span>, <span class="st">"2:0"</span>, <span class="st">"2:2"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu">labs</span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Annotate different karyotypes"</span><span class="op">)</span>
+<span class="fu"><a href="../reference/plot_segments.html">plot_segments</a></span><span class="op">(</span><span class="va">x</span>, highlight <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2:1"</span>, <span class="st">"2:0"</span>, <span class="st">"2:2"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu">labs</span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Annotate different karyotypes"</span><span class="op">)</span>
 <span class="co">#&gt; Scale for 'fill' is already present. Adding another scale for 'fill', which</span>
 <span class="co">#&gt; will replace the existing scale.</span></code></pre></div>
 <p><img src="a2_Plots_files/figure-html/unnamed-chunk-5-1.png" width="912"></p>
@@ -204,7 +207,7 @@
 <span class="co">#&gt; will replace the existing scale.</span></code></pre></div>
 <p><img src="a2_Plots_files/figure-html/unnamed-chunk-5-2.png" width="912"></p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/plot_segments.html">plot_segments</a></span><span class="op">(</span><span class="va">x</span>, chromosomes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'chr17'</span>, <span class="st">'chr13'</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu">labs</span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Chromosome 17 and 13 zoom"</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="../reference/plot_segments.html">plot_segments</a></span><span class="op">(</span><span class="va">x</span>, chromosomes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'chr17'</span>, <span class="st">'chr13'</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu">labs</span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Chromosome 17 and 13 zoom"</span><span class="op">)</span>
 <span class="co">#&gt; Scale for 'fill' is already present. Adding another scale for 'fill', which</span>
 <span class="co">#&gt; will replace the existing scale.</span></code></pre></div>
 <p><img src="a2_Plots_files/figure-html/unnamed-chunk-5-3.png" width="912"></p>
@@ -216,79 +219,118 @@
 <span class="co">#&gt; will replace the existing scale.</span></code></pre></div>
 <p><img src="a2_Plots_files/figure-html/unnamed-chunk-5-4.png" width="912"></p>
 </div>
-<div id="subclonal-cnas" class="section level2">
-<h2 class="hasAnchor">
-<a href="#subclonal-cnas" class="anchor"></a>Subclonal CNAs</h2>
+<div class="section level4">
+<h4 id="subclonal-cnas">Subclonal CNAs<a class="anchor" aria-label="anchor" href="#subclonal-cnas"></a>
+</h4>
 <p>To show subclonal copy numbers we need to use the PCAWG object released with the package.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="fu">CNAqc</span><span class="fu">::</span><span class="va">example_PCAWG</span><span class="op">)</span>
-<span class="co">#&gt; ── [ CNAqc ]  12400 mutations in 552 segments (486 clonal, 66 subclonal). Genome</span>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">CNAqc</span><span class="fu">::</span><span class="va"><a href="../reference/example_PCAWG.html">example_PCAWG</a></span><span class="op">)</span>
+<span class="co">#&gt; ── <span style="color: #000000; background-color: #BBBB00;">[ CNAqc ] </span> <span style="color: #00BB00;">293736</span> mutations in <span style="color: #00BB00;">667</span> segments (<span style="color: #00BB00;">654</span> clonal, <span style="color: #00BB00;">13</span> subclonal). Genom</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; ── Clonal CNAs</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt;   3:0  [n = 1772, L =  414 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { CDK12 }</span>
-<span class="co">#&gt;   2:2  [n = 1713, L =  277 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■</span>
-<span class="co">#&gt;   2:1  [n = 1479, L =  289 Mb] ■■■■■■■■■■■■■■■■■■■■■■</span>
-<span class="co">#&gt;   3:1  [n = 1444, L =  221 Mb] ■■■■■■■■■■■■■■■■■■■■■■</span>
-<span class="co">#&gt;   2:0  [n =  949, L =  320 Mb] ■■■■■■■■■■■■■■  { TP53 }</span>
-<span class="co">#&gt;   3:2  [n =  491, L =   54 Mb] ■■■■■■■</span>
-<span class="co">#&gt;   4:1  [n =  445, L =   49 Mb] ■■■■■■■</span>
-<span class="co">#&gt;   1:1  [n =  320, L =  104 Mb] ■■■■■</span>
-<span class="co">#&gt;   4:2  [n =  310, L =   34 Mb] ■■■■■</span>
-<span class="co">#&gt;   5:0  [n =  110, L =   20 Mb] ■■</span>
+<span class="co">#&gt;   2:1  [n = 88422, L =   692 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■</span>
+<span class="co">#&gt;   3:2  [n = 58384, L =   417 Mb] ■■■■■■■■■■■■■■■■■■  { <span style="color: #BBBB00;">BRAF</span> }</span>
+<span class="co">#&gt;   3:1  [n = 48704, L =   380 Mb] ■■■■■■■■■■■■■■■</span>
+<span class="co">#&gt;   3:0  [n = 26622, L =   360 Mb] ■■■■■■■■  { <span style="color: #BBBB00;">CDKN2A</span> }</span>
+<span class="co">#&gt;   2:2  [n = 25290, L =   253 Mb] ■■■■■■■■</span>
+<span class="co">#&gt;   3:3  [n = 16790, L =   115 Mb] ■■■■■</span>
+<span class="co">#&gt;   2:0  [n =  5374, L =    67 Mb] ■■</span>
+<span class="co">#&gt;   4:0  [n =  1752, L =    22 Mb] ■  { <span style="color: #BBBB00;">TP53</span> }</span>
+<span class="co">#&gt;   4:2  [n =  1441, L =    11 Mb] </span>
+<span class="co">#&gt;   1:1  [n =   855, L =     9 Mb]</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; ── Subclonal CNAs (showing up to 10 segments)</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt;  chr13@62300908  [n =  231, L =  24.27 Mb]   2:0 (0.08)   2:1 (0.92) ■■■■■■■■■■</span>
-<span class="co">#&gt;  chr1@176138962  [n =  216, L =  25.93 Mb]   2:1 (0.26)   2:2 (0.74) ■■■■■■■■■</span>
-<span class="co">#&gt;  chr1@220232950  [n =  137, L =  27.02 Mb]   2:1 (0.35)   2:2 (0.65) ■■■■■</span>
-<span class="co">#&gt;   chr1@91503321  [n =  133, L =  14.64 Mb]   2:1 (0.25)   2:2 (0.75) ■■■■■</span>
-<span class="co">#&gt;  chr18@30575049  [n =  129, L =  29.95 Mb]   1:0 (0.32)   1:1 (0.68) ■■■■■</span>
-<span class="co">#&gt;   chr9@16500688  [n =  116, L =  13.48 Mb]   2:1 (0.87)   2:2 (0.13) ■■■■■</span>
-<span class="co">#&gt;   chr1@48302609  [n =  111, L =  21.73 Mb]   2:1 (0.26)   2:2 (0.74) ■■■■</span>
-<span class="co">#&gt;     chr8@159286  [n =  110, L =  27.39 Mb]   1:0 (0.06)   1:1 (0.94) ■■■■</span>
-<span class="co">#&gt;  chr13@96297358  [n =  110, L =  17.85 Mb]   2:0 (0.09)   2:1 (0.91) ■■■■</span>
-<span class="co">#&gt;   chr10@7016917  [n =   95, L =  11.51 Mb]   2:1 (0.67)   2:2 (0.33) ■■■■</span>
-<span class="co">#&gt; ℹ Sample Purity: 88.5% ~ Ploidy: 3.</span>
-<span class="co">#&gt; ℹ There are 2 annotated driver(s) mapped to clonal CNAs.</span>
-<span class="co">#&gt;          chr     from       to ref alt DP NV       VAF driver_label is_driver</span>
-<span class="co">#&gt;        chr17  7577058  7577058   C   A 26 23 0.8846154         TP53      TRUE</span>
-<span class="co">#&gt;        chr17 37680973 37680973   C   T 41 39 0.9512195        CDK12      TRUE</span></code></pre></div>
+<span class="co">#&gt;  chr11@55700000  [n =  10468, L =  78.75 Mb]   2:1 (0.21)   2:2 (0.79) ■■■■■■■■■■</span>
+<span class="co">#&gt;  chr11@17365005  [n =   5389, L =  31.55 Mb]   2:1 (0.21)   2:2 (0.79) ■■■■■</span>
+<span class="co">#&gt;   chr11@5372292  [n =   1014, L =  11.99 Mb]   2:1 (0.21)   2:2 (0.79) </span>
+<span class="co">#&gt;    chr11@202253  [n =    610, L =   5.17 Mb]   2:1 (0.22)   2:2 (0.78) </span>
+<span class="co">#&gt;  chr11@48918601  [n =    542, L =   2.68 Mb]   2:1 (0.25)   2:2 (0.75) </span>
+<span class="co">#&gt;   chr6@82432583  [n =    301, L =   1.81 Mb]   2:1 (0.19)   2:2 (0.81) </span>
+<span class="co">#&gt;  chr11@51600000  [n =    290, L =    4.1 Mb]   2:1 (0.26)   2:2 (0.74) </span>
+<span class="co">#&gt;   chr6@81896364  [n =     69, L =   0.54 Mb]   2:1 (0.19)   2:2 (0.81) </span>
+<span class="co">#&gt;   chr6@93956180  [n =     41, L =   0.11 Mb]    2:1 (0.2)    2:2 (0.8) </span>
+<span class="co">#&gt;   chr8@42633277  [n =     13, L =   0.26 Mb]   2:1 (0.28)   2:2 (0.72)</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample Purity: 73.4% ~ Ploidy: 3.</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> There are 3 annotated driver(s) mapped to clonal CNAs.</span>
+<span class="co">#&gt;          chr      from        to ref alt DP NV       VAF driver_label is_driver</span>
+<span class="co">#&gt;        chr17   7577082   7577082   C   T 78 70 0.8974359         TP53      TRUE</span>
+<span class="co">#&gt;         chr7 140453136 140453136   A   T 95 54 0.5684211         BRAF      TRUE</span>
+<span class="co">#&gt;         chr9  21971120  21971120   G   A 23 14 0.6086957       CDKN2A      TRUE</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="color: #000000; background-color: #00BB00; font-weight: bold;"> PASS </span><span style="font-weight: bold;"> Peaks QC closest: </span><span style="color: #00BB00; font-weight: bold;">100%</span><span style="font-weight: bold;">, </span><span style="color: #00BB00; font-weight: bold;">λ = -0.0104</span><span style="font-weight: bold;">. Purity correction: -1%.</span> <span style="color: #00BBBB;">─────────</span></span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">1:1</span> ~ n = 855   (  1%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.006</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">2:0</span> ~ n = 5374  (  4%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.003  <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.002</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">2:1</span> ~ n = 88422 ( 74%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.006  <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.006</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">2:2</span> ~ n = 25290 ( 21%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.053  <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.004</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">General peak QC (</span><span style="color: #00BB00; font-weight: bold;">154052</span><span style="font-weight: bold;"> mutations): </span><span style="color: #000000; background-color: #00BB00; font-weight: bold;"> PASS </span><span style="font-weight: bold;"> 21 </span><span style="color: #BBBBBB; background-color: #BB0000; font-weight: bold;"> FAIL </span><span style="font-weight: bold;"> 3 - epsilon = 0.03.</span> <span style="color: #00BBBB;">────</span></span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">3:0</span> ~ n = 26622 ( 17%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> 3 <span style="color: #BBBBBB; background-color: #BB0000;"> FAIL </span> 0</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">3:1</span> ~ n = 48704 ( 32%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> 3 <span style="color: #BBBBBB; background-color: #BB0000;"> FAIL </span> 0</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">3:2</span> ~ n = 58384 ( 38%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> 3 <span style="color: #BBBBBB; background-color: #BB0000;"> FAIL </span> 0</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">3:3</span> ~ n = 16790 ( 11%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> 3 <span style="color: #BBBBBB; background-color: #BB0000;"> FAIL </span> 0</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">4:0</span> ~ n = 1752  (  1%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> 3 <span style="color: #BBBBBB; background-color: #BB0000;"> FAIL </span> 1</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">4:2</span> ~ n = 1441  (  1%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> 3 <span style="color: #BBBBBB; background-color: #BB0000;"> FAIL </span> 1</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">4:3</span> ~ n = 359   (  0%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> 3 <span style="color: #BBBBBB; background-color: #BB0000;"> FAIL </span> 1</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Subclonal peaks QC (</span><span style="color: #00BB00; font-weight: bold;">7</span><span style="font-weight: bold;"> segments, initial state </span><span style="color: #00BB00; font-weight: bold;">2:1</span><span style="font-weight: bold;">): </span><span style="font-weight: bold; text-decoration: underline;">linear</span><span style="font-weight: bold;"> </span><span style="color: #00BB00; font-weight: bold;">3</span><span style="font-weight: bold;"> </span><span style="font-weight: bold; text-decoration: underline;">branching</span><span style="font-weight: bold;"> </span><span style="color: #BB0000; font-weight: bold;">0</span><span style="font-weight: bold;"> </span><span style="font-weight: bold; text-decoration: underline;">eith</span></span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; ── <span style="color: #000000; background-color: #00BB00;"> PASS </span> Linear models</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">chr11@17365005</span> ~ (31.6Mb, n = 5389) <span style="color: #BBBB00;">2:1 (21) + 2:2 (79)</span> : A1A2B1 -&gt; A1A2B1 -&gt; A1A2B1B2 [<span style="color: #00BB00;">100</span>]</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">chr11@51600000</span> ~ (4.1Mb, n = 290) <span style="color: #BBBB00;">2:1 (26) + 2:2 (74)</span> : A1A2B1 -&gt; A1A2B1 -&gt; A1A2B1B2 [<span style="color: #BBBB00;">75</span>]</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;"> chr11@5372292</span> ~ (12Mb, n = 1014) <span style="color: #BBBB00;">2:1 (21) + 2:2 (79)</span> : A1A2B1 -&gt; A1A2B1 -&gt; A1A2B1B2 [<span style="color: #00BB00;">100</span>]</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; ── <span style="color: #BBBBBB; background-color: #BBBB00;"> UNKNOWN </span> Either branching or linear models</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">  chr11@202253</span> ~ (5.2Mb, n = 610) <span style="color: #BBBB00;">2:1 (22) + 2:2 (78)</span> : A1A2B1 -&gt; A1A2B1 -&gt; A1A2B1B2 [<span style="color: #00BB00;">100</span>]; A1A2B1 -&gt; A1A2B1 | A1A2B1B2 [<span style="color: #00BB00;">100</span>]; A1A2B1 -&gt; A1A2B1B2 -&gt; A2B1B2 [<span style="color: #00BB00;">100</span>]</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">chr11@48918601</span> ~ (2.7Mb, n = 542) <span style="color: #BBBB00;">2:1 (25) + 2:2 (75)</span> : A1A2B1 -&gt; A1A2B1 -&gt; A1A2B1B2 [<span style="color: #00BB00;">100</span>]; A1A2B1 -&gt; A1A2B1 | A1A2B1B2 [<span style="color: #00BB00;">100</span>]; A1A2B1 -&gt; A1A2B1B2 -&gt; A2B1B2 [<span style="color: #00BB00;">100</span>]</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">chr11@55700000</span> ~ (78.8Mb, n = 10468) <span style="color: #BBBB00;">2:1 (21) + 2:2 (79)</span> : A1A2B1 -&gt; A1A2B1 -&gt; A1A2B1B2 [<span style="color: #00BB00;">100</span>]; A1A2B1 -&gt; A1A2B1 | A1A2B1B2 [<span style="color: #00BB00;">100</span>]; A1A2B1 -&gt; A1A2B1B2 -&gt; A2B1B2 [<span style="color: #00BB00;">100</span>]</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;"> chr6@82432583</span> ~ (1.8Mb, n = 301) <span style="color: #BBBB00;">2:1 (19) + 2:2 (81)</span> : A1A2B1 -&gt; A1A2B1 -&gt; A1A2B1B2 [<span style="color: #00BB00;">100</span>]; A1A2B1 -&gt; A1A2B1 | A1A2B1B2 [<span style="color: #00BB00;">100</span>]; A1A2B1 -&gt; A1A2B1B2 -&gt; A2B1B2 [<span style="color: #00BB00;">100</span>]</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✓</span> Cancer Cell Fraction (CCF) data available for karyotypes:1:0, 1:1, 2:0, 2:1, and 2:2.</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✓</span> <span style="color: #BBBBBB; background-color: #00BB00;"> PASS </span> CCF via <span style="font-weight: bold;">ENTROPY</span>.</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✓</span> <span style="color: #BBBBBB; background-color: #00BB00;"> PASS </span> CCF via <span style="font-weight: bold;">ENTROPY</span>.</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✓</span> <span style="color: #BBBBBB; background-color: #00BB00;"> PASS </span> CCF via <span style="font-weight: bold;">ENTROPY</span>.</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✓</span> <span style="color: #BBBBBB; background-color: #00BB00;"> PASS </span> CCF via <span style="font-weight: bold;">ENTROPY</span>.</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✓</span> <span style="color: #BBBBBB; background-color: #00BB00;"> PASS </span> CCF via <span style="font-weight: bold;">ENTROPY</span>.</span></code></pre></div>
 <p>Note that the segments of each subclone have different colours; the CCF is not reported in this plot.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/plot_segments.html">plot_segments</a></span><span class="op">(</span><span class="fu">CNAqc</span><span class="fu">::</span><span class="va">example_PCAWG</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="../reference/plot_segments.html">plot_segments</a></span><span class="op">(</span><span class="fu">CNAqc</span><span class="fu">::</span><span class="va"><a href="../reference/example_PCAWG.html">example_PCAWG</a></span><span class="op">)</span>
+<span class="co">#&gt; Scale for 'fill' is already present. Adding another scale for 'fill', which</span>
+<span class="co">#&gt; will replace the existing scale.</span></code></pre></div>
 <p><img src="a2_Plots_files/figure-html/unnamed-chunk-7-1.png" width="912"></p>
 </div>
-<div id="comparing-multiple-calls" class="section level2">
-<h2 class="hasAnchor">
-<a href="#comparing-multiple-calls" class="anchor"></a>Comparing multiple calls</h2>
+</div>
+<div class="section level3">
+<h3 id="comparing-multiple-calls">Comparing multiple calls<a class="anchor" aria-label="anchor" href="#comparing-multiple-calls"></a>
+</h3>
 <p>If you want to compare multiple CNAqc objects you can use <code>plot_multisample_CNA</code>. Here we show it by combining twice <code>x</code> with some changes in its calls, and putting together another sample.</p>
 <p>This type of plot shows only clonal CNAs.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">y</span> <span class="op">=</span> <span class="fu">CNAqc</span><span class="fu">::</span><span class="fu"><a href="../reference/init.html">init</a></span><span class="op">(</span>
   <span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">snvs</span>, 
-  <span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">cna</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>
-    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>
-      Major <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="va">chr</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"chr3"</span>, <span class="st">"chr4"</span>, <span class="st">"chr1"</span><span class="op">)</span>, <span class="fl">1</span>, <span class="va">Major</span><span class="op">)</span>,
-      minor <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="va">chr</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"chr3"</span>, <span class="st">"chr4"</span>, <span class="st">"chr1"</span><span class="op">)</span>, <span class="fl">1</span>, <span class="va">minor</span><span class="op">)</span>
+  <span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">cna</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>
+      Major <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">chr</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"chr3"</span>, <span class="st">"chr4"</span>, <span class="st">"chr1"</span><span class="op">)</span>, <span class="fl">1</span>, <span class="va">Major</span><span class="op">)</span>,
+      minor <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">chr</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"chr3"</span>, <span class="st">"chr4"</span>, <span class="st">"chr1"</span><span class="op">)</span>, <span class="fl">1</span>, <span class="va">minor</span><span class="op">)</span>
       <span class="op">)</span>,
   <span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">purity</span>,
   ref <span class="op">=</span> <span class="st">'hg19'</span><span class="op">)</span>
-<span class="co">#&gt;  [ CNAqc - CNA Quality Check ]</span>
-<span class="co">#&gt; ℹ Using reference genome coordinates for: hg19.</span>
-<span class="co">#&gt; ℹ Drivers are annotated, but 'gene' column is missing, using mutation location.</span>
-<span class="co">#&gt; ✓ Fortified calls for 12963 somatic mutations: 12963 SNVs (100%) and 0 indels.</span>
-<span class="co">#&gt; ! CNAs have no CCF, assuming clonal CNAs (CCF = 1).</span>
-<span class="co">#&gt; ✓ Fortified CNAs for 267 segments: 267 clonal and 0 subclonal.</span>
-<span class="co">#&gt; ✓ 12963 mutations mapped to clonal CNAs.</span>
+<span class="co">#&gt; <span style="color: #BBBBBB; background-color: #0000BB;"> [ CNAqc - CNA Quality Check ] </span></span>
+<span class="co"><span style="color: #BBBBBB; background-color: #0000BB;">#&gt; </span></span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Using reference genome coordinates for: <span style="color: #00BB00;">hg19</span>.</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Drivers are annotated, but 'gene' column is missing, using mutation location.</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✓</span> Fortified calls for <span style="color: #00BB00;">12963</span> somatic mutations: <span style="color: #00BB00;">12963</span> SNVs (<span style="color: #00BB00;">100%</span>) and <span style="color: #00BB00;">0</span> indels.</span>
+<span class="co">#&gt; <span style="color: #BBBB00;">!</span> CNAs have no CCF, assuming clonal CNAs (CCF = 1).</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✓</span> Fortified CNAs for <span style="color: #00BB00;">267</span> segments: <span style="color: #00BB00;">267</span> clonal and <span style="color: #00BB00;">0</span> subclonal.</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✓</span> <span style="color: #00BB00;">12963</span> mutations mapped to clonal CNAs.</span>
 
 <span class="co"># Comparative CNA plot</span>
-<span class="fu"><a href="../reference/plot_multisample_CNA.html">plot_multisample_CNA</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>`Original` <span class="op">=</span> <span class="va">x</span>, `Copy` <span class="op">=</span> <span class="va">x</span>, `Faked_diploid` <span class="op">=</span> <span class="va">y</span>, `PCAWG` <span class="op">=</span> <span class="fu">CNAqc</span><span class="fu">::</span><span class="va">example_PCAWG</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="../reference/plot_multisample_CNA.html">plot_multisample_CNA</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>`Original` <span class="op">=</span> <span class="va">x</span>, `Copy` <span class="op">=</span> <span class="va">x</span>, `Faked_diploid` <span class="op">=</span> <span class="va">y</span>, `PCAWG` <span class="op">=</span> <span class="fu">CNAqc</span><span class="fu">::</span><span class="va"><a href="../reference/example_PCAWG.html">example_PCAWG</a></span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="a2_Plots_files/figure-html/unnamed-chunk-8-1.png" width="576"></p>
 </div>
-<div id="plotting-segments-summaries" class="section level2">
-<h2 class="hasAnchor">
-<a href="#plotting-segments-summaries" class="anchor"></a>Plotting segments summaries</h2>
+<div class="section level3">
+<h3 id="plotting-segments-summaries">Plotting segments summaries<a class="anchor" aria-label="anchor" href="#plotting-segments-summaries"></a>
+</h3>
 <p><code>plot_karyotypes</code> gives two visualizations, based on its parameter <code>type</code>:</p>
 <ul>
 <li>
@@ -298,7 +340,7 @@
 </ul>
 <p>The package uses a pre-set color schema to colour simple CNAs.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">ggpubr</span><span class="fu">::</span><span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html">ggarrange</a></span><span class="op">(</span>
+<code class="sourceCode R"><span class="fu">ggpubr</span><span class="fu">::</span><span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html" class="external-link">ggarrange</a></span><span class="op">(</span>
   <span class="fu"><a href="../reference/plot_karyotypes.html">plot_karyotypes</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>,
   <span class="fu"><a href="../reference/plot_karyotypes.html">plot_karyotypes</a></span><span class="op">(</span><span class="va">x</span>, type <span class="op">=</span> <span class="st">'number'</span><span class="op">)</span>,
   common.legend <span class="op">=</span> <span class="cn">TRUE</span>,
@@ -311,12 +353,15 @@
 <p><img src="a2_Plots_files/figure-html/unnamed-chunk-10-1.png" width="432"></p>
 </div>
 </div>
-<div id="plotting-mutations" class="section level1">
-<h1 class="hasAnchor">
-<a href="#plotting-mutations" class="anchor"></a>Plotting mutations</h1>
+<div class="section level2">
+<h2 id="plotting-mutations">Plotting mutations<a class="anchor" aria-label="anchor" href="#plotting-mutations"></a>
+</h2>
+<div class="section level3">
+<h3 id="data-histograms">Data histograms<a class="anchor" aria-label="anchor" href="#data-histograms"></a>
+</h3>
 <p>You have a function to plot all your data histograms</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">ggpubr</span><span class="fu">::</span><span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html">ggarrange</a></span><span class="op">(</span>
+<code class="sourceCode R"><span class="fu">ggpubr</span><span class="fu">::</span><span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html" class="external-link">ggarrange</a></span><span class="op">(</span>
   <span class="fu"><a href="../reference/plot_data_histogram.html">plot_data_histogram</a></span><span class="op">(</span><span class="va">x</span>, which <span class="op">=</span> <span class="st">'VAF'</span><span class="op">)</span>,
   <span class="fu"><a href="../reference/plot_data_histogram.html">plot_data_histogram</a></span><span class="op">(</span><span class="va">x</span>, which <span class="op">=</span> <span class="st">'DP'</span><span class="op">)</span>,
   <span class="fu"><a href="../reference/plot_data_histogram.html">plot_data_histogram</a></span><span class="op">(</span><span class="va">x</span>, which <span class="op">=</span> <span class="st">'NV'</span><span class="op">)</span>,
@@ -325,10 +370,11 @@
   <span class="op">)</span>
 <span class="co">#&gt; Warning: Removed 8 rows containing missing values (geom_bar).</span></code></pre></div>
 <p><img src="a2_Plots_files/figure-html/unnamed-chunk-11-1.png" width="960"></p>
-<p>If you <a href="https://caravagn.github.io/CNAqc/articles/ccf_computation.html">compute Cancer Cell Fractions (CCF) values</a>, you can use <code>plot_data_histogram(x, which = 'CCF')</code> as well.</p>
-<div id="segment-specific-vaf-distribution" class="section level2">
-<h2 class="hasAnchor">
-<a href="#segment-specific-vaf-distribution" class="anchor"></a>Segment-specific VAF distribution</h2>
+<p>If you <a href="https://caravagn.github.io/CNAqc/articles/ccf_computation.html" class="external-link">compute Cancer Cell Fractions (CCF) values</a>, you can use <code>plot_data_histogram(x, which = 'CCF')</code> as well.</p>
+</div>
+<div class="section level3">
+<h3 id="segment-specific-vafs">Segment-specific VAFs<a class="anchor" aria-label="anchor" href="#segment-specific-vafs"></a>
+</h3>
 <p>You can inspect the raw VAF distribution per segment, split by chromosome. Each colour represents a distinct segment; we want can use this plot to check that, for every karyotype and chromosome, the VAF distributions are similar.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Default parameters to filter segments are annotatetd in the plot</span>
@@ -343,9 +389,9 @@
 <span class="co">#&gt; Warning: Removed 56 rows containing missing values (geom_bar).</span></code></pre></div>
 <p><img src="a2_Plots_files/figure-html/unnamed-chunk-13-1.png" width="2880"></p>
 </div>
-<div id="genome-wide-mutation-data" class="section level2">
-<h2 class="hasAnchor">
-<a href="#genome-wide-mutation-data" class="anchor"></a>Genome-wide mutation data</h2>
+<div class="section level3">
+<h3 id="genome-wide-mutation-data">Genome-wide mutation data<a class="anchor" aria-label="anchor" href="#genome-wide-mutation-data"></a>
+</h3>
 <p>Genome-wide plots that follow the layout of <code>plot_segments</code> are avaiable to view the genome-wide distributions of the number of mutations, their VAF and depth. VAF and depth-plotting functions (scatterplots) can subset the input data to speed up rendering and reduce the size of output files - by default <code>N = 5000</code> points are randomly sampled. Counts plot, instead, bin the genome locations by <em>one megabase</em> (<span class="math inline">\(10^6\)</span> bases).</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># All genome, all data - counts of mutations per megabase</span>
@@ -354,7 +400,7 @@
 <p>An example effect of downsampling the data is the following</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Different subsamples</span>
-<span class="fu">ggpubr</span><span class="fu">::</span><span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html">ggarrange</a></span><span class="op">(</span>
+<span class="fu">ggpubr</span><span class="fu">::</span><span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html" class="external-link">ggarrange</a></span><span class="op">(</span>
   <span class="fu"><a href="../reference/plot_gw_depth.html">plot_gw_depth</a></span><span class="op">(</span><span class="va">x</span>, N <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span>,
   <span class="fu"><a href="../reference/plot_gw_depth.html">plot_gw_depth</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>,
   <span class="fu"><a href="../reference/plot_gw_depth.html">plot_gw_depth</a></span><span class="op">(</span><span class="va">x</span>, N <span class="op">=</span> <span class="fl">10000</span><span class="op">)</span>,
@@ -378,22 +424,22 @@
 <p><img src="a2_Plots_files/figure-html/unnamed-chunk-15-1.png" width="768"></p>
 </div>
 </div>
-<div id="plotting-all-data" class="section level1">
-<h1 class="hasAnchor">
-<a href="#plotting-all-data" class="anchor"></a>Plotting all data</h1>
+<div class="section level2">
+<h2 id="combined-plots">Combined plots<a class="anchor" aria-label="anchor" href="#combined-plots"></a>
+</h2>
 <p>A one-summary plot can be easily assembled combining the above functions and functions from <code>cowplot</code> or other ggplot-manipulation packages.</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Layout a panel with segments in bottom, and all other genome-wide plots on top.</span>
 <span class="co"># Via cowplot we can align plots on the vertical axis, and stretch their relative</span>
 <span class="co"># height to obtain a nicer layout.</span>
-<span class="fu">cowplot</span><span class="fu">::</span><span class="fu"><a href="https://wilkelab.org/cowplot/reference/plot_grid.html">plot_grid</a></span><span class="op">(</span>
+<span class="fu">cowplot</span><span class="fu">::</span><span class="fu"><a href="https://wilkelab.org/cowplot/reference/plot_grid.html" class="external-link">plot_grid</a></span><span class="op">(</span>
   <span class="fu"><a href="../reference/plot_gw_counts.html">plot_gw_counts</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>,
   <span class="fu"><a href="../reference/plot_gw_vaf.html">plot_gw_vaf</a></span><span class="op">(</span><span class="va">x</span>, N <span class="op">=</span> <span class="fl">10000</span><span class="op">)</span>,
   <span class="fu"><a href="../reference/plot_gw_depth.html">plot_gw_depth</a></span><span class="op">(</span><span class="va">x</span>, N <span class="op">=</span> <span class="fl">10000</span><span class="op">)</span>,
   <span class="fu"><a href="../reference/plot_segments.html">plot_segments</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>,
   align <span class="op">=</span> <span class="st">'v'</span>, 
   nrow <span class="op">=</span> <span class="fl">4</span>, 
-  rel_heights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">.15</span>, <span class="fl">.15</span>, <span class="fl">.15</span>, <span class="fl">.8</span><span class="op">)</span><span class="op">)</span>
+  rel_heights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.15</span>, <span class="fl">.15</span>, <span class="fl">.15</span>, <span class="fl">.8</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; Warning: `guides(&lt;scale&gt; = FALSE)` is deprecated. Please use `guides(&lt;scale&gt; = "none")` instead.</span>
 <span class="co">#&gt; `guides(&lt;scale&gt; = FALSE)` is deprecated. Please use `guides(&lt;scale&gt; = "none")` instead.</span>
 <span class="co">#&gt; Scale for 'fill' is already present. Adding another scale for 'fill', which</span>
@@ -418,11 +464,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by <a href="https://www.caravagnalab.org">Giulio Caravagna</a>.</p>
+  <p></p>
+<p>Developed by <a href="https://www.caravagnalab.org" class="external-link">Giulio Caravagna</a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
       </footer>
@@ -430,6 +478,8 @@
 
   
 
+
+  
 
   </body>
 </html>

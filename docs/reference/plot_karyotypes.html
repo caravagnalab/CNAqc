@@ -30,7 +30,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -118,25 +118,19 @@ With <code>"number"</code>, the segment counts. In all other cases an erorr is g
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BBBBBB; background-color: #0000BB;"> [ CNAqc - CNA Quality Check ] </span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Using reference genome coordinates for: <span style="color: #00BB00;">GRCh38</span>.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Predicting coding</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Drivers are annotated, but 'gene' column is missing, using mutation location.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Predicting coding</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Fortified calls for <span style="color: #00BB00;">12963</span> somatic mutations: <span style="color: #00BB00;">12963</span> SNVs (<span style="color: #00BB00;">100%</span>) and <span style="color: #00BB00;">0</span> indels.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Predicting coding</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> CNAs have no CCF, assuming clonal CNAs (CCF = 1).</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Predicting coding</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Fortified CNAs for <span style="color: #00BB00;">267</span> segments: <span style="color: #00BB00;">267</span> clonal and <span style="color: #00BB00;">0</span> subclonal.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Predicting coding</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="color: #00BB00;">12963</span> mutations mapped to clonal CNAs.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Predicting coding</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="fu">plot_karyotypes</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in (function (classes, fdef, mtable) {    methods &lt;- .findInheritedMethods(classes, fdef, mtable)    if (length(methods) == 1L)         return(methods[[1L]])    else if (length(methods) == 0L) {        cnames &lt;- paste0("\"", vapply(classes, as.character,             ""), "\"", collapse = ", ")        stop(gettextf("unable to find an inherited method for function %s for signature %s",             sQuote(fdef@generic), sQuote(cnames)), domain = NA)    }    else stop("Internal error in finding inherited methods; didn't return a unique method",         domain = NA)})(list("tbl_df"), new("standardGeneric", .Data = function (x,     keys, columns, keytype, ...) standardGeneric("select"), generic = structure("select", package = "AnnotationDbi"),     package = "AnnotationDbi", group = list(), valueClass = character(0),     signature = "x", default = NULL, skeleton = (function (x,         keys, columns, keytype, ...)     stop("invalid call in method dispatch to 'select' (no default method)",         domain = NA))(x, keys, columns, keytype, ...)), &lt;environment&gt;):</span> unable to find an inherited method for function ‘select’ for signature ‘"tbl_df"’</span>
+<span class="r-plt img"><img src="plot_karyotypes-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="fu">plot_karyotypes</span><span class="op">(</span><span class="va">x</span>, chromosomes <span class="op">=</span> <span class="st">'chr3'</span><span class="op">)</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in (function (classes, fdef, mtable) {    methods &lt;- .findInheritedMethods(classes, fdef, mtable)    if (length(methods) == 1L)         return(methods[[1L]])    else if (length(methods) == 0L) {        cnames &lt;- paste0("\"", vapply(classes, as.character,             ""), "\"", collapse = ", ")        stop(gettextf("unable to find an inherited method for function %s for signature %s",             sQuote(fdef@generic), sQuote(cnames)), domain = NA)    }    else stop("Internal error in finding inherited methods; didn't return a unique method",         domain = NA)})(list("tbl_df"), new("standardGeneric", .Data = function (x,     keys, columns, keytype, ...) standardGeneric("select"), generic = structure("select", package = "AnnotationDbi"),     package = "AnnotationDbi", group = list(), valueClass = character(0),     signature = "x", default = NULL, skeleton = (function (x,         keys, columns, keytype, ...)     stop("invalid call in method dispatch to 'select' (no default method)",         domain = NA))(x, keys, columns, keytype, ...)), &lt;environment&gt;):</span> unable to find an inherited method for function ‘select’ for signature ‘"tbl_df"’</span>
+<span class="r-plt img"><img src="plot_karyotypes-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span class="fu">plot_karyotypes</span><span class="op">(</span><span class="va">x</span>, chromosomes <span class="op">=</span> <span class="st">'chr13'</span><span class="op">)</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in (function (classes, fdef, mtable) {    methods &lt;- .findInheritedMethods(classes, fdef, mtable)    if (length(methods) == 1L)         return(methods[[1L]])    else if (length(methods) == 0L) {        cnames &lt;- paste0("\"", vapply(classes, as.character,             ""), "\"", collapse = ", ")        stop(gettextf("unable to find an inherited method for function %s for signature %s",             sQuote(fdef@generic), sQuote(cnames)), domain = NA)    }    else stop("Internal error in finding inherited methods; didn't return a unique method",         domain = NA)})(list("tbl_df"), new("standardGeneric", .Data = function (x,     keys, columns, keytype, ...) standardGeneric("select"), generic = structure("select", package = "AnnotationDbi"),     package = "AnnotationDbi", group = list(), valueClass = character(0),     signature = "x", default = NULL, skeleton = (function (x,         keys, columns, keytype, ...)     stop("invalid call in method dispatch to 'select' (no default method)",         domain = NA))(x, keys, columns, keytype, ...)), &lt;environment&gt;):</span> unable to find an inherited method for function ‘select’ for signature ‘"tbl_df"’</span>
+<span class="r-plt img"><img src="plot_karyotypes-3.png" alt="" width="700" height="433"></span>
 </code></pre></div>
     </div>
   </div>

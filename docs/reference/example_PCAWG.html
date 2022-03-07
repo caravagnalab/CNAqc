@@ -29,7 +29,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -107,11 +107,8 @@ Pan-cancer analysis of whole genomes. Nature 578, 82–93 (2020).
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">example_PCAWG</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">example_PCAWG</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ── <span style="color: #000000; background-color: #BBBB00;">[ CNAqc ] </span> <span style="color: #00BB00;">293736</span> mutations in <span style="color: #00BB00;">667</span> segments (<span style="color: #00BB00;">654</span> clonal, <span style="color: #00BB00;">13</span> subclonal). Genom</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Predicting coding</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Predicting coding</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ── Clonal CNAs </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Predicting coding</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   2:1  [n = 88422, L =   692 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   3:2  [n = 58384, L =   417 Mb] ■■■■■■■■■■■■■■■■■■  { <span style="color: #BBBB00;">BRAF</span> }</span>
@@ -125,9 +122,7 @@ Pan-cancer analysis of whole genomes. Nature 578, 82–93 (2020).
 <span class="r-out co"><span class="r-pr">#&gt;</span>   1:1  [n =   855, L =     9 Mb] </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Predicting coding</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ── Subclonal CNAs (showing up to 10 segments) </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Predicting coding</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  chr11@55700000  [n =  10468, L =  78.75 Mb]   2:1 (0.21)   2:2 (0.79) ■■■■■■■■■■</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  chr11@17365005  [n =   5389, L =  31.55 Mb]   2:1 (0.21)   2:2 (0.79) ■■■■■</span>
@@ -141,50 +136,49 @@ Pan-cancer analysis of whole genomes. Nature 578, 82–93 (2020).
 <span class="r-out co"><span class="r-pr">#&gt;</span>   chr8@42633277  [n =     13, L =   0.26 Mb]   2:1 (0.28)   2:2 (0.72) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sample Purity: 73.4% ~ Ploidy: 3.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Predicting coding</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> There are 3 annotated driver(s) mapped to clonal CNAs.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Predicting coding</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          chr      from        to ref alt DP NV       VAF driver_label is_driver</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        chr17   7577082   7577082   C   T 78 70 0.8974359         TP53      TRUE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         chr7 140453136 140453136   A   T 95 54 0.5684211         BRAF      TRUE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         chr9  21971120  21971120   G   A 23 14 0.6086957       CDKN2A      TRUE</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Predicting coding</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="color: #000000; background-color: #00BB00; font-weight: bold;"> PASS </span><span style="font-weight: bold;"> Peaks QC closest: </span><span style="color: #00BB00; font-weight: bold;">100%</span><span style="font-weight: bold;">, </span><span style="color: #00BB00; font-weight: bold;">λ = -0.0104</span><span style="font-weight: bold;">. Purity correction: -1%.</span> <span style="color: #00BBBB;">─────────</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Predicting coding</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">1:1</span> ~ n = 855   (  1%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.006 </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Predicting coding</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">2:0</span> ~ n = 5374  (  4%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.003  <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.002 </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Predicting coding</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">2:1</span> ~ n = 88422 ( 74%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.006  <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.006 </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Predicting coding</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">2:2</span> ~ n = 25290 ( 21%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.053  <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.004 </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Predicting coding</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Predicting coding</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">General peak QC (</span><span style="color: #00BB00; font-weight: bold;">154052</span><span style="font-weight: bold;"> mutations): </span><span style="color: #000000; background-color: #00BB00; font-weight: bold;"> PASS </span><span style="font-weight: bold;"> 21 </span><span style="color: #BBBBBB; background-color: #BB0000; font-weight: bold;"> FAIL </span><span style="font-weight: bold;"> 3 - epsilon = 0.03.</span> <span style="color: #00BBBB;">────</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Predicting coding</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">3:0</span> ~ n = 26622 ( 17%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> 3 <span style="color: #BBBBBB; background-color: #BB0000;"> FAIL </span> 0</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Predicting coding</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">3:1</span> ~ n = 48704 ( 32%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> 3 <span style="color: #BBBBBB; background-color: #BB0000;"> FAIL </span> 0</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Predicting coding</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">3:2</span> ~ n = 58384 ( 38%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> 3 <span style="color: #BBBBBB; background-color: #BB0000;"> FAIL </span> 0</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Predicting coding</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">3:3</span> ~ n = 16790 ( 11%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> 3 <span style="color: #BBBBBB; background-color: #BB0000;"> FAIL </span> 0</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Predicting coding</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">4:0</span> ~ n = 1752  (  1%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> 3 <span style="color: #BBBBBB; background-color: #BB0000;"> FAIL </span> 1</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Predicting coding</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">4:2</span> ~ n = 1441  (  1%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> 3 <span style="color: #BBBBBB; background-color: #BB0000;"> FAIL </span> 1</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Predicting coding</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">4:3</span> ~ n = 359   (  0%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> 3 <span style="color: #BBBBBB; background-color: #BB0000;"> FAIL </span> 1</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Predicting coding</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in arrange(., BR %&gt;% desc, LI %&gt;% desc):</span> Problem with the implicit `transmute()` step.</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #BB0000;">✖</span> Problem while computing `..1 = BR %&gt;% desc`.</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Caused by error:</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> unable to find an inherited method for function ‘desc’ for signature ‘"integer"’</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Subclonal peaks QC (</span><span style="color: #00BB00; font-weight: bold;">7</span><span style="font-weight: bold;"> segments, initial state </span><span style="color: #00BB00; font-weight: bold;">2:1</span><span style="font-weight: bold;">): </span><span style="font-weight: bold; text-decoration: underline;">linear</span><span style="font-weight: bold;"> </span><span style="color: #00BB00; font-weight: bold;">3</span><span style="font-weight: bold;"> </span><span style="font-weight: bold; text-decoration: underline;">branching</span><span style="font-weight: bold;"> </span><span style="color: #BB0000; font-weight: bold;">0</span><span style="font-weight: bold;"> </span><span style="font-weight: bold; text-decoration: underline;">eith</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── <span style="color: #000000; background-color: #00BB00;"> PASS </span> Linear models </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">chr11@17365005</span> ~ (31.6Mb, n = 5389) <span style="color: #BBBB00;">2:1 (21) + 2:2 (79)</span> : A1A2B1 -&gt; A1A2B1 -&gt; A1A2B1B2 [<span style="color: #00BB00;">100</span>]</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">chr11@51600000</span> ~ (4.1Mb, n = 290) <span style="color: #BBBB00;">2:1 (26) + 2:2 (74)</span> : A1A2B1 -&gt; A1A2B1 -&gt; A1A2B1B2 [<span style="color: #BBBB00;">75</span>]</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;"> chr11@5372292</span> ~ (12Mb, n = 1014) <span style="color: #BBBB00;">2:1 (21) + 2:2 (79)</span> : A1A2B1 -&gt; A1A2B1 -&gt; A1A2B1B2 [<span style="color: #00BB00;">100</span>]</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── <span style="color: #BBBBBB; background-color: #BBBB00;"> UNKNOWN </span> Either branching or linear models </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">  chr11@202253</span> ~ (5.2Mb, n = 610) <span style="color: #BBBB00;">2:1 (22) + 2:2 (78)</span> : A1A2B1 -&gt; A1A2B1 -&gt; A1A2B1B2 [<span style="color: #00BB00;">100</span>]; A1A2B1 -&gt; A1A2B1 | A1A2B1B2 [<span style="color: #00BB00;">100</span>]; A1A2B1 -&gt; A1A2B1B2 -&gt; A2B1B2 [<span style="color: #00BB00;">100</span>]</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">chr11@48918601</span> ~ (2.7Mb, n = 542) <span style="color: #BBBB00;">2:1 (25) + 2:2 (75)</span> : A1A2B1 -&gt; A1A2B1 -&gt; A1A2B1B2 [<span style="color: #00BB00;">100</span>]; A1A2B1 -&gt; A1A2B1 | A1A2B1B2 [<span style="color: #00BB00;">100</span>]; A1A2B1 -&gt; A1A2B1B2 -&gt; A2B1B2 [<span style="color: #00BB00;">100</span>]</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">chr11@55700000</span> ~ (78.8Mb, n = 10468) <span style="color: #BBBB00;">2:1 (21) + 2:2 (79)</span> : A1A2B1 -&gt; A1A2B1 -&gt; A1A2B1B2 [<span style="color: #00BB00;">100</span>]; A1A2B1 -&gt; A1A2B1 | A1A2B1B2 [<span style="color: #00BB00;">100</span>]; A1A2B1 -&gt; A1A2B1B2 -&gt; A2B1B2 [<span style="color: #00BB00;">100</span>]</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;"> chr6@82432583</span> ~ (1.8Mb, n = 301) <span style="color: #BBBB00;">2:1 (19) + 2:2 (81)</span> : A1A2B1 -&gt; A1A2B1 -&gt; A1A2B1B2 [<span style="color: #00BB00;">100</span>]; A1A2B1 -&gt; A1A2B1 | A1A2B1B2 [<span style="color: #00BB00;">100</span>]; A1A2B1 -&gt; A1A2B1B2 -&gt; A2B1B2 [<span style="color: #00BB00;">100</span>]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Cancer Cell Fraction (CCF) data available for karyotypes:1:0, 1:1, 2:0, 2:1, and 2:2.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="color: #BBBBBB; background-color: #00BB00;"> PASS </span> CCF via <span style="font-weight: bold;">ENTROPY</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="color: #BBBBBB; background-color: #00BB00;"> PASS </span> CCF via <span style="font-weight: bold;">ENTROPY</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="color: #BBBBBB; background-color: #00BB00;"> PASS </span> CCF via <span style="font-weight: bold;">ENTROPY</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="color: #BBBBBB; background-color: #00BB00;"> PASS </span> CCF via <span style="font-weight: bold;">ENTROPY</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="color: #BBBBBB; background-color: #00BB00;"> PASS </span> CCF via <span style="font-weight: bold;">ENTROPY</span>.</span>
 <span class="r-in"></span>
 </code></pre></div>
     </div>
