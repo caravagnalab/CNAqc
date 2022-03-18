@@ -97,7 +97,7 @@ paste0("TxDb.Hsapiens.UCSC.",reference_genome, ".knownGene") %>% BiocManager::in
 paste0("BSgenome.Hsapiens.UCSC.",reference_genome) %>% BiocManager::install()
 
 # Then these two packages provide useful utilities to deal with biological databases
-"Organsm.dplyr" %>% BiocManager::install()
+"Organism.dplyr" %>% BiocManager::install()
 "org.Hs.eg.db" %>% BiocManager::install()
 ```
 # Annotation
@@ -114,7 +114,7 @@ One thing to note is the presence of multiple locations and consequences for a s
 
 This happens as we try to annotate the mutations in a transcript-agnostic manner, consequently we report all possible effects and locations for any transcript (separated by `:`). 
 
-For this cohort, the drivers largely correspond to those previously noted (`TP53` and `CTCF` mutations) with some differences. Obviously using multiple annotations and validation guarantees more precise results. 
+For this cohort, the drivers largely correspond to those previously noted (`TP53` and `CTCF` mutations) with some differences. Obviously using multiple annotations and validations guarantees more precise results. 
 
 `CNAqc` uses a list of driver gene per cancer type from [intOGen](https://www.intogen.org/download) (_Release date 2020.02.01_), matching mutation by gene id (e.g., a missense mutation in `APC`). The list of genes can be pooled from multiple tumor types, or providing a tumour code. 
 
