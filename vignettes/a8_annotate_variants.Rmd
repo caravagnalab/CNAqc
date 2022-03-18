@@ -26,9 +26,7 @@ require(dplyr)
 # options(connectionObserver = NULL)
 ```
 
-CNAqc  has a number of simple annotation functions that can be useful for giving a preliminary idea of what somatic mutations might be _driver events_. 
-
-> This function does not replace more complex and in-depth analyzes of mutations.
+CNAqc  has a number of simple annotation functions that can be useful for giving a preliminary idea of what somatic mutations might be _driver events_. This function does not replace more complex and in-depth analyzes of mutations, using specialised tools like [Intogen](https://www.intogen.org/search), [COSMIC](https://cancer.sanger.ac.uk/cosmic), etc..
 
 Given a table of mutation we annotate:
 
@@ -57,7 +55,7 @@ The annotation phase is heavily based on the [VariantAnnotation](https://biocond
 
 # Install Required Packages
 
-We will show the functioning with tha example file shipped in `CNAqc`
+We will annotate the example dataset available in CNAqc.
 
 ```{r}
 # Load template data
@@ -68,9 +66,7 @@ snvs <- example_dataset_CNAqc$snvs
 snvs %>%  head
 ```
 
-As we can see we already have driver annotated from an external source ([ANNOVAR](https://annovar.openbioinformatics.org/en/latest/)).
-
-We get rid of them and re-annotate the data.
+This tibble has already have driver annotated which have been generated using ([ANNOVAR](https://annovar.openbioinformatics.org/en/latest/)). We get rid of them and re-annotate the data.
 
 ```{r, warning=FALSE, message=FALSE}
 # What are drivers (labels)
@@ -80,11 +76,11 @@ drivers_true <- snvs %>%
   unique
 
 snvs <- snvs %>% 
-  select(-is_driver, -driver_label)
+  dplyr::select(-is_driver, -driver_label)
 ```
 
-The function uses databases from Bioconductor to annotate the variants. Installation of these
-databases might take a bit of time, as ~1GB of data have to be downloaded.
+The function uses databases from [Bioconductor](https://www.bioconductor.org/) to annotate the variants; installation of these
+databases might take a bit of time because ~1GB of data have to be downloaded. This will happen only the first time the annotation is run.
 
 ```{r, warning=FALSE, message=FALSE}
 # Reference against which we mapped the reads
@@ -100,8 +96,8 @@ paste0("TxDb.Hsapiens.UCSC.",reference_genome, ".knownGene") %>% BiocManager::in
 # We have to install also the BS database for the sequences (it may take some time)
 paste0("BSgenome.Hsapiens.UCSC.",reference_genome) %>% BiocManager::install()
 
-# Then these two packages provide usefull utilities to deal with biological databases
-"Organism.dplyr" %>% BiocManager::install()
+# Then these two packages provide useful utilities to deal with biological databases
+"Organsm.dplyr" %>% BiocManager::install()
 "org.Hs.eg.db" %>% BiocManager::install()
 ```
 # Annotation

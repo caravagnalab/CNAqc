@@ -64,17 +64,36 @@
 #' @usage data(example_dataset_CNAqc)
 #'
 #' @format A list of snvs, cna and purity value that
-#' can be used to run CNAqc analyses.
+#' can be used with CNAqc. This tumour does not contain subclonal CNAs.
 #'
 #' @keywords datasets
-#'
-#' @references ??
 #'
 #' @examples
 #' data(example_dataset_CNAqc)
 #' example_dataset_CNAqc
 #'
 "example_dataset_CNAqc"
+
+#' Example PCAWG tumour
+#'
+#' @docType data
+#'
+#' @usage data(example_PCAWG)
+#'
+#' @format A CNAqc object created for a PCAWG sample, with subclonal CNAs
+#' called by Battenberg.
+#'
+#' @keywords datasets
+#'
+#' @references The ICGC/TCGA Pan-Cancer Analysis of Whole Genomes Consortium.
+#' Pan-cancer analysis of whole genomes. Nature 578, 82–93 (2020).
+#'  https://doi.org/10.1038/s41586-020-1969-6
+#'
+#' @examples
+#' data(example_PCAWG)
+#' example_PCAWG
+#'
+"example_PCAWG"
 
 #' Driver mutations released with the DriverDBv3 database
 #' \url{http://driverdb.tms.cmu.edu.tw/}
@@ -95,5 +114,22 @@
 #'
 "DriverDBv3"
 
+#' Data (simulation performance) from the trainig set to auto-tune epsilon.
+#'
+#' @docType data
+#'
+#' @usage data(fpr_test)
+#'
+#' @format A tibble.
+#'
+#' @keywords datasets
+#'
+#' @references
+#'
+#' @examples
+#' data(fpr_test)
+#' fpr_test
+#'
+"fpr_test"
 
 

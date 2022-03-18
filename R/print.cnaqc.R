@@ -22,7 +22,7 @@ print.cnaqc = function(x, ...)
   cli::cli_rule(
     paste(
       crayon::bgYellow(crayon::black("[ CNAqc ] ")),
-      'n = {.value {x$n_snvs}} mutations in {.field {x$n_cna}} segments ({.value {x$n_cna_clonal}} clonal + {.value {x$n_cna_sbclonal}} subclonal). Genome reference: {.field {x$reference_genome}}.'
+      '{.field {x$n_snvs}} mutations in {.field {x$n_cna}} segments ({.field {x$n_cna_clonal}} clonal, {.field {x$n_cna_subclonal}} subclonal). Genome reference: {.field {x$reference_genome}}.'
     )
   )
 
@@ -32,9 +32,19 @@ print.cnaqc = function(x, ...)
   # names(head(x$n_karyotype)), ')', collapse = '; ')))
 
   # cli::cli_alert_info(paste0("Mutation mapping (up to top 5): "))
+
+  cli::cli_h3("Clonal CNAs")
   cat('\n')
-  bar_print_console(x)
+  bar_print_console(x, top = 10)
   cat('\n')
+
+  if(x$n_cna_subclonal > 0)
+  {
+    cli::cli_h3("Subclonal CNAs (showing up to 10 segments)")
+    cat('\n')
+    bar_print_console_scl(x, top = 10)
+    cat('\n')
+  }
 
   # Available analyses
   with_peaks = all(!is.null(x$peaks_analysis))
@@ -57,7 +67,7 @@ print.cnaqc = function(x, ...)
   if(with_drivers)
   {
     nd = x$snvs %>% dplyr::filter(is_driver) %>% nrow()
-    cli::cli_alert_info("There are {.value {nd}} annotated driver(s).")
+    cli::cli_alert_info("There are {.value {nd}} annotated driver(s) mapped to clonal CNAs.")
 
     w_d = x$snvs %>%
       dplyr::filter(is_driver) %>%
@@ -75,6 +85,7 @@ print.cnaqc = function(x, ...)
   pfail = function()
     "{crayon::bgRed(crayon::white(\" FAIL \"))}"
 
+
   if (with_peaks)
   {
     prop = x$peaks_analysis$matches %>%
@@ -89,19 +100,21 @@ print.cnaqc = function(x, ...)
     pur_ch = paste0(round(x$peaks_analysis$score * 100, digits = 0), '%')
 
     if (x$peaks_analysis$QC == "PASS")
-      cli::cli_h3(
+      cli::cli_h1(
         paste0(
           ppass(),
           " Peaks QC {crayon::bold(x$peaks_analysis$matching_strategy)}: {crayon::green(paste0(prop, '%'))}, {crayon::green(paste('\u03bb =', pur_sc))}. Purity correction: {.value {pur_ch}}."
         )
       )
     else
-      cli::cli_h3(
+      cli::cli_h1(
         paste0(
           pfail(),
           " Peaks QC {crayon::bold(x$peaks_analysis$matching_strategy)}: {crayon::red(paste0(prop, '%'))}, {crayon::red(paste('\u03bb =', pur_sc))}. Purity correction: {.value {pur_ch}}."
         )
       )
+
+    cat('\n')
 
     xx = x$peaks_analysis$matches %>%
       dplyr::mutate(QC = ifelse(QC == "PASS", ppass(), pfail()))
@@ -117,7 +130,7 @@ print.cnaqc = function(x, ...)
       n = sprintf("%-5s", x$n_karyotype[karyo])
       p = x$n_karyotype[karyo] / sum(x$n_karyotype[xx$karyotype %>% unique])
       p = format(p * 100, digits = 0)
-      p = sprintf("%2s", p)
+      p = sprintf("%3s", p)
 
       cli::cli_alert_info(
         paste0(
@@ -128,6 +141,226 @@ print.cnaqc = function(x, ...)
         )
       )
 
+    }
+
+    # General karyotypes
+    if('general' %in% (x$peaks_analysis %>% names))
+    {
+      gen =  x$peaks_analysis$general$summary %>%
+        ungroup() %>%
+        mutate(prop = round(n/sum(n) * 100, 0))
+
+      n_matched =  gen$matched %>% sum
+      n_mismatched =  gen$mismatched %>% sum
+
+      cli::cli_h1(
+        paste(
+          "General peak QC ({.field {sum(gen$n)}} mutations):", ppass(), n_matched, pfail(), n_mismatched, "- epsilon = {.value {x$peaks_analysis$general$params$epsilon}}."
+        )
+      )
+      cat('\n')
+
+      for(i in 1:nrow(gen))
+      {
+        qc = paste(
+          sprintf("%-7s", paste(ppass(), gen$matched[i])),
+          sprintf("%-7s", paste(pfail(), gen$mismatched[i]))
+        )
+
+        n = sprintf("%-5s", gen$n[i])
+        p = sprintf("%3s", gen$prop[i])
+
+        cli::cli_alert_info(
+          paste0(
+            crayon::blue(gen$karyotype[i]),
+            " ~ n = {n} ({p}%) {clisymbols::symbol$arrow_right} ",
+            qc,
+            ""
+          )
+        )
+      }
+    }
+
+    # Subclonal
+    if('subclonal' %in% names(x$peaks_analysis))
+    {
+      nsegs =  x$peaks_analysis$subclonal$expected_peaks$segment_id %>% unique %>% length()
+
+      general_table = x$peaks_analysis$subclonal$summary %>%
+        # filter(prop > 0) %>%
+        group_by(segment_id) %>%
+        summarise(BR = sum(model == 'branching' & prop > 0), LI = sum(model == 'linear'& prop > 0)) %>%
+        arrange(BR %>% desc, LI %>% desc)
+
+      certainly_linear = general_table %>% filter(BR == 0, LI > 0) %>% nrow()
+      certainly_branching = general_table %>% filter(BR > 0, LI == 0) %>% nrow()
+      ambiguous = general_table %>% filter(BR > 0, LI > 0) %>% nrow()
+
+      all_bad = nsegs - (certainly_linear + certainly_branching + ambiguous)
+
+      numcol = function(x)
+      {
+        if(x == 0) return(crayon::red("{0}"))
+        return(paste("{.field {", eval(parse(text=x)), "}}"))
+      }
+
+      cli::cli_h1(
+        paste(
+          "Subclonal peaks QC ({.field {nsegs}} segments, initial state {.field {x$most_prevalent_karyotype}}):",
+          crayon::underline("linear"), certainly_linear %>% numcol(),
+          crayon::underline("branching"), certainly_branching%>% numcol(),
+          crayon::underline("either"), ambiguous%>% numcol(),
+          crayon::underline("no support"), all_bad%>% numcol(),
+          "- epsilon = {.value {x$peaks_analysis$subclonal$params$epsilon}}."
+        )
+      )
+
+      puncertain = function()
+        "{crayon::bgYellow(crayon::white(\" UNKNOWN \"))}"
+
+      my_print = function(s, b){
+       # cat(s)
+
+        hb = x$peaks_analysis$subclonal$summary %>%
+          filter(segment_id == s) %>%
+          arrange(desc(prop)) %>%
+          mutate(prop = prop * 100) %>%
+          mutate(prop = case_when(
+            prop == 0 ~ crayon::red('0'),
+            prop == 100 ~ crayon::green('100'),
+            TRUE ~ crayon::yellow(prop)
+          )) %>%
+          mutate(label = paste0(model_id, " [", prop, "]")) %>%
+          pull(label) %>%
+          paste(collapse = '; ')
+
+
+        n = x$peaks_analysis$subclonal$summary %>% filter(segment_id == s) %>% filter(row_number() == 1) %>% pull(size)
+        cl = x$peaks_analysis$subclonal$summary %>% filter(segment_id == s) %>% filter(row_number() == 1) %>% pull(clones)
+        cl = strsplit(cl, ' ')[[1]]
+        cl = paste0(cl[1], ' (', cl[2] %>% as.numeric *100, ') + ', cl[3], ' (', cl[4] %>% as.numeric * 100, ')')
+        cl = sprintf("%17s", cl)
+
+        cli::cli_alert_info(
+          paste0(
+            crayon::blue(sprintf(paste0("%", b, 's'), s)),
+            " ~ {n[1]} {crayon::yellow(cl)} : ",
+            hb,
+            ""
+          )
+        )
+      }
+
+      ml = general_table$segment_id %>% nchar() %>% max
+
+      if(certainly_linear > 0)
+      {
+        cli::cli_h3(paste(ppass(), "Linear models"))
+
+        general_table %>%
+          filter(BR == 0, LI > 0) %>%
+          pull(segment_id) %>%
+          lapply(my_print, b = ml)
+      }
+
+      if(certainly_branching > 0)
+      {
+        cli::cli_h3(paste(ppass(), "Branching models"))
+
+        general_table %>%
+          filter(BR > 0, LI == 0) %>%
+          pull(segment_id) %>%
+          lapply(my_print, b = ml)
+      }
+
+      if(ambiguous > 0)
+      {
+        cli::cli_h3(paste(puncertain(), "Either branching or linear models"))
+
+        general_table %>% filter(BR > 0, LI > 0) %>%
+          pull(segment_id) %>%
+          lapply(my_print, b = ml)
+      }
+
+      if(all_bad > 0)
+      {
+        cli::cli_h3(paste(pfail(), "Bad models"))
+
+        general_table %>% filter(BR == 0, LI == 0) %>%
+          pull(segment_id) %>%
+          lapply(my_print, b = ml)
+      }
+
+      # nlin = x$peaks_analysis$subclonal$expected_peaks %>%
+      #   filter(model == 'linear', matched) %>% nrow()
+      # nlin_f = x$peaks_analysis$subclonal$expected_peaks %>%
+      #   filter(model == 'linear', !matched) %>% nrow()
+      #
+      # nbr = x$peaks_analysis$subclonal$expected_peaks %>%
+      #   filter(model == 'branching', matched) %>% nrow()
+      # nbr_f = x$peaks_analysis$subclonal$expected_peaks %>%
+      #   filter(model == 'branching', !matched) %>% nrow()
+
+
+      # cli::cli_h3(
+      #   paste(
+      #     "Subclonal peak QC ({.field {nsegs}} segments):",
+      #     crayon::bold("linear"),
+      #     ppass(), nlin, pfail(), nlin_f,
+      #     "~",
+      #     crayon::bold("branching"),
+      #     ppass(), nbr, pfail(), nbr_f,
+      #     "- epsilon = {.value {x$peaks_analysis$subclonal$params$epsilon}}."
+      #   )
+      # )
+
+    #   S_table = x$peaks_analysis$subclonal$summary
+    #   S_table$size = strsplit(S_table$segment_id, split = '\\n') %>%
+    #     sapply(function(x) x[[2]])
+    #   S_table$clones = strsplit(S_table$segment_id, split = '\\n') %>%
+    #     sapply(function(x) x[[3]])
+    #   S_table$segment_id = strsplit(S_table$segment_id, split = '\\n') %>%
+    #     sapply(function(x) x[[1]]) %>%
+    #     strsplit(split = ' ') %>%
+    #     sapply(function(x) { paste(x[1], x[2], sep = '@') })
+    #
+    #   for (s in S_table$segment_id %>% unique())
+    #   {
+    #     hb = S_table %>%
+    #       filter(segment_id == s) %>%
+    #       pull(prop) %>%
+    #       length() == 1
+    #
+    #     bp = S_table %>%
+    #       filter(segment_id == s) %>%
+    #       mutate(prop = prop * 100) %>%
+    #       pull(prop) %>%
+    #       round(0) %>%
+    #       paste0('%')
+    #
+    #     bm = S_table %>%
+    #       filter(segment_id == s) %>%
+    #       pull(model)
+    #
+    #     qc = ifelse(hb,
+    #                 crayon::green(paste(bm, bp, collapse = ', ')),
+    #                 paste(bm, bp, collapse = ', '))
+    #
+    #     n = S_table %>% filter(segment_id == s) %>% pull(size)
+    #     n = sprintf("%20s", n)
+    #     cl = S_table %>% filter(segment_id == s) %>% pull(clones)
+    #     cl = sprintf("%17s", cl)
+    #
+    #     cli::cli_alert_info(
+    #       paste0(
+    #         crayon::blue(sprintf("%17s", s)),
+    #         " ~ {n[1]} {crayon::yellow(cl[1])} {clisymbols::symbol$arrow_right} ",
+    #         qc,
+    #         ""
+    #       )
+    #     )
+    #
+    # }
     }
   }
 
@@ -186,6 +419,7 @@ print.cnaqc = function(x, ...)
 
 }
 
+
 bar_print_console = function(x, top = length(x$n_karyotype)) {
   e = x$n_karyotype %>% sort(decreasing = TRUE)
   l =  round(x$l_karyotype / 10 ^ 6, digits = 0)
@@ -223,6 +457,41 @@ bar_print_console = function(x, top = length(x$n_karyotype)) {
 
                cat("\n")
              })
+}
+
+
+
+bar_print_console_scl = function(x, top = nrow(x$cna_subclonal))
+{
+  max_bars = 10
+
+  L_table =  x$cna_subclonal %>%
+    mutate(Mb = round(length/1e6, 2), CCF = round(CCF, 2), bars = n/max(n) * max_bars)  %>%
+    arrange(desc(n)) %>%
+    filter(row_number() <= top)
+
+  label_width = 30
+
+  max_n_digits = 1 + (nchar(L_table$n) %>% max)
+  max_L_digits = 1 + (nchar(L_table$Mb) %>% max)
+
+  for(i in 1:nrow(L_table))
+  {
+    cat(sprintf('%*s ', 15, paste(L_table$chr[i],  L_table$from[i], sep = '@')))
+    cat(sprintf(' [n = %*s, L = %*s Mb] ',
+                max_n_digits,
+                L_table$n[i],
+                max_L_digits,
+                L_table$Mb[i]))
+
+    # str = paste0(L_table$karyotype[i], " (", L_table$CCF[i] ,") - ", L_table$karyotype_2[i],  " (", 1 - L_table$CCF[i] ,") ")
+    cat(sprintf('%*s ', 12, paste0(L_table$karyotype[i], " (", L_table$CCF[i] ,")")))
+    cat(sprintf('%*s ', 12, paste0(L_table$karyotype_2[i], " (", 1-L_table$CCF[i] ,")")))
+
+    cat(paste(rep("\u25A0", L_table$bars[i]), collapse = ''))
+    cat('\n')
+  }
+
 }
 
 

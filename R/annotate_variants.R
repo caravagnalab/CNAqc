@@ -1,9 +1,11 @@
-#' Annotate variant in a CNAqc object
+#' Annotate variant with VariantAnnotation.
 #'
-#' @description  The function provides an easy and fast way to annotate SNVs, in particular we annotate the locations of the different mutations, the consequences for
-#' those in coding regions and we compare them to a set of known drivers.
+#' @description  The function provides an easy and fast way to annotate variants,
+#' reporting the locations of the different mutations and the consequences for
+#' those in coding regions. Then putative drivers are returned upon matching
+#' against lists of known drivers.
 #'
-#' @param x a data.frame with columns c("chr", "from", "to").
+#' @param x A data.frame with columns c("chr", "from", "to"), or a CNAqc object.
 #' @param driver_list a one column data.frame with gene symbols.
 #' @param polyphen whether or not to annotate Polyphen scores.
 #' @param filter_tumor_type filter Intogen drivers by tumor type.
@@ -34,67 +36,31 @@ annotate_variants <- function(x,
                               ref = "hg19",
                               driver_list = CNAqc::intogen_drivers,
                               polyphen = FALSE,
-                              filter_tumor_type = NULL) {
+                              filter_tumor_type = NULL)
+{
   tx_pkg <-  paste0("TxDb.Hsapiens.UCSC.", ref, ".knownGene")
   bs_pkg <- paste0("BSgenome.Hsapiens.UCSC.", ref)
 
-
-  if (!require(tx_pkg,  character.only = T, quietly = T) %>% suppressWarnings()) {
-    stop(
-      paste0(
-        "Please install ",
-        tx_pkg,
-        " from Bioconducator to use the variant annotation function."
-      )
-    )
+  # Check for available packages
+  rqp = function(x) {
+    if (!require(x,  character.only = T, quietly = T) %>% suppressWarnings()) {
+      cli::cli_abort("Bioconducator package {.field {x}} is required to annotate variants")
+    }
   }
 
-  if (!require(bs_pkg,  character.only = T, quietly = T) %>% suppressWarnings()) {
-    stop(
-      paste0(
-        "Please install ",
-        bs_pkg,
-        " from Bioconducator to use the variant annotation function."
-      )
-    )
-  }
+  # Required packages
+  tx_pkg %>% rqp()
+  bs_pkg %>% rqp()
+  "Organism.dplyr" %>% rqp()
+  "org.Hs.eg.db" %>% rqp()
 
-  if (!require("Organism.dplyr",
-               character.only = T,
-               quietly = T) %>% suppressWarnings()) {
-    stop(
-      paste0(
-        "Please install ",
-        "Organism.dplyr",
-        " from Bioconducator to use the variant annotation function."
-      )
-    )
-  }
+  # Define input
+  inp = x
 
-  if (!require("org.Hs.eg.db",
-               character.only = T,
-               quietly = T) %>% suppressWarnings()) {
-    stop(
-      paste0(
-        "Please install ",
-        "org.Hs.eg.db",
-        " from Bioconducator to use the variant annotation function."
-      )
-    )
-  }
-
-  inp = NULL
-
-  # Manage input files
   if (inherits(x, 'cnaqc'))
   {
-    cli::cli_alert("Preparing annotations for the CNAqc object")
-    inp = x$snvs
-  }
-  else
-  {
-    cli::cli_alert("Preparing annotations for a dataframe")
-    inp = x
+    cli::cli_alert_info("Extracting mutations from a CNAqc object.")
+    inp = x %>% Mutations()
   }
 
   # Cancel other annotations
@@ -110,7 +76,6 @@ annotate_variants <- function(x,
 
   # Get data and ranges
   txdb <- eval(parse(text = tx_pkg))
-
   inp <- inp %>% mutate(to = to - 1)
 
   rd <-
@@ -123,7 +88,7 @@ annotate_variants <- function(x,
     )
 
   # VariantAnnotation package
-  cli::cli_process_start("Locaring variants with {crayon::yellow('VariantAnnotation')}")
+  cli::cli_process_start("Locating variants with {crayon::yellow('VariantAnnotation')}")
 
   loc <-
     VariantAnnotation::locateVariants(rd, txdb, VariantAnnotation::AllVariants())
@@ -131,13 +96,9 @@ annotate_variants <- function(x,
   cli::cli_process_done()
 
   # Src organism DB
-  cli::cli_process_start("Sourcing organism")
+  cli::cli_process_start("Traslating Entrez ids")
 
   src <- src_organism(tx_pkg)
-
-  cli::cli_process_done()
-
-  cli::cli_process_start("Traslating Entrez ids")
 
   translated_enttrz <-
     AnnotationDbi::select(

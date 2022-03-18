@@ -16,107 +16,111 @@ knitr::opts_chunk$set(
 options(crayon.enabled=F)
 ```
 
+# Peak analysis
 
-
-`CNAqc` can determine if purity and CNA segments "fit well" to mutation data, an hortogonal quality check (QC) metric that can be used to adjust purity/ ploidy.
-
- `CNAqc`  matches allelic imbalance of CNA segments to the allelic frequencies of somatic mutations. The package implements a karyotype-weighted linear score which uses the distance between data peaks (empirical), and their theoretical expectation. This score accouts for normal plodiy (germline), and tumour purity/  ploidy. The peaks are determined via kernel density estimation and peak-detection heuristics.
+`CNAqc` can perform quality control (QC) of somatic mutations, allele-specific CNAs and tumour purity. 3 distinct procedures are available, all called by function `analyze_peaks`. The idea is as follows: a CNA segment with $m$/ $M$ copies of the minor/ major alleles is consistent with mutation data if VAFs peak at certain positions we can compute. CNAqc computes expected peaks, and compares them to the one it detects from data. The theory works for both clonal and subclonal segments, and a purity error parameter (`purity_error`) determines the maximum error we can tolerate before we fail a sample.
 
 ```{r setup}
 library(CNAqc)
-```
 
-We work with the template dataset. 
-
-```{r echo=FALSE, results=TRUE, message=FALSE}
-# Dataset available with the package 
+# We work with the template dataset. 
 data('example_dataset_CNAqc', package = 'CNAqc')
+
 x = CNAqc::init(
   example_dataset_CNAqc$snvs, 
   example_dataset_CNAqc$cna,
   example_dataset_CNAqc$purity,
   ref = 'hg19')
 
+x = CNAqc::example_PCAWG
+
 print(x)
 ```
 
-Peak detection routines are implemented in function `analyze_peaks`. 
 
-The idea is as follows: a segment with $m$ and $M$ copies of the minor and major alleles is consistent to mutation data if the  VAF distribution peaks at certain values, which we can compute. Profiling then of the VAF distribution with a peak-detection heuristic allows `CNAqc` to measure the if peaks match. Large deviance suggests usually wrong purity estimation.
-
-# Peak analysis
-
+We run it with default parameters, otherwise one can select only certain segments  to fit or change purity error tolerance etc.
 ```{r, fig.width=11, fig.height=3, warning=F}
-# Run default analysis
 x = analyze_peaks(x)
 ```
+An S3 methods print to screen all QC results based on peak-detection.
 
-`CNAqc` analyze  LOH regions (A, AA), diploid regions (AB), and amplification regions (AAB, AABB). These correspond to
-`'1:1'`, `'2:1'`, `'2:0'` and `'2:2'` in "Major:minor" notation. Karyotypes are subset by their size (normalized for
-the number of input mutations), and by default karyotypes smaller than 5% of the actual mutational burden are not considered
-
-A Kernel-density method (unitary adjustment, Gaussian kernel) is used to smooth the data distribution, and the  [peakPick: Peak Picking Methods Inspired by Biological Data](https://cran.rstudio.com/web/packages/peakPick/index.html) package is used   to determine peaks in the smoothed density.  Peaks below a mnimum 
-density (noise and miscalled segments) are filtered, and the others are matched to a predefined location with some tolerance (e.g., plus/minus `0.5 * epsilon`, where `epsilon = 0.015` is the default).
-
-Theis analysis produces a set of scores that account for karyotype size and peaks offset, and that can be combined into a linear model to compute an overall QC metrics, called `rho`. 
 ```{r, fig.width=11, fig.height=3}
 print(x)
 ```
 
-A summary table is stored inside the named list `peaks_analysis`.
 
-# Plotting results 
+## Simple clonal CNAs
 
-For every karyotype, a plot with the estimated KDE and the matched peaks is available (assembled `ggpubr` figure with); gray panels represent karyotypes that have not been used.
+This QC is the most important as it can be used to detect adjustments required to better fit purity or ploidy of the sample (to re-run the copy number caller), or to select among alternative copy number solutions returned from a caller (tetraploid versus triploid).
+
+For these segments the package computes a linear score from the distance between data peaks, and their theoretical expectation. The peaks are determined via:
+
+- a kernel-density (unitary adjustment, Gaussian kernel) used to smooth the data distribution, and the   [peakPick](https://cran.rstudio.com/web/packages/peakPick/index.html) package to determine peaks in the smoothed density.
+
+- a Binomial mixture model using [Bmix](https://caravagnalab.github.io/BMix/).
+
+There are two possible algorithmic strategies to match peaks with clonal simple CNAs (configured by parameter `matching_strategy`): one matches the closest peaks as defined by euclidean distance, the other ranks peaks  right to left, and prioritises right-most peaks (see the manual for more details). A call to `plot_peaks_analysis` with default parameters shows the results from peak detection.
 
 ```{r, fig.width=11, fig.height=3, warning=F}
 plot_peaks_analysis(x)
 ```
 
-Individual karyotypes plots are available inside the named lists `peaks_analysis$plots`, named afte each required
-karyotype.
+Plots are ordered by fixed positions (gray panels represent karyotypes that have not been used). Each vertical dashed line is the expected peak, the bandwidth around being the tolerance we use to match peaks (based on `purity_error`, adjusted for segment ploidy and tumour purity). Each dot is a peak detected from data, with a bandwidth of tolerance (fixed) around it. The colours green/red reflect if a peak is matched or not; the overall QC status for a karyotype  is given by the colour of the facet and the box surrounding the whole figure assembly reports the QC status for the sample.
 
+Plots can also be generated without assembly or empty plots (see the parameters of function `plot_peaks_analysis`).
+
+## Complex clonal CNAs
+
+The QC procedure for these CNAs uses only the kernel density estimation to make the computation faster.
+```{r, fig.width=8, fig.height=5, warning=F}
+plot_peaks_analysis(x, what = 'general')
+```
+The plot reports dashed lines for expected peaks (for mutation with multiplicity from 1 to the maximum of the Major/minor allele counts), and dots for each data peak.The colours green/red report the QC status for each peak; with these CNAs no karyotype-level or sample-level scores are produced.
+
+##  Subclonal CNAs 
+
+The QC procedure for these CNAs uses only the kernel density estimation (as for complex CNAs), and considers 2 subclones with distinct mixing proportions. Differently from clonal CNAs, however, here the analysis is carried out at the level of each segment (without pooling segments with the same karyotypes) so to support callers that report segment-specific CCF values (e.g., Battenberg).
+
+```{r, fig.width=8, fig.height=12, warning=F}
+plot_peaks_analysis(x, what = 'subclonal')
+```
+The visual layout of this plot is the same of complex clonal CNAs; not that the facet reports the distinct evolutionary models that have been generated to QC subclonal CNAs.
+
+
+# Summary results
+
+For every type of copy number analyzed several information are reported, tables with summary peaks are available inside `x$peaks_analysis`. More precisely
 ```{r, fig.width=3, fig.height=3}
-# Tetraploid segments
-x$peaks_analysis$plots$`2:2`
-```
-
-You can integrate plots from QC analysis with data.
-```{r, fig.width=11, fig.height=7, warning=F}
-cowplot::plot_grid(
-  plot_peaks_analysis(x),
-  plot_segments(x),
-  rel_heights = c(.8, 1),
-  nrow = 2
-)
-```
-
-# Summary results and Quality Check (QC)
-
-The summary technical table is available as `peaks_analysis$matches` inside `x`. 
-
-```{r}
+# Simple clonal CNAs
 x$peaks_analysis$matches
+
+# Complex clonal CNAs
+x$peaks_analysis$general$expected_peaks
+
+# Subclonal CNAs
+x$peaks_analysis$subclonal$expected_peaks
 ```
 
-The table reports several information. The following might be of some use after the analysis:
+The most helpful table is usually the one for simple clonal CNAs `x$peaks_analysis$matches`, which reports several information:
 
 - `mutation_multiplicity` and `karyotype`, which are the number of copies of the mutation, and the segment's karyotype. Each segment with `discarded = FALSE` has been analysed;
 - `peak`, `x`, `y` report where the expected peak should be found, and where it has been found (`x` and `y`);
 - `offset`, `weight` and `score` that report the factors of the final `score`;
 - `QC` that reports if the  peak is considered matched.
 
-The overall `QC` result - `"PASS"/"FAIL"` - is available in `x`.
+The overall sample-level QC result - `"PASS"/"FAIL"` - is available in
 ```{r}
 x$peaks_analysis$QC
 ```
 
+You can visually summarise QC results for all the analyses available in CNAqc (peaks-based and [CCF-based](https://caravagn.github.io/CNAqc/articles/ccf_computation.html)).
 
-You can visually summarise the result of the QC analysis, for both peaks and [CCF computation](https://caravagn.github.io/CNAqc/articles/ccf_computation.html).
-
-```{r, fig.width=3, fig.height=3, message=F, warning=F}
+```{r, fig.width=6, fig.height=10, message=F, warning=F}
 plot_qc(x)
 ```
 
-Here since CCF have not been computed, the only available QC tests are for peak-detection.
+
+# Per-chromosome analysis
+
+CNAqc analyses can be run per chromosome. First, split your data by chromosome using function `split_by_chromosome`, and then run the analysis for every chromosome. 
 

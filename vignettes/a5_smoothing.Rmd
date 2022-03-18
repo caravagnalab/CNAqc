@@ -20,7 +20,9 @@ options(crayon.enabled=FALSE)
 library(CNAqc)
 ```
 
-We work with the template dataset. 
+Smoothing works with a simple algorithm that merges, inside each chromosome, all contiguous segments that have the same absolute copy number values (minnor and major allele counts), and are separated by up to $\delta$ base pairs. Only clonal CNAs can be smoothed; subclonal CNAs are retained (they cannot be smoothed usually because the CCF of conrtiguous segments might be different, even if the allele-specific profiles are equivalent).
+
+The default value of $\delta = 10^6$ (1 megabase).
 
 ```{r echo=FALSE, results=TRUE, message=FALSE}
 # Dataset available with the package 
@@ -35,9 +37,6 @@ print(x)
 ```
 
 
-Smoothing works with a simple algorithm that merges, inside each chromosome, all contiguous segments that have the same absolute copy number values (minnor and major allele counts), and are separated by up to $\delta$ base pairs. 
-
-The default value of $\delta = 10^6$ (1 megabase).
 
 ```{r, fig.width=11, fig.height=3}
 # Before smoothing
@@ -47,11 +46,11 @@ print(x)
 x = smooth_segments(x, maximum_distance = 1e6) # default
 ```
 
-The old obbject is retained inside the new one
+The old CNAqc object is retained inside the new one
 ```{r, fig.width=11, fig.height=3}
 print(x$before_smoothing)
 
-# The new has theoretically smaller segments
+# The new should have fewer segments
 print(x)
 ```
 

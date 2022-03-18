@@ -1,3 +1,5 @@
+##########################################
+# Peak detection for simple karyotypes (more sofisticated algorithm) - rightmost peak matching
 peak_detector = function(snvs,
                          expectation,
                          tumour_purity,
@@ -19,6 +21,7 @@ peak_detector = function(snvs,
 
   den = density(y, kernel = 'gaussian', adjust = kernel_adjust)
   in_range = den$x >= min(y) & den$x <= max(y)
+  in_range = TRUE
 
   input_peakdetection = matrix(cbind(x = den$x[in_range], y = den$y[in_range]), ncol = 2)
   colnames(input_peakdetection) = c('x', 'y')
@@ -35,7 +38,6 @@ peak_detector = function(snvs,
     dplyr::mutate(x = round(x, 2), y = round(y, 2)) %>%
     dplyr::distinct(x, .keep_all = TRUE)
 
-
   # print(pks)
   hst = hist(snvs$VAF, breaks = seq(0, 1, 0.01), plot = F)$counts
   pks$counts_per_bin = hst[round(pks$x * 100)]
@@ -50,46 +52,50 @@ peak_detector = function(snvs,
     # Heuristic to remove low-density peaks
     xy_peaks = pks %>%
       # dplyr::mutate(discarded = counts_per_bin < sum(hst) * p)
-      dplyr::mutate(discarded = y <= max(pks$y) * (1 / 20), from = 'KDE')
+      dplyr::mutate(discarded = y <= max(pks$y) * (1 / 20),
+                    from = 'KDE')
 
     if (any(xy_peaks$discarded))
     {
-      cli::cli_alert_warning("Some KDE peaks have been removed")
-      xy_peaks %>%
-        filter(discarded) %>%
-        print
+      # cli::cli_alert_warning("Some KDE peaks have been removed")
+      # xy_peaks %>%
+      #   filter(discarded) %>%
+      #   print
     }
 
   }
 
   # BMix clustering
-  bm = bmixfit(
-    data.frame(successes = snvs$NV, trials = snvs$DP),
-    K.BetaBinomials = 0,
-    K.Binomials = 1:4,
-    silent = TRUE
-  )
-  # plot.bmix(bm, data = data.frame(successes = rc$NV, trials = rc$DP))
-
-
-  llxy = NULL
-  for (b in names(bm$B.params))
+  if (y %>% unique() %>% length() > 1)
   {
-    w_den = which.min(abs(den$x - bm$B.params[b]))
+    bm = bmixfit(
+      data.frame(successes = snvs$NV, trials = snvs$DP),
+      K.BetaBinomials = 0,
+      K.Binomials = 1:4,
+      silent = TRUE
+    )
+    # plot.bmix(bm, data = data.frame(successes = rc$NV, trials = rc$DP))
 
-    tnw = tibble(x = den$x[w_den],
-                 y = den$y[w_den],
-                 # counts_per_bin = bm$pi[b] * (snvs %>% nrow), # Wrong
-                 discarded = FALSE)
 
-    # Counts are counted the same way regardless it is a BMix fit or not.
-    tnw$counts_per_bin = hst[round(tnw$x * 100)]
+    llxy = NULL
+    for (b in names(bm$B.params))
+    {
+      w_den = which.min(abs(den$x - bm$B.params[b]))
 
-    llxy = llxy %>%
-      bind_rows(tnw)
+      tnw = tibble(x = den$x[w_den],
+                   y = den$y[w_den],
+                   # counts_per_bin = bm$pi[b] * (snvs %>% nrow), # Wrong
+                   discarded = FALSE)
+
+      # Counts are counted the same way regardless it is a BMix fit or not.
+      tnw$counts_per_bin = hst[round(tnw$x * 100)]
+
+      llxy = llxy %>%
+        bind_rows(tnw)
+    }
+
+    xy_peaks = xy_peaks %>% bind_rows(llxy %>% mutate(from = 'BMix'))
   }
-
-  xy_peaks = xy_peaks %>% bind_rows(llxy %>% mutate(from = 'BMix'))
 
 
   # Handle special case where everything is discarded by including the one
@@ -164,7 +170,7 @@ peak_detector = function(snvs,
   # Handle the special case where we have less peaks that the ones we need to
   # match. In this case we match everything to the same peak
   if (nrow(match_xy_peaks) < nrow(expectation)) {
-    entry = match_xy_peaks[1, ]
+    entry = match_xy_peaks[1,]
     missing = nrow(expectation) - nrow(match_xy_peaks)
     for (s in 1:missing)
       match_xy_peaks = bind_rows(match_xy_peaks, entry)
@@ -175,7 +181,8 @@ peak_detector = function(snvs,
   # Distance in VAF space, converted to purity space
   expectation = expectation %>%
     mutate(
-      offset_VAF = peak - x, # VAF space
+      offset_VAF = peak - x,
+      # VAF space
       offset = compute_delta_purity(
         vaf = x,
         delta_vaf = offset_VAF,
@@ -254,6 +261,8 @@ peak_detector = function(snvs,
   ))
 }
 
+##########################################
+# Peak detection for simple karyotypes (more sofisticated algorithm) - closest peak matching
 peak_detector_closest_hit_match = function(snvs,
                                            expectation,
                                            tumour_purity,
@@ -269,8 +278,12 @@ peak_detector_closest_hit_match = function(snvs,
   # Smoothed Gaussian kernel for VAF
   y = snvs %>% dplyr::pull(VAF)
 
-  den = density(y, kernel = 'gaussian', adjust = kernel_adjust)
-  in_range = den$x >= min(y) & den$x <= max(y)
+  den = density(y,
+                kernel = 'gaussian',
+                adjust = kernel_adjust,
+                na.rm = T)
+  in_range = den$x >= min(y, na.rm = T) & den$x <= max(y, na.rm = T)
+  in_range = TRUE
 
   # den = density(y, kernel = 'gaussian', adjust = 0.5)
   # plot(den)
@@ -290,7 +303,6 @@ peak_detector_closest_hit_match = function(snvs,
     dplyr::mutate(x = round(x, 2), y = round(y, 2)) %>%
     dplyr::distinct(x, .keep_all = TRUE)
 
-
   # print(pks)
   hst = hist(snvs$VAF, breaks = seq(0, 1, 0.01), plot = F)$counts
   pks$counts_per_bin = hst[round(pks$x * 100)]
@@ -301,47 +313,51 @@ peak_detector_closest_hit_match = function(snvs,
     # Heuristic to remove low-density peaks
     xy_peaks = pks %>%
       # dplyr::mutate(discarded = counts_per_bin < sum(hst) * p)
-      dplyr::mutate(discarded = y <= max(pks$y) * (1 / 20), from = 'KDE')
+      dplyr::mutate(discarded = y <= max(pks$y) * (1 / 20),
+                    from = 'KDE')
 
 
     if (any(xy_peaks$discarded))
     {
-      cli::cli_alert_warning("Some peaks have been removed")
-      xy_peaks %>%
-        filter(discarded) %>%
-        print
+      # cli::cli_alert_warning("Some peaks have been removed")
+      # xy_peaks %>%
+      #   filter(discarded) %>%
+      #   print
     }
   }
 
   # BMix clustering
-  # invisible(capture.output(
-  bm = BMix::bmixfit(
-    data.frame(successes = snvs$NV, trials = snvs$DP),
-    K.BetaBinomials = 0,
-    K.Binomials = 1:4,
-    silent = TRUE
-  )
-  # ))
-  # plot.bmix(bm, data = data.frame(successes = rc$NV, trials = rc$DP))
-
-  llxy = NULL
-  for (b in names(bm$B.params))
+  if (y %>% unique() %>% length() > 1)
   {
-    w_den = which.min(abs(den$x - bm$B.params[b]))
+    # invisible(capture.output(
+    bm = BMix::bmixfit(
+      data.frame(successes = snvs$NV, trials = snvs$DP),
+      K.BetaBinomials = 0,
+      K.Binomials = 1:4,
+      silent = TRUE
+    )
+    # ))
+    # plot.bmix(bm, data = data.frame(successes = rc$NV, trials = rc$DP))
 
-    tnw = tibble(x = den$x[w_den],
-                 y = den$y[w_den],
-                 # counts_per_bin = bm$pi[b] * (snvs %>% nrow), # Wrong
-                 discarded = FALSE)
+    llxy = NULL
+    for (b in names(bm$B.params))
+    {
+      w_den = which.min(abs(den$x - bm$B.params[b]))
 
-    # Counts are counted the same way regardless it is a BMix fit or not.
-    tnw$counts_per_bin = hst[round(tnw$x * 100)]
+      tnw = tibble(x = den$x[w_den],
+                   y = den$y[w_den],
+                   # counts_per_bin = bm$pi[b] * (snvs %>% nrow), # Wrong
+                   discarded = FALSE)
 
-    llxy = llxy %>%
-      bind_rows(tnw)
+      # Counts are counted the same way regardless it is a BMix fit or not.
+      tnw$counts_per_bin = hst[round(tnw$x * 100)]
+
+      llxy = llxy %>%
+        bind_rows(tnw)
+    }
+
+    xy_peaks = xy_peaks %>% bind_rows(llxy %>% mutate(from = 'BMix'))
   }
-
-  xy_peaks = xy_peaks %>% bind_rows(llxy %>% mutate(from = 'BMix'))
 
   # tibble(
   # `x`= bm$B.params,
@@ -387,7 +403,7 @@ peak_detector_closest_hit_match = function(snvs,
     if (length(id_match) == 0)
       return(NA)
     else
-      return(not_discarded[id_match, ])
+      return(not_discarded[id_match,])
   }
 
   matched_peaks = lapply(seq_along(expectation$peak), get_match)
@@ -400,13 +416,14 @@ peak_detector_closest_hit_match = function(snvs,
   matching = matching %>%
     rowwise() %>%
     mutate(
-      offset_VAF = peak - x, # VAF space
+      offset_VAF = peak - x,
+      # VAF space
       offset = compute_delta_purity(
         vaf = x,
         delta_vaf = offset_VAF,
         ploidy = strsplit(snvs$karyotype[1], ':') %>% unlist %>% as.numeric() %>% sum(),
         multiplicity = mutation_multiplicity
-        )
+      )
     )
 
   # matching$matched = abs(matching$offset) <= matching_epsilon
@@ -437,7 +454,12 @@ peak_detector_closest_hit_match = function(snvs,
   ))
 }
 
-overlap_bands = function(peak, tolerance, left_extremum, right_extremum)
+##########################################
+# Auxiliary functions  peak-matching for simple karyotypes
+overlap_bands = function(peak,
+                         tolerance,
+                         left_extremum,
+                         right_extremum)
 {
   # if(peak + tolerance >= left_extremum & peak + tolerance <= right_extremum)
   #   return(TRUE)
@@ -450,4 +472,5 @@ overlap_bands = function(peak, tolerance, left_extremum, right_extremum)
   return(M)
 }
 
-
+##########################################
+# KDE-based pure peak detection (for general karyptypes and subclonal CNAs)

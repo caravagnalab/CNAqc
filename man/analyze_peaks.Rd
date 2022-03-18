@@ -8,7 +8,7 @@ analyze_peaks(
   x,
   karyotypes = c("1:0", "1:1", "2:0", "2:1", "2:2"),
   min_karyotype_size = 0,
-  min_absolute_karyotype_mutations = 10,
+  min_absolute_karyotype_mutations = 100,
   p_binsize_peaks = 0.005,
   matching_epsilon = NULL,
   purity_error = 0.05,
@@ -16,7 +16,8 @@ analyze_peaks(
   n_bootstrap = 1,
   kernel_adjust = 1,
   matching_strategy = "closest",
-  KDE = TRUE
+  KDE = TRUE,
+  starting_state_subclonal_evolution = "1:1"
 )
 }
 \arguments{
@@ -36,12 +37,15 @@ mutations). Karyotypes smaller than this value are removed from analysis.}
 
 \item{p_binsize_peaks}{Peaks detected will be filtered if, in a peak, we map
 less than \code{p_binsize_peaks * N} mutations. The value \code{N} is obtained
-couting all mutations that map in all peaks.}
+couting all mutations that map in all peaks.#'}
 
-\item{matching_epsilon}{Peaks at a location are matched with a range of \code{epsilon * 0.5},
-left and right. By default (\code{0.025}) a maxium 5\% tolerance is adopted. The status of
-overall PASS/ FAIL for this analysis is determined with the same tolerance, given the score
-computed across all karyotypes.}
+\item{matching_epsilon}{Deprecated parameter.}
+
+\item{purity_error}{Purity error tolerance to determine QC results. This can be
+set automatically using function \code{auto_tolerance}}
+
+\item{VAF_tolerance}{A tolerance in comparing bands overlaps - this is applied
+to the raw VAF values.}
 
 \item{n_bootstrap}{Number of times peak detection is bootstrapped (this helps sometimes
 finding peaks that might be visually observable but fail to be detected by the underlying
@@ -56,6 +60,11 @@ match the expected peak. If \code{"rightmost"}, peaks are matched prioritizing
 right to left peaks (the higher get matched first); this strategy is more correct
 in principle but works only if there are no spurious peaks in the estimated
 density. By defaule the first strategy is used.}
+
+\item{KDE}{Deprecated parameter (unused).}
+
+\item{starting_state_subclonal_evolution}{Starting state to determine linear versus
+branching evolutionary model, for sublonal CNA QC.}
 }
 \value{
 An object of class \code{cnaqc}, modified to hold the results from this analysis.
@@ -63,23 +72,20 @@ See the vignette to see how to extract and plot the results.
 }
 \description{
 This function carries out a peak-detection
-analysis based on a joint criterion: KDE (package \code{peakPick}) plus
-Binomial mixture (package \code{BMix}). This is used to determine if the
-clonal mutations - for a given karyotype - have VAF close to the expected clonal
-VAF, computed from input major and minor alleles and tumour purity.
-A score is produced as a linear combination of the distance of the actual
-peak to the expected one.
+analysis to determine QC for clonal simple CNAs, clonal complex CNAs and
+subclonal CNAs.
+
+Several scores are produced and returned; functions to visualize results
+are also available (see the tool website for example usages).
 }
 \examples{
-data('example_dataset_CNAqc', package = 'CNAqc')
-x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
 
 x = analyze_peaks(x)
 print(x)
 
 print(x$peaks_analysis)
 
-
 x = analyze_peaks(x, matching_strategy = "rightmost")
 print(x)
+
 }

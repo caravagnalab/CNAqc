@@ -7,8 +7,6 @@
 subset_by_minimum_CCF(x, min_target_CCF = 0.1)
 }
 \arguments{
-\item{x}{}
-
 \item{min_target_CCF}{}
 }
 \value{

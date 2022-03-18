@@ -16,41 +16,94 @@ knitr::opts_chunk$set(
 options(crayon.enabled=F)
 ```
 
-### Requirements
+# Overview
 
-* read counts from somatic mutations (SNVs, indels); 
-* allele-specific copy number segments (clonal CNAs);
+<img src="logo_summary.png" alt="CNAqc Input/Output" width="650"/><br>
+_CNAqc Input/Output_
+
+
+## Summary
+
+CNAqc requires in input
+
+* read counts from somatic mutations such as single-nucleotide variants (SNVs) or insertion-deletions (indels); 
+* allele-specific copy number segments (CNAs), for both clonal and subclonal segments;
 * tumor purity estimate.
 
-`CNAqc` uses chromosome coordinates for one of the supported references to map mutations to segments. Then, it can elaborate a number of analysis that help quality control the consistency among mutations and CNAs, and re-parametrise callers. 
+CNAqc uses chromosome coordinates the supported references (GRCh38 and hg19) to map mutations to segments. Then, the tool can elaborate a number of analysis that help quality control the consistency among mutations, CNAs and tumour purity (see Articles). 
 
-Example inputs and tool functions are discussed as Articles.
+CNAqc can be used to: 
 
-### The model
+1. quality control (QC) concordance across the input mutations, CNAs and purity;
+2. select among alternative tumour segmentations and purity/ ploidy estimates;
+3. optimize CNA calling with automatic QC procedures leveraging the Sequenza copy number caller;
+4. estimate the Cancer Cell Fractions (CCFs) values of the input variants, and estimate their uncertainty;
+5. identify patterns of over-fragmentation of chromosome arms;
+6. smooth and subset segments with various filters;
+7. annotate putative driver mutations among the input variants, using VariantAnnotation.
 
-The following concepts are used to develop `CNAqc` analyses.
 
-The **expected Variant Allele Frequency (VAF)** for mutations present in $m$ copies of the tumour genome, when the tumour sample purity is $\pi$ and segment ploidy is $p$ (i.e., total number of copies of the minor and major allele at the mutation locus) are given by
+## The model
+
+
+The following concepts are used to develop CNAqc 
+
+### VAF peaks
+
+<img src="peaks.png" alt="CNAqc Input/Output" width="650"/><br>
+_Expected VAF peaks for mutations mapped to diploid heterozygous and triploid clonal CNAs (at purity $\pi=1$)._
+
+
+**Variant Allele Frequency (VAF) peaks for clonal CNAs.** Consider:
+
+- mutations present in a percentage $0<c<1$ of tumour cells, sitting on a segment $nA:nB$;
+- tumour purity $\pi$;
+- a healthy diploid normal;
+
+Since the proportion of all reads from the tumour is $\pi(n_A+n_B)$, and from the normal is $2(1-\pi)$. Then, muations present in $m$ copies of the tumour genome should peak at VAF value 
 \[
-v = \dfrac{m \pi}{
-2 (1 - \pi) + \pi p 
+v_m(c) = \dfrac{m \pi c}{
+2 (1 - \pi) + \pi (n_A+n_B)
 } \, .
 \]
 
-This formula gives as an expectation for the allelic frequency of somatic mutations that map to a certain karyotype (e.g., a triploid `2:1` segment, or AAB),
+**Variant Allele Frequency (VAF) peaks for subclonal CNAs.** Consider a mixture of 2 subclones with segments $n_{A,1}:n_{B,1}$ and  $n_{A,2}:n_{B,2}$, proportions $\rho_1$ and $\rho_2$ ($\rho_1+\rho_2=1$).
 
-Given VAF, tumour purity and CNAs, **Cancer Cell Fractions (CCF)** values can be computed as
+The expected peak for a shared mutation with multiplicity $m_1$/ $m_2$ in the first/ second subclone is
+\[
+v_{m_1,m_2} = \dfrac{
+(m_1\rho_1 + m_2\rho_2) \pi
+}
+{
+2 (1 - \pi) + \pi [(n_{A,1}+n_{B,1})\rho_1 + (n_{A,2}+n_{B,2})\rho_2]
+} \, .
+\]
+
+The expected peak for a private mutation with multiplicity $m$ in subclone $i$ is
+\[
+v_{m_i} = \dfrac{
+m\rho_i \pi
+}
+{
+2 (1 - \pi) + \pi [(n_{A,1}+n_{B,1})\rho_1 + (n_{A,2}+n_{B,2})\rho_2]
+} \, .
+\]
+
+
+### CCFs
+
+**Cancer Cell Fractions (CCF).** Given VAF, tumour purity and CNAs, CCF  values can be computed as
+
 
 \[
-\text{CCF} = 
+c = 
 \dfrac{
 v[
-(p - 2)\pi + 2
+(n_a+n_B - 2)\pi + 2
 ]
 }
 {
 m \pi
 }
 \]
-where $p$ is total segment ploidy (e.g., 3 for a `2:1` state).
 

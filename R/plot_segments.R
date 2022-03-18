@@ -37,13 +37,17 @@ plot_segments = function(x,
   stopifnot(inherits(x, 'cnaqc'))
 
   # Circular layout
-  if (circular)
-    return(plot_segments_circular(x, chromosomes = chromosomes))
+  if (circular) {
+    base_plot = plot_segments_circular(x, chromosomes = chromosomes)
 
-  # Standard plot -- baseline genome reference
-  base_plot = CNAqc:::blank_genome(chromosomes = chromosomes,
-                                   ref = x$reference_genome,
-                                   ...)
+    return(base_plot)
+  }
+  else{
+    # Standard plot -- baseline genome reference
+    base_plot = CNAqc:::blank_genome(chromosomes = chromosomes,
+                                     ref = x$reference_genome,
+                                     ...)
+  }
 
   # Segments
   segments = x$cna %>%
@@ -63,10 +67,28 @@ plot_segments = function(x,
   # =-=-=-=-=-=-=-=-=-=-=-=-
   # Draw Segments
   # =-=-=-=-=-=-=-=-=-=-=-=-
-  base_plot = CNAqc:::add_segments_to_plot(
+  base_plot = add_segments_to_plot(
     segments = segments %>% dplyr::filter(total <= max_Y_height),
     base_plot = base_plot,
     cn = cn)
+
+  # Extract subclonal segments
+  subclonal_segments = NULL
+  if (!is.null(x$cna_subclonal) & nrow(x$cna_subclonal) > 0)
+  {
+    subclonal_segments = x$cna_subclonal %>%
+      dplyr::filter(chr %in% chromosomes)
+
+    if (nrow(subclonal_segments) > 0)
+    {
+      base_plot = add_subclonal_segments_to_plot(
+        segments = subclonal_segments %>%
+          relative_to_absolute_coordinates(x = x),
+        base_plot = base_plot,
+        cn = cn
+      )
+    }
+  }
 
   # Fragmentation ~ add some annotation to hihglight that
   if (!is.null(x$arm_fragmentation))
@@ -150,12 +172,13 @@ plot_segments = function(x,
   # =-=-=-=-=-=-=-=-=-=-=-=-
   # Breakpoints annotations
   # =-=-=-=-=-=-=-=-=-=-=-=-
-  base_plot = CNAqc:::add_breakpoints_to_plot(segments, base_plot, max_Y_height)
+  base_plot = CNAqc:::add_breakpoints_to_plot(segments, base_plot, max_Y_height, circular)
 
   # =-=-=-=-=-=-=-=-=-=-=-=-
   # Drivers annotations
   # =-=-=-=-=-=-=-=-=-=-=-=-
   drivers_list = CNAqc:::get_drivers(x, chromosomes = chromosomes)
+  if(!circular)
   base_plot = CNAqc:::add_drivers_to_segment_plot(x, drivers_list = drivers_list, base_plot)
 
 

@@ -11,8 +11,6 @@ subset_snvs(
 )
 }
 \arguments{
-\item{x}{}
-
 \item{ref_nucleotides}{What reference alleles to use, default \code{c("A", "C", "T", "G")}.}
 
 \item{alt_nucleotides}{What alternative alleles to use, default \code{c("A", "C", "T", "G")}.}

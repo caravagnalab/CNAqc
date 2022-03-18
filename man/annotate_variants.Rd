@@ -2,7 +2,7 @@
 % Please edit documentation in R/annotate_variants.R
 \name{annotate_variants}
 \alias{annotate_variants}
-\title{Annotate variant in a CNAqc object}
+\title{Annotate variant with VariantAnnotation.}
 \usage{
 annotate_variants(
   x,
@@ -13,7 +13,7 @@ annotate_variants(
 )
 }
 \arguments{
-\item{x}{a data.frame with columns c("chr", "from", "to").}
+\item{x}{A data.frame with columns c("chr", "from", "to"), or a CNAqc object.}
 
 \item{driver_list}{a one column data.frame with gene symbols.}
 
@@ -31,8 +31,10 @@ The `chr` column in the input should contain the chr prefix before the chromosom
 \href{https://bioconductor.org/packages/release/bioc/html/VariantAnnotation.html}{VariantAnnotation}.
 }
 \description{
-The function provides an easy and fast way to annotate SNVs, in particular we annotate the locations of the different mutations, the consequences for
-those in coding regions and we compare them to a set of known drivers.
+The function provides an easy and fast way to annotate variants,
+reporting the locations of the different mutations and the consequences for
+those in coding regions. Then putative drivers are returned upon matching
+against lists of known drivers.
 }
 \examples{
 

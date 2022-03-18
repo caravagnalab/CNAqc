@@ -107,7 +107,7 @@
 
       
 
-      </header><script src="a6_fragmentation_files/header-attrs-2.9/header-attrs.js"></script><div class="row">
+      </header><script src="a6_fragmentation_files/header-attrs-2.11/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>6. Genome fragmentation analysis</h1>
@@ -127,7 +127,15 @@
 <span class="co">#&gt; Warning: replacing previous import 'crayon::%+%' by 'ggplot2::%+%' when loading</span>
 <span class="co">#&gt; 'BMix'</span>
 <span class="co">#&gt; ✓ Loading BMix, 'Binomial and Beta-Binomial univariate mixtures'. Support : &lt;https://caravagnalab.github.io/BMix/&gt;</span>
+<span class="co">#&gt; Warning: package 'tidyr' was built under R version 4.0.5</span>
+<span class="co">#&gt; Warning: package 'readr' was built under R version 4.0.5</span>
+<span class="co">#&gt; Warning: package 'dplyr' was built under R version 4.0.5</span>
+<span class="co">#&gt; Warning: package 'crayon' was built under R version 4.0.5</span>
 <span class="co">#&gt; ✓ Loading CNAqc, 'Copy Number Alteration quality check'. Support : &lt;https://caravagn.github.io/CNAqc/&gt;</span></code></pre></div>
+<div id="fragmentation-of-individual-arms" class="section level3">
+<h3 class="hasAnchor">
+<a href="#fragmentation-of-individual-arms" class="anchor"></a>Fragmentation of individual arms</h3>
+<p>The fragmentation of a chromosome arm is assessed with a statistical test based on counting the size of the copy number segments mapping to the arm. This analysis works only at the level of clonal CNAs.</p>
 <p>We work with the template dataset.</p>
 <pre><code>#&gt;  [ CNAqc - CNA Quality Check ]
 #&gt; 
@@ -141,18 +149,12 @@
 #&gt;   25:2  [n =    2, L =    1 Mb] 
 #&gt;    3:1  [n =    2, L =    1 Mb] 
 #&gt;  106:1  [n =    1, L =    0 Mb] 
-#&gt;   26:2  [n =    1, L =    0 Mb] 
-#&gt;   99:1  [n =    1, L =    0 Mb] 
 #&gt; 
 #&gt; 
 #&gt;          chr      from        to ref alt  DP NV       VAF driver_label is_driver
 #&gt;         chr2 179431633 179431634   C   T 117 77 0.6581197          TTN      TRUE
 #&gt;        chr16  67646006  67646007   C   T 120 54 0.4500000         CTCF      TRUE
 #&gt;        chr17   7577106   7577107   G   C  84 78 0.9285714         TP53      TRUE</code></pre>
-<div id="fragmentation-of-individual-arms" class="section level3">
-<h3 class="hasAnchor">
-<a href="#fragmentation-of-individual-arms" class="anchor"></a>Fragmentation of individual arms</h3>
-<p>The fragmentation of a chromosome arm is assessed with a statistical test based on counting the size of the copy number segments mapping to the arm.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># A histogram of segments' lenght</span>
 <span class="fu"><a href="../reference/plot_segment_size_distribution.html">plot_segment_size_distribution</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></code></pre></div>
@@ -181,7 +183,9 @@
 <span class="co">#&gt; ℹ 8 significantly overfragmented chromosome arms (alpha level 0.01).</span>
 
 <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-<span class="co">#&gt; ── [ CNAqc ]  n = 12963 mutations in 267 segments (267 clonal + 0 subclonal). Ge</span>
+<span class="co">#&gt; ── [ CNAqc ]  12963 mutations in 267 segments (267 clonal, 0 subclonal). Genome</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; ── Clonal CNAs</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;    2:2  [n = 7478, L = 1483 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { CTCF }</span>
 <span class="co">#&gt;    4:2  [n = 1893, L =  331 Mb] ■■■■■■■</span>
@@ -192,11 +196,9 @@
 <span class="co">#&gt;   16:2  [n =    4, L =    0 Mb] </span>
 <span class="co">#&gt;   25:2  [n =    2, L =    1 Mb] </span>
 <span class="co">#&gt;    3:1  [n =    2, L =    1 Mb] </span>
-<span class="co">#&gt;  106:1  [n =    1, L =    0 Mb] </span>
-<span class="co">#&gt;   26:2  [n =    1, L =    0 Mb] </span>
-<span class="co">#&gt;   99:1  [n =    1, L =    0 Mb]</span>
+<span class="co">#&gt;  106:1  [n =    1, L =    0 Mb]</span>
 <span class="co">#&gt; ℹ Sample Purity: 89% ~ Ploidy: 4.</span>
-<span class="co">#&gt; ℹ There are 3 annotated driver(s).</span>
+<span class="co">#&gt; ℹ There are 3 annotated driver(s) mapped to clonal CNAs.</span>
 <span class="co">#&gt;          chr      from        to ref alt  DP NV       VAF driver_label is_driver</span>
 <span class="co">#&gt;         chr2 179431633 179431634   C   T 117 77 0.6581197          TTN      TRUE</span>
 <span class="co">#&gt;        chr16  67646006  67646007   C   T 120 54 0.4500000         CTCF      TRUE</span>
@@ -251,10 +253,11 @@
 <span class="co">#&gt; ℹ Creating a new CNAqc object. The old object will be retained in the $before_smoothing field.</span>
 <span class="co">#&gt;  [ CNAqc - CNA Quality Check ]</span>
 <span class="co">#&gt; ℹ Using reference genome coordinates for: hg19.</span>
-<span class="co">#&gt; ℹ Input n = 12963 mutations for 87 CNA segments (87 clonal, 0 subclonal)</span>
-<span class="co">#&gt; Warning in map_mutations_to_segments(snvs, cna %&gt;% filter(CCF == 1)): [CNAqc] a</span>
+<span class="co">#&gt; ✓ Fortified calls for 12963 somatic mutations: 12963 SNVs (100%) and 0 indels.</span>
+<span class="co">#&gt; ✓ Fortified CNAs for 87 segments: 87 clonal and 0 subclonal.</span>
+<span class="co">#&gt; Warning in map_mutations_to_clonal_segments(snvs, cna_clonal): [CNAqc] a</span>
 <span class="co">#&gt; karyotype column is present in CNA calls, and will be overwritten</span>
-<span class="co">#&gt; ✓ Mapped n = 12963 mutations to clonal segments (100% of input)</span>
+<span class="co">#&gt; ✓ 12963 mutations mapped to clonal CNAs.</span>
 
 <span class="co"># Re-compute the fragmentation</span>
 <span class="va">x</span> <span class="op">=</span> <span class="fu"><a href="../reference/detect_arm_overfragmentation.html">detect_arm_overfragmentation</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
@@ -264,7 +267,9 @@
 <span class="co">#&gt; ℹ 2 significantly overfragmented chromosome arms (alpha level 0.01).</span>
 
 <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-<span class="co">#&gt; ── [ CNAqc ]  n = 12963 mutations in 87 segments (87 clonal + 0 subclonal). Geno</span>
+<span class="co">#&gt; ── [ CNAqc ]  12963 mutations in 87 segments (87 clonal, 0 subclonal). Genome re</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; ── Clonal CNAs</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;    2:2  [n = 7478, L = 1493 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { CTCF }</span>
 <span class="co">#&gt;    4:2  [n = 1893, L =  333 Mb] ■■■■■■■</span>
@@ -275,11 +280,9 @@
 <span class="co">#&gt;   16:2  [n =    4, L =    0 Mb] </span>
 <span class="co">#&gt;   25:2  [n =    2, L =    1 Mb] </span>
 <span class="co">#&gt;    3:1  [n =    2, L =    1 Mb] </span>
-<span class="co">#&gt;  106:1  [n =    1, L =    0 Mb] </span>
-<span class="co">#&gt;   26:2  [n =    1, L =    0 Mb] </span>
-<span class="co">#&gt;   99:1  [n =    1, L =    0 Mb]</span>
+<span class="co">#&gt;  106:1  [n =    1, L =    0 Mb]</span>
 <span class="co">#&gt; ℹ Sample Purity: 89% ~ Ploidy: 4.</span>
-<span class="co">#&gt; ℹ There are 3 annotated driver(s).</span>
+<span class="co">#&gt; ℹ There are 3 annotated driver(s) mapped to clonal CNAs.</span>
 <span class="co">#&gt;          chr      from        to ref alt  DP NV       VAF driver_label is_driver</span>
 <span class="co">#&gt;         chr2 179431633 179431634   C   T 117 77 0.6581197          TTN      TRUE</span>
 <span class="co">#&gt;        chr16  67646006  67646007   C   T 120 54 0.4500000         CTCF      TRUE</span>
