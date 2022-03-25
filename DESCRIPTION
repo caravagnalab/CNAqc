@@ -40,7 +40,8 @@ Imports:
     RColorBrewer,
     VariantAnnotation,
     GenomicRanges,
-    easypar
+    easypar,
+    gtools
 biocViews:
 Remotes: 
     caravagn/pio,
