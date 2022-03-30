@@ -85,6 +85,11 @@ plot_gw_depth = function(x, N = 5000, chromosomes = paste0('chr', c(1:22, 'X', '
     mutations = mutations %>% bind_rows(x$cna_subclonal$mutations %>% Reduce(f = bind_rows))
   }
 
+  mutations = relative_to_absolute_coordinates(
+    x,
+    mutations
+  )
+
 
   bl_plot = CNAqc:::blank_genome(ref = x$reference_genome, chromosomes = chromosomes)
 
@@ -123,7 +128,7 @@ plot_gw_depth = function(x, N = 5000, chromosomes = paste0('chr', c(1:22, 'X', '
     ) +
     labs(y = "DP") +
     geom_hline(yintercept = med_DP, size = .4, linetype = 'dashed', color = 'darkred') +
-    guides(fill = FALSE) +
+    guides(fill = "none") +
     ylim(min(mutations$DP, na.rm = T) * .85, NA)
 
   # Simulate an internal legend
@@ -165,6 +170,10 @@ plot_gw_vaf = function(x, N = 5000, chromosomes = paste0('chr', c(1:22, 'X', 'Y'
     mutations = mutations %>% bind_rows(x$cna_subclonal$mutations %>% Reduce(f = bind_rows))
   }
 
+  mutations = relative_to_absolute_coordinates(
+    x,
+    mutations
+  )
 
   bl_plot = CNAqc:::blank_genome(ref = x$reference_genome, chromosomes = chromosomes)
 
@@ -203,7 +212,7 @@ plot_gw_vaf = function(x, N = 5000, chromosomes = paste0('chr', c(1:22, 'X', 'Y'
     ylim(0,1) +
     labs(y = "VAF") +
     geom_hline(yintercept = med_VAF, size = .4, linetype = 'dashed', color = 'darkred') +
-    guides(fill = FALSE)
+    guides(fill = "none")
 
 
   # Simulate an internal legend
@@ -290,7 +299,7 @@ plot_gw_ccf = function(x, N = 5000, chromosomes = paste0('chr', c(1:22, 'X', 'Y'
     ) +
     labs(y = "CCF") +
     geom_hline(yintercept = med_CCF, size = .4, linetype = 'dashed', color = 'darkred') +
-    guides(fill = FALSE)
+    guides(fill = "none")
 
 
   # Simulate an internal legend
