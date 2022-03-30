@@ -65,10 +65,13 @@ smooth_segments = function(x, maximum_distance = 1e6)
         # Stop if end of list
         if(j == nrow(chr_segments)) break
 
-        is_subclonal_next = !is.na(chr_segments$Major_2[j+1]) & !is.na(chr_segments$minor_2[j+1])
-        is_subclonal_this = !is.na(chr_segments$Major_2[j]) & !is.na(chr_segments$minor_2[j])
+        if("Major_2" %in% colnames(chr_segments))
+        {
+          is_subclonal_next = !is.na(chr_segments$Major_2[j+1]) & !is.na(chr_segments$minor_2[j+1])
+          is_subclonal_this = !is.na(chr_segments$Major_2[j]) & !is.na(chr_segments$minor_2[j])
 
-        if(is_subclonal_next | is_subclonal_this) break
+          if(is_subclonal_next | is_subclonal_this) break
+        }
 
         separation = (chr_segments$from[j + 1] - chr_segments$to[j]) < maximum_distance
         minor_match = chr_segments$minor[j + 1] == chr_segments$minor[j]
@@ -105,7 +108,11 @@ smooth_segments = function(x, maximum_distance = 1e6)
   cli::cli_alert_success("Smoothed from {.value {nrow(segments)}} to {.value {nrow(smoothed_segments)}} segments with {.value {maximum_distance}} gap (bases).")
   cli::cli_alert_info("Creating a new CNAqc object. The old object will be retained in the $before_smoothing field.")
 
-  smoothed_segments = smoothed_segments %>% dplyr::select(-starts_with('karyotype'), -mutations, -segment_id, -n)
+  if("mutations" %in% colnames(smoothed_segments)) smoothed_segments = smoothed_segments %>% dplyr::select(-mutations)
+  if(grepl('karyotype', colnames(smoothed_segments)) %>% any) smoothed_segments = smoothed_segments %>% dplyr::select(-mutations)
+  if("segment_id" %in% colnames(smoothed_segments)) smoothed_segments = smoothed_segments %>% dplyr::select(-segment_id)
+
+  smoothed_segments = smoothed_segments %>% dplyr::select(-n)
 
   # clonal_CNA = smoothed_segments %>% dplyr::select(-segment_id, -n)
 
