@@ -26,6 +26,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -38,18 +40,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CNAqc</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.1</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="../articles/CNAqc.html">Get started</a>
 </li>
@@ -57,7 +53,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -87,12 +83,15 @@
     <li>
       <a href="../articles/a8_annotate_variants.html">8. Drivers annotation</a>
     </li>
+    <li>
+      <a href="../articles/a9_automatic.html">9. Automatic CNA calling</a>
+    </li>
   </ul>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/caravagnalab/CNAqc/">
+  <a href="https://github.com/caravagnalab/CNAqc/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -113,7 +112,7 @@
       <h1 data-toc-skip>6. Genome fragmentation analysis</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/caravagnalab/CNAqcvignettes/a6_fragmentation.Rmd"><code>vignettes/a6_fragmentation.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/caravagnalab/CNAqcvignettes/a6_fragmentation.Rmd" class="external-link"><code>vignettes/a6_fragmentation.Rmd</code></a></small>
       <div class="hidden name"><code>a6_fragmentation.Rmd</code></div>
 
     </div>
@@ -121,38 +120,37 @@
     
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/caravagnalab/CNAqc">CNAqc</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/caravagnalab/CNAqc" class="external-link">CNAqc</a></span><span class="op">)</span>
 <span class="co">#&gt; Warning: replacing previous import 'cli::num_ansi_colors' by</span>
 <span class="co">#&gt; 'crayon::num_ansi_colors' when loading 'BMix'</span>
 <span class="co">#&gt; Warning: replacing previous import 'crayon::%+%' by 'ggplot2::%+%' when loading</span>
 <span class="co">#&gt; 'BMix'</span>
-<span class="co">#&gt; ✔ Loading BMix, 'Binomial and Beta-Binomial univariate mixtures'. Support : &lt;https://caravagnalab.github.io/BMix/&gt;</span>
-<span class="co">#&gt; ✔ Loading CNAqc, 'Copy Number Alteration quality check'. Support : &lt;https://caravagn.github.io/CNAqc/&gt;</span></code></pre></div>
+<span class="co">#&gt; <span style="color: #00BB00;">✔</span> Loading <span style="color: #00BB00;">BMix</span>, <span style="font-style: italic;">'Binomial and Beta-Binomial univariate mixtures'</span>. Support : <span style="color: #0000BB; font-style: italic;">&lt;https://caravagnalab.github.io/BMix/&gt;</span></span>
+<span class="co">#&gt; <span style="color: #00BB00;">✔</span> Loading <span style="color: #00BB00;">CNAqc</span>, <span style="font-style: italic;">'Copy Number Alteration quality check'</span>. Support : <span style="color: #0000BB; font-style: italic;">&lt;https://caravagn.github.io/CNAqc/&gt;</span></span></code></pre></div>
+<div class="section level3">
+<h3 id="fragmentation-of-individual-arms">Fragmentation of individual arms<a class="anchor" aria-label="anchor" href="#fragmentation-of-individual-arms"></a>
+</h3>
+<p>The fragmentation of a chromosome arm is assessed with a statistical test based on counting the size of the copy number segments mapping to the arm. This analysis works only at the level of clonal CNAs.</p>
 <p>We work with the template dataset.</p>
-<pre><code>#&gt;  [ CNAqc - CNA Quality Check ]
-#&gt; 
-#&gt;    2:2  [n = 7478, L = 1483 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { CTCF }
-#&gt;    4:2  [n = 1893, L =  331 Mb] ■■■■■■■
-#&gt;    3:2  [n = 1625, L =  357 Mb] ■■■■■■
-#&gt;    2:1  [n = 1563, L =  420 Mb] ■■■■■■  { TTN }
-#&gt;    3:0  [n =  312, L =  137 Mb] ■
-#&gt;    2:0  [n =   81, L =   39 Mb]   { TP53 }
-#&gt;   16:2  [n =    4, L =    0 Mb] 
-#&gt;   25:2  [n =    2, L =    1 Mb] 
-#&gt;    3:1  [n =    2, L =    1 Mb] 
-#&gt;  106:1  [n =    1, L =    0 Mb] 
-#&gt;   26:2  [n =    1, L =    0 Mb] 
-#&gt;   99:1  [n =    1, L =    0 Mb] 
-#&gt; 
-#&gt; 
-#&gt;          chr      from        to ref alt  DP NV       VAF driver_label is_driver
-#&gt;         chr2 179431633 179431634   C   T 117 77 0.6581197          TTN      TRUE
-#&gt;        chr16  67646006  67646007   C   T 120 54 0.4500000         CTCF      TRUE
-#&gt;        chr17   7577106   7577107   G   C  84 78 0.9285714         TP53      TRUE</code></pre>
-<div id="fragmentation-of-individual-arms" class="section level3">
-<h3 class="hasAnchor">
-<a href="#fragmentation-of-individual-arms" class="anchor"></a>Fragmentation of individual arms</h3>
-<p>The fragmentation of a chromosome arm is assessed with a statistical test based on counting the size of the copy number segments mapping to the arm.</p>
+<pre><code><span class="co">#&gt; <span style="color: #BBBBBB; background-color: #0000BB;"> [ CNAqc - CNA Quality Check ] </span></span>
+<span class="co"><span style="color: #BBBBBB; background-color: #0000BB;">#&gt; </span></span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;    2:2  [n = 7478, L = 1483 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { <span style="color: #BBBB00;">CTCF</span> }</span>
+<span class="co">#&gt;    4:2  [n = 1893, L =  331 Mb] ■■■■■■■</span>
+<span class="co">#&gt;    3:2  [n = 1625, L =  357 Mb] ■■■■■■</span>
+<span class="co">#&gt;    2:1  [n = 1563, L =  420 Mb] ■■■■■■  { <span style="color: #BBBB00;">TTN</span> }</span>
+<span class="co">#&gt;    3:0  [n =  312, L =  137 Mb] ■</span>
+<span class="co">#&gt;    2:0  [n =   81, L =   39 Mb]   { <span style="color: #BBBB00;">TP53</span> }</span>
+<span class="co">#&gt;   16:2  [n =    4, L =    0 Mb] </span>
+<span class="co">#&gt;   25:2  [n =    2, L =    1 Mb] </span>
+<span class="co">#&gt;    3:1  [n =    2, L =    1 Mb] </span>
+<span class="co">#&gt;  106:1  [n =    1, L =    0 Mb] </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;          chr      from        to ref alt  DP NV       VAF driver_label is_driver</span>
+<span class="co">#&gt;         chr2 179431633 179431634   C   T 117 77 0.6581197          TTN      TRUE</span>
+<span class="co">#&gt;        chr16  67646006  67646007   C   T 120 54 0.4500000         CTCF      TRUE</span>
+<span class="co">#&gt;        chr17   7577106   7577107   G   C  84 78 0.9285714         TP53      TRUE</span></code></pre>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># A histogram of segments' lenght</span>
 <span class="fu"><a href="../reference/plot_segment_size_distribution.html">plot_segment_size_distribution</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></code></pre></div>
@@ -169,39 +167,39 @@
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Test with default parameters (small segments: &lt; 20% of chromosome arm)</span>
 <span class="va">x</span> <span class="op">=</span> <span class="fu"><a href="../reference/detect_arm_overfragmentation.html">detect_arm_overfragmentation</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-<span class="co">#&gt; ℹ One-tailed Binomial test: 8 tests, alpha 0.01. Short segments: 0.2% of the reference arm.</span>
-<span class="co">#&gt; ✔ chr7p,  p = 1.71798691840001e-24 ~ 34 segments, 34 short.</span>
-<span class="co">#&gt; ✔ chr1p,  p = 1.62738995200002e-15 ~ 24 segments, 23 short.</span>
-<span class="co">#&gt; ✔ chr1q,  p = 4.34176000000001e-08 ~ 13 segments, 12 short.</span>
-<span class="co">#&gt; ✔ chr11q,  p = 1.0657792e-06 ~ 13 segments, 11 short.</span>
-<span class="co">#&gt; ✔ chr12q,  p = 2.00704e-07 ~ 12 segments, 11 short.</span>
-<span class="co">#&gt; ✔ chr3q,  p = 4.52608e-06 ~ 12 segments, 10 short.</span>
-<span class="co">#&gt; ✔ chr7q,  p = 4.52608e-06 ~ 12 segments, 10 short.</span>
-<span class="co">#&gt; ✔ chr8p,  p = 9.21599999999998e-07 ~ 11 segments, 10 short.</span>
-<span class="co">#&gt; ℹ 8 significantly overfragmented chromosome arms (alpha level 0.01).</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> One-tailed Binomial test: 8 tests, alpha 0.01. Short segments: 0.2% of the reference arm.</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #00BB00;">chr7p</span>,  p = 1.71798691840001e-24 ~ 34 segments, 34 short.</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #00BB00;">chr1p</span>,  p = 1.62738995200002e-15 ~ 24 segments, 23 short.</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #00BB00;">chr1q</span>,  p = 4.34176000000001e-08 ~ 13 segments, 12 short.</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #00BB00;">chr11q</span>,  p = 1.0657792e-06 ~ 13 segments, 11 short.</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #00BB00;">chr12q</span>,  p = 2.00704e-07 ~ 12 segments, 11 short.</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #00BB00;">chr3q</span>,  p = 4.52608e-06 ~ 12 segments, 10 short.</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #00BB00;">chr7q</span>,  p = 4.52608e-06 ~ 12 segments, 10 short.</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #00BB00;">chr8p</span>,  p = 9.21599999999998e-07 ~ 11 segments, 10 short.</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> 8 significantly overfragmented chromosome arms (alpha level 0.01).</span>
 
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-<span class="co">#&gt; ── [ CNAqc ]  n = 12963 mutations in 267 segments (267 clonal + 0 subclonal). Ge</span>
+<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
+<span class="co">#&gt; ── <span style="color: #000000; background-color: #BBBB00;">[ CNAqc ] </span> <span style="color: #00BB00;">12963</span> mutations in <span style="color: #00BB00;">267</span> segments (<span style="color: #00BB00;">267</span> clonal, <span style="color: #00BB00;">0</span> subclonal). Genome</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt;    2:2  [n = 7478, L = 1483 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { CTCF }</span>
+<span class="co">#&gt; ── Clonal CNAs</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;    2:2  [n = 7478, L = 1483 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { <span style="color: #BBBB00;">CTCF</span> }</span>
 <span class="co">#&gt;    4:2  [n = 1893, L =  331 Mb] ■■■■■■■</span>
 <span class="co">#&gt;    3:2  [n = 1625, L =  357 Mb] ■■■■■■</span>
-<span class="co">#&gt;    2:1  [n = 1563, L =  420 Mb] ■■■■■■  { TTN }</span>
+<span class="co">#&gt;    2:1  [n = 1563, L =  420 Mb] ■■■■■■  { <span style="color: #BBBB00;">TTN</span> }</span>
 <span class="co">#&gt;    3:0  [n =  312, L =  137 Mb] ■</span>
-<span class="co">#&gt;    2:0  [n =   81, L =   39 Mb]   { TP53 }</span>
+<span class="co">#&gt;    2:0  [n =   81, L =   39 Mb]   { <span style="color: #BBBB00;">TP53</span> }</span>
 <span class="co">#&gt;   16:2  [n =    4, L =    0 Mb] </span>
 <span class="co">#&gt;   25:2  [n =    2, L =    1 Mb] </span>
 <span class="co">#&gt;    3:1  [n =    2, L =    1 Mb] </span>
-<span class="co">#&gt;  106:1  [n =    1, L =    0 Mb] </span>
-<span class="co">#&gt;   26:2  [n =    1, L =    0 Mb] </span>
-<span class="co">#&gt;   99:1  [n =    1, L =    0 Mb]</span>
-<span class="co">#&gt; ℹ Sample Purity: 89% ~ Ploidy: 4.</span>
-<span class="co">#&gt; ℹ There are 3 annotated driver(s).</span>
+<span class="co">#&gt;  106:1  [n =    1, L =    0 Mb]</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample Purity: 89% ~ Ploidy: 4.</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> There are 3 annotated driver(s) mapped to clonal CNAs.</span>
 <span class="co">#&gt;          chr      from        to ref alt  DP NV       VAF driver_label is_driver</span>
 <span class="co">#&gt;         chr2 179431633 179431634   C   T 117 77 0.6581197          TTN      TRUE</span>
 <span class="co">#&gt;        chr16  67646006  67646007   C   T 120 54 0.4500000         CTCF      TRUE</span>
 <span class="co">#&gt;        chr17   7577106   7577107   G   C  84 78 0.9285714         TP53      TRUE</span>
-<span class="co">#&gt; ✔ Arm-level fragmentation analysis: 8 segments overfragmented.</span></code></pre></div>
+<span class="co">#&gt; <span style="color: #00BB00;">✔</span> Arm-level fragmentation analysis: 8 segments overfragmented.</span></code></pre></div>
 <p>You can produce a arm-level report for the fragmentation test, with:</p>
 <ul>
 <li>a scatter of the counts per arm, with scaled the p-values;</li>
@@ -221,71 +219,73 @@
 <span class="co">#&gt; Scale for 'fill' is already present. Adding another scale for 'fill', which</span>
 <span class="co">#&gt; will replace the existing scale.</span></code></pre></div>
 <p><img src="a6_fragmentation_files/figure-html/unnamed-chunk-6-1.png" width="912"></p>
-<p><a href="https://caravagn.github.io/CNAqc/articles/smoothing.html">Smoothing</a> is a good way to start cleaning up the fragmented sets of arms, as it merges segments that have no karyotype change, and are closer than a certain distance.</p>
+<p><a href="https://caravagn.github.io/CNAqc/articles/smoothing.html" class="external-link">Smoothing</a> is a good way to start cleaning up the fragmented sets of arms, as it merges segments that have no karyotype change, and are closer than a certain distance.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Smooth with default parameters</span>
 <span class="va">x</span> <span class="op">=</span> <span class="fu"><a href="../reference/smooth_segments.html">smooth_segments</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-<span class="co">#&gt; Smoothing chr1 with 37 segments: [1-24] [27-30] [31-33] [34-37] </span>
-<span class="co">#&gt; Smoothing chr10 with 8 segments: [1-2] [3-4] [5-8] </span>
-<span class="co">#&gt; Smoothing chr11 with 22 segments: [1-7] [8-9] [10-22] </span>
-<span class="co">#&gt; Smoothing chr12 with 13 segments: [2-3] [12-13] </span>
-<span class="co">#&gt; Smoothing chr14 with 2 segments: [1-2] </span>
-<span class="co">#&gt; Smoothing chr15 with 9 segments: [1-5] [7-9] </span>
-<span class="co">#&gt; Smoothing chr16 with 10 segments: [1-6] [8-10] </span>
-<span class="co">#&gt; Smoothing chr17 with 10 segments: [4-5] [6-7] [8-10] </span>
-<span class="co">#&gt; Smoothing chr18 with 8 segments: [1-2] [3-8] </span>
-<span class="co">#&gt; Smoothing chr19 with 5 segments: [2-5] </span>
-<span class="co">#&gt; Smoothing chr2 with 18 segments: [1-8] [10-12] [14-18] </span>
-<span class="co">#&gt; Smoothing chr20 with 9 segments: [1-3] [4-9] </span>
-<span class="co">#&gt; Smoothing chr21 with 2 segments: [1-2] </span>
-<span class="co">#&gt; Smoothing chr22 with 3 segments: </span>
-<span class="co">#&gt; Smoothing chr3 with 19 segments: [1-7] [8-13] [15-19] </span>
-<span class="co">#&gt; Smoothing chr4 with 8 segments: [1-4] [5-8] </span>
-<span class="co">#&gt; Smoothing chr5 with 6 segments: [1-2] [3-5] </span>
-<span class="co">#&gt; Smoothing chr6 with 4 segments: [1-2] [3-4] </span>
-<span class="co">#&gt; Smoothing chr7 with 46 segments: [1-5] [9-27] [36-38] [39-41] [43-46] </span>
-<span class="co">#&gt; Smoothing chr8 with 18 segments: [1-4] [5-11] [12-18] </span>
-<span class="co">#&gt; Smoothing chr9 with 3 segments: [1-2] </span>
-<span class="co">#&gt; Smoothing chrX with 6 segments: [1-2] [3-6]</span>
-<span class="co">#&gt; ✔ Smoothed from 267 to 87 segments with 1e+06 gap (bases).</span>
-<span class="co">#&gt; ℹ Creating a new CNAqc object. The old object will be retained in the $before_smoothing field.</span>
-<span class="co">#&gt;  [ CNAqc - CNA Quality Check ]</span>
-<span class="co">#&gt; ℹ Using reference genome coordinates for: hg19.</span>
-<span class="co">#&gt; ℹ Input n = 12963 mutations for 87 CNA segments (87 clonal, 0 subclonal)</span>
-<span class="co">#&gt; Warning in map_mutations_to_segments(snvs, cna %&gt;% filter(CCF == 1)): [CNAqc] a</span>
+<span class="co">#&gt; → <span style="color: #0000BB;">chr1</span> <span style="color: #BB0000;">37</span> -<span style="color: #00BB00;">6</span> @</span>
+<span class="co">#&gt; → <span style="color: #0000BB;">chr10</span> <span style="color: #BB0000;">8</span> -<span style="color: #00BB00;">3</span> @</span>
+<span class="co">#&gt; → <span style="color: #0000BB;">chr11</span> <span style="color: #BB0000;">22</span> -<span style="color: #00BB00;">3</span> @</span>
+<span class="co">#&gt; → <span style="color: #0000BB;">chr12</span> <span style="color: #BB0000;">13</span> -<span style="color: #00BB00;">11</span> @</span>
+<span class="co">#&gt; → <span style="color: #0000BB;">chr14</span> <span style="color: #BB0000;">2</span> -<span style="color: #00BB00;">1</span> @</span>
+<span class="co">#&gt; → <span style="color: #0000BB;">chr15</span> <span style="color: #BB0000;">9</span> -<span style="color: #00BB00;">3</span> @</span>
+<span class="co">#&gt; → <span style="color: #0000BB;">chr16</span> <span style="color: #BB0000;">10</span> -<span style="color: #00BB00;">3</span> @</span>
+<span class="co">#&gt; → <span style="color: #0000BB;">chr17</span> <span style="color: #BB0000;">10</span> -<span style="color: #00BB00;">6</span> @</span>
+<span class="co">#&gt; → <span style="color: #0000BB;">chr18</span> <span style="color: #BB0000;">8</span> -<span style="color: #00BB00;">2</span> @</span>
+<span class="co">#&gt; → <span style="color: #0000BB;">chr19</span> <span style="color: #BB0000;">5</span> -<span style="color: #00BB00;">2</span> @</span>
+<span class="co">#&gt; → <span style="color: #0000BB;">chr2</span> <span style="color: #BB0000;">18</span> -<span style="color: #00BB00;">5</span> @</span>
+<span class="co">#&gt; → <span style="color: #0000BB;">chr20</span> <span style="color: #BB0000;">9</span> -<span style="color: #00BB00;">2</span> @</span>
+<span class="co">#&gt; → <span style="color: #0000BB;">chr21</span> <span style="color: #BB0000;">2</span> -<span style="color: #00BB00;">1</span> @</span>
+<span class="co">#&gt; → <span style="color: #0000BB;">chr22</span> <span style="color: #BB0000;">3</span> -<span style="color: #00BB00;">3</span> @</span>
+<span class="co">#&gt; → <span style="color: #0000BB;">chr3</span> <span style="color: #BB0000;">19</span> -<span style="color: #00BB00;">4</span> @</span>
+<span class="co">#&gt; → <span style="color: #0000BB;">chr4</span> <span style="color: #BB0000;">8</span> -<span style="color: #00BB00;">2</span> @</span>
+<span class="co">#&gt; → <span style="color: #0000BB;">chr5</span> <span style="color: #BB0000;">6</span> -<span style="color: #00BB00;">3</span> @</span>
+<span class="co">#&gt; → <span style="color: #0000BB;">chr6</span> <span style="color: #BB0000;">4</span> -<span style="color: #00BB00;">2</span> @</span>
+<span class="co">#&gt; → <span style="color: #0000BB;">chr7</span> <span style="color: #BB0000;">46</span> -<span style="color: #00BB00;">17</span> @</span>
+<span class="co">#&gt; → <span style="color: #0000BB;">chr8</span> <span style="color: #BB0000;">18</span> -<span style="color: #00BB00;">3</span> @</span>
+<span class="co">#&gt; → <span style="color: #0000BB;">chr9</span> <span style="color: #BB0000;">3</span> -<span style="color: #00BB00;">2</span> @</span>
+<span class="co">#&gt; → <span style="color: #0000BB;">chrX</span> <span style="color: #BB0000;">6</span> -<span style="color: #00BB00;">2</span> @</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✔</span> Smoothed from 267 to 87 segments with 1e+06 gap (bases).</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Creating a new CNAqc object. The old object will be retained in the $before_smoothing field.</span>
+<span class="co">#&gt; <span style="color: #BBBBBB; background-color: #0000BB;"> [ CNAqc - CNA Quality Check ] </span></span>
+<span class="co"><span style="color: #BBBBBB; background-color: #0000BB;">#&gt; </span></span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Using reference genome coordinates for: <span style="color: #00BB00;">hg19</span>.</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✔</span> Fortified calls for <span style="color: #00BB00;">12963</span> somatic mutations: <span style="color: #00BB00;">12963</span> SNVs (<span style="color: #00BB00;">100%</span>) and <span style="color: #00BB00;">0</span> indels.</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✔</span> Fortified CNAs for <span style="color: #00BB00;">87</span> segments: <span style="color: #00BB00;">87</span> clonal and <span style="color: #00BB00;">0</span> subclonal.</span>
+<span class="co">#&gt; Warning in map_mutations_to_clonal_segments(snvs, cna_clonal): [CNAqc] a</span>
 <span class="co">#&gt; karyotype column is present in CNA calls, and will be overwritten</span>
-<span class="co">#&gt; ✔ Mapped n = 12963 mutations to clonal segments (100% of input)</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #00BB00;">12963</span> mutations mapped to clonal CNAs.</span>
 
 <span class="co"># Re-compute the fragmentation</span>
 <span class="va">x</span> <span class="op">=</span> <span class="fu"><a href="../reference/detect_arm_overfragmentation.html">detect_arm_overfragmentation</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-<span class="co">#&gt; ℹ One-tailed Binomial test: 2 tests, alpha 0.01. Short segments: 0.2% of the reference arm.</span>
-<span class="co">#&gt; ✔ chr7p,  p = 4.52608e-06 ~ 12 segments, 10 short.</span>
-<span class="co">#&gt; ✔ chr12q,  p = 4.19839999999999e-06 ~ 10 segments, 9 short.</span>
-<span class="co">#&gt; ℹ 2 significantly overfragmented chromosome arms (alpha level 0.01).</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> One-tailed Binomial test: 2 tests, alpha 0.01. Short segments: 0.2% of the reference arm.</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #00BB00;">chr7p</span>,  p = 4.52608e-06 ~ 12 segments, 10 short.</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #00BB00;">chr12q</span>,  p = 4.19839999999999e-06 ~ 10 segments, 9 short.</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> 2 significantly overfragmented chromosome arms (alpha level 0.01).</span>
 
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-<span class="co">#&gt; ── [ CNAqc ]  n = 12963 mutations in 87 segments (87 clonal + 0 subclonal). Geno</span>
+<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
+<span class="co">#&gt; ── <span style="color: #000000; background-color: #BBBB00;">[ CNAqc ] </span> <span style="color: #00BB00;">12963</span> mutations in <span style="color: #00BB00;">87</span> segments (<span style="color: #00BB00;">87</span> clonal, <span style="color: #00BB00;">0</span> subclonal). Genome re</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt;    2:2  [n = 7478, L = 1493 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { CTCF }</span>
+<span class="co">#&gt; ── Clonal CNAs</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;    2:2  [n = 7478, L = 1493 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { <span style="color: #BBBB00;">CTCF</span> }</span>
 <span class="co">#&gt;    4:2  [n = 1893, L =  333 Mb] ■■■■■■■</span>
 <span class="co">#&gt;    3:2  [n = 1625, L =  362 Mb] ■■■■■■</span>
-<span class="co">#&gt;    2:1  [n = 1563, L =  424 Mb] ■■■■■■  { TTN }</span>
+<span class="co">#&gt;    2:1  [n = 1563, L =  424 Mb] ■■■■■■  { <span style="color: #BBBB00;">TTN</span> }</span>
 <span class="co">#&gt;    3:0  [n =  312, L =  139 Mb] ■</span>
-<span class="co">#&gt;    2:0  [n =   81, L =   39 Mb]   { TP53 }</span>
+<span class="co">#&gt;    2:0  [n =   81, L =   39 Mb]   { <span style="color: #BBBB00;">TP53</span> }</span>
 <span class="co">#&gt;   16:2  [n =    4, L =    0 Mb] </span>
 <span class="co">#&gt;   25:2  [n =    2, L =    1 Mb] </span>
 <span class="co">#&gt;    3:1  [n =    2, L =    1 Mb] </span>
-<span class="co">#&gt;  106:1  [n =    1, L =    0 Mb] </span>
-<span class="co">#&gt;   26:2  [n =    1, L =    0 Mb] </span>
-<span class="co">#&gt;   99:1  [n =    1, L =    0 Mb]</span>
-<span class="co">#&gt; ℹ Sample Purity: 89% ~ Ploidy: 4.</span>
-<span class="co">#&gt; ℹ There are 3 annotated driver(s).</span>
+<span class="co">#&gt;  106:1  [n =    1, L =    0 Mb]</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample Purity: 89% ~ Ploidy: 4.</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> There are 3 annotated driver(s) mapped to clonal CNAs.</span>
 <span class="co">#&gt;          chr      from        to ref alt  DP NV       VAF driver_label is_driver</span>
 <span class="co">#&gt;         chr2 179431633 179431634   C   T 117 77 0.6581197          TTN      TRUE</span>
 <span class="co">#&gt;        chr16  67646006  67646007   C   T 120 54 0.4500000         CTCF      TRUE</span>
 <span class="co">#&gt;        chr17   7577106   7577107   G   C  84 78 0.9285714         TP53      TRUE</span>
-<span class="co">#&gt; ✔ These segments are smoothed; before smoothing there were 267 segments.</span>
-<span class="co">#&gt; ✔ Arm-level fragmentation analysis: 2 segments overfragmented.</span></code></pre></div>
+<span class="co">#&gt; <span style="color: #00BB00;">✔</span> These segments are smoothed; before smoothing there were 267 segments.</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✔</span> Arm-level fragmentation analysis: 2 segments overfragmented.</span></code></pre></div>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/plot_arm_fragmentation.html">plot_arm_fragmentation</a></span><span class="op">(</span><span class="va">x</span>, zoom <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>
 <span class="co">#&gt; Warning: `guides(&lt;scale&gt; = FALSE)` is deprecated. Please use `guides(&lt;scale&gt; =</span>
@@ -303,11 +303,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by <a href="https://www.caravagnalab.org">Giulio Caravagna</a>.</p>
+  <p></p>
+<p>Developed by <a href="https://www.caravagnalab.org" class="external-link">Giulio Caravagna</a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
       </footer>
@@ -315,6 +317,8 @@
 
   
 
+
+  
 
   </body>
 </html>

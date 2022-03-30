@@ -26,6 +26,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -38,18 +40,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CNAqc</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.1</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="../articles/CNAqc.html">Get started</a>
 </li>
@@ -57,7 +53,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -87,12 +83,15 @@
     <li>
       <a href="../articles/a8_annotate_variants.html">8. Drivers annotation</a>
     </li>
+    <li>
+      <a href="../articles/a9_automatic.html">9. Automatic CNA calling</a>
+    </li>
   </ul>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/caravagnalab/CNAqc/">
+  <a href="https://github.com/caravagnalab/CNAqc/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -113,162 +112,340 @@
       <h1 data-toc-skip>3. QC analysis via peaks detection</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/caravagnalab/CNAqcvignettes/a3_peaks_detection.Rmd"><code>vignettes/a3_peaks_detection.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/caravagnalab/CNAqcvignettes/a3_peaks_detection.Rmd" class="external-link"><code>vignettes/a3_peaks_detection.Rmd</code></a></small>
       <div class="hidden name"><code>a3_peaks_detection.Rmd</code></div>
 
     </div>
 
     
     
-<p><code>CNAqc</code> can determine if purity and CNA segments “fit well” to mutation data, an hortogonal quality check (QC) metric that can be used to adjust purity/ ploidy.</p>
-<p><code>CNAqc</code> matches allelic imbalance of CNA segments to the allelic frequencies of somatic mutations. The package implements a karyotype-weighted linear score which uses the distance between data peaks (empirical), and their theoretical expectation. This score accouts for normal plodiy (germline), and tumour purity/ ploidy. The peaks are determined via kernel density estimation and peak-detection heuristics.</p>
+<div class="section level2">
+<h2 id="peak-analysis">Peak analysis<a class="anchor" aria-label="anchor" href="#peak-analysis"></a>
+</h2>
+<p><code>CNAqc</code> can perform quality control (QC) of somatic mutations, allele-specific CNAs and tumour purity. 3 distinct procedures are available, all called by function <code>analyze_peaks</code>. The idea is as follows: a CNA segment with <span class="math inline">\(m\)</span>/ <span class="math inline">\(M\)</span> copies of the minor/ major alleles is consistent with mutation data if VAFs peak at certain positions we can compute. CNAqc computes expected peaks, and compares them to the one it detects from data. The theory works for both clonal and subclonal segments, and a purity error parameter (<code>purity_error</code>) determines the maximum error we can tolerate before we fail a sample.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/caravagnalab/CNAqc">CNAqc</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/caravagnalab/CNAqc" class="external-link">CNAqc</a></span><span class="op">)</span>
 <span class="co">#&gt; Warning: replacing previous import 'cli::num_ansi_colors' by</span>
 <span class="co">#&gt; 'crayon::num_ansi_colors' when loading 'BMix'</span>
 <span class="co">#&gt; Warning: replacing previous import 'crayon::%+%' by 'ggplot2::%+%' when loading</span>
 <span class="co">#&gt; 'BMix'</span>
-<span class="co">#&gt; ✔ Loading BMix, 'Binomial and Beta-Binomial univariate mixtures'. Support : &lt;https://caravagnalab.github.io/BMix/&gt;</span>
-<span class="co">#&gt; ✔ Loading CNAqc, 'Copy Number Alteration quality check'. Support : &lt;https://caravagn.github.io/CNAqc/&gt;</span></code></pre></div>
-<p>We work with the template dataset.</p>
-<pre><code>#&gt;  [ CNAqc - CNA Quality Check ]
-#&gt; 
-#&gt;    2:2  [n = 7478, L = 1483 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { CTCF }
-#&gt;    4:2  [n = 1893, L =  331 Mb] ■■■■■■■
-#&gt;    3:2  [n = 1625, L =  357 Mb] ■■■■■■
-#&gt;    2:1  [n = 1563, L =  420 Mb] ■■■■■■  { TTN }
-#&gt;    3:0  [n =  312, L =  137 Mb] ■
-#&gt;    2:0  [n =   81, L =   39 Mb]   { TP53 }
-#&gt;   16:2  [n =    4, L =    0 Mb] 
-#&gt;   25:2  [n =    2, L =    1 Mb] 
-#&gt;    3:1  [n =    2, L =    1 Mb] 
-#&gt;  106:1  [n =    1, L =    0 Mb] 
-#&gt;   26:2  [n =    1, L =    0 Mb] 
-#&gt;   99:1  [n =    1, L =    0 Mb] 
-#&gt; 
-#&gt; 
-#&gt;          chr      from        to ref alt  DP NV       VAF driver_label is_driver
-#&gt;         chr2 179431633 179431634   C   T 117 77 0.6581197          TTN      TRUE
-#&gt;        chr16  67646006  67646007   C   T 120 54 0.4500000         CTCF      TRUE
-#&gt;        chr17   7577106   7577107   G   C  84 78 0.9285714         TP53      TRUE</code></pre>
-<p>Peak detection routines are implemented in function <code>analyze_peaks</code>.</p>
-<p>The idea is as follows: a segment with <span class="math inline">\(m\)</span> and <span class="math inline">\(M\)</span> copies of the minor and major alleles is consistent to mutation data if the VAF distribution peaks at certain values, which we can compute. Profiling then of the VAF distribution with a peak-detection heuristic allows <code>CNAqc</code> to measure the if peaks match. Large deviance suggests usually wrong purity estimation.</p>
-<div id="peak-analysis" class="section level1">
-<h1 class="hasAnchor">
-<a href="#peak-analysis" class="anchor"></a>Peak analysis</h1>
+<span class="co">#&gt; <span style="color: #00BB00;">✔</span> Loading <span style="color: #00BB00;">BMix</span>, <span style="font-style: italic;">'Binomial and Beta-Binomial univariate mixtures'</span>. Support : <span style="color: #0000BB; font-style: italic;">&lt;https://caravagnalab.github.io/BMix/&gt;</span></span>
+<span class="co">#&gt; <span style="color: #00BB00;">✔</span> Loading <span style="color: #00BB00;">CNAqc</span>, <span style="font-style: italic;">'Copy Number Alteration quality check'</span>. Support : <span style="color: #0000BB; font-style: italic;">&lt;https://caravagn.github.io/CNAqc/&gt;</span></span>
+
+<span class="co"># We work with the template dataset. </span>
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">'example_dataset_CNAqc'</span>, package <span class="op">=</span> <span class="st">'CNAqc'</span><span class="op">)</span>
+
+<span class="va">x</span> <span class="op">=</span> <span class="fu">CNAqc</span><span class="fu">::</span><span class="fu"><a href="../reference/init.html">init</a></span><span class="op">(</span>
+  <span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">snvs</span>, 
+  <span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">cna</span>,
+  <span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">purity</span>,
+  ref <span class="op">=</span> <span class="st">'hg19'</span><span class="op">)</span>
+<span class="co">#&gt; <span style="color: #BBBBBB; background-color: #0000BB;"> [ CNAqc - CNA Quality Check ] </span></span>
+<span class="co"><span style="color: #BBBBBB; background-color: #0000BB;">#&gt; </span></span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Using reference genome coordinates for: <span style="color: #00BB00;">hg19</span>.</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Drivers are annotated, but 'gene' column is missing, using mutation location.</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✔</span> Fortified calls for <span style="color: #00BB00;">12963</span> somatic mutations: <span style="color: #00BB00;">12963</span> SNVs (<span style="color: #00BB00;">100%</span>) and <span style="color: #00BB00;">0</span> indels.</span>
+<span class="co">#&gt; <span style="color: #BBBB00;">!</span> CNAs have no CCF, assuming clonal CNAs (CCF = 1).</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✔</span> Fortified CNAs for <span style="color: #00BB00;">267</span> segments: <span style="color: #00BB00;">267</span> clonal and <span style="color: #00BB00;">0</span> subclonal.</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #00BB00;">12963</span> mutations mapped to clonal CNAs.</span>
+
+<span class="va">x</span> <span class="op">=</span> <span class="fu">CNAqc</span><span class="fu">::</span><span class="va"><a href="../reference/example_PCAWG.html">example_PCAWG</a></span>
+
+<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
+<span class="co">#&gt; ── <span style="color: #000000; background-color: #BBBB00;">[ CNAqc ] </span> <span style="color: #00BB00;">293736</span> mutations in <span style="color: #00BB00;">667</span> segments (<span style="color: #00BB00;">654</span> clonal, <span style="color: #00BB00;">13</span> subclonal). Genom</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; ── Clonal CNAs</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;   2:1  [n = 88422, L =   692 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■</span>
+<span class="co">#&gt;   3:2  [n = 58384, L =   417 Mb] ■■■■■■■■■■■■■■■■■■  { <span style="color: #BBBB00;">BRAF</span> }</span>
+<span class="co">#&gt;   3:1  [n = 48704, L =   380 Mb] ■■■■■■■■■■■■■■■</span>
+<span class="co">#&gt;   3:0  [n = 26622, L =   360 Mb] ■■■■■■■■  { <span style="color: #BBBB00;">CDKN2A</span> }</span>
+<span class="co">#&gt;   2:2  [n = 25290, L =   253 Mb] ■■■■■■■■</span>
+<span class="co">#&gt;   3:3  [n = 16790, L =   115 Mb] ■■■■■</span>
+<span class="co">#&gt;   2:0  [n =  5374, L =    67 Mb] ■■</span>
+<span class="co">#&gt;   4:0  [n =  1752, L =    22 Mb] ■  { <span style="color: #BBBB00;">TP53</span> }</span>
+<span class="co">#&gt;   4:2  [n =  1441, L =    11 Mb] </span>
+<span class="co">#&gt;   1:1  [n =   855, L =     9 Mb]</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; ── Subclonal CNAs (showing up to 10 segments)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  chr11@55700000  [n =  10468, L =  78.75 Mb]   2:1 (0.21)   2:2 (0.79) ■■■■■■■■■■</span>
+<span class="co">#&gt;  chr11@17365005  [n =   5389, L =  31.55 Mb]   2:1 (0.21)   2:2 (0.79) ■■■■■</span>
+<span class="co">#&gt;   chr11@5372292  [n =   1014, L =  11.99 Mb]   2:1 (0.21)   2:2 (0.79) </span>
+<span class="co">#&gt;    chr11@202253  [n =    610, L =   5.17 Mb]   2:1 (0.22)   2:2 (0.78) </span>
+<span class="co">#&gt;  chr11@48918601  [n =    542, L =   2.68 Mb]   2:1 (0.25)   2:2 (0.75) </span>
+<span class="co">#&gt;   chr6@82432583  [n =    301, L =   1.81 Mb]   2:1 (0.19)   2:2 (0.81) </span>
+<span class="co">#&gt;  chr11@51600000  [n =    290, L =    4.1 Mb]   2:1 (0.26)   2:2 (0.74) </span>
+<span class="co">#&gt;   chr6@81896364  [n =     69, L =   0.54 Mb]   2:1 (0.19)   2:2 (0.81) </span>
+<span class="co">#&gt;   chr6@93956180  [n =     41, L =   0.11 Mb]    2:1 (0.2)    2:2 (0.8) </span>
+<span class="co">#&gt;   chr8@42633277  [n =     13, L =   0.26 Mb]   2:1 (0.28)   2:2 (0.72)</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample Purity: 73.4% ~ Ploidy: 3.</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> There are 3 annotated driver(s) mapped to clonal CNAs.</span>
+<span class="co">#&gt;          chr      from        to ref alt DP NV       VAF driver_label is_driver</span>
+<span class="co">#&gt;        chr17   7577082   7577082   C   T 78 70 0.8974359         TP53      TRUE</span>
+<span class="co">#&gt;         chr7 140453136 140453136   A   T 95 54 0.5684211         BRAF      TRUE</span>
+<span class="co">#&gt;         chr9  21971120  21971120   G   A 23 14 0.6086957       CDKN2A      TRUE</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="color: #000000; background-color: #00BB00; font-weight: bold;"> PASS </span><span style="font-weight: bold;"> Peaks QC closest: </span><span style="color: #00BB00; font-weight: bold;">100%</span><span style="font-weight: bold;">, </span><span style="color: #00BB00; font-weight: bold;">λ = -0.0104</span><span style="font-weight: bold;">. Purity correction: -1%.</span> <span style="color: #00BBBB;">─────────</span></span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">1:1</span> ~ n = 855   (  1%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.006</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">2:0</span> ~ n = 5374  (  4%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.003  <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.002</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">2:1</span> ~ n = 88422 ( 74%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.006  <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.006</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">2:2</span> ~ n = 25290 ( 21%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.053  <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.004</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">General peak QC (</span><span style="color: #00BB00; font-weight: bold;">154052</span><span style="font-weight: bold;"> mutations): </span><span style="color: #000000; background-color: #00BB00; font-weight: bold;"> PASS </span><span style="font-weight: bold;"> 21 </span><span style="color: #BBBBBB; background-color: #BB0000; font-weight: bold;"> FAIL </span><span style="font-weight: bold;"> 3 - epsilon = 0.03.</span> <span style="color: #00BBBB;">────</span></span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">3:0</span> ~ n = 26622 ( 17%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> 3 <span style="color: #BBBBBB; background-color: #BB0000;"> FAIL </span> 0</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">3:1</span> ~ n = 48704 ( 32%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> 3 <span style="color: #BBBBBB; background-color: #BB0000;"> FAIL </span> 0</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">3:2</span> ~ n = 58384 ( 38%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> 3 <span style="color: #BBBBBB; background-color: #BB0000;"> FAIL </span> 0</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">3:3</span> ~ n = 16790 ( 11%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> 3 <span style="color: #BBBBBB; background-color: #BB0000;"> FAIL </span> 0</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">4:0</span> ~ n = 1752  (  1%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> 3 <span style="color: #BBBBBB; background-color: #BB0000;"> FAIL </span> 1</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">4:2</span> ~ n = 1441  (  1%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> 3 <span style="color: #BBBBBB; background-color: #BB0000;"> FAIL </span> 1</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">4:3</span> ~ n = 359   (  0%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> 3 <span style="color: #BBBBBB; background-color: #BB0000;"> FAIL </span> 1</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Subclonal peaks QC (</span><span style="color: #00BB00; font-weight: bold;">7</span><span style="font-weight: bold;"> segments, initial state </span><span style="color: #00BB00; font-weight: bold;">2:1</span><span style="font-weight: bold;">): </span><span style="font-weight: bold; text-decoration: underline;">linear</span><span style="font-weight: bold;"> </span><span style="color: #00BB00; font-weight: bold;">3</span><span style="font-weight: bold;"> </span><span style="font-weight: bold; text-decoration: underline;">branching</span><span style="font-weight: bold;"> </span><span style="color: #BB0000; font-weight: bold;">0</span><span style="font-weight: bold;"> </span><span style="font-weight: bold; text-decoration: underline;">eith</span></span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; ── <span style="color: #000000; background-color: #00BB00;"> PASS </span> Linear models</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">chr11@17365005</span> ~ (31.6Mb, n = 5389) <span style="color: #BBBB00;">2:1 (21) + 2:2 (79)</span> : A1A2B1 -&gt; A1A2B1 -&gt; A1A2B1B2 [<span style="color: #00BB00;">100</span>]</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">chr11@51600000</span> ~ (4.1Mb, n = 290) <span style="color: #BBBB00;">2:1 (26) + 2:2 (74)</span> : A1A2B1 -&gt; A1A2B1 -&gt; A1A2B1B2 [<span style="color: #BBBB00;">75</span>]</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;"> chr11@5372292</span> ~ (12Mb, n = 1014) <span style="color: #BBBB00;">2:1 (21) + 2:2 (79)</span> : A1A2B1 -&gt; A1A2B1 -&gt; A1A2B1B2 [<span style="color: #00BB00;">100</span>]</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; ── <span style="color: #BBBBBB; background-color: #BBBB00;"> UNKNOWN </span> Either branching or linear models</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">  chr11@202253</span> ~ (5.2Mb, n = 610) <span style="color: #BBBB00;">2:1 (22) + 2:2 (78)</span> : A1A2B1 -&gt; A1A2B1 -&gt; A1A2B1B2 [<span style="color: #00BB00;">100</span>]; A1A2B1 -&gt; A1A2B1 | A1A2B1B2 [<span style="color: #00BB00;">100</span>]; A1A2B1 -&gt; A1A2B1B2 -&gt; A2B1B2 [<span style="color: #00BB00;">100</span>]</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">chr11@48918601</span> ~ (2.7Mb, n = 542) <span style="color: #BBBB00;">2:1 (25) + 2:2 (75)</span> : A1A2B1 -&gt; A1A2B1 -&gt; A1A2B1B2 [<span style="color: #00BB00;">100</span>]; A1A2B1 -&gt; A1A2B1 | A1A2B1B2 [<span style="color: #00BB00;">100</span>]; A1A2B1 -&gt; A1A2B1B2 -&gt; A2B1B2 [<span style="color: #00BB00;">100</span>]</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">chr11@55700000</span> ~ (78.8Mb, n = 10468) <span style="color: #BBBB00;">2:1 (21) + 2:2 (79)</span> : A1A2B1 -&gt; A1A2B1 -&gt; A1A2B1B2 [<span style="color: #00BB00;">100</span>]; A1A2B1 -&gt; A1A2B1 | A1A2B1B2 [<span style="color: #00BB00;">100</span>]; A1A2B1 -&gt; A1A2B1B2 -&gt; A2B1B2 [<span style="color: #00BB00;">100</span>]</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;"> chr6@82432583</span> ~ (1.8Mb, n = 301) <span style="color: #BBBB00;">2:1 (19) + 2:2 (81)</span> : A1A2B1 -&gt; A1A2B1 -&gt; A1A2B1B2 [<span style="color: #00BB00;">100</span>]; A1A2B1 -&gt; A1A2B1 | A1A2B1B2 [<span style="color: #00BB00;">100</span>]; A1A2B1 -&gt; A1A2B1B2 -&gt; A2B1B2 [<span style="color: #00BB00;">100</span>]</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✔</span> Cancer Cell Fraction (CCF) data available for karyotypes:1:0, 1:1, 2:0, 2:1, and 2:2.</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #BBBBBB; background-color: #00BB00;"> PASS </span> CCF via <span style="font-weight: bold;">ENTROPY</span>.</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #BBBBBB; background-color: #00BB00;"> PASS </span> CCF via <span style="font-weight: bold;">ENTROPY</span>.</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #BBBBBB; background-color: #00BB00;"> PASS </span> CCF via <span style="font-weight: bold;">ENTROPY</span>.</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #BBBBBB; background-color: #00BB00;"> PASS </span> CCF via <span style="font-weight: bold;">ENTROPY</span>.</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #BBBBBB; background-color: #00BB00;"> PASS </span> CCF via <span style="font-weight: bold;">ENTROPY</span>.</span></code></pre></div>
+<p>We run it with default parameters, otherwise one can select only certain segments to fit or change purity error tolerance etc.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">x</span> <span class="op">=</span> <span class="fu"><a href="../reference/analyze_peaks.html">analyze_peaks</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Peak analysis: simple CNAs</span> <span style="color: #00BBBB;">──────────────────────────────────────────────────</span></span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Analysing <span style="color: #00BB00;">120065</span> mutations mapping to karyotype(s) <span style="color: #00BB00;">2:1</span>, <span style="color: #00BB00;">2:2</span>, <span style="color: #00BB00;">2:0</span>, <span style="color: #00BB00;">1:1</span>, and <span style="color: #00BB00;">1:0</span>.</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Mixed type peak detection for karyotype <span style="color: #00BB00;">1:0</span> (<span style="color: #00BB00;">124</span> mutations)</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Mixed type peak detection for karyotype <span style="color: #00BB00;">1:1</span> (<span style="color: #00BB00;">855</span> mutations)</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Mixed type peak detection for karyotype <span style="color: #00BB00;">2:0</span> (<span style="color: #00BB00;">5374</span> mutations)</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Mixed type peak detection for karyotype <span style="color: #00BB00;">2:1</span> (<span style="color: #00BB00;">88422</span> mutations)</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Mixed type peak detection for karyotype <span style="color: #00BB00;">2:2</span> (<span style="color: #00BB00;">25290</span> mutations)</span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 8 × 16</span></span>
+<span class="co">#&gt; <span style="color: #949494;"># Rowwise: </span></span>
+<span class="co">#&gt;   mutation_multiplicity karyotype  peak delta_vaf     x     y counts_per_bin</span>
+<span class="co">#&gt;                   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">1</span>                     1 2:1       0.268   0.013<span style="text-decoration: underline;">4</span>  0.264 4.14            <span style="text-decoration: underline;">3</span>138</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">2</span>                     2 2:1       0.537   0.026<span style="text-decoration: underline;">8</span>  0.54  3               <span style="text-decoration: underline;">2</span>729</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">3</span>                     1 2:2       0.212   0.008<span style="text-decoration: underline;">31</span> 0.21  0.93             198</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">4</span>                     2 2:2       0.423   0.016<span style="text-decoration: underline;">6</span>  0.423 6.85            <span style="text-decoration: underline;">1</span>732</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">5</span>                     1 2:0       0.367   0.025   0.357 0.868             50</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">6</span>                     2 2:0       0.734   0.05    0.735 5.43             265</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">7</span>                     1 1:1       0.367   0.025   0.37  2.42              15</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">8</span>                     1 1:0       0.580   0.062<span style="text-decoration: underline;">4</span>  0.570 4.16               7</span>
+<span class="co">#&gt; <span style="color: #949494;"># … with 9 more variables: discarded &lt;lgl&gt;, from &lt;chr&gt;, offset_VAF &lt;dbl&gt;,</span></span>
+<span class="co">#&gt; <span style="color: #949494;">#   offset &lt;dbl&gt;, weight &lt;dbl&gt;, epsilon &lt;dbl&gt;, VAF_tolerance &lt;dbl&gt;,</span></span>
+<span class="co">#&gt; <span style="color: #949494;">#   matched &lt;lgl&gt;, QC &lt;chr&gt;</span></span>
+<span class="co">#&gt; <span style="color: #00BB00;">✔</span> Peak detection <span style="color: #00BB00;">PASS</span> with <span style="color: #00BB00;">r = 0.0112655534075274</span> - maximum purity error ε = <span style="color: #00BB00;">0.05</span>.</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Peak analysis: complex CNAs</span> <span style="color: #00BBBB;">─────────────────────────────────────────────────</span></span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Karyotypes <span style="color: #00BB00;">3:2</span>, <span style="color: #00BB00;">3:1</span>, <span style="color: #00BB00;">3:0</span>, <span style="color: #00BB00;">3:3</span>, <span style="color: #00BB00;">4:0</span>, <span style="color: #00BB00;">4:2</span>, <span style="color: #00BB00;">4:3</span>, <span style="color: #00BB00;">5:2</span>, <span style="color: #00BB00;">5:3</span>, and <span style="color: #00BB00;">6:3</span> with &gt;<span style="color: #00BB00;">100</span> mutation(s). Using epsilon = <span style="color: #00BB00;">0.05</span>.</span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 10 × 5</span></span>
+<span class="co">#&gt; <span style="color: #949494;"># Groups:   karyotype, matched [10]</span></span>
+<span class="co">#&gt;    karyotype n       matched mismatched  prop</span>
+<span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;table&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> 3:0       26622         3          0 1    </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> 3:1       48704         3          0 1    </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> 3:2       58384         3          0 1    </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> 3:3       16790         3          0 1    </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> 4:2        1441         3          1 0.75 </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> 4:3         359         3          1 0.75 </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> 5:3         132         3          2 0.6  </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> 4:0        1752         2          2 0.5  </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> 5:2         132         2          3 0.4  </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">10</span> 6:3         114         2          4 0.333</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Peak analysis: subclonal CNAs</span> <span style="color: #00BBBB;">───────────────────────────────────────────────</span></span>
+<span class="co">#&gt; → Computing evolution models for subclonal CNAs - starting from <span style="color: #00BB00;">1:1</span></span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 11 × 6</span></span>
+<span class="co">#&gt;    segment_id     model_id                   model      prop size         clones</span>
+<span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> chr6@82432583  A1B1 -&gt; A1A2B1 -&gt; A1A2B1B2 linear     1    (1.8Mb, n =… 2:1 0…</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> chr6@82432583  A1B1 -&gt; A1A2B1 | A1A2B1B2  branching  1    (1.8Mb, n =… 2:1 0…</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> chr6@82432583  A1B1 -&gt; A1A2B1B2 -&gt; A2B1B2 linear     1    (1.8Mb, n =… 2:1 0…</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> chr11@202253   A1B1 -&gt; A1A2B1 -&gt; A1A2B1B2 linear     1    (5.2Mb, n =… 2:1 0…</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> chr11@5372292  A1B1 -&gt; A1A2B1 -&gt; A1A2B1B2 linear     1    (12Mb, n = … 2:1 0…</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> chr11@17365005 A1B1 -&gt; A1A2B1 -&gt; A1A2B1B2 linear     1    (31.6Mb, n … 2:1 0…</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> chr11@48918601 A1B1 -&gt; A1A2B1 -&gt; A1A2B1B2 linear     1    (2.7Mb, n =… 2:1 0…</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> chr11@48918601 A1B1 -&gt; A1A2B1 | A1A2B1B2  branching  1    (2.7Mb, n =… 2:1 0…</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> chr11@48918601 A1B1 -&gt; A1A2B1B2 -&gt; A2B1B2 linear     1    (2.7Mb, n =… 2:1 0…</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">10</span> chr11@51600000 A1B1 -&gt; A1A2B1 -&gt; A1A2B1B2 linear     0.75 (4.1Mb, n =… 2:1 0…</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">11</span> chr11@55700000 A1B1 -&gt; A1A2B1 -&gt; A1A2B1B2 linear     1    (78.8Mb, n … 2:1 0…</span></code></pre></div>
+<p>An S3 methods print to screen all QC results based on peak-detection.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Run default analysis</span>
-<span class="va">x</span> <span class="op">=</span> <span class="fu"><a href="../reference/analyze_peaks.html">analyze_peaks</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-<span class="co">#&gt; ℹ Karyotypes 1:0, 1:1, 2:0, 2:1, and 2:2. Matching strategy closest. KDE = TRUE.</span>
-<span class="co">#&gt; ℹ Found n = 9122 mutations in 2:2, 2:1, 2:0 (skipping those with n &lt; 0 mutations).</span>
-<span class="co">#&gt; ! Some peaks have been removed</span>
-<span class="co">#&gt; # A tibble: 2 × 5</span>
-<span class="co">#&gt;       x     y counts_per_bin discarded from </span>
-<span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt;          &lt;int&gt; &lt;lgl&gt;     &lt;chr&gt;</span>
-<span class="co">#&gt; 1  0.13   0.3              1 TRUE      KDE  </span>
-<span class="co">#&gt; 2  0.32   0.3              0 TRUE      KDE</span>
-<span class="co">#&gt; ! Some peaks have been removed</span>
-<span class="co">#&gt; # A tibble: 10 × 5</span>
-<span class="co">#&gt;        x     y counts_per_bin discarded from </span>
-<span class="co">#&gt;    &lt;dbl&gt; &lt;dbl&gt;          &lt;int&gt; &lt;lgl&gt;     &lt;chr&gt;</span>
-<span class="co">#&gt;  1  0.11  0.27             20 TRUE      KDE  </span>
-<span class="co">#&gt;  2  0.67  0.01              0 TRUE      KDE  </span>
-<span class="co">#&gt;  3  0.72  0.02              2 TRUE      KDE  </span>
-<span class="co">#&gt;  4  0.75  0.01              2 TRUE      KDE  </span>
-<span class="co">#&gt;  5  0.79  0.01              1 TRUE      KDE  </span>
-<span class="co">#&gt;  6  0.82  0.01              1 TRUE      KDE  </span>
-<span class="co">#&gt;  7  0.85  0.01              1 TRUE      KDE  </span>
-<span class="co">#&gt;  8  0.91  0.01              1 TRUE      KDE  </span>
-<span class="co">#&gt;  9  0.93  0.01              0 TRUE      KDE  </span>
-<span class="co">#&gt; 10  0.97  0.02              0 TRUE      KDE  </span>
-<span class="co">#&gt; # A tibble: 6 × 17</span>
-<span class="co">#&gt;   mutation_multiplic… karyotype  peak     x     y counts_per_bin discarded from </span>
-<span class="co">#&gt;                 &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;          &lt;int&gt; &lt;lgl&gt;     &lt;chr&gt;</span>
-<span class="co">#&gt; 1                   1 2:0       0.445 0.423 0.172              0 FALSE     BMix </span>
-<span class="co">#&gt; 2                   2 2:0       0.89  0.885 7.99               7 FALSE     BMix </span>
-<span class="co">#&gt; 3                   1 2:1       0.308 0.306 3.60              59 FALSE     BMix </span>
-<span class="co">#&gt; 4                   2 2:1       0.616 0.602 2.94              60 FALSE     BMix </span>
-<span class="co">#&gt; 5                   1 2:2       0.235 0.24  0.86              65 FALSE     KDE  </span>
-<span class="co">#&gt; 6                   2 2:2       0.471 0.461 8.14             625 FALSE     BMix </span>
-<span class="co">#&gt; # … with 9 more variables: offset_VAF &lt;dbl&gt;, offset &lt;dbl&gt;, weight &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   epsilon &lt;dbl&gt;, VAF_tolerance &lt;dbl&gt;, matched &lt;lgl&gt;, score &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   purity_error &lt;dbl&gt;, QC &lt;chr&gt;</span>
-<span class="co">#&gt; ✔ Peak detection PASS with r = 0.00405912590312769 and tolerance e =</span></code></pre></div>
-<p><code>CNAqc</code> analyze LOH regions (A, AA), diploid regions (AB), and amplification regions (AAB, AABB). These correspond to <code>'1:1'</code>, <code>'2:1'</code>, <code>'2:0'</code> and <code>'2:2'</code> in “Major:minor” notation. Karyotypes are subset by their size (normalized for the number of input mutations), and by default karyotypes smaller than 5% of the actual mutational burden are not considered</p>
-<p>A Kernel-density method (unitary adjustment, Gaussian kernel) is used to smooth the data distribution, and the <a href="https://cran.rstudio.com/web/packages/peakPick/index.html">peakPick: Peak Picking Methods Inspired by Biological Data</a> package is used to determine peaks in the smoothed density. Peaks below a mnimum density (noise and miscalled segments) are filtered, and the others are matched to a predefined location with some tolerance (e.g., plus/minus <code>0.5 * epsilon</code>, where <code>epsilon = 0.015</code> is the default).</p>
-<p>Theis analysis produces a set of scores that account for karyotype size and peaks offset, and that can be combined into a linear model to compute an overall QC metrics, called <code>rho</code>.</p>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
+<span class="co">#&gt; ── <span style="color: #000000; background-color: #BBBB00;">[ CNAqc ] </span> <span style="color: #00BB00;">293736</span> mutations in <span style="color: #00BB00;">667</span> segments (<span style="color: #00BB00;">654</span> clonal, <span style="color: #00BB00;">13</span> subclonal). Genom</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; ── Clonal CNAs</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;   2:1  [n = 88422, L =   692 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■</span>
+<span class="co">#&gt;   3:2  [n = 58384, L =   417 Mb] ■■■■■■■■■■■■■■■■■■  { <span style="color: #BBBB00;">BRAF</span> }</span>
+<span class="co">#&gt;   3:1  [n = 48704, L =   380 Mb] ■■■■■■■■■■■■■■■</span>
+<span class="co">#&gt;   3:0  [n = 26622, L =   360 Mb] ■■■■■■■■  { <span style="color: #BBBB00;">CDKN2A</span> }</span>
+<span class="co">#&gt;   2:2  [n = 25290, L =   253 Mb] ■■■■■■■■</span>
+<span class="co">#&gt;   3:3  [n = 16790, L =   115 Mb] ■■■■■</span>
+<span class="co">#&gt;   2:0  [n =  5374, L =    67 Mb] ■■</span>
+<span class="co">#&gt;   4:0  [n =  1752, L =    22 Mb] ■  { <span style="color: #BBBB00;">TP53</span> }</span>
+<span class="co">#&gt;   4:2  [n =  1441, L =    11 Mb] </span>
+<span class="co">#&gt;   1:1  [n =   855, L =     9 Mb]</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; ── Subclonal CNAs (showing up to 10 segments)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;  chr11@55700000  [n =  10468, L =  78.75 Mb]   2:1 (0.21)   2:2 (0.79) ■■■■■■■■■■</span>
+<span class="co">#&gt;  chr11@17365005  [n =   5389, L =  31.55 Mb]   2:1 (0.21)   2:2 (0.79) ■■■■■</span>
+<span class="co">#&gt;   chr11@5372292  [n =   1014, L =  11.99 Mb]   2:1 (0.21)   2:2 (0.79) </span>
+<span class="co">#&gt;    chr11@202253  [n =    610, L =   5.17 Mb]   2:1 (0.22)   2:2 (0.78) </span>
+<span class="co">#&gt;  chr11@48918601  [n =    542, L =   2.68 Mb]   2:1 (0.25)   2:2 (0.75) </span>
+<span class="co">#&gt;   chr6@82432583  [n =    301, L =   1.81 Mb]   2:1 (0.19)   2:2 (0.81) </span>
+<span class="co">#&gt;  chr11@51600000  [n =    290, L =    4.1 Mb]   2:1 (0.26)   2:2 (0.74) </span>
+<span class="co">#&gt;   chr6@81896364  [n =     69, L =   0.54 Mb]   2:1 (0.19)   2:2 (0.81) </span>
+<span class="co">#&gt;   chr6@93956180  [n =     41, L =   0.11 Mb]    2:1 (0.2)    2:2 (0.8) </span>
+<span class="co">#&gt;   chr8@42633277  [n =     13, L =   0.26 Mb]   2:1 (0.28)   2:2 (0.72)</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample Purity: 73.4% ~ Ploidy: 3.</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> There are 3 annotated driver(s) mapped to clonal CNAs.</span>
+<span class="co">#&gt;          chr      from        to ref alt DP NV       VAF driver_label is_driver</span>
+<span class="co">#&gt;        chr17   7577082   7577082   C   T 78 70 0.8974359         TP53      TRUE</span>
+<span class="co">#&gt;         chr7 140453136 140453136   A   T 95 54 0.5684211         BRAF      TRUE</span>
+<span class="co">#&gt;         chr9  21971120  21971120   G   A 23 14 0.6086957       CDKN2A      TRUE</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="color: #000000; background-color: #00BB00; font-weight: bold;"> PASS </span><span style="font-weight: bold;"> Peaks QC closest: </span><span style="color: #00BB00; font-weight: bold;">199%</span><span style="font-weight: bold;">, </span><span style="color: #00BB00; font-weight: bold;">λ = 0.0113</span><span style="font-weight: bold;">. Purity correction: 1%.</span> <span style="color: #00BBBB;">───────────</span></span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">2:1</span> ~ n = 88422 ( 74%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> 0.017   <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.006</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">2:2</span> ~ n = 25290 ( 21%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> 0.01    <span style="color: #000000; background-color: #00BB00;"> PASS </span> 0.002</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">2:0</span> ~ n = 5374  (  4%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> 0.019   <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.001</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">1:1</span> ~ n = 855   (  1%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.006</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">1:0</span> ~ n = 124   (  0%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> 0.008</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">General peak QC (</span><span style="color: #00BB00; font-weight: bold;">154430</span><span style="font-weight: bold;"> mutations): </span><span style="color: #000000; background-color: #00BB00; font-weight: bold;"> PASS </span><span style="font-weight: bold;"> 27 </span><span style="color: #BBBBBB; background-color: #BB0000; font-weight: bold;"> FAIL </span><span style="font-weight: bold;"> 13 - epsilon = 0.05.</span> <span style="color: #00BBBB;">───</span></span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">3:0</span> ~ n = 26622 ( 17%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> 3 <span style="color: #BBBBBB; background-color: #BB0000;"> FAIL </span> 0</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">3:1</span> ~ n = 48704 ( 32%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> 3 <span style="color: #BBBBBB; background-color: #BB0000;"> FAIL </span> 0</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">3:2</span> ~ n = 58384 ( 38%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> 3 <span style="color: #BBBBBB; background-color: #BB0000;"> FAIL </span> 0</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">3:3</span> ~ n = 16790 ( 11%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> 3 <span style="color: #BBBBBB; background-color: #BB0000;"> FAIL </span> 0</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">4:2</span> ~ n = 1441  (  1%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> 3 <span style="color: #BBBBBB; background-color: #BB0000;"> FAIL </span> 1</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">4:3</span> ~ n = 359   (  0%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> 3 <span style="color: #BBBBBB; background-color: #BB0000;"> FAIL </span> 1</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">5:3</span> ~ n = 132   (  0%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> 3 <span style="color: #BBBBBB; background-color: #BB0000;"> FAIL </span> 2</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">4:0</span> ~ n = 1752  (  1%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> 2 <span style="color: #BBBBBB; background-color: #BB0000;"> FAIL </span> 2</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">5:2</span> ~ n = 132   (  0%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> 2 <span style="color: #BBBBBB; background-color: #BB0000;"> FAIL </span> 3</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">6:3</span> ~ n = 114   (  0%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> 2 <span style="color: #BBBBBB; background-color: #BB0000;"> FAIL </span> 4</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Subclonal peaks QC (</span><span style="color: #00BB00; font-weight: bold;">7</span><span style="font-weight: bold;"> segments, initial state </span><span style="color: #00BB00; font-weight: bold;">2:1</span><span style="font-weight: bold;">): </span><span style="font-weight: bold; text-decoration: underline;">linear</span><span style="font-weight: bold;"> </span><span style="color: #00BB00; font-weight: bold;">5</span><span style="font-weight: bold;"> </span><span style="font-weight: bold; text-decoration: underline;">branching</span><span style="font-weight: bold;"> </span><span style="color: #BB0000; font-weight: bold;">0</span><span style="font-weight: bold;"> </span><span style="font-weight: bold; text-decoration: underline;">eith</span></span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; ── <span style="color: #000000; background-color: #00BB00;"> PASS </span> Linear models</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">chr11@17365005</span> ~ (31.6Mb, n = 5389) <span style="color: #BBBB00;">2:1 (21) + 2:2 (79)</span> : A1B1 -&gt; A1A2B1 -&gt; A1A2B1B2 [<span style="color: #00BB00;">100</span>]</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">  chr11@202253</span> ~ (5.2Mb, n = 610) <span style="color: #BBBB00;">2:1 (22) + 2:2 (78)</span> : A1B1 -&gt; A1A2B1 -&gt; A1A2B1B2 [<span style="color: #00BB00;">100</span>]</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">chr11@51600000</span> ~ (4.1Mb, n = 290) <span style="color: #BBBB00;">2:1 (26) + 2:2 (74)</span> : A1B1 -&gt; A1A2B1 -&gt; A1A2B1B2 [<span style="color: #BBBB00;">75</span>]</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;"> chr11@5372292</span> ~ (12Mb, n = 1014) <span style="color: #BBBB00;">2:1 (21) + 2:2 (79)</span> : A1B1 -&gt; A1A2B1 -&gt; A1A2B1B2 [<span style="color: #00BB00;">100</span>]</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">chr11@55700000</span> ~ (78.8Mb, n = 10468) <span style="color: #BBBB00;">2:1 (21) + 2:2 (79)</span> : A1B1 -&gt; A1A2B1 -&gt; A1A2B1B2 [<span style="color: #00BB00;">100</span>]</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; ── <span style="color: #BBBBBB; background-color: #BBBB00;"> UNKNOWN </span> Either branching or linear models</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">chr11@48918601</span> ~ (2.7Mb, n = 542) <span style="color: #BBBB00;">2:1 (25) + 2:2 (75)</span> : A1B1 -&gt; A1A2B1 -&gt; A1A2B1B2 [<span style="color: #00BB00;">100</span>]; A1B1 -&gt; A1A2B1 | A1A2B1B2 [<span style="color: #00BB00;">100</span>]; A1B1 -&gt; A1A2B1B2 -&gt; A2B1B2 [<span style="color: #00BB00;">100</span>]</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;"> chr6@82432583</span> ~ (1.8Mb, n = 301) <span style="color: #BBBB00;">2:1 (19) + 2:2 (81)</span> : A1B1 -&gt; A1A2B1 -&gt; A1A2B1B2 [<span style="color: #00BB00;">100</span>]; A1B1 -&gt; A1A2B1 | A1A2B1B2 [<span style="color: #00BB00;">100</span>]; A1B1 -&gt; A1A2B1B2 -&gt; A2B1B2 [<span style="color: #00BB00;">100</span>]</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✔</span> Cancer Cell Fraction (CCF) data available for karyotypes:1:0, 1:1, 2:0, 2:1, and 2:2.</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #BBBBBB; background-color: #00BB00;"> PASS </span> CCF via <span style="font-weight: bold;">ENTROPY</span>.</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #BBBBBB; background-color: #00BB00;"> PASS </span> CCF via <span style="font-weight: bold;">ENTROPY</span>.</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #BBBBBB; background-color: #00BB00;"> PASS </span> CCF via <span style="font-weight: bold;">ENTROPY</span>.</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #BBBBBB; background-color: #00BB00;"> PASS </span> CCF via <span style="font-weight: bold;">ENTROPY</span>.</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #BBBBBB; background-color: #00BB00;"> PASS </span> CCF via <span style="font-weight: bold;">ENTROPY</span>.</span></code></pre></div>
+<div class="section level3">
+<h3 id="simple-clonal-cnas">Simple clonal CNAs<a class="anchor" aria-label="anchor" href="#simple-clonal-cnas"></a>
+</h3>
+<p>This QC is the most important as it can be used to detect adjustments required to better fit purity or ploidy of the sample (to re-run the copy number caller), or to select among alternative copy number solutions returned from a caller (tetraploid versus triploid).</p>
+<p>For these segments the package computes a linear score from the distance between data peaks, and their theoretical expectation. The peaks are determined via:</p>
+<ul>
+<li><p>a kernel-density (unitary adjustment, Gaussian kernel) used to smooth the data distribution, and the <a href="https://cran.rstudio.com/web/packages/peakPick/index.html" class="external-link">peakPick</a> package to determine peaks in the smoothed density.</p></li>
+<li><p>a Binomial mixture model using <a href="https://caravagnalab.github.io/BMix/" class="external-link">Bmix</a>.</p></li>
+</ul>
+<p>There are two possible algorithmic strategies to match peaks with clonal simple CNAs (configured by parameter <code>matching_strategy</code>): one matches the closest peaks as defined by euclidean distance, the other ranks peaks right to left, and prioritises right-most peaks (see the manual for more details). A call to <code>plot_peaks_analysis</code> with default parameters shows the results from peak detection.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-<span class="co">#&gt; ── [ CNAqc ]  n = 12963 mutations in 267 segments (267 clonal + 0 subclonal). Ge</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;    2:2  [n = 7478, L = 1483 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { CTCF }</span>
-<span class="co">#&gt;    4:2  [n = 1893, L =  331 Mb] ■■■■■■■</span>
-<span class="co">#&gt;    3:2  [n = 1625, L =  357 Mb] ■■■■■■</span>
-<span class="co">#&gt;    2:1  [n = 1563, L =  420 Mb] ■■■■■■  { TTN }</span>
-<span class="co">#&gt;    3:0  [n =  312, L =  137 Mb] ■</span>
-<span class="co">#&gt;    2:0  [n =   81, L =   39 Mb]   { TP53 }</span>
-<span class="co">#&gt;   16:2  [n =    4, L =    0 Mb] </span>
-<span class="co">#&gt;   25:2  [n =    2, L =    1 Mb] </span>
-<span class="co">#&gt;    3:1  [n =    2, L =    1 Mb] </span>
-<span class="co">#&gt;  106:1  [n =    1, L =    0 Mb] </span>
-<span class="co">#&gt;   26:2  [n =    1, L =    0 Mb] </span>
-<span class="co">#&gt;   99:1  [n =    1, L =    0 Mb]</span>
-<span class="co">#&gt; ℹ Sample Purity: 89% ~ Ploidy: 4.</span>
-<span class="co">#&gt; ℹ There are 3 annotated driver(s).</span>
-<span class="co">#&gt;          chr      from        to ref alt  DP NV       VAF driver_label is_driver</span>
-<span class="co">#&gt;         chr2 179431633 179431634   C   T 117 77 0.6581197          TTN      TRUE</span>
-<span class="co">#&gt;        chr16  67646006  67646007   C   T 120 54 0.4500000         CTCF      TRUE</span>
-<span class="co">#&gt;        chr17   7577106   7577107   G   C  84 78 0.9285714         TP53      TRUE</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; ──  PASS  Peaks QC closest: 100%, λ = 0.0041. Purity correction: 0%.</span>
-<span class="co">#&gt; ℹ 2:0 ~ n = 81    ( 1%) →  PASS  0.043    PASS  0.005</span>
-<span class="co">#&gt; ℹ 2:1 ~ n = 1563  (17%) →  PASS  0.01     PASS  0.028</span>
-<span class="co">#&gt; ℹ 2:2 ~ n = 7478  (82%) →  PASS  -0.034   PASS  0.035</span></code></pre></div>
-<p>A summary table is stored inside the named list <code>peaks_analysis</code>.</p>
-</div>
-<div id="plotting-results" class="section level1">
-<h1 class="hasAnchor">
-<a href="#plotting-results" class="anchor"></a>Plotting results</h1>
-<p>For every karyotype, a plot with the estimated KDE and the matched peaks is available (assembled <code>ggpubr</code> figure with); gray panels represent karyotypes that have not been used.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/plot_peaks_analysis.html">plot_peaks_analysis</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></code></pre></div>
-<p><img src="a3_peaks_detection_files/figure-html/unnamed-chunk-5-1.png" width="1056"></p>
-<p>Individual karyotypes plots are available inside the named lists <code>peaks_analysis$plots</code>, named afte each required karyotype.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Tetraploid segments</span>
-<span class="va">x</span><span class="op">$</span><span class="va">peaks_analysis</span><span class="op">$</span><span class="va">plots</span><span class="op">$</span><span class="va">`2:2`</span>
-<span class="co">#&gt; NULL</span></code></pre></div>
-<p>You can integrate plots from QC analysis with data.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">cowplot</span><span class="fu">::</span><span class="fu"><a href="https://wilkelab.org/cowplot/reference/plot_grid.html">plot_grid</a></span><span class="op">(</span>
-  <span class="fu"><a href="../reference/plot_peaks_analysis.html">plot_peaks_analysis</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>,
-  <span class="fu"><a href="../reference/plot_segments.html">plot_segments</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>,
-  rel_heights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">.8</span>, <span class="fl">1</span><span class="op">)</span>,
-  nrow <span class="op">=</span> <span class="fl">2</span>
-<span class="op">)</span>
-<span class="co">#&gt; Scale for 'fill' is already present. Adding another scale for 'fill', which</span>
-<span class="co">#&gt; will replace the existing scale.</span></code></pre></div>
-<p><img src="a3_peaks_detection_files/figure-html/unnamed-chunk-7-1.png" width="1056"></p>
+<p><img src="a3_peaks_detection_files/figure-html/unnamed-chunk-4-1.png" width="1056"></p>
+<p>Plots are ordered by fixed positions (gray panels represent karyotypes that have not been used). Each vertical dashed line is the expected peak, the bandwidth around being the tolerance we use to match peaks (based on <code>purity_error</code>, adjusted for segment ploidy and tumour purity). Each dot is a peak detected from data, with a bandwidth of tolerance (fixed) around it. The colours green/red reflect if a peak is matched or not; the overall QC status for a karyotype is given by the colour of the facet and the box surrounding the whole figure assembly reports the QC status for the sample.</p>
+<p>Plots can also be generated without assembly or empty plots (see the parameters of function <code>plot_peaks_analysis</code>).</p>
 </div>
-<div id="summary-results-and-quality-check-qc" class="section level1">
-<h1 class="hasAnchor">
-<a href="#summary-results-and-quality-check-qc" class="anchor"></a>Summary results and Quality Check (QC)</h1>
-<p>The summary technical table is available as <code>peaks_analysis$matches</code> inside <code>x</code>.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">x</span><span class="op">$</span><span class="va">peaks_analysis</span><span class="op">$</span><span class="va">matches</span>
-<span class="co">#&gt; # A tibble: 6 × 17</span>
-<span class="co">#&gt;   mutation_multiplic… karyotype  peak     x     y counts_per_bin discarded from </span>
-<span class="co">#&gt;                 &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;          &lt;int&gt; &lt;lgl&gt;     &lt;chr&gt;</span>
-<span class="co">#&gt; 1                   1 2:0       0.445 0.423 0.172              0 FALSE     BMix </span>
-<span class="co">#&gt; 2                   2 2:0       0.89  0.885 7.99               7 FALSE     BMix </span>
-<span class="co">#&gt; 3                   1 2:1       0.308 0.306 3.60              59 FALSE     BMix </span>
-<span class="co">#&gt; 4                   2 2:1       0.616 0.602 2.94              60 FALSE     BMix </span>
-<span class="co">#&gt; 5                   1 2:2       0.235 0.24  0.86              65 FALSE     KDE  </span>
-<span class="co">#&gt; 6                   2 2:2       0.471 0.461 8.14             625 FALSE     BMix </span>
-<span class="co">#&gt; # … with 9 more variables: offset_VAF &lt;dbl&gt;, offset &lt;dbl&gt;, weight &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   epsilon &lt;dbl&gt;, VAF_tolerance &lt;dbl&gt;, matched &lt;lgl&gt;, score &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   purity_error &lt;dbl&gt;, QC &lt;chr&gt;</span></code></pre></div>
-<p>The table reports several information. The following might be of some use after the analysis:</p>
+<div class="section level3">
+<h3 id="complex-clonal-cnas">Complex clonal CNAs<a class="anchor" aria-label="anchor" href="#complex-clonal-cnas"></a>
+</h3>
+<p>The QC procedure for these CNAs uses only the kernel density estimation to make the computation faster.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/plot_peaks_analysis.html">plot_peaks_analysis</a></span><span class="op">(</span><span class="va">x</span>, what <span class="op">=</span> <span class="st">'general'</span><span class="op">)</span></code></pre></div>
+<p><img src="a3_peaks_detection_files/figure-html/unnamed-chunk-5-1.png" width="768"> The plot reports dashed lines for expected peaks (for mutation with multiplicity from 1 to the maximum of the Major/minor allele counts), and dots for each data peak.The colours green/red report the QC status for each peak; with these CNAs no karyotype-level or sample-level scores are produced.</p>
+</div>
+<div class="section level3">
+<h3 id="subclonal-cnas">Subclonal CNAs<a class="anchor" aria-label="anchor" href="#subclonal-cnas"></a>
+</h3>
+<p>The QC procedure for these CNAs uses only the kernel density estimation (as for complex CNAs), and considers 2 subclones with distinct mixing proportions. Differently from clonal CNAs, however, here the analysis is carried out at the level of each segment (without pooling segments with the same karyotypes) so to support callers that report segment-specific CCF values (e.g., Battenberg).</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/plot_peaks_analysis.html">plot_peaks_analysis</a></span><span class="op">(</span><span class="va">x</span>, what <span class="op">=</span> <span class="st">'subclonal'</span><span class="op">)</span></code></pre></div>
+<p><img src="a3_peaks_detection_files/figure-html/unnamed-chunk-6-1.png" width="768"> The visual layout of this plot is the same of complex clonal CNAs; not that the facet reports the distinct evolutionary models that have been generated to QC subclonal CNAs.</p>
+</div>
+</div>
+<div class="section level2">
+<h2 id="summary-results">Summary results<a class="anchor" aria-label="anchor" href="#summary-results"></a>
+</h2>
+<p>For every type of copy number analyzed several information are reported, tables with summary peaks are available inside <code>x$peaks_analysis</code>. More precisely</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Simple clonal CNAs</span>
+<span class="va">x</span><span class="op">$</span><span class="va">peaks_analysis</span><span class="op">$</span><span class="va">matches</span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 8 × 16</span></span>
+<span class="co">#&gt; <span style="color: #949494;"># Rowwise: </span></span>
+<span class="co">#&gt;   mutation_multiplicity karyotype  peak delta_vaf     x     y counts_per_bin</span>
+<span class="co">#&gt;                   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">1</span>                     1 2:1       0.268   0.013<span style="text-decoration: underline;">4</span>  0.264 4.14            <span style="text-decoration: underline;">3</span>138</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">2</span>                     2 2:1       0.537   0.026<span style="text-decoration: underline;">8</span>  0.54  3               <span style="text-decoration: underline;">2</span>729</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">3</span>                     1 2:2       0.212   0.008<span style="text-decoration: underline;">31</span> 0.21  0.93             198</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">4</span>                     2 2:2       0.423   0.016<span style="text-decoration: underline;">6</span>  0.423 6.85            <span style="text-decoration: underline;">1</span>732</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">5</span>                     1 2:0       0.367   0.025   0.357 0.868             50</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">6</span>                     2 2:0       0.734   0.05    0.735 5.43             265</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">7</span>                     1 1:1       0.367   0.025   0.37  2.42              15</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">8</span>                     1 1:0       0.580   0.062<span style="text-decoration: underline;">4</span>  0.570 4.16               7</span>
+<span class="co">#&gt; <span style="color: #949494;"># … with 9 more variables: discarded &lt;lgl&gt;, from &lt;chr&gt;, offset_VAF &lt;dbl&gt;,</span></span>
+<span class="co">#&gt; <span style="color: #949494;">#   offset &lt;dbl&gt;, weight &lt;dbl&gt;, epsilon &lt;dbl&gt;, VAF_tolerance &lt;dbl&gt;,</span></span>
+<span class="co">#&gt; <span style="color: #949494;">#   matched &lt;lgl&gt;, QC &lt;chr&gt;</span></span>
+
+<span class="co"># Complex clonal CNAs</span>
+<span class="va">x</span><span class="op">$</span><span class="va">peaks_analysis</span><span class="op">$</span><span class="va">general</span><span class="op">$</span><span class="va">expected_peaks</span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 40 × 9</span></span>
+<span class="co">#&gt;    minor Major ploidy multiplicity purity  peak karyotype matched n      </span>
+<span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;table&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>     2     4      6            1  0.734 0.149 4:2       TRUE    1441   </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>     2     4      6            2  0.734 0.297 4:2       TRUE    1441   </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>     2     4      6            3  0.734 0.446 4:2       FALSE   1441   </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>     2     4      6            4  0.734 0.595 4:2       TRUE    1441   </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>     2     5      7            1  0.734 0.129 5:2       FALSE    132   </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>     2     5      7            2  0.734 0.259 5:2       TRUE     132   </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>     2     5      7            3  0.734 0.388 5:2       FALSE    132   </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>     2     5      7            4  0.734 0.518 5:2       FALSE    132   </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>     2     5      7            5  0.734 0.647 5:2       TRUE     132   </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">10</span>     0     4      4            1  0.734 0.212 4:0       FALSE   1752   </span>
+<span class="co">#&gt; <span style="color: #949494;"># … with 30 more rows</span></span>
+
+<span class="co"># Subclonal CNAs</span>
+<span class="va">x</span><span class="op">$</span><span class="va">peaks_analysis</span><span class="op">$</span><span class="va">subclonal</span><span class="op">$</span><span class="va">expected_peaks</span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 91 × 16</span></span>
+<span class="co">#&gt;    mutation karyotype_1 genotype_1 karyotype_2 genotype_2 n.clone_1 n.clone_2</span>
+<span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> CZLSBQYB 2:1         A1A2B1     <span style="color: #BB0000;">NA</span>          <span style="color: #BB0000;">NA</span>                 1         0</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> BPOTOEFF <span style="color: #BB0000;">NA</span>          <span style="color: #BB0000;">NA</span>         2:2         A1A2B1B2           0         1</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> KAARFQIK 2:1         A1A2B1     2:2         A1A2B1B2           1         2</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> MFLZDLUF 2:1         A1A2B1     2:2         A1A2B1B2           2         2</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> JCNPSYPK <span style="color: #BB0000;">NA</span>          <span style="color: #BB0000;">NA</span>         2:2         A1A2B1B2           0         1</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> HVJQLGKC 2:1         A1A2B1     2:2         A1A2B1B2           1         1</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> BHPBZOEW 2:1         A1A2B1     2:2         A1A2B1B2           1         2</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> GMXHAPDL 2:1         A1A2B1     2:2         A1A2B1B2           2         2</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> BQQRZVXM <span style="color: #BB0000;">NA</span>          <span style="color: #BB0000;">NA</span>         2:1         A2B1B2             0         1</span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">10</span> HBQCDYOE 2:2         A1A2B1B2   <span style="color: #BB0000;">NA</span>          <span style="color: #BB0000;">NA</span>                 1         0</span>
+<span class="co">#&gt; <span style="color: #949494;"># … with 81 more rows, and 9 more variables: peak &lt;dbl&gt;,</span></span>
+<span class="co">#&gt; <span style="color: #949494;">#   genotype_initial &lt;chr&gt;, model &lt;chr&gt;, model_id &lt;chr&gt;, role &lt;chr&gt;,</span></span>
+<span class="co">#&gt; <span style="color: #949494;">#   segment_id &lt;chr&gt;, matched &lt;lgl&gt;, size &lt;chr&gt;, clones &lt;chr&gt;</span></span></code></pre></div>
+<p>The most helpful table is usually the one for simple clonal CNAs <code>x$peaks_analysis$matches</code>, which reports several information:</p>
 <ul>
 <li>
 <code>mutation_multiplicity</code> and <code>karyotype</code>, which are the number of copies of the mutation, and the segment’s karyotype. Each segment with <code>discarded = FALSE</code> has been analysed;</li>
@@ -279,15 +456,19 @@
 <li>
 <code>QC</code> that reports if the peak is considered matched.</li>
 </ul>
-<p>The overall <code>QC</code> result - <code>"PASS"/"FAIL"</code> - is available in <code>x</code>.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<p>The overall sample-level QC result - <code>"PASS"/"FAIL"</code> - is available in</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">x</span><span class="op">$</span><span class="va">peaks_analysis</span><span class="op">$</span><span class="va">QC</span>
 <span class="co">#&gt; [1] "PASS"</span></code></pre></div>
-<p>You can visually summarise the result of the QC analysis, for both peaks and <a href="https://caravagn.github.io/CNAqc/articles/ccf_computation.html">CCF computation</a>.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<p>You can visually summarise QC results for all the analyses available in CNAqc (peaks-based and <a href="https://caravagn.github.io/CNAqc/articles/ccf_computation.html" class="external-link">CCF-based</a>).</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/plot_qc.html">plot_qc</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></code></pre></div>
-<p><img src="a3_peaks_detection_files/figure-html/unnamed-chunk-10-1.png" width="288"></p>
-<p>Here since CCF have not been computed, the only available QC tests are for peak-detection.</p>
+<p><img src="a3_peaks_detection_files/figure-html/unnamed-chunk-9-1.png" width="576"></p>
+</div>
+<div class="section level2">
+<h2 id="per-chromosome-analysis">Per-chromosome analysis<a class="anchor" aria-label="anchor" href="#per-chromosome-analysis"></a>
+</h2>
+<p>CNAqc analyses can be run per chromosome. First, split your data by chromosome using function <code>split_by_chromosome</code>, and then run the analysis for every chromosome.</p>
 </div>
   </div>
 
@@ -302,11 +483,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by <a href="https://www.caravagnalab.org">Giulio Caravagna</a>.</p>
+  <p></p>
+<p>Developed by <a href="https://www.caravagnalab.org" class="external-link">Giulio Caravagna</a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
       </footer>
@@ -314,6 +497,8 @@
 
   
 
+
+  
 
   </body>
 </html>

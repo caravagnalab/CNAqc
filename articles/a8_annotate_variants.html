@@ -26,6 +26,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -38,18 +40,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CNAqc</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.1</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="../articles/CNAqc.html">Get started</a>
 </li>
@@ -57,7 +53,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -87,12 +83,15 @@
     <li>
       <a href="../articles/a8_annotate_variants.html">8. Drivers annotation</a>
     </li>
+    <li>
+      <a href="../articles/a9_automatic.html">9. Automatic CNA calling</a>
+    </li>
   </ul>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/caravagnalab/CNAqc/">
+  <a href="https://github.com/caravagnalab/CNAqc/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -113,7 +112,7 @@
       <h1 data-toc-skip>8. Drivers annotation</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/caravagnalab/CNAqcvignettes/a8_annotate_variants.Rmd"><code>vignettes/a8_annotate_variants.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/caravagnalab/CNAqcvignettes/a8_annotate_variants.Rmd" class="external-link"><code>vignettes/a8_annotate_variants.Rmd</code></a></small>
       <div class="hidden name"><code>a8_annotate_variants.Rmd</code></div>
 
     </div>
@@ -121,19 +120,16 @@
     
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/caravagnalab/CNAqc">CNAqc</a></span><span class="op">)</span>
-<span class="co">#&gt; ✔ Loading BMix, 'Binomial and Beta-Binomial univariate mixtures'. Support : &lt;https://caravagnalab.github.io/BMix/&gt;</span>
-<span class="co">#&gt; ✔ Loading CNAqc, 'Copy Number Alteration quality check'. Support : &lt;https://caravagn.github.io/CNAqc/&gt;</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/caravagnalab/CNAqc" class="external-link">CNAqc</a></span><span class="op">)</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✔</span> Loading <span style="color: #00BB00;">BMix</span>, <span style="font-style: italic;">'Binomial and Beta-Binomial univariate mixtures'</span>. Support : <span style="color: #0000BB; font-style: italic;">&lt;https://caravagnalab.github.io/BMix/&gt;</span></span>
+<span class="co">#&gt; <span style="color: #00BB00;">✔</span> Loading <span style="color: #00BB00;">CNAqc</span>, <span style="font-style: italic;">'Copy Number Alteration quality check'</span>. Support : <span style="color: #0000BB; font-style: italic;">&lt;https://caravagn.github.io/CNAqc/&gt;</span></span>
 
 <span class="co"># Extra packages</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span>
 
 <span class="co">#if you use RStudio you will probably have to run this line</span>
 <span class="co"># options(connectionObserver = NULL)</span></code></pre></div>
-<p>CNAqc has a number of simple annotation functions that can be useful for giving a preliminary idea of what somatic mutations might be <em>driver events</em>.</p>
-<blockquote>
-<p>This function does not replace more complex and in-depth analyzes of mutations.</p>
-</blockquote>
+<p>CNAqc has a number of simple annotation functions that can be useful for giving a preliminary idea of what somatic mutations might be <em>driver events</em>. This function does not replace more complex and in-depth analyzes of mutations, using specialised tools like <a href="https://www.intogen.org/search" class="external-link">Intogen</a>, <a href="https://cancer.sanger.ac.uk/cosmic" class="external-link">COSMIC</a>, etc..</p>
 <p>Given a table of mutation we annotate:</p>
 <ol style="list-style-type: decimal">
 <li>
@@ -170,178 +166,183 @@
 <code>stop</code>.</li>
 </ul>
 </li>
-<li><p>Synonymous mutations are then compared to known driver genes from the <a href="https://www.intogen.org/search">intOGen</a> database, and flagged as drivers.</p></li>
+<li><p>Synonymous mutations are then compared to known driver genes from the <a href="https://www.intogen.org/search" class="external-link">intOGen</a> database, and flagged as drivers.</p></li>
 <li><p>Optionally if the <code>dbSNP</code> id is present the <code>PolyPhen</code> score can also be annotated</p></li>
 </ol>
-<p>The annotation phase is heavily based on the <a href="https://bioconductor.org/packages/release/bioc/html/VariantAnnotation.html">VariantAnnotation</a> package.</p>
-<div id="install-required-packages" class="section level1">
-<h1 class="hasAnchor">
-<a href="#install-required-packages" class="anchor"></a>Install Required Packages</h1>
-<p>We will show the functioning with tha example file shipped in <code>CNAqc</code></p>
+<p>The annotation phase is heavily based on the <a href="https://bioconductor.org/packages/release/bioc/html/VariantAnnotation.html" class="external-link">VariantAnnotation</a> package.</p>
+<div class="section level2">
+<h2 id="install-required-packages">Install Required Packages<a class="anchor" aria-label="anchor" href="#install-required-packages"></a>
+</h2>
+<p>We will annotate the example dataset available in CNAqc.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Load template data</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">'example_dataset_CNAqc'</span>, package <span class="op">=</span> <span class="st">'CNAqc'</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">'example_dataset_CNAqc'</span>, package <span class="op">=</span> <span class="st">'CNAqc'</span><span class="op">)</span>
 
 <span class="va">snvs</span> <span class="op">&lt;-</span> <span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">snvs</span>
 
-<span class="va">snvs</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>  <span class="va">head</span>
-<span class="co">#&gt; # A tibble: 6 × 13</span>
+<span class="va">snvs</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>  <span class="va">head</span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 13</span></span>
 <span class="co">#&gt;   chr      from      to ref   alt   FILTER    DP    NV    VAF ANNOVAR_FUNCTION</span>
-<span class="co">#&gt;   &lt;chr&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;           </span>
-<span class="co">#&gt; 1 chr1  1027104 1027105 T     G     PASS      60     6 0.1    UTR5            </span>
-<span class="co">#&gt; 2 chr1  2248588 2248589 A     C     PASS     127     9 0.0709 intergenic      </span>
-<span class="co">#&gt; 3 chr1  2461999 2462000 G     A     PASS     156    65 0.417  upstream        </span>
-<span class="co">#&gt; 4 chr1  2727935 2727936 T     C     PASS     180    90 0.5    downstream      </span>
-<span class="co">#&gt; 5 chr1  2763397 2763398 C     T     PASS     183    61 0.333  intergenic      </span>
-<span class="co">#&gt; 6 chr1  2768208 2768209 C     T     PASS     203   130 0.640  intergenic      </span>
-<span class="co">#&gt; # … with 3 more variables: GENE &lt;chr&gt;, is_driver &lt;lgl&gt;, driver_label &lt;chr&gt;</span></code></pre></div>
-<p>As we can see we already have driver annotated from an external source (<a href="https://annovar.openbioinformatics.org/en/latest/">ANNOVAR</a>).</p>
-<p>We get rid of them and re-annotate the data.</p>
+<span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">1</span> chr1  1<span style="text-decoration: underline;">027</span>104 1<span style="text-decoration: underline;">027</span>105 T     G     PASS      60     6 0.1    UTR5            </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">2</span> chr1  2<span style="text-decoration: underline;">248</span>588 2<span style="text-decoration: underline;">248</span>589 A     C     PASS     127     9 0.070<span style="text-decoration: underline;">9</span> intergenic      </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">3</span> chr1  2<span style="text-decoration: underline;">461</span>999 2<span style="text-decoration: underline;">462</span>000 G     A     PASS     156    65 0.417  upstream        </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">4</span> chr1  2<span style="text-decoration: underline;">727</span>935 2<span style="text-decoration: underline;">727</span>936 T     C     PASS     180    90 0.5    downstream      </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">5</span> chr1  2<span style="text-decoration: underline;">763</span>397 2<span style="text-decoration: underline;">763</span>398 C     T     PASS     183    61 0.333  intergenic      </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">6</span> chr1  2<span style="text-decoration: underline;">768</span>208 2<span style="text-decoration: underline;">768</span>209 C     T     PASS     203   130 0.640  intergenic      </span>
+<span class="co">#&gt; <span style="color: #949494;"># … with 3 more variables: GENE &lt;chr&gt;, is_driver &lt;lgl&gt;, driver_label &lt;chr&gt;</span></span></code></pre></div>
+<p>This tibble has already have driver annotated which have been generated using (<a href="https://annovar.openbioinformatics.org/en/latest/" class="external-link">ANNOVAR</a>). We get rid of them and re-annotate the data.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># What are drivers (labels)</span>
-<span class="va">drivers_true</span> <span class="op">&lt;-</span> <span class="va">snvs</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">is_driver</span> <span class="op">==</span> <span class="cn">T</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html">pull</a></span><span class="op">(</span><span class="va">driver_label</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>  
+<span class="va">drivers_true</span> <span class="op">&lt;-</span> <span class="va">snvs</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">is_driver</span> <span class="op">==</span> <span class="cn">T</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html" class="external-link">pull</a></span><span class="op">(</span><span class="va">driver_label</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>  
   <span class="va">unique</span>
 
-<span class="va">snvs</span> <span class="op">&lt;-</span> <span class="va">snvs</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">is_driver</span>, <span class="op">-</span><span class="va">driver_label</span><span class="op">)</span></code></pre></div>
-<p>The function uses databases from Bioconductor to annotate the variants. Installation of these databases might take a bit of time, as ~1GB of data have to be downloaded.</p>
+<span class="va">snvs</span> <span class="op">&lt;-</span> <span class="va">snvs</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">is_driver</span>, <span class="op">-</span><span class="va">driver_label</span><span class="op">)</span></code></pre></div>
+<p>The function uses databases from <a href="https://www.bioconductor.org/" class="external-link">Bioconductor</a> to annotate the variants; installation of these databases might take a bit of time because ~1GB of data have to be downloaded. This will happen only the first time the annotation is run.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Reference against which we mapped the reads</span>
 <span class="va">reference_genome</span> <span class="op">&lt;-</span> <span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">reference</span>
 
 <span class="co"># All those packages are distributed in Bioconductor</span>
-<span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
-    <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, repos<span class="op">=</span><span class="st">"http://cran.us.r-project.org"</span><span class="op">)</span>
+<span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
+    <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, repos<span class="op">=</span><span class="st">"http://cran.us.r-project.org"</span><span class="op">)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; The downloaded binary packages are in</span>
+<span class="co">#&gt;  /var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpQCV5Zw/downloaded_packages</span>
 
 <span class="co"># We have to install the corresponding txdb package for transcript annotations</span>
-<span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"TxDb.Hsapiens.UCSC."</span>,<span class="va">reference_genome</span>, <span class="st">".knownGene"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html">install</a></span><span class="op">(</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"TxDb.Hsapiens.UCSC."</span>,<span class="va">reference_genome</span>, <span class="st">".knownGene"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html" class="external-link">install</a></span><span class="op">(</span><span class="op">)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; The downloaded binary packages are in</span>
+<span class="co">#&gt;  /var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpQCV5Zw/downloaded_packages</span>
 
 <span class="co"># We have to install also the BS database for the sequences (it may take some time)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"BSgenome.Hsapiens.UCSC."</span>,<span class="va">reference_genome</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html">install</a></span><span class="op">(</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"BSgenome.Hsapiens.UCSC."</span>,<span class="va">reference_genome</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html" class="external-link">install</a></span><span class="op">(</span><span class="op">)</span>
 
-<span class="co"># Then these two packages provide usefull utilities to deal with biological databases</span>
-<span class="st">"Organism.dplyr"</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html">install</a></span><span class="op">(</span><span class="op">)</span>
-<span class="st">"org.Hs.eg.db"</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html">install</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<span class="co"># Then these two packages provide useful utilities to deal with biological databases</span>
+<span class="st">"Organism.dplyr"</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html" class="external-link">install</a></span><span class="op">(</span><span class="op">)</span>
+<span class="st">"org.Hs.eg.db"</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html" class="external-link">install</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="annotation" class="section level1">
-<h1 class="hasAnchor">
-<a href="#annotation" class="anchor"></a>Annotation</h1>
+<div class="section level2">
+<h2 id="annotation">Annotation<a class="anchor" aria-label="anchor" href="#annotation"></a>
+</h2>
 <p>Now we have everything to get our annotated file</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Run function</span>
 <span class="va">snvs_annotated</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/annotate_variants.html">annotate_variants</a></span><span class="op">(</span><span class="va">snvs</span>, ref <span class="op">=</span> <span class="va">reference_genome</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 3 × 10</span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 10</span></span>
 <span class="co">#&gt;   chr      from     to gene_symbol location consequence refAA varAA driver_label</span>
-<span class="co">#&gt;   &lt;fct&gt;   &lt;int&gt;  &lt;int&gt; &lt;chr&gt;       &lt;chr&gt;    &lt;chr&gt;       &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;       </span>
-<span class="co">#&gt; 1 chr16  6.76e7 6.76e7 CTCF        coding   nonsynonym… H     Y     CTCF_H-&gt;Y   </span>
-<span class="co">#&gt; 2 chr17  7.58e6 7.58e6 TP53        coding:… nonsynonym… P     A     TP53_P-&gt;A   </span>
-<span class="co">#&gt; 3 chr19  5.09e7 5.09e7 POLD1       coding   nonsynonym… T     M     POLD1_T-&gt;M  </span>
-<span class="co">#&gt; # … with 1 more variable: is_driver &lt;lgl&gt;</span>
+<span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">1</span> chr16  6.76<span style="color: #949494;">e</span>7 6.76<span style="color: #949494;">e</span>7 CTCF        coding   nonsynonym… H     Y     CTCF_H-&gt;Y   </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">2</span> chr17  7.58<span style="color: #949494;">e</span>6 7.58<span style="color: #949494;">e</span>6 TP53        coding:… nonsynonym… P     A     TP53_P-&gt;A   </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">3</span> chr19  5.09<span style="color: #949494;">e</span>7 5.09<span style="color: #949494;">e</span>7 POLD1       coding   nonsynonym… T     M     POLD1_T-&gt;M  </span>
+<span class="co">#&gt; <span style="color: #949494;"># … with 1 more variable: is_driver &lt;lgl&gt;</span></span>
 
 <span class="va">snvs_annotated</span>
-<span class="co">#&gt; # A tibble: 15,676 × 18</span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 15,676 × 18</span></span>
 <span class="co">#&gt;    chr       from      to ref   alt   FILTER    DP    NV    VAF ANNOVAR_FUNCTION</span>
-<span class="co">#&gt;    &lt;chr&gt;    &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;           </span>
-<span class="co">#&gt;  1 chr16 67646006  6.76e7 C     T     PASS     120    54 0.45   exonic          </span>
-<span class="co">#&gt;  2 chr17  7577106  7.58e6 G     C     PASS      84    78 0.929  exonic          </span>
-<span class="co">#&gt;  3 chr19 50919900  5.09e7 C     T     PASS     145    61 0.421  exonic          </span>
-<span class="co">#&gt;  4 chr1   1027104  1.03e6 T     G     PASS      60     6 0.1    UTR5            </span>
-<span class="co">#&gt;  5 chr1   1027104  1.03e6 T     G     PASS      60     6 0.1    UTR5            </span>
-<span class="co">#&gt;  6 chr1   1027104  1.03e6 T     G     PASS      60     6 0.1    UTR5            </span>
-<span class="co">#&gt;  7 chr1   1027104  1.03e6 T     G     PASS      60     6 0.1    UTR5            </span>
-<span class="co">#&gt;  8 chr1   1027104  1.03e6 T     G     PASS      60     6 0.1    UTR5            </span>
-<span class="co">#&gt;  9 chr1   2461999  2.46e6 G     A     PASS     156    65 0.417  upstream        </span>
-<span class="co">#&gt; 10 chr1   3387161  3.39e6 T     G     PASS     124     6 0.0484 intronic        </span>
-<span class="co">#&gt; # … with 15,666 more rows, and 8 more variables: GENE &lt;chr&gt;, gene_symbol &lt;chr&gt;,</span>
-<span class="co">#&gt; #   location &lt;chr&gt;, consequence &lt;chr&gt;, refAA &lt;chr&gt;, varAA &lt;chr&gt;,</span>
-<span class="co">#&gt; #   driver_label &lt;chr&gt;, is_driver &lt;lgl&gt;</span></code></pre></div>
+<span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> chr16 67<span style="text-decoration: underline;">646</span>006  6.76<span style="color: #949494;">e</span>7 C     T     PASS     120    54 0.45   exonic          </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> chr17  7<span style="text-decoration: underline;">577</span>106  7.58<span style="color: #949494;">e</span>6 G     C     PASS      84    78 0.929  exonic          </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> chr19 50<span style="text-decoration: underline;">919</span>900  5.09<span style="color: #949494;">e</span>7 C     T     PASS     145    61 0.421  exonic          </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> chr1   1<span style="text-decoration: underline;">027</span>104  1.03<span style="color: #949494;">e</span>6 T     G     PASS      60     6 0.1    UTR5            </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> chr1   1<span style="text-decoration: underline;">027</span>104  1.03<span style="color: #949494;">e</span>6 T     G     PASS      60     6 0.1    UTR5            </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> chr1   1<span style="text-decoration: underline;">027</span>104  1.03<span style="color: #949494;">e</span>6 T     G     PASS      60     6 0.1    UTR5            </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> chr1   1<span style="text-decoration: underline;">027</span>104  1.03<span style="color: #949494;">e</span>6 T     G     PASS      60     6 0.1    UTR5            </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> chr1   1<span style="text-decoration: underline;">027</span>104  1.03<span style="color: #949494;">e</span>6 T     G     PASS      60     6 0.1    UTR5            </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> chr1   2<span style="text-decoration: underline;">461</span>999  2.46<span style="color: #949494;">e</span>6 G     A     PASS     156    65 0.417  upstream        </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">10</span> chr1   3<span style="text-decoration: underline;">387</span>161  3.39<span style="color: #949494;">e</span>6 T     G     PASS     124     6 0.048<span style="text-decoration: underline;">4</span> intronic        </span>
+<span class="co">#&gt; <span style="color: #949494;"># … with 15,666 more rows, and 8 more variables: GENE &lt;chr&gt;, gene_symbol &lt;chr&gt;,</span></span>
+<span class="co">#&gt; <span style="color: #949494;">#   location &lt;chr&gt;, consequence &lt;chr&gt;, refAA &lt;chr&gt;, varAA &lt;chr&gt;,</span></span>
+<span class="co">#&gt; <span style="color: #949494;">#   driver_label &lt;chr&gt;, is_driver &lt;lgl&gt;</span></span></code></pre></div>
 <p>One thing to note is the presence of multiple locations and consequences for a single variant.</p>
 <p>This happens as we try to annotate the mutations in a transcript-agnostic manner, consequently we report all possible effects and locations for any transcript (separated by <code>:</code>).</p>
-<p>For this cohort, the drivers largely correspond to those previously noted (<code>TP53</code> and <code>CTCF</code> mutations) with some differences. Obviously using multiple annotations and validation guarantees more precise results.</p>
-<p><code>CNAqc</code> uses a list of driver gene per cancer type from <a href="https://www.intogen.org/download">intOGen</a> (<em>Release date 2020.02.01</em>), matching mutation by gene id (e.g., a missense mutation in <code>APC</code>). The list of genes can be pooled from multiple tumor types, or providing a tumour code.</p>
+<p>For this cohort, the drivers largely correspond to those previously noted (<code>TP53</code> and <code>CTCF</code> mutations) with some differences. Obviously using multiple annotations and validations guarantees more precise results.</p>
+<p><code>CNAqc</code> uses a list of driver gene per cancer type from <a href="https://www.intogen.org/download" class="external-link">intOGen</a> (<em>Release date 2020.02.01</em>), matching mutation by gene id (e.g., a missense mutation in <code>APC</code>). The list of genes can be pooled from multiple tumor types, or providing a tumour code.</p>
 <p>The list of tumor types and codes is available in the package.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">'intogen_ttypes'</span>, package <span class="op">=</span> <span class="st">'CNAqc'</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">'intogen_ttypes'</span>, package <span class="op">=</span> <span class="st">'CNAqc'</span><span class="op">)</span>
 
 <span class="co"># intOGen</span>
 <span class="va">intogen_ttypes</span>
-<span class="co">#&gt; # A tibble: 66 × 2</span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 66 × 2</span></span>
 <span class="co">#&gt;    cancer_name                           intogen_code</span>
-<span class="co">#&gt;    &lt;chr&gt;                                 &lt;chr&gt;       </span>
-<span class="co">#&gt;  1 Adrenocortical carcinoma              ACC         </span>
-<span class="co">#&gt;  2 Adenoid cystic carcinoma              ACY         </span>
-<span class="co">#&gt;  3 Acute lymphoblastic leukemia          ALL         </span>
-<span class="co">#&gt;  4 Acute myeloid leukemia                AML         </span>
-<span class="co">#&gt;  5 Anus cancer                           AN          </span>
-<span class="co">#&gt;  6 Angiosarcoma                          ANGS        </span>
-<span class="co">#&gt;  7 Atypical teratoid/rhabdoid tumor      ATRT        </span>
-<span class="co">#&gt;  8 Bowel cancer                          BC          </span>
-<span class="co">#&gt;  9 Small intestine cancer neuroendocrine BCNET       </span>
-<span class="co">#&gt; 10 Bladder cancer                        BLCA        </span>
-<span class="co">#&gt; # … with 56 more rows</span></code></pre></div>
+<span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                 <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> Adrenocortical carcinoma              ACC         </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> Adenoid cystic carcinoma              ACY         </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> Acute lymphoblastic leukemia          ALL         </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> Acute myeloid leukemia                AML         </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> Anus cancer                           AN          </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> Angiosarcoma                          ANGS        </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> Atypical teratoid/rhabdoid tumor      ATRT        </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> Bowel cancer                          BC          </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> Small intestine cancer neuroendocrine BCNET       </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">10</span> Bladder cancer                        BLCA        </span>
+<span class="co">#&gt; <span style="color: #949494;"># … with 56 more rows</span></span></code></pre></div>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Example: OV is ovarian cancer</span>
 <span class="va">snvs_annotated_OV</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/annotate_variants.html">annotate_variants</a></span><span class="op">(</span><span class="va">snvs</span>, 
                                        ref <span class="op">=</span> <span class="va">reference_genome</span>, 
                                        filter_tumor_type <span class="op">=</span> <span class="st">"OV"</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 1 × 10</span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 10</span></span>
 <span class="co">#&gt;   chr      from     to gene_symbol location consequence refAA varAA driver_label</span>
-<span class="co">#&gt;   &lt;fct&gt;   &lt;int&gt;  &lt;int&gt; &lt;chr&gt;       &lt;chr&gt;    &lt;chr&gt;       &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;       </span>
-<span class="co">#&gt; 1 chr17 7577106 7.58e6 TP53        coding:… nonsynonym… P     A     TP53_P-&gt;A   </span>
-<span class="co">#&gt; # … with 1 more variable: is_driver &lt;lgl&gt;</span>
+<span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">1</span> chr17 7<span style="text-decoration: underline;">577</span>106 7.58<span style="color: #949494;">e</span>6 TP53        coding:… nonsynonym… P     A     TP53_P-&gt;A   </span>
+<span class="co">#&gt; <span style="color: #949494;"># … with 1 more variable: is_driver &lt;lgl&gt;</span></span>
 
 <span class="va">snvs_annotated_OV</span>
-<span class="co">#&gt; # A tibble: 15,676 × 18</span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 15,676 × 18</span></span>
 <span class="co">#&gt;    chr      from      to ref   alt   FILTER    DP    NV    VAF ANNOVAR_FUNCTION</span>
-<span class="co">#&gt;    &lt;chr&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;           </span>
-<span class="co">#&gt;  1 chr17 7577106 7577107 G     C     PASS      84    78 0.929  exonic          </span>
-<span class="co">#&gt;  2 chr1  1027104 1027105 T     G     PASS      60     6 0.1    UTR5            </span>
-<span class="co">#&gt;  3 chr1  1027104 1027105 T     G     PASS      60     6 0.1    UTR5            </span>
-<span class="co">#&gt;  4 chr1  1027104 1027105 T     G     PASS      60     6 0.1    UTR5            </span>
-<span class="co">#&gt;  5 chr1  1027104 1027105 T     G     PASS      60     6 0.1    UTR5            </span>
-<span class="co">#&gt;  6 chr1  1027104 1027105 T     G     PASS      60     6 0.1    UTR5            </span>
-<span class="co">#&gt;  7 chr1  2461999 2462000 G     A     PASS     156    65 0.417  upstream        </span>
-<span class="co">#&gt;  8 chr1  3387161 3387162 T     G     PASS     124     6 0.0484 intronic        </span>
-<span class="co">#&gt;  9 chr1  3387161 3387162 T     G     PASS     124     6 0.0484 intronic        </span>
-<span class="co">#&gt; 10 chr1  3387161 3387162 T     G     PASS     124     6 0.0484 intronic        </span>
-<span class="co">#&gt; # … with 15,666 more rows, and 8 more variables: GENE &lt;chr&gt;, gene_symbol &lt;chr&gt;,</span>
-<span class="co">#&gt; #   location &lt;chr&gt;, consequence &lt;chr&gt;, refAA &lt;chr&gt;, varAA &lt;chr&gt;,</span>
-<span class="co">#&gt; #   driver_label &lt;chr&gt;, is_driver &lt;lgl&gt;</span></code></pre></div>
+<span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> chr17 7<span style="text-decoration: underline;">577</span>106 7<span style="text-decoration: underline;">577</span>107 G     C     PASS      84    78 0.929  exonic          </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> chr1  1<span style="text-decoration: underline;">027</span>104 1<span style="text-decoration: underline;">027</span>105 T     G     PASS      60     6 0.1    UTR5            </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> chr1  1<span style="text-decoration: underline;">027</span>104 1<span style="text-decoration: underline;">027</span>105 T     G     PASS      60     6 0.1    UTR5            </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> chr1  1<span style="text-decoration: underline;">027</span>104 1<span style="text-decoration: underline;">027</span>105 T     G     PASS      60     6 0.1    UTR5            </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> chr1  1<span style="text-decoration: underline;">027</span>104 1<span style="text-decoration: underline;">027</span>105 T     G     PASS      60     6 0.1    UTR5            </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> chr1  1<span style="text-decoration: underline;">027</span>104 1<span style="text-decoration: underline;">027</span>105 T     G     PASS      60     6 0.1    UTR5            </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> chr1  2<span style="text-decoration: underline;">461</span>999 2<span style="text-decoration: underline;">462</span>000 G     A     PASS     156    65 0.417  upstream        </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> chr1  3<span style="text-decoration: underline;">387</span>161 3<span style="text-decoration: underline;">387</span>162 T     G     PASS     124     6 0.048<span style="text-decoration: underline;">4</span> intronic        </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> chr1  3<span style="text-decoration: underline;">387</span>161 3<span style="text-decoration: underline;">387</span>162 T     G     PASS     124     6 0.048<span style="text-decoration: underline;">4</span> intronic        </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">10</span> chr1  3<span style="text-decoration: underline;">387</span>161 3<span style="text-decoration: underline;">387</span>162 T     G     PASS     124     6 0.048<span style="text-decoration: underline;">4</span> intronic        </span>
+<span class="co">#&gt; <span style="color: #949494;"># … with 15,666 more rows, and 8 more variables: GENE &lt;chr&gt;, gene_symbol &lt;chr&gt;,</span></span>
+<span class="co">#&gt; <span style="color: #949494;">#   location &lt;chr&gt;, consequence &lt;chr&gt;, refAA &lt;chr&gt;, varAA &lt;chr&gt;,</span></span>
+<span class="co">#&gt; <span style="color: #949494;">#   driver_label &lt;chr&gt;, is_driver &lt;lgl&gt;</span></span></code></pre></div>
 <p>Another option is to supply a list of drivers in a one-coloumn <code>data.frame</code>, via argument <code>driver_list</code>.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">snvs_annotated_custom</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/annotate_variants.html">annotate_variants</a></span><span class="op">(</span><span class="va">snvs</span>,
                                            ref <span class="op">=</span> <span class="va">reference_genome</span>, 
-                                           driver_list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"TP53"</span>, <span class="st">"CHDS"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="va">as.data.frame</span>
+                                           driver_list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"TP53"</span>, <span class="st">"CHDS"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="va">as.data.frame</span>
                                            <span class="op">)</span>
-<span class="co">#&gt; # A tibble: 1 × 10</span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 10</span></span>
 <span class="co">#&gt;   chr      from     to gene_symbol location consequence refAA varAA driver_label</span>
-<span class="co">#&gt;   &lt;fct&gt;   &lt;int&gt;  &lt;int&gt; &lt;chr&gt;       &lt;chr&gt;    &lt;chr&gt;       &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;       </span>
-<span class="co">#&gt; 1 chr17 7577106 7.58e6 TP53        coding:… nonsynonym… P     A     TP53_P-&gt;A   </span>
-<span class="co">#&gt; # … with 1 more variable: is_driver &lt;lgl&gt;</span>
+<span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">1</span> chr17 7<span style="text-decoration: underline;">577</span>106 7.58<span style="color: #949494;">e</span>6 TP53        coding:… nonsynonym… P     A     TP53_P-&gt;A   </span>
+<span class="co">#&gt; <span style="color: #949494;"># … with 1 more variable: is_driver &lt;lgl&gt;</span></span>
 
 <span class="va">snvs_annotated_custom</span>
-<span class="co">#&gt; # A tibble: 15,676 × 18</span>
+<span class="co">#&gt; <span style="color: #949494;"># A tibble: 15,676 × 18</span></span>
 <span class="co">#&gt;    chr      from      to ref   alt   FILTER    DP    NV    VAF ANNOVAR_FUNCTION</span>
-<span class="co">#&gt;    &lt;chr&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;           </span>
-<span class="co">#&gt;  1 chr17 7577106 7577107 G     C     PASS      84    78 0.929  exonic          </span>
-<span class="co">#&gt;  2 chr1  1027104 1027105 T     G     PASS      60     6 0.1    UTR5            </span>
-<span class="co">#&gt;  3 chr1  1027104 1027105 T     G     PASS      60     6 0.1    UTR5            </span>
-<span class="co">#&gt;  4 chr1  1027104 1027105 T     G     PASS      60     6 0.1    UTR5            </span>
-<span class="co">#&gt;  5 chr1  1027104 1027105 T     G     PASS      60     6 0.1    UTR5            </span>
-<span class="co">#&gt;  6 chr1  1027104 1027105 T     G     PASS      60     6 0.1    UTR5            </span>
-<span class="co">#&gt;  7 chr1  2461999 2462000 G     A     PASS     156    65 0.417  upstream        </span>
-<span class="co">#&gt;  8 chr1  3387161 3387162 T     G     PASS     124     6 0.0484 intronic        </span>
-<span class="co">#&gt;  9 chr1  3387161 3387162 T     G     PASS     124     6 0.0484 intronic        </span>
-<span class="co">#&gt; 10 chr1  3387161 3387162 T     G     PASS     124     6 0.0484 intronic        </span>
-<span class="co">#&gt; # … with 15,666 more rows, and 8 more variables: GENE &lt;chr&gt;, gene_symbol &lt;chr&gt;,</span>
-<span class="co">#&gt; #   location &lt;chr&gt;, consequence &lt;chr&gt;, refAA &lt;chr&gt;, varAA &lt;chr&gt;,</span>
-<span class="co">#&gt; #   driver_label &lt;chr&gt;, is_driver &lt;lgl&gt;</span></code></pre></div>
+<span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> chr17 7<span style="text-decoration: underline;">577</span>106 7<span style="text-decoration: underline;">577</span>107 G     C     PASS      84    78 0.929  exonic          </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> chr1  1<span style="text-decoration: underline;">027</span>104 1<span style="text-decoration: underline;">027</span>105 T     G     PASS      60     6 0.1    UTR5            </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> chr1  1<span style="text-decoration: underline;">027</span>104 1<span style="text-decoration: underline;">027</span>105 T     G     PASS      60     6 0.1    UTR5            </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> chr1  1<span style="text-decoration: underline;">027</span>104 1<span style="text-decoration: underline;">027</span>105 T     G     PASS      60     6 0.1    UTR5            </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> chr1  1<span style="text-decoration: underline;">027</span>104 1<span style="text-decoration: underline;">027</span>105 T     G     PASS      60     6 0.1    UTR5            </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> chr1  1<span style="text-decoration: underline;">027</span>104 1<span style="text-decoration: underline;">027</span>105 T     G     PASS      60     6 0.1    UTR5            </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> chr1  2<span style="text-decoration: underline;">461</span>999 2<span style="text-decoration: underline;">462</span>000 G     A     PASS     156    65 0.417  upstream        </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> chr1  3<span style="text-decoration: underline;">387</span>161 3<span style="text-decoration: underline;">387</span>162 T     G     PASS     124     6 0.048<span style="text-decoration: underline;">4</span> intronic        </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> chr1  3<span style="text-decoration: underline;">387</span>161 3<span style="text-decoration: underline;">387</span>162 T     G     PASS     124     6 0.048<span style="text-decoration: underline;">4</span> intronic        </span>
+<span class="co">#&gt; <span style="color: #BCBCBC;">10</span> chr1  3<span style="text-decoration: underline;">387</span>161 3<span style="text-decoration: underline;">387</span>162 T     G     PASS     124     6 0.048<span style="text-decoration: underline;">4</span> intronic        </span>
+<span class="co">#&gt; <span style="color: #949494;"># … with 15,666 more rows, and 8 more variables: GENE &lt;chr&gt;, gene_symbol &lt;chr&gt;,</span></span>
+<span class="co">#&gt; <span style="color: #949494;">#   location &lt;chr&gt;, consequence &lt;chr&gt;, refAA &lt;chr&gt;, varAA &lt;chr&gt;,</span></span>
+<span class="co">#&gt; <span style="color: #949494;">#   driver_label &lt;chr&gt;, is_driver &lt;lgl&gt;</span></span></code></pre></div>
 </div>
-<div id="plot" class="section level1">
-<h1 class="hasAnchor">
-<a href="#plot" class="anchor"></a>Plot</h1>
+<div class="section level2">
+<h2 id="plot">Plot<a class="anchor" aria-label="anchor" href="#plot"></a>
+</h2>
 <p>We can finally perform QC and plot drivers together with the data distribution.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">x</span> <span class="op">=</span> <span class="fu"><a href="../reference/init.html">init</a></span><span class="op">(</span>
@@ -350,9 +351,10 @@
   <span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">purity</span>,
   ref <span class="op">=</span> <span class="st">'hg19'</span>
   <span class="op">)</span>
-<span class="co">#&gt;  [ CNAqc - CNA Quality Check ]</span>
+<span class="co">#&gt; <span style="color: #BBBBBB; background-color: #0000BB;"> [ CNAqc - CNA Quality Check ] </span></span>
+<span class="co"><span style="color: #BBBBBB; background-color: #0000BB;">#&gt; </span></span>
 
-<span class="fu">ggpubr</span><span class="fu">::</span><span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html">ggarrange</a></span><span class="op">(</span>
+<span class="fu">ggpubr</span><span class="fu">::</span><span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html" class="external-link">ggarrange</a></span><span class="op">(</span>
   <span class="fu"><a href="../reference/plot_data_histogram.html">plot_data_histogram</a></span><span class="op">(</span><span class="va">x</span>, which <span class="op">=</span> <span class="st">'VAF'</span><span class="op">)</span>,
   <span class="fu"><a href="../reference/plot_data_histogram.html">plot_data_histogram</a></span><span class="op">(</span><span class="va">x</span>, which <span class="op">=</span> <span class="st">'DP'</span><span class="op">)</span>,
   <span class="fu"><a href="../reference/plot_data_histogram.html">plot_data_histogram</a></span><span class="op">(</span><span class="va">x</span>, which <span class="op">=</span> <span class="st">'NV'</span><span class="op">)</span>,
@@ -374,11 +376,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by <a href="https://www.caravagnalab.org">Giulio Caravagna</a>.</p>
+  <p></p>
+<p>Developed by <a href="https://www.caravagnalab.org" class="external-link">Giulio Caravagna</a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
       </footer>
@@ -386,6 +390,8 @@
 
   
 
+
+  
 
   </body>
 </html>
