@@ -49,8 +49,8 @@
 #' @import BMix
 #'
 #' @examples
-# data('example_dataset_CNAqc', package = 'CNAqc')
-# x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+#' data('example_dataset_CNAqc', package = 'CNAqc')
+#' x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
 #'
 #' x = analyze_peaks(x)
 #' print(x)
@@ -59,7 +59,6 @@
 #'
 #' x = analyze_peaks(x, matching_strategy = "rightmost")
 #' print(x)
-#'
 analyze_peaks = function(x,
                          karyotypes = c('1:0', '1:1', '2:0', '2:1', '2:2'),
                          min_karyotype_size = 0,
