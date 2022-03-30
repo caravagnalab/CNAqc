@@ -102,7 +102,7 @@ CNA = function(x, type = c("clonal", "subclonal"))
 
   if((cna %>% nrow())== 0) cli::cli_alert_danger("No CNAs with these parameters: {.field {cna}}.")
 
-  return(mutations)
+  return(cna)
 }
 
 
