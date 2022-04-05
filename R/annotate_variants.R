@@ -7,7 +7,7 @@
 #'
 #' @param x A data.frame with columns c("chr", "from", "to"), or a CNAqc object.
 #' @param driver_list a one column data.frame with gene symbols.
-#' @param polyphen whether or not to annotate Polyphen scores.
+#' @param collapse whether or not to merge different location, consequences and genes in a single string or split the mutations
 #' @param filter_tumor_type filter Intogen drivers by tumor type.
 #'
 #' @return a data.frame with an additional columns `location` reporting the position of the variant in the genome (`coding`, `intron`, `threeUTR`, ...),
@@ -35,7 +35,7 @@
 annotate_variants <- function(x,
                               ref = "hg19",
                               driver_list = CNAqc::intogen_drivers,
-                              polyphen = FALSE,
+                              collapse = TRUE,
                               filter_tumor_type = NULL)
 {
   tx_pkg <-  paste0("TxDb.Hsapiens.UCSC.", ref, ".knownGene")
@@ -187,12 +187,7 @@ annotate_variants <- function(x,
       refAA = REFAA,
       varAA = VARAA
     ) %>%
-    dplyr::select(chr, from, to, consequence, refAA, varAA) %>% unique() %>% group_by(chr, from, to) %>%
-    summarize(
-      consequence = paste(consequence, collapse = ":"),
-      refAA = paste(refAA, collapse = ":"),
-      varAA = paste(varAA, collapse = ":")
-    ) %>%  ungroup()
+    dplyr::select(chr, from, to, consequence, refAA, varAA) %>% unique() 
 
   res <-
     dplyr::left_join(loc_df, output_coding,  by = c("chr", "from", "to")) %>% mutate(
@@ -219,21 +214,19 @@ annotate_variants <- function(x,
   print(res %>% filter(is_driver))
 
 
-  if (polyphen) {
-    # ahaha
-    stop("Sorry not yet implemented, wait just a couple of days (I swear)!")
-    poly_pkg <- "PolyPhen.Hsapiens.dbSNP131"
-    if (!require(poly_pkg,  character.only = T, quietly = T)) {
-      stop(
-        paste0(
-          "Please install ",
-          poly_pkg,
-          " from Bioconducator to use the PolyPhen variant annotation function."
-        )
-      )
-    }
+  if(collapse){
+    res <- res %>%  group_by(chr,from,to) %>% 
+      summarize(gene_symbol = paste(unique(gene_symbol), collapse = ":"), 
+                location = paste(unique(location), collapse = ":"), 
+                refAA = paste(unique(refAA), collapse = ":"), 
+                varAA = paste(unique(varAA), collapse = ":"), 
+                consequence = paste(unique(consequence), collapse = ":"), 
+                driver_label= paste(unique(driver_label), collapse = ":"), 
+                is_driver = any(is_driver))
+    res$driver_label <- gsub(res$driver_label, pattern = "NA:", replacement = "", fixed = TRUE)
   }
-
+  
+  
   final_table = left_join(
     inp %>% mutate(to = to + 1),
     res %>% mutate(to = to + 1),
@@ -241,6 +234,7 @@ annotate_variants <- function(x,
     ) %>%
     dplyr::arrange(-is_driver)
 
+  
 
   # final_table %>% filter(is_driver)
   # res %>% filter(is_driver) %>% mutate(to = to + 1)
