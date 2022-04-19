@@ -301,7 +301,7 @@ analyze_peaks_general = function(x,
 
   stable = stable %>%
     mutate(prop = matched / (matched + mismatched)) %>%
-    arrange(prop %>% desc)
+    arrange(dplyr::desc(prop))
 
   x$peaks_analysis$general$summary = stable
 
