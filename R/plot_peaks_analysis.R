@@ -11,8 +11,8 @@
 #' Otherwise the plot is not returned (NULL is forwarded).
 #' @param assembly_plot If \code{TRUE}, a unique figure is returned with all the
 #' plots assembled. Otherwise a list of plot is returned.
-#' @param what What karyotypes should be plot. Value `common` refers to karyotypes used
-#' for sample-leval QC. `general` for all the others.
+#' @param what What karyotypes should be plot. Value `common` or `simple` refers to clonal karyotypes used
+#' for sample-level QC. `general` or `complex` for all the others. `subclonal` is for subclonal segments.
 #'
 #' @return A \code{ggpubr} object for an assembled figure.
 #' @export
@@ -28,11 +28,11 @@
 plot_peaks_analysis = function(x,
                                empty_plot = TRUE,
                                assembly_plot = TRUE,
-                               what = "common")
+                               what = "simple")
 {
   stopifnot(inherits(x, "cnaqc"))
 
-  if(what == 'common')
+  if(what %in% c('simple', 'common'))
   {
     with_peaks = all(!is.null(x$peaks_analysis))
     if (!with_peaks) {
@@ -86,7 +86,7 @@ plot_peaks_analysis = function(x,
     return(plots)
   }
 
-  if(what == 'general')
+  if(what %in% c('complex', 'general'))
   {
     with_peaks = all(!is.null(x$peaks_analysis$general))
 
