@@ -1,5 +1,5 @@
 
-# CNAqc <img src='man/figures/logo.png' align="right" height="139" />
+# CNAqc <img src='man/figures/logo.png' style="float:right; height:139;" />
 
 <!-- badges: start -->
 
@@ -7,18 +7,24 @@
 [![pkgdown](https://github.com/caravagnalab/CNAqc/actions/workflows/pkgdown.yaml/badge.svg)](https://github.com/caravagnalab/CNAqc/actions/workflows/pkgdown.yaml)
 
 [![Lifecycle:
-maturing](https://img.shields.io/badge/lifecycle-stable-green.svg)](https://www.tidyverse.org/lifecycle/#stable)
+stable](https://img.shields.io/badge/lifecycle-stable-green.svg)](https://www.tidyverse.org/lifecycle/#stable)
 <!-- badges: end -->
 
-`CNAqc` contains different methods to assess
-quality of allele-specific Copy Number Alterations
-(CNA), somatic mutations and  purity estimates
-generated from tumour bulk sequencing.
+`CNAqc` is a package that contains different methods to inspect the
+quality, visualise and process allele-specific Copy Number Alteration
+(CNA) calls generated from bulk sequencing of tumour samples, jointly
+with tumour somatic mutations and other covariates.
 
-The package provides methods to estimate Cancer Cell Fractions (CCFs) normalizing somatic
-allele frequencies for copy number states and tumour purity. The package
-contains also statistical tests to identify patterns of
-over-fragmentation of chromosome arms.
+Methods are available to integrate somatic mutation data, clonal and
+subclonal CNA segments, and tumour purity estimates. Quality control
+procedures can be easily used to select among alternative tumour
+segmentations and purity/ ploidy estimates; an automatic pipeline to
+optimize CNA calling is available by interfacing CNAqc with Sequenza.
+The package provides also methods to estimate the Cancer Cell Fractions
+(CCFs) values of the input variants, and estimate their uncertainty. The
+package contains also statistical tests to identify patterns of
+over-fragmentation of chromosome arms, smooth and subset segments, and
+annotate putative driver mutations.
 
 #### Citation
 
