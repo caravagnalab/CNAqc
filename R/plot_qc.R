@@ -175,16 +175,17 @@ plot_qc = function(x)
       `NA` = 'gainsboro'
     )) +
     CNAqc:::my_ggplot_theme() +
-    labs(x = NULL, y = NULL, title = "CNAqc summary QC ") +
+    labs(x = NULL, y = NULL, title = "Simple clonal CNAs ") +
     guides(fill = guide_legend('QC (NA not available)'))
 
   # Other peaks
-  secondary_table = ggplot() + labs(title = "Secondary peaks")
+  secondary_table = ggplot() + labs(title = "Complex clonal CNAs")
   if(!is.null(x$peaks_analysis$general))
     secondary_table = secondary_table +
       geom_tile(
         data = x$peaks_analysis$general$expected_peaks,
-        aes(y = karyotype, x = multiplicity, fill = matched)
+        aes(y = karyotype, x = multiplicity, fill = matched,
+            width = .8, height = .8)
       ) +
       CNAqc:::my_ggplot_theme() +
       scale_fill_manual(
@@ -193,36 +194,40 @@ plot_qc = function(x)
     facet_wrap(~"General peaks")
 
   # Subclonal peaks
-  expected_peaks = x$peaks_analysis$subclonal$expected_peaks
+  third_table = ggplot() + labs(title = "Subclonal CNAs")
+  if(!is.null(x$peaks_analysis$subclonal))
+  {
+    expected_peaks = x$peaks_analysis$subclonal$expected_peaks
 
-  third_table = ggplot(expected_peaks %>% group_by(segment_id, model) %>% mutate(peak = row_number())) +
-    geom_tile(
-      aes(
-        y = segment_id,
-        x = peak,
-        fill = matched,
-        color = role
-      ),
-      width = .8,
-      size = 1,
-      height = .8
-    ) +
-    scale_fill_manual(values = c(
-      `TRUE` = 'forestgreen',
-      `FALSE` = 'indianred',
-      `NA` = 'gray'
-    )) +
-    facet_wrap(~ model) +
-    CNAqc:::my_ggplot_theme() +
-    scale_y_discrete(limits = expected_peaks$segment_id %>% unique %>% gtools::mixedsort(decreasing = TRUE)) +
-    # scale_x_discrete(limits = c(1:2) %>% paste) +
-    guides(fill = guide_legend(ncol = 1),
-           color = guide_legend(override.aes = aes(fill = NA), ncol = 1)) +
-    labs(y = 'Subclonal CNA segment') +
-    scale_color_manual(values = c(`private` = 'gray', `shared` = 'black')) +
-    coord_flip() +
-    theme(axis.text.x = element_text(angle = 90)) +
-    labs(title = 'Subclonal CNAs')
+    third_table = ggplot(expected_peaks %>% group_by(segment_id, model) %>% mutate(peak = row_number())) +
+      geom_tile(
+        aes(
+          y = segment_id,
+          x = peak,
+          fill = matched,
+          color = role
+        ),
+        width = .8,
+        size = 1,
+        height = .8
+      ) +
+      scale_fill_manual(values = c(
+        `TRUE` = 'forestgreen',
+        `FALSE` = 'indianred',
+        `NA` = 'gray'
+      )) +
+      facet_wrap(~ model) +
+      CNAqc:::my_ggplot_theme() +
+      scale_y_discrete(limits = expected_peaks$segment_id %>% unique %>% gtools::mixedsort(decreasing = TRUE)) +
+      # scale_x_discrete(limits = c(1:2) %>% paste) +
+      guides(fill = guide_legend(ncol = 1),
+             color = guide_legend(override.aes = aes(fill = NA), ncol = 1)) +
+      labs(y = 'Subclonal CNA segment') +
+      scale_color_manual(values = c(`private` = 'gray', `shared` = 'black')) +
+      coord_flip() +
+      theme(axis.text.x = element_text(angle = 90)) +
+      labs(title = 'Subclonal CNAs')
+  }
 
   p1 = cowplot::plot_grid(top_table, secondary_table,  axis = 'tb', align = 'h', ncol = 2)
   cowplot::plot_grid(p1, third_table, ncol = 1)

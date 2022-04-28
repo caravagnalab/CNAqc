@@ -8,7 +8,7 @@ plot_peaks_analysis(
   x,
   empty_plot = TRUE,
   assembly_plot = TRUE,
-  what = "common"
+  what = "simple"
 )
 }
 \arguments{
@@ -21,8 +21,8 @@ Otherwise the plot is not returned (NULL is forwarded).}
 \item{assembly_plot}{If \code{TRUE}, a unique figure is returned with all the
 plots assembled. Otherwise a list of plot is returned.}
 
-\item{what}{What karyotypes should be plot. Value `common` refers to karyotypes used
-for sample-leval QC. `general` for all the others.}
+\item{what}{What karyotypes should be plot. Value `common` or `simple` refers to clonal karyotypes used
+for sample-level QC. `general` or `complex` for all the others. `subclonal` is for subclonal segments.}
 }
 \value{
 A \code{ggpubr} object for an assembled figure.

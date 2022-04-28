@@ -79,6 +79,8 @@ Several scores are produced and returned; functions to visualize results
 are also available (see the tool website for example usages).
 }
 \examples{
+data('example_dataset_CNAqc', package = 'CNAqc')
+x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
 
 x = analyze_peaks(x)
 print(x)
@@ -87,5 +89,4 @@ print(x$peaks_analysis)
 
 x = analyze_peaks(x, matching_strategy = "rightmost")
 print(x)
-
 }

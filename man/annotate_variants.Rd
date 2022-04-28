@@ -8,7 +8,7 @@ annotate_variants(
   x,
   ref = "hg19",
   driver_list = CNAqc::intogen_drivers,
-  polyphen = FALSE,
+  collapse = TRUE,
   filter_tumor_type = NULL
 )
 }
@@ -17,7 +17,7 @@ annotate_variants(
 
 \item{driver_list}{a one column data.frame with gene symbols.}
 
-\item{polyphen}{whether or not to annotate Polyphen scores.}
+\item{collapse}{whether or not to merge different location, consequences and genes in a single string or split the mutations}
 
 \item{filter_tumor_type}{filter Intogen drivers by tumor type.}
 }
