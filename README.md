@@ -1,5 +1,5 @@
 
-# CNAqc <img src='man/figures/logo.png' style="float:right; height:139;" />
+# CNAqc <a href="caravagnalab.github.io/CNAqc"><img src="man/figures/logo.png" align="right" height="139" /></a>
 
 <!-- badges: start -->
 
@@ -32,11 +32,12 @@ annotate putative driver mutations.
 
 If you use `CNAqc`, please cite:
 
--   *A fully automated approach for quality control of cancer mutations
-    in the era of high-resolution whole genome sequencing* Jacob
-    Househam, William CH Cross and Giulio Caravagna. [biorXiv
-    preprint](https://www.biorxiv.org/content/10.1101/2021.02.13.429885v1.full),
-    2021
+-   *Integrated quality control of allele-specific copy numbers,
+    mutations and tumour purity from cancer whole genome sequencing
+    assays* Jacob Househam, Riccardo Bergamin, Salvatore Milite, Nicola
+    Calonaci, Alice Antonello, Marc J Williams, William CH Cross, Giulio
+    Caravagna. [biorXiv
+    2022](https://www.biorxiv.org/content/10.1101/2021.02.13.429885v3).
 
 #### Help and support
 
@@ -44,8 +45,7 @@ If you use `CNAqc`, please cite:
 
 ### Installation
 
-You can install the released version of `CNAqc` from
-[GitHub](https://github.com/) with:
+You can install the released version of `CNAqc` with:
 
 ``` r
 # install.packages("devtools")
