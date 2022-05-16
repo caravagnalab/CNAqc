@@ -126,6 +126,8 @@
 <span class="co">#&gt; Warning: replacing previous import 'crayon::%+%' by 'ggplot2::%+%' when loading</span>
 <span class="co">#&gt; 'BMix'</span>
 <span class="co">#&gt; <span style="color: #00BB00;">✔</span> Loading <span style="color: #00BB00;">BMix</span>, <span style="font-style: italic;">'Binomial and Beta-Binomial univariate mixtures'</span>. Support : <span style="color: #0000BB; font-style: italic;">&lt;https://caravagnalab.github.io/BMix/&gt;</span></span>
+<span class="co">#&gt; Warning: replacing previous import 'cli::num_ansi_colors' by</span>
+<span class="co">#&gt; 'crayon::num_ansi_colors' when loading 'easypar'</span>
 <span class="co">#&gt; <span style="color: #00BB00;">✔</span> Loading <span style="color: #00BB00;">CNAqc</span>, <span style="font-style: italic;">'Copy Number Alteration quality check'</span>. Support : <span style="color: #0000BB; font-style: italic;">&lt;https://caravagn.github.io/CNAqc/&gt;</span></span></code></pre></div>
 <p>Smoothing works with a simple algorithm that merges, inside each chromosome, all contiguous segments that have the same absolute copy number values (minnor and major allele counts), and are separated by up to <span class="math inline">\(\delta\)</span> base pairs. Only clonal CNAs can be smoothed; subclonal CNAs are retained (they cannot be smoothed usually because the CCF of conrtiguous segments might be different, even if the allele-specific profiles are equivalent).</p>
 <p>The default value of <span class="math inline">\(\delta = 10^6\)</span> (1 megabase).</p>
@@ -285,7 +287,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
 </div>
 
       </footer>

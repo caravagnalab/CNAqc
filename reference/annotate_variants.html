@@ -97,7 +97,7 @@ against lists of known drivers.</p>
   <span class="va">x</span>,
   ref <span class="op">=</span> <span class="st">"hg19"</span>,
   driver_list <span class="op">=</span> <span class="fu">CNAqc</span><span class="fu">::</span><span class="va">intogen_drivers</span>,
-  polyphen <span class="op">=</span> <span class="cn">FALSE</span>,
+  collapse <span class="op">=</span> <span class="cn">TRUE</span>,
   filter_tumor_type <span class="op">=</span> <span class="cn">NULL</span>
 <span class="op">)</span></code></pre></div>
     </div>
@@ -108,8 +108,8 @@ against lists of known drivers.</p>
 <dd><p>A data.frame with columns c("chr", "from", "to"), or a CNAqc object.</p></dd>
 <dt>driver_list</dt>
 <dd><p>a one column data.frame with gene symbols.</p></dd>
-<dt>polyphen</dt>
-<dd><p>whether or not to annotate Polyphen scores.</p></dd>
+<dt>collapse</dt>
+<dd><p>whether or not to merge different location, consequences and genes in a single string or split the mutations</p></dd>
 <dt>filter_tumor_type</dt>
 <dd><p>filter Intogen drivers by tumor type.</p></dd>
 </dl></div>
@@ -150,7 +150,7 @@ The `chr` column in the input should contain the chr prefix before the chromosom
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
 </div>
 
       </footer></div>

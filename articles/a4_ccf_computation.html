@@ -129,6 +129,8 @@
 <span class="co">#&gt; Warning: replacing previous import 'crayon::%+%' by 'ggplot2::%+%' when loading</span>
 <span class="co">#&gt; 'BMix'</span>
 <span class="co">#&gt; <span style="color: #00BB00;">✔</span> Loading <span style="color: #00BB00;">BMix</span>, <span style="font-style: italic;">'Binomial and Beta-Binomial univariate mixtures'</span>. Support : <span style="color: #0000BB; font-style: italic;">&lt;https://caravagnalab.github.io/BMix/&gt;</span></span>
+<span class="co">#&gt; Warning: replacing previous import 'cli::num_ansi_colors' by</span>
+<span class="co">#&gt; 'crayon::num_ansi_colors' when loading 'easypar'</span>
 <span class="co">#&gt; <span style="color: #00BB00;">✔</span> Loading <span style="color: #00BB00;">CNAqc</span>, <span style="font-style: italic;">'Copy Number Alteration quality check'</span>. Support : <span style="color: #0000BB; font-style: italic;">&lt;https://caravagn.github.io/CNAqc/&gt;</span></span></code></pre></div>
 <p>CNAqc can compute Cancer Cell Fractions (CCFs) using function <code>compute_CCF</code>, which can be used to compare CCF estimates obtained with other tools (e.g., DPClust, Ccube, etc.). The main advantage of CNAqc is reporting uncertainty/ unreliability of a CCF estimate.</p>
 <p>To compute CCFs CNAqc computes the <em>mutation multiplicity</em> for every mutation (we call this task <em>phasing</em>): this is defined as the number of copies of a mutation in a certain copy number segment This is a difficult task that harmonize the data accounting for tumour purity, and CNAs; phasing errors propagate in CCF estimates and downstream analyses.</p>
@@ -496,7 +498,7 @@ H(x) = - p_x \log(p_x)
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
 </div>
 
       </footer>

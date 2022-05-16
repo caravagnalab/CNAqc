@@ -97,7 +97,7 @@
   <span class="va">x</span>,
   empty_plot <span class="op">=</span> <span class="cn">TRUE</span>,
   assembly_plot <span class="op">=</span> <span class="cn">TRUE</span>,
-  what <span class="op">=</span> <span class="st">"common"</span>
+  what <span class="op">=</span> <span class="st">"simple"</span>
 <span class="op">)</span></code></pre></div>
     </div>
 
@@ -113,8 +113,8 @@ Otherwise the plot is not returned (NULL is forwarded).</p></dd>
 <dd><p>If <code>TRUE</code>, a unique figure is returned with all the
 plots assembled. Otherwise a list of plot is returned.</p></dd>
 <dt>what</dt>
-<dd><p>What karyotypes should be plot. Value `common` refers to karyotypes used
-for sample-leval QC. `general` for all the others.</p></dd>
+<dd><p>What karyotypes should be plot. Value `common` or `simple` refers to clonal karyotypes used
+for sample-level QC. `general` or `complex` for all the others. `subclonal` is for subclonal segments.</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>
@@ -146,13 +146,13 @@ for sample-leval QC. `general` for all the others.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   mutation_multiplicity karyotype  peak delta_vaf     x     y counts_per_bin</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>                     1 2:2       0.235   0.007<span style="text-decoration: underline;">00</span> 0.24   0.86             65</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span>                     2 2:2       0.471   0.014<span style="text-decoration: underline;">0</span>  0.461  8.14            625</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span>                     2 2:2       0.471   0.014<span style="text-decoration: underline;">0</span>  0.46   8.14            625</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span>                     1 2:1       0.308   0.012<span style="text-decoration: underline;">0</span>  0.306  3.60             59</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span>                     2 2:1       0.616   0.023<span style="text-decoration: underline;">9</span>  0.602  2.94             60</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span>                     2 2:1       0.616   0.023<span style="text-decoration: underline;">9</span>  0.600  2.94             60</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 9 more variables: discarded &lt;lgl&gt;, from &lt;chr&gt;, offset_VAF &lt;dbl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   offset &lt;dbl&gt;, weight &lt;dbl&gt;, epsilon &lt;dbl&gt;, VAF_tolerance &lt;dbl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   matched &lt;lgl&gt;, QC &lt;chr&gt;</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Peak detection <span style="color: #00BB00;">PASS</span> with <span style="color: #00BB00;">r = 0.00776282580370826</span> - maximum purity error ε = <span style="color: #00BB00;">0.05</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Peak detection <span style="color: #00BB00;">PASS</span> with <span style="color: #00BB00;">r = 0.0103563917332481</span> - maximum purity error ε = <span style="color: #00BB00;">0.05</span>.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Peak analysis: complex CNAs</span> <span style="color: #00BBBB;">─────────────────────────────────────────────────</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -184,7 +184,7 @@ for sample-leval QC. `general` for all the others.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
 </div>
 
       </footer></div>

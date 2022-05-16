@@ -121,27 +121,23 @@
       </header><div class="row">
   <div class="contents col-md-9">
 <div class="section level1">
-<div class="page-header"><h1 id="cnaqc-">CNAqc <img src="reference/figures/logo.png" align="right" height="139"><a class="anchor" aria-label="anchor" href="#cnaqc-"></a>
+<div class="page-header"><h1 id="cnaqc-">CNAqc <a href="caravagnalab.github.io/CNAqc"><img src="reference/figures/logo.png" align="right" height="139"></a>
+<a class="anchor" aria-label="anchor" href="#cnaqc-"></a>
 </h1></div>
 <!-- badges: start -->
-
-<p><a href="https://www.tidyverse.org/lifecycle/#stable" class="external-link"><img src="https://img.shields.io/badge/lifecycle-stable-green.svg" alt="Lifecycle: maturing"></a> <!-- badges: end --></p>
-<p><code>CNAqc</code> contains different methods to assess quality of allele-specific Copy Number Alterations (CNA), somatic mutations and purity estimates generated from tumour bulk sequencing.</p>
-<p>The package provides methods to estimate Cancer Cell Fractions (CCFs) normalizing somatic allele frequencies for copy number states and tumour purity. The package contains also statistical tests to identify patterns of over-fragmentation of chromosome arms.</p>
+<p><a href="https://www.tidyverse.org/lifecycle/#stable" class="external-link"><img src="https://img.shields.io/badge/lifecycle-stable-green.svg" alt="Lifecycle: stable"></a> <!-- badges: end --></p>
+<p><code>CNAqc</code> is a package that contains different methods to inspect the quality, visualise and process allele-specific Copy Number Alteration (CNA) calls generated from bulk sequencing of tumour samples, jointly with tumour somatic mutations and other covariates.</p>
+<p>Methods are available to integrate somatic mutation data, clonal and subclonal CNA segments, and tumour purity estimates. Quality control procedures can be easily used to select among alternative tumour segmentations and purity/ ploidy estimates; an automatic pipeline to optimize CNA calling is available by interfacing CNAqc with Sequenza. The package provides also methods to estimate the Cancer Cell Fractions (CCFs) values of the input variants, and estimate their uncertainty. The package contains also statistical tests to identify patterns of over-fragmentation of chromosome arms, smooth and subset segments, and annotate putative driver mutations.</p>
 <div class="section level4">
 <h4 id="citation">Citation<a class="anchor" aria-label="anchor" href="#citation"></a>
 </h4>
 <p><a href="https://doi.org/10.1101/2021.02.13.429885" class="external-link"><img src="https://img.shields.io/badge/doi-10.1101/2021.02.13.429885-red.svg"></a></p>
 <p>If you use <code>CNAqc</code>, please cite:</p>
-<ul>
-<li>
-<em>A fully automated approach for quality control of cancer mutations in the era of high-resolution whole genome sequencing</em> Jacob Househam, William CH Cross and Giulio Caravagna. <a href="https://www.biorxiv.org/content/10.1101/2021.02.13.429885v1.full" class="external-link">biorXiv preprint</a>, 2021</li>
-</ul>
+<ul><li>
+<em>Integrated quality control of allele-specific copy numbers, mutations and tumour purity from cancer whole genome sequencing assays</em> Jacob Househam, Riccardo Bergamin, Salvatore Milite, Nicola Calonaci, Alice Antonello, Marc J Williams, William CH Cross, Giulio Caravagna. <a href="https://www.biorxiv.org/content/10.1101/2021.02.13.429885v3" class="external-link">biorXiv 2022</a>.</li></ul>
 </div>
-<div class="section level4">
-<h4 id="help-and-support">Help and support<a class="anchor" aria-label="anchor" href="#help-and-support"></a>
-</h4>
-</div>
+<div class="section level4"><h4 id="help-and-support">Help and support<a class="anchor" aria-label="anchor" href="#help-and-support"></a>
+</h4></div>
 <div class="section level2">
 <h2 id="section">
 <a href="https://caravagnalab.github.io/CNAqc"><img src="https://img.shields.io/badge/GitHub%20Pages-https://caravagnalab.github.io/CNAqc/-yellow.svg"></a><a class="anchor" aria-label="anchor" href="#section"></a>
@@ -149,7 +145,7 @@
 <div class="section level3">
 <h3 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h3>
-<p>You can install the released version of <code>CNAqc</code> from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
+<p>You can install the released version of <code>CNAqc</code> with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># install.packages("devtools")</span>
 <span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"caravagnalab/CNAqc"</span><span class="op">)</span></code></pre></div>
@@ -158,7 +154,7 @@
 <h4 id="copyright-and-contacts">Copyright and contacts<a class="anchor" aria-label="anchor" href="#copyright-and-contacts"></a>
 </h4>
 <p>Giulio Caravagna. Cancer Data Science (CDS) Laboratory.</p>
-<p><a href="mailto:gcaravagn@gmail.com"><img src="https://img.shields.io/badge/Email-gcaravagn@gmail.com-steelblue.svg"></a> <a href="https://github.com/caravagnalab" class="external-link"><img src="https://img.shields.io/badge/CDS%20Lab%20Github-caravagnalab-seagreen.svg"></a> <a href="https://www.caravagnalab.org/" class="external-link"><img src="https://img.shields.io/badge/CDS%20Lab%20webpage-https://www.caravagnalab.org/-red.svg"></a></p>
+<p><a href="https://github.com/caravagnalab" class="external-link"><img src="https://img.shields.io/badge/CDS%20Lab%20Github-caravagnalab-seagreen.svg"></a> <a href="https://www.caravagnalab.org/" class="external-link"><img src="https://img.shields.io/badge/CDS%20Lab%20webpage-https://www.caravagnalab.org/-red.svg"></a></p>
 </div>
 </div>
 </div>
@@ -216,7 +212,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
 </div>
 
       </footer>
