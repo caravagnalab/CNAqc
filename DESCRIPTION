@@ -45,7 +45,7 @@ biocViews:
 Remotes: 
     caravagn/pio,
     caravagnalab/BMix,
-    caravagn/easypar
+    caravagn/easypar,
     cran/peakPick
 RoxygenNote: 7.1.2
 Suggests: 
