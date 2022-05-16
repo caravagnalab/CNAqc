@@ -30,7 +30,6 @@ Depends:
 Imports: 
     pio,
     crayon,
-    peakPick,
     ggpubr,
     tidyverse,
     ggrepel,
@@ -47,6 +46,7 @@ Remotes:
     caravagn/pio,
     caravagnalab/BMix,
     caravagn/easypar
+    cran/peakPick
 RoxygenNote: 7.1.2
 Suggests: 
     knitr,
