@@ -129,7 +129,7 @@ print.cnaqc = function(x, ...)
 
       n = sprintf("%-5s", x$n_karyotype[karyo])
       p = x$n_karyotype[karyo] / sum(x$n_karyotype[xx$karyotype %>% unique])
-      p = format(p * 100, digits = 0)
+      p = format(p * 100, digits = 1)
       p = sprintf("%3s", p)
 
       cli::cli_alert_info(
