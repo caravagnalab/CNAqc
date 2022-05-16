@@ -53,6 +53,7 @@ Suggests:
     knitr,
     rmarkdown,
     org.Hs.eg.db,
+    akima,
     Organism.dplyr
 VignetteBuilder: knitr
 URL: https://github.com/caravagnalab/CNAqc
