@@ -26,6 +26,8 @@ print.cnaqc = function(x, ...)
     )
   )
 
+
+  
   # cli::cli_alert_info(paste0(" CNA segments: ", x$n_cna_clonal, " clonal, ", x$n_cna_sbclonal, " subclonal."))
 
   # cli::cli_alert_info(paste0("Mutation mapping (head): ", paste0(head(x$n_karyotype), ' (',
