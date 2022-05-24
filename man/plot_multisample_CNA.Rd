@@ -2,25 +2,38 @@
 % Please edit documentation in R/plot_multisample_CNA.R
 \name{plot_multisample_CNA}
 \alias{plot_multisample_CNA}
-\title{Plots CNA for multiple samples.}
+\title{Plots CNAs from multiple samples.}
 \usage{
-plot_multisample_CNA(x)
+plot_multisample_CNA(x, layout = "flat", ...)
 }
 \arguments{
-\item{x}{A named list of `CNAqc` objects.}
+\item{x}{A list of `CNAqc` objects; names are optional for the circular layout.}
 }
 \value{
-A `ggplot` plot
+A `ggplot` plot.
 }
 \description{
-This functions plots with circular layout the CNA segments of multiple
-`CNAqc` objects, stored in a named list `x`. In this layout, instead of
-plotting the Major and minor alleles of each segment, we assign colours
-to certain karyotypes. Each sample is plot on a lane, like in a donut plot.
+This functions plots with distinct layout CNA data associated to multiple
+CNAqc objects.
+
+Flat layout: classical layout where the amount of deletions and gains are
+reported with a certain discretized binning of the input tumour genome. Deletions
+are anything with an LOH state; gains must have more than 3 copies.
+
+Circular layout: plot the Major and minor alleles of each segment, each sample
+is plot on a lane, like in a donut plot.
 }
 \examples{
 data('example_dataset_CNAqc', package = 'CNAqc')
 x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna, example_dataset_CNAqc$purity)
 
+# Add some example deletion
+x2 = x
+x2$cna$Major[1:10] = 2
+x2$cna$minor[1:10] = 0
+
 plot_multisample_CNA(list(`S1` = x, `S2` = x))
+
+
+plot_multisample_CNA(list(`S1` = x, `S2` = x), layout = 'circular')
 }

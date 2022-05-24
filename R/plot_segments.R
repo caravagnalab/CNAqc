@@ -44,7 +44,7 @@ plot_segments = function(x,
   }
   else{
     # Standard plot -- baseline genome reference
-    base_plot = CNAqc:::blank_genome(chromosomes = chromosomes,
+    base_plot = blank_genome(chromosomes = chromosomes,
                                      ref = x$reference_genome,
                                      ...)
   }
