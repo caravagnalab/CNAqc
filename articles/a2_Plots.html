@@ -299,37 +299,6 @@
 </div>
 </div>
 <div class="section level3">
-<h3 id="comparing-multiple-calls">Comparing multiple calls<a class="anchor" aria-label="anchor" href="#comparing-multiple-calls"></a>
-</h3>
-<p>If you want to compare multiple CNAqc objects you can use <code>plot_multisample_CNA</code>. Here we show it by combining twice <code>x</code> with some changes in its calls, and putting together another sample.</p>
-<p>This type of plot shows only clonal CNAs.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">y</span> <span class="op">=</span> <span class="fu">CNAqc</span><span class="fu">::</span><span class="fu"><a href="../reference/init.html">init</a></span><span class="op">(</span>
-  <span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">snvs</span>, 
-  <span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">cna</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>
-      Major <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">chr</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"chr3"</span>, <span class="st">"chr4"</span>, <span class="st">"chr1"</span><span class="op">)</span>, <span class="fl">1</span>, <span class="va">Major</span><span class="op">)</span>,
-      minor <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">chr</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"chr3"</span>, <span class="st">"chr4"</span>, <span class="st">"chr1"</span><span class="op">)</span>, <span class="fl">1</span>, <span class="va">minor</span><span class="op">)</span>
-      <span class="op">)</span>,
-  <span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">purity</span>,
-  ref <span class="op">=</span> <span class="st">'hg19'</span><span class="op">)</span>
-<span class="co">#&gt; <span style="color: #BBBBBB; background-color: #0000BB;"> [ CNAqc - CNA Quality Check ] </span></span>
-<span class="co"><span style="color: #BBBBBB; background-color: #0000BB;">#&gt; </span></span>
-<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Using reference genome coordinates for: <span style="color: #00BB00;">hg19</span>.</span>
-<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Drivers are annotated, but 'gene' column is missing, using mutation location.</span>
-<span class="co">#&gt; <span style="color: #00BB00;">✔</span> Fortified calls for <span style="color: #00BB00;">12963</span> somatic mutations: <span style="color: #00BB00;">12963</span> SNVs (<span style="color: #00BB00;">100%</span>) and <span style="color: #00BB00;">0</span> indels.</span>
-<span class="co">#&gt; <span style="color: #BBBB00;">!</span> CNAs have no CCF, assuming clonal CNAs (CCF = 1).</span>
-<span class="co">#&gt; <span style="color: #00BB00;">✔</span> Fortified CNAs for <span style="color: #00BB00;">267</span> segments: <span style="color: #00BB00;">267</span> clonal and <span style="color: #00BB00;">0</span> subclonal.</span>
-<span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #00BB00;">12963</span> mutations mapped to clonal CNAs.</span>
-
-<span class="co"># Comparative CNA plot</span>
-<span class="fu"><a href="../reference/plot_multisample_CNA.html">plot_multisample_CNA</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>`Original` <span class="op">=</span> <span class="va">x</span>, `Copy` <span class="op">=</span> <span class="va">x</span>, `Faked_diploid` <span class="op">=</span> <span class="va">y</span>, `PCAWG` <span class="op">=</span> <span class="fu">CNAqc</span><span class="fu">::</span><span class="va"><a href="../reference/example_PCAWG.html">example_PCAWG</a></span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; ── Breaking input segments at <span style="color: #00BB00;">100 Kb</span> resolution</span>
-<span class="co">#&gt; [easypar] 3/23 computations returned errors and will be removed.</span></code></pre></div>
-<p><img src="a2_Plots_files/figure-html/unnamed-chunk-8-1.png" width="576"></p>
-</div>
-<div class="section level3">
 <h3 id="plotting-segments-summaries">Plotting segments summaries<a class="anchor" aria-label="anchor" href="#plotting-segments-summaries"></a>
 </h3>
 <p><code>plot_karyotypes</code> gives two visualizations, based on its parameter <code>type</code>:</p>
@@ -340,18 +309,18 @@
 <code>type = 'number'</code>, reporting the counts of segments per karyotype.</li>
 </ul>
 <p>The package uses a pre-set color schema to colour simple CNAs.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">ggpubr</span><span class="fu">::</span><span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html" class="external-link">ggarrange</a></span><span class="op">(</span>
   <span class="fu"><a href="../reference/plot_karyotypes.html">plot_karyotypes</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>,
   <span class="fu"><a href="../reference/plot_karyotypes.html">plot_karyotypes</a></span><span class="op">(</span><span class="va">x</span>, type <span class="op">=</span> <span class="st">'number'</span><span class="op">)</span>,
   common.legend <span class="op">=</span> <span class="cn">TRUE</span>,
   legend <span class="op">=</span> <span class="st">'bottom'</span>
 <span class="op">)</span></code></pre></div>
-<p><img src="a2_Plots_files/figure-html/unnamed-chunk-9-1.png" width="432"></p>
+<p><img src="a2_Plots_files/figure-html/unnamed-chunk-8-1.png" width="432"></p>
 <p>You can also plot the segments’ length distribution, which is used to detect fragmentation patterns in the segments.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/plot_segment_size_distribution.html">plot_segment_size_distribution</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></code></pre></div>
-<p><img src="a2_Plots_files/figure-html/unnamed-chunk-10-1.png" width="432"></p>
+<p><img src="a2_Plots_files/figure-html/unnamed-chunk-9-1.png" width="432"></p>
 </div>
 </div>
 <div class="section level2">
@@ -361,7 +330,7 @@
 <h3 id="data-histograms">Data histograms<a class="anchor" aria-label="anchor" href="#data-histograms"></a>
 </h3>
 <p>You have a function to plot all your data histograms</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">ggpubr</span><span class="fu">::</span><span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html" class="external-link">ggarrange</a></span><span class="op">(</span>
   <span class="fu"><a href="../reference/plot_data_histogram.html">plot_data_histogram</a></span><span class="op">(</span><span class="va">x</span>, which <span class="op">=</span> <span class="st">'VAF'</span><span class="op">)</span>,
   <span class="fu"><a href="../reference/plot_data_histogram.html">plot_data_histogram</a></span><span class="op">(</span><span class="va">x</span>, which <span class="op">=</span> <span class="st">'DP'</span><span class="op">)</span>,
@@ -370,36 +339,36 @@
   nrow <span class="op">=</span> <span class="fl">1</span>
   <span class="op">)</span>
 <span class="co">#&gt; Warning: Removed 8 rows containing missing values (geom_bar).</span></code></pre></div>
-<p><img src="a2_Plots_files/figure-html/unnamed-chunk-11-1.png" width="960"></p>
+<p><img src="a2_Plots_files/figure-html/unnamed-chunk-10-1.png" width="960"></p>
 <p>If you <a href="https://caravagn.github.io/CNAqc/articles/ccf_computation.html" class="external-link">compute Cancer Cell Fractions (CCF) values</a>, you can use <code>plot_data_histogram(x, which = 'CCF')</code> as well.</p>
 </div>
 <div class="section level3">
 <h3 id="segment-specific-vafs">Segment-specific VAFs<a class="anchor" aria-label="anchor" href="#segment-specific-vafs"></a>
 </h3>
 <p>You can inspect the raw VAF distribution per segment, split by chromosome. Each colour represents a distinct segment; we want can use this plot to check that, for every karyotype and chromosome, the VAF distributions are similar.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Default parameters to filter segments are annotatetd in the plot</span>
 <span class="fu"><a href="../reference/inspect_segment.html">inspect_segment</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
 <span class="co">#&gt; Warning: `guides(&lt;scale&gt; = FALSE)` is deprecated. Please use `guides(&lt;scale&gt; =</span>
 <span class="co">#&gt; "none")` instead.</span>
 <span class="co">#&gt; Warning: Removed 30 rows containing missing values (geom_bar).</span></code></pre></div>
-<p><img src="a2_Plots_files/figure-html/unnamed-chunk-12-1.png" width="1152"></p>
+<p><img src="a2_Plots_files/figure-html/unnamed-chunk-11-1.png" width="1152"></p>
 <p>You can facet your data histograms and obtain a similar layout</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/plot_data_histogram.html">plot_data_histogram</a></span><span class="op">(</span><span class="va">x</span>, which <span class="op">=</span> <span class="st">'VAF'</span><span class="op">)</span> <span class="op">+</span> <span class="fu">facet_grid</span><span class="op">(</span><span class="va">karyotype</span><span class="op">~</span><span class="va">chr</span>, scales <span class="op">=</span> <span class="st">'free'</span><span class="op">)</span>
 <span class="co">#&gt; Warning: Removed 56 rows containing missing values (geom_bar).</span></code></pre></div>
-<p><img src="a2_Plots_files/figure-html/unnamed-chunk-13-1.png" width="2880"></p>
+<p><img src="a2_Plots_files/figure-html/unnamed-chunk-12-1.png" width="2880"></p>
 </div>
 <div class="section level3">
 <h3 id="genome-wide-mutation-data">Genome-wide mutation data<a class="anchor" aria-label="anchor" href="#genome-wide-mutation-data"></a>
 </h3>
 <p>Genome-wide plots that follow the layout of <code>plot_segments</code> are avaiable to view the genome-wide distributions of the number of mutations, their VAF and depth. VAF and depth-plotting functions (scatterplots) can subset the input data to speed up rendering and reduce the size of output files - by default <code>N = 5000</code> points are randomly sampled. Counts plot, instead, bin the genome locations by <em>one megabase</em> (<span class="math inline">\(10^6\)</span> bases).</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># All genome, all data - counts of mutations per megabase</span>
 <span class="fu"><a href="../reference/plot_gw_counts.html">plot_gw_counts</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></code></pre></div>
-<p><img src="a2_Plots_files/figure-html/unnamed-chunk-14-1.png" width="768"></p>
+<p><img src="a2_Plots_files/figure-html/unnamed-chunk-13-1.png" width="768"></p>
 <p>An example effect of downsampling the data is the following</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Different subsamples</span>
 <span class="fu">ggpubr</span><span class="fu">::</span><span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html" class="external-link">ggarrange</a></span><span class="op">(</span>
   <span class="fu"><a href="../reference/plot_gw_depth.html">plot_gw_depth</a></span><span class="op">(</span><span class="va">x</span>, N <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span>,
@@ -419,14 +388,13 @@
 <span class="co">#&gt; Warning: Removed 24 rows containing missing values (geom_segment).</span>
 <span class="co">#&gt; Warning: Removed 1 rows containing missing values (geom_hline).</span>
 <span class="co">#&gt; Removed 1 rows containing missing values (geom_hline).</span></code></pre></div>
-<p><img src="a2_Plots_files/figure-html/unnamed-chunk-15-1.png" width="768"></p>
+<p><img src="a2_Plots_files/figure-html/unnamed-chunk-14-1.png" width="768"></p>
 </div>
-</div>
-<div class="section level2">
-<h2 id="combined-plots">Combined plots<a class="anchor" aria-label="anchor" href="#combined-plots"></a>
-</h2>
+<div class="section level3">
+<h3 id="combined-plots">Combined plots<a class="anchor" aria-label="anchor" href="#combined-plots"></a>
+</h3>
 <p>A one-summary plot can be easily assembled combining the above functions and functions from <code>cowplot</code> or other ggplot-manipulation packages.</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Layout a panel with segments in bottom, and all other genome-wide plots on top.</span>
 <span class="co"># Via cowplot we can align plots on the vertical axis, and stretch their relative</span>
 <span class="co"># height to obtain a nicer layout.</span>
@@ -444,8 +412,73 @@
 <span class="co">#&gt; Warning: Removed 24 rows containing missing values (geom_segment).</span>
 <span class="co">#&gt; Warning: Removed 1 rows containing missing values (geom_hline).</span>
 <span class="co">#&gt; Removed 1 rows containing missing values (geom_hline).</span></code></pre></div>
-<p><img src="a2_Plots_files/figure-html/unnamed-chunk-16-1.png" width="912"></p>
+<p><img src="a2_Plots_files/figure-html/unnamed-chunk-15-1.png" width="912"></p>
 <p>This is actually done by the default S3 <code>plot</code> function, which includes both segments and data histograms</p>
+</div>
+</div>
+<div class="section level2">
+<h2 id="cohort-plots">Cohort plots<a class="anchor" aria-label="anchor" href="#cohort-plots"></a>
+</h2>
+<p>If one has created CNAqc objects for multiple samples, or from multiple calls of the same sample, CNAqc can be used to perform cohort-level plots. All input CNAqc objects must have the same reference.</p>
+<div class="section level3">
+<h3 id="cna-calls">CNA calls<a class="anchor" aria-label="anchor" href="#cna-calls"></a>
+</h3>
+<p>You can visualise multiple CNA calls (clonal copy numbers) via <code>plot_multisample_CNA</code>.</p>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">x</span> <span class="op">=</span> <span class="fu">CNAqc</span><span class="fu">::</span><span class="fu"><a href="../reference/init.html">init</a></span><span class="op">(</span>
+  <span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">snvs</span>, 
+  <span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">cna</span>,
+  <span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">purity</span>,
+  ref <span class="op">=</span> <span class="st">'hg19'</span>
+  <span class="op">)</span>
+<span class="co">#&gt; <span style="color: #BBBBBB; background-color: #0000BB;"> [ CNAqc - CNA Quality Check ] </span></span>
+<span class="co"><span style="color: #BBBBBB; background-color: #0000BB;">#&gt; </span></span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Using reference genome coordinates for: <span style="color: #00BB00;">hg19</span>.</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Drivers are annotated, but 'gene' column is missing, using mutation location.</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✔</span> Fortified calls for <span style="color: #00BB00;">12963</span> somatic mutations: <span style="color: #00BB00;">12963</span> SNVs (<span style="color: #00BB00;">100%</span>) and <span style="color: #00BB00;">0</span> indels.</span>
+<span class="co">#&gt; <span style="color: #BBBB00;">!</span> CNAs have no CCF, assuming clonal CNAs (CCF = 1).</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✔</span> Fortified CNAs for <span style="color: #00BB00;">267</span> segments: <span style="color: #00BB00;">267</span> clonal and <span style="color: #00BB00;">0</span> subclonal.</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #00BB00;">12963</span> mutations mapped to clonal CNAs.</span>
+
+<span class="va">y</span> <span class="op">=</span> <span class="fu">CNAqc</span><span class="fu">::</span><span class="fu"><a href="../reference/init.html">init</a></span><span class="op">(</span>
+  <span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">snvs</span>, 
+  <span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">cna</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>
+      Major <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">chr</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"chr3"</span>, <span class="st">"chr4"</span>, <span class="st">"chr1"</span><span class="op">)</span>, <span class="fl">1</span>, <span class="va">Major</span><span class="op">)</span>,
+      minor <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">chr</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"chr3"</span>, <span class="st">"chr4"</span>, <span class="st">"chr1"</span><span class="op">)</span>, <span class="fl">1</span>, <span class="va">minor</span><span class="op">)</span>
+      <span class="op">)</span>,
+  <span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">purity</span>,
+  ref <span class="op">=</span> <span class="st">'hg19'</span><span class="op">)</span>
+<span class="co">#&gt; <span style="color: #BBBBBB; background-color: #0000BB;"> [ CNAqc - CNA Quality Check ] </span></span>
+<span class="co"><span style="color: #BBBBBB; background-color: #0000BB;">#&gt; </span></span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Using reference genome coordinates for: <span style="color: #00BB00;">hg19</span>.</span>
+<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Drivers are annotated, but 'gene' column is missing, using mutation location.</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✔</span> Fortified calls for <span style="color: #00BB00;">12963</span> somatic mutations: <span style="color: #00BB00;">12963</span> SNVs (<span style="color: #00BB00;">100%</span>) and <span style="color: #00BB00;">0</span> indels.</span>
+<span class="co">#&gt; <span style="color: #BBBB00;">!</span> CNAs have no CCF, assuming clonal CNAs (CCF = 1).</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✔</span> Fortified CNAs for <span style="color: #00BB00;">267</span> segments: <span style="color: #00BB00;">267</span> clonal and <span style="color: #00BB00;">0</span> subclonal.</span>
+<span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #00BB00;">12963</span> mutations mapped to clonal CNAs.</span>
+
+<span class="co"># List of input objects: 2 copies of the same 'x', one faked diploid plus one PCAWG sample</span>
+<span class="va">inputs</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>`Original` <span class="op">=</span> <span class="va">x</span>, `Copy` <span class="op">=</span> <span class="va">x</span>, `Faked_diploid` <span class="op">=</span> <span class="va">y</span>, `PCAWG` <span class="op">=</span> <span class="fu">CNAqc</span><span class="fu">::</span><span class="va"><a href="../reference/example_PCAWG.html">example_PCAWG</a></span><span class="op">)</span></code></pre></div>
+<p>A <code>flat</code> layout is possible where the frequency of deletions and amplifications relative to diploid are shown by using a certain binning (step <span class="math inline">\(\delta\)</span>) of the tumour genome. Here by deletion we define anything with 0 copies of the minor allele, and by amplification anything with <span class="math inline">\(\geq 3\)</span> total copies (sum of the minor and major alleles).</p>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Comparative CNA plot - default delta</span>
+<span class="fu"><a href="../reference/plot_multisample_CNA.html">plot_multisample_CNA</a></span><span class="op">(</span><span class="va">inputs</span><span class="op">)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; ── Breaking input segments at <span style="color: #00BB00;">100 Kb</span> resolution</span></code></pre></div>
+<p><img src="a2_Plots_files/figure-html/unnamed-chunk-17-1.png" width="768"></p>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Comparative CNA plot - 10 Mb delta</span>
+<span class="fu"><a href="../reference/plot_multisample_CNA.html">plot_multisample_CNA</a></span><span class="op">(</span><span class="va">inputs</span>, delta <span class="op">=</span> <span class="fl">1e7</span><span class="op">)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; ── Breaking input segments at <span style="color: #00BB00;">10000 Kb</span> resolution</span></code></pre></div>
+<p><img src="a2_Plots_files/figure-html/unnamed-chunk-18-1.png" width="768"></p>
+<p>A <code>circular</code> layout is also possible to show, in a circle, the segments (as in <code>plot_segments</code>). In this case no binning or transformation of the data is performed. In this particular plot the names of the list given in input are also reported.</p>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Comparative CNA plot</span>
+<span class="fu"><a href="../reference/plot_multisample_CNA.html">plot_multisample_CNA</a></span><span class="op">(</span><span class="va">inputs</span>, layout <span class="op">=</span> <span class="st">'circular'</span><span class="op">)</span></code></pre></div>
+<p><img src="a2_Plots_files/figure-html/unnamed-chunk-19-1.png" width="576"></p>
+</div>
 </div>
   </div>
 
