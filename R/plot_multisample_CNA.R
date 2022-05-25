@@ -78,6 +78,8 @@ aux_plot_cohort_CNA = function(x, delta = 1e5)
         # Expand all bins with relevant information
         x_chr = x_chr %>% filter(CNA != "None")
 
+        if(nrow(x_chr) == 0) return(NULL)
+
         lapply(1:nrow(x_chr),
                function(i) {
                  bins_seq = seq(x_chr$from_bin[i], x_chr$to_bin[i], by = 1) * delta

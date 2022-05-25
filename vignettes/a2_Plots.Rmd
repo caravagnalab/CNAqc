@@ -83,26 +83,6 @@ plot_segments(CNAqc::example_PCAWG)
 ```
 
 
-## Comparing multiple calls
-
-If you want to compare multiple CNAqc objects you can use `plot_multisample_CNA`.  Here we show it by combining twice `x` with some changes in its calls, and putting together another sample.
-
-This type of plot shows only clonal CNAs.
-
-```{r, fig.width=6, fig.height=6}
-y = CNAqc::init(
-  example_dataset_CNAqc$snvs, 
-  example_dataset_CNAqc$cna %>%
-    mutate(
-      Major = ifelse(chr %in% c("chr3", "chr4", "chr1"), 1, Major),
-      minor = ifelse(chr %in% c("chr3", "chr4", "chr1"), 1, minor)
-      ),
-  example_dataset_CNAqc$purity,
-  ref = 'hg19')
-
-# Comparative CNA plot
-plot_multisample_CNA(list(`Original` = x, `Copy` = x, `Faked_diploid` = y, `PCAWG` = CNAqc::example_PCAWG))
-```
 
 ## Plotting segments summaries
 
@@ -180,7 +160,7 @@ ggpubr::ggarrange(
 ```
 
 
-# Combined plots
+## Combined plots
 
 A one-summary plot can be easily assembled combining the above functions and functions from `cowplot` or other ggplot-manipulation packages.
 
@@ -200,4 +180,53 @@ cowplot::plot_grid(
 
 This is actually done by the default S3 `plot` function, which includes both segments and data histograms
 
+
+# Cohort plots
+
+If one has created CNAqc objects for multiple samples, or from multiple calls of the same sample, CNAqc can be used to perform cohort-level plots. All input CNAqc objects must have the same reference. 
+
+
+## CNA calls
+
+You can visualise multiple CNA calls (clonal copy numbers) via `plot_multisample_CNA`. 
+
+```{r, fig.width=6, fig.height=6}
+x = CNAqc::init(
+  example_dataset_CNAqc$snvs, 
+  example_dataset_CNAqc$cna,
+  example_dataset_CNAqc$purity,
+  ref = 'hg19'
+  )
+
+y = CNAqc::init(
+  example_dataset_CNAqc$snvs, 
+  example_dataset_CNAqc$cna %>%
+    mutate(
+      Major = ifelse(chr %in% c("chr3", "chr4", "chr1"), 1, Major),
+      minor = ifelse(chr %in% c("chr3", "chr4", "chr1"), 1, minor)
+      ),
+  example_dataset_CNAqc$purity,
+  ref = 'hg19')
+
+# List of input objects: 2 copies of the same 'x', one faked diploid plus one PCAWG sample
+inputs = list(`Original` = x, `Copy` = x, `Faked_diploid` = y, `PCAWG` = CNAqc::example_PCAWG)
+```
+
+A `flat` layout is possible where the frequency of deletions and amplifications relative to diploid are shown by using a certain binning (step $\delta$) of the tumour genome. Here by deletion we define anything with 0 copies of the minor allele, and by amplification anything with $\geq 3$ total copies (sum of the minor and major alleles).
+```{r, fig.width=8, fig.height=4}
+# Comparative CNA plot - default delta
+plot_multisample_CNA(inputs)
+```
+
+```{r, fig.width=8, fig.height=4}
+# Comparative CNA plot - 10 Mb delta
+plot_multisample_CNA(inputs, delta = 1e7)
+```
+
+A `circular` layout is also possible to show, in a circle, the segments (as in `plot_segments`). In this case no binning or transformation of the data is performed. In this particular plot the names of the list given in input are also reported.
+
+```{r, fig.width=6, fig.height=6}
+# Comparative CNA plot
+plot_multisample_CNA(inputs, layout = 'circular')
+```
 

@@ -132,4 +132,25 @@
 #'
 "fpr_test"
 
+#' Driver mutations released with the boost DM method the DriverDBv3 database
+#' \url{https://www.intogen.org/boostdm/}
+#'
+#' @docType data
+#'
+#' @usage data(boostDM_drivers)
+#'
+#' @format A tibble.
+#'
+#' @keywords datasets
+#'
+#' @references Muiños, F., Martínez-Jiménez, F., Pich, O. et al.
+#' In silico saturation mutagenesis of cancer genes. Nature 596, 428–432 (2021).
+#' https://doi.org/10.1038/s41586-021-03771-1
+#'
+#' @examples
+#' data(boostDM_drivers)
+#' boostDM_drivers
+#'
+"boostDM_drivers"
+
 
