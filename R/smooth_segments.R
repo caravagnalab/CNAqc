@@ -111,8 +111,7 @@ smooth_segments = function(x, maximum_distance = 1e6)
   if("mutations" %in% colnames(smoothed_segments)) smoothed_segments = smoothed_segments %>% dplyr::select(-mutations)
   if(grepl('karyotype', colnames(smoothed_segments)) %>% any) smoothed_segments = smoothed_segments %>% dplyr::select(-mutations)
   if("segment_id" %in% colnames(smoothed_segments)) smoothed_segments = smoothed_segments %>% dplyr::select(-segment_id)
-
-  smoothed_segments = smoothed_segments %>% dplyr::select(-n)
+  if("n" %in% colnames(smoothed_segments)) smoothed_segments = smoothed_segments %>% dplyr::select(-n)
 
   # clonal_CNA = smoothed_segments %>% dplyr::select(-segment_id, -n)
 
