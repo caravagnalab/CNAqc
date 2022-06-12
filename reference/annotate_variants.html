@@ -106,20 +106,31 @@ against lists of known drivers.</p>
     <h2>Arguments</h2>
     <dl><dt>x</dt>
 <dd><p>A data.frame with columns c("chr", "from", "to"), or a CNAqc object.</p></dd>
+
+
 <dt>driver_list</dt>
 <dd><p>a one column data.frame with gene symbols.</p></dd>
+
+
 <dt>collapse</dt>
 <dd><p>whether or not to merge different location, consequences and genes in a single string or split the mutations</p></dd>
+
+
 <dt>filter_tumor_type</dt>
 <dd><p>filter Intogen drivers by tumor type.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>a data.frame with an additional columns `location` reporting the position of the variant in the genome (`coding`, `intron`, `threeUTR`, ...),
+    
+
+<p>a data.frame with an additional columns `location` reporting the position of the variant in the genome (`coding`, `intron`, `threeUTR`, ...),
 `consequence` with the consequence of coding mutations (`synonymous`, `nonsynonymous`, ...), `is_driver` a boolean that indicates if the gene is a driver,
 `gene_symbol` for the annotated corresponding gene symbol (if the variant is in a gene) and `driver_label` with the driver label written as
-`gene_refAA-&gt;varAA` (is `NA` in case `is_driver = FALSE`).
-The `chr` column in the input should contain the chr prefix before the chromosome number. The annotation process is based on the package
+`gene_refAA-&gt;varAA` (is `NA` in case `is_driver = FALSE`).</p>
+
+
+<p>The `chr` column in the input should contain the chr prefix before the chromosome number. The annotation process is based on the package
 <a href="https://bioconductor.org/packages/release/bioc/html/VariantAnnotation.html" class="external-link">VariantAnnotation</a>.</p>
     </div>
 
@@ -150,7 +161,7 @@ The `chr` column in the input should contain the chr prefix before the chromosom
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>
