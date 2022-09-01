@@ -21,7 +21,7 @@ get_karyotypes_colors = function(karyotypes)
     '2:2' = 'firebrick3'
   )
 
-  missing = setdiff(karyotypes, names(color))
+  missing = setdiff(names(color),karyotypes)
   nmissing = length(missing)
 
 
