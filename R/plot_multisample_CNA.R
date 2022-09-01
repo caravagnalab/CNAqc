@@ -225,7 +225,7 @@ aux_plot_cohort_CNA = function(x, delta = 1e5)
 # Circular layout
 aux_plot_cohort_CNA_circular = function(x, ...)
 {
-  Ln = names(L)
+  Ln = names(x)
   if(is.null(Ln)) {
     Ln = paste0("Sample ", 1:length(L))
     names(L) = Ln
@@ -239,7 +239,7 @@ aux_plot_cohort_CNA_circular = function(x, ...)
   calls = lapply(Ln,
                  function(s)
                  {
-                   W = L[[s]]$cna %>%
+                   W = x[[s]]$cna %>%
                      mutate(
                        label = paste(Major, minor, sep = ':'),
                        CN = minor + Major,
@@ -247,7 +247,7 @@ aux_plot_cohort_CNA_circular = function(x, ...)
                      ) %>%
                      select(chr, from, to, label, CN, sample)
 
-                   CNAqc:::relative_to_absolute_coordinates(L[[s]], W)
+                   CNAqc:::relative_to_absolute_coordinates(x[[s]], W)
                  })
 
   calls_flat =
@@ -265,13 +265,13 @@ aux_plot_cohort_CNA_circular = function(x, ...)
   chromosomes = calls_flat$chr %>% unique
 
   # Reference genome
-  reference_genome = CNAqc:::get_reference(L[[1]]$reference_genome) %>% filter(chr %in% chromosomes)
+  reference_genome = CNAqc:::get_reference(x[[1]]$reference_genome) %>% filter(chr %in% chromosomes)
   low = min(reference_genome$from)
   upp = max(reference_genome$to)
 
   # Default blank genome -- remove labels with label_chr = NA
   bl_genome = suppressMessages(
-    CNAqc:::blank_genome(ref = L[[1]]$reference_genome, chromosomes = chromosomes, 
+    CNAqc:::blank_genome(ref = x[[1]]$reference_genome, chromosomes = chromosomes,
                          label_chr = NA) +
       labs(x = "", y = "")
   )

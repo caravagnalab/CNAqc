@@ -160,10 +160,11 @@ Full CNAqc analysis. First we create the object.
 
 ```{r}
 # CNAqc data object
-x = CNAqc::init(snvs,
-                cna,
-                purity,
-                ref = "GRCh38")
+x = CNAqc::init(
+  mutations = snvs,
+  cna = cna,
+  purity = purity,
+  ref = "GRCh38")
 
 print(x)
 ```
@@ -268,7 +269,11 @@ Let's see why this is wrong, using peak detection.
 
 ```{r}
 # CNAqc data object
-x = CNAqc::init(snvs, cna, purity, ref = "GRCh38") %>%
+x = CNAqc::init(
+  mutations = snvs,
+  cna = cna,
+  purity = purity,
+  ref = "GRCh38") %>% 
   CNAqc::analyze_peaks(matching_strategy = 'closest')
 
 print(x)
@@ -292,7 +297,11 @@ cna = Sequenza_bad_calls$segments
 purity = Sequenza_bad_calls$purity
 
 # CNAqc data object
-x = CNAqc::init(snvs, cna, purity, ref = "GRCh38") %>%
+x = CNAqc::init(
+  mutations = snvs,
+  cna = cna,
+  purity = purity,
+  ref = "GRCh38") %>% 
   CNAqc::analyze_peaks(matching_strategy = 'closest')
 
 print(x)

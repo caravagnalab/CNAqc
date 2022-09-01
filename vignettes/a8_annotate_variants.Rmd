@@ -61,21 +61,21 @@ We will annotate the example dataset available in CNAqc.
 # Load template data
 data('example_dataset_CNAqc', package = 'CNAqc')
 
-snvs <- example_dataset_CNAqc$snvs
+mutations <- example_dataset_CNAqc$mutations
 
-snvs %>%  head
+mutations %>%  head
 ```
 
 This tibble has already have driver annotated which have been generated using ([ANNOVAR](https://annovar.openbioinformatics.org/en/latest/)). We get rid of them and re-annotate the data.
 
 ```{r, warning=FALSE, message=FALSE}
 # What are drivers (labels)
-drivers_true <- snvs %>% 
+drivers_true <- mutations %>% 
   filter(is_driver == T) %>% 
   pull(driver_label) %>%  
   unique
 
-snvs <- snvs %>% 
+mutations <- mutations %>% 
   dplyr::select(-is_driver, -driver_label)
 ```
 
@@ -106,9 +106,9 @@ Now we have everything to get our annotated file
 
 ```{r, warning=FALSE, message=FALSE}
 # Run function
-snvs_annotated <- annotate_variants(snvs, ref = reference_genome)
+mutations_annotated <- annotate_variants(mutations, ref = reference_genome)
 
-snvs_annotated
+mutations_annotated
 ```
 One thing to note is the presence of multiple locations and consequences for a single variant. 
 
@@ -129,22 +129,22 @@ intogen_ttypes
 
 ```{r,  warning=FALSE, message=FALSE}
 # Example: OV is ovarian cancer
-snvs_annotated_OV <- annotate_variants(snvs, 
+mutations_annotated_OV <- annotate_variants(mutations, 
                                        ref = reference_genome, 
                                        filter_tumor_type = "OV")
 
-snvs_annotated_OV
+mutations_annotated_OV
 ```
 
 Another option is to supply a list of drivers in a one-coloumn `data.frame`, via argument `driver_list`.
 
 ```{r,  warning=FALSE, message=FALSE}
-snvs_annotated_custom <- annotate_variants(snvs,
+mutations_annotated_custom <- annotate_variants(mutations,
                                            ref = reference_genome, 
                                            driver_list = c("TP53", "CHDS") %>% as.data.frame
                                            )
 
-snvs_annotated_custom
+mutations_annotated_custom
 ```
 
 # Plot
@@ -153,9 +153,9 @@ We can finally perform QC and plot drivers together with the data distribution.
 
 ```{r, warning=FALSE, message=FALSE, fig.width=10, fig.height=4}
 x = init(
-  snvs_annotated, 
-  example_dataset_CNAqc$cna,
-  example_dataset_CNAqc$purity,
+  mutations = mutations_annotated, 
+  cna = example_dataset_CNAqc$cna,
+  purity = example_dataset_CNAqc$purity,
   ref = 'hg19'
   )
 

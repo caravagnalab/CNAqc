@@ -117,9 +117,9 @@ We work with the template dataset.
 data('example_dataset_CNAqc', package = 'CNAqc')
 
 x = CNAqc::init(
-  example_dataset_CNAqc$snvs, 
-  example_dataset_CNAqc$cna,
-  example_dataset_CNAqc$purity,
+  mutations = example_dataset_CNAqc$mutations, 
+  cna = example_dataset_CNAqc$cna,
+  purity = example_dataset_CNAqc$purity,
   ref = 'hg19')
 
 print(x)
@@ -194,9 +194,9 @@ If we take the data of `x` and just scale by a constant the read counts, we pres
 
 ```{r,fig.width=11, fig.height=10, warning=F, message=T}
 x_s = init(
-  x$snvs %>% mutate(DP = DP * .6, NV = NV * .6),
-  x$cna,
-  x$purity)
+  mutations = x$mutations %>% mutate(DP = DP * .6, NV = NV * .6),
+  cna = x$cna,
+  purity = x$purity)
 
 # Recompute CCF values
 y_e = compute_CCF(x_s, method = 'ENTROPY', karyotypes = '2:2')

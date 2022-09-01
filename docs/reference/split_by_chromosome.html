@@ -110,7 +110,570 @@ with data splits by chromosomes.</p>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"example_PCAWG"</span>, package <span class="op">=</span> <span class="st">'CNAqc'</span><span class="op">)</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="fu">split_by_chromosome</span><span class="op">(</span><span class="va">example_PCAWG</span><span class="op">)</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in UseMethod("filter"):</span> no applicable method for 'filter' applied to an object of class "NULL"</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── chr1 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BBBBBB; background-color: #0000BB;"> [ CNAqc - CNA Quality Check ] </span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Using reference genome coordinates for: <span style="color: #00BB00;">hg19</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Detected indels mutation; do not forget to rely more on SNVs for data QC.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Fortified calls for <span style="color: #00BB00;">11027</span> somatic mutations: <span style="color: #00BB00;">10983</span> SNVs (<span style="color: #00BB00;">100%</span>) and <span style="color: #00BB00;">44</span> indels.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Fortified CNAs for <span style="color: #00BB00;">40</span> segments: <span style="color: #00BB00;">40</span> clonal and <span style="color: #00BB00;">0</span> subclonal.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>[CNAqc] a karyotype column is present in CNA calls, and will be overwritten</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="color: #00BB00;">11027</span> mutations mapped to clonal CNAs.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── chr2 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BBBBBB; background-color: #0000BB;"> [ CNAqc - CNA Quality Check ] </span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Using reference genome coordinates for: <span style="color: #00BB00;">hg19</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Detected indels mutation; do not forget to rely more on SNVs for data QC.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Fortified calls for <span style="color: #00BB00;">29957</span> somatic mutations: <span style="color: #00BB00;">29857</span> SNVs (<span style="color: #00BB00;">100%</span>) and <span style="color: #00BB00;">100</span> indels.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Fortified CNAs for <span style="color: #00BB00;">13</span> segments: <span style="color: #00BB00;">13</span> clonal and <span style="color: #00BB00;">0</span> subclonal.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>[CNAqc] a karyotype column is present in CNA calls, and will be overwritten</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="color: #00BB00;">29957</span> mutations mapped to clonal CNAs.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── chr3 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BBBBBB; background-color: #0000BB;"> [ CNAqc - CNA Quality Check ] </span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Using reference genome coordinates for: <span style="color: #00BB00;">hg19</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Detected indels mutation; do not forget to rely more on SNVs for data QC.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Fortified calls for <span style="color: #00BB00;">26192</span> somatic mutations: <span style="color: #00BB00;">26103</span> SNVs (<span style="color: #00BB00;">100%</span>) and <span style="color: #00BB00;">89</span> indels.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Fortified CNAs for <span style="color: #00BB00;">17</span> segments: <span style="color: #00BB00;">17</span> clonal and <span style="color: #00BB00;">0</span> subclonal.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>[CNAqc] a karyotype column is present in CNA calls, and will be overwritten</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="color: #00BB00;">26192</span> mutations mapped to clonal CNAs.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── chr4 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BBBBBB; background-color: #0000BB;"> [ CNAqc - CNA Quality Check ] </span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Using reference genome coordinates for: <span style="color: #00BB00;">hg19</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Detected indels mutation; do not forget to rely more on SNVs for data QC.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Fortified calls for <span style="color: #00BB00;">21187</span> somatic mutations: <span style="color: #00BB00;">21104</span> SNVs (<span style="color: #00BB00;">100%</span>) and <span style="color: #00BB00;">83</span> indels.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Fortified CNAs for <span style="color: #00BB00;">377</span> segments: <span style="color: #00BB00;">377</span> clonal and <span style="color: #00BB00;">0</span> subclonal.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>[CNAqc] a karyotype column is present in CNA calls, and will be overwritten</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="color: #00BB00;">21179</span> mutations mapped to clonal CNAs.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── chr5 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BBBBBB; background-color: #0000BB;"> [ CNAqc - CNA Quality Check ] </span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Using reference genome coordinates for: <span style="color: #00BB00;">hg19</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Detected indels mutation; do not forget to rely more on SNVs for data QC.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Fortified calls for <span style="color: #00BB00;">24728</span> somatic mutations: <span style="color: #00BB00;">24624</span> SNVs (<span style="color: #00BB00;">100%</span>) and <span style="color: #00BB00;">104</span> indels.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Fortified CNAs for <span style="color: #00BB00;">14</span> segments: <span style="color: #00BB00;">14</span> clonal and <span style="color: #00BB00;">0</span> subclonal.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>[CNAqc] a karyotype column is present in CNA calls, and will be overwritten</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="color: #00BB00;">24728</span> mutations mapped to clonal CNAs.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── chr6 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BBBBBB; background-color: #0000BB;"> [ CNAqc - CNA Quality Check ] </span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Using reference genome coordinates for: <span style="color: #00BB00;">hg19</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Detected indels mutation; do not forget to rely more on SNVs for data QC.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Fortified calls for <span style="color: #00BB00;">19446</span> somatic mutations: <span style="color: #00BB00;">19383</span> SNVs (<span style="color: #00BB00;">100%</span>) and <span style="color: #00BB00;">63</span> indels.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Fortified CNAs for <span style="color: #00BB00;">14</span> segments: <span style="color: #00BB00;">14</span> clonal and <span style="color: #00BB00;">0</span> subclonal.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>[CNAqc] a karyotype column is present in CNA calls, and will be overwritten</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="color: #00BB00;">19035</span> mutations mapped to clonal CNAs.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── chr7 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BBBBBB; background-color: #0000BB;"> [ CNAqc - CNA Quality Check ] </span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Using reference genome coordinates for: <span style="color: #00BB00;">hg19</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Detected indels mutation; do not forget to rely more on SNVs for data QC.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Fortified calls for <span style="color: #00BB00;">21030</span> somatic mutations: <span style="color: #00BB00;">20955</span> SNVs (<span style="color: #00BB00;">100%</span>) and <span style="color: #00BB00;">75</span> indels.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Fortified CNAs for <span style="color: #00BB00;">17</span> segments: <span style="color: #00BB00;">17</span> clonal and <span style="color: #00BB00;">0</span> subclonal.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>[CNAqc] a karyotype column is present in CNA calls, and will be overwritten</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="color: #00BB00;">21030</span> mutations mapped to clonal CNAs.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── chr8 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BBBBBB; background-color: #0000BB;"> [ CNAqc - CNA Quality Check ] </span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Using reference genome coordinates for: <span style="color: #00BB00;">hg19</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Detected indels mutation; do not forget to rely more on SNVs for data QC.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Fortified calls for <span style="color: #00BB00;">19332</span> somatic mutations: <span style="color: #00BB00;">19270</span> SNVs (<span style="color: #00BB00;">100%</span>) and <span style="color: #00BB00;">62</span> indels.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Fortified CNAs for <span style="color: #00BB00;">62</span> segments: <span style="color: #00BB00;">62</span> clonal and <span style="color: #00BB00;">0</span> subclonal.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>[CNAqc] a karyotype column is present in CNA calls, and will be overwritten</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="color: #00BB00;">19308</span> mutations mapped to clonal CNAs.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── chr9 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BBBBBB; background-color: #0000BB;"> [ CNAqc - CNA Quality Check ] </span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Using reference genome coordinates for: <span style="color: #00BB00;">hg19</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Detected indels mutation; do not forget to rely more on SNVs for data QC.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Fortified calls for <span style="color: #00BB00;">7122</span> somatic mutations: <span style="color: #00BB00;">7101</span> SNVs (<span style="color: #00BB00;">100%</span>) and <span style="color: #00BB00;">21</span> indels.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Fortified CNAs for <span style="color: #00BB00;">7</span> segments: <span style="color: #00BB00;">7</span> clonal and <span style="color: #00BB00;">0</span> subclonal.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>[CNAqc] a karyotype column is present in CNA calls, and will be overwritten</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="color: #00BB00;">7122</span> mutations mapped to clonal CNAs.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── chr10 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BBBBBB; background-color: #0000BB;"> [ CNAqc - CNA Quality Check ] </span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Using reference genome coordinates for: <span style="color: #00BB00;">hg19</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Detected indels mutation; do not forget to rely more on SNVs for data QC.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Fortified calls for <span style="color: #00BB00;">5065</span> somatic mutations: <span style="color: #00BB00;">5052</span> SNVs (<span style="color: #00BB00;">100%</span>) and <span style="color: #00BB00;">13</span> indels.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Fortified CNAs for <span style="color: #00BB00;">19</span> segments: <span style="color: #00BB00;">19</span> clonal and <span style="color: #00BB00;">0</span> subclonal.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>[CNAqc] a karyotype column is present in CNA calls, and will be overwritten</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="color: #00BB00;">5065</span> mutations mapped to clonal CNAs.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── chr12 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BBBBBB; background-color: #0000BB;"> [ CNAqc - CNA Quality Check ] </span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Using reference genome coordinates for: <span style="color: #00BB00;">hg19</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Detected indels mutation; do not forget to rely more on SNVs for data QC.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Fortified calls for <span style="color: #00BB00;">14351</span> somatic mutations: <span style="color: #00BB00;">14287</span> SNVs (<span style="color: #00BB00;">100%</span>) and <span style="color: #00BB00;">64</span> indels.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Fortified CNAs for <span style="color: #00BB00;">4</span> segments: <span style="color: #00BB00;">4</span> clonal and <span style="color: #00BB00;">0</span> subclonal.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>[CNAqc] a karyotype column is present in CNA calls, and will be overwritten</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="color: #00BB00;">14351</span> mutations mapped to clonal CNAs.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── chr13 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BBBBBB; background-color: #0000BB;"> [ CNAqc - CNA Quality Check ] </span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Using reference genome coordinates for: <span style="color: #00BB00;">hg19</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Detected indels mutation; do not forget to rely more on SNVs for data QC.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Fortified calls for <span style="color: #00BB00;">8024</span> somatic mutations: <span style="color: #00BB00;">7986</span> SNVs (<span style="color: #00BB00;">100%</span>) and <span style="color: #00BB00;">38</span> indels.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Fortified CNAs for <span style="color: #00BB00;">7</span> segments: <span style="color: #00BB00;">7</span> clonal and <span style="color: #00BB00;">0</span> subclonal.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>[CNAqc] a karyotype column is present in CNA calls, and will be overwritten</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="color: #00BB00;">8024</span> mutations mapped to clonal CNAs.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── chr14 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BBBBBB; background-color: #0000BB;"> [ CNAqc - CNA Quality Check ] </span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Using reference genome coordinates for: <span style="color: #00BB00;">hg19</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Detected indels mutation; do not forget to rely more on SNVs for data QC.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Fortified calls for <span style="color: #00BB00;">11085</span> somatic mutations: <span style="color: #00BB00;">11041</span> SNVs (<span style="color: #00BB00;">100%</span>) and <span style="color: #00BB00;">44</span> indels.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Fortified CNAs for <span style="color: #00BB00;">1</span> segments: <span style="color: #00BB00;">1</span> clonal and <span style="color: #00BB00;">0</span> subclonal.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>[CNAqc] a karyotype column is present in CNA calls, and will be overwritten</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="color: #00BB00;">11085</span> mutations mapped to clonal CNAs.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── chr15 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BBBBBB; background-color: #0000BB;"> [ CNAqc - CNA Quality Check ] </span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Using reference genome coordinates for: <span style="color: #00BB00;">hg19</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Detected indels mutation; do not forget to rely more on SNVs for data QC.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Fortified calls for <span style="color: #00BB00;">8566</span> somatic mutations: <span style="color: #00BB00;">8536</span> SNVs (<span style="color: #00BB00;">100%</span>) and <span style="color: #00BB00;">30</span> indels.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Fortified CNAs for <span style="color: #00BB00;">18</span> segments: <span style="color: #00BB00;">18</span> clonal and <span style="color: #00BB00;">0</span> subclonal.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>[CNAqc] a karyotype column is present in CNA calls, and will be overwritten</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="color: #00BB00;">8566</span> mutations mapped to clonal CNAs.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── chr16 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BBBBBB; background-color: #0000BB;"> [ CNAqc - CNA Quality Check ] </span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Using reference genome coordinates for: <span style="color: #00BB00;">hg19</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Detected indels mutation; do not forget to rely more on SNVs for data QC.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Fortified calls for <span style="color: #00BB00;">10010</span> somatic mutations: <span style="color: #00BB00;">9978</span> SNVs (<span style="color: #00BB00;">100%</span>) and <span style="color: #00BB00;">32</span> indels.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Fortified CNAs for <span style="color: #00BB00;">10</span> segments: <span style="color: #00BB00;">10</span> clonal and <span style="color: #00BB00;">0</span> subclonal.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>[CNAqc] a karyotype column is present in CNA calls, and will be overwritten</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="color: #00BB00;">10010</span> mutations mapped to clonal CNAs.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── chr17 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BBBBBB; background-color: #0000BB;"> [ CNAqc - CNA Quality Check ] </span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Using reference genome coordinates for: <span style="color: #00BB00;">hg19</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Detected indels mutation; do not forget to rely more on SNVs for data QC.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Fortified calls for <span style="color: #00BB00;">6329</span> somatic mutations: <span style="color: #00BB00;">6316</span> SNVs (<span style="color: #00BB00;">100%</span>) and <span style="color: #00BB00;">13</span> indels.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Fortified CNAs for <span style="color: #00BB00;">8</span> segments: <span style="color: #00BB00;">8</span> clonal and <span style="color: #00BB00;">0</span> subclonal.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>[CNAqc] a karyotype column is present in CNA calls, and will be overwritten</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="color: #00BB00;">6329</span> mutations mapped to clonal CNAs.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── chr18 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BBBBBB; background-color: #0000BB;"> [ CNAqc - CNA Quality Check ] </span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Using reference genome coordinates for: <span style="color: #00BB00;">hg19</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Detected indels mutation; do not forget to rely more on SNVs for data QC.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Fortified calls for <span style="color: #00BB00;">13062</span> somatic mutations: <span style="color: #00BB00;">13009</span> SNVs (<span style="color: #00BB00;">100%</span>) and <span style="color: #00BB00;">53</span> indels.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Fortified CNAs for <span style="color: #00BB00;">9</span> segments: <span style="color: #00BB00;">9</span> clonal and <span style="color: #00BB00;">0</span> subclonal.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>[CNAqc] a karyotype column is present in CNA calls, and will be overwritten</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="color: #00BB00;">13062</span> mutations mapped to clonal CNAs.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── chr19 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BBBBBB; background-color: #0000BB;"> [ CNAqc - CNA Quality Check ] </span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Using reference genome coordinates for: <span style="color: #00BB00;">hg19</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Detected indels mutation; do not forget to rely more on SNVs for data QC.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Fortified calls for <span style="color: #00BB00;">5228</span> somatic mutations: <span style="color: #00BB00;">5208</span> SNVs (<span style="color: #00BB00;">100%</span>) and <span style="color: #00BB00;">20</span> indels.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Fortified CNAs for <span style="color: #00BB00;">9</span> segments: <span style="color: #00BB00;">9</span> clonal and <span style="color: #00BB00;">0</span> subclonal.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>[CNAqc] a karyotype column is present in CNA calls, and will be overwritten</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="color: #00BB00;">5228</span> mutations mapped to clonal CNAs.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── chr20 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BBBBBB; background-color: #0000BB;"> [ CNAqc - CNA Quality Check ] </span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Using reference genome coordinates for: <span style="color: #00BB00;">hg19</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Detected indels mutation; do not forget to rely more on SNVs for data QC.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Fortified calls for <span style="color: #00BB00;">5970</span> somatic mutations: <span style="color: #00BB00;">5954</span> SNVs (<span style="color: #00BB00;">100%</span>) and <span style="color: #00BB00;">16</span> indels.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Fortified CNAs for <span style="color: #00BB00;">2</span> segments: <span style="color: #00BB00;">2</span> clonal and <span style="color: #00BB00;">0</span> subclonal.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>[CNAqc] a karyotype column is present in CNA calls, and will be overwritten</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="color: #00BB00;">5970</span> mutations mapped to clonal CNAs.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── chr21 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BBBBBB; background-color: #0000BB;"> [ CNAqc - CNA Quality Check ] </span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Using reference genome coordinates for: <span style="color: #00BB00;">hg19</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Detected indels mutation; do not forget to rely more on SNVs for data QC.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Fortified calls for <span style="color: #00BB00;">5117</span> somatic mutations: <span style="color: #00BB00;">5095</span> SNVs (<span style="color: #00BB00;">100%</span>) and <span style="color: #00BB00;">22</span> indels.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Fortified CNAs for <span style="color: #00BB00;">2</span> segments: <span style="color: #00BB00;">2</span> clonal and <span style="color: #00BB00;">0</span> subclonal.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>[CNAqc] a karyotype column is present in CNA calls, and will be overwritten</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="color: #00BB00;">5117</span> mutations mapped to clonal CNAs.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── chr22 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BBBBBB; background-color: #0000BB;"> [ CNAqc - CNA Quality Check ] </span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Using reference genome coordinates for: <span style="color: #00BB00;">hg19</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Detected indels mutation; do not forget to rely more on SNVs for data QC.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Fortified calls for <span style="color: #00BB00;">2595</span> somatic mutations: <span style="color: #00BB00;">2589</span> SNVs (<span style="color: #00BB00;">100%</span>) and <span style="color: #00BB00;">6</span> indels.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Fortified CNAs for <span style="color: #00BB00;">4</span> segments: <span style="color: #00BB00;">4</span> clonal and <span style="color: #00BB00;">0</span> subclonal.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>[CNAqc] a karyotype column is present in CNA calls, and will be overwritten</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="color: #00BB00;">2595</span> mutations mapped to clonal CNAs.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $chr1</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── <span style="color: #000000; background-color: #BBBB00;">[ CNAqc ] </span> <span style="color: #00BB00;">11027</span> mutations in <span style="color: #00BB00;">40</span> segments (<span style="color: #00BB00;">40</span> clonal, <span style="color: #00BB00;">0</span> subclonal). Genome re</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── Clonal CNAs </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:2  [n = 7968, L =   68 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:1  [n = 2017, L =   19 Mb] ■■■■■■■</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:2  [n =  462, L =    4 Mb] ■■</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:1  [n =  428, L =    3 Mb] ■</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4:2  [n =   93, L =    2 Mb] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:3  [n =   24, L =    0 Mb] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5:2  [n =   19, L =    0 Mb] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6:2  [n =    8, L =    0 Mb] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1:0  [n =    3, L =    0 Mb] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7:2  [n =    3, L =    0 Mb] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sample Purity: 73.4% ~ Ploidy: 4.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> There are 0 annotated driver(s) mapped to clonal CNAs.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        [1] chr          from         to           ref          alt         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        [6] DP           NV           VAF          driver_label is_driver   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;0 rows&gt; (or 0-length row.names)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $chr2</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── <span style="color: #000000; background-color: #BBBB00;">[ CNAqc ] </span> <span style="color: #00BB00;">29957</span> mutations in <span style="color: #00BB00;">13</span> segments (<span style="color: #00BB00;">13</span> clonal, <span style="color: #00BB00;">0</span> subclonal). Genome re</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── Clonal CNAs </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:1  [n = 29957, L =   237 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sample Purity: 73.4% ~ Ploidy: 4.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> There are 0 annotated driver(s) mapped to clonal CNAs.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        [1] chr          from         to           ref          alt         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        [6] DP           NV           VAF          driver_label is_driver   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;0 rows&gt; (or 0-length row.names)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $chr3</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── <span style="color: #000000; background-color: #BBBB00;">[ CNAqc ] </span> <span style="color: #00BB00;">26192</span> mutations in <span style="color: #00BB00;">17</span> segments (<span style="color: #00BB00;">17</span> clonal, <span style="color: #00BB00;">0</span> subclonal). Genome re</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── Clonal CNAs </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:2  [n = 13692, L =   104 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:1  [n = 12378, L =    83 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1:0  [n =   100, L =     4 Mb] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:2  [n =    22, L =     0 Mb] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sample Purity: 73.4% ~ Ploidy: 5.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> There are 0 annotated driver(s) mapped to clonal CNAs.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        [1] chr          from         to           ref          alt         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        [6] DP           NV           VAF          driver_label is_driver   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;0 rows&gt; (or 0-length row.names)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $chr4</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── <span style="color: #000000; background-color: #BBBB00;">[ CNAqc ] </span> <span style="color: #00BB00;">21179</span> mutations in <span style="color: #00BB00;">377</span> segments (<span style="color: #00BB00;">377</span> clonal, <span style="color: #00BB00;">0</span> subclonal). Genome </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── Clonal CNAs </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   3:1  [n = 10448, L =    67 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   3:0  [n =  8069, L =    97 Mb] ■■■■■■■■■■■■■■■■■■■■■</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   3:2  [n =   803, L =     6 Mb] ■■</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   3:3  [n =   801, L =     4 Mb] ■■</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   4:3  [n =   359, L =     3 Mb] ■</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   5:3  [n =   132, L =     1 Mb] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   6:3  [n =   114, L =     1 Mb] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   4:2  [n =    59, L =     0 Mb] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  10:3  [n =    56, L =     0 Mb] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   9:3  [n =    52, L =     0 Mb] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sample Purity: 73.4% ~ Ploidy: 3.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> There are 0 annotated driver(s) mapped to clonal CNAs.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        [1] chr          from         to           ref          alt         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        [6] DP           NV           VAF          driver_label is_driver   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;0 rows&gt; (or 0-length row.names)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $chr5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── <span style="color: #000000; background-color: #BBBB00;">[ CNAqc ] </span> <span style="color: #00BB00;">24728</span> mutations in <span style="color: #00BB00;">14</span> segments (<span style="color: #00BB00;">14</span> clonal, <span style="color: #00BB00;">0</span> subclonal). Genome re</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── Clonal CNAs </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:1  [n = 24592, L =   175 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1:1  [n =   136, L =     1 Mb] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sample Purity: 73.4% ~ Ploidy: 3.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> There are 0 annotated driver(s) mapped to clonal CNAs.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        [1] chr          from         to           ref          alt         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        [6] DP           NV           VAF          driver_label is_driver   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;0 rows&gt; (or 0-length row.names)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $chr6</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── <span style="color: #000000; background-color: #BBBB00;">[ CNAqc ] </span> <span style="color: #00BB00;">19035</span> mutations in <span style="color: #00BB00;">14</span> segments (<span style="color: #00BB00;">14</span> clonal, <span style="color: #00BB00;">0</span> subclonal). Genome re</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── Clonal CNAs </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:1  [n = 16330, L =   122 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:2  [n =  2705, L =    36 Mb] ■■■■</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sample Purity: 73.4% ~ Ploidy: 3.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> There are 0 annotated driver(s) mapped to clonal CNAs.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        [1] chr          from         to           ref          alt         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        [6] DP           NV           VAF          driver_label is_driver   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;0 rows&gt; (or 0-length row.names)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $chr7</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── <span style="color: #000000; background-color: #BBBB00;">[ CNAqc ] </span> <span style="color: #00BB00;">21030</span> mutations in <span style="color: #00BB00;">17</span> segments (<span style="color: #00BB00;">17</span> clonal, <span style="color: #00BB00;">0</span> subclonal). Genome re</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── Clonal CNAs </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:2  [n = 21030, L =   155 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { <span style="color: #BBBB00;">BRAF</span> }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sample Purity: 73.4% ~ Ploidy: 5.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> There are 1 annotated driver(s) mapped to clonal CNAs.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         chr      from        to ref alt DP NV       VAF driver_label is_driver</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        chr7 140453136 140453136   A   T 95 54 0.5684211         BRAF      TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $chr8</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── <span style="color: #000000; background-color: #BBBB00;">[ CNAqc ] </span> <span style="color: #00BB00;">19308</span> mutations in <span style="color: #00BB00;">62</span> segments (<span style="color: #00BB00;">62</span> clonal, <span style="color: #00BB00;">0</span> subclonal). Genome re</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── Clonal CNAs </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:3  [n = 9995, L =   64 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:2  [n = 4836, L =   27 Mb] ■■■■■■■■■■■■■</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:0  [n = 3063, L =   38 Mb] ■■■■■■■■</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4:2  [n = 1289, L =    8 Mb] ■■■</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5:2  [n =  105, L =    1 Mb] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6:2  [n =   20, L =    0 Mb] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sample Purity: 73.4% ~ Ploidy: 6.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> There are 0 annotated driver(s) mapped to clonal CNAs.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        [1] chr          from         to           ref          alt         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        [6] DP           NV           VAF          driver_label is_driver   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;0 rows&gt; (or 0-length row.names)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $chr9</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── <span style="color: #000000; background-color: #BBBB00;">[ CNAqc ] </span> <span style="color: #00BB00;">7122</span> mutations in <span style="color: #00BB00;">7</span> segments (<span style="color: #00BB00;">7</span> clonal, <span style="color: #00BB00;">0</span> subclonal). Genome refer</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── Clonal CNAs </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:0  [n = 7098, L =  114 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { <span style="color: #BBBB00;">CDKN2A</span> }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7:0  [n =   24, L =    5 Mb] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sample Purity: 73.4% ~ Ploidy: 3.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> There are 1 annotated driver(s) mapped to clonal CNAs.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         chr     from       to ref alt DP NV       VAF driver_label is_driver</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        chr9 21971120 21971120   G   A 23 14 0.6086957       CDKN2A      TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $chr10</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── <span style="color: #000000; background-color: #BBBB00;">[ CNAqc ] </span> <span style="color: #00BB00;">5065</span> mutations in <span style="color: #00BB00;">19</span> segments (<span style="color: #00BB00;">19</span> clonal, <span style="color: #00BB00;">0</span> subclonal). Genome ref</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── Clonal CNAs </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:0  [n = 2715, L =   38 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:0  [n = 2287, L =   29 Mb] ■■■■■■■■■■■■■■■■■■■■■■</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:1  [n =   26, L =    0 Mb] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1:0  [n =   21, L =    0 Mb] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4:0  [n =   15, L =    0 Mb] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1:1  [n =    1, L =    0 Mb] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sample Purity: 73.4% ~ Ploidy: 3.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> There are 0 annotated driver(s) mapped to clonal CNAs.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        [1] chr          from         to           ref          alt         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        [6] DP           NV           VAF          driver_label is_driver   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;0 rows&gt; (or 0-length row.names)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $chr12</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── <span style="color: #000000; background-color: #BBBB00;">[ CNAqc ] </span> <span style="color: #00BB00;">14351</span> mutations in <span style="color: #00BB00;">4</span> segments (<span style="color: #00BB00;">4</span> clonal, <span style="color: #00BB00;">0</span> subclonal). Genome refe</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── Clonal CNAs </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:1  [n = 14351, L =   129 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sample Purity: 73.4% ~ Ploidy: 3.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> There are 0 annotated driver(s) mapped to clonal CNAs.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        [1] chr          from         to           ref          alt         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        [6] DP           NV           VAF          driver_label is_driver   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;0 rows&gt; (or 0-length row.names)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $chr13</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── <span style="color: #000000; background-color: #BBBB00;">[ CNAqc ] </span> <span style="color: #00BB00;">8024</span> mutations in <span style="color: #00BB00;">7</span> segments (<span style="color: #00BB00;">7</span> clonal, <span style="color: #00BB00;">0</span> subclonal). Genome refer</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── Clonal CNAs </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:0  [n = 8024, L =   99 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sample Purity: 73.4% ~ Ploidy: 3.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> There are 0 annotated driver(s) mapped to clonal CNAs.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        [1] chr          from         to           ref          alt         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        [6] DP           NV           VAF          driver_label is_driver   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;0 rows&gt; (or 0-length row.names)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $chr14</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── <span style="color: #000000; background-color: #BBBB00;">[ CNAqc ] </span> <span style="color: #00BB00;">11085</span> mutations in <span style="color: #00BB00;">1</span> segments (<span style="color: #00BB00;">1</span> clonal, <span style="color: #00BB00;">0</span> subclonal). Genome refe</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── Clonal CNAs </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:1  [n = 11085, L =    87 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sample Purity: 73.4% ~ Ploidy: 3.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> There are 0 annotated driver(s) mapped to clonal CNAs.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        [1] chr          from         to           ref          alt         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        [6] DP           NV           VAF          driver_label is_driver   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;0 rows&gt; (or 0-length row.names)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $chr15</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── <span style="color: #000000; background-color: #BBBB00;">[ CNAqc ] </span> <span style="color: #00BB00;">8566</span> mutations in <span style="color: #00BB00;">18</span> segments (<span style="color: #00BB00;">18</span> clonal, <span style="color: #00BB00;">0</span> subclonal). Genome ref</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── Clonal CNAs </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:1  [n = 7617, L =   77 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1:1  [n =  718, L =    9 Mb] ■■■</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:1  [n =  146, L =    1 Mb] ■</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4:1  [n =   85, L =    0 Mb] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sample Purity: 73.4% ~ Ploidy: 3.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> There are 0 annotated driver(s) mapped to clonal CNAs.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        [1] chr          from         to           ref          alt         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        [6] DP           NV           VAF          driver_label is_driver   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;0 rows&gt; (or 0-length row.names)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $chr16</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── <span style="color: #000000; background-color: #BBBB00;">[ CNAqc ] </span> <span style="color: #00BB00;">10010</span> mutations in <span style="color: #00BB00;">10</span> segments (<span style="color: #00BB00;">10</span> clonal, <span style="color: #00BB00;">0</span> subclonal). Genome re</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── Clonal CNAs </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:2  [n = 10002, L =    90 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:0  [n =     8, L =     0 Mb] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sample Purity: 73.4% ~ Ploidy: 4.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> There are 0 annotated driver(s) mapped to clonal CNAs.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        [1] chr          from         to           ref          alt         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        [6] DP           NV           VAF          driver_label is_driver   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;0 rows&gt; (or 0-length row.names)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $chr17</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── <span style="color: #000000; background-color: #BBBB00;">[ CNAqc ] </span> <span style="color: #00BB00;">6329</span> mutations in <span style="color: #00BB00;">8</span> segments (<span style="color: #00BB00;">8</span> clonal, <span style="color: #00BB00;">0</span> subclonal). Genome refer</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── Clonal CNAs </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:2  [n = 4593, L =   59 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4:0  [n = 1732, L =   22 Mb] ■■■■■■■■■■  { <span style="color: #BBBB00;">TP53</span> }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:0  [n =    4, L =    0 Mb] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sample Purity: 73.4% ~ Ploidy: 4.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> There are 1 annotated driver(s) mapped to clonal CNAs.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          chr    from      to ref alt DP NV       VAF driver_label is_driver</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        chr17 7577082 7577082   C   T 78 70 0.8974359         TP53      TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $chr18</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── <span style="color: #000000; background-color: #BBBB00;">[ CNAqc ] </span> <span style="color: #00BB00;">13062</span> mutations in <span style="color: #00BB00;">9</span> segments (<span style="color: #00BB00;">9</span> clonal, <span style="color: #00BB00;">0</span> subclonal). Genome refe</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── Clonal CNAs </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:2  [n = 13062, L =    78 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sample Purity: 73.4% ~ Ploidy: 5.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> There are 0 annotated driver(s) mapped to clonal CNAs.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        [1] chr          from         to           ref          alt         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        [6] DP           NV           VAF          driver_label is_driver   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;0 rows&gt; (or 0-length row.names)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $chr19</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── <span style="color: #000000; background-color: #BBBB00;">[ CNAqc ] </span> <span style="color: #00BB00;">5228</span> mutations in <span style="color: #00BB00;">9</span> segments (<span style="color: #00BB00;">9</span> clonal, <span style="color: #00BB00;">0</span> subclonal). Genome refer</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── Clonal CNAs </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:2  [n = 4499, L =   42 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:0  [n =  716, L =   12 Mb] ■■■■</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:1  [n =   13, L =    0 Mb] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sample Purity: 73.4% ~ Ploidy: 5.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> There are 0 annotated driver(s) mapped to clonal CNAs.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        [1] chr          from         to           ref          alt         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        [6] DP           NV           VAF          driver_label is_driver   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;0 rows&gt; (or 0-length row.names)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $chr20</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── <span style="color: #000000; background-color: #BBBB00;">[ CNAqc ] </span> <span style="color: #00BB00;">5970</span> mutations in <span style="color: #00BB00;">2</span> segments (<span style="color: #00BB00;">2</span> clonal, <span style="color: #00BB00;">0</span> subclonal). Genome refer</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── Clonal CNAs </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:3  [n = 5970, L =   46 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sample Purity: 73.4% ~ Ploidy: 6.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> There are 0 annotated driver(s) mapped to clonal CNAs.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        [1] chr          from         to           ref          alt         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        [6] DP           NV           VAF          driver_label is_driver   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;0 rows&gt; (or 0-length row.names)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $chr21</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── <span style="color: #000000; background-color: #BBBB00;">[ CNAqc ] </span> <span style="color: #00BB00;">5117</span> mutations in <span style="color: #00BB00;">2</span> segments (<span style="color: #00BB00;">2</span> clonal, <span style="color: #00BB00;">0</span> subclonal). Genome refer</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── Clonal CNAs </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:1  [n = 5117, L =   34 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sample Purity: 73.4% ~ Ploidy: 4.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> There are 0 annotated driver(s) mapped to clonal CNAs.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        [1] chr          from         to           ref          alt         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        [6] DP           NV           VAF          driver_label is_driver   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;0 rows&gt; (or 0-length row.names)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $chr22</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── <span style="color: #000000; background-color: #BBBB00;">[ CNAqc ] </span> <span style="color: #00BB00;">2595</span> mutations in <span style="color: #00BB00;">4</span> segments (<span style="color: #00BB00;">4</span> clonal, <span style="color: #00BB00;">0</span> subclonal). Genome refer</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── Clonal CNAs </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:1  [n = 2595, L =   39 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sample Purity: 73.4% ~ Ploidy: 4.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> There are 0 annotated driver(s) mapped to clonal CNAs.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        [1] chr          from         to           ref          alt         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        [6] DP           NV           VAF          driver_label is_driver   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;0 rows&gt; (or 0-length row.names)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>
     </div>
   </div>

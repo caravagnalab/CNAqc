@@ -74,19 +74,19 @@ init = function(mutations, snvs = NULL, cna, purity, ref = "GRCh38")
   pio::pioHdr("CNAqc - CNA Quality Check")
   cat('\n')
 
-  if(!is.null(mutations))
+  if(!is.null(snvs))
   {
     if(!is.null(mutations))
     {
-      cli::boxx("Parameter `mutations` has been deprecated, cannot use it with `mutations`", col = 'red', margin = 3)
+      cli::boxx("Parameter `snvs` has been deprecated, cannot use it with `mutations`", col = 'red', margin = 3)
 
-      cli::cli_abort("Avoid using `mutations` if you use `mutations")
+      cli::cli_abort("Avoid using `snvs` if you use `mutations")
     }
     else
     {
-      cli::boxx("Parameter `mutations` has been deprecated, using it as `mutations", col = 'red', margin = 3)
+      cli::boxx("Parameter `snvs` has been deprecated, using it as `mutations", col = 'red', margin = 3)
 
-      mutations = mutations
+      mutations = snvs
     }
 
   }

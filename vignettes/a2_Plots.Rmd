@@ -30,10 +30,11 @@ All plotting functions use `ggplot` and multi-panel figures assembled with eithe
 ```{r echo=TRUE, results=TRUE}
 # Dataset available with the package 
 data('example_dataset_CNAqc', package = 'CNAqc')
+
 x = CNAqc::init(
-  example_dataset_CNAqc$snvs, 
-  example_dataset_CNAqc$cna,
-  example_dataset_CNAqc$purity,
+  mutations = example_dataset_CNAqc$mutations, 
+  cna = example_dataset_CNAqc$cna,
+  purity = example_dataset_CNAqc$purity,
   ref = 'hg19')
 
 print(x)
@@ -192,20 +193,20 @@ You can visualise multiple CNA calls (clonal copy numbers) via `plot_multisample
 
 ```{r, fig.width=6, fig.height=6}
 x = CNAqc::init(
-  example_dataset_CNAqc$snvs, 
-  example_dataset_CNAqc$cna,
-  example_dataset_CNAqc$purity,
+  mutations = example_dataset_CNAqc$mutations, 
+  cna = example_dataset_CNAqc$cna,
+  purity = example_dataset_CNAqc$purity,
   ref = 'hg19'
   )
 
 y = CNAqc::init(
-  example_dataset_CNAqc$snvs, 
-  example_dataset_CNAqc$cna %>%
+  mutations = example_dataset_CNAqc$mutations, 
+  cna = example_dataset_CNAqc$cna %>%
     mutate(
       Major = ifelse(chr %in% c("chr3", "chr4", "chr1"), 1, Major),
       minor = ifelse(chr %in% c("chr3", "chr4", "chr1"), 1, minor)
       ),
-  example_dataset_CNAqc$purity,
+  purity = example_dataset_CNAqc$purity,
   ref = 'hg19')
 
 # List of input objects: 2 copies of the same 'x', one faked diploid plus one PCAWG sample
