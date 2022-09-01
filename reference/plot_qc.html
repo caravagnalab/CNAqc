@@ -91,7 +91,7 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">plot_qc</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">plot_qc</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -110,8 +110,8 @@ been computed.</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">'example_dataset_CNAqc'</span>, package <span class="op">=</span> <span class="st">'CNAqc'</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">x</span> <span class="op">=</span> <span class="fu"><a href="init.html">init</a></span><span class="op">(</span><span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">snvs</span>, <span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">cna</span>,<span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">purity</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">'example_dataset_CNAqc'</span>, package <span class="op">=</span> <span class="st">'CNAqc'</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">x</span> <span class="op">=</span> <span class="fu"><a href="init.html">init</a></span><span class="op">(</span><span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">snvs</span>, <span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">cna</span>,<span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">purity</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BBBBBB; background-color: #0000BB;"> [ CNAqc - CNA Quality Check ] </span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Using reference genome coordinates for: <span style="color: #00BB00;">GRCh38</span>.</span>
@@ -120,8 +120,8 @@ been computed.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> CNAs have no CCF, assuming clonal CNAs (CCF = 1).</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Fortified CNAs for <span style="color: #00BB00;">267</span> segments: <span style="color: #00BB00;">267</span> clonal and <span style="color: #00BB00;">0</span> subclonal.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="color: #00BB00;">12963</span> mutations mapped to clonal CNAs.</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">x</span> <span class="op">=</span> <span class="fu"><a href="analyze_peaks.html">analyze_peaks</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">x</span> <span class="op">=</span> <span class="fu"><a href="analyze_peaks.html">analyze_peaks</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Peak analysis: simple CNAs</span> <span style="color: #00BBBB;">──────────────────────────────────────────────────</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -130,15 +130,16 @@ been computed.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Mixed type peak detection for karyotype <span style="color: #00BB00;">2:2</span> (<span style="color: #00BB00;">7478</span> mutations)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 4 × 16</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Rowwise: </span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   mutation_multiplicity karyotype  peak delta_vaf     x     y counts_per_bin</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>                     1 2:2       0.235   0.007<span style="text-decoration: underline;">00</span> 0.24   0.86             65</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span>                     2 2:2       0.471   0.014<span style="text-decoration: underline;">0</span>  0.46   8.14            625</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span>                     1 2:1       0.308   0.012<span style="text-decoration: underline;">0</span>  0.306  3.60             59</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span>                     2 2:1       0.616   0.023<span style="text-decoration: underline;">9</span>  0.600  2.94             60</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 9 more variables: discarded &lt;lgl&gt;, from &lt;chr&gt;, offset_VAF &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   offset &lt;dbl&gt;, weight &lt;dbl&gt;, epsilon &lt;dbl&gt;, VAF_tolerance &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   matched &lt;lgl&gt;, QC &lt;chr&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   mutation_mu…¹ karyo…²  peak delta…³     x     y count…⁴ disca…⁵ from  offset…⁶</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>             1 2:2     0.235 0.007<span style="text-decoration: underline;">00</span> 0.24   0.86      65 FALSE   KDE   -<span style="color: #BB0000;">0.004</span><span style="color: #BB0000; text-decoration: underline;">55</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span>             2 2:2     0.471 0.014<span style="text-decoration: underline;">0</span>  0.46   8.14     625 FALSE   KDE    0.010<span style="text-decoration: underline;">9</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span>             1 2:1     0.308 0.012<span style="text-decoration: underline;">0</span>  0.306  3.60      59 FALSE   BMix   0.002<span style="text-decoration: underline;">45</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span>             2 2:1     0.616 0.023<span style="text-decoration: underline;">9</span>  0.600  2.94      60 FALSE   BMix   0.015<span style="text-decoration: underline;">6</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 6 more variables: offset &lt;dbl&gt;, weight &lt;dbl&gt;, epsilon &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   VAF_tolerance &lt;dbl&gt;, matched &lt;lgl&gt;, QC &lt;chr&gt;, and abbreviated variable</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   names ¹​mutation_multiplicity, ²​karyotype, ³​delta_vaf, ⁴​counts_per_bin,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   ⁵​discarded, ⁶​offset_VAF</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Peak detection <span style="color: #00BB00;">PASS</span> with <span style="color: #00BB00;">r = 0.0103563917332481</span> - maximum purity error ε = <span style="color: #00BB00;">0.05</span>.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Peak analysis: complex CNAs</span> <span style="color: #00BBBB;">─────────────────────────────────────────────────</span></span>
@@ -155,7 +156,7 @@ been computed.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Peak analysis: subclonal CNAs</span> <span style="color: #00BBBB;">───────────────────────────────────────────────</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> No subclonal CNAs in this sample.</span>
-<span class="r-in"><span class="fu">plot_qc</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">plot_qc</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="plot_qc-1.png" alt="" width="700" height="433"></span>
 </code></pre></div>
     </div>
@@ -171,7 +172,7 @@ been computed.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

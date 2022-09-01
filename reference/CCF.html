@@ -95,7 +95,7 @@ across the used karyotypes, and extracted from the
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">CCF</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">CCF</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -115,8 +115,8 @@ and CCF values.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">'example_dataset_CNAqc'</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">x</span> <span class="op">=</span> <span class="fu"><a href="init.html">init</a></span><span class="op">(</span><span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">snvs</span>, <span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">cna</span>, <span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">purity</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">'example_dataset_CNAqc'</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">x</span> <span class="op">=</span> <span class="fu"><a href="init.html">init</a></span><span class="op">(</span><span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">snvs</span>, <span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">cna</span>, <span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">purity</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BBBBBB; background-color: #0000BB;"> [ CNAqc - CNA Quality Check ] </span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Using reference genome coordinates for: <span style="color: #00BB00;">GRCh38</span>.</span>
@@ -125,8 +125,8 @@ and CCF values.</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> CNAs have no CCF, assuming clonal CNAs (CCF = 1).</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Fortified CNAs for <span style="color: #00BB00;">267</span> segments: <span style="color: #00BB00;">267</span> clonal and <span style="color: #00BB00;">0</span> subclonal.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="color: #00BB00;">12963</span> mutations mapped to clonal CNAs.</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">x</span> <span class="op">=</span> <span class="fu"><a href="compute_CCF.html">compute_CCF</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">x</span> <span class="op">=</span> <span class="fu"><a href="compute_CCF.html">compute_CCF</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Some karyotypes have fewer than25and will not be analysed.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ── Computing mutation multiplicity for karyotype <span style="color: #00BB00;">2:0</span> using the entropy method. ─</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Expected Binomial peak(s) for these calls (1 and 2 copies): 0.445 and 0.89</span>
@@ -140,23 +140,24 @@ and CCF values.</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Expected Binomial peak(s) for these calls (1 and 2 copies): 0.235449735449735 and 0.470899470899471</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Mixing pre/ post aneuploidy: 0.09 and 0.91</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Not assignamble area: [0.290780141843972; 0.368794326241135]</span>
-<span class="r-in"><span class="fu">CCF</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">CCF</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 9,122 × 19</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    chr       from       to ref   alt   FILTER    DP    NV   VAF ANNOVAR_FUNCTION</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> chr12 52<span style="text-decoration: underline;">097</span>806 52<span style="text-decoration: underline;">097</span>807 A     C     PASS      75     6 0.08  intronic        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> chr12 52<span style="text-decoration: underline;">518</span>721 52<span style="text-decoration: underline;">518</span>722 G     A     PASS      60    53 0.883 intergenic      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> chr12 53<span style="text-decoration: underline;">360</span>455 53<span style="text-decoration: underline;">360</span>456 C     T     PASS      82    75 0.915 intergenic      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> chr12 54<span style="text-decoration: underline;">790</span>107 54<span style="text-decoration: underline;">790</span>108 C     T     PASS      86    77 0.895 exonic          </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> chr12 54<span style="text-decoration: underline;">790</span>131 54<span style="text-decoration: underline;">790</span>132 A     T     PASS      72    62 0.861 exonic          </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> chr12 55<span style="text-decoration: underline;">400</span>463 55<span style="text-decoration: underline;">400</span>464 T     A     PASS      85    40 0.471 intergenic      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> chr12 57<span style="text-decoration: underline;">769</span>765 57<span style="text-decoration: underline;">769</span>766 C     T     PASS      73    62 0.849 intronic        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> chr12 58<span style="text-decoration: underline;">555</span>290 58<span style="text-decoration: underline;">555</span>291 C     T     PASS      65    51 0.785 intergenic      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> chr12 58<span style="text-decoration: underline;">579</span>121 58<span style="text-decoration: underline;">579</span>122 T     A     PASS      64    57 0.891 intergenic      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> chr12 59<span style="text-decoration: underline;">011</span>655 59<span style="text-decoration: underline;">011</span>656 G     A     PASS      54    44 0.815 ncRNA_intronic  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 9,112 more rows, and 9 more variables: GENE &lt;chr&gt;, is_driver &lt;lgl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    chr       from       to ref   alt   FILTER    DP    NV   VAF ANNOVAR_…¹ GENE </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> chr12 52<span style="text-decoration: underline;">097</span>806 52<span style="text-decoration: underline;">097</span>807 A     C     PASS      75     6 0.08  intronic   SCN8A</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> chr12 52<span style="text-decoration: underline;">518</span>721 52<span style="text-decoration: underline;">518</span>722 G     A     PASS      60    53 0.883 intergenic AC07…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> chr12 53<span style="text-decoration: underline;">360</span>455 53<span style="text-decoration: underline;">360</span>456 C     T     PASS      82    75 0.915 intergenic KRT1…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> chr12 54<span style="text-decoration: underline;">790</span>107 54<span style="text-decoration: underline;">790</span>108 C     T     PASS      86    77 0.895 exonic     ITGA5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> chr12 54<span style="text-decoration: underline;">790</span>131 54<span style="text-decoration: underline;">790</span>132 A     T     PASS      72    62 0.861 exonic     ITGA5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> chr12 55<span style="text-decoration: underline;">400</span>463 55<span style="text-decoration: underline;">400</span>464 T     A     PASS      85    40 0.471 intergenic TESP…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> chr12 57<span style="text-decoration: underline;">769</span>765 57<span style="text-decoration: underline;">769</span>766 C     T     PASS      73    62 0.849 intronic   R3HD…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> chr12 58<span style="text-decoration: underline;">555</span>290 58<span style="text-decoration: underline;">555</span>291 C     T     PASS      65    51 0.785 intergenic RP11…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> chr12 58<span style="text-decoration: underline;">579</span>121 58<span style="text-decoration: underline;">579</span>122 T     A     PASS      64    57 0.891 intergenic RP11…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> chr12 59<span style="text-decoration: underline;">011</span>655 59<span style="text-decoration: underline;">011</span>656 G     A     PASS      54    44 0.815 ncRNA_int… RP11…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 9,112 more rows, 8 more variables: is_driver &lt;lgl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   driver_label &lt;chr&gt;, gene &lt;chr&gt;, type &lt;chr&gt;, karyotype &lt;chr&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   segment_id &lt;chr&gt;, mutation_multiplicity &lt;dbl&gt;, CCF &lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   segment_id &lt;chr&gt;, mutation_multiplicity &lt;dbl&gt;, CCF &lt;dbl&gt;, and abbreviated</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   variable name ¹​ANNOVAR_FUNCTION</span></span>
 </code></pre></div>
     </div>
   </div>
@@ -171,7 +172,7 @@ and CCF values.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

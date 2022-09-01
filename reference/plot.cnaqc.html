@@ -87,7 +87,7 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">plot.cnaqc</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">plot.cnaqc</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -109,8 +109,8 @@
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">'example_dataset_CNAqc'</span>, package <span class="op">=</span> <span class="st">'CNAqc'</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">x</span> <span class="op">=</span> <span class="fu"><a href="init.html">init</a></span><span class="op">(</span><span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">snvs</span>, <span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">cna</span>,<span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">purity</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">'example_dataset_CNAqc'</span>, package <span class="op">=</span> <span class="st">'CNAqc'</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">x</span> <span class="op">=</span> <span class="fu"><a href="init.html">init</a></span><span class="op">(</span><span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">snvs</span>, <span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">cna</span>,<span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">purity</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BBBBBB; background-color: #0000BB;"> [ CNAqc - CNA Quality Check ] </span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Using reference genome coordinates for: <span style="color: #00BB00;">GRCh38</span>.</span>
@@ -119,8 +119,8 @@
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> CNAs have no CCF, assuming clonal CNAs (CCF = 1).</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Fortified CNAs for <span style="color: #00BB00;">267</span> segments: <span style="color: #00BB00;">267</span> clonal and <span style="color: #00BB00;">0</span> subclonal.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="color: #00BB00;">12963</span> mutations mapped to clonal CNAs.</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">plot.cnaqc</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">plot.cnaqc</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Scale for 'fill' is already present. Adding another scale for 'fill', which</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> will replace the existing scale.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 24 rows containing missing values (geom_rect).</span>
@@ -144,7 +144,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

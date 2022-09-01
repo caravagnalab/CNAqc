@@ -120,157 +120,157 @@
     
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/caravagnalab/CNAqc" class="external-link">CNAqc</a></span><span class="op">)</span>
-<span class="co">#&gt; Warning: replacing previous import 'cli::num_ansi_colors' by</span>
-<span class="co">#&gt; 'crayon::num_ansi_colors' when loading 'BMix'</span>
-<span class="co">#&gt; Warning: replacing previous import 'crayon::%+%' by 'ggplot2::%+%' when loading</span>
-<span class="co">#&gt; 'BMix'</span>
-<span class="co">#&gt; <span style="color: #00BB00;">✔</span> Loading <span style="color: #00BB00;">BMix</span>, <span style="font-style: italic;">'Binomial and Beta-Binomial univariate mixtures'</span>. Support : <span style="color: #0000BB; font-style: italic;">&lt;https://caravagnalab.github.io/BMix/&gt;</span></span>
-<span class="co">#&gt; Warning: replacing previous import 'cli::num_ansi_colors' by</span>
-<span class="co">#&gt; 'crayon::num_ansi_colors' when loading 'easypar'</span>
-<span class="co">#&gt; <span style="color: #00BB00;">✔</span> Loading <span style="color: #00BB00;">CNAqc</span>, <span style="font-style: italic;">'Copy Number Alteration quality check'</span>. Support : <span style="color: #0000BB; font-style: italic;">&lt;https://caravagn.github.io/CNAqc/&gt;</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/caravagnalab/CNAqc" class="external-link">CNAqc</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: replacing previous import 'cli::num_ansi_colors' by</span></span>
+<span><span class="co">#&gt; 'crayon::num_ansi_colors' when loading 'BMix'</span></span>
+<span><span class="co">#&gt; Warning: replacing previous import 'crayon::%+%' by 'ggplot2::%+%' when loading</span></span>
+<span><span class="co">#&gt; 'BMix'</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Loading <span style="color: #00BB00;">BMix</span>, <span style="font-style: italic;">'Binomial and Beta-Binomial univariate mixtures'</span>. Support : <span style="color: #0000BB; font-style: italic;">&lt;https://caravagnalab.github.io/BMix/&gt;</span></span></span>
+<span><span class="co">#&gt; Warning: replacing previous import 'cli::num_ansi_colors' by</span></span>
+<span><span class="co">#&gt; 'crayon::num_ansi_colors' when loading 'easypar'</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Loading <span style="color: #00BB00;">CNAqc</span>, <span style="font-style: italic;">'Copy Number Alteration quality check'</span>. Support : <span style="color: #0000BB; font-style: italic;">&lt;https://caravagn.github.io/CNAqc/&gt;</span></span></span></code></pre></div>
 <p>Smoothing works with a simple algorithm that merges, inside each chromosome, all contiguous segments that have the same absolute copy number values (minnor and major allele counts), and are separated by up to <span class="math inline">\(\delta\)</span> base pairs. Only clonal CNAs can be smoothed; subclonal CNAs are retained (they cannot be smoothed usually because the CCF of conrtiguous segments might be different, even if the allele-specific profiles are equivalent).</p>
 <p>The default value of <span class="math inline">\(\delta = 10^6\)</span> (1 megabase).</p>
-<pre><code><span class="co">#&gt; <span style="color: #BBBBBB; background-color: #0000BB;"> [ CNAqc - CNA Quality Check ] </span></span>
-<span class="co"><span style="color: #BBBBBB; background-color: #0000BB;">#&gt; </span></span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;    2:2  [n = 7478, L = 1483 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { <span style="color: #BBBB00;">CTCF</span> }</span>
-<span class="co">#&gt;    4:2  [n = 1893, L =  331 Mb] ■■■■■■■</span>
-<span class="co">#&gt;    3:2  [n = 1625, L =  357 Mb] ■■■■■■</span>
-<span class="co">#&gt;    2:1  [n = 1563, L =  420 Mb] ■■■■■■  { <span style="color: #BBBB00;">TTN</span> }</span>
-<span class="co">#&gt;    3:0  [n =  312, L =  137 Mb] ■</span>
-<span class="co">#&gt;    2:0  [n =   81, L =   39 Mb]   { <span style="color: #BBBB00;">TP53</span> }</span>
-<span class="co">#&gt;   16:2  [n =    4, L =    0 Mb] </span>
-<span class="co">#&gt;   25:2  [n =    2, L =    1 Mb] </span>
-<span class="co">#&gt;    3:1  [n =    2, L =    1 Mb] </span>
-<span class="co">#&gt;  106:1  [n =    1, L =    0 Mb] </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;          chr      from        to ref alt  DP NV       VAF driver_label is_driver</span>
-<span class="co">#&gt;         chr2 179431633 179431634   C   T 117 77 0.6581197          TTN      TRUE</span>
-<span class="co">#&gt;        chr16  67646006  67646007   C   T 120 54 0.4500000         CTCF      TRUE</span>
-<span class="co">#&gt;        chr17   7577106   7577107   G   C  84 78 0.9285714         TP53      TRUE</span></code></pre>
+<pre><code><span><span class="co">#&gt; <span style="color: #BBBBBB; background-color: #0000BB;"> [ CNAqc - CNA Quality Check ] </span></span></span>
+<span><span class="co"><span style="color: #BBBBBB; background-color: #0000BB;">#&gt; </span></span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;    2:2  [n = 7478, L = 1483 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { <span style="color: #BBBB00;">CTCF</span> }</span></span>
+<span><span class="co">#&gt;    4:2  [n = 1893, L =  331 Mb] ■■■■■■■</span></span>
+<span><span class="co">#&gt;    3:2  [n = 1625, L =  357 Mb] ■■■■■■</span></span>
+<span><span class="co">#&gt;    2:1  [n = 1563, L =  420 Mb] ■■■■■■  { <span style="color: #BBBB00;">TTN</span> }</span></span>
+<span><span class="co">#&gt;    3:0  [n =  312, L =  137 Mb] ■</span></span>
+<span><span class="co">#&gt;    2:0  [n =   81, L =   39 Mb]   { <span style="color: #BBBB00;">TP53</span> }</span></span>
+<span><span class="co">#&gt;   16:2  [n =    4, L =    0 Mb] </span></span>
+<span><span class="co">#&gt;   25:2  [n =    2, L =    1 Mb] </span></span>
+<span><span class="co">#&gt;    3:1  [n =    2, L =    1 Mb] </span></span>
+<span><span class="co">#&gt;  106:1  [n =    1, L =    0 Mb] </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;          chr      from        to ref alt  DP NV       VAF driver_label is_driver</span></span>
+<span><span class="co">#&gt;         chr2 179431633 179431634   C   T 117 77 0.6581197          TTN      TRUE</span></span>
+<span><span class="co">#&gt;        chr16  67646006  67646007   C   T 120 54 0.4500000         CTCF      TRUE</span></span>
+<span><span class="co">#&gt;        chr17   7577106   7577107   G   C  84 78 0.9285714         TP53      TRUE</span></span></code></pre>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Before smoothing</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-<span class="co">#&gt; ── <span style="color: #000000; background-color: #BBBB00;">[ CNAqc ] </span> <span style="color: #00BB00;">12963</span> mutations in <span style="color: #00BB00;">267</span> segments (<span style="color: #00BB00;">267</span> clonal, <span style="color: #00BB00;">0</span> subclonal). Genome</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; ── Clonal CNAs</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;    2:2  [n = 7478, L = 1483 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { <span style="color: #BBBB00;">CTCF</span> }</span>
-<span class="co">#&gt;    4:2  [n = 1893, L =  331 Mb] ■■■■■■■</span>
-<span class="co">#&gt;    3:2  [n = 1625, L =  357 Mb] ■■■■■■</span>
-<span class="co">#&gt;    2:1  [n = 1563, L =  420 Mb] ■■■■■■  { <span style="color: #BBBB00;">TTN</span> }</span>
-<span class="co">#&gt;    3:0  [n =  312, L =  137 Mb] ■</span>
-<span class="co">#&gt;    2:0  [n =   81, L =   39 Mb]   { <span style="color: #BBBB00;">TP53</span> }</span>
-<span class="co">#&gt;   16:2  [n =    4, L =    0 Mb] </span>
-<span class="co">#&gt;   25:2  [n =    2, L =    1 Mb] </span>
-<span class="co">#&gt;    3:1  [n =    2, L =    1 Mb] </span>
-<span class="co">#&gt;  106:1  [n =    1, L =    0 Mb]</span>
-<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample Purity: 89% ~ Ploidy: 4.</span>
-<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> There are 3 annotated driver(s) mapped to clonal CNAs.</span>
-<span class="co">#&gt;          chr      from        to ref alt  DP NV       VAF driver_label is_driver</span>
-<span class="co">#&gt;         chr2 179431633 179431634   C   T 117 77 0.6581197          TTN      TRUE</span>
-<span class="co">#&gt;        chr16  67646006  67646007   C   T 120 54 0.4500000         CTCF      TRUE</span>
-<span class="co">#&gt;        chr17   7577106   7577107   G   C  84 78 0.9285714         TP53      TRUE</span>
-
-<span class="co"># After smoothing</span>
-<span class="va">x</span> <span class="op">=</span> <span class="fu"><a href="../reference/smooth_segments.html">smooth_segments</a></span><span class="op">(</span><span class="va">x</span>, maximum_distance <span class="op">=</span> <span class="fl">1e6</span><span class="op">)</span> <span class="co"># default</span>
-<span class="co">#&gt; → <span style="color: #0000BB;">chr1</span> <span style="color: #BB0000;">37</span> -<span style="color: #00BB00;">6</span> @</span>
-<span class="co">#&gt; → <span style="color: #0000BB;">chr10</span> <span style="color: #BB0000;">8</span> -<span style="color: #00BB00;">3</span> @</span>
-<span class="co">#&gt; → <span style="color: #0000BB;">chr11</span> <span style="color: #BB0000;">22</span> -<span style="color: #00BB00;">3</span> @</span>
-<span class="co">#&gt; → <span style="color: #0000BB;">chr12</span> <span style="color: #BB0000;">13</span> -<span style="color: #00BB00;">11</span> @</span>
-<span class="co">#&gt; → <span style="color: #0000BB;">chr14</span> <span style="color: #BB0000;">2</span> -<span style="color: #00BB00;">1</span> @</span>
-<span class="co">#&gt; → <span style="color: #0000BB;">chr15</span> <span style="color: #BB0000;">9</span> -<span style="color: #00BB00;">3</span> @</span>
-<span class="co">#&gt; → <span style="color: #0000BB;">chr16</span> <span style="color: #BB0000;">10</span> -<span style="color: #00BB00;">3</span> @</span>
-<span class="co">#&gt; → <span style="color: #0000BB;">chr17</span> <span style="color: #BB0000;">10</span> -<span style="color: #00BB00;">6</span> @</span>
-<span class="co">#&gt; → <span style="color: #0000BB;">chr18</span> <span style="color: #BB0000;">8</span> -<span style="color: #00BB00;">2</span> @</span>
-<span class="co">#&gt; → <span style="color: #0000BB;">chr19</span> <span style="color: #BB0000;">5</span> -<span style="color: #00BB00;">2</span> @</span>
-<span class="co">#&gt; → <span style="color: #0000BB;">chr2</span> <span style="color: #BB0000;">18</span> -<span style="color: #00BB00;">5</span> @</span>
-<span class="co">#&gt; → <span style="color: #0000BB;">chr20</span> <span style="color: #BB0000;">9</span> -<span style="color: #00BB00;">2</span> @</span>
-<span class="co">#&gt; → <span style="color: #0000BB;">chr21</span> <span style="color: #BB0000;">2</span> -<span style="color: #00BB00;">1</span> @</span>
-<span class="co">#&gt; → <span style="color: #0000BB;">chr22</span> <span style="color: #BB0000;">3</span> -<span style="color: #00BB00;">3</span> @</span>
-<span class="co">#&gt; → <span style="color: #0000BB;">chr3</span> <span style="color: #BB0000;">19</span> -<span style="color: #00BB00;">4</span> @</span>
-<span class="co">#&gt; → <span style="color: #0000BB;">chr4</span> <span style="color: #BB0000;">8</span> -<span style="color: #00BB00;">2</span> @</span>
-<span class="co">#&gt; → <span style="color: #0000BB;">chr5</span> <span style="color: #BB0000;">6</span> -<span style="color: #00BB00;">3</span> @</span>
-<span class="co">#&gt; → <span style="color: #0000BB;">chr6</span> <span style="color: #BB0000;">4</span> -<span style="color: #00BB00;">2</span> @</span>
-<span class="co">#&gt; → <span style="color: #0000BB;">chr7</span> <span style="color: #BB0000;">46</span> -<span style="color: #00BB00;">17</span> @</span>
-<span class="co">#&gt; → <span style="color: #0000BB;">chr8</span> <span style="color: #BB0000;">18</span> -<span style="color: #00BB00;">3</span> @</span>
-<span class="co">#&gt; → <span style="color: #0000BB;">chr9</span> <span style="color: #BB0000;">3</span> -<span style="color: #00BB00;">2</span> @</span>
-<span class="co">#&gt; → <span style="color: #0000BB;">chrX</span> <span style="color: #BB0000;">6</span> -<span style="color: #00BB00;">2</span> @</span>
-<span class="co">#&gt; <span style="color: #00BB00;">✔</span> Smoothed from 267 to 87 segments with 1e+06 gap (bases).</span>
-<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Creating a new CNAqc object. The old object will be retained in the $before_smoothing field.</span>
-<span class="co">#&gt; <span style="color: #BBBBBB; background-color: #0000BB;"> [ CNAqc - CNA Quality Check ] </span></span>
-<span class="co"><span style="color: #BBBBBB; background-color: #0000BB;">#&gt; </span></span>
-<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Using reference genome coordinates for: <span style="color: #00BB00;">hg19</span>.</span>
-<span class="co">#&gt; <span style="color: #00BB00;">✔</span> Fortified calls for <span style="color: #00BB00;">12963</span> somatic mutations: <span style="color: #00BB00;">12963</span> SNVs (<span style="color: #00BB00;">100%</span>) and <span style="color: #00BB00;">0</span> indels.</span>
-<span class="co">#&gt; <span style="color: #00BB00;">✔</span> Fortified CNAs for <span style="color: #00BB00;">87</span> segments: <span style="color: #00BB00;">87</span> clonal and <span style="color: #00BB00;">0</span> subclonal.</span>
-<span class="co">#&gt; Warning in map_mutations_to_clonal_segments(snvs, cna_clonal): [CNAqc] a</span>
-<span class="co">#&gt; karyotype column is present in CNA calls, and will be overwritten</span>
-<span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #00BB00;">12963</span> mutations mapped to clonal CNAs.</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Before smoothing</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span><span class="co">#&gt; ── <span style="color: #000000; background-color: #BBBB00;">[ CNAqc ] </span> <span style="color: #00BB00;">12963</span> mutations in <span style="color: #00BB00;">267</span> segments (<span style="color: #00BB00;">267</span> clonal, <span style="color: #00BB00;">0</span> subclonal). Genome</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ── Clonal CNAs</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;    2:2  [n = 7478, L = 1483 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { <span style="color: #BBBB00;">CTCF</span> }</span></span>
+<span><span class="co">#&gt;    4:2  [n = 1893, L =  331 Mb] ■■■■■■■</span></span>
+<span><span class="co">#&gt;    3:2  [n = 1625, L =  357 Mb] ■■■■■■</span></span>
+<span><span class="co">#&gt;    2:1  [n = 1563, L =  420 Mb] ■■■■■■  { <span style="color: #BBBB00;">TTN</span> }</span></span>
+<span><span class="co">#&gt;    3:0  [n =  312, L =  137 Mb] ■</span></span>
+<span><span class="co">#&gt;    2:0  [n =   81, L =   39 Mb]   { <span style="color: #BBBB00;">TP53</span> }</span></span>
+<span><span class="co">#&gt;   16:2  [n =    4, L =    0 Mb] </span></span>
+<span><span class="co">#&gt;   25:2  [n =    2, L =    1 Mb] </span></span>
+<span><span class="co">#&gt;    3:1  [n =    2, L =    1 Mb] </span></span>
+<span><span class="co">#&gt;  106:1  [n =    1, L =    0 Mb]</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample Purity: 89% ~ Ploidy: 4.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> There are 3 annotated driver(s) mapped to clonal CNAs.</span></span>
+<span><span class="co">#&gt;          chr      from        to ref alt  DP NV       VAF driver_label is_driver</span></span>
+<span><span class="co">#&gt;         chr2 179431633 179431634   C   T 117 77 0.6581197          TTN      TRUE</span></span>
+<span><span class="co">#&gt;        chr16  67646006  67646007   C   T 120 54 0.4500000         CTCF      TRUE</span></span>
+<span><span class="co">#&gt;        chr17   7577106   7577107   G   C  84 78 0.9285714         TP53      TRUE</span></span>
+<span></span>
+<span><span class="co"># After smoothing</span></span>
+<span><span class="va">x</span> <span class="op">=</span> <span class="fu"><a href="../reference/smooth_segments.html">smooth_segments</a></span><span class="op">(</span><span class="va">x</span>, maximum_distance <span class="op">=</span> <span class="fl">1e6</span><span class="op">)</span> <span class="co"># default</span></span>
+<span><span class="co">#&gt; → <span style="color: #0000BB;">chr1</span> <span style="color: #BB0000;">37</span> -<span style="color: #00BB00;">6</span> @</span></span>
+<span><span class="co">#&gt; → <span style="color: #0000BB;">chr10</span> <span style="color: #BB0000;">8</span> -<span style="color: #00BB00;">3</span> @</span></span>
+<span><span class="co">#&gt; → <span style="color: #0000BB;">chr11</span> <span style="color: #BB0000;">22</span> -<span style="color: #00BB00;">3</span> @</span></span>
+<span><span class="co">#&gt; → <span style="color: #0000BB;">chr12</span> <span style="color: #BB0000;">13</span> -<span style="color: #00BB00;">11</span> @</span></span>
+<span><span class="co">#&gt; → <span style="color: #0000BB;">chr14</span> <span style="color: #BB0000;">2</span> -<span style="color: #00BB00;">1</span> @</span></span>
+<span><span class="co">#&gt; → <span style="color: #0000BB;">chr15</span> <span style="color: #BB0000;">9</span> -<span style="color: #00BB00;">3</span> @</span></span>
+<span><span class="co">#&gt; → <span style="color: #0000BB;">chr16</span> <span style="color: #BB0000;">10</span> -<span style="color: #00BB00;">3</span> @</span></span>
+<span><span class="co">#&gt; → <span style="color: #0000BB;">chr17</span> <span style="color: #BB0000;">10</span> -<span style="color: #00BB00;">6</span> @</span></span>
+<span><span class="co">#&gt; → <span style="color: #0000BB;">chr18</span> <span style="color: #BB0000;">8</span> -<span style="color: #00BB00;">2</span> @</span></span>
+<span><span class="co">#&gt; → <span style="color: #0000BB;">chr19</span> <span style="color: #BB0000;">5</span> -<span style="color: #00BB00;">2</span> @</span></span>
+<span><span class="co">#&gt; → <span style="color: #0000BB;">chr2</span> <span style="color: #BB0000;">18</span> -<span style="color: #00BB00;">5</span> @</span></span>
+<span><span class="co">#&gt; → <span style="color: #0000BB;">chr20</span> <span style="color: #BB0000;">9</span> -<span style="color: #00BB00;">2</span> @</span></span>
+<span><span class="co">#&gt; → <span style="color: #0000BB;">chr21</span> <span style="color: #BB0000;">2</span> -<span style="color: #00BB00;">1</span> @</span></span>
+<span><span class="co">#&gt; → <span style="color: #0000BB;">chr22</span> <span style="color: #BB0000;">3</span> -<span style="color: #00BB00;">3</span> @</span></span>
+<span><span class="co">#&gt; → <span style="color: #0000BB;">chr3</span> <span style="color: #BB0000;">19</span> -<span style="color: #00BB00;">4</span> @</span></span>
+<span><span class="co">#&gt; → <span style="color: #0000BB;">chr4</span> <span style="color: #BB0000;">8</span> -<span style="color: #00BB00;">2</span> @</span></span>
+<span><span class="co">#&gt; → <span style="color: #0000BB;">chr5</span> <span style="color: #BB0000;">6</span> -<span style="color: #00BB00;">3</span> @</span></span>
+<span><span class="co">#&gt; → <span style="color: #0000BB;">chr6</span> <span style="color: #BB0000;">4</span> -<span style="color: #00BB00;">2</span> @</span></span>
+<span><span class="co">#&gt; → <span style="color: #0000BB;">chr7</span> <span style="color: #BB0000;">46</span> -<span style="color: #00BB00;">17</span> @</span></span>
+<span><span class="co">#&gt; → <span style="color: #0000BB;">chr8</span> <span style="color: #BB0000;">18</span> -<span style="color: #00BB00;">3</span> @</span></span>
+<span><span class="co">#&gt; → <span style="color: #0000BB;">chr9</span> <span style="color: #BB0000;">3</span> -<span style="color: #00BB00;">2</span> @</span></span>
+<span><span class="co">#&gt; → <span style="color: #0000BB;">chrX</span> <span style="color: #BB0000;">6</span> -<span style="color: #00BB00;">2</span> @</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Smoothed from 267 to 87 segments with 1e+06 gap (bases).</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Creating a new CNAqc object. The old object will be retained in the $before_smoothing field.</span></span>
+<span><span class="co">#&gt; <span style="color: #BBBBBB; background-color: #0000BB;"> [ CNAqc - CNA Quality Check ] </span></span></span>
+<span><span class="co"><span style="color: #BBBBBB; background-color: #0000BB;">#&gt; </span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Using reference genome coordinates for: <span style="color: #00BB00;">hg19</span>.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Fortified calls for <span style="color: #00BB00;">12963</span> somatic mutations: <span style="color: #00BB00;">12963</span> SNVs (<span style="color: #00BB00;">100%</span>) and <span style="color: #00BB00;">0</span> indels.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Fortified CNAs for <span style="color: #00BB00;">87</span> segments: <span style="color: #00BB00;">87</span> clonal and <span style="color: #00BB00;">0</span> subclonal.</span></span>
+<span><span class="co">#&gt; Warning in map_mutations_to_clonal_segments(snvs, cna_clonal): [CNAqc] a</span></span>
+<span><span class="co">#&gt; karyotype column is present in CNA calls, and will be overwritten</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #00BB00;">12963</span> mutations mapped to clonal CNAs.</span></span></code></pre></div>
 <p>The old CNAqc object is retained inside the new one</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">before_smoothing</span><span class="op">)</span>
-<span class="co">#&gt; ── <span style="color: #000000; background-color: #BBBB00;">[ CNAqc ] </span> <span style="color: #00BB00;">12963</span> mutations in <span style="color: #00BB00;">267</span> segments (<span style="color: #00BB00;">267</span> clonal, <span style="color: #00BB00;">0</span> subclonal). Genome</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; ── Clonal CNAs</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;    2:2  [n = 7478, L = 1483 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { <span style="color: #BBBB00;">CTCF</span> }</span>
-<span class="co">#&gt;    4:2  [n = 1893, L =  331 Mb] ■■■■■■■</span>
-<span class="co">#&gt;    3:2  [n = 1625, L =  357 Mb] ■■■■■■</span>
-<span class="co">#&gt;    2:1  [n = 1563, L =  420 Mb] ■■■■■■  { <span style="color: #BBBB00;">TTN</span> }</span>
-<span class="co">#&gt;    3:0  [n =  312, L =  137 Mb] ■</span>
-<span class="co">#&gt;    2:0  [n =   81, L =   39 Mb]   { <span style="color: #BBBB00;">TP53</span> }</span>
-<span class="co">#&gt;   16:2  [n =    4, L =    0 Mb] </span>
-<span class="co">#&gt;   25:2  [n =    2, L =    1 Mb] </span>
-<span class="co">#&gt;    3:1  [n =    2, L =    1 Mb] </span>
-<span class="co">#&gt;  106:1  [n =    1, L =    0 Mb]</span>
-<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample Purity: 89% ~ Ploidy: 4.</span>
-<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> There are 3 annotated driver(s) mapped to clonal CNAs.</span>
-<span class="co">#&gt;          chr      from        to ref alt  DP NV       VAF driver_label is_driver</span>
-<span class="co">#&gt;         chr2 179431633 179431634   C   T 117 77 0.6581197          TTN      TRUE</span>
-<span class="co">#&gt;        chr16  67646006  67646007   C   T 120 54 0.4500000         CTCF      TRUE</span>
-<span class="co">#&gt;        chr17   7577106   7577107   G   C  84 78 0.9285714         TP53      TRUE</span>
-
-<span class="co"># The new should have fewer segments</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-<span class="co">#&gt; ── <span style="color: #000000; background-color: #BBBB00;">[ CNAqc ] </span> <span style="color: #00BB00;">12963</span> mutations in <span style="color: #00BB00;">87</span> segments (<span style="color: #00BB00;">87</span> clonal, <span style="color: #00BB00;">0</span> subclonal). Genome re</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; ── Clonal CNAs</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;    2:2  [n = 7478, L = 1493 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { <span style="color: #BBBB00;">CTCF</span> }</span>
-<span class="co">#&gt;    4:2  [n = 1893, L =  333 Mb] ■■■■■■■</span>
-<span class="co">#&gt;    3:2  [n = 1625, L =  362 Mb] ■■■■■■</span>
-<span class="co">#&gt;    2:1  [n = 1563, L =  424 Mb] ■■■■■■  { <span style="color: #BBBB00;">TTN</span> }</span>
-<span class="co">#&gt;    3:0  [n =  312, L =  139 Mb] ■</span>
-<span class="co">#&gt;    2:0  [n =   81, L =   39 Mb]   { <span style="color: #BBBB00;">TP53</span> }</span>
-<span class="co">#&gt;   16:2  [n =    4, L =    0 Mb] </span>
-<span class="co">#&gt;   25:2  [n =    2, L =    1 Mb] </span>
-<span class="co">#&gt;    3:1  [n =    2, L =    1 Mb] </span>
-<span class="co">#&gt;  106:1  [n =    1, L =    0 Mb]</span>
-<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample Purity: 89% ~ Ploidy: 4.</span>
-<span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> There are 3 annotated driver(s) mapped to clonal CNAs.</span>
-<span class="co">#&gt;          chr      from        to ref alt  DP NV       VAF driver_label is_driver</span>
-<span class="co">#&gt;         chr2 179431633 179431634   C   T 117 77 0.6581197          TTN      TRUE</span>
-<span class="co">#&gt;        chr16  67646006  67646007   C   T 120 54 0.4500000         CTCF      TRUE</span>
-<span class="co">#&gt;        chr17   7577106   7577107   G   C  84 78 0.9285714         TP53      TRUE</span>
-<span class="co">#&gt; <span style="color: #00BB00;">✔</span> These segments are smoothed; before smoothing there were 267 segments.</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">before_smoothing</span><span class="op">)</span></span>
+<span><span class="co">#&gt; ── <span style="color: #000000; background-color: #BBBB00;">[ CNAqc ] </span> <span style="color: #00BB00;">12963</span> mutations in <span style="color: #00BB00;">267</span> segments (<span style="color: #00BB00;">267</span> clonal, <span style="color: #00BB00;">0</span> subclonal). Genome</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ── Clonal CNAs</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;    2:2  [n = 7478, L = 1483 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { <span style="color: #BBBB00;">CTCF</span> }</span></span>
+<span><span class="co">#&gt;    4:2  [n = 1893, L =  331 Mb] ■■■■■■■</span></span>
+<span><span class="co">#&gt;    3:2  [n = 1625, L =  357 Mb] ■■■■■■</span></span>
+<span><span class="co">#&gt;    2:1  [n = 1563, L =  420 Mb] ■■■■■■  { <span style="color: #BBBB00;">TTN</span> }</span></span>
+<span><span class="co">#&gt;    3:0  [n =  312, L =  137 Mb] ■</span></span>
+<span><span class="co">#&gt;    2:0  [n =   81, L =   39 Mb]   { <span style="color: #BBBB00;">TP53</span> }</span></span>
+<span><span class="co">#&gt;   16:2  [n =    4, L =    0 Mb] </span></span>
+<span><span class="co">#&gt;   25:2  [n =    2, L =    1 Mb] </span></span>
+<span><span class="co">#&gt;    3:1  [n =    2, L =    1 Mb] </span></span>
+<span><span class="co">#&gt;  106:1  [n =    1, L =    0 Mb]</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample Purity: 89% ~ Ploidy: 4.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> There are 3 annotated driver(s) mapped to clonal CNAs.</span></span>
+<span><span class="co">#&gt;          chr      from        to ref alt  DP NV       VAF driver_label is_driver</span></span>
+<span><span class="co">#&gt;         chr2 179431633 179431634   C   T 117 77 0.6581197          TTN      TRUE</span></span>
+<span><span class="co">#&gt;        chr16  67646006  67646007   C   T 120 54 0.4500000         CTCF      TRUE</span></span>
+<span><span class="co">#&gt;        chr17   7577106   7577107   G   C  84 78 0.9285714         TP53      TRUE</span></span>
+<span></span>
+<span><span class="co"># The new should have fewer segments</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span><span class="co">#&gt; ── <span style="color: #000000; background-color: #BBBB00;">[ CNAqc ] </span> <span style="color: #00BB00;">12963</span> mutations in <span style="color: #00BB00;">87</span> segments (<span style="color: #00BB00;">87</span> clonal, <span style="color: #00BB00;">0</span> subclonal). Genome re</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ── Clonal CNAs</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;    2:2  [n = 7478, L = 1493 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { <span style="color: #BBBB00;">CTCF</span> }</span></span>
+<span><span class="co">#&gt;    4:2  [n = 1893, L =  333 Mb] ■■■■■■■</span></span>
+<span><span class="co">#&gt;    3:2  [n = 1625, L =  362 Mb] ■■■■■■</span></span>
+<span><span class="co">#&gt;    2:1  [n = 1563, L =  424 Mb] ■■■■■■  { <span style="color: #BBBB00;">TTN</span> }</span></span>
+<span><span class="co">#&gt;    3:0  [n =  312, L =  139 Mb] ■</span></span>
+<span><span class="co">#&gt;    2:0  [n =   81, L =   39 Mb]   { <span style="color: #BBBB00;">TP53</span> }</span></span>
+<span><span class="co">#&gt;   16:2  [n =    4, L =    0 Mb] </span></span>
+<span><span class="co">#&gt;   25:2  [n =    2, L =    1 Mb] </span></span>
+<span><span class="co">#&gt;    3:1  [n =    2, L =    1 Mb] </span></span>
+<span><span class="co">#&gt;  106:1  [n =    1, L =    0 Mb]</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample Purity: 89% ~ Ploidy: 4.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> There are 3 annotated driver(s) mapped to clonal CNAs.</span></span>
+<span><span class="co">#&gt;          chr      from        to ref alt  DP NV       VAF driver_label is_driver</span></span>
+<span><span class="co">#&gt;         chr2 179431633 179431634   C   T 117 77 0.6581197          TTN      TRUE</span></span>
+<span><span class="co">#&gt;        chr16  67646006  67646007   C   T 120 54 0.4500000         CTCF      TRUE</span></span>
+<span><span class="co">#&gt;        chr17   7577106   7577107   G   C  84 78 0.9285714         TP53      TRUE</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> These segments are smoothed; before smoothing there were 267 segments.</span></span></code></pre></div>
 <p>You can visualise the effect of the smoothing automatically using <code>CNAqc</code> functions.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/plot_smoothing.html">plot_smoothing</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-<span class="co">#&gt; Scale for 'fill' is already present. Adding another scale for 'fill', which</span>
-<span class="co">#&gt; will replace the existing scale.</span>
-<span class="co">#&gt; Warning: Graphs cannot be horizontally aligned unless the axis parameter is set.</span>
-<span class="co">#&gt; Placing graphs unaligned.</span>
-<span class="co">#&gt; Scale for 'fill' is already present. Adding another scale for 'fill', which</span>
-<span class="co">#&gt; will replace the existing scale.</span>
-<span class="co">#&gt; Warning: Graphs cannot be horizontally aligned unless the axis parameter is set.</span>
-<span class="co">#&gt; Placing graphs unaligned.</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_smoothing.html">plot_smoothing</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Scale for 'fill' is already present. Adding another scale for 'fill', which</span></span>
+<span><span class="co">#&gt; will replace the existing scale.</span></span>
+<span><span class="co">#&gt; Warning: Graphs cannot be horizontally aligned unless the axis parameter is set.</span></span>
+<span><span class="co">#&gt; Placing graphs unaligned.</span></span>
+<span><span class="co">#&gt; Scale for 'fill' is already present. Adding another scale for 'fill', which</span></span>
+<span><span class="co">#&gt; will replace the existing scale.</span></span>
+<span><span class="co">#&gt; Warning: Graphs cannot be horizontally aligned unless the axis parameter is set.</span></span>
+<span><span class="co">#&gt; Placing graphs unaligned.</span></span></code></pre></div>
 <p><img src="a5_smoothing_files/figure-html/unnamed-chunk-5-1.png" width="1440"></p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/plot_multisample_CNA.html">plot_multisample_CNA</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>`Before` <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">before_smoothing</span>, `After` <span class="op">=</span> <span class="va">x</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; ── Breaking input segments at <span style="color: #00BB00;">100 Kb</span> resolution</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_multisample_CNA.html">plot_multisample_CNA</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>`Before` <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">before_smoothing</span>, `After` <span class="op">=</span> <span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ── Breaking input segments at <span style="color: #00BB00;">100 Kb</span> resolution</span></span></code></pre></div>
 <p><img src="a5_smoothing_files/figure-html/unnamed-chunk-6-1.png" width="576"></p>
   </div>
 
@@ -289,7 +289,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer>

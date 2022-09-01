@@ -91,7 +91,7 @@ annotated <code>NULL</code> is returned.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">get_drivers</span><span class="op">(</span><span class="va">x</span>, chromosomes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"chr"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">22</span>, <span class="st">"X"</span>, <span class="st">"Y"</span><span class="op">)</span><span class="op">)</span>, which <span class="op">=</span> <span class="st">"VAF"</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">get_drivers</span><span class="op">(</span><span class="va">x</span>, chromosomes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"chr"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">22</span>, <span class="st">"X"</span>, <span class="st">"Y"</span><span class="op">)</span><span class="op">)</span>, which <span class="op">=</span> <span class="st">"VAF"</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -118,8 +118,8 @@ that can have drivers annotated.</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">'example_dataset_CNAqc'</span>, package <span class="op">=</span> <span class="st">'CNAqc'</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">x</span> <span class="op">=</span> <span class="fu"><a href="init.html">init</a></span><span class="op">(</span><span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">snvs</span>, <span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">cna</span>,<span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">purity</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">'example_dataset_CNAqc'</span>, package <span class="op">=</span> <span class="st">'CNAqc'</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">x</span> <span class="op">=</span> <span class="fu"><a href="init.html">init</a></span><span class="op">(</span><span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">snvs</span>, <span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">cna</span>,<span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">purity</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BBBBBB; background-color: #0000BB;"> [ CNAqc - CNA Quality Check ] </span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Using reference genome coordinates for: <span style="color: #00BB00;">GRCh38</span>.</span>
@@ -128,16 +128,17 @@ that can have drivers annotated.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> CNAs have no CCF, assuming clonal CNAs (CCF = 1).</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Fortified CNAs for <span style="color: #00BB00;">267</span> segments: <span style="color: #00BB00;">267</span> clonal and <span style="color: #00BB00;">0</span> subclonal.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="color: #00BB00;">12963</span> mutations mapped to clonal CNAs.</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">get_drivers</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">get_drivers</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 3 × 17</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   chr        from       to ref   alt   FILTER    DP    NV   VAF ANNOVAR_FUNCTION</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> chr2  179<span style="text-decoration: underline;">431</span>633   1.79<span style="color: #949494;">e</span>8 C     T     PASS     117    77 0.658 exonic          </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> chr16  67<span style="text-decoration: underline;">646</span>006   6.76<span style="color: #949494;">e</span>7 C     T     PASS     120    54 0.45  exonic          </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> chr17   7<span style="text-decoration: underline;">577</span>106   7.58<span style="color: #949494;">e</span>6 G     C     PASS      84    78 0.929 exonic          </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 7 more variables: GENE &lt;chr&gt;, is_driver &lt;lgl&gt;, driver_label &lt;chr&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   gene &lt;chr&gt;, type &lt;chr&gt;, karyotype &lt;chr&gt;, segment_id &lt;chr&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   chr     from     to ref   alt   FILTER    DP    NV   VAF ANNOV…¹ GENE  is_dr…²</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> chr2  1.79<span style="color: #949494;">e</span>8 1.79<span style="color: #949494;">e</span>8 C     T     PASS     117    77 0.658 exonic  TTN   TRUE   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> chr16 6.76<span style="color: #949494;">e</span>7 6.76<span style="color: #949494;">e</span>7 C     T     PASS     120    54 0.45  exonic  CTCF  TRUE   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> chr17 7.58<span style="color: #949494;">e</span>6 7.58<span style="color: #949494;">e</span>6 G     C     PASS      84    78 0.929 exonic  TP53  TRUE   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 5 more variables: driver_label &lt;chr&gt;, gene &lt;chr&gt;, type &lt;chr&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   karyotype &lt;chr&gt;, segment_id &lt;chr&gt;, and abbreviated variable names</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   ¹​ANNOVAR_FUNCTION, ²​is_driver</span></span>
 </code></pre></div>
     </div>
   </div>
@@ -152,7 +153,7 @@ that can have drivers annotated.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

@@ -91,7 +91,7 @@ these can be forced to remain.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">subsample</span><span class="op">(</span><span class="va">x</span>, N <span class="op">=</span> <span class="fl">15000</span>, keep_drivers <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">subsample</span><span class="op">(</span><span class="va">x</span>, N <span class="op">=</span> <span class="fl">15000</span>, keep_drivers <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -111,8 +111,8 @@ these can be forced to remain.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">'example_dataset_CNAqc'</span>, package <span class="op">=</span> <span class="st">'CNAqc'</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">x</span> <span class="op">=</span> <span class="fu"><a href="init.html">init</a></span><span class="op">(</span><span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">snvs</span>, <span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">cna</span>,<span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">purity</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">'example_dataset_CNAqc'</span>, package <span class="op">=</span> <span class="st">'CNAqc'</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">x</span> <span class="op">=</span> <span class="fu"><a href="init.html">init</a></span><span class="op">(</span><span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">snvs</span>, <span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">cna</span>,<span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">purity</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BBBBBB; background-color: #0000BB;"> [ CNAqc - CNA Quality Check ] </span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Using reference genome coordinates for: <span style="color: #00BB00;">GRCh38</span>.</span>
@@ -121,8 +121,8 @@ these can be forced to remain.</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> CNAs have no CCF, assuming clonal CNAs (CCF = 1).</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Fortified CNAs for <span style="color: #00BB00;">267</span> segments: <span style="color: #00BB00;">267</span> clonal and <span style="color: #00BB00;">0</span> subclonal.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> <span style="color: #00BB00;">12963</span> mutations mapped to clonal CNAs.</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">subsample</span><span class="op">(</span><span class="va">x</span>, N <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">subsample</span><span class="op">(</span><span class="va">x</span>, N <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BBBBBB; background-color: #0000BB;"> [ CNAqc - CNA Quality Check ] </span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Using reference genome coordinates for: <span style="color: #00BB00;">GRCh38</span>.</span>
@@ -135,11 +135,11 @@ these can be forced to remain.</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ── Clonal CNAs </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2:2  [n = 56, L = 1483 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { <span style="color: #BBBB00;">CTCF</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3:2  [n = 16, L = 357 Mb] ■■■■■■■■</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2:1  [n = 14, L = 420 Mb] ■■■■■■■  { <span style="color: #BBBB00;">TTN</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4:2  [n = 11, L = 331 Mb] ■■■■■</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3:0  [n =  5, L = 137 Mb] ■■</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:2  [n = 59, L = 1483 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { <span style="color: #BBBB00;">CTCF</span> }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4:2  [n = 17, L = 331 Mb] ■■■■■■■■</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:1  [n = 12, L = 420 Mb] ■■■■■  { <span style="color: #BBBB00;">TTN</span> }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:2  [n = 12, L = 357 Mb] ■■■■■</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:0  [n =  2, L = 137 Mb] ■</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  2:0  [n =  1, L = 39 Mb]   { <span style="color: #BBBB00;">TP53</span> }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sample Purity: 89% ~ Ploidy: 4.</span>
@@ -149,7 +149,7 @@ these can be forced to remain.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         chr2 179431633 179431634   C   T 117 77 0.6581197          TTN      TRUE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        chr16  67646006  67646007   C   T 120 54 0.4500000         CTCF      TRUE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        chr17   7577106   7577107   G   C  84 78 0.9285714         TP53      TRUE</span>
-<span class="r-in"><span class="fu">subsample</span><span class="op">(</span><span class="va">x</span>, N <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">subsample</span><span class="op">(</span><span class="va">x</span>, N <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BBBBBB; background-color: #0000BB;"> [ CNAqc - CNA Quality Check ] </span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Using reference genome coordinates for: <span style="color: #00BB00;">GRCh38</span>.</span>
@@ -162,21 +162,22 @@ these can be forced to remain.</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ── Clonal CNAs </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2:2  [n = 558, L = 1483 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { <span style="color: #BBBB00;">CTCF, CTCF</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4:2  [n = 150, L = 331 Mb] ■■■■■■■</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3:2  [n = 139, L = 357 Mb] ■■■■■■■</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2:1  [n = 128, L = 420 Mb] ■■■■■■  { <span style="color: #BBBB00;">TTN</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3:0  [n =  22, L = 137 Mb] ■</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2:0  [n =   6, L =  39 Mb]   { <span style="color: #BBBB00;">TP53</span> }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:2  [n = 562, L = 1483 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { <span style="color: #BBBB00;">CTCF</span> }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:1  [n = 151, L = 420 Mb] ■■■■■■■  { <span style="color: #BBBB00;">TTN, TTN</span> }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4:2  [n = 142, L = 331 Mb] ■■■■■■■</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:2  [n = 124, L = 357 Mb] ■■■■■■</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:0  [n =  20, L = 137 Mb] ■</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:0  [n =   4, L =  39 Mb]   { <span style="color: #BBBB00;">TP53, TP53</span> }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sample Purity: 89% ~ Ploidy: 4.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> There are 4 annotated driver(s) mapped to clonal CNAs.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> There are 5 annotated driver(s) mapped to clonal CNAs.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          chr      from        to ref alt  DP NV       VAF driver_label is_driver</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         chr2 179431633 179431634   C   T 117 77 0.6581197          TTN      TRUE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        chr16  67646006  67646007   C   T 120 54 0.4500000         CTCF      TRUE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        chr17   7577106   7577107   G   C  84 78 0.9285714         TP53      TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>        chr16  67646006  67646007   C   T 120 54 0.4500000         CTCF      TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        chr17   7577106   7577107   G   C  84 78 0.9285714         TP53      TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         chr2 179431633 179431634   C   T 117 77 0.6581197          TTN      TRUE</span>
 </code></pre></div>
     </div>
   </div>
@@ -191,7 +192,7 @@ these can be forced to remain.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>
