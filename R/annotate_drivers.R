@@ -113,7 +113,3 @@
 #' # exones_GRCh38 %>% filter(gene =='TP53') %>% pull(from) %>% min
 #' # exones_GRCh38 %>% filter(gene =='TP53') %>% pull(from) %>% max
 #' # gene_coordinates_GRCh38 %>% filter(gene =='TP53')
-#'
-#'
-#'
-#'

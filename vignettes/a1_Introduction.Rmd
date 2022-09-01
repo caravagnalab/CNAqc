@@ -53,7 +53,7 @@ Chromosome names and alleles should be in character format; chromosomes must be 
 ```{r}
 # Example input SNVs
 print(
-  example_dataset_CNAqc$snvs %>% 
+  example_dataset_CNAqc$mutations %>% 
         select(
           chr, from, to, # Genomic coordinates
           ref, alt,      # Alleles (reference and alternative)
@@ -69,7 +69,7 @@ Optionally, you can annotate also _driver mutations_ by adding the following col
 
 ```{r}
 print(
-  example_dataset_CNAqc$snvs %>% 
+  example_dataset_CNAqc$mutations %>% 
         select(
           chr, from, to, ref, alt, is_driver, driver_label, everything()
         )
@@ -137,9 +137,9 @@ When you create a dataset it is required to explicit the reference genome for th
 ```{r}
 # Use SNVs, CNAs and tumour purity (hg19 reference, see below)
 x = init(
-  example_dataset_CNAqc$snvs, 
-  example_dataset_CNAqc$cna,
-  example_dataset_CNAqc$purity,
+  mutations = example_dataset_CNAqc$mutations, 
+  cna = example_dataset_CNAqc$cna,
+  purity = example_dataset_CNAqc$purity,
   ref = 'hg19'
   )
 ```

@@ -1,9 +1,9 @@
 ##########################################
 # Peak detection for simple karyotypes (more sofisticated algorithm) - rightmost peak matching
-peak_detector = function(snvs,
+peak_detector = function(mutations,
                          expectation,
                          tumour_purity,
-                         filtered_qc_snvs,
+                         filtered_qc_mutations,
                          VAF_tolerance = 0.001,
                          matching_epsilon = 0.015,
                          kernel_adjust = 1,
@@ -11,13 +11,13 @@ peak_detector = function(snvs,
                          KDE = FALSE)
 {
   # expectation = CNAqc:::expected_vaf_peak(AB[1], AB[2], tumour_purity)
-  # snvs = w %>%
+  # mutations = w %>%
   #   dplyr::sample_n(size = nrow(w), replace = TRUE)
 
   xy_peaks = den = NULL
 
   # Smoothed Gaussian kernel for VAF
-  y = snvs %>% dplyr::pull(VAF)
+  y = mutations %>% dplyr::pull(VAF)
 
   den = density(y, kernel = 'gaussian', adjust = kernel_adjust)
   in_range = den$x >= min(y) & den$x <= max(y)
@@ -39,7 +39,7 @@ peak_detector = function(snvs,
     dplyr::distinct(x, .keep_all = TRUE)
 
   # print(pks)
-  hst = hist(snvs$VAF, breaks = seq(0, 1, 0.01), plot = F)$counts
+  hst = hist(mutations$VAF, breaks = seq(0, 1, 0.01), plot = F)$counts
   pks$counts_per_bin = hst[round(pks$x * 100)]
 
   # xy_peaks = pks %>%
@@ -69,7 +69,7 @@ peak_detector = function(snvs,
   if (y %>% unique() %>% length() > 1)
   {
     bm = bmixfit(
-      data.frame(successes = snvs$NV, trials = snvs$DP),
+      data.frame(successes = mutations$NV, trials = mutations$DP),
       K.BetaBinomials = 0,
       K.Binomials = 1:4,
       silent = TRUE
@@ -84,7 +84,7 @@ peak_detector = function(snvs,
 
       tnw = tibble(x = den$x[w_den],
                    y = den$y[w_den],
-                   # counts_per_bin = bm$pi[b] * (snvs %>% nrow), # Wrong
+                   # counts_per_bin = bm$pi[b] * (mutations %>% nrow), # Wrong
                    discarded = FALSE)
 
       # Counts are counted the same way regardless it is a BMix fit or not.
@@ -114,15 +114,15 @@ peak_detector = function(snvs,
     stop("Cannot find peaks for this karyotype, raising an error (check the data distribution).")
 
   # linear combination of the weight, split by number of peaks to match
-  weight = filtered_qc_snvs %>%
-    filter(karyotype == snvs$karyotype[1]) %>%
+  weight = filtered_qc_mutations %>%
+    filter(karyotype == mutations$karyotype[1]) %>%
     pull(norm_prop)
 
   weight = weight / nrow(expectation)
 
   ###### ###### ###### ###### ######
   # # Plot
-  # plot_data = ggplot(data = snvs, aes(VAF)) +
+  # plot_data = ggplot(data = mutations, aes(VAF)) +
   #   geom_histogram(aes(y = ..density..), binwidth = 0.01, alpha = .3) +
   #   geom_line(
   #     data = data.frame(x = den$x, y = den$y),
@@ -132,8 +132,8 @@ peak_detector = function(snvs,
   #   ) +
   #   CNAqc:::my_ggplot_theme() +
   #   labs(
-  #     title = paste0("Karyotype ", snvs$karyotype[1]),
-  #     subtitle = paste0('w = ', round(weight, 3), ' (n = ', nrow(snvs), ')'),
+  #     title = paste0("Karyotype ", mutations$karyotype[1]),
+  #     subtitle = paste0('w = ', round(weight, 3), ' (n = ', nrow(mutations), ')'),
   #     y = 'KDE'
   #   ) +
   #   # geom_hline(
@@ -186,7 +186,7 @@ peak_detector = function(snvs,
       offset = compute_delta_purity(
         vaf = x,
         delta_vaf = offset_VAF,
-        ploidy = strsplit(snvs$karyotype[1], ':') %>% unlist %>% as.numeric() %>% sum(),
+        ploidy = strsplit(mutations$karyotype[1], ':') %>% unlist %>% as.numeric() %>% sum(),
         multiplicity = mutation_multiplicity
       )
     )
@@ -263,10 +263,10 @@ peak_detector = function(snvs,
 
 ##########################################
 # Peak detection for simple karyotypes (more sofisticated algorithm) - closest peak matching
-peak_detector_closest_hit_match = function(snvs,
+peak_detector_closest_hit_match = function(mutations,
                                            expectation,
                                            tumour_purity,
-                                           filtered_qc_snvs,
+                                           filtered_qc_mutations,
                                            VAF_tolerance = 0.001,
                                            matching_epsilon = 0.015,
                                            kernel_adjust = 1,
@@ -276,7 +276,7 @@ peak_detector_closest_hit_match = function(snvs,
   xy_peaks = den = NULL
 
   # Smoothed Gaussian kernel for VAF
-  y = snvs %>% dplyr::pull(VAF)
+  y = mutations %>% dplyr::pull(VAF)
 
   den = density(y,
                 kernel = 'gaussian',
@@ -304,7 +304,7 @@ peak_detector_closest_hit_match = function(snvs,
     dplyr::distinct(x, .keep_all = TRUE)
 
   # print(pks)
-  hst = hist(snvs$VAF, breaks = seq(0, 1, 0.01), plot = F)$counts
+  hst = hist(mutations$VAF, breaks = seq(0, 1, 0.01), plot = F)$counts
   pks$counts_per_bin = hst[round(pks$x * 100)]
 
   # Run KDE if required only
@@ -331,7 +331,7 @@ peak_detector_closest_hit_match = function(snvs,
   {
     # invisible(capture.output(
     bm = BMix::bmixfit(
-      data.frame(successes = snvs$NV, trials = snvs$DP),
+      data.frame(successes = mutations$NV, trials = mutations$DP),
       K.BetaBinomials = 0,
       K.Binomials = 1:4,
       silent = TRUE
@@ -346,7 +346,7 @@ peak_detector_closest_hit_match = function(snvs,
 
       tnw = tibble(x = den$x[w_den],
                    y = den$y[w_den],
-                   # counts_per_bin = bm$pi[b] * (snvs %>% nrow), # Wrong
+                   # counts_per_bin = bm$pi[b] * (mutations %>% nrow), # Wrong
                    discarded = FALSE)
 
       # Counts are counted the same way regardless it is a BMix fit or not.
@@ -382,8 +382,8 @@ peak_detector_closest_hit_match = function(snvs,
 
 
   # linear combination of the weight, split by number of peaks to match
-  weight = filtered_qc_snvs %>%
-    filter(karyotype == snvs$karyotype[1]) %>%
+  weight = filtered_qc_mutations %>%
+    filter(karyotype == mutations$karyotype[1]) %>%
     pull(norm_prop)
 
   weight = weight / nrow(expectation)
@@ -421,7 +421,7 @@ peak_detector_closest_hit_match = function(snvs,
       offset = compute_delta_purity(
         vaf = x,
         delta_vaf = offset_VAF,
-        ploidy = strsplit(snvs$karyotype[1], ':') %>% unlist %>% as.numeric() %>% sum(),
+        ploidy = strsplit(mutations$karyotype[1], ':') %>% unlist %>% as.numeric() %>% sum(),
         multiplicity = mutation_multiplicity
       )
     )

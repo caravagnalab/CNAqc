@@ -63,7 +63,7 @@
 #'
 #' @usage data(example_dataset_CNAqc)
 #'
-#' @format A list of snvs, cna and purity value that
+#' @format A list of SNVs, allele-specific copy number alterations (CNAs) and purity value that
 #' can be used with CNAqc. This tumour does not contain subclonal CNAs.
 #'
 #' @keywords datasets

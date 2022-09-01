@@ -1,30 +1,55 @@
-#' Create a CNAqc object.
+#' Creates a CNAqc object.
 #'
-#' @description Creates a CNAqc object from a set of
-#' mutation and CNA calls, and a tumour purity value.
-#' The resulting object contains the mutations mapped
-#' into CNA segments, and allows for the computation
+#' @description Creates a CNAqc object from input
+#' mutations, allele-specifc copy numbers and a tumour purity value.
+#' The resulting object retains the input mutations that map on top
+#' of the copy number segments, and allows for the computation
 #' of the QC metrics available in the CNAqc package.
-#' CNAqc supports `hg19` coordinates.
 #'
-#' @param snvs A data.frame of mutations with the following fields
-#' available: `chr`, `from`, `to` as `hg19` chromosome coordinates.
-#' `ref` and `alt` for the reference and alternative alleles, and
-#' `DP`, `NV` and `VAF` for the depth (total number of reads with both
-#' reference and alternative), the number of variants with the alternative
-#' allele and the allele frequency (VAF = NV/DP). Chromosome names must be
-#' in the format `chr1`, `chr2`, etc.; alleles should be characters and
-#' all other fields numeric.
-#' @param cna A data.frame of CNA with the following fields
-#' available: `chr`, `from`, `to` as `hg19` chromosome coordinates.
-#' `Major` and `minor` for the number of copies of the major allele,
-#' and the minor (B-allele). A `CCF` column can be used as a real-value
-#' in between 0 and 1 to represent Cancer Cell Fractions; if this is not
-#' available `CCF = 1` is set and all calls will refer to clonal segments.
-#' Otherwise, segments with `CCF<1` would be considered subclonal CNAs.
+#' Genomic coordinates in relative (per-chromosome) format are
+#' transformed into absolute coordinates by means of a reference
+#' genome providing the length of each chromosome. CNAqc supports
+#' `hg19`/`GRCh37` and `hg38`/`GRCh38` references, which are embedded
+#' into the package as `CNAqc::chr_coordinates_hg19` and
+#' `CNAqc::chr_coordinates_GRCh38`. An abitrary reference can also be
+#' provided it is stored in am equivalent format.
+#'
+#' @param mutations A dataframe of mutations with the following fields:
+#' * `chr` chromosome name, e.g., \code{"chr3"}, \code{"chr8"}, \code{"chrX"}, ...
+#' * `from` where the mutation start, an integer number
+#' * `to` where the mutation ends, an integer number
+#' * `ref` reference allele, e.g., \code{"A"}, \code{"ACC"}, \code{"AGA"}, ...
+#' * `alt` alternative allele, e.g., \code{"A"}, \code{"ACC"}, \code{"AGA"}, ...
+#' * `DP` sequencing depth at the locus, an integer number
+#' * `NV` number of reads with the variant at the locus, an integer number
+#' * `VAF` variant allele frequency (VAF), defined as `NV/DP`, at the locus, a real number in [0,1]
+#'
+#' @param snvs Deprecated parameter.
+#'
+#' @param cna A dataframe of allele-specific copy number with the following fields:
+#' * `chr` chromosome name, e.g., \code{"chr3"}, \code{"chr8"}, \code{"chrX"}, ...
+#' * `from` where the segment start, an integer number
+#' * `to` where the segment ends, an integer number
+#' * `Major` for the number of copies of the major allele (or A-allele), an integer number
+#' * `minor` for the number of copies of the major allele (or B-allele), an integer number
+#' * `CCF` an optional cancer cell fraction (CCF) column distinguishing clonal and subclonal segments, a real number in [0,1]
+#' * `Major_2` optional for the number of copies of the major allele (or A-allele) in the second clone if present, an integer number
+#' * `minor_2` optional for the number of copies of the major allele (or B-allele) in the second clone  if present, an integer number
+#'
+#' If the `CCF` value is present and equal to 1, a segment is considered clonal, otherwise
+#' subclonal. If a segment is subclonal
+#' * the columns `Major` and `minor` are interpreted as those for a subclone with proportion equal to the `CCF` value;
+#' * the columns `Major_2` and `minor_2` are interpreted as those for a second subclone with proportion equal to the `1 - CCF` value;
+#'
 #' @param purity Value in between `0` and `1` to represent the proportion
 #' of actual tumour content (sometimes called "cellularity").
-#' @param ref The reference genome (either "hg19" or "GRCh38"); the default is "GRCh38".
+#'
+#' @param ref A key word for the used reference coordinate system. CNAqc supports
+#' `hg19`/`GRCh37` and `hg38`/`GRCh38` references, which are embedded
+#' into the package as `CNAqc::chr_coordinates_hg19` and
+#' `CNAqc::chr_coordinates_GRCh38`. An abitrary reference can also be
+#' provided if `ref` is a dataframe in the same format as `CNAqc::chr_coordinates_hg19`
+#' or `CNAqc::chr_coordinates_GRCh38`. The default reference is `GRCh38`.
 #'
 #' @return A CNAqc object of class `cnaqc`, with S3 methods for printing,
 #' plotting and analyzing data.
@@ -42,12 +67,29 @@
 #' data('example_dataset_CNAqc', package = 'CNAqc')
 #' print(example_dataset_CNAqc)
 #'
-#' x = init(snvs = example_dataset_CNAqc$snvs, cna = example_dataset_CNAqc$cna, purity = example_dataset_CNAqc$purity)
+#' x = init(mutations = example_dataset_CNAqc$mutations, cna = example_dataset_CNAqc$cna, purity = example_dataset_CNAqc$purity)
 #' print(x)
-init = function(snvs, cna, purity, ref = "GRCh38")
+init = function(mutations, snvs = NULL, cna, purity, ref = "GRCh38")
 {
   pio::pioHdr("CNAqc - CNA Quality Check")
   cat('\n')
+
+  if(!is.null(mutations))
+  {
+    if(!is.null(mutations))
+    {
+      cli::boxx("Parameter `mutations` has been deprecated, cannot use it with `mutations`", col = 'red', margin = 3)
+
+      cli::cli_abort("Avoid using `mutations` if you use `mutations")
+    }
+    else
+    {
+      cli::boxx("Parameter `mutations` has been deprecated, using it as `mutations", col = 'red', margin = 3)
+
+      mutations = mutations
+    }
+
+  }
 
   # Output
   fit = list()
@@ -58,7 +100,7 @@ init = function(snvs, cna, purity, ref = "GRCh38")
   cli::cli_alert_info("Using reference genome coordinates for: {.field {ref}}.")
 
   # Parse input
-  input = prepare_input_data(snvs, cna, purity)
+  input = prepare_input_data(mutations, cna, purity)
 
   # Remove CNA segments with NA Major/minor
   # na_allele_Major = sapply(input$cna_clonal$Major, is.na)
@@ -74,7 +116,7 @@ init = function(snvs, cna, purity, ref = "GRCh38")
   #   input$cna = input$cna[!na_allele, , drop = FALSE]
   # }
 
-  fit$snvs = input$snvs
+  fit$mutations = input$mutations
   fit$cna = input$cna_clonal %>%
     dplyr::left_join(input$tab, by = 'segment_id') %>% as_tibble()
   fit$cna_subclonal = input$cna_subclonal %>% as_tibble()
@@ -82,15 +124,15 @@ init = function(snvs, cna, purity, ref = "GRCh38")
 
   # Counts data
   if(!fit$has_subclonal_CNA)
-    fit$n_snvs = nrow(fit$snvs)
+    fit$n_mutations = nrow(fit$mutations)
   else
-    fit$n_snvs = nrow(fit$snvs)  + sapply(fit$cna_subclonal$mutations, nrow) %>% sum()
+    fit$n_mutations = nrow(fit$mutations)  + sapply(fit$cna_subclonal$mutations, nrow) %>% sum()
 
   fit$n_cna_clonal = nrow(fit$cna)
   fit$n_cna_subclonal = ifelse(is.null(fit$cna_subclonal), 0, nrow(fit$cna_subclonal))
   fit$n_cna = fit$n_cna_clonal + fit$n_cna_subclonal
 
-  fit$n_karyotype = sort(table(fit$snvs$karyotype), decreasing = T)
+  fit$n_karyotype = sort(table(fit$mutations$karyotype), decreasing = T)
   fit$purity = purity
 
   # Segments length (clonal)

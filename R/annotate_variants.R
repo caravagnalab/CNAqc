@@ -27,9 +27,9 @@
 #'
 #' data('example_dataset_CNAqc', package = 'CNAqc')
 #'
-#' snvs <- example_dataset_CNAqc$snvs
+#' mutations <- example_dataset_CNAqc$mutations
 #'
-#' snvs_annotated <- annotate_variants(snvs)
+#' mutations_annotated <- annotate_variants(mutations)
 #' }
 #'
 annotate_variants <- function(x,
@@ -187,7 +187,7 @@ annotate_variants <- function(x,
       refAA = REFAA,
       varAA = VARAA
     ) %>%
-    dplyr::select(chr, from, to, consequence, refAA, varAA) %>% unique() 
+    dplyr::select(chr, from, to, consequence, refAA, varAA) %>% unique()
 
   res <-
     dplyr::left_join(loc_df, output_coding,  by = c("chr", "from", "to")) %>% mutate(
@@ -215,18 +215,18 @@ annotate_variants <- function(x,
 
 
   if(collapse){
-    res <- res %>%  group_by(chr,from,to) %>% 
-      summarize(gene_symbol = paste(unique(gene_symbol), collapse = ":"), 
-                location = paste(unique(location), collapse = ":"), 
-                refAA = paste(unique(refAA), collapse = ":"), 
-                varAA = paste(unique(varAA), collapse = ":"), 
-                consequence = paste(unique(consequence), collapse = ":"), 
-                driver_label= paste(unique(driver_label), collapse = ":"), 
+    res <- res %>%  group_by(chr,from,to) %>%
+      summarize(gene_symbol = paste(unique(gene_symbol), collapse = ":"),
+                location = paste(unique(location), collapse = ":"),
+                refAA = paste(unique(refAA), collapse = ":"),
+                varAA = paste(unique(varAA), collapse = ":"),
+                consequence = paste(unique(consequence), collapse = ":"),
+                driver_label= paste(unique(driver_label), collapse = ":"),
                 is_driver = any(is_driver))
     res$driver_label <- gsub(res$driver_label, pattern = "NA:", replacement = "", fixed = TRUE)
   }
-  
-  
+
+
   final_table = left_join(
     inp %>% mutate(to = to + 1),
     res %>% mutate(to = to + 1),
@@ -234,7 +234,7 @@ annotate_variants <- function(x,
     ) %>%
     dplyr::arrange(-is_driver)
 
-  
+
 
   # final_table %>% filter(is_driver)
   # res %>% filter(is_driver) %>% mutate(to = to + 1)
@@ -242,7 +242,7 @@ annotate_variants <- function(x,
 
   if (inherits(x, 'cnaqc'))
   {
-    x$snvs = final_table
+    x$mutations = final_table
     final_table = x
   }
 

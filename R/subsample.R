@@ -15,23 +15,23 @@
 #'
 #' @examples
 #' data('example_dataset_CNAqc', package = 'CNAqc')
-#' x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+#' x = init(example_dataset_CNAqc$mutations, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
 #'
 #' subsample(x, N = 100)
 #' subsample(x, N = 1000)
 subsample = function(x, N = 15000, keep_drivers = TRUE)
 {
-  if (x$n_snvs < N)
+  if (x$n_mutations < N)
     return(x)
 
-  xx = x$snvs %>% dplyr::sample_n(N)
+  xx = x$mutations %>% dplyr::sample_n(N)
 
   xx_d = data.frame(stringsAsFactors = FALSE)
-  if (keep_drivers & 'is_driver' %in% colnames(x$snvs))
-    xx_d = x$snvs %>% dplyr::filter(is_driver)
+  if (keep_drivers & 'is_driver' %in% colnames(x$mutations))
+    xx_d = x$mutations %>% dplyr::filter(is_driver)
 
   CNAqc::init(
-    snvs = dplyr::bind_rows(xx_d, xx),
+    mutations = dplyr::bind_rows(xx_d, xx),
     cna = x$cna %>% dplyr::select(-segment_id,-n,-CCF),
     purity = x$purity
   )
@@ -53,7 +53,7 @@ subsample = function(x, N = 15000, keep_drivers = TRUE)
 #'
 #' @examples
 #' data('example_dataset_CNAqc', package = 'CNAqc')
-#' x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+#' x = init(example_dataset_CNAqc$mutations, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
 #'
 #' subset_by_segment_karyotype(x, '2:2')
 #' subset_by_segment_karyotype(x, '2:1')
@@ -71,7 +71,7 @@ subset_by_segment_karyotype = function(x, karyotypes)
 
   return(
     CNAqc::init(
-      snvs = x$snvs,
+      mutations = x$mutations,
       cna = cna_calls %>% dplyr::select(-segment_id,-n,-CCF),
       purity = x$purity,
       ref = x$reference_genome
@@ -97,7 +97,7 @@ subset_by_segment_karyotype = function(x, karyotypes)
 #'
 #' @examples
 #' data('example_dataset_CNAqc', package = 'CNAqc')
-#' x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+#' x = init(example_dataset_CNAqc$mutations, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
 #'
 subset_by_segment_totalcn = function(x, totalcn)
 {
@@ -113,7 +113,7 @@ subset_by_segment_totalcn = function(x, totalcn)
 
   return(
     CNAqc::init(
-      snvs = x$snvs,
+      mutations = x$mutations,
       cna = cna_calls,
       purity = x$purity,
       ref = x$reference_genome
@@ -135,7 +135,7 @@ subset_by_segment_minmutations = function(x, totalcn)
 
   return(
     CNAqc::init(
-      snvs = x$snvs,
+      mutations = x$mutations,
       cna = cna_calls,
       purity = x$purity,
       ref = x$reference_genome
@@ -144,17 +144,23 @@ subset_by_segment_minmutations = function(x, totalcn)
 
 }
 
-#' Title
+#' Subset mutations with minimum CCF values.
 #'
-#' @param x
-#' @param min_target_CCF
+#' @description
 #'
-#' @return
+#' This function allows to subset a CNAqc object and retain only mutations that
+#' map to clonal CNAs and have a mininum CCF value. Note that subclonal CNAs are
+#' lost upon application of this function.
+#'
+#' @param x A CNAqc object.
+#' @param min_target_CCF The minimum CCF do be enforced.
+#'
+#' @return A new CNAqc object with filtered mutations.
 #' @export
 #'
 #' @examples
 #'
-#' x = init(snvs = example_dataset_CNAqc$snvs, cna = example_dataset_CNAqc$cna, purity = example_dataset_CNAqc$purity)
+#' x = init(mutations = example_dataset_CNAqc$mutations, cna = example_dataset_CNAqc$cna, purity = example_dataset_CNAqc$purity)
 #' print(x)
 #'
 #' plot_data_histogram(x)
@@ -162,7 +168,7 @@ subset_by_segment_minmutations = function(x, totalcn)
 #' plot_data_histogram(subset_by_minimum_CCF(x))
 subset_by_minimum_CCF = function(x, min_target_CCF = 0.1)
 {
-  used_karyotypes = x$snvs$karyotype %>% unique
+  used_karyotypes = x$mutations$karyotype %>% unique
 
   minor_copies = sapply(strsplit(used_karyotypes, split = ':'), function(x)
     x[2]) %>% as.numeric()
@@ -213,12 +219,12 @@ subset_by_minimum_CCF = function(x, min_target_CCF = 0.1)
   }
 
   cat("\n")
-  subset_data = x$snvs %>%
+  subset_data = x$mutations %>%
     dplyr::mutate(remove = VAF <  cutoffs[karyotype]) %>%
     dplyr::filter(!remove)
 
   init(
-    snvs = subset_data,
+    mutations = subset_data,
     cna = x$cna %>% dplyr::select(-segment_id,-n,-CCF),
     purity = x$purity,
     ref = x$reference_genome
@@ -227,10 +233,10 @@ subset_by_minimum_CCF = function(x, min_target_CCF = 0.1)
 
 #' Retain only SNVs.
 #'
-#' @description It removes all non-SNVs mutations, re-creaging a new CNAqc
-#' dataset (all analyses are lost).
+#' @description It removes all non-SNVs mutations, re-creating a new CNAqc
+#' object with just SNVs. All analyses are lost.
 #'
-#' @param x
+#' @param x A CNAqc object.
 #' @param ref_nucleotides What reference alleles to use, default \code{c("A", "C", "T", "G")}.
 #' @param alt_nucleotides What alternative alleles to use, default \code{c("A", "C", "T", "G")}.
 #'
@@ -238,7 +244,7 @@ subset_by_minimum_CCF = function(x, min_target_CCF = 0.1)
 #' @export
 #'
 #' @examples
-#' x = init(snvs = example_dataset_CNAqc$snvs, cna = example_dataset_CNAqc$cna, purity = example_dataset_CNAqc$purity)
+#' x = init(mutations = example_dataset_CNAqc$mutations, cna = example_dataset_CNAqc$cna, purity = example_dataset_CNAqc$purity)
 #' print(x)
 #'
 #' # no change - they are already SNVs
@@ -247,21 +253,21 @@ subset_snvs = function(x,
                        ref_nucleotides = c("A", "C", "T", "G"),
                        alt_nucleotides = c("A", "C", "T", "G"))
 {
-  subset_snvs = x$snvs %>%
+  subset_mutations = x$mutations %>%
     dplyr::filter(ref %in% ref_nucleotides, alt %in% alt_nucleotides)
 
-  removed_snvs = x$snvs %>%
+  removed_mutations = x$mutations %>%
     dplyr::filter(!(ref %in% ref_nucleotides) |
                     !(alt %in% alt_nucleotides))
 
-  if (nrow(removed_snvs) > 0)
+  if (nrow(removed_mutations) > 0)
   {
     cli::cli_alert_success(
-      "Retained {.field {nrow(subset_snvs)}} SNVs, removed {.field {nrow(removed_snvs)}}."
+      "Retained {.field {nrow(subset_mutations)}} SNVs, removed {.field {nrow(removed_mutations)}}."
     )
 
     x = init(
-      snvs = subset_snvs,
+      mutations = subset_mutations,
       cna = x$cna %>% dplyr::select(-segment_id,-n,-CCF),
       purity = x$purity,
       ref = x$reference_genome
@@ -273,9 +279,9 @@ subset_snvs = function(x,
 
 # load('/Volumes/Data/Dropbox/160916_HMFregCPCT_FR10302749_FR12251983_CPCT02020357_cnaqc_object.RData')
 # plot_data_histogram(x)
-# w = init(x$snvs, x$cna, x$purity, x$reference_genome)
+# w = init(x$mutations, x$cna, x$purity, x$reference_genome)
 # wsb = subset_by_minimum_CCF(w, 0.1)
-# wsbsnv = subset_snvs(wsb)
+# wsbsnv = subset_mutations(wsb)
 #
 # ggpubr::ggarrange(
 #   plot_data_histogram(x),
@@ -314,7 +320,7 @@ split_by_chromosome = function(x,
 
   for(chr in chromosomes)
   {
-    clonal_mutations = x$snvs %>% filter(chr == !!chr)
+    clonal_mutations = x$mutations %>% filter(chr == !!chr)
 
     if((clonal_mutations %>% nrow()) == 0) next
 

@@ -1,0 +1,19 @@
+pandoc: 2.17.1.1
+pkgdown: 2.0.2
+pkgdown_sha: ~
+articles:
+  CNAqc: CNAqc.html
+  a1_Introduction: a1_Introduction.html
+  a2_Plots: a2_Plots.html
+  a3_peaks_detection: a3_peaks_detection.html
+  a4_ccf_computation: a4_ccf_computation.html
+  a5_smoothing: a5_smoothing.html
+  a6_fragmentation: a6_fragmentation.html
+  a7_example_MSeq: a7_example_MSeq.html
+  a8_annotate_variants: a8_annotate_variants.html
+  a9_automatic: a9_automatic.html
+last_built: 2022-09-01T09:34Z
+urls:
+  reference: caravagnalab.github.io/CNAqc/reference
+  article: caravagnalab.github.io/CNAqc/articles
+

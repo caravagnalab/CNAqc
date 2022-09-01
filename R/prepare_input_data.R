@@ -103,5 +103,5 @@ prepare_input_data = function(snvs, cna, tumour_purity)
     }
   }
 
-  return(list(snvs = snvs, cna_clonal = cna_clonal, cna_subclonal = cna_subclonal, tab = tab))
+  return(list(mutations = snvs, cna_clonal = cna_clonal, cna_subclonal = cna_subclonal, tab = tab))
 }

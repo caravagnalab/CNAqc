@@ -11,14 +11,14 @@
 #'
 #' @examples
 #' data('example_dataset_CNAqc', package = 'CNAqc')
-#' x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+#' x = init(example_dataset_CNAqc$mutations, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
 #'
 #' plot_gw_counts(x)
 plot_gw_counts = function(x, chromosomes = paste0('chr', c(1:22, 'X', 'Y')))
 {
   stopifnot(inherits(x, 'cnaqc'))
 
-  mutations = x$snvs %>% dplyr::filter(chr %in% chromosomes)
+  mutations = x$mutations %>% dplyr::filter(chr %in% chromosomes)
 
   if(x$n_cna_subclonal > 0)
   {
@@ -67,7 +67,7 @@ plot_gw_counts = function(x, chromosomes = paste0('chr', c(1:22, 'X', 'Y')))
 #'
 #' @examples
 #' data('example_dataset_CNAqc', package = 'CNAqc')
-#' x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+#' x = init(example_dataset_CNAqc$mutations, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
 #'
 #' plot_gw_depth(x)
 #'
@@ -78,7 +78,7 @@ plot_gw_depth = function(x, N = 5000, chromosomes = paste0('chr', c(1:22, 'X', '
 {
   stopifnot(inherits(x, 'cnaqc'))
 
-  mutations = x$snvs %>% dplyr::filter(chr %in% chromosomes)
+  mutations = x$mutations %>% dplyr::filter(chr %in% chromosomes)
 
   if(x$n_cna_subclonal > 0)
   {
@@ -152,7 +152,7 @@ plot_gw_depth = function(x, N = 5000, chromosomes = paste0('chr', c(1:22, 'X', '
 #'
 #' @examples
 #' data('example_dataset_CNAqc', package = 'CNAqc')
-#' x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+#' x = init(example_dataset_CNAqc$mutations, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
 #'
 #' plot_gw_vaf(x)
 #'
@@ -163,7 +163,7 @@ plot_gw_vaf = function(x, N = 5000, chromosomes = paste0('chr', c(1:22, 'X', 'Y'
 {
   stopifnot(inherits(x, 'cnaqc'))
 
-  mutations = x$snvs %>% dplyr::filter(chr %in% chromosomes)
+  mutations = x$mutations %>% dplyr::filter(chr %in% chromosomes)
 
   if(x$n_cna_subclonal > 0)
   {
@@ -236,7 +236,7 @@ plot_gw_vaf = function(x, N = 5000, chromosomes = paste0('chr', c(1:22, 'X', 'Y'
 #'
 #' @examples
 #' data('example_dataset_CNAqc', package = 'CNAqc')
-#' x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+#' x = init(example_dataset_CNAqc$mutations, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
 #'
 #' # Compute CCF
 #' x = compute_CCF(x)

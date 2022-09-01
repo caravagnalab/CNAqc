@@ -12,7 +12,7 @@ advanced_phasing = function(x, cutoff_n = 50)
                       cli::cli_alert("Signal deconvolution")
 
                       # x_k = x %>% subset_by_segment_karyotype(karyotype)
-                      x_k = x$snvs %>% dplyr::filter(karyotype == !!karyotype)
+                      x_k = x$mutations %>% dplyr::filter(karyotype == !!karyotype)
 
                       n_ploidy = strsplit(karyotype, ':')[[1]] %>% as.numeric() %>% max
 

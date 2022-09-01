@@ -15,7 +15,7 @@
 #'
 #' @examples
 #' data('example_dataset_CNAqc', package = 'CNAqc')
-#' x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+#' x = init(example_dataset_CNAqc$mutations, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
 #'
 #' x = smooth_segments(x)
 #' plot_smoothing(x)
@@ -130,7 +130,7 @@ smooth_segments = function(x, maximum_distance = 1e6)
   # if(!is.null(x$cna_subclonal) & nrow(x$cna_subclonal) > 0)
   #   subclonal_mutations_CNA = Reduce(bind_rows, x$cna_subclonal$mutations)
   #
-  # muattions = bind_rows(x$snvs, subclonal_mutations_CNA)
+  # muattions = bind_rows(x$mutations, subclonal_mutations_CNA)
 
 
   # Clean up the new segments table,

@@ -1,10 +1,10 @@
-map_mutations_to_clonal_segments = function(snvs, cna)
+map_mutations_to_clonal_segments = function(mutations, cna)
 {
-  if('karyotype' %in% colnames(snvs))
+  if('karyotype' %in% colnames(mutations))
     warning("[CNAqc] a karyotype column is present in CNA calls, and will be overwritten")
 
-  snvs$karyotype = NA
-  snvs$segment_id = NA
+  mutations$karyotype = NA
+  mutations$segment_id = NA
 
   # pb <- progress_estimated(nrow(cna), min_time = 0)
 
@@ -20,16 +20,16 @@ map_mutations_to_clonal_segments = function(snvs, cna)
 
 
     mappable = which(
-      snvs$chr == cna$chr[i] &
-        snvs$from >= cna$from[i] &
-        snvs$to <= cna$to[i]
+      mutations$chr == cna$chr[i] &
+        mutations$from >= cna$from[i] &
+        mutations$to <= cna$to[i]
         )
 
-    snvs$karyotype[mappable] = paste0(cna$Major[i], ':', cna$minor[i])
-    snvs$segment_id[mappable] = cna$segment_id[i]
+    mutations$karyotype[mappable] = paste0(cna$Major[i], ':', cna$minor[i])
+    mutations$segment_id[mappable] = cna$segment_id[i]
   }
 
-  snvs
+  mutations
 }
 
 

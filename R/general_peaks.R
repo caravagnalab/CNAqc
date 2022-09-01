@@ -3,7 +3,7 @@
 
 
 # data('example_dataset_CNAqc', package = 'CNAqc')
-# x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+# x = init(example_dataset_CNAqc$mutations, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
 
 
 

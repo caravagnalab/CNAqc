@@ -21,7 +21,7 @@
 #'
 #' @examples
 #' data('example_dataset_CNAqc', package = 'CNAqc')
-#' x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+#' x = init(example_dataset_CNAqc$mutations, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
 #'
 #' x = analyze_peaks(x)
 #' plot_peaks_analysis(x)
@@ -131,7 +131,7 @@ plot_peaks_fit = function(x, k)
     pull(epsilon)
 
   # Required input values
-  snvs = x$snvs %>%
+  mutations = x$mutations %>%
     dplyr::filter(karyotype == k) %>%
     dplyr::mutate(karyotype = paste0(karyotype, " (", matching,")"))
 
@@ -162,12 +162,12 @@ plot_peaks_fit = function(x, k)
 
   title = bquote(
       bold(.(k)) ~
-      .(paste0(' (n = ', nrow(snvs), ', ', round(weight*100, 1),  '%)'))
+      .(paste0(' (n = ', nrow(mutations), ', ', round(weight*100, 1),  '%)'))
   )
 
   # Plot the data
   plot_data =
-    ggplot(data = snvs, aes(VAF)) +
+    ggplot(data = mutations, aes(VAF)) +
     geom_histogram(aes(y = ..density..), binwidth = 0.01, alpha = .3) +
     geom_line(
       data = data.frame(x = den$x, y = den$y),
@@ -301,7 +301,7 @@ plot_peaks_fit_general = function(x)
   data_densities = x$peaks_analysis$general$data_densities  %>% add_counts()
 
   # plotting
-  x$snvs %>%
+  x$mutations %>%
     filter(karyotype %in% analysis) %>%
     add_counts() %>%
     ggplot(aes(VAF)) +

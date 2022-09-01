@@ -20,7 +20,7 @@
 #'
 #' @examples
 #' data('example_dataset_CNAqc', package = 'CNAqc')
-#' x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+#' x = init(example_dataset_CNAqc$mutations, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
 #'
 #' # Deafault segments -- all chromsomes, at least 1KB, at least 200 mapped mutations.
 #' inspect_segment(x)
@@ -48,7 +48,7 @@ inspect_segment = function(x,
     return(ggplot() + geom_blank())
   }
 
-  hplot = x$snvs %>%
+  hplot = x$mutations %>%
     ungroup %>%
     filter(segment_id %in% segment_ids) %>%
     ggplot(aes(VAF)) +
@@ -81,7 +81,7 @@ inspect_segment = function(x,
 
 
   hplot
-  # x$snvs %>%
+  # x$mutations %>%
   #   ungroup %>%
   #   filter(segment_id %in% segment_ids) %>%
   #   ggplot(aes(VAF, fill = segment_id)) +

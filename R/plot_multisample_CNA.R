@@ -19,7 +19,7 @@
 #'
 #' @examples
 #' data('example_dataset_CNAqc', package = 'CNAqc')
-#' x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna, example_dataset_CNAqc$purity)
+#' x = init(example_dataset_CNAqc$mutations, example_dataset_CNAqc$cna, example_dataset_CNAqc$purity)
 #'
 #' # Add some example deletion
 #' x2 = x
@@ -36,12 +36,8 @@ plot_multisample_CNA = function(x, layout = 'flat', ...)
 
   if(!ok_input) stop("Input x must be a list of CNAqc objects!")
 
-  L = x
-  Ln = names(L)
-  if(is.null(Ln)) Ln = paste0("Sample ", 1:length(L))
-
   if(layout == "flat") return(x %>% aux_plot_cohort_CNA(...))
-  if(layout == "circular") return(x %>% aux_plot_cohort_CNA_circular())
+  if(layout == "circular") return(x %>% aux_plot_cohort_CNA_circular(...))
 
   return(ggplot())
 }
@@ -211,8 +207,8 @@ aux_plot_cohort_CNA = function(x, delta = 1e5)
 
   # Maybe later we add these...
   # drivers = lapply(x, function(x)
-  #   if ("is_driver" %in% colnames(x$snvs))
-  #     x$snvs %>% dplyr::filter(is_driver)) %>%
+  #   if ("is_driver" %in% colnames(x$mutations))
+  #     x$mutations %>% dplyr::filter(is_driver)) %>%
   #   Reduce(f = bind_rows) %>%
   #   dplyr::group_by(chr, from, to, gene, driver_label) %>%
   #   dplyr::summarise(n = n()) %>%
@@ -229,11 +225,12 @@ aux_plot_cohort_CNA = function(x, delta = 1e5)
 # Circular layout
 aux_plot_cohort_CNA_circular = function(x, ...)
 {
-  L = x
   Ln = names(L)
   if(is.null(Ln)) {
     Ln = paste0("Sample ", 1:length(L))
     names(L) = Ln
+
+    cli::cli_alert_warning("The input list is un-named, using default naming scheme Sample*")
   }
 
   KARYO_colors = CNAqc:::get_karyotypes_colors(NULL)

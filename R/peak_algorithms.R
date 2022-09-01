@@ -50,7 +50,7 @@ analyze_peaks_common = function(x,
     )
 
   # Run peak detection
-  data_fits = x$snvs %>%
+  data_fits = x$mutations %>%
     filter(karyotype %in% analysis) %>%
     group_split(karyotype) %>%
     lapply(
@@ -62,7 +62,7 @@ analyze_peaks_common = function(x,
       }
     )
 
-  names(data_fits) = x$snvs %>%
+  names(data_fits) = x$mutations %>%
     filter(karyotype %in% analysis) %>%
     group_split(karyotype) %>%
     sapply(function(e) e$karyotype[1])
@@ -202,7 +202,7 @@ analyze_peaks_general = function(x,
                                  n_bootstrap = 5)
 {
   # Filter small segments
-  candidates = x$snvs$karyotype %>% unique
+  candidates = x$mutations$karyotype %>% unique
   candidates = setdiff(candidates,  c("1:1", "1:0", "2:0", "2:1", "2:2", "NA:NA"))
   n_cand = x$n_karyotype[candidates] >= n_min
 
@@ -220,14 +220,14 @@ analyze_peaks_general = function(x,
     Reduce(f = bind_rows)
 
   # Data peaks and densities
-  data_fit = x$snvs %>%
+  data_fit = x$mutations %>%
     filter(karyotype %in% analysis) %>%
     group_split(karyotype) %>%
     lapply(simple_peak_detector,
            kernel_adjust = kernel_adjust,
            n_bootstrap = n_bootstrap)
 
-  names(data_fit) = x$snvs %>%
+  names(data_fit) = x$mutations %>%
     filter(karyotype %in% analysis) %>%
     group_split(karyotype) %>%
     sapply(function(e) e$karyotype[1])
@@ -610,7 +610,7 @@ mixture_peak_detector = function(mutations, kernel_adjust, n_bootstrap)
 
       tnw = tibble(x = den$x[w_den],
                    y = den$y[w_den],
-                   # counts_per_bin = bm$pi[b] * (snvs %>% nrow), # Wrong
+                   # counts_per_bin = bm$pi[b] * (mutations %>% nrow), # Wrong
                    discarded = FALSE)
 
       # Counts are counted the same way regardless it is a BMix fit or not.

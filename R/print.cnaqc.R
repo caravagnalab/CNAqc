@@ -12,7 +12,7 @@
 #'
 #' @examples
 #' data('example_dataset_CNAqc', package = 'CNAqc')
-#' x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+#' x = init(example_dataset_CNAqc$mutations, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
 #'
 #' print(x)
 print.cnaqc = function(x, ...)
@@ -22,12 +22,12 @@ print.cnaqc = function(x, ...)
   cli::cli_rule(
     paste(
       crayon::bgYellow(crayon::black("[ CNAqc ] ")),
-      '{.field {x$n_snvs}} mutations in {.field {x$n_cna}} segments ({.field {x$n_cna_clonal}} clonal, {.field {x$n_cna_subclonal}} subclonal). Genome reference: {.field {x$reference_genome}}.'
+      '{.field {x$n_mutations}} mutations in {.field {x$n_cna}} segments ({.field {x$n_cna_clonal}} clonal, {.field {x$n_cna_subclonal}} subclonal). Genome reference: {.field {x$reference_genome}}.'
     )
   )
 
 
-  
+
   # cli::cli_alert_info(paste0(" CNA segments: ", x$n_cna_clonal, " clonal, ", x$n_cna_sbclonal, " subclonal."))
 
   # cli::cli_alert_info(paste0("Mutation mapping (head): ", paste0(head(x$n_karyotype), ' (',
@@ -54,7 +54,7 @@ print.cnaqc = function(x, ...)
   with_smoothing = all(!is.null(x$before_smoothing))
   with_arm_frag = all(!is.null(x$arm_fragmentation))
   with_wg_frag = all(!is.null(x$wg_fragmentation))
-  with_drivers = all(c("driver_label", "is_driver") %in% colnames(x$snvs))
+  with_drivers = all(c("driver_label", "is_driver") %in% colnames(x$mutations))
 
   cli::cli_alert_info(paste0(
     "Sample Purity: ",
@@ -68,10 +68,10 @@ print.cnaqc = function(x, ...)
 
   if(with_drivers)
   {
-    nd = x$snvs %>% dplyr::filter(is_driver) %>% nrow()
+    nd = x$mutations %>% dplyr::filter(is_driver) %>% nrow()
     cli::cli_alert_info("There are {.value {nd}} annotated driver(s) mapped to clonal CNAs.")
 
-    w_d = x$snvs %>%
+    w_d = x$mutations %>%
       dplyr::filter(is_driver) %>%
       dplyr::select(chr, from, to, ref, alt, DP, NV, VAF, driver_label, is_driver) %>%
       as.data.frame()
@@ -448,8 +448,8 @@ bar_print_console = function(x, top = length(x$n_karyotype)) {
 
                cat(paste(rep("\u25A0", bars[b]), collapse = ''))
 
-               drv = x$snvs %>% dplyr::filter(karyotype == b)
-               if ('is_driver' %in% colnames(x$snvs))
+               drv = x$mutations %>% dplyr::filter(karyotype == b)
+               if ('is_driver' %in% colnames(x$mutations))
                {
                  drv = drv %>% dplyr::filter(is_driver) %>% dplyr::pull(driver_label)
 
@@ -512,7 +512,7 @@ bar_print_console_scl = function(x, top = nrow(x$cna_subclonal))
 #'
 #' @examples
 #' data('example_dataset_CNAqc', package = 'CNAqc')
-#' x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+#' x = init(example_dataset_CNAqc$mutations, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
 #'
 #' plot.cnaqc(x)
 plot.cnaqc = function(x, ...)

@@ -50,7 +50,7 @@
 #'
 #' @examples
 #' data('example_dataset_CNAqc', package = 'CNAqc')
-#' x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+#' x = init(example_dataset_CNAqc$mutations, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
 #'
 #' x = analyze_peaks(x)
 #' print(x)
@@ -193,14 +193,14 @@ analyze_peaks = function(x,
 #
 #
 #   # Karyotypes of interest, and filter for karyotype size
-#   qc_snvs = x$snvs %>%
+#   qc_mutations = x$mutations %>%
 #     dplyr::filter(karyotype %in% karyotypes)
 #
-#   filtered_qc_snvs = qc_snvs %>%
+#   filtered_qc_mutations = qc_mutations %>%
 #     dplyr::group_by(karyotype) %>%
 #     dplyr::summarise(
 #       n = n(),
-#       n_proportion = n() / x$n_snvs,
+#       n_proportion = n() / x$n_mutations,
 #       .groups = 'drop'
 #     ) %>%
 #     dplyr::arrange(desc(n)) %>%
@@ -208,11 +208,11 @@ analyze_peaks = function(x,
 #                     n > min_absolute_karyotype_mutations)
 #
 #   # Re-normalize karyotype size for the ones with QC = true
-#   N_total = sum(filtered_qc_snvs %>% filter(QC) %>% pull(n_proportion))
-#   filtered_qc_snvs = filtered_qc_snvs %>%
+#   N_total = sum(filtered_qc_mutations %>% filter(QC) %>% pull(n_proportion))
+#   filtered_qc_mutations = filtered_qc_mutations %>%
 #     dplyr::mutate(norm_prop = ifelse(QC, n_proportion / N_total, NA))
 #
-#   n_k = sum(filtered_qc_snvs %>% filter(QC) %>% pull(n))
+#   n_k = sum(filtered_qc_mutations %>% filter(QC) %>% pull(n))
 #
 #   cli::cli_alert_info(
 #     "Karyotypes {.field {karyotypes}}. Matching strategy {.field {matching_strategy}}. KDE = {.field {KDE}}."
@@ -224,11 +224,11 @@ analyze_peaks = function(x,
 #       n_k,
 #       ' mutations in ',
 #       paste(
-#         filtered_qc_snvs %>% dplyr::filter(QC) %>% dplyr::pull(karyotype),
+#         filtered_qc_mutations %>% dplyr::filter(QC) %>% dplyr::pull(karyotype),
 #         collapse = ', '
 #       ),
 #       ' (skipping those with n < ',
-#       round(min_karyotype_size * x$n_snvs),
+#       round(min_karyotype_size * x$n_mutations),
 #       ' mutations).'
 #     )
 #   )
@@ -240,8 +240,8 @@ analyze_peaks = function(x,
 #   }
 #
 #   # Actual data and analysis
-#   qc_karyotypes = filtered_qc_snvs %>% dplyr::filter(QC) %>% dplyr::pull(karyotype)
-#   qc_snvs = qc_snvs %>% dplyr::filter(karyotype %in% qc_karyotypes)
+#   qc_karyotypes = filtered_qc_mutations %>% dplyr::filter(QC) %>% dplyr::pull(karyotype)
+#   qc_mutations = qc_mutations %>% dplyr::filter(karyotype %in% qc_karyotypes)
 #
 #   tumour_purity = x$purity
 #
@@ -270,7 +270,7 @@ analyze_peaks = function(x,
 #       # is used meaning that if N==1 no bootstrap is computed
 #       pd = function(w, n_boot)
 #       {
-#         w = qc_snvs %>%
+#         w = qc_mutations %>%
 #           dplyr::filter(karyotype == k)
 #
 #         # Bootstrap only if multiple samples are required
@@ -282,10 +282,10 @@ analyze_peaks = function(x,
 #
 #         if (matching_strategy == "rightmost")
 #           run_results = peak_detector(
-#             snvs = data_input,
+#             mutations = data_input,
 #             expectation = expectation,
 #             tumour_purity = tumour_purity,
-#             filtered_qc_snvs = filtered_qc_snvs,
+#             filtered_qc_mutations = filtered_qc_mutations,
 #             p = p_binsize_peaks,
 #             kernel_adjust = kernel_adjust,
 #             matching_epsilon = band_matching,
@@ -295,10 +295,10 @@ analyze_peaks = function(x,
 #
 #         if (matching_strategy == "closest")
 #           run_results = peak_detector_closest_hit_match(
-#             snvs = data_input,
+#             mutations = data_input,
 #             expectation = expectation,
 #             tumour_purity = tumour_purity,
-#             filtered_qc_snvs = filtered_qc_snvs,
+#             filtered_qc_mutations = filtered_qc_mutations,
 #             p = p_binsize_peaks,
 #             kernel_adjust = kernel_adjust,
 #             matching_epsilon = band_matching,

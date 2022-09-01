@@ -1,6 +1,6 @@
 has_driver_data = function(x)
 {
-  if (all(c("is_driver", "driver_label") %in% colnames(x$snvs))) return(TRUE)
+  if (all(c("is_driver", "driver_label") %in% colnames(x$mutations))) return(TRUE)
 
   return(FALSE)
 }
@@ -23,7 +23,7 @@ has_driver_data = function(x)
 #'
 #' @examples
 #' data('example_dataset_CNAqc', package = 'CNAqc')
-#' x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+#' x = init(example_dataset_CNAqc$mutations, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
 #'
 #' get_drivers(x)
 get_drivers = function(x,
@@ -42,7 +42,7 @@ get_drivers = function(x,
   drivers_list = NULL
 
   if(which == "VAF")
-    drivers_list = x$snvs %>%
+    drivers_list = x$mutations %>%
       dplyr::filter(is_driver, chr %in% chromosomes)
 
   if(which == "CCF")
@@ -91,7 +91,7 @@ annotate_drivers_to_histogram = function(x, drivers_list, p, which)
   #   ) +
   #     scale_fill_manual(values = CNAqc:::get_karyotypes_colors(unique(drivers_list$karyotype))) +
   #     coord_cartesian(clip = 'off')
-  
+
   p = p +
     geom_vline(
       data = drivers_list,
@@ -116,7 +116,7 @@ annotate_drivers_to_histogram = function(x, drivers_list, p, which)
       show.legend = FALSE
     ) +
   coord_cartesian(clip = 'off')
-  
+
 
 
   return(p)

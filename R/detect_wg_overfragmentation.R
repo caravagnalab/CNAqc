@@ -1,5 +1,5 @@
 # data('example_dataset_CNAqc')
-# x = CNAqc::init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna, example_dataset_CNAqc$purity)
+# x = CNAqc::init(example_dataset_CNAqc$mutations, example_dataset_CNAqc$cna, example_dataset_CNAqc$purity)
 # CNAqc::plot_segments(x) + ylim(0, 5)
 # x = detect_wg_overfragmentation(x,  small_segments_cutoff = 1e6)
 

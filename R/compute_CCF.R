@@ -5,7 +5,7 @@
 #' This function provides the implementation of a set of entropy-related routines that can estimate
 #' Cancer Cell Fraction values (CCFs) for the available mutations. The implemented routine is described
 #' in the package vignette `"Computation of Cancer Cell Fractions"` that is available at the URL
-#' \url{https://caravagn.github.io/CNAqc/articles/ccf_computation.html}. This function creates a field
+#' \url{https://caravagnalab.github.io/CNAqc/articles/ccf_computation.html}. This function creates a field
 #' `CCF_estimates` inside the returned object which contains both the estimated CCF values and the
 #' plot of the report of this analysis.
 #'
@@ -26,7 +26,7 @@
 #' @examples
 #'
 #' data('example_dataset_CNAqc')
-#' x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna, example_dataset_CNAqc$purity)
+#' x = init(example_dataset_CNAqc$mutations, example_dataset_CNAqc$cna, example_dataset_CNAqc$purity)
 #'
 #' x = compute_CCF(x, karyotypes = c('1:0', '1:1', '2:1', '2:0', '2:2'))
 #' print(x)

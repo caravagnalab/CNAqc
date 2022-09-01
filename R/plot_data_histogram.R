@@ -21,7 +21,7 @@
 #'
 #' @examples
 #' data('example_dataset_CNAqc', package = 'CNAqc')
-#' x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+#' x = init(example_dataset_CNAqc$mutations, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
 #' plot_data_histogram(x)
 #' plot_data_histogram(x, which = 'DP')
 #' plot_data_histogram(x, which = 'DP', karyotypes = '2:2')
@@ -115,7 +115,7 @@ plot_VAF_data = function(x,
   stopifnot(inherits(x, 'cnaqc'))
 
   # VAF
-  # raw_muts = x$snvs %>%
+  # raw_muts = x$mutations %>%
   #   dplyr::mutate(karyotype = ifelse(karyotype %in% karyotypes, karyotype, "other"))
 
   raw_muts = Mutations(x) %>%
@@ -133,7 +133,7 @@ plot_VAF_data = function(x,
            "n = ",
            nrow(raw_muts),
            "; VAF < 0.05 (5%) = ",
-           sum(x$snvs$VAF < 0.05)
+           sum(x$mutations$VAF < 0.05)
          )) +
     scale_fill_manual(values = colors) +
     facet_wrap(type ~ paste("CNA", cna), scales = 'free_y')

@@ -10,7 +10,7 @@
 #' @param x An object of class \code{cnaqc}, where CCF have been computed using
 #' function `compute_CCF`.
 #' @param strip If \code{TRUE}, shows little detail and a strip horizontal plot.
-#' Otherwise it shows a detailed report (multiple rows). This parameter is now 
+#' Otherwise it shows a detailed report (multiple rows). This parameter is now
 #' deprecated.
 #' @param empty_plot If data for one karyotype is missing, an empty plot is returned.
 #' Otherwise the plot is not returned (NULL is forwarded).
@@ -23,11 +23,11 @@
 #'
 #' @examples
 #' data('example_dataset_CNAqc')
-#' x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna, example_dataset_CNAqc$purity)
+#' x = init(example_dataset_CNAqc$mutations, example_dataset_CNAqc$cna, example_dataset_CNAqc$purity)
 #'
 #' x = compute_CCF(x)
 #' plot_CCF(x)
-plot_CCF = function(x, 
+plot_CCF = function(x,
                     strip = FALSE,
                     empty_plot = TRUE,
                     assembly_plot = TRUE)
@@ -52,32 +52,32 @@ plot_CCF = function(x,
     USE_KARYOTYPES,
     function(k)
     {
-      if(!(k %in% names(x$CCF_estimates))) 
+      if(!(k %in% names(x$CCF_estimates)))
       {
         if(empty_plot) return(CNAqc:::eplot())
         else return(NULL)
       }
-      
+
       if(method == 'ENTROPY') return(suppressWarnings(CNAqc:::plot_mutation_multiplicity_entropy(x, k)))
       if(method == 'ROUGH') return(suppressWarnings(CNAqc:::plot_mutation_multiplicity_rough(x, k)))
       return(CNAqc:::eplot())
     }
   )
-  
+
   ccf_plot = ccf_plot[!sapply(ccf_plot, is.null)]
   if(length(ccf_plot) == 0) {
     cli::cli_alert_warning("Nothing to plot")
     return(CNAqc:::eplot())
   }
-  
+
   # Plots assembly
-  if (assembly_plot)  
+  if (assembly_plot)
     ccf_plot = ggpubr::ggarrange(
       plotlist = ccf_plot,
       ncol = length(ccf_plot),
       nrow = 1
     )
-  
+
   return(ccf_plot)
 }
 
