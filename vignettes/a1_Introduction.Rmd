@@ -17,11 +17,9 @@ options(crayon.enabled=F)
 ```
 
 
-```{r setup}
+```{r setup, warning=FALSE}
 library(CNAqc)
 ```
-
-We discuss the input format and references used in `CNAqc`.
 
 # Input format
 
@@ -31,14 +29,15 @@ _CNAqc notation:_
 
 - Clonal denotes something (a CNA, or a mutaiton) that is found at clonality 100% or, so to say, in all tumour cells; subclonal is something that is found in a subset of the tumour cells.
 
-## Somatic mutations
-
-You need to provide data for _somatic mutations_, _copy number segments_ and _tumour purity_; CNAqc comes with a template dataset.
+CNAqc comes with a template dataset.
 
 ```{r}
 # Load template data
 data('example_dataset_CNAqc', package = 'CNAqc')
 ```
+
+## Somatic mutations
+
 
 These fields are required for somatic mutations:
 
@@ -52,50 +51,54 @@ Chromosome names and alleles should be in character format; chromosomes must be 
 
 ```{r}
 # Example input SNVs
-print(
-  example_dataset_CNAqc$mutations %>% 
-        select(
-          chr, from, to, # Genomic coordinates
-          ref, alt,      # Alleles (reference and alternative)
-          DP, NV, VAF    # Read counts (depth, number of variant reads, tumour VAF)
-          )
-  )
+example_dataset_CNAqc$mutations %>%
+  select(chr, from, to, # Genomic coordinates
+         ref, alt,      # Alleles (reference and alternative)
+         DP, NV, VAF    # Read counts (depth, number of variant reads, tumour VAF)
+         ) %>%
+         print()
 ```
 
-Optionally, you can annotate also _driver mutations_ by adding the following columns to your data:
+### Adding driver mutations
+
+Optionally, you can annotate _driver mutations_ by adding the following columns to your data:
 
 * `is_driver`: whether the mutation is a driver, or not;
 * `driver_label`:  the label to be shown in the plots that report also drivers (e.g., `BRAF V600E` could be a label).
 
 ```{r}
-print(
-  example_dataset_CNAqc$mutations %>% 
-        select(
-          chr, from, to, ref, alt, is_driver, driver_label, everything()
-        )
-  )
+example_dataset_CNAqc$mutations %>%
+  select(chr, from, to, ref, alt, is_driver, driver_label) %>%
+  filter(is_driver) %>% 
+print()
 ```
 
 ## Copy number segments
 
-CNAqc distinguishes between 3 types of CNAs:
+CNAqc distinguishes between 3 types of copy number segments:
 
 * clonal simple CNAs:
-  * any clonal `"1:0"` (loss of heterzygosity, LOH), `"2:0"` (copy neutral LOH), `"1:1"` (diploid heterozygous), `"2:1"` (trisomy) and `"2:2"` (tetraploidy);
+  * `"1:0"` loss of heterzygosity (LOH);
+  * `"2:0"` copy neutral LOH;
+  * `"1:1"` diploid heterozygous (assumed to be the normal reference);
+  * `"2:1"` trisomy;
+  * `"2:2"` tetraploidy.
 * clonal complex CNAs:
   * any other clonal CNA that is not simple;
 * subclonal CNAs:
   * any mixture of 2 subclones, where each one of the subclones is defined by a simple CNA.
 
-A fixed set of colours is used to identify the simple CNAs, and these fields are required for all types of  **copy number segments**:
+These fields are required for all types of CNAs:
 
 * the segment location, as `chr`, `from` and `to`;
-* the segment absolute number of copies of the major and minor alleles, as `Major` and `minor`;
+* the segment absolute integer number of copies of the major and minor alleles, as `Major` and `minor`;
 
-Optionally, you can annotate also annotate the Cancer Cell Fraction (CCF) `CCF` for each segment (the clonality of the segment, which is returned only by callers that support subclonal segments):
 
-* segments with `CCF = 1` are _clonal_, otherwise _subclonal_;
-* by default, if missing, all segments are assumed to be clonal and assigned `CCF = 1`. Some computations might subset only clonal CNAs (see the manual of each function).
+### Adding subclonal copy numbers
+
+Optionally, you can annotate also subclonal CNAs. 
+
+To do this first you annotate the Cancer Cell Fraction (CCF) `CCF` for each input  segment as an extra column in the dataframe: segments with `CCF = 1` are _clonal_, otherwise _subclonal_;
 
 ```{r}
 # Example input CNA
@@ -108,11 +111,13 @@ print(
   )
 ```
 
+> Note: the CCF  of a segment can only be computed by callers that support subclonal segments. If there are no subclonal CNAs the `CCF` column can be omitted. In that case CNAqc assumes all segments to be clonal and assigns `CCF = 1`. 
+
 If you wish to use subclonal CNAs, further columns are required.
 
-* `Major_2` and `minor_2` reporting the e major and minor alleles for the second clone.
+* `Major_2` and `minor_2` reporting the major and minor alleles for the second clone.
 
-The model captures a mixture of two subclones, one with segment `Major:minor` and CCF `CCF` (which is compulsory), and another with segment `Major_2:minor_2` and CCF `1 - CCF`.
+The CNAqc model captures a mixture of two subclones, one with segment `Major:minor` and CCF `CCF` (which is compulsory), and another with segment `Major_2:minor_2` and CCF `1 - CCF`.
 
 The values of `Major_2` and `minor_2` for clonal segments (`CCF = 1`) can be `NA` and will not be used.
 
@@ -180,22 +185,38 @@ print(y_2_4)
 
 ## Reference genome coordinates
 
-`CNAqc` contains two coordinates for two reference genomes, `hg19` and `GRCh38` (default). For each reference genome the package stores the location of the chromosomes, and their centromers; you can access these data.
+CNAqc uses a genome coordinates reference system to convert relative relative to absolute coordinates, a step required to plot segments across the whole genome (see `plot_segments`). For instance, if a mutation maps to position $100$ of chromosome `chr2`, its absolute coordinate is $100 + L$ where $L$ is the length of `chr1`. The reference system adopted by CNAqc needs therefore to report the length of each chromosome, plus the information regarding the boundary of each centromere.
+
+CNAqc supports two coordinates reference genomes:
+
+* `hg19` or `GRCh37`;
+* `hg38` or `GRCh38` (default),
+
+for which two dataframes are stored inside the package.
 
 ```{r, fig.width=9.5, fig.height=3}
-CNAqc:::get_reference("hg19")
+CNAqc:::get_reference("hg19") # equivalent to CNAqc:::get_reference("GRCh37")
 
-CNAqc:::get_reference("GRCh38")
+CNAqc:::get_reference("GRCh38") # equivalent to CNAqc:::get_reference("hg38")
 ```
 
-The reference genomes can be specified as a parameter once you create a `CNAqc` object. Coordinates are used to translate relative to absolute genome coordinates of somatic mutations and CNA segments; this is done only 
-when plotting the data. Note that mapping of mutations to CNA segments is independent of the reference genome, and it will work as far as both mutation and CNA segments are mapped to the same reference.
+The reference genomes has to be specified when you create a CNAqc object -- see function `init`. 
 
-You can use a hidden function to plot a reference, and make it explicit with a title.
+> Note: mapping of mutations onto segments is independent of the reference genome, and it will work as far as both mutation and CNA segments are mapped to the same reference.
+
+You can use a hidden function to plot a reference
 
 ```{r, fig.width=9.5, fig.height=3}
-print(CNAqc:::blank_genome(ref = 'hg19') + labs(title = "HG19 genome reference"))
+CNAqc:::blank_genome(ref = 'hg19') + 
+  labs(title = "HG19 genome reference")
 ```
 
+## Example CNAqc object(s)
+
+CNAqc comes with an object released by [PCAWG](https://dcc.icgc.org/pcawg)
+
+```{r}
+CNAqc::example_PCAWG
+```
 
 

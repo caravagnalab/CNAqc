@@ -121,25 +121,18 @@
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/caravagnalab/CNAqc" class="external-link">CNAqc</a></span><span class="op">)</span>
-<span class="co">#&gt; Warning: replacing previous import 'cli::num_ansi_colors' by</span>
-<span class="co">#&gt; 'crayon::num_ansi_colors' when loading 'BMix'</span>
-<span class="co">#&gt; Warning: replacing previous import 'crayon::%+%' by 'ggplot2::%+%' when loading</span>
-<span class="co">#&gt; 'BMix'</span>
 <span class="co">#&gt; <span style="color: #00BB00;">✔</span> Loading <span style="color: #00BB00;">BMix</span>, <span style="font-style: italic;">'Binomial and Beta-Binomial univariate mixtures'</span>. Support : <span style="color: #0000BB; font-style: italic;">&lt;https://caravagnalab.github.io/BMix/&gt;</span></span>
-<span class="co">#&gt; Warning: replacing previous import 'cli::num_ansi_colors' by</span>
-<span class="co">#&gt; 'crayon::num_ansi_colors' when loading 'easypar'</span>
-<span class="co">#&gt; Warning: package 'tidyr' was built under R version 4.0.5</span>
-<span class="co">#&gt; Warning: package 'readr' was built under R version 4.0.5</span>
-<span class="co">#&gt; Warning: package 'crayon' was built under R version 4.0.5</span>
-<span class="co">#&gt; Warning: package 'RColorBrewer' was built under R version 4.0.5</span>
 <span class="co">#&gt; <span style="color: #00BB00;">✔</span> Loading <span style="color: #00BB00;">CNAqc</span>, <span style="font-style: italic;">'Copy Number Alteration quality check'</span>. Support : <span style="color: #0000BB; font-style: italic;">&lt;https://caravagn.github.io/CNAqc/&gt;</span></span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></code></pre></div>
-<div class="section level2">
-<h2 id="plotting-copy-number-segments">Plotting copy number segments<a class="anchor" aria-label="anchor" href="#plotting-copy-number-segments"></a>
-</h2>
-<p>All plotting functions use <code>ggplot</code> and multi-panel
-figures assembled with either <code>ggpubr</code> and
-<code>cowplot</code>. We work with the template dataset.</p>
+<p>All CNAqc plotting functions use:</p>
+<ul>
+<li>
+<a href="https://ggplot2.tidyverse.org/" class="external-link">ggplot</a> for panel
+plots;</li>
+<li>
+<a href="https://rpkgs.datanovia.com/ggpubr/" class="external-link">ggpubr</a> and <a href="https://cran.r-project.org/web/packages/cowplot" class="external-link">cowplot</a> for
+multi-panel figures assembly.</li>
+</ul>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Dataset available with the package </span>
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">'example_dataset_CNAqc'</span>, package <span class="op">=</span> <span class="st">'CNAqc'</span><span class="op">)</span>
@@ -179,26 +172,27 @@ figures assembled with either <code>ggpubr</code> and
 <span class="co">#&gt;         chr2 179431633 179431634   C   T 117 77 0.6581197          TTN      TRUE</span>
 <span class="co">#&gt;        chr16  67646006  67646007   C   T 120 54 0.4500000         CTCF      TRUE</span>
 <span class="co">#&gt;        chr17   7577106   7577107   G   C  84 78 0.9285714         TP53      TRUE</span></code></pre></div>
+<div class="section level2">
+<h2 id="plotting-copy-number-segments">Plotting copy number segments<a class="anchor" aria-label="anchor" href="#plotting-copy-number-segments"></a>
+</h2>
 <div class="section level3">
 <h3 id="segments-plots">Segments plots<a class="anchor" aria-label="anchor" href="#segments-plots"></a>
 </h3>
-<p>Function <code>plot_segments</code> plots all the genome, annotating
-in the caption summmary statistics. By default, it plots the major and
-minor alleles for each segment as red and blue bars. In the bottom, each
-circle annotates a breakpoint in the segments; grays are breakpoints of
-samples that are shown in the plot. Since by default this plot has
-limited y-axis, breakpoints of segments outside the plot (e.g. very high
+<p>Function plots genome-wide segments, by default using the major and
+minor alleles for each segment as red and blue bars. Bottom circles
+annotate breakpoints; by default this plot has limited y-axis and
+breakpoints for segments outside the plot (e.g. very high
 amplifications) are in black.</p>
-<p>Since <code>x</code> has drivers annotated, these are also plot with
-a colour that reflects their karyotype. Areas in the genome that are
-mapped to the most prevalent karyotype (here, <code>"2:2"</code>), are
-shadowed by default.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Default plot</span>
 <span class="fu"><a href="../reference/plot_segments.html">plot_segments</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
 <span class="co">#&gt; Scale for 'fill' is already present. Adding another scale for 'fill', which</span>
 <span class="co">#&gt; will replace the existing scale.</span></code></pre></div>
 <p><img src="a2_Plots_files/figure-html/unnamed-chunk-3-1.png" width="912"></p>
+<p>Since <code>x</code> has drivers annotated, these are also plot with
+a colour that reflects their karyotype. Areas in the genome that are
+mapped to the most prevalent karyotype (here, <code>"2:2"</code>), are
+shadowed by default.</p>
 <p>An alternative circular layout plot is available (default
 parameters).</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">

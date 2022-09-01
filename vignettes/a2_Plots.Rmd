@@ -17,15 +17,15 @@ options(crayon.enabled=F)
 ```
 
 
-```{r setup}
+```{r setup, warning=FALSE}
 library(CNAqc)
 require(dplyr)
 ```
 
+All CNAqc plotting functions use:
 
-# Plotting copy number segments
-
-All plotting functions use `ggplot` and multi-panel figures assembled with either `ggpubr` and `cowplot`. We work with the template dataset. 
+* [ggplot](https://ggplot2.tidyverse.org/) for panel plots;
+* [ggpubr](https://rpkgs.datanovia.com/ggpubr/) and [cowplot](https://cran.r-project.org/web/packages/cowplot) for multi-panel figures assembly.
 
 ```{r echo=TRUE, results=TRUE}
 # Dataset available with the package 
@@ -40,28 +40,32 @@ x = CNAqc::init(
 print(x)
 ```
 
+# Plotting copy number segments
+
 ## Segments plots
 
-Function `plot_segments` plots all the genome, annotating in the caption summmary statistics. By default, it plots the major and minor alleles for each segment as red and blue bars. In the bottom, each circle annotates a breakpoint in the segments; grays are breakpoints of samples that are shown in the plot. Since by default this plot has limited y-axis,  breakpoints of segments outside the plot (e.g. very high amplifications) are in black.
-
-Since `x` has drivers annotated, these are also plot with a colour that reflects their karyotype. Areas in the genome that are mapped to the most prevalent karyotype (here, `"2:2"`), are shadowed by default.
+CNAqc can plot genome-wide segments showing major and minor allele counts as red and blue bars. Bottom circles annotate breakpoints; by default this plot has limited y-axis and breakpoints for segments outside the plot (e.g. very high amplifications) are in black. Areas in the genome that are mapped to the most prevalent karyotype are shadowed by default.
 
 ```{r, fig.width=9.5, fig.height=3}
 # Default plot
 plot_segments(x)
 ```
 
-An alternative circular layout plot is available (default parameters).
+> Note: the colour scheme in CNAqc is fixed for certain segments. The colour scheme is adopted also for other information, e.g., to report the segment where a certain driver is mapped. 
+
+
+An alternative circular layout plot is available.
 ```{r, fig.width=4, fig.height=4}
 # Circular layout
 plot_segments(x, circular = TRUE)
 ```
 
-### Custom segments plot
+### Customising segments plot
 
 ```{r, fig.width=9.5, fig.height=3}
-# Shadow other karyotypes
-plot_segments(x, highlight = c("2:1", "2:0", "2:2")) + labs(title = "Annotate different karyotypes")
+# Shadow other segments
+plot_segments(x, highlight = c("2:1", "2:0", "2:2")) + 
+  labs(title = "Annotate different karyotypes")
 
 # Subset the genome
 plot_segments(x, chromosomes = 'chr17') + labs(title = "Chromosome 17 zoom")
@@ -73,26 +77,26 @@ plot_segments(x, cn = 'total') + labs(title = "Total copy number")
 
 ### Subclonal CNAs
 
-To show subclonal copy numbers we need to use the PCAWG object released with the package.
+We use the [PCAWG](https://dcc.icgc.org/pcawg) object released with the package
 
 ```{r echo=TRUE, results=TRUE}
-print(CNAqc::example_PCAWG)
+CNAqc::example_PCAWG %>% print()
 ```
-Note that the segments of each subclone have different colours; the CCF is not reported in this plot.
+
+Subclonal segments of each subclone have different colours compared to red/blue clonal segments.
+
 ```{r, fig.width=9.5, fig.height=3}
 plot_segments(CNAqc::example_PCAWG)
 ```
 
+> Note: the CCF of each subclone is not reported in this plot.
 
+## Segments summaries
 
-## Plotting segments summaries
+Based on parameter `type`, function  `plot_karyotypes` reports:
 
-`plot_karyotypes` gives two visualizations, based on its parameter `type`:
-
-* `type = 'percentage'`, reporting the proportion of genome covered by each karyotypes (default);
-* `type = 'number'`, reporting the counts of segments per karyotype.
-
-The package uses a pre-set color schema to colour simple CNAs.
+* `type = 'percentage'`, the proportion of genome covered by each segment (default);
+* `type = 'number'`, the counts of segments per karyotype.
 
 ```{r, fig.width=4.5, fig.height=4}
 ggpubr::ggarrange(
@@ -103,7 +107,7 @@ ggpubr::ggarrange(
 )
 ```
 
-You can also plot the segments' length distribution, which is used to detect fragmentation patterns in the segments.
+We can also plot the segments length distribution, which is used to detect fragmentation patterns.
 ```{r, fig.width=4.5, fig.height=3}
 plot_segment_size_distribution(x)
 ```
@@ -112,7 +116,7 @@ plot_segment_size_distribution(x)
 
 ## Data histograms
 
-You have a function to plot all your data histograms
+Read counts information can be plot using  `plot_data_histogram` as histograms.
 
 ```{r, fig.width=10, fig.height=4}
 ggpubr::ggarrange(
@@ -124,34 +128,33 @@ ggpubr::ggarrange(
   )
 ```
 
-If you [compute Cancer Cell Fractions (CCF) values](https://caravagn.github.io/CNAqc/articles/ccf_computation.html), you can use `plot_data_histogram(x, which = 'CCF')` as well.
+> Note: if you compute CCFs you can use `plot_data_histogram(x, which = 'CCF')` as well.
 
 ## Segment-specific VAFs 
 
-You can inspect the raw VAF distribution per segment, split by chromosome. Each colour represents a distinct segment; we want can use this plot to check that, for every karyotype and chromosome, the VAF distributions are similar.
+VAFs  per segment, split by chromosome, can help identify miscalled segments (i.e., for segments with the same major/minor allele copies the VAF distributions should be similar)
+
 ```{r, fig.width=12, fig.height=4}
-# Default parameters to filter segments are annotatetd in the plot
 inspect_segment(x)
 ```
 
-You can facet your data histograms and obtain a similar layout
 ```{r, fig.width=30, fig.height=6}
-plot_data_histogram(x, which = 'VAF') + facet_grid(karyotype~chr, scales = 'free')
+# With facet from a data histogram
+plot_data_histogram(x, which = 'VAF') + 
+  facet_grid(karyotype~chr, scales = 'free')
 ```
 
 ## Genome-wide mutation data
 
-Genome-wide plots that follow the layout of `plot_segments` are avaiable to view the genome-wide distributions of the number of mutations, their VAF and depth. VAF and depth-plotting functions (scatterplots) can subset the input data to speed up rendering and reduce the size of output files - by default `N = 5000` points are randomly sampled. 
-Counts plot, instead, bin the genome locations by _one megabase_ ($10^6$ bases).
+Genome-wide plots that follow the layout of `plot_segments` are avaiable to view the genome-wide distributions of the number of mutations, their VAF and depth. VAF and depth-plotting functions (scatterplots) can subset the input data to speed up rendering and reduce the size of output files - by default $5000$ points are shown  Counts plot, instead, bin the genome locations by one megabase ($10^6$ bases).
 
 ```{r, fig.width=8, fig.height=1}
 # All genome, all data - counts of mutations per megabase
 plot_gw_counts(x)
 ```
 
-An example effect of downsampling the data is the following
 ```{r, fig.width=8, fig.height=4}
-# Different subsamples
+# An example effect of downsampling the data
 ggpubr::ggarrange(
   plot_gw_depth(x, N = 1000),
   plot_gw_depth(x),
@@ -163,35 +166,36 @@ ggpubr::ggarrange(
 
 ## Combined plots
 
-A one-summary plot can be easily assembled combining the above functions and functions from `cowplot` or other ggplot-manipulation packages.
+The default S3 `plot` function layouts a panel with segments in bottom, and all other genome-wide plots on top. This function aligns plots on the vertical axis, and stretch their relative  height to obtain a nice layout. 
 
 ```{r, fig.width=9.5, fig.height=6}
-# Layout a panel with segments in bottom, and all other genome-wide plots on top.
-# Via cowplot we can align plots on the vertical axis, and stretch their relative
-# height to obtain a nicer layout.
-cowplot::plot_grid(
-  plot_gw_counts(x),
-  plot_gw_vaf(x, N = 10000),
-  plot_gw_depth(x, N = 10000),
-  plot_segments(x),
-  align = 'v', 
-  nrow = 4, 
-  rel_heights = c(.15, .15, .15, .8))
+# The actual plot function
+# 
+# cowplot::plot_grid(
+#   plot_gw_counts(x),
+#   plot_gw_vaf(x, N = 10000),
+#   plot_gw_depth(x, N = 10000),
+#   plot_segments(x),
+#   align = 'v', 
+#   nrow = 4, 
+#   rel_heights = c(.15, .15, .15, .8))
+plot(x)
 ```
 
-This is actually done by the default S3 `plot` function, which includes both segments and data histograms
 
 
 # Cohort plots
 
-If one has created CNAqc objects for multiple samples, or from multiple calls of the same sample, CNAqc can be used to perform cohort-level plots. All input CNAqc objects must have the same reference. 
+One can have multiple CNAqc objects - i.e., work with a cohort of objects - when working with
 
+- a group of distinct patients;
+- multiple samples from the same patient;
+- multiple calls from the same sample;
 
-## CNA calls
-
-You can visualise multiple CNA calls (clonal copy numbers) via `plot_multisample_CNA`. 
+Assuming all input objects have the same reference, cohort cohort-level plots are possible.
 
 ```{r, fig.width=6, fig.height=6}
+# Object 1
 x = CNAqc::init(
   mutations = example_dataset_CNAqc$mutations, 
   cna = example_dataset_CNAqc$cna,
@@ -199,6 +203,7 @@ x = CNAqc::init(
   ref = 'hg19'
   )
 
+# Object 1 with some modifications
 y = CNAqc::init(
   mutations = example_dataset_CNAqc$mutations, 
   cna = example_dataset_CNAqc$cna %>%
@@ -209,22 +214,30 @@ y = CNAqc::init(
   purity = example_dataset_CNAqc$purity,
   ref = 'hg19')
 
-# List of input objects: 2 copies of the same 'x', one faked diploid plus one PCAWG sample
-inputs = list(`Original` = x, `Copy` = x, `Faked_diploid` = y, `PCAWG` = CNAqc::example_PCAWG)
+# PCAWG sample
+z = CNAqc::example_PCAWG
+
+# Inputs need to be wrapped in a named list
+inputs = list(`Original` = x, `Copy` = x, `Faked_diploid` = y, `PCAWG` = z)
 ```
 
-A `flat` layout is possible where the frequency of deletions and amplifications relative to diploid are shown by using a certain binning (step $\delta$) of the tumour genome. Here by deletion we define anything with 0 copies of the minor allele, and by amplification anything with $\geq 3$ total copies (sum of the minor and major alleles).
+## Copy number segments
+
+
+The frequency of deletions and amplifications relative to diploid are shown by using a certain binning (step $\delta$) of the tumour genome. Here by deletion we define anything with 0 copies of the minor allele, and by amplification anything with $\geq 3$ total copies (sum of the minor and major alleles).
+
 ```{r, fig.width=8, fig.height=4}
 # Comparative CNA plot - default delta
 plot_multisample_CNA(inputs)
 ```
 
+The binning $\delta$ of the tumour genome can be changed to get larger/ shorter segments
 ```{r, fig.width=8, fig.height=4}
 # Comparative CNA plot - 10 Mb delta
 plot_multisample_CNA(inputs, delta = 1e7)
 ```
 
-A `circular` layout is also possible to show, in a circle, the segments (as in `plot_segments`). In this case no binning or transformation of the data is performed. In this particular plot the names of the list given in input are also reported.
+A circular layout is also possible, with no binning or transformation of the data.
 
 ```{r, fig.width=6, fig.height=6}
 # Comparative CNA plot

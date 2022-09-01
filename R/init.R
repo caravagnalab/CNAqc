@@ -84,7 +84,10 @@ init = function(mutations, snvs = NULL, cna, purity, ref = "GRCh38")
     }
     else
     {
-      cli::boxx("Parameter `snvs` has been deprecated, using it as `mutations", col = 'red', margin = 3)
+      cli::boxx("Parameter `snvs` has been deprecated, using it as `mutations",
+                col = 'red',
+                margin = 3) %>%
+        cat('\n')
 
       mutations = snvs
     }
@@ -160,3 +163,19 @@ init = function(mutations, snvs = NULL, cna, purity, ref = "GRCh38")
 
   fit
 }
+
+check_custom_reference = function(x)
+{
+  required = CNAqc::chr_coordinates_hg19 %>% colnames()
+
+  if(!all(colnames(x) %in% required))
+  {
+    cli::boxx("Problems with your custom reference", background_col = 'red', col = 'white') %>% cat('\n')
+
+    cli::cli_alert_danger("This type of dataframe should be used, but you are missing columns")
+    CNAqc::chr_coordinates_hg19 %>% print()
+
+    cli::cli_abort("Cannot use your custom refernece")
+  }
+}
+

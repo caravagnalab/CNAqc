@@ -16,42 +16,32 @@ knitr::opts_chunk$set(
 options(crayon.enabled=F)
 ```
 
-# Peak analysis
-
-`CNAqc` can perform quality control (QC) of somatic mutations, allele-specific CNAs and tumour purity. 3 distinct procedures are available, all called by function `analyze_peaks`. The idea is as follows: a CNA segment with $m$/ $M$ copies of the minor/ major alleles is consistent with mutation data if VAFs peak at certain positions we can compute. CNAqc computes expected peaks, and compares them to the one it detects from data. The theory works for both clonal and subclonal segments, and a purity error parameter (`purity_error`) determines the maximum error we can tolerate before we fail a sample.
 
 ```{r setup}
 library(CNAqc)
 
-# We work with the template dataset. 
-data('example_dataset_CNAqc', package = 'CNAqc')
-
-x = CNAqc::init(
-  mutations = example_dataset_CNAqc$mutations, 
-  cna = example_dataset_CNAqc$cna,
-  purity = example_dataset_CNAqc$purity,
-  ref = 'hg19')
-
+# We work with the PCAWG object
 x = CNAqc::example_PCAWG
 
 print(x)
 ```
 
+# Peak analysis
 
-We run it with default parameters, otherwise one can select only certain segments  to fit or change purity error tolerance etc.
+CNAqc can perform QC of somatic mutations, allele-specific CNAs and tumour purity by peak-detection algorithms. The idea is that a segment with $m$/ $M$ copies of the minor/ major alleles is consistent with mutation data if VAF peaks at certain position;CNAqc computes expected peaks and compares them to peaks detected from data. The theory works for both clonal and subclonal segments, and a purity error parameter (`purity_error`) determines the maximum error we can tolerate before we fail a sample.
+
+Three distinct algorithms are available, each one working with a different type of copy number segment; all analyses are called by function `analyze_peaks`, whose results can be print to screne.
+
 ```{r, fig.width=11, fig.height=3, warning=F}
 x = analyze_peaks(x)
-```
-An S3 methods print to screen all QC results based on peak-detection.
 
-```{r, fig.width=11, fig.height=3}
+# S3  print
 print(x)
 ```
 
-
 ## Simple clonal CNAs
 
-This QC is the most important as it can be used to detect adjustments required to better fit purity or ploidy of the sample (to re-run the copy number caller), or to select among alternative copy number solutions returned from a caller (tetraploid versus triploid).
+This QC can be used to detect purity adjustments required to better fit the data, or to select among alternative copy number solutions returned from a caller (e.g., tetraploid versus triploid).
 
 For these segments the package computes a linear score from the distance between data peaks, and their theoretical expectation. The peaks are determined via:
 

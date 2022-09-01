@@ -27,26 +27,27 @@ _CNAqc Input/Output_
 CNAqc requires in input
 
 * read counts from somatic mutations such as single-nucleotide variants (SNVs) or insertion-deletions (indels); 
-* allele-specific copy number segments (CNAs), for both clonal and subclonal segments;
-* tumor purity estimate.
+* allele-specific copy number segments (CNAs) for clonal segments and, optionally, for subclonal segments;
+* a tumor purity estimate.
 
-CNAqc uses chromosome coordinates the supported references (GRCh38 and hg19) to map mutations to segments. Then, the tool can elaborate a number of analysis that help quality control the consistency among mutations, CNAs and tumour purity (see Articles). 
+CNAqc uses chromosome coordinates the to map mutations to segments. The conversion of relative to absolute genome coordinates requires to fix a reference genome build; supported references are GRCh38/hg17 and hg19/GRCh37, but custom references can also be built. 
+
+The tool can elaborate a number of analysis to assess the consistency among mutations, CNAs and tumour purity (see Articles). 
 
 CNAqc can be used to: 
 
-1. quality control (QC) concordance across the input mutations, CNAs and purity;
+1. QC concordance across the input mutations, CNAs and purity;
 2. select among alternative tumour segmentations and purity/ ploidy estimates;
 3. optimize CNA calling with automatic QC procedures leveraging the Sequenza copy number caller;
-4. estimate the Cancer Cell Fractions (CCFs) values of the input variants, and estimate their uncertainty;
+4. estimate CCF values of the input variants, and estimate their uncertainty;
 5. identify patterns of over-fragmentation of chromosome arms;
 6. smooth and subset segments with various filters;
-7. annotate putative driver mutations among the input variants, using VariantAnnotation.
-
+7. annotate putative driver mutations among the input variants, using [VariantAnnotation](https://bioconductor.org/packages/release/bioc/html/VariantAnnotation.html).
 
 ## The model
 
 
-The following concepts are used to develop CNAqc 
+The following concepts are used to develop CNAqc.
 
 ### VAF peaks
 
@@ -54,7 +55,9 @@ The following concepts are used to develop CNAqc
 _Expected VAF peaks for mutations mapped to diploid heterozygous and triploid clonal CNAs (at purity $\pi=1$)._
 
 
-**Variant Allele Frequency (VAF) peaks for clonal CNAs.** Consider:
+### Clonal CNAs
+
+Consider:
 
 - mutations present in a percentage $0<c<1$ of tumour cells, sitting on a segment $nA:nB$;
 - tumour purity $\pi$;
@@ -67,7 +70,9 @@ v_m(c) = \dfrac{m \pi c}{
 } \, .
 \]
 
-**Variant Allele Frequency (VAF) peaks for subclonal CNAs.** Consider a mixture of 2 subclones with segments $n_{A,1}:n_{B,1}$ and  $n_{A,2}:n_{B,2}$, proportions $\rho_1$ and $\rho_2$ ($\rho_1+\rho_2=1$).
+### Subclonal CNAs
+
+Consider a mixture of 2 subclones with segments $n_{A,1}:n_{B,1}$ and  $n_{A,2}:n_{B,2}$, proportions $\rho_1$ and $\rho_2$ ($\rho_1+\rho_2=1$).
 
 The expected peak for a shared mutation with multiplicity $m_1$/ $m_2$ in the first/ second subclone is
 \[
@@ -90,9 +95,9 @@ m\rho_i \pi
 \]
 
 
-### CCFs
+### Cancer Cell Fractions (CCFs)
 
-**Cancer Cell Fractions (CCF).** Given VAF, tumour purity and CNAs, CCF  values can be computed as
+Given VAF, tumour purity and CNAs, CCF  values can be computed as
 
 
 \[
@@ -106,4 +111,6 @@ v[
 m \pi
 }
 \]
+
+Therefore the problem of computing CCFs is essentially linked to computing `m`, mutation multiplicity. This type of computation can be done by "phasing" the VAFs against the multiplicity.
 
