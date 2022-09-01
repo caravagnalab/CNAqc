@@ -271,7 +271,8 @@ aux_plot_cohort_CNA_circular = function(x, ...)
 
   # Default blank genome -- remove labels with label_chr = NA
   bl_genome = suppressMessages(
-    CNAqc:::blank_genome(label_chr = NA) +
+    CNAqc:::blank_genome(ref = L[[1]]$reference_genome, chromosomes = chromosomes, 
+                         label_chr = NA) +
       labs(x = "", y = "")
   )
 
