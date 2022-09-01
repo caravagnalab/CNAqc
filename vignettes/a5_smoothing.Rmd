@@ -27,13 +27,12 @@ The default value of $\delta = 10^6$ (1 megabase).
 ```{r echo=FALSE, results=TRUE, message=FALSE}
 # Dataset available with the package 
 data('example_dataset_CNAqc', package = 'CNAqc')
-x = CNAqc::init(
-  example_dataset_CNAqc$snvs, 
-  example_dataset_CNAqc$cna,
-  example_dataset_CNAqc$purity,
-  ref = 'hg19')
 
-print(x)
+x = CNAqc::init(
+  mutations = example_dataset_CNAqc$mutations, 
+  cna = example_dataset_CNAqc$cna,
+  purity = example_dataset_CNAqc$purity,
+  ref = 'hg19')
 ```
 
 

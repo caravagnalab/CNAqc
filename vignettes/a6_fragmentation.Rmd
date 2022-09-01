@@ -31,10 +31,11 @@ We work with the template dataset.
 ```{r echo=FALSE, results=TRUE, message=FALSE}
 # Dataset available with the package 
 data('example_dataset_CNAqc', package = 'CNAqc')
+
 x = CNAqc::init(
-  example_dataset_CNAqc$snvs, 
-  example_dataset_CNAqc$cna,
-  example_dataset_CNAqc$purity,
+  mutations = example_dataset_CNAqc$mutations, 
+  cna = example_dataset_CNAqc$cna,
+  purity = example_dataset_CNAqc$purity,
   ref = 'hg19')
 
 print(x)

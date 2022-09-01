@@ -1,7 +1,7 @@
-prepare_input_data = function(snvs, cna, tumour_purity)
+prepare_input_data = function(mutations, cna, tumour_purity)
 {
   # Input data types and fortification
-  stopifnot(is_tibble(snvs) | is.data.frame(snvs))
+  stopifnot(is_tibble(mutations) | is.data.frame(mutations))
   stopifnot(is_tibble(cna) | is.data.frame(cna))
   stopifnot(tumour_purity > 0 |
               tumour_purity <= 1 | !is.na(tumour_purity))
@@ -10,7 +10,7 @@ prepare_input_data = function(snvs, cna, tumour_purity)
   ref_nucleotides = c("A", "C", "T", "G")
   alt_nucleotides = c("A", "C", "T", "G")
 
-  snvs = fortify_mutation_calls(snvs) %>%
+  mutations = fortify_mutation_calls(mutations) %>%
     mutate(
       type = ifelse(
         (ref %in% ref_nucleotides) & (alt %in% alt_nucleotides),
@@ -19,7 +19,7 @@ prepare_input_data = function(snvs, cna, tumour_purity)
       )
     )
 
-  all_mutations = snvs
+  all_mutations = mutations
 
   nsnvs = (all_mutations$type == "SNV") %>% sum()
   nindel = nrow(all_mutations) - nsnvs
@@ -56,27 +56,27 @@ prepare_input_data = function(snvs, cna, tumour_purity)
   # )
 
   # Mapping mutations to clonal segments
-  snvs = map_mutations_to_clonal_segments(snvs, cna_clonal)
+  mutations = map_mutations_to_clonal_segments(mutations, cna_clonal)
 
   # Notify NA (not mapped)
-  not_mappable = sum(is.na(snvs$karyotype))
+  not_mappable = sum(is.na(mutations$karyotype))
 
   if(not_mappable > 0)
   {
     # cli::cli_alert_danger('{.field {not_mappable}} mutations cannot be mapped to clonal CNAs and will be removed.')
-    snvs = snvs %>% dplyr::filter(!is.na(karyotype))
+    mutations = mutations %>% dplyr::filter(!is.na(karyotype))
   }
 
-  nsnvs = nrow(snvs)
+  nmutations = nrow(mutations)
 
   # Tabular of mapping per segments (count)
-  tab = snvs %>%
+  tab = mutations %>%
     group_by(segment_id) %>%
     summarise(n = n()) %>%
     arrange(desc(n))
 
   # Stats about mappability
-  num_mappable = sum(!is.na(snvs$karyotype))
+  num_mappable = sum(!is.na(mutations$karyotype))
   perc_mappable = round(num_mappable / nsnvs * 100)
 
   # cat("\n")
@@ -103,5 +103,5 @@ prepare_input_data = function(snvs, cna, tumour_purity)
     }
   }
 
-  return(list(mutations = snvs, cna_clonal = cna_clonal, cna_subclonal = cna_subclonal, tab = tab))
+  return(list(mutations = mutations, cna_clonal = cna_clonal, cna_subclonal = cna_subclonal, tab = tab))
 }

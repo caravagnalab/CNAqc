@@ -135,8 +135,8 @@ smooth_segments = function(x, maximum_distance = 1e6)
 
   # Clean up the new segments table,
   x_new = CNAqc::init(
-    x %>% Mutations(),
-    smoothed_segments,
+    mutations = x %>% Mutations(),
+    cna = smoothed_segments,
     purity = x$purity,
     ref = x$reference_genome)
 
