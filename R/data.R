@@ -132,7 +132,7 @@
 #'
 "fpr_test"
 
-#' Driver mutations released with the boost DM method the DriverDBv3 database
+#' Driver mutations released with the boost DM method
 #' \url{https://www.intogen.org/boostdm/}
 #'
 #' @docType data
