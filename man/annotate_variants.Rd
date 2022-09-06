@@ -2,39 +2,35 @@
 % Please edit documentation in R/annotate_variants.R
 \name{annotate_variants}
 \alias{annotate_variants}
-\title{Annotate variant with VariantAnnotation.}
+\title{Annotate variants and drivers.}
 \usage{
-annotate_variants(
-  x,
-  ref = "hg19",
-  driver_list = CNAqc::intogen_drivers,
-  collapse = TRUE,
-  filter_tumor_type = NULL
-)
+annotate_variants(x, drivers = CNAqc::intogen_drivers)
 }
 \arguments{
-\item{x}{A data.frame with columns c("chr", "from", "to"), or a CNAqc object.}
+\item{x}{A CNAqc object.}
 
-\item{driver_list}{a one column data.frame with gene symbols.}
-
-\item{collapse}{whether or not to merge different location, consequences and genes in a single string or split the mutations}
-
-\item{filter_tumor_type}{filter Intogen drivers by tumor type.}
+\item{drivers}{A dataframe in the format of the `intogen_drivers` one released with
+CNAqc. In particular, it must contain a column named `gene` to identify gene names.}
 }
 \value{
-a data.frame with an additional columns `location` reporting the position of the variant in the genome (`coding`, `intron`, `threeUTR`, ...),
-`consequence` with the consequence of coding mutations (`synonymous`, `nonsynonymous`, ...), `is_driver` a boolean that indicates if the gene is a driver,
-`gene_symbol` for the annotated corresponding gene symbol (if the variant is in a gene) and `driver_label` with the driver label written as
-`gene_refAA->varAA` (is `NA` in case `is_driver = FALSE`).
+A CNAqc object with variants annotated. For each variant this object contains:
 
-The `chr` column in the input should contain the chr prefix before the chromosome number. The annotation process is based on the package
-\href{https://bioconductor.org/packages/release/bioc/html/VariantAnnotation.html}{VariantAnnotation}.
+- `location` reporting the position of the variant in the genome (`coding`, `intron`, `threeUTR`, ...),
+- `consequence` with the consequence of coding mutations (`synonymous`, `nonsynonymous`, ...),
+- `is_driver` a boolean that indicates if the gene is a driver,
+- `gene_symbol` for the annotated corresponding gene symbol (if the variant is in a gene)
+- `driver_label` with the driver label written as `gene_refAA->varAA` (`NA` in case `is_driver = FALSE`).
+
+The annotation process is based on the package \href{https://bioconductor.org/packages/release/bioc/html/VariantAnnotation.html}{VariantAnnotation}.
 }
 \description{
-The function provides an easy and fast way to annotate variants,
-reporting the locations of the different mutations and the consequences for
-those in coding regions. Then putative drivers are returned upon matching
-against lists of known drivers.
+Easy and fast way to annotate input mutations, and detect
+potential driver mutations. This function computes the locations of
+the different mutations and the consequences of substituions mapped to
+coding regions, using \href{https://bioconductor.org/packages/release/bioc/html/VariantAnnotation.html}{VariantAnnotation} and other Bioconductor packages.
+Then, putative drivers are annotated upon matching from an input list that,
+by default, is compiled from the \href{https://www.intogen.org}{Intogen} database. Drivers are selected among
+coding substituions with known effect.
 }
 \examples{
 

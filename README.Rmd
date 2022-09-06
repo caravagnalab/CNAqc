@@ -11,7 +11,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# CNAqc <a href="caravagnalab.github.io/CNAqc"><img src="man/figures/logo.png" align="right" height="139" /></a>
+# CNAqc <a href="caravagnalab.github.io/CNAqc"><img src="man/figures/logo.png" align="right" height="69" /></a>
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/caravagnalab/CNAqc/workflows/R-CMD-check/badge.svg)](https://github.com/caravagnalab/CNAqc/actions)
@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
 [![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-green.svg)](https://www.tidyverse.org/lifecycle/#stable)
 <!-- badges: end -->
 
-CNAqc is a package to quality control (QC) bulk cancer sequencing data. Methods are available to , visualise and manipulate i) somatic mutation data of both single-nucleotide variants and insertion-deletions, ii) allele-specific Copy Number Alterations (CNAs) and iii) tumour purity estimates. QC procedures in CNAqc can be used to validate copy number segmentations against variant allele frequencies of somatic mutations; QC scores can be used to rank alternative tumour segmentations and purity/ ploidy estimates. The tool also provides an automatic copy number calling pipeline that uses the Sequenza caller algorithm. CNAqc provides also algorithms to phase mutation multiplicities against CNAs and estimate Cancer Cell Fractions (CCFs) with their uncertainty. The package contains also statistical tests to identify patterns of over-fragmentation of chromosome arms (excessively short and numerous DNA fragments) and perform various manipulation tasks for somatic tumour data.
+CNAqc is a package to manipulate, visualise and quality control (QC) variants data from bulk cancer sequencing assays. The tool processes i) somatic single-nucleotide variants and insertion-deletions, ii) allele-specific Copy Number Alterations (CNAs) and iii) tumour purity estimates. QC procedures can be used to validate copy number segmentations against variant allele frequencies of somatic mutations, and to rank alternative tumour segmentations and purity/ ploidy estimates. The tool also provides an automatic copy number calling pipeline that uses the Sequenza caller algorithm and performs QC-driven copy numbner calling. CNAqc provides also algorithms to i) estimate Cancer Cell Fractions (CCFs) per mutation, ii) identify patterns of over-fragmentation of chromosome arms, iii) annotate driver mutationts and iv) perform various manipulation tasks for somatic tumour data.
 
 #### Citation
 

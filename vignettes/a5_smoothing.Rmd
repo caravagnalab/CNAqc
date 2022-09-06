@@ -20,9 +20,9 @@ options(crayon.enabled=FALSE)
 library(CNAqc)
 ```
 
-Smoothing works with a simple algorithm that merges, inside each chromosome, all contiguous segments that have the same absolute copy number values (minnor and major allele counts), and are separated by up to $\delta$ base pairs. Only clonal CNAs can be smoothed; subclonal CNAs are retained (they cannot be smoothed usually because the CCF of conrtiguous segments might be different, even if the allele-specific profiles are equivalent).
+Smoothing merges, for each chromosome, all contiguous segments that have the same minnor and major allele counts, and are separated by up to $\delta$ base pairs (default $\delta = 10^6$, 1 megabase). 
 
-The default value of $\delta = 10^6$ (1 megabase).
+Only clonal CNAs can be smoothed; subclonal CNAs are retained  but cannot be smoothed because the CCF of contiguous segments might be different.
 
 ```{r echo=FALSE, results=TRUE, message=FALSE}
 # Dataset available with the package 
@@ -49,11 +49,11 @@ The old CNAqc object is retained inside the new one
 ```{r, fig.width=11, fig.height=3}
 print(x$before_smoothing)
 
-# The new should have fewer segments
+# The new one should have fewer segments
 print(x)
 ```
 
-You can visualise the effect of the smoothing automatically using `CNAqc` functions.
+You can visualise the effect of the smoothing.
 ```{r, fig.width=15, fig.height=7}
 plot_smoothing(x)
 ```

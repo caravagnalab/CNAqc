@@ -17,7 +17,7 @@ options(crayon.enabled=F)
 ```
 
 
-```{r setup}
+```{r setup, warning=FALSE}
 library(CNAqc)
 
 # We work with the PCAWG object

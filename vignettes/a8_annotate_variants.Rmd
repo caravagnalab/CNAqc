@@ -26,11 +26,13 @@ require(dplyr)
 # options(connectionObserver = NULL)
 ```
 
-CNAqc  has a number of simple annotation functions that can be useful for giving a preliminary idea of what somatic mutations might be _driver events_. This function does not replace more complex and in-depth analyzes of mutations, using specialised tools like [Intogen](https://www.intogen.org/search), [COSMIC](https://cancer.sanger.ac.uk/cosmic), etc..
+>Note: variant annotation should be carried out with dedicated tools. CNAqc functions should only be used to get a preliminary idea of the most important mutations annotated in a sample.
 
-Given a table of mutation we annotate:
+# Annotating driver mutations with VariantAnnotation and Intogen
 
-1. Position of the mutation, any of:
+CNAqc can annotate input mutations and flag potential _driver mutations_. Using the [VariantAnnotation](https://bioconductor.org/packages/release/bioc/html/VariantAnnotation.html) package and the [intOGen](https://www.intogen.org/search) database, CNAqc performs the following steps:
+
+1. Annotates the position of each mutation, with [VariantAnnotation](https://bioconductor.org/packages/release/bioc/html/VariantAnnotation.html):
     - `coding`, 
     - `intron`, 
     - `fiveUTR`, 
@@ -40,47 +42,34 @@ Given a table of mutation we annotate:
     - `spliceSite`, 
     - `promoter`.
     
-2. Consequence on the protein for coding mutations (with eventual change in the AA):
+2. Annotates the consequence on the protein for coding mutations, with change in the amino acid if known, with [VariantAnnotation](https://bioconductor.org/packages/release/bioc/html/VariantAnnotation.html):
     - `nonsynonymous`, 
     - `synonymous`, 
     -  `frameshift`,
     -  `stop`.
     
-3. Synonymous mutations are then compared to known driver genes from the [intOGen](https://www.intogen.org/search) database, and flagged as drivers.
-
-4. Optionally if the `dbSNP` id is present the `PolyPhen` score can also be annotated
-
-The annotation phase is heavily based on the [VariantAnnotation](https://bioconductor.org/packages/release/bioc/html/VariantAnnotation.html) package.
+3. Compares non-synonymous mutations to known driver genes from the [intOGen](https://www.intogen.org/search) database or a custom list, and flags drivers.
 
 
-# Install Required Packages
-
-We will annotate the example dataset available in CNAqc.
+This functionality works with a CNAqc object.
 
 ```{r}
-# Load template data
+# Dataset available with the package 
 data('example_dataset_CNAqc', package = 'CNAqc')
 
-mutations <- example_dataset_CNAqc$mutations
+x = CNAqc::init(
+  mutations = example_dataset_CNAqc$mutations, 
+  cna = example_dataset_CNAqc$cna,
+  purity = example_dataset_CNAqc$purity,
+  ref = 'hg19')
 
-mutations %>%  head
+# What we annotate
+x %>% Mutations
 ```
 
-This tibble has already have driver annotated which have been generated using ([ANNOVAR](https://annovar.openbioinformatics.org/en/latest/)). We get rid of them and re-annotate the data.
+## Required packages
 
-```{r, warning=FALSE, message=FALSE}
-# What are drivers (labels)
-drivers_true <- mutations %>% 
-  filter(is_driver == T) %>% 
-  pull(driver_label) %>%  
-  unique
-
-mutations <- mutations %>% 
-  dplyr::select(-is_driver, -driver_label)
-```
-
-The function uses databases from [Bioconductor](https://www.bioconductor.org/) to annotate the variants; installation of these
-databases might take a bit of time because ~1GB of data have to be downloaded. This will happen only the first time the annotation is run.
+CNAqc uses databases from [Bioconductor](https://www.bioconductor.org/) to annotate the variants; installation of these databases might take a bit of time because ~1GB of data have to be downloaded. This will happen only the first time the annotation is run.
 
 ```{r, warning=FALSE, message=FALSE}
 # Reference against which we mapped the reads
@@ -100,73 +89,112 @@ paste0("BSgenome.Hsapiens.UCSC.",reference_genome) %>% BiocManager::install()
 "Organism.dplyr" %>% BiocManager::install()
 "org.Hs.eg.db" %>% BiocManager::install()
 ```
-# Annotation
 
-Now we have everything to get our annotated file
+## Drivers known to CNAqc
+
+CNAqc has pre-loaded a list of 568 driver genes for 66 cancer types, compiled from [intOGen](https://www.intogen.org/download) release date 2020.02.01.
+
+```{r}
+# The available list:
+# - gene id
+# - tumour code where the gene has been flagged as driver
+# - tumour code longname (Esophageal cancer)
+data("intogen_drivers", package = 'CNAqc')
+
+# Number of genes (568)
+intogen_drivers$gene %>% unique
+
+# Tumour types (66)
+intogen_drivers$synopsis %>% unique
+
+# Organised table
+intogen_drivers
+```
+
+We plot the list of genes that appear in at least 20 tumour types.
+```{r, fig.width=8, fig.height=12}
+library(RColorBrewer)
+
+n <- 60
+qual_col_pals = brewer.pal.info[brewer.pal.info$category == 'qual',]
+col_vector = unlist(mapply(brewer.pal, qual_col_pals$maxcolors, rownames(qual_col_pals)))
+
+intogen_drivers %>% 
+  group_by(gene) %>% 
+  filter(n() > 20) %>% 
+  ggplot() + 
+  geom_bar(aes(x = gene, fill = synopsis)) +
+  coord_flip() +
+  scale_fill_manual(values = col_vector) +
+  CNAqc:::my_ggplot_theme()
+```
+
+## Default annotation
 
 ```{r, warning=FALSE, message=FALSE}
-# Run function
-mutations_annotated <- annotate_variants(mutations, ref = reference_genome)
+# Run default annotation function
+x_new <- annotate_variants(x)
 
-mutations_annotated
+x_new
 ```
-One thing to note is the presence of multiple locations and consequences for a single variant. 
 
-This happens as we try to annotate the mutations in a transcript-agnostic manner, consequently we report all possible effects and locations for any transcript (separated by `:`). 
+Note that there can be multiple locations and consequences for a single variant.  This happens as we try to annotate the mutations in a transcript-agnostic manner, consequently we report all possible effects and locations for any transcript (separated by `:`). Comparison between known and newly-annotated drivers seems consistent.
 
-For this cohort, the drivers largely correspond to those previously noted (`TP53` and `CTCF` mutations) with some differences. Obviously using multiple annotations and validations guarantees more precise results. 
-
-`CNAqc` uses a list of driver gene per cancer type from [intOGen](https://www.intogen.org/download) (_Release date 2020.02.01_), matching mutation by gene id (e.g., a missense mutation in `APC`). The list of genes can be pooled from multiple tumor types, or providing a tumour code. 
-
-The list of tumor types and codes is available in the package. 
 ```{r}
-data('intogen_ttypes', package = 'CNAqc')
+# Reference driver mutations
+x %>% print()
 
-# intOGen
-intogen_ttypes
+# New driver mutations
+x_new %>% print()
+```
+
+## Type-specific drivers annotation
+
+One can restrict the list of potential genes to use for drivers detection. To this extent, it is convenient to use the available database and the information regarding the input cancer type.
+
+```{r}
+# We pretend to work with OV, ovarian cancer
+OV_drivers = intogen_drivers %>% dplyr::filter(tumour == 'OV')
+
+OV_drivers$gene %>% unique()
+
+# Run annotation function
+x_new_ov <- annotate_variants(x, drivers = OV_drivers)
+
+# Reference driver mutations
+x %>% print()
+
+# New driver mutations, searching for OV drivers
+x_new_ov %>% print()
 ```
 
 
-```{r,  warning=FALSE, message=FALSE}
-# Example: OV is ovarian cancer
-mutations_annotated_OV <- annotate_variants(mutations, 
-                                       ref = reference_genome, 
-                                       filter_tumor_type = "OV")
+# Example annotations
 
-mutations_annotated_OV
-```
+Annotated data can undergo the canonical analysis workflow.
 
-Another option is to supply a list of drivers in a one-coloumn `data.frame`, via argument `driver_list`.
-
-```{r,  warning=FALSE, message=FALSE}
-mutations_annotated_custom <- annotate_variants(mutations,
-                                           ref = reference_genome, 
-                                           driver_list = c("TP53", "CHDS") %>% as.data.frame
-                                           )
-
-mutations_annotated_custom
-```
-
-# Plot
-
-We can finally perform QC and plot drivers together with the data distribution.
 
 ```{r, warning=FALSE, message=FALSE, fig.width=10, fig.height=4}
-x = init(
-  mutations = mutations_annotated, 
-  cna = example_dataset_CNAqc$cna,
-  purity = example_dataset_CNAqc$purity,
-  ref = 'hg19'
-  )
-
 ggpubr::ggarrange(
-  plot_data_histogram(x, which = 'VAF'),
-  plot_data_histogram(x, which = 'DP'),
-  plot_data_histogram(x, which = 'NV'),
+  plot_data_histogram(x_new, which = 'VAF'),
+  plot_data_histogram(x_new, which = 'DP'),
+  plot_data_histogram(x_new, which = 'NV'),
   ncol = 3,
   nrow = 1
   )
-
 ```
+
+```{r, fig.width=9.5, fig.height=6}
+# The actual plot function
+cowplot::plot_grid(
+  plot_gw_counts(x_new),
+  plot_gw_vaf(x_new, N = 10000),
+  plot_gw_depth(x_new, N = 10000),
+  plot_segments(x_new),
+  align = 'v',
+  nrow = 4,
+  rel_heights = c(.15, .15, .15, .8))
+```
+
 
 

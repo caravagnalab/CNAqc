@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 options(crayon.enabled=FALSE)
 ```
 
-```{r setup}
+```{r setup, warning=FALSE}
 library(CNAqc)
 ```
 
@@ -24,7 +24,7 @@ library(CNAqc)
 ### Fragmentation of individual arms
 
 The fragmentation of a chromosome arm is assessed with a statistical test based on counting
-the size of the copy number segments mapping to the arm. This analysis works only at the level of clonal CNAs.
+the size of the copy number segments mapping to the arm. This analysis works only at the level of clonal segments
 
 We work with the template dataset. 
 
@@ -84,7 +84,7 @@ Once available, these results appear in any call to `plot_segments` as annotated
 plot_segments(x)
 ```
 
-[Smoothing](https://caravagn.github.io/CNAqc/articles/smoothing.html) is a good way to start cleaning up the fragmented sets of arms, as it merges segments that have no karyotype change, and are closer than a certain distance.
+Smoothing  is a good way to start cleaning up the fragmented sets of arms.
 
 ```{r, fig.width=9.5, fig.height=3}
 # Smooth with default parameters
