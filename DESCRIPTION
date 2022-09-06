@@ -7,7 +7,11 @@ Maintainer: Giulio Caravagna <gcaravagn@gmail.com>
 Authors@R: c(
     person("Giulio", "Caravagna", , "gcaravagn@gmail.com", role = c("aut", "cre"),
       comment = c(ORCID = "0000-0003-4240-3265")
-    )
+    ),
+    person("Riccardo", "Bergamin", , "ric.b.91@gmail.com", role = c("ctb"")),
+    person("Nicola", "Calonaci", , "nicola.calonaci@gmail.com", role = c("ctb"")),
+    person("Salvatore", "Milite", , "militesalvatore@gmail.com", role = c("ctb"")),
+    person("Alice", "Antonello", , "aliceantonello9@gmail.com", role = c("ctb""))    
   )
 Description: CNAqc is a package to provide a set of metrics to quality control (QC) 
   allele-specific Copy Number Alteration (CNA) calls, somatic mutations and tumour purity determined 
