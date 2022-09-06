@@ -170,16 +170,14 @@ The default S3 `plot` function layouts a panel with segments in bottom, and all 
 
 ```{r, fig.width=9.5, fig.height=6}
 # The actual plot function
-# 
-# cowplot::plot_grid(
-#   plot_gw_counts(x),
-#   plot_gw_vaf(x, N = 10000),
-#   plot_gw_depth(x, N = 10000),
-#   plot_segments(x),
-#   align = 'v', 
-#   nrow = 4, 
-#   rel_heights = c(.15, .15, .15, .8))
-plot(x)
+cowplot::plot_grid(
+  plot_gw_counts(x),
+  plot_gw_vaf(x, N = 10000),
+  plot_gw_depth(x, N = 10000),
+  plot_segments(x),
+  align = 'v',
+  nrow = 4,
+  rel_heights = c(.15, .15, .15, .8))
 ```
 
 
