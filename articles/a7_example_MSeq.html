@@ -485,10 +485,11 @@
 <p>Full CNAqc analysis. First we create the object.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># CNAqc data object</span></span>
-<span><span class="va">x</span> <span class="op">=</span> <span class="fu">CNAqc</span><span class="fu">::</span><span class="fu"><a href="../reference/init.html">init</a></span><span class="op">(</span><span class="va">snvs</span>,</span>
-<span>                <span class="va">cna</span>,</span>
-<span>                <span class="va">purity</span>,</span>
-<span>                ref <span class="op">=</span> <span class="st">"GRCh38"</span><span class="op">)</span></span>
+<span><span class="va">x</span> <span class="op">=</span> <span class="fu">CNAqc</span><span class="fu">::</span><span class="fu"><a href="../reference/init.html">init</a></span><span class="op">(</span></span>
+<span>  mutations <span class="op">=</span> <span class="va">snvs</span>,</span>
+<span>  cna <span class="op">=</span> <span class="va">cna</span>,</span>
+<span>  purity <span class="op">=</span> <span class="va">purity</span>,</span>
+<span>  ref <span class="op">=</span> <span class="st">"GRCh38"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #BBBBBB; background-color: #0000BB;"> [ CNAqc - CNA Quality Check ] </span></span></span>
 <span><span class="co"><span style="color: #BBBBBB; background-color: #0000BB;">#&gt; </span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Using reference genome coordinates for: <span style="color: #00BB00;">GRCh38</span>.</span></span>
@@ -555,14 +556,14 @@
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>             1 1:1     0.345  0.025  0.347 3.66      604 FALSE   BMix  -<span style="color: #BB0000;">0.001</span><span style="color: #BB0000; text-decoration: underline;">82</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>             1 2:0     0.345  0.025  0.34  1.43       19 FALSE   KDE    0.005<span style="text-decoration: underline;">00</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>             2 2:0     0.69   0.05   0.673 0.537      12 FALSE   BMix   0.016<span style="text-decoration: underline;">6</span> </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>             1 1:0     0.527  0.058<span style="text-decoration: underline;">3</span> 0.532 1.26       12 FALSE   BMix  -<span style="color: #BB0000;">0.005</span><span style="color: #BB0000; text-decoration: underline;">08</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>             1 2:1     0.257  0.013<span style="text-decoration: underline;">8</span> 0.279 1.54        5 FALSE   BMix  -<span style="color: #BB0000;">0.022</span><span style="color: #BB0000; text-decoration: underline;">9</span> </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>             2 2:1     0.513  0.027<span style="text-decoration: underline;">6</span> 0.521 0.615       1 FALSE   BMix  -<span style="color: #BB0000;">0.008</span><span style="color: #BB0000; text-decoration: underline;">13</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>             1 1:0     0.527  0.058<span style="text-decoration: underline;">3</span> 0.540 1.26       13 FALSE   BMix  -<span style="color: #BB0000;">0.012</span><span style="color: #BB0000; text-decoration: underline;">9</span> </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>             1 2:1     0.257  0.013<span style="text-decoration: underline;">8</span> 0.277 1.56        5 FALSE   BMix  -<span style="color: #BB0000;">0.020</span><span style="color: #BB0000; text-decoration: underline;">9</span> </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>             2 2:1     0.513  0.027<span style="text-decoration: underline;">6</span> 0.523 0.617       1 FALSE   BMix  -<span style="color: #BB0000;">0.010</span><span style="color: #BB0000; text-decoration: underline;">2</span> </span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># … with 6 more variables: offset &lt;dbl&gt;, weight &lt;dbl&gt;, epsilon &lt;dbl&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   VAF_tolerance &lt;dbl&gt;, matched &lt;lgl&gt;, QC &lt;chr&gt;, and abbreviated variable</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   names ¹​mutation_multiplicity, ²​karyotype, ³​delta_vaf, ⁴​counts_per_bin,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   ⁵​discarded, ⁶​offset_VAF</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Peak detection <span style="color: #00BB00;">PASS</span> with <span style="color: #00BB00;">r = -0.00294794631867507</span> - maximum purity error ε = <span style="color: #00BB00;">0.05</span>.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Peak detection <span style="color: #00BB00;">PASS</span> with <span style="color: #00BB00;">r = -0.00319576226201076</span> - maximum purity error ε = <span style="color: #00BB00;">0.05</span>.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Peak analysis: complex CNAs</span> <span style="color: #00BBBB;">─────────────────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> No karyotypes with &gt;<span style="color: #00BB00;">100</span> mutation(s).</span></span>
@@ -581,11 +582,11 @@
 <span><span class="co">#&gt;  2:1  [n =   345, L =    43 Mb] ■</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample Purity: 69% ~ Ploidy: 2.</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="color: #000000; background-color: #00BB00; font-weight: bold;"> PASS </span><span style="font-weight: bold;"> Peaks QC closest: </span><span style="color: #00BB00; font-weight: bold;">111%</span><span style="font-weight: bold;">, </span><span style="color: #00BB00; font-weight: bold;">λ = -0.0029</span><span style="font-weight: bold;">. Purity correction: 0%.</span> <span style="color: #00BBBB;">──────────</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="color: #000000; background-color: #00BB00; font-weight: bold;"> PASS </span><span style="font-weight: bold;"> Peaks QC closest: </span><span style="color: #00BB00; font-weight: bold;">111%</span><span style="font-weight: bold;">, </span><span style="color: #00BB00; font-weight: bold;">λ = -0.0032</span><span style="font-weight: bold;">. Purity correction: 0%.</span> <span style="color: #00BBBB;">──────────</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">1:1</span> ~ n = 14488 ( 84%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.004</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">2:0</span> ~ n = 1552  (  9%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> 0.01    <span style="color: #000000; background-color: #00BB00;"> PASS </span> 0.017</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">1:0</span> ~ n = 898   (  5%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.004</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">2:1</span> ~ n = 345   (  2%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.088  <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.015</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">1:0</span> ~ n = 898   (  5%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.011</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">2:1</span> ~ n = 345   (  2%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.08   <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.019</span></span></code></pre></div>
 <p>For this sample these calls are passed by CNAqc.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Do not assemble plots, and remove karyotypes with no data associated</span></span>
@@ -631,11 +632,11 @@
 <span><span class="co">#&gt;  2:1  [n =   345, L =    43 Mb] ■</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample Purity: 69% ~ Ploidy: 2.</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="color: #000000; background-color: #00BB00; font-weight: bold;"> PASS </span><span style="font-weight: bold;"> Peaks QC closest: </span><span style="color: #00BB00; font-weight: bold;">111%</span><span style="font-weight: bold;">, </span><span style="color: #00BB00; font-weight: bold;">λ = -0.0029</span><span style="font-weight: bold;">. Purity correction: 0%.</span> <span style="color: #00BBBB;">──────────</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="color: #000000; background-color: #00BB00; font-weight: bold;"> PASS </span><span style="font-weight: bold;"> Peaks QC closest: </span><span style="color: #00BB00; font-weight: bold;">111%</span><span style="font-weight: bold;">, </span><span style="color: #00BB00; font-weight: bold;">λ = -0.0032</span><span style="font-weight: bold;">. Purity correction: 0%.</span> <span style="color: #00BBBB;">──────────</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">1:1</span> ~ n = 14488 ( 84%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.004</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">2:0</span> ~ n = 1552  (  9%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> 0.01    <span style="color: #000000; background-color: #00BB00;"> PASS </span> 0.017</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">1:0</span> ~ n = 898   (  5%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.004</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">2:1</span> ~ n = 345   (  2%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.088  <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.015</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">1:0</span> ~ n = 898   (  5%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.011</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">2:1</span> ~ n = 345   (  2%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.08   <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.019</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Cancer Cell Fraction (CCF) data available for karyotypes:1:0, 1:1, 2:0, and 2:1.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #BBBBBB; background-color: #00BB00;"> PASS </span> CCF via <span style="font-weight: bold;">ENTROPY</span>.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #BBBBBB; background-color: #00BB00;"> PASS </span> CCF via <span style="font-weight: bold;">ENTROPY</span>.</span></span>
@@ -691,7 +692,7 @@
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Using reference genome coordinates for: <span style="color: #00BB00;">GRCh38</span>.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Fortified calls for <span style="color: #00BB00;">17283</span> somatic mutations: <span style="color: #00BB00;">17283</span> SNVs (<span style="color: #00BB00;">100%</span>) and <span style="color: #00BB00;">0</span> indels.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Fortified CNAs for <span style="color: #00BB00;">54</span> segments: <span style="color: #00BB00;">54</span> clonal and <span style="color: #00BB00;">0</span> subclonal.</span></span>
-<span><span class="co">#&gt; Warning in map_mutations_to_clonal_segments(snvs, cna_clonal): [CNAqc] a</span></span>
+<span><span class="co">#&gt; Warning in map_mutations_to_clonal_segments(mutations, cna_clonal): [CNAqc] a</span></span>
 <span><span class="co">#&gt; karyotype column is present in CNA calls, and will be overwritten</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #00BB00;">17283</span> mutations mapped to clonal CNAs.</span></span>
 <span></span>
@@ -743,7 +744,11 @@
 <p>Let’s see why this is wrong, using peak detection.</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># CNAqc data object</span></span>
-<span><span class="va">x</span> <span class="op">=</span> <span class="fu">CNAqc</span><span class="fu">::</span><span class="fu"><a href="../reference/init.html">init</a></span><span class="op">(</span><span class="va">snvs</span>, <span class="va">cna</span>, <span class="va">purity</span>, ref <span class="op">=</span> <span class="st">"GRCh38"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span><span class="va">x</span> <span class="op">=</span> <span class="fu">CNAqc</span><span class="fu">::</span><span class="fu"><a href="../reference/init.html">init</a></span><span class="op">(</span></span>
+<span>  mutations <span class="op">=</span> <span class="va">snvs</span>,</span>
+<span>  cna <span class="op">=</span> <span class="va">cna</span>,</span>
+<span>  purity <span class="op">=</span> <span class="va">purity</span>,</span>
+<span>  ref <span class="op">=</span> <span class="st">"GRCh38"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
 <span>  <span class="fu">CNAqc</span><span class="fu">::</span><span class="fu"><a href="../reference/analyze_peaks.html">analyze_peaks</a></span><span class="op">(</span>matching_strategy <span class="op">=</span> <span class="st">'closest'</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #BBBBBB; background-color: #0000BB;"> [ CNAqc - CNA Quality Check ] </span></span></span>
 <span><span class="co"><span style="color: #BBBBBB; background-color: #0000BB;">#&gt; </span></span></span>
@@ -762,15 +767,15 @@
 <span><span class="co">#&gt; <span style="color: #949494;"># Rowwise: </span></span></span>
 <span><span class="co">#&gt;   mutation_mu…¹ karyo…²  peak delta…³      x     y count…⁴ disca…⁵ from  offse…⁶</span></span>
 <span><span class="co">#&gt;           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>             1 2:2     0.177  0.010<span style="text-decoration: underline;">4</span> 0.097<span style="text-decoration: underline;">6</span> 3.72      594 FALSE   BMix  7.98<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>             2 2:2     0.355  0.020<span style="text-decoration: underline;">8</span> 0.345  3.72      499 FALSE   BMix  9.86<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>             1 2:0     0.275  0.025  0.275  0.387       4 FALSE   BMix  3.56<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>             2 2:0     0.55   0.05   0.542  1.25       13 FALSE   BMix  8.46<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>             1 2:2     0.177  0.010<span style="text-decoration: underline;">4</span> 0.095<span style="text-decoration: underline;">8</span> 3.80      594 FALSE   BMix   0.081<span style="text-decoration: underline;">7</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>             2 2:2     0.355  0.020<span style="text-decoration: underline;">8</span> 0.343  3.73      499 FALSE   BMix   0.011<span style="text-decoration: underline;">7</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>             1 2:0     0.275  0.025  0.247  0.530       4 FALSE   BMix   0.027<span style="text-decoration: underline;">6</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>             2 2:0     0.55   0.05   0.54   1.26       13 FALSE   KDE    0.010<span style="text-decoration: underline;">0</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># … with 6 more variables: offset &lt;dbl&gt;, weight &lt;dbl&gt;, epsilon &lt;dbl&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   VAF_tolerance &lt;dbl&gt;, matched &lt;lgl&gt;, QC &lt;chr&gt;, and abbreviated variable</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   names ¹​mutation_multiplicity, ²​karyotype, ³​delta_vaf, ⁴​counts_per_bin,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   ⁵​discarded, ⁶​offset_VAF</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BB0000;">✖</span> Peak detection <span style="color: #BB0000;">FAIL</span> with <span style="color: #BB0000;">r = 0.253955491101314</span> - maximum purity error ε = <span style="color: #00BB00;">0.05</span>.</span></span>
+<span><span class="co">#&gt; <span style="color: #BB0000;">✖</span> Peak detection <span style="color: #BB0000;">FAIL</span> with <span style="color: #BB0000;">r = 0.264488688595134</span> - maximum purity error ε = <span style="color: #00BB00;">0.05</span>.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Peak analysis: complex CNAs</span> <span style="color: #00BBBB;">─────────────────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Karyotypes <span style="color: #00BB00;">3:1</span>, <span style="color: #00BB00;">4:0</span>, and <span style="color: #00BB00;">4:2</span> with &gt;<span style="color: #00BB00;">100</span> mutation(s). Using epsilon = <span style="color: #00BB00;">0.05</span>.</span></span>
@@ -797,9 +802,9 @@
 <span><span class="co">#&gt;  4:2  [n =   169, L =    31 Mb]</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample Purity: 55% ~ Ploidy: 4.</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="color: #BBBBBB; background-color: #BB0000; font-weight: bold;"> FAIL </span><span style="font-weight: bold;"> Peaks QC closest: </span><span style="color: #BB0000; font-weight: bold;">188%</span><span style="font-weight: bold;">, </span><span style="color: #BB0000; font-weight: bold;">λ = 0.254</span><span style="font-weight: bold;">. Purity correction: 25%.</span> <span style="color: #00BBBB;">───────────</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">2:2</span> ~ n = 14268 ( 94%) → <span style="color: #BBBBBB; background-color: #BB0000;"> FAIL </span> 0.246   <span style="color: #BBBBBB; background-color: #BB0000;"> FAIL </span> 0.023</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">2:0</span> ~ n = 898   (  6%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> 0.001   <span style="color: #000000; background-color: #00BB00;"> PASS </span> 0.008</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="color: #BBBBBB; background-color: #BB0000; font-weight: bold;"> FAIL </span><span style="font-weight: bold;"> Peaks QC closest: </span><span style="color: #BB0000; font-weight: bold;">188%</span><span style="font-weight: bold;">, </span><span style="color: #BB0000; font-weight: bold;">λ = 0.2645</span><span style="font-weight: bold;">. Purity correction: 26%.</span> <span style="color: #00BBBB;">──────────</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">2:2</span> ~ n = 14268 ( 94%) → <span style="color: #BBBBBB; background-color: #BB0000;"> FAIL </span> 0.25    <span style="color: #BBBBBB; background-color: #BB0000;"> FAIL </span> 0.027</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">2:0</span> ~ n = 898   (  6%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> 0.055   <span style="color: #000000; background-color: #00BB00;"> PASS </span> 0.01</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">General peak QC (</span><span style="color: #00BB00; font-weight: bold;">2117</span><span style="font-weight: bold;"> mutations): </span><span style="color: #000000; background-color: #00BB00; font-weight: bold;"> PASS </span><span style="font-weight: bold;"> 5 </span><span style="color: #BBBBBB; background-color: #BB0000; font-weight: bold;"> FAIL </span><span style="font-weight: bold;"> 6 - epsilon = 0.05.</span> <span style="color: #00BBBB;">───────</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">4:2</span> ~ n = 169   (  8%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> 3 <span style="color: #BBBBBB; background-color: #BB0000;"> FAIL </span> 1</span></span>
@@ -824,7 +829,11 @@
 <span><span class="va">purity</span> <span class="op">=</span> <span class="va">Sequenza_bad_calls</span><span class="op">$</span><span class="va">purity</span></span>
 <span></span>
 <span><span class="co"># CNAqc data object</span></span>
-<span><span class="va">x</span> <span class="op">=</span> <span class="fu">CNAqc</span><span class="fu">::</span><span class="fu"><a href="../reference/init.html">init</a></span><span class="op">(</span><span class="va">snvs</span>, <span class="va">cna</span>, <span class="va">purity</span>, ref <span class="op">=</span> <span class="st">"GRCh38"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span><span class="va">x</span> <span class="op">=</span> <span class="fu">CNAqc</span><span class="fu">::</span><span class="fu"><a href="../reference/init.html">init</a></span><span class="op">(</span></span>
+<span>  mutations <span class="op">=</span> <span class="va">snvs</span>,</span>
+<span>  cna <span class="op">=</span> <span class="va">cna</span>,</span>
+<span>  purity <span class="op">=</span> <span class="va">purity</span>,</span>
+<span>  ref <span class="op">=</span> <span class="st">"GRCh38"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
 <span>  <span class="fu">CNAqc</span><span class="fu">::</span><span class="fu"><a href="../reference/analyze_peaks.html">analyze_peaks</a></span><span class="op">(</span>matching_strategy <span class="op">=</span> <span class="st">'closest'</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #BBBBBB; background-color: #0000BB;"> [ CNAqc - CNA Quality Check ] </span></span></span>
 <span><span class="co"><span style="color: #BBBBBB; background-color: #0000BB;">#&gt; </span></span></span>
@@ -846,16 +855,16 @@
 <span><span class="co">#&gt;   mutation_mul…¹ karyo…²  peak delta…³     x     y count…⁴ disca…⁵ from  offse…⁶</span></span>
 <span><span class="co">#&gt;            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>              1 1:1     0.3    0.025  0.34  3.73      499 FALSE   KDE   -<span style="color: #BB0000;">0.040</span><span style="color: #BB0000; text-decoration: underline;">0</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>              1 2:0     0.3    0.025  0.34  1.31       20 FALSE   KDE   -<span style="color: #BB0000;">0.040</span><span style="color: #BB0000; text-decoration: underline;">0</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>              2 2:0     0.6    0.05   0.650 0.500      15 FALSE   BMix  -<span style="color: #BB0000;">0.049</span><span style="color: #BB0000; text-decoration: underline;">5</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>              1 2:0     0.3    0.025  0.335 1.30       23 FALSE   BMix  -<span style="color: #BB0000;">0.035</span><span style="color: #BB0000; text-decoration: underline;">0</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>              2 2:0     0.6    0.05   0.641 0.492      13 FALSE   BMix  -<span style="color: #BB0000;">0.041</span><span style="color: #BB0000; text-decoration: underline;">0</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>              1 1:0     0.429  0.051<span style="text-decoration: underline;">0</span> 0.540 1.26       13 FALSE   BMix  -<span style="color: #BB0000;">0.111</span> </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>              1 2:1     0.231  0.014<span style="text-decoration: underline;">8</span> 0.275 1.58        5 FALSE   BMix  -<span style="color: #BB0000;">0.044</span><span style="color: #BB0000; text-decoration: underline;">5</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>              1 2:1     0.231  0.014<span style="text-decoration: underline;">8</span> 0.284 1.51        5 FALSE   BMix  -<span style="color: #BB0000;">0.052</span><span style="color: #BB0000; text-decoration: underline;">8</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>              2 2:1     0.462  0.029<span style="text-decoration: underline;">6</span> 0.523 0.617       1 FALSE   BMix  -<span style="color: #BB0000;">0.061</span><span style="color: #BB0000; text-decoration: underline;">7</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># … with 6 more variables: offset &lt;dbl&gt;, weight &lt;dbl&gt;, epsilon &lt;dbl&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   VAF_tolerance &lt;dbl&gt;, matched &lt;lgl&gt;, QC &lt;chr&gt;, and abbreviated variable</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   names ¹​mutation_multiplicity, ²​karyotype, ³​delta_vaf, ⁴​counts_per_bin,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   ⁵​discarded, ⁶​offset_VAF</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Peak detection <span style="color: #00BB00;">PASS</span> with <span style="color: #00BB00;">r = -0.0898357985029788</span> - maximum purity error ε = <span style="color: #00BB00;">0.05</span>.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Peak detection <span style="color: #00BB00;">PASS</span> with <span style="color: #00BB00;">r = -0.0886546657438173</span> - maximum purity error ε = <span style="color: #00BB00;">0.05</span>.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Peak analysis: complex CNAs</span> <span style="color: #00BBBB;">─────────────────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> No karyotypes with &gt;<span style="color: #00BB00;">100</span> mutation(s).</span></span>
@@ -874,11 +883,11 @@
 <span><span class="co">#&gt;  2:1  [n =   345, L =    43 Mb] ■</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample Purity: 60% ~ Ploidy: 2.</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="color: #000000; background-color: #00BB00; font-weight: bold;"> PASS </span><span style="font-weight: bold;"> Peaks QC closest: </span><span style="color: #00BB00; font-weight: bold;">103%</span><span style="font-weight: bold;">, </span><span style="color: #00BB00; font-weight: bold;">λ = -0.0898</span><span style="font-weight: bold;">. Purity correction: -9%.</span> <span style="color: #00BBBB;">─────────</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="color: #000000; background-color: #00BB00; font-weight: bold;"> PASS </span><span style="font-weight: bold;"> Peaks QC closest: </span><span style="color: #00BB00; font-weight: bold;">103%</span><span style="font-weight: bold;">, </span><span style="color: #00BB00; font-weight: bold;">λ = -0.0887</span><span style="font-weight: bold;">. Purity correction: -9%.</span> <span style="color: #00BBBB;">─────────</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">1:1</span> ~ n = 14268 ( 83%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.08</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">2:0</span> ~ n = 1772  ( 10%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.08   <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.05</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">2:0</span> ~ n = 1772  ( 10%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.07   <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.041</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">1:0</span> ~ n = 898   (  5%) → <span style="color: #BBBBBB; background-color: #BB0000;"> FAIL </span> -0.094</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">2:1</span> ~ n = 345   (  2%) → <span style="color: #BBBBBB; background-color: #BB0000;"> FAIL </span> -0.17   <span style="color: #BBBBBB; background-color: #BB0000;"> FAIL </span> -0.113</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">2:1</span> ~ n = 345   (  2%) → <span style="color: #BBBBBB; background-color: #BB0000;"> FAIL </span> -0.206  <span style="color: #BBBBBB; background-color: #BB0000;"> FAIL </span> -0.113</span></span></code></pre></div>
 <p>For this sample these calls are flagged by CNAqc because the purity is off by a <code>~10%</code> factor.</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_peaks_analysis.html">plot_peaks_analysis</a></span><span class="op">(</span><span class="va">x</span>, empty_plot <span class="op">=</span> <span class="cn">FALSE</span>, assembly_plot <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
@@ -900,7 +909,7 @@
 <span></span>
 <span><span class="co">#CNAqc suggested adjustment</span></span>
 <span><span class="va">x</span><span class="op">$</span><span class="va">peaks_analysis</span><span class="op">$</span><span class="va">score</span></span>
-<span><span class="co">#&gt; [1] -0.0898358</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] -0.08865467</span></span></code></pre></div>
 </div>
   </div>
 

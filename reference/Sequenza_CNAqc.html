@@ -12,21 +12,21 @@ Instructions to customize these steps are available at
 2. This pipeline (Sequenza_CNAqc) optimizes CNA calling and purity
 estimations using peak detection from CNAqc. Starting from a broad set of initial conditions
 for purity (5% to 100%) the pipeline fits cellularity and ploidy values and dumps results.
-Results are then quality controlled by peak detection via CNAqc. The analysis with CNAqc 
-can be carried out using either somatic mutations called by Sequenza, or an external set 
+Results are then quality controlled by peak detection via CNAqc. The analysis with CNAqc
+can be carried out using either somatic mutations called by Sequenza, or an external set
 of input calls.
-3. At every run the best solution by Sequenza is stored in a cache, and up to two alternative 
-solutions are generated: one optional by Sequenza, which might propose different exact values for 
-cellularity and ploidy; one by CNAqc, adjusting the current cellularity of the best Sequenza 
-solution. The alternative solutions are enqueued in a list L of cellularity and ploidy values 
+3. At every run the best solution by Sequenza is stored in a cache, and up to two alternative
+solutions are generated: one optional by Sequenza, which might propose different exact values for
+cellularity and ploidy; one by CNAqc, adjusting the current cellularity of the best Sequenza
+solution. The alternative solutions are enqueued in a list L of cellularity and ploidy values
 to be tested, based on their presence in the cache.
-4. Until the list L is empty, the point values of cellularity and ploidy are 
+4. Until the list L is empty, the point values of cellularity and ploidy are
 tested repeating step 3, using ranges around the proposed values specified by
 input parameters. Further refinement steps will restrict the Sequenza purity
 range based on the score computed by analyze_peaks, which determines a purity
 gradient.
 5. Each run is saved in a folder named run-1, run-2, etc.
-When the list L is empty the pipeline stops and a symbolic link final 
+When the list L is empty the pipeline stops and a symbolic link final
 pointing to the best Sequenza solution, based on CNAqc score is created."><meta property="og:image" content="caravagnalab.github.io/CNAqc/logo.png"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -124,21 +124,21 @@ from data, and allele-specific segments.</p>
 <p>2. This pipeline (<code>Sequenza_CNAqc</code>) optimizes CNA calling and purity
 estimations using peak detection from CNAqc. Starting from a broad set of initial conditions
 for purity (5% to 100%) the pipeline fits cellularity and ploidy values and dumps results.
-Results are then quality controlled by peak detection via CNAqc. The analysis with CNAqc 
-can be carried out using either somatic mutations called by Sequenza, or an external set 
+Results are then quality controlled by peak detection via CNAqc. The analysis with CNAqc
+can be carried out using either somatic mutations called by Sequenza, or an external set
 of input calls.</p>
-<p>3. At every run the best solution by Sequenza is stored in a cache, and up to two alternative 
-solutions are generated: one optional by Sequenza, which might propose different exact values for 
-cellularity and ploidy; one by CNAqc, adjusting the current cellularity of the best Sequenza 
-solution. The alternative solutions are enqueued in a list L of cellularity and ploidy values 
+<p>3. At every run the best solution by Sequenza is stored in a cache, and up to two alternative
+solutions are generated: one optional by Sequenza, which might propose different exact values for
+cellularity and ploidy; one by CNAqc, adjusting the current cellularity of the best Sequenza
+solution. The alternative solutions are enqueued in a list L of cellularity and ploidy values
 to be tested, based on their presence in the cache.</p>
-<p>4. Until the list L is empty, the point values of cellularity and ploidy are 
+<p>4. Until the list L is empty, the point values of cellularity and ploidy are
 tested repeating step 3, using ranges around the proposed values specified by
 input parameters. Further refinement steps will restrict the Sequenza purity
 range based on the score computed by <code>analyze_peaks</code>, which determines a purity
 gradient.</p>
 <p>5. Each run is saved in a folder named <code>run-1</code>, <code>run-2</code>, etc.
-When the list L is empty the pipeline stops and a symbolic link <code>final</code> 
+When the list L is empty the pipeline stops and a symbolic link <code>final</code>
 pointing to the best Sequenza solution, based on CNAqc score is created.</p>
     </div>
 
@@ -230,13 +230,13 @@ in tibble format. Must include colummns "chr", "from", "to", "NV", "NR", "VAF".<
 
 <dt>delta_cellularity</dt>
 <dd><p>When a proposed solution of purity and ploidy is tested,
-Sequenza is run on an interval of purity centered at the proposed value, of half 
+Sequenza is run on an interval of purity centered at the proposed value, of half
 width <code>delta_cellularity</code>.</p></dd>
 
 
 <dt>delta_ploidy</dt>
 <dd><p>When a proposed solution of purity and ploidy is tested,
-Sequenza is run on an interval of ploidy centered at the proposed value, of half 
+Sequenza is run on an interval of ploidy centered at the proposed value, of half
 width <code>delta_ploidy</code>.</p></dd>
 
 

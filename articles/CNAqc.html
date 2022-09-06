@@ -129,30 +129,35 @@
 <p>CNAqc requires in input</p>
 <ul>
 <li>read counts from somatic mutations such as single-nucleotide variants (SNVs) or insertion-deletions (indels);</li>
-<li>allele-specific copy number segments (CNAs), for both clonal and subclonal segments;</li>
-<li>tumor purity estimate.</li>
+<li>allele-specific copy number segments (CNAs) for clonal segments and, optionally, for subclonal segments;</li>
+<li>a tumor purity estimate.</li>
 </ul>
-<p>CNAqc uses chromosome coordinates the supported references (GRCh38 and hg19) to map mutations to segments. Then, the tool can elaborate a number of analysis that help quality control the consistency among mutations, CNAs and tumour purity (see Articles).</p>
+<p>CNAqc uses chromosome coordinates the to map mutations to segments. The conversion of relative to absolute genome coordinates requires to fix a reference genome build; supported references are GRCh38/hg17 and hg19/GRCh37, but custom references can also be built.</p>
+<p>The tool can elaborate a number of analysis to assess the consistency among mutations, CNAs and tumour purity (see Articles).</p>
 <p>CNAqc can be used to:</p>
 <ol style="list-style-type: decimal">
-<li>quality control (QC) concordance across the input mutations, CNAs and purity;</li>
+<li>QC concordance across the input mutations, CNAs and purity;</li>
 <li>select among alternative tumour segmentations and purity/ ploidy estimates;</li>
 <li>optimize CNA calling with automatic QC procedures leveraging the Sequenza copy number caller;</li>
-<li>estimate the Cancer Cell Fractions (CCFs) values of the input variants, and estimate their uncertainty;</li>
+<li>estimate CCF values of the input variants, and estimate their uncertainty;</li>
 <li>identify patterns of over-fragmentation of chromosome arms;</li>
 <li>smooth and subset segments with various filters;</li>
-<li>annotate putative driver mutations among the input variants, using VariantAnnotation.</li>
+<li>annotate putative driver mutations among the input variants, using <a href="https://bioconductor.org/packages/release/bioc/html/VariantAnnotation.html" class="external-link">VariantAnnotation</a>.</li>
 </ol>
 </div>
 <div class="section level3">
 <h3 id="the-model">The model<a class="anchor" aria-label="anchor" href="#the-model"></a>
 </h3>
-<p>The following concepts are used to develop CNAqc</p>
+<p>The following concepts are used to develop CNAqc.</p>
 <div class="section level4">
 <h4 id="vaf-peaks">VAF peaks<a class="anchor" aria-label="anchor" href="#vaf-peaks"></a>
 </h4>
 <p><img src="peaks.png" alt="CNAqc Input/Output" width="650"><br><em>Expected VAF peaks for mutations mapped to diploid heterozygous and triploid clonal CNAs (at purity <span class="math inline">\(\pi=1\)</span>).</em></p>
-<p><strong>Variant Allele Frequency (VAF) peaks for clonal CNAs.</strong> Consider:</p>
+</div>
+<div class="section level4">
+<h4 id="clonal-cnas">Clonal CNAs<a class="anchor" aria-label="anchor" href="#clonal-cnas"></a>
+</h4>
+<p>Consider:</p>
 <ul>
 <li>mutations present in a percentage <span class="math inline">\(0&lt;c&lt;1\)</span> of tumour cells, sitting on a segment <span class="math inline">\(nA:nB\)</span>;</li>
 <li>tumour purity <span class="math inline">\(\pi\)</span>;</li>
@@ -163,7 +168,11 @@ v_m(c) = \dfrac{m \pi c}{
 2 (1 - \pi) + \pi (n_A+n_B)
 } \, .
 \]</span></p>
-<p><strong>Variant Allele Frequency (VAF) peaks for subclonal CNAs.</strong> Consider a mixture of 2 subclones with segments <span class="math inline">\(n_{A,1}:n_{B,1}\)</span> and <span class="math inline">\(n_{A,2}:n_{B,2}\)</span>, proportions <span class="math inline">\(\rho_1\)</span> and <span class="math inline">\(\rho_2\)</span> (<span class="math inline">\(\rho_1+\rho_2=1\)</span>).</p>
+</div>
+<div class="section level4">
+<h4 id="subclonal-cnas">Subclonal CNAs<a class="anchor" aria-label="anchor" href="#subclonal-cnas"></a>
+</h4>
+<p>Consider a mixture of 2 subclones with segments <span class="math inline">\(n_{A,1}:n_{B,1}\)</span> and <span class="math inline">\(n_{A,2}:n_{B,2}\)</span>, proportions <span class="math inline">\(\rho_1\)</span> and <span class="math inline">\(\rho_2\)</span> (<span class="math inline">\(\rho_1+\rho_2=1\)</span>).</p>
 <p>The expected peak for a shared mutation with multiplicity <span class="math inline">\(m_1\)</span>/ <span class="math inline">\(m_2\)</span> in the first/ second subclone is <span class="math display">\[
 v_{m_1,m_2} = \dfrac{
 (m_1\rho_1 + m_2\rho_2) \pi
@@ -182,9 +191,9 @@ m\rho_i \pi
 \]</span></p>
 </div>
 <div class="section level4">
-<h4 id="ccfs">CCFs<a class="anchor" aria-label="anchor" href="#ccfs"></a>
+<h4 id="cancer-cell-fractions-ccfs">Cancer Cell Fractions (CCFs)<a class="anchor" aria-label="anchor" href="#cancer-cell-fractions-ccfs"></a>
 </h4>
-<p><strong>Cancer Cell Fractions (CCF).</strong> Given VAF, tumour purity and CNAs, CCF values can be computed as</p>
+<p>Given VAF, tumour purity and CNAs, CCF values can be computed as</p>
 <p><span class="math display">\[
 c = 
 \dfrac{
@@ -196,6 +205,7 @@ v[
 m \pi
 }
 \]</span></p>
+<p>Therefore the problem of computing CCFs is essentially linked to computing <code>m</code>, mutation multiplicity. This type of computation can be done by “phasing” the VAFs against the multiplicity.</p>
 </div>
 </div>
 </div>
