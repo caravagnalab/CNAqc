@@ -30,6 +30,7 @@ reference:
   - example_dataset_CNAqc
   - example_PCAWG
   - fpr_test
+  - boostDM_drivers
 
 - title: Data processing
   desc:  Functions to manipulate and visualise the data.
