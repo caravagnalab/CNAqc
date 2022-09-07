@@ -4,7 +4,7 @@
 \alias{plot.cnaqc}
 \title{Plot for class \code{'cnaqc'}.}
 \usage{
-plot.cnaqc(x, ...)
+\method{plot}{cnaqc}(x, ...)
 }
 \arguments{
 \item{x}{An obj of class \code{'cnaqc'}.}
@@ -18,8 +18,7 @@ Nothing.
 The default plot is the CNA segments in wide format
 }
 \examples{
-data('example_dataset_CNAqc', package = 'CNAqc')
-x = init(example_dataset_CNAqc$mutations, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+data('example_PCAWG', package = 'CNAqc')
 
-plot.cnaqc(x)
+plot(example_PCAWG)
 }

@@ -1,27 +1,22 @@
-#' Return the available mutation CCF estimates in the data.
+#' Extract CCF estimates.
 #'
 #' @description
 #'
 #' This function extracts Cancer Cell Fractions (CCFs) estimates
-#' from a `CNAqc` object, after they have been computed using
+#' from a CNAqc object, after they have been computed using
 #' function `compute_CCF`. The estimates are pooled
 #' across the used karyotypes, and extracted from the
 #' `CCF_estimates` field of the input object.
 #'
-#' @param x An object of class \code{cnaqc}, where CCF have been computed using
-#' function `compute_CCF`.
+#' @param x A CNAqc object.
 #'
-#' @return A tibble with the mutations with the new columns for mutation multiplicity
-#' and CCF values.
+#' @return A mutations tibble with columns for mutation multiplicity and CCFs.
 #'
 #' @export
 #'
 #' @examples
-#' data('example_dataset_CNAqc')
-#' x = init(example_dataset_CNAqc$mutations, example_dataset_CNAqc$cna, example_dataset_CNAqc$purity)
-#'
-#' x = compute_CCF(x)
-#' CCF(x)
+#' data("example_PCAWG", package = 'CNAqc')
+#' CCF(example_PCAWG)
 CCF = function(x)
 {
   stopifnot(inherits(x, 'cnaqc'))
@@ -37,7 +32,7 @@ CCF = function(x)
   return(mutations)
 }
 
-#' Extract mutation information.
+#' Extract mutations.
 #'
 #' @description Getter to obtain mutation calls from an object.
 #'
@@ -72,7 +67,7 @@ Mutations = function(x, cna = c("clonal", "subclonal"), type = c("SNV", "indel")
   return(mutations)
 }
 
-#' Extract CNA information.
+#' Extract CNAs.
 #'
 #' @description Getter to obtain copy number calls from an object.
 #'

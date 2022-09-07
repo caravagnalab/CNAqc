@@ -1,30 +1,49 @@
 #' Plot CNA segments.
 #'
-#' @description Plot CNA segments as Major/ minor allele, annotating
-#' clonal and subclonal CNA calls in two different sets of colors.
+#' @description
+#' CNAqc can plot genome-wide segments showing major and minor allele counts as
+#' red and blue bars. Bottom circles annotate breakpoints; by default this plot
+#' has limited y-axis and breakpoints for segments outside the plot (e.g. very
+#' high amplifications) are in black. Areas in the genome that are mapped to
+#' the most prevalent karyotype are shadowed by default. Note that the colour
+#' scheme in CNAqc is fixed for certain segments. The colour scheme is adopted
+#' also for other information, e.g., to report the segment where a certain driver
+#' is mapped. A circular layout for this plot is also available, and total
+#' copy numbers can also be plot.
 #'
-#' @param x An object of class \code{cnaqc}, created by the \code{init} function.
-#' @param chromosomes The chromosome to use for this plot.
+#' Note that two distinct colour schemas distinguish clonal and subclonal segments.
+#'
+#' @param x A CNAqc object.
+#' @param chromosomes The chromosome to plot.
 #' @param max_Y_height Maximum height for the Y-axis of the plot. Segments witht total copy
 #' number (Major plus minor) above \code{max_Y_height} are not showm; in that case a point
 #' annotation is put on top of the plot, and \code{max_Y_height} is annotated in the grid.
 #' @param highlight A list of karyotype ids in \code{"Major:minor"} notation
 #' (e.g., \code{"1:1", "2,1", ...}) that will be shadowed with a transparent area.
-#' By default, it plots the most prevalent karyotype,
+#' By default, it plots the most prevalent karyotype using `x$most_prevalent_karyotype`.
 #' @param circular Uses a circular layout in polar coordinates to make the segments
 #' look like a circos plot. This visualisation can save space.
 #' @param cn Type of copy number segment to show on the plot. Either \code{"absolute"} for
 #' Major and minor annotation, or \code{"total"} for the total (Major plus minor) annotation.
 #'
-#' @return A \code{ggplot} object.
+#' @return A \code{ggplot2} plot.
 #' @export
 #'
 #' @examples
 #' data('example_dataset_CNAqc', package = 'CNAqc')
-#' x = init(example_dataset_CNAqc$mutations, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+#' x = init(mutations = example_dataset_CNAqc$mutations, cna = example_dataset_CNAqc$cna, purity = example_dataset_CNAqc$purity)
 #'
+#' # Default view, works for most cases
 #' plot_segments(x)
+#'
+#' # A subset of chromosomes
 #' plot_segments(x, chromosomes = 'chr13')
+#'
+#' # Total CNAs
+#' plot_segments(x, cn = 'total')
+#'
+#' # Shadows all simple clonal CNAs
+#' plot_segments(x, highlight = c('1:0', '1:1', '2:0', '2:1', '2:2'))
 plot_segments = function(x,
                          chromosomes = paste0('chr', c(1:22, 'X', 'Y')),
                          max_Y_height = 6,

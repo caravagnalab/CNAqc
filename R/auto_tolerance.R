@@ -1,21 +1,28 @@
-#' Determine the optimal error tolerance based on data
+#' Determine the optimal error tolerance to QC clonal simple  CNAs.
 #'
-#' @description Regression has been used to measure the rate of false positives
+#' @description
+#'
+#' The QC procedure implemented by function \code{analyze_peaks} allows to
+#' pass or fail a sample based on a custom purity error (maximum error to allow).
+#'
+#' A regression has been used to measure the rate of false positives
 #' from simulated tumours with variable coverage and purity. This allows to determine
-#' an optimal valut of $\epsilon$, parameter `purity_error` of function
-#' \code{analyze_peaks}.
+#' an optimal value of $\epsilon$, the parameter `purity_error` of function
+#' \code{analyze_peaks}, for a desired rate of alse positives basde on the sample
+#' coverage and putative purity.
 #'
-#' @param purity Data purity (putative).
-#' @param coverage Data coverage.
+#' @param purity The data purity (putative) for a sample.
+#' @param coverage The observed data coverage.
 #' @param fpr Desired false positive rate.
 #' @param epsilon_range Range of values to constrain $epsilon$.
 #'
 #' @return The $\epsilon$ value estimated from data, constrained to be in
-#' `epsilon_range`, in order to limit the false positive rate to be `fpr`.
+#' `epsilon_range`, in order to limit the false positive rate to be at most `fpr`.
 #'
 #' @export
 #'
 #' @examples
+#' # Desired 10% FPR for a 30% pure tumour at 90x
 #' auto_tolerance(.3, 90)
 auto_tolerance = function(
   purity,

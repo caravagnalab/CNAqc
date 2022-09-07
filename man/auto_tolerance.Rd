@@ -2,14 +2,14 @@
 % Please edit documentation in R/auto_tolerance.R
 \name{auto_tolerance}
 \alias{auto_tolerance}
-\title{Determine the optimal error tolerance based on data}
+\title{Determine the optimal error tolerance to QC clonal simple  CNAs.}
 \usage{
 auto_tolerance(purity, coverage, fpr = 0.1, epsilon_range = c(0.01, 0.08))
 }
 \arguments{
-\item{purity}{Data purity (putative).}
+\item{purity}{The data purity (putative) for a sample.}
 
-\item{coverage}{Data coverage.}
+\item{coverage}{The observed data coverage.}
 
 \item{fpr}{Desired false positive rate.}
 
@@ -17,14 +17,19 @@ auto_tolerance(purity, coverage, fpr = 0.1, epsilon_range = c(0.01, 0.08))
 }
 \value{
 The $\epsilon$ value estimated from data, constrained to be in
-`epsilon_range`, in order to limit the false positive rate to be `fpr`.
+`epsilon_range`, in order to limit the false positive rate to be at most `fpr`.
 }
 \description{
-Regression has been used to measure the rate of false positives
+The QC procedure implemented by function \code{analyze_peaks} allows to
+pass or fail a sample based on a custom purity error (maximum error to allow).
+
+A regression has been used to measure the rate of false positives
 from simulated tumours with variable coverage and purity. This allows to determine
-an optimal valut of $\epsilon$, parameter `purity_error` of function
-\code{analyze_peaks}.
+an optimal value of $\epsilon$, the parameter `purity_error` of function
+\code{analyze_peaks}, for a desired rate of alse positives basde on the sample
+coverage and putative purity.
 }
 \examples{
+# Desired 10\% FPR for a 30\% pure tumour at 90x
 auto_tolerance(.3, 90)
 }

@@ -2,26 +2,27 @@
 % Please edit documentation in R/subsample.R
 \name{subsample}
 \alias{subsample}
-\title{Randomly subsample a dataset's mutations.}
+\title{Randomly subsample mutations.}
 \usage{
 subsample(x, N = 15000, keep_drivers = TRUE)
 }
 \arguments{
-\item{x}{An object of class \code{cnaqc}, created by the \code{init} function.}
+\item{x}{A new CNAqc object with subset data.}
 
 \item{N}{The maximum number of mutations to retain.}
 
 \item{keep_drivers}{If \code{TRUE}, it retains drivers annotated in the data.}
 }
 \description{
-This functions subsample mutations with uniform probability, retaining
-all the copy number calls. If data contains driver mutation annotations,
-these can be forced to remain.
+This functions randoly subsample mutations, retaining
+all the simple clonal CNAs; subclonal CNAs are dropped.
+If data contains driver mutation annotations, these can be forced to remain.
 }
 \examples{
 data('example_dataset_CNAqc', package = 'CNAqc')
-x = init(example_dataset_CNAqc$mutations, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+x = init(mutations = example_dataset_CNAqc$mutations, cna = example_dataset_CNAqc$cna, purity = example_dataset_CNAqc$purity)
 
+# Example runs
 subsample(x, N = 100)
 subsample(x, N = 1000)
 }

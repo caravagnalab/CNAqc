@@ -1,11 +1,21 @@
-#' Determines fragmentation of copy number segments
+#' Determines arm-level over-fragmentation patterns.
 #'
 #' @description
 #'
-#' This functions determines if, at the arm level, the segments are over-fragmented
-#' using the statistical test described in the package manual.
+#' The fragmentation of a chromosome arm is assessed with a statistical test based
+#' on counting the size of the copy number segments mapping to the arm. This analysis
+#' works only at the level of clonal CNAs.
 #'
-#' @param x An object of class \code{cnaqc}, created by the \code{init} function.
+#' CNAqc counts, for every arm with lenght $L$ nucleotides:
+#'
+#' - the number of mapped CNA segments shorter than a percentage of $L$;
+#' - the number of mapped CNA segments longer than a percentage of $L$.
+#'
+#' A one-sided Binomial test is used to compute a p-value. In this way the test accounts
+#' for the difference in lenghts of the chromsome arms; a p-value per arm is reported and
+#' adjusted for multiple hyoptheses (Bonferroni).
+#'
+#' @param x A CNAqc object.
 #' @param alpha Confidence level for the tests, for instance \code{0.05}.
 #' @param genome_percentage_cutoff Segments are considered long or short depending on whether
 #' they are longer (in basepairs) than \code{genome_percentage_cutoff * L} bases, where \code{L}
@@ -14,15 +24,17 @@
 #' a certain arm Default is \code{10} segments. This number influences the correction for mulitple
 #' hypothesis testing.
 #'
-#' @return An object of class \code{cnaqc} with the results.
+#' @return A CNAqc objectwith the results.
 #'
 #' @export
 #'
 #' @examples
 #' data('example_dataset_CNAqc')
-#' x = init(example_dataset_CNAqc$mutations, example_dataset_CNAqc$cna, example_dataset_CNAqc$purity)
+#' x = init(mutations = example_dataset_CNAqc$mutations, cna = example_dataset_CNAqc$cna, purity = example_dataset_CNAqc$purity)
 #'
 #' x = detect_arm_overfragmentation(x)
+#'
+#' # Report to console
 #' print(x)
 detect_arm_overfragmentation = function(x,
                                         alpha = 0.01,

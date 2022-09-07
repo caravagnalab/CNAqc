@@ -2,7 +2,7 @@
 % Please edit documentation in R/analyze_peaks.R
 \name{analyze_peaks}
 \alias{analyze_peaks}
-\title{Analyze calls by peak detection.}
+\title{QC by peak-detection algorithms.}
 \usage{
 analyze_peaks(
   x,
@@ -21,72 +21,124 @@ analyze_peaks(
 )
 }
 \arguments{
-\item{x}{An object of class \code{cnaqc}, created by the \code{init} function.}
+\item{x}{A CNAqc object.}
 
-\item{karyotypes}{The list of karyotypes to test. By default LOH regions (A, AA),
-diploid regions (AB), and amplification regions (AAB, AABB). These correspond to
+\item{karyotypes}{For clonal simple CNAs, the list of segments to test; by default LOH regions (A, AA),
+diploid regions (AB), and amplification regions (AAB, AABB) are tested, corresponding to
 \code{'1:0', '1:1', '2:1', '2:0', '2:2'} in "Major:minor" notation.}
 
-\item{min_karyotype_size}{Karyotypes are subset by their size (normalized for
-the number of input mutations). Karyotypes smaller than this value are removed
-from analysis.}
+\item{min_karyotype_size}{For clonal simple CNAs, a filter for the segments
+to test. The segment size is defined based on the number of mutations mapped, this cut is on the proportion
+relative to the whole set of segments one wishes to analyse (defined by `karyotypes`). For example, by setting
+`min_karyotype_size = 0.2` one would QC clonal simple CNAs that contain at least 20% of the total mutations.
+The default of this parameter is `0` (all QCed).}
 
-\item{min_absolute_karyotype_mutations}{As \code{min_karyotype_size} this imposes a
-minimum number of mutations on a karyotype to be analysed (in absolute number of
-mutations). Karyotypes smaller than this value are removed from analysis.}
+\item{min_absolute_karyotype_mutations}{For clonal simple CNAs, as \code{min_karyotype_size} but with a cut
+measured on absolute mutation counts. For example, by setting `min_absolute_karyotype_mutations = 150` one
+would QC clonal simple CNAs that contain at least `150` mutations. The default of this parameter is `100`.}
 
-\item{p_binsize_peaks}{Peaks detected will be filtered if, in a peak, we map
-less than \code{p_binsize_peaks * N} mutations. The value \code{N} is obtained
-couting all mutations that map in all peaks.#'}
+\item{p_binsize_peaks}{For clonal simple CNAs, peaks detected will be filtered if, in a peak, we map
+less than \code{p_binsize_peaks * N} mutations. The value \code{N} is obtained couting all mutations that map
+in all peaks. By default this parameters is `0.005`.}
 
 \item{matching_epsilon}{Deprecated parameter.}
 
-\item{purity_error}{Purity error tolerance to determine QC results. This can be
-set automatically using function \code{auto_tolerance}}
+\item{purity_error}{For clonal simple CNAs, the purity error tolerance to determine QC pass or fail. This can be
+set automatically using function \code{auto_tolerance} to optimise the analysis based on a desired rate of false
+positives matches, as a function of the data coverage and (putative) purity.}
 
-\item{VAF_tolerance}{A tolerance in comparing bands overlaps - this is applied
+\item{VAF_tolerance}{For clonal simple CNAs,  a tolerance in comparing bands overlaps which is applied
 to the raw VAF values.}
 
-\item{n_bootstrap}{Number of times peak detection is bootstrapped (this helps sometimes
-finding peaks that might be visually observable but fail to be detected by the underlying
-peak detection heuristic). The default of this parameter is 1, meaning that no bootstrap
-is performed.}
+\item{n_bootstrap}{For clonal simple CNAs, the number of times peak detection is bootstrapped (by default 1).
+This helps sometimes finding peaks that might be visually observable but fail to be detected by the underlying
+peak-detection heuristics.}
 
-\item{kernel_adjust}{KDE adjust density parameter; see \code{density}. A Gaussian
-kernel is used (\code{kernel = 'gaussian'}).}
+\item{kernel_adjust}{For KDE-based matches the adjust density parameter; see \code{density}. Note that a
+Gaussian kernel is used by setting (\code{kernel = 'gaussian'}).}
 
-\item{matching_strategy}{If \code{"closest"}, the closest peak will be used to
-match the expected peak. If \code{"rightmost"}, peaks are matched prioritizing
-right to left peaks (the higher get matched first); this strategy is more correct
+\item{matching_strategy}{For clonal simple CNAs, if \code{"closest"} the closest peak will be used to
+match the expected peak. If \code{"rightmost"} peaks are matched prioritizing
+right to left peaks (the higher-VAF gets matched first); this strategy is more correct
 in principle but works only if there are no spurious peaks in the estimated
-density. By defaule the first strategy is used.}
+density. By default the \code{"closest"} strategy is used.}
 
-\item{KDE}{Deprecated parameter (unused).}
+\item{KDE}{Deprecated parameter.}
 
-\item{starting_state_subclonal_evolution}{Starting state to determine linear versus
-branching evolutionary model, for sublonal CNA QC.}
+\item{starting_state_subclonal_evolution}{For subclonal simple CNAs, the starting state to determine linear versus
+branching evolutionary models. By default this is an heterozygous diploid `1:1` state.}
 }
 \value{
-An object of class \code{cnaqc}, modified to hold the results from this analysis.
-See the vignette to see how to extract and plot the results.
+An object of class \code{cnaqc}, modified to hold the results from this analysis. For every type
+of segment analyzed tables with summary peaks are available in \code{x$peaks_analysis}. The most helpful table
+is usually the one for simple clonal CNAs `x$peaks_analysis$matches`, which reports several information:
+
+- `mutation_multiplicity`, the number of copies of the mutation (i.e., a phasing information);
+- `peak`, `x`, `y` the expected peak, and the matched peak (`x` and `y`);
+- `offset`, `weight` and `score`, the factors of the final score;
+- `QC`, a pass/fail status for the peak.
+
+The overall sample-level QC result is available in `x$peaks_analysis$QC`.
 }
 \description{
-This function carries out a peak-detection
-analysis to determine QC for clonal simple CNAs, clonal complex CNAs and
-subclonal CNAs.
+CNAqc uses peak-detection algorithms to QC data; all leverage the idea that
+VAFs peaks are known for mutations mapped to a segment with given minor/ major
+allele copies. CNAqc therefore computes expected peaks, and compares them to
+peaks detected from data. The theory works with minor modifications for both
+clonal and subclonal segments. Three distinct algorithms are available, each
+one working with a different type of copy number segment; all analyses are
+called by this function, which takes care of running all the suitable algorithms
+based on the input data.
 
-Several scores are produced and returned; functions to visualize results
-are also available (see the tool website for example usages).
+* Simple clonal segments (1:0, 2:0, 1:1, 2:1, 2:2). This QC measures an error for
+the precision of the current purity estimate, failing a whole sample or a subset
+of segments the value is over a desired maximum value. The error is determined as
+a linear combination from the distance between VAF peaks and their theoretical
+expectation. For this analysis, all mutations mapping across any segment with the
+same major/minor alleles are pooled. Note that this score can be used to select
+among alternative copy number solutions, i.e., favouring a solution with lower score.
+The peaks are determined i) via peak-detection algorithms from the peakPick package,
+applied to a Gaussian kernel density estimate (gKDE) smooth of the VAF distribution,
+and ii) via the Bmix Binomial mixture model. Peak-matching (i.e., determining what
+data peak is closest to the expected peak) has two possible implementations: one
+matching the closest peaks by euclidean distance, the other ranking peaks from
+higher to lowr VAFs, and prioritising the former.
+
+* Complex clonal segments. The QC procedure for these “general” segments uses only
+the KDE and, as for simple segments, pools all mutations mapping across any segment
+with the same major/minor alleles. In this case,t no segment-level or sample-level
+scores are produced, and complex segment with many matched peaks is likely to be correct.
+
+* Subclonal simple segments. The QC procedure for these segments uses the KDE and
+considers 2 subclones with distinct mixing proportions. Differently from clonal CNAs,
+however, here the analysis is carried out at the level of each segment, i.e., without
+pooling segments with the same karyotypes. This makes it possible to use subclonal calls
+from callers that report segment-specific CCF values, e.g., Battenberg. The model in
+CNAqc ranks the proposed evolutionary alternatives (linear versus branching) based on
+the number of matched peaks. A subclonal segment with many matched peaks is likely to be
+correct.
+
+Results from peak-based QC are available via \code{plot_peaks_analysis}, and stored
+inside the input object.
 }
 \examples{
 data('example_dataset_CNAqc', package = 'CNAqc')
-x = init(example_dataset_CNAqc$mutations, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+x = init(mutations = example_dataset_CNAqc$mutations, cna = example_dataset_CNAqc$cna, purity = example_dataset_CNAqc$purity)
 
+# Note the run outputs
 x = analyze_peaks(x)
+
+# More precise messages
 print(x)
 
+# The tabulars with summary results per peak and segment
 print(x$peaks_analysis)
 
+# Analysis where simple clonal segments are matched with an alternative algorithm.
 x = analyze_peaks(x, matching_strategy = "rightmost")
+
 print(x)
+}
+\seealso{
+\code{auto_tolerance}, \code{plot_peak_analysis} and \code{plot_QC}.
 }

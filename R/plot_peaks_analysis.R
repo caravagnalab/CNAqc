@@ -1,29 +1,51 @@
 #' Plot the results of peak analysis.
 #'
-#'  @description Results from \code{analyze_peaks} can be visualised with this
-#'  function, which arranges the plots of each karyotype in a figure via \code{ggpubr}.
-#'  Each karyotype shows the data, the estimated density, the peaks (selected and
-#'  discarded), and the fit with shaded matching area.
+#' @description Results from \code{analyze_peaks} can be visualised with this
+#'  function, specifying what type of segment one wishes to plot.
 #'
-#' @param x An object of class \code{cnaqc}, where function \code{analyze_peaks} has
-#' been computed.
-#' @param empty_plot If data for one karyotype is missing, an empty plot is returned.
-#' Otherwise the plot is not returned (NULL is forwarded).
-#' @param assembly_plot If \code{TRUE}, a unique figure is returned with all the
-#' plots assembled. Otherwise a list of plot is returned.
-#' @param what What karyotypes should be plot. Value `common` or `simple` refers to clonal karyotypes used
-#' for sample-level QC. `general` or `complex` for all the others. `subclonal` is for subclonal segments.
+#'  * Simple clonal CNAs. Gray panels are placeholders for segments among
+#'  `1:0`, `2:0`, `1:1`, `2:1`, and `2:2` that are  available for the sample.
+#'  Each vertical dashed line is an expected peak, the bandwidth around being
+#'  the tolerance we use to match peaks (based on purity_error, adjusted for
+#'  segment ploidy and tumour purity). Each dot is a peak detected from data,
+#'  with a bandwidth of tolerance (fixed) around it. Note that: i)
+#'  a green peak is matched, a red one is mismatched; ii) the overall segment QC
+#'  is given by the colour of the facet; iii) the overall sample QC is given by
+#'  the box surrounding the whole figure assembly and iv) options of function
+#'  `plot_peaks_analysis` allow to separate the plots.
 #'
-#' @return A \code{ggpubr} object for an assembled figure.
+#'  * Complex clonal CNAs. The plot is similar to the one for simple segments,
+#'  but no segment-level or sample-level scores are produced.
+#'
+#'  * Subclonal simple CNAs. The layout of this plot is the same of complex clonal
+#'  CNAs; not that the facet reports the distinct evolutionary models that have
+#'  been generated to QC subclonal CNAs. The model in CNAqc ranks the proposed
+#'  evolutionary alternatives (linear versus branching) based on the number of
+#'  matched peaks. A subclonal segment with many matched peaks is likely to be correct.
+#'
+#' @param x A CNAqc object.
+#' @param empty_plot For simple clonal CNAs, if data for one karyotype is missing
+#' an empty plot is returned. Otherwise the plot is not returned (NULL is forwarded).
+#' @param assembly_plot For simple clonal CNAs, if \code{TRUE}, a unique figure is
+#' returned with all the plots assembled. Otherwise a list of plot is returned.
+#' @param what What analysis should be plot:
+#'
+#' - Value `common` or `simple` refers to clonal karyotypes used for sample-level QC.
+#' - `general` or `complex` for all the others.
+#' - `subclonal` is for subclonal segments.
+#'
+#' @return A single \code{ggpubr} figure or a list of `ggplot2` figures.
 #' @export
 #'
 #' @import ggpubr
 #'
 #' @examples
 #' data('example_dataset_CNAqc', package = 'CNAqc')
-#' x = init(example_dataset_CNAqc$mutations, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+#' x = init(mutations = example_dataset_CNAqc$mutations, cna = example_dataset_CNAqc$cna, purity = example_dataset_CNAqc$purity)
 #'
+#' # Analyse first, then plot
 #' x = analyze_peaks(x)
+#'
 #' plot_peaks_analysis(x)
 plot_peaks_analysis = function(x,
                                empty_plot = TRUE,

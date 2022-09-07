@@ -10,30 +10,44 @@ plot_multisample_CNA(x, layout = "flat", ...)
 \item{x}{A list of `CNAqc` objects; names are optional for the circular layout.}
 }
 \value{
-A `ggplot` plot.
+A `ggplot2` plot.
 }
 \description{
-This functions plots with distinct layout CNA data associated to multiple
-CNAqc objects.
+One can have multiple CNAqc objects - i.e., work with a cohort of objects - when
+working with:
 
-Flat layout: classical layout where the amount of deletions and gains are
+- a group of distinct patients;
+- multiple samples from the same patient;
+- multiple calls from the same sample;
+
+Assuming all input objects have the same reference, cohort cohort-level plots are possible
+with this function. Two layouts are possible:
+
+* Flat layout: classical layout where the amount of deletions and gains are
 reported with a certain discretized binning of the input tumour genome. Deletions
 are anything with an LOH state; gains must have more than 3 copies.
-
-Circular layout: plot the Major and minor alleles of each segment, each sample
+* Circular layout: plot the Major and minor alleles of each segment, each sample
 is plot on a lane, like in a donut plot.
 }
 \examples{
 data('example_dataset_CNAqc', package = 'CNAqc')
-x = init(example_dataset_CNAqc$mutations, example_dataset_CNAqc$cna, example_dataset_CNAqc$purity)
+
+# We build faking it to be hg19, otherwise we cannot blend it with PCAWG
+x = CNAqc::init(mutations = example_dataset_CNAqc$mutations, cna = example_dataset_CNAqc$cna, purity = example_dataset_CNAqc$purity, ref = 'hg19')
 
 # Add some example deletion
 x2 = x
 x2$cna$Major[1:10] = 2
 x2$cna$minor[1:10] = 0
 
-plot_multisample_CNA(list(`S1` = x, `S2` = x))
+#PCAWG sample
+z = CNAqc::example_PCAWG
 
+# Inputs need to be wrapped in a named list
+inputs = list(`Original` = x, `Copy` = x, `Faked_diploid` = x2, `PCAWG` = z)
 
-plot_multisample_CNA(list(`S1` = x, `S2` = x), layout = 'circular')
+plot_multisample_CNA(inputs)
+
+# Circular layout
+plot_multisample_CNA(inputs, layout = 'circular')
 }

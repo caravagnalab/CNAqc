@@ -1,13 +1,13 @@
-#' Plot icon for these segments.
+#' A circular plot for simple clonal CNAs.
 #'
 #' @description
 #'
-#' An icon is a small plot with no legend or axis, which
-#' has the same layout of function \code{plot_multisample_CNA}.
+#' An icon is a small circular plot with no legend or axis, which
+#' shows simple clonal CNAs.
 #'
-#' @param x A `CNAqc` object.
+#' @param x A CNAqc object.
 #'
-#' @return A `ggplot` plot.
+#' @return A `ggplot2` plot.
 #' @export
 #'
 #' @examples

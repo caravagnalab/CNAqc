@@ -16,11 +16,13 @@ A named list of CNAqc objects.
 }
 \description{
 Split a CNAqc object by chromosome, returning a named list
-with data splits by chromosomes.
+with data splits by chromosomes. In this way it is easy to run QC steps
+per chromosome.
 }
 \examples{
 
 data("example_PCAWG", package = 'CNAqc')
 
+# Split of tje PCAWG object, for instance
 split_by_chromosome(example_PCAWG)
 }

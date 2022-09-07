@@ -70,5 +70,8 @@
 #' @importFrom dplyr group_split
 #' @importFrom dplyr distinct
 #' @importFrom dplyr summarise
+#' @importFrom dplyr sample_n
+#' @importFrom crayon green
+#' @importFrom crayon red
 ## usethis namespace: end
 NULL

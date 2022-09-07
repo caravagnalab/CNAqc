@@ -1,26 +1,22 @@
-#' Plot the VAF of a set of segments
+#' Plot VAFs across chromosomes.
 #'
-#' @description Plot the VAF of a set of segments that map to some
-#' chromosome id, with a minimum number of mapped mutations and length.
-#' THe plot is a histogram of the VAF, coloured per segement. A maximum
-#' of 74 segements can be plotted in colour, otherwise colors are not used
-#' and the histogram is black. The plots are facetted by chromosome id and
-#' karyotype.
+#' @description Plot VAFs across chromosomes for mutations mapping to
+#' clonal simple CNAs. FIlters can be used to subset the data. Every segment has
+#' a colour, and  maximum 74 segements can be plotted. The plots are
+#' split by chromosome and karyotype.
 #'
-#' @param x An object of class \code{cnaqc}.
+#' @param x A CNAqc object.
 #' @param chrs The chromosome ids to use (e.g., "chr2"). All are used by default.
-#' @param n Disregard chromosome with less than `n` mutations mapped.
-#' @param l Disregard chromosome that span less than `l` nucleotide.
+#' @param n Disregard chromosomes with less than `n` mutations mapped.
+#' @param l Disregard chromosomes that span less than `l` nucleotide.
 #'
-#' @return A ggplot object of the VAF histogram per segment.
-#'
-#' @import RColorBrewer
+#' @return A `ggplot2` object.
 #'
 #' @export
 #'
 #' @examples
 #' data('example_dataset_CNAqc', package = 'CNAqc')
-#' x = init(example_dataset_CNAqc$mutations, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+#' x = init(mutations = example_dataset_CNAqc$mutations, cna = example_dataset_CNAqc$cna, purity = example_dataset_CNAqc$purity)
 #'
 #' # Deafault segments -- all chromsomes, at least 1KB, at least 200 mapped mutations.
 #' inspect_segment(x)

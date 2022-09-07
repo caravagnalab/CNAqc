@@ -1,23 +1,28 @@
-#' Smooth copy number segments.
+#' Smooth simple clonal CNAs.
 #'
 #' @description
-#' This functions join segments that have the same Major and minor alleles
-#' (absolute copy number), and that are split by at most a certain number
-#' of nucleotides \code{Delta}. The pre-smoothing copy number segments are
+#' This function joins simple clonal CNAs that have the same Major and minor alleles,
+#' and that are zeparate by at most a certain number
+#' of nucleotides. The pre-smoothing copy number segments are
 #' retained in the output computation.
 #'
-#' @param x An object of class \code{cnaqc}, created by the \code{init} function.
-#' @param maximum_distance The \code{Delta} maximum of nucleotides to allow
-#' to join two equivalent copy number segments.
+#' @param x A CNAqc object.
+#' @param maximum_distance The maximum number of nucleotides to  join two equivalent
+#' segments.
 #'
-#' @return An object of class \code{cnaqc}, created by the \code{init} function.
+#' @return A CNAqc object with smoothed segments, which retains also the pre-smooting
+#' dataset.
 #' @export
 #'
 #' @examples
 #' data('example_dataset_CNAqc', package = 'CNAqc')
-#' x = init(example_dataset_CNAqc$mutations, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+#' x = init(mutations = example_dataset_CNAqc$mutations, cna = example_dataset_CNAqc$cna, purity = example_dataset_CNAqc$purity)
 #'
+#' # Before smoothing
+#' print(x)
 #' x = smooth_segments(x)
+#'
+#' # After smoothing
 #' plot_smoothing(x)
 smooth_segments = function(x, maximum_distance = 1e6)
 {

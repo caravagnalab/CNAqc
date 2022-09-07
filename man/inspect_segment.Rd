@@ -2,7 +2,7 @@
 % Please edit documentation in R/inspect_segment.R
 \name{inspect_segment}
 \alias{inspect_segment}
-\title{Plot the VAF of a set of segments}
+\title{Plot VAFs across chromosomes.}
 \usage{
 inspect_segment(
   x,
@@ -12,28 +12,26 @@ inspect_segment(
 )
 }
 \arguments{
-\item{x}{An object of class \code{cnaqc}.}
+\item{x}{A CNAqc object.}
 
 \item{chrs}{The chromosome ids to use (e.g., "chr2"). All are used by default.}
 
-\item{n}{Disregard chromosome with less than `n` mutations mapped.}
+\item{n}{Disregard chromosomes with less than `n` mutations mapped.}
 
-\item{l}{Disregard chromosome that span less than `l` nucleotide.}
+\item{l}{Disregard chromosomes that span less than `l` nucleotide.}
 }
 \value{
-A ggplot object of the VAF histogram per segment.
+A `ggplot2` object.
 }
 \description{
-Plot the VAF of a set of segments that map to some
-chromosome id, with a minimum number of mapped mutations and length.
-THe plot is a histogram of the VAF, coloured per segement. A maximum
-of 74 segements can be plotted in colour, otherwise colors are not used
-and the histogram is black. The plots are facetted by chromosome id and
-karyotype.
+Plot VAFs across chromosomes for mutations mapping to
+clonal simple CNAs. FIlters can be used to subset the data. Every segment has
+a colour, and  maximum 74 segements can be plotted. The plots are
+split by chromosome and karyotype.
 }
 \examples{
 data('example_dataset_CNAqc', package = 'CNAqc')
-x = init(example_dataset_CNAqc$mutations, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+x = init(mutations = example_dataset_CNAqc$mutations, cna = example_dataset_CNAqc$cna, purity = example_dataset_CNAqc$purity)
 
 # Deafault segments -- all chromsomes, at least 1KB, at least 200 mapped mutations.
 inspect_segment(x)

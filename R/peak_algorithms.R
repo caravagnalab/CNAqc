@@ -590,7 +590,7 @@ mixture_peak_detector = function(mutations, kernel_adjust, n_bootstrap)
   single_run = function(mutations, ...)
   {
     # BMix clustering
-    bm = bmixfit(
+    bm = BMix::bmixfit(
       data.frame(successes = mutations$NV, trials = mutations$DP),
       K.BetaBinomials = 0,
       K.Binomials = 1:4,

@@ -1,7 +1,7 @@
 #' Creates a CNAqc object.
 #'
-#' @description Creates a CNAqc object from input
-#' mutations, allele-specifc copy numbers and a tumour purity value.
+#' @description Creates a CNAqc object from a set of
+#' mutations (SNVs or indels), allele-specific copy numbers and a tumour purity value.
 #' The resulting object retains the input mutations that map on top
 #' of the copy number segments, and allows for the computation
 #' of the QC metrics available in the CNAqc package.
@@ -15,18 +15,26 @@
 #' provided it is stored in am equivalent format.
 #'
 #' @param mutations A dataframe of mutations with the following fields:
-#' * `chr` chromosome name, e.g., \code{"chr3"}, \code{"chr8"}, \code{"chrX"}, ...
-#' * `from` where the mutation start, an integer number
-#' * `to` where the mutation ends, an integer number
-#' * `ref` reference allele, e.g., \code{"A"}, \code{"ACC"}, \code{"AGA"}, ...
-#' * `alt` alternative allele, e.g., \code{"A"}, \code{"ACC"}, \code{"AGA"}, ...
-#' * `DP` sequencing depth at the locus, an integer number
-#' * `NV` number of reads with the variant at the locus, an integer number
-#' * `VAF` variant allele frequency (VAF), defined as `NV/DP`, at the locus, a real number in [0,1]
+#'
+#' * `chr` chromosome name, e.g., \code{"chr3"}, \code{"chr8"}, \code{"chrX"}, ...;
+#' * `from` where the mutation start, an integer number;
+#' * `to` where the mutation ends, an integer number;
+#' * `ref` reference allele, e.g., \code{"A"}, \code{"ACC"}, \code{"AGA"}, ...;
+#' * `alt` alternative allele, e.g., \code{"A"}, \code{"ACC"}, \code{"AGA"}, ...;
+#' * `DP` sequencing depth at the locus, an integer number;
+#' * `NV` number of reads with the variant at the locus, an integer number;
+#' * `VAF` variant allele frequency (VAF), defined as `NV/DP`, at the locus, a real number in [0,1].
+#'
+#' Optionally, driver mutations can be annotated. In this case the input dataframe
+#' needs to report:
+#'
+#' * `is_driver` a boolean flag for the driver status;
+#' * `driver_label` the driver label that will appear in each plot, e.g., `BRAV V600E`.
 #'
 #' @param snvs Deprecated parameter.
 #'
 #' @param cna A dataframe of allele-specific copy number with the following fields:
+#'
 #' * `chr` chromosome name, e.g., \code{"chr3"}, \code{"chr8"}, \code{"chrX"}, ...
 #' * `from` where the segment start, an integer number
 #' * `to` where the segment ends, an integer number
@@ -37,7 +45,8 @@
 #' * `minor_2` optional for the number of copies of the major allele (or B-allele) in the second clone  if present, an integer number
 #'
 #' If the `CCF` value is present and equal to 1, a segment is considered clonal, otherwise
-#' subclonal. If a segment is subclonal
+#' subclonal. If a segment is subclonal:
+#'
 #' * the columns `Major` and `minor` are interpreted as those for a subclone with proportion equal to the `CCF` value;
 #' * the columns `Major_2` and `minor_2` are interpreted as those for a second subclone with proportion equal to the `1 - CCF` value;
 #'
@@ -56,16 +65,15 @@
 #'
 #' @export
 #'
-#' @import crayon
-#' @import vcfR
-#' @import clisymbols
-#' @import easypar
-#'
 #' @examples
+#' # Example input data released with the package
 #' data('example_dataset_CNAqc', package = 'CNAqc')
 #' print(example_dataset_CNAqc)
 #'
+#' # Note the outputs to screen
 #' x = init(mutations = example_dataset_CNAqc$mutations, cna = example_dataset_CNAqc$cna, purity = example_dataset_CNAqc$purity)
+#'
+#' # An S3 method can be used to report to screen what is in the object
 #' print(x)
 init = function(mutations, snvs = NULL, cna, purity, ref = "GRCh38")
 {

@@ -2,26 +2,22 @@
 % Please edit documentation in R/subsample.R
 \name{subset_by_segment_karyotype}
 \alias{subset_by_segment_karyotype}
-\title{Subset calls by segments' karyotype.}
+\title{Subset by clonal simple segments.}
 \usage{
 subset_by_segment_karyotype(x, karyotypes)
 }
 \arguments{
-\item{x}{An object of class \code{cnaqc}, created by the \code{init} function.}
+\item{x}{A new CNAqc object with subset data.}
 
 \item{karyotype}{A list of karyotype ids in \code{"Major:minor"} notation
 (e.g., \code{"1:1", "2,1", ...}) that will be retained.}
 }
-\value{
-An object of class \code{cnaqc}, created by the \code{init} function.
-}
 \description{
-For an object already created, it subsets the calls to those that involve
-segments with a certain karyotype.
+Retains only a subset of clonal simple segments, e.g., all `2:1` segments.
 }
 \examples{
 data('example_dataset_CNAqc', package = 'CNAqc')
-x = init(example_dataset_CNAqc$mutations, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+x = init(mutations = example_dataset_CNAqc$mutations, cna = example_dataset_CNAqc$cna, purity = example_dataset_CNAqc$purity)
 
 subset_by_segment_karyotype(x, '2:2')
 subset_by_segment_karyotype(x, '2:1')

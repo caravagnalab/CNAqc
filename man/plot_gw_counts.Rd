@@ -2,25 +2,25 @@
 % Please edit documentation in R/plot_genome_wide_mutations.R
 \name{plot_gw_counts}
 \alias{plot_gw_counts}
-\title{Plot a genome-wide histogram of mutation counts.}
+\title{Plot genome-wide mutation counts.}
 \usage{
 plot_gw_counts(x, chromosomes = paste0("chr", c(1:22, "X", "Y")))
 }
 \arguments{
-\item{x}{An object of class \code{cnaqc}, created by the \code{init} function.}
+\item{x}{A CNAqc object.}
 
-\item{chromosomes}{The chromosome to use for this plot.}
+\item{chromosomes}{The chromosomes to use for this plot.}
 }
 \value{
-A \code{ggplot} object.
+A \code{ggplot2} plot.
 }
 \description{
 Plot a genome-wide histogram of mutation counts, binned
-every one megabase (10e6 positions according to the hg19 reference).
+every one megabase (`1e6` nucleotides).
 }
 \examples{
 data('example_dataset_CNAqc', package = 'CNAqc')
-x = init(example_dataset_CNAqc$mutations, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+x = init(mutations = example_dataset_CNAqc$mutations, cna = example_dataset_CNAqc$cna, purity = example_dataset_CNAqc$purity)
 
 plot_gw_counts(x)
 }

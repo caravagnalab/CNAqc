@@ -2,7 +2,7 @@
 % Please edit documentation in R/pipelines.R
 \name{Sequenza_CNAqc}
 \alias{Sequenza_CNAqc}
-\title{CNAqc-based purity-optimisation pipeline for Sequenza CNA calling.}
+\title{CNAqc-based purity-optimisation pipeline for Sequenza.}
 \usage{
 Sequenza_CNAqc(
   sample_id,
@@ -123,7 +123,6 @@ to adjust manually the range of \code{ploidy}.
 }
 \examples{
 \dontrun{
-
 # Install Sequenza package from https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html
 install.packages("sequenza")
 

@@ -2,29 +2,26 @@
 % Please edit documentation in R/subsample.R
 \name{subset_by_minimum_CCF}
 \alias{subset_by_minimum_CCF}
-\title{Subset mutations with minimum CCF values.}
+\title{Subset mutations by minimum CCF}
 \usage{
 subset_by_minimum_CCF(x, min_target_CCF = 0.1)
 }
 \arguments{
-\item{x}{A CNAqc object.}
+\item{x}{A new CNAqc object with subset data.}
 
 \item{min_target_CCF}{The minimum CCF do be enforced.}
 }
-\value{
-A new CNAqc object with filtered mutations.
-}
 \description{
-This function allows to subset a CNAqc object and retain only mutations that
-map to clonal CNAs and have a mininum CCF value. Note that subclonal CNAs are
-lost upon application of this function.
+Retains only a subset of mutations, if they have CCF above a cutoff. Note that
+subclonal CNAs are lost upon application of this function.
 }
 \examples{
-
+data('example_dataset_CNAqc', package = 'CNAqc')
 x = init(mutations = example_dataset_CNAqc$mutations, cna = example_dataset_CNAqc$cna, purity = example_dataset_CNAqc$purity)
-print(x)
 
+# Original data
 plot_data_histogram(x)
 
+# Original data if CCF is above 10\%
 plot_data_histogram(subset_by_minimum_CCF(x))
 }

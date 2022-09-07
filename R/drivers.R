@@ -5,17 +5,16 @@ has_driver_data = function(x)
   return(FALSE)
 }
 
-#' Extract driver data.
+#' Extract drivers data.
 #'
 #' @description
 #'
-#' Returns a tibble with the drivers annotated on certain chromsomes,
+#' Returns a tibble with the drivers annotated on certain chromosomes,
 #' extracting VAF or CCF values (if computed). If drivers are not
 #' annotated \code{NULL} is returned.
 #'
-#' @param x An object of class \code{cnaqc}, created by the \code{init} function
-#' that can have drivers annotated.
-#' @param chromosomes Which chromosome to subset
+#' @param x A CNAqc object.
+#' @param chromosomes Which chromosomes to subset.
 #' @param which A keyword for \code{"VAF"} or \code{"CCF"}.
 #'
 #' @return A tibble
@@ -23,7 +22,7 @@ has_driver_data = function(x)
 #'
 #' @examples
 #' data('example_dataset_CNAqc', package = 'CNAqc')
-#' x = init(example_dataset_CNAqc$mutations, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+#' x = init(mutations = example_dataset_CNAqc$mutations, cna = example_dataset_CNAqc$cna, purity = example_dataset_CNAqc$purity)
 #'
 #' get_drivers(x)
 get_drivers = function(x,

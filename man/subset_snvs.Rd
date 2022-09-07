@@ -2,7 +2,7 @@
 % Please edit documentation in R/subsample.R
 \name{subset_snvs}
 \alias{subset_snvs}
-\title{Retain only SNVs.}
+\title{Subset only SNVs.}
 \usage{
 subset_snvs(
   x,
@@ -21,13 +21,12 @@ subset_snvs(
 A new CNAqc dataset created with \code{init}.
 }
 \description{
-It removes all non-SNVs mutations, re-creating a new CNAqc
+This function removes all non-SNVs mutations, re-creating a new CNAqc
 object with just SNVs. All analyses are lost.
 }
 \examples{
+data('example_dataset_CNAqc', package = 'CNAqc')
 x = init(mutations = example_dataset_CNAqc$mutations, cna = example_dataset_CNAqc$cna, purity = example_dataset_CNAqc$purity)
-print(x)
 
-# no change - they are already SNVs
-print(subset_snvs(x))
+subset_snvs(x)
 }

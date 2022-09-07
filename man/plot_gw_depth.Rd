@@ -2,30 +2,31 @@
 % Please edit documentation in R/plot_genome_wide_mutations.R
 \name{plot_gw_depth}
 \alias{plot_gw_depth}
-\title{Plot a genome-wide scatter plot of coverage.}
+\title{Plot genome-wide coverage.}
 \usage{
 plot_gw_depth(x, N = 5000, chromosomes = paste0("chr", c(1:22, "X", "Y")))
 }
 \arguments{
-\item{x}{An object of class \code{cnaqc}, created by the \code{init} function.}
+\item{x}{A CNAqc object.}
 
 \item{N}{Mutations to use, randomly sampled.}
 
 \item{chromosomes}{The chromosome to use for this plot.}
 }
 \value{
-A \code{ggplot} object.
+A \code{ggplot2} plot.
 }
 \description{
-@description Plot a genome-wide scatter plot of mutation depths, downsampled
- if required (annotates the used proportion).
+Plot a genome-wide scatter plot of mutation depths.
+The function can randomly subset the points to show.
 }
 \examples{
 data('example_dataset_CNAqc', package = 'CNAqc')
-x = init(example_dataset_CNAqc$mutations, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+x = init(mutations = example_dataset_CNAqc$mutations, cna = example_dataset_CNAqc$cna, purity = example_dataset_CNAqc$purity)
 
 plot_gw_depth(x)
 
+# Downsampling examples
 plot_gw_depth(x, N = 100)
 plot_gw_depth(x, N = 1000)
 plot_gw_depth(x, N = 10000)

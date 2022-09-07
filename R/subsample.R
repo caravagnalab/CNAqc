@@ -1,22 +1,23 @@
-#' Randomly subsample a dataset's mutations.
+#' Randomly subsample mutations.
 #'
 #' @description
 #'
-#' This functions subsample mutations with uniform probability, retaining
-#' all the copy number calls. If data contains driver mutation annotations,
-#' these can be forced to remain.
+#' This functions randoly subsample mutations, retaining
+#' all the simple clonal CNAs; subclonal CNAs are dropped.
+#' If data contains driver mutation annotations, these can be forced to remain.
 #'
-#' @param x An object of class \code{cnaqc}, created by the \code{init} function.
+#' @param x A CNAqc object.
 #' @param N The maximum number of mutations to retain.
 #' @param keep_drivers If \code{TRUE}, it retains drivers annotated in the data.
 #'
-#' @param x An object of class \code{cnaqc}, created by the \code{init} function.
+#' @param x A new CNAqc object with subset data.
 #' @export
 #'
 #' @examples
 #' data('example_dataset_CNAqc', package = 'CNAqc')
-#' x = init(example_dataset_CNAqc$mutations, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+#' x = init(mutations = example_dataset_CNAqc$mutations, cna = example_dataset_CNAqc$cna, purity = example_dataset_CNAqc$purity)
 #'
+#' # Example runs
 #' subsample(x, N = 100)
 #' subsample(x, N = 1000)
 subsample = function(x, N = 15000, keep_drivers = TRUE)
@@ -37,23 +38,22 @@ subsample = function(x, N = 15000, keep_drivers = TRUE)
   )
 }
 
-#' Subset calls by segments' karyotype.
+#' Subset by clonal simple segments.
 #'
 #' @description
 #'
-#' For an object already created, it subsets the calls to those that involve
-#' segments with a certain karyotype.
+#' Retains only a subset of clonal simple segments, e.g., all `2:1` segments.
 #'
-#' @param x An object of class \code{cnaqc}, created by the \code{init} function.
+#' @param x A CNAqc object.
 #' @param karyotype A list of karyotype ids in \code{"Major:minor"} notation
 #' (e.g., \code{"1:1", "2,1", ...}) that will be retained.
 #'
-#' @return An object of class \code{cnaqc}, created by the \code{init} function.
+#' @param x A new CNAqc object with subset data.
 #' @export
 #'
 #' @examples
 #' data('example_dataset_CNAqc', package = 'CNAqc')
-#' x = init(example_dataset_CNAqc$mutations, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+#' x = init(mutations = example_dataset_CNAqc$mutations, cna = example_dataset_CNAqc$cna, purity = example_dataset_CNAqc$purity)
 #'
 #' subset_by_segment_karyotype(x, '2:2')
 #' subset_by_segment_karyotype(x, '2:1')
@@ -80,31 +80,31 @@ subset_by_segment_karyotype = function(x, karyotypes)
 }
 
 
-#' Subset calls by segments total copy number
+#' Subset clonal simple segments total copy number.
 #'
 #' @description
 #'
-#' For an object already created, it subsets the calls to those that involve
-#' segments with a certain total copy number (defined as Major plus minor).
+#' Retains only a subset of clonal simple segments, e.g., all segments with
+#' total ploidy 2.
 #'
-#' @param x An object of class \code{cnaqc}, created by the \code{init} function.
-#' @param total A list of copy number integers to find segments to retain only if they
-#' have a certain total copy state.
+#' @param x A CNAqc object.
+#' @param total The total (Major + minor) copy numbers to filter.
 #'
-#' @return An object of class \code{cnaqc}, created by the \code{init} function.
+#' @param x A new CNAqc object with subset data.
 #'
 #' @export
 #'
 #' @examples
 #' data('example_dataset_CNAqc', package = 'CNAqc')
-#' x = init(example_dataset_CNAqc$mutations, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+#' x = init(mutations = example_dataset_CNAqc$mutations, cna = example_dataset_CNAqc$cna, purity = example_dataset_CNAqc$purity)
 #'
+#' subset_by_segment_totalcn(x, 2)
 subset_by_segment_totalcn = function(x, totalcn)
 {
   if (!inherits(x, "cnaqc"))
     stop("Not a CNAqc object in input.")
 
-  cna_calls = x$cna %>%
+  cna_calls = x %>% CNA %>%
     dplyr::mutate(total_cn = Major + minor) %>%
     dplyr::filter(total_cn %in% totalcn)
 
@@ -144,27 +144,27 @@ subset_by_segment_minmutations = function(x, totalcn)
 
 }
 
-#' Subset mutations with minimum CCF values.
+#' Subset mutations by minimum CCF
 #'
 #' @description
 #'
-#' This function allows to subset a CNAqc object and retain only mutations that
-#' map to clonal CNAs and have a mininum CCF value. Note that subclonal CNAs are
-#' lost upon application of this function.
+#' Retains only a subset of mutations, if they have CCF above a cutoff. Note that
+#' subclonal CNAs are lost upon application of this function.
 #'
 #' @param x A CNAqc object.
 #' @param min_target_CCF The minimum CCF do be enforced.
 #'
-#' @return A new CNAqc object with filtered mutations.
+#' @param x A new CNAqc object with subset data.
 #' @export
 #'
 #' @examples
-#'
+#' data('example_dataset_CNAqc', package = 'CNAqc')
 #' x = init(mutations = example_dataset_CNAqc$mutations, cna = example_dataset_CNAqc$cna, purity = example_dataset_CNAqc$purity)
-#' print(x)
 #'
+#' # Original data
 #' plot_data_histogram(x)
 #'
+#' # Original data if CCF is above 10%
 #' plot_data_histogram(subset_by_minimum_CCF(x))
 subset_by_minimum_CCF = function(x, min_target_CCF = 0.1)
 {
@@ -231,9 +231,9 @@ subset_by_minimum_CCF = function(x, min_target_CCF = 0.1)
   )
 }
 
-#' Retain only SNVs.
+#' Subset only SNVs.
 #'
-#' @description It removes all non-SNVs mutations, re-creating a new CNAqc
+#' @description This function removes all non-SNVs mutations, re-creating a new CNAqc
 #' object with just SNVs. All analyses are lost.
 #'
 #' @param x A CNAqc object.
@@ -244,19 +244,18 @@ subset_by_minimum_CCF = function(x, min_target_CCF = 0.1)
 #' @export
 #'
 #' @examples
+#' data('example_dataset_CNAqc', package = 'CNAqc')
 #' x = init(mutations = example_dataset_CNAqc$mutations, cna = example_dataset_CNAqc$cna, purity = example_dataset_CNAqc$purity)
-#' print(x)
 #'
-#' # no change - they are already SNVs
-#' print(subset_snvs(x))
+#' subset_snvs(x)
 subset_snvs = function(x,
                        ref_nucleotides = c("A", "C", "T", "G"),
                        alt_nucleotides = c("A", "C", "T", "G"))
 {
-  subset_mutations = x$mutations %>%
+  subset_mutations = x %>% Mutations %>%
     dplyr::filter(ref %in% ref_nucleotides, alt %in% alt_nucleotides)
 
-  removed_mutations = x$mutations %>%
+  removed_mutations = x %>% Mutations %>%
     dplyr::filter(!(ref %in% ref_nucleotides) |
                     !(alt %in% alt_nucleotides))
 
@@ -296,7 +295,8 @@ subset_snvs = function(x,
 #' Split a dataset by chromosome.
 #'
 #' @description Split a CNAqc object by chromosome, returning a named list
-#' with data splits by chromosomes.
+#' with data splits by chromosomes. In this way it is easy to run QC steps
+#' per chromosome.
 #'
 #' @param x An object created by CNAqc.
 #' @param chromosomes A list of chromosomes to retain.
@@ -308,6 +308,7 @@ subset_snvs = function(x,
 #'
 #' data("example_PCAWG", package = 'CNAqc')
 #'
+#' # Split of tje PCAWG object, for instance
 #' split_by_chromosome(example_PCAWG)
 split_by_chromosome = function(x,
                                chromosomes = paste0('chr', c(1:22, 'X', 'Y'))

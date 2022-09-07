@@ -1,4 +1,4 @@
-#' CNAqc-based purity-optimisation pipeline for Sequenza CNA calling.
+#' CNAqc-based purity-optimisation pipeline for Sequenza.
 #'
 #' @description This pipeline implements optimised allele-specific
 #' copy number calling with Sequenza and CNAqc, optimising purity estimated
@@ -76,7 +76,6 @@
 #'
 #' @examples
 #' \dontrun{
-#'
 #' # Install Sequenza package from https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html
 #' install.packages("sequenza")
 #'
@@ -114,7 +113,6 @@
 #'    delta_ploidy = 0.25,
 #'    verbose = TRUE)
 #' }
-
 Sequenza_CNAqc = function(sample_id,
                           seqz_file,
                           mutations = NULL,

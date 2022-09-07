@@ -2,25 +2,22 @@
 % Please edit documentation in R/subsample.R
 \name{subset_by_segment_totalcn}
 \alias{subset_by_segment_totalcn}
-\title{Subset calls by segments total copy number}
+\title{Subset clonal simple segments total copy number.}
 \usage{
 subset_by_segment_totalcn(x, totalcn)
 }
 \arguments{
-\item{x}{An object of class \code{cnaqc}, created by the \code{init} function.}
+\item{x}{A new CNAqc object with subset data.}
 
-\item{total}{A list of copy number integers to find segments to retain only if they
-have a certain total copy state.}
-}
-\value{
-An object of class \code{cnaqc}, created by the \code{init} function.
+\item{total}{The total (Major + minor) copy numbers to filter.}
 }
 \description{
-For an object already created, it subsets the calls to those that involve
-segments with a certain total copy number (defined as Major plus minor).
+Retains only a subset of clonal simple segments, e.g., all segments with
+total ploidy 2.
 }
 \examples{
 data('example_dataset_CNAqc', package = 'CNAqc')
-x = init(example_dataset_CNAqc$mutations, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+x = init(mutations = example_dataset_CNAqc$mutations, cna = example_dataset_CNAqc$cna, purity = example_dataset_CNAqc$purity)
 
+subset_by_segment_totalcn(x, 2)
 }

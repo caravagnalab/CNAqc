@@ -1,17 +1,17 @@
-#' Plot a genome-wide histogram of mutation counts.
+#' Plot genome-wide mutation counts.
 #'
 #' @description Plot a genome-wide histogram of mutation counts, binned
-#' every one megabase (10e6 positions according to the hg19 reference).
+#' every one megabase (`1e6` nucleotides).
 #'
-#' @param x An object of class \code{cnaqc}, created by the \code{init} function.
-#' @param chromosomes The chromosome to use for this plot.
+#' @param x A CNAqc object.
+#' @param chromosomes The chromosomes to use for this plot.
 #'
-#' @return A \code{ggplot} object.
+#' @return A \code{ggplot2} plot.
 #' @export
 #'
 #' @examples
 #' data('example_dataset_CNAqc', package = 'CNAqc')
-#' x = init(example_dataset_CNAqc$mutations, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+#' x = init(mutations = example_dataset_CNAqc$mutations, cna = example_dataset_CNAqc$cna, purity = example_dataset_CNAqc$purity)
 #'
 #' plot_gw_counts(x)
 plot_gw_counts = function(x, chromosomes = paste0('chr', c(1:22, 'X', 'Y')))
@@ -57,24 +57,25 @@ plot_gw_counts = function(x, chromosomes = paste0('chr', c(1:22, 'X', 'Y')))
 
 }
 
-#' Plot a genome-wide scatter plot of coverage.
+#' Plot genome-wide coverage.
 #'
-#'  @description Plot a genome-wide scatter plot of mutation depths, downsampled
-#'  if required (annotates the used proportion).
+#' @description Plot a genome-wide scatter plot of mutation depths.
+#' The function can randomly subset the points to show.
 #'
-#' @param x An object of class \code{cnaqc}, created by the \code{init} function.
+#' @param x A CNAqc object.
 #' @param N Mutations to use, randomly sampled.
 #' @param chromosomes The chromosome to use for this plot.
 #'
-#' @return A \code{ggplot} object.
+#' @return A \code{ggplot2} plot.
 #' @export
 #'
 #' @examples
 #' data('example_dataset_CNAqc', package = 'CNAqc')
-#' x = init(example_dataset_CNAqc$mutations, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+#' x = init(mutations = example_dataset_CNAqc$mutations, cna = example_dataset_CNAqc$cna, purity = example_dataset_CNAqc$purity)
 #'
 #' plot_gw_depth(x)
 #'
+#' # Downsampling examples
 #' plot_gw_depth(x, N = 100)
 #' plot_gw_depth(x, N = 1000)
 #' plot_gw_depth(x, N = 10000)
@@ -155,24 +156,25 @@ plot_gw_depth = function(x,
   )
 }
 
-#' Plot a genome-wide scatter plot of VAF
+#' Plot genome-wide VAFs.
 #'
-#'  @description Plot a genome-wide scatter plot of mutation VAFs, downsampled
-#'  if required (annotates the used proportion).
+#'  @description Plot a genome-wide scatter plot of mutation VAFs.
+#' The function can randomly subset the points to show.
 #'
-#' @param x An object of class \code{cnaqc}, created by the \code{init} function.
+#' @param x A CNAqc object.
 #' @param N Mutations to use, randomly sampled.
-#' @param chromosomes The chromosome to use for this plot.
+#' @param chromosomes The chromosomes to use for this plot.
 #'
-#' @return A \code{ggplot} object.
+#' @return A \code{ggplot2} plot.
 #' @export
 #'
 #' @examples
 #' data('example_dataset_CNAqc', package = 'CNAqc')
-#' x = init(example_dataset_CNAqc$mutations, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+#' x = init(mutations = example_dataset_CNAqc$mutations, cna = example_dataset_CNAqc$cna, purity = example_dataset_CNAqc$purity)
 #'
 #' plot_gw_vaf(x)
 #'
+#' # Downsampling examples
 #' plot_gw_vaf(x, N = 100)
 #' plot_gw_vaf(x, N = 1000)
 #' plot_gw_vaf(x, N = 10000)
@@ -252,26 +254,27 @@ plot_gw_vaf = function(x,
   )
 }
 
-#' Plot a genome-wide scatter plot of VAF
+#' Plot genome-wide CCFs.
 #'
-#'  @description Plot a genome-wide scatter plot of mutation VAFs, downsampled
-#'  if required (annotates the used proportion).
+#' @description Plot a genome-wide scatter plot of mutation CCFs, if availbale.
+#' The function can randomly subset the points to show.
 #'
-#' @param x An object of class \code{cnaqc}, created by the \code{init} function.
+#' @param x A CNAqc object.
 #' @param N Mutations to use, randomly sampled.
-#' @param chromosomes The chromosome to use for this plot.
+#' @param chromosomes The chromosomes to use for this plot.
 #'
-#' @return A \code{ggplot} object.
+#' @return A \code{ggplot2} plot.
 #' @export
 #'
 #' @examples
 #' data('example_dataset_CNAqc', package = 'CNAqc')
-#' x = init(example_dataset_CNAqc$mutations, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+#' x = init(mutations = example_dataset_CNAqc$mutations, cna = example_dataset_CNAqc$cna, purity = example_dataset_CNAqc$purity)
 #'
-#' # Compute CCF
+#' # Compute CCFs
 #' x = compute_CCF(x)
 #' plot_gw_ccf(x)
 #'
+#' # Downsampling examples
 #' plot_gw_ccf(x, N = 100)
 #' plot_gw_ccf(x, N = 1000)
 #' plot_gw_ccf(x, N = 10000)

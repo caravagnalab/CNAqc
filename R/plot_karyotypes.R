@@ -1,22 +1,24 @@
-#' Plot a barplot for the segments.
+#' Plot counts and numbers of clonal simple CNAs.
 #'
-#'  @description Plot a barplot for the segments, reporting either their
+#' @description Plot a barplot for the segments, reporting either their
 #'  counts of the proportion of genome covered.
 #'
-#' @param x An object of class \code{cnaqc}, created by the \code{init} function.
+#' @param x A CNAqc object.
 #' @param type With \code{"percentage"}, the proportion of genome covered is returned.
 #' With \code{"number"}, the segment counts. In all other cases an erorr is generated.
 #' @param chromosomes The chromosome to use for this plot.
 #'
-#' @return A \code{ggplot} object.
+#' @return A \code{ggplot2} plot.
 #' @export
 #'
 #' @examples
 #' data('example_dataset_CNAqc', package = 'CNAqc')
-#' x = init(example_dataset_CNAqc$mutations, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+#' x = init(mutations = example_dataset_CNAqc$mutations, cna = example_dataset_CNAqc$cna, purity = example_dataset_CNAqc$purity)
 #'
+#' # All chromosomes (default)
 #' plot_karyotypes(x)
 #'
+#' # Specific chromosomes
 #' plot_karyotypes(x, chromosomes = 'chr3')
 #' plot_karyotypes(x, chromosomes = 'chr13')
 plot_karyotypes = function(x,

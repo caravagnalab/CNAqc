@@ -93,3 +93,22 @@
 #' fpr_test
 #'
 "fpr_test"
+
+#' List of Intogen driver genes per tumour type.
+#'
+#' @docType data
+#'
+#' @usage data(intogen_drivers)
+#'
+#' @format A tibble.
+#'
+#' @keywords datasets
+#'
+#' @references
+#'
+#' @examples
+#' data(intogen_drivers)
+#' intogen_drivers
+#'
+"intogen_drivers"
+

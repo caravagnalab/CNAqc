@@ -2,25 +2,25 @@
 % Please edit documentation in R/plot_segment_size_distribution.R
 \name{plot_segment_size_distribution}
 \alias{plot_segment_size_distribution}
-\title{Plot the segments' size distribution.}
+\title{Plot the length of clonal simple CNAs.}
 \usage{
 plot_segment_size_distribution(x, annotate_cut = 1e+07)
 }
 \arguments{
-\item{x}{An object of class \code{cnaqc}, created by the \code{init} function.}
+\item{x}{A CNAqc object.}
 
-\item{annotate_cut}{A custom vertical line annotation.}
+\item{annotate_cut}{A custom vertical line annotation, by default at `1e7` megabases.}
 }
 \value{
-A \code{ggplot} object.
+A \code{ggplot2} plot.
 }
 \description{
 This is the histogram of the number of bases (length)
-in each copy number segment.
+in each copy number segment, for clonal simple CNAs.
 }
 \examples{
 data('example_dataset_CNAqc', package = 'CNAqc')
-x = init(example_dataset_CNAqc$mutations, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+x = init(mutations = example_dataset_CNAqc$mutations, cna = example_dataset_CNAqc$cna, purity = example_dataset_CNAqc$purity)
 
 plot_segment_size_distribution(x)
 }

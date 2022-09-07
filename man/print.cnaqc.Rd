@@ -4,7 +4,7 @@
 \alias{print.cnaqc}
 \title{Print for class \code{'cnaqc'}.}
 \usage{
-print.cnaqc(x, ...)
+\method{print}{cnaqc}(x, ...)
 }
 \arguments{
 \item{x}{An obj of class \code{'cnaqc'}.}
@@ -18,8 +18,7 @@ Nothing.
 Print for class \code{'cnaqc'}.
 }
 \examples{
-data('example_dataset_CNAqc', package = 'CNAqc')
-x = init(example_dataset_CNAqc$mutations, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+data('example_PCAWG', package = 'CNAqc')
 
-print(x)
+print(example_PCAWG)
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/detect_arm_overfragmentation.R
 \name{detect_arm_overfragmentation}
 \alias{detect_arm_overfragmentation}
-\title{Determines fragmentation of copy number segments}
+\title{Determines arm-level over-fragmentation patterns.}
 \usage{
 detect_arm_overfragmentation(
   x,
@@ -12,7 +12,7 @@ detect_arm_overfragmentation(
 )
 }
 \arguments{
-\item{x}{An object of class \code{cnaqc}, created by the \code{init} function.}
+\item{x}{A CNAqc object.}
 
 \item{alpha}{Confidence level for the tests, for instance \code{0.05}.}
 
@@ -25,16 +25,28 @@ a certain arm Default is \code{10} segments. This number influences the correcti
 hypothesis testing.}
 }
 \value{
-An object of class \code{cnaqc} with the results.
+A CNAqc objectwith the results.
 }
 \description{
-This functions determines if, at the arm level, the segments are over-fragmented
-using the statistical test described in the package manual.
+The fragmentation of a chromosome arm is assessed with a statistical test based
+on counting the size of the copy number segments mapping to the arm. This analysis
+works only at the level of clonal CNAs.
+
+CNAqc counts, for every arm with lenght $L$ nucleotides:
+
+- the number of mapped CNA segments shorter than a percentage of $L$;
+- the number of mapped CNA segments longer than a percentage of $L$.
+
+A one-sided Binomial test is used to compute a p-value. In this way the test accounts
+for the difference in lenghts of the chromsome arms; a p-value per arm is reported and
+adjusted for multiple hyoptheses (Bonferroni).
 }
 \examples{
 data('example_dataset_CNAqc')
-x = init(example_dataset_CNAqc$mutations, example_dataset_CNAqc$cna, example_dataset_CNAqc$purity)
+x = init(mutations = example_dataset_CNAqc$mutations, cna = example_dataset_CNAqc$cna, purity = example_dataset_CNAqc$purity)
 
 x = detect_arm_overfragmentation(x)
+
+# Report to console
 print(x)
 }

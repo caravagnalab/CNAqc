@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_data_histogram.R
 \name{plot_data_histogram}
 \alias{plot_data_histogram}
-\title{Plot the data histogram.}
+\title{Plot the read-counts data histograms.}
 \usage{
 plot_data_histogram(
   x,
@@ -11,33 +11,40 @@ plot_data_histogram(
 )
 }
 \arguments{
-\item{x}{An object of class \code{cnaqc}, created by the \code{init} function.}
+\item{x}{A CNAqc object.}
 
 \item{which}{One of \code{"VAF"}, \code{"DP"}, \code{"NV"} or \code{"CCF"}.}
 
-\item{karyotype}{A list of karyotype ids in \code{"Major:minor"} notation
-(e.g., \code{"1:1", "2,1", ...}) that will be retained ofr the plot.}
+\item{karyotype}{A list of karyotypes in \code{"Major:minor"} notation
+(e.g., \code{"1:1", "2,1", ...}) for the plot. By default \code{c("1:0", '1:1', '2:0', '2:1', '2:2')}
+are used.}
 }
 \value{
-A \code{ggplot} object.
+A \code{ggplot2} plot.
 }
 \description{
 This function plots the histogram of any of the following:
-the Variant Allele Frequency (VAF), the depth of sequencing
-(DP), the nuber of reads with the variant (NV) and the
-Cancer Cell Fractions (CCF) esimates (that must be computed
-before.
 
-The plot can be subset by selecting only data in certain segments,
-identified by the karyotype shortname, and will be coloured accordingly.
+* the Variant Allele Frequency (VAF),
+* the depth of sequencing (DP),
+* the number of reads with the variant (NV)
+* the Cancer Cell Fractions (CCF) estimates (if available)
+
+The plot can be subset by selecting only mutations mapping to certain
+karyotypes.
 }
 \examples{
 data('example_dataset_CNAqc', package = 'CNAqc')
-x = init(example_dataset_CNAqc$mutations, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+x = init(mutations = example_dataset_CNAqc$mutations, cna = example_dataset_CNAqc$cna, purity = example_dataset_CNAqc$purity)
+
+# Default plot
 plot_data_histogram(x)
+
+# Customised plots
 plot_data_histogram(x, which = 'DP')
 plot_data_histogram(x, which = 'DP', karyotypes = '2:2')
 
+# CCF computation and plotting
 x = compute_CCF(x)
 plot_data_histogram(x, which = 'CCF')
 }

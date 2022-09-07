@@ -2,7 +2,7 @@
 % Please edit documentation in R/parse_Battenberg.R
 \name{parse_Battenberg}
 \alias{parse_Battenberg}
-\title{Parse Battenberg clonal/ subclonal calls}
+\title{Parse Battenberg calls.}
 \usage{
 parse_Battenberg(x)
 }
@@ -18,6 +18,7 @@ Two tibbles in CNAqc-ready format.
 \description{
 Returns two tibbles in CNAqc-ready format, one with clonal calls
 and the other with subclonal calls extracted by parsing the Battenberg format.
+This function can be used to process raw date released by PCAWG.
 }
 \examples{
 \dontrun{

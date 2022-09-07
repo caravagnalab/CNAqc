@@ -7,21 +7,23 @@
 plot_qc(x)
 }
 \arguments{
-\item{x}{An object of class \code{cnaqc}, where function \code{analyze_peaks} has
-been computed.}
+\item{x}{A CNAqc object.}
 }
 \value{
-A \code{ggplot} object.
+A \code{ggplot2} plot
 }
 \description{
-@description Results from \code{analyze_peaks} can be visualised with this
- function. Compared to individual karyotypes fits available with function \code{plot_peaks_analysis},
- this function reports sumary statistics for each karyotype, and the overall score.
+Results from \code{analyze_peaks} and \code{compute_CCF} can be
+visualised with this function. Compared to individual karyotypes fits available
+with function \code{plot_peaks_analysis}, for instance, this function reports
+summary pass/fail statistics for each analysis.
 }
 \examples{
 data('example_dataset_CNAqc', package = 'CNAqc')
-x = init(example_dataset_CNAqc$mutations, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+x = init(mutations = example_dataset_CNAqc$mutations, cna = example_dataset_CNAqc$cna, purity = example_dataset_CNAqc$purity)
 
 x = analyze_peaks(x)
+x = compute_CCF(x)
+
 plot_qc(x)
 }

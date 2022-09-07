@@ -68,7 +68,7 @@ peak_detector = function(mutations,
   # BMix clustering
   if (y %>% unique() %>% length() > 1)
   {
-    bm = bmixfit(
+    bm = BMix::bmixfit(
       data.frame(successes = mutations$NV, trials = mutations$DP),
       K.BetaBinomials = 0,
       K.Binomials = 1:4,

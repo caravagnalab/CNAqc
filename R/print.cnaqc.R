@@ -9,10 +9,9 @@
 #' @export print.cnaqc
 #'
 #' @examples
-#' data('example_dataset_CNAqc', package = 'CNAqc')
-#' x = init(example_dataset_CNAqc$mutations, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+#' data('example_PCAWG', package = 'CNAqc')
 #'
-#' print(x)
+#' print(example_PCAWG)
 print.cnaqc = function(x, ...)
 {
   stopifnot(inherits(x, "cnaqc"))
@@ -511,10 +510,9 @@ bar_print_console_scl = function(x, top = nrow(x$cna_subclonal))
 #' @export
 #'
 #' @examples
-#' data('example_dataset_CNAqc', package = 'CNAqc')
-#' x = init(example_dataset_CNAqc$mutations, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+#' data('example_PCAWG', package = 'CNAqc')
 #'
-#' plot.cnaqc(x)
+#' plot(example_PCAWG)
 plot.cnaqc = function(x, ...)
 {
   stopifnot(inherits(x, "cnaqc"))

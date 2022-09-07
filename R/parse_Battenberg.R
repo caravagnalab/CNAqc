@@ -1,7 +1,8 @@
-#' Parse Battenberg clonal/ subclonal calls
+#' Parse Battenberg calls.
 #'
 #' @description Returns two tibbles in CNAqc-ready format, one with clonal calls
 #' and the other with subclonal calls extracted by parsing the Battenberg format.
+#' This function can be used to process raw date released by PCAWG.
 #'
 #' @param x The input dataframe, required to have the following columns: \code{chr},
 #' \code{from}, \code{to}, \code{battenberg_nMaj1_A}, \code{battenberg_nMin1_A},

@@ -2,19 +2,19 @@
 % Please edit documentation in R/plot_icon_cna.R
 \name{plot_icon_CNA}
 \alias{plot_icon_CNA}
-\title{Plot icon for these segments.}
+\title{A circular plot for simple clonal CNAs.}
 \usage{
 plot_icon_CNA(x)
 }
 \arguments{
-\item{x}{A `CNAqc` object.}
+\item{x}{A CNAqc object.}
 }
 \value{
-A `ggplot` plot.
+A `ggplot2` plot.
 }
 \description{
-An icon is a small plot with no legend or axis, which
-has the same layout of function \code{plot_multisample_CNA}.
+An icon is a small circular plot with no legend or axis, which
+shows simple clonal CNAs.
 }
 \examples{
 data('example_dataset_CNAqc', package = 'CNAqc')
