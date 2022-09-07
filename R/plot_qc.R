@@ -230,7 +230,7 @@ plot_qc = function(x)
       ggplot2::labs(y = 'Subclonal CNA segment') +
       ggplot2::scale_color_manual(values = c(`private` = 'gray', `shared` = 'black')) +
       ggplot2::coord_flip() +
-      ggplot2::theme(axis.text.x = element_text(angle = 90)) +
+      ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90)) +
       ggplot2::labs(title = 'Subclonal CNAs')
   }
 

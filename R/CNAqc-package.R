@@ -60,6 +60,7 @@
 #' @importFrom dplyr desc
 #' @importFrom dplyr row_number
 #' @importFrom dplyr bind_rows
+#' @importFrom dplyr ungroup
 #' @importFrom dplyr bind_cols
 #' @importFrom dplyr full_join
 #' @importFrom dplyr left_join

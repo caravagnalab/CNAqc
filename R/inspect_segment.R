@@ -34,50 +34,51 @@ inspect_segment = function(x,
 {
   stopifnot(inherits(x, 'cnaqc'))
 
-
-  segment_ids = x$cna %>%
-    mutate(size = to - from) %>%
-    filter(n > !!n, size > l, chr %in% chrs) %>%
-    pull(segment_id)
+  segment_ids = x %>%
+    CNA() %>%
+    dplyr::mutate(size = to - from) %>%
+    dplyr::filter(n > !!n, size > l, chr %in% chrs) %>%
+    dplyr::pull(segment_id)
 
   k <- length(segment_ids)
 
-  if(k == 0)
+  if (k == 0)
   {
     message("No segments matching input criteria!")
-    return(ggplot() + geom_blank())
+    return(eplot())
   }
 
-  hplot = x$mutations %>%
-    ungroup %>%
-    filter(segment_id %in% segment_ids) %>%
+  hplot = x %>%
+    Mutations() %>%
+    # dplyr::ungroup %>%
+    dplyr::filter(segment_id %in% segment_ids) %>%
     ggplot(aes(VAF)) +
     ggplot2::facet_grid(karyotype ~ chr, scales = 'free') +
     CNAqc:::my_ggplot_theme() +
-    scale_x_continuous(breaks = c(0,  1), limits = c(0, 1)) +
-    guides(fill = FALSE) +
-    labs(
+    ggplot2::scale_x_continuous(breaks = c(0,  1), limits = c(0, 1)) +
+    ggplot2::guides(fill = FALSE) +
+    ggplot2::labs(
       title = paste0(k, ' segments, ', length(chrs), ' chromosomes'),
-      subtitle = paste0('>',n, " mutations per segment, segment length >", l, ' bases.')
+      subtitle = paste0('>', n, " mutations per segment, segment length >", l, ' bases.')
     )
 
-  if(k < 74)
+  if (k < 74)
   {
-    qual_col_pals = brewer.pal.info[brewer.pal.info$category == 'qual', ]
+    qual_col_pals = RColorBrewer::brewer.pal.info[RColorBrewer::brewer.pal.info$category == 'qual',]
     col_vector = unlist(mapply(
-      brewer.pal,
+      RColorBrewer::brewer.pal,
       qual_col_pals$maxcolors,
       rownames(qual_col_pals)
     ))
 
     hplot = hplot +
-      geom_histogram(binwidth = 0.01, aes(fill = segment_id)) +
-      scale_fill_manual(values = col_vector)
+      ggplot2::geom_histogram(binwidth = 0.01, ggplot2::aes(fill = segment_id)) +
+      ggplot2::scale_fill_manual(values = col_vector)
   }
   else
     hplot = hplot +
-      geom_histogram(binwidth = 0.01) +
-      scale_fill_manual(values = col_vector)
+    ggplot2::geom_histogram(binwidth = 0.01) +
+    ggplot2::scale_fill_manual(values = col_vector)
 
 
   hplot

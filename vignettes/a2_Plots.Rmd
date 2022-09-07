@@ -141,7 +141,7 @@ inspect_segment(x)
 ```{r, fig.width=30, fig.height=6}
 # With facet from a data histogram
 plot_data_histogram(x, which = 'VAF') + 
-  facet_grid(karyotype~chr, scales = 'free')
+  ggplot2::facet_grid(karyotype~chr, scales = 'free')
 ```
 
 ## Genome-wide mutation data

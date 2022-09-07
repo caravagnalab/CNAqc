@@ -1,29 +1,8 @@
-destination: docs
-
-template:
-  params:
-    part_of: evoverse
-    footer: G. Caravagna, PhD.
-url:
-  caravagnalab.github.io/CNAqc
-
-repo:
-  url:
-    home: https://github.com/caravagnalab/CNAqc/
-    source: https://github.com/caravagnalab/CNAqc
-    issue: https://github.com/caravagnalab/CNAqc/issues
-    user: https://github.com/caravagnalab
-
-
-authors:
-  Giulio Caravagna:
-    href: https://www.caravagnalab.org
 
 destination: docs
 
 template:
   params:
-    part_of: evoverse
     footer: G. Caravagna, PhD.
 url:
   caravagnalab.github.io/CNAqc
