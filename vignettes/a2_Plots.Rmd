@@ -65,14 +65,14 @@ plot_segments(x, circular = TRUE)
 ```{r, fig.width=9.5, fig.height=3}
 # Shadow other segments
 plot_segments(x, highlight = c("2:1", "2:0", "2:2")) + 
-  labs(title = "Annotate different karyotypes")
+  ggplot2::labs(title = "Annotate different karyotypes")
 
 # Subset the genome
-plot_segments(x, chromosomes = 'chr17') + labs(title = "Chromosome 17 zoom")
-plot_segments(x, chromosomes = c('chr17', 'chr13')) + labs(title = "Chromosome 17 and 13 zoom")
+plot_segments(x, chromosomes = 'chr17') + ggplot2::labs(title = "Chromosome 17 zoom")
+plot_segments(x, chromosomes = c('chr17', 'chr13')) + ggplot2::labs(title = "Chromosome 17 and 13 zoom")
 
 # Total copy number
-plot_segments(x, cn = 'total') + labs(title = "Total copy number")
+plot_segments(x, cn = 'total') + ggplot2::labs(title = "Total copy number")
 ```
 
 ### Subclonal CNAs

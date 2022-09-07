@@ -32,7 +32,7 @@ plot_peaks_analysis = function(x,
 {
   stopifnot(inherits(x, "cnaqc"))
 
-  if(what %in% c('simple', 'common'))
+  if (what %in% c('simple', 'common'))
   {
     with_peaks = all(!is.null(x$peaks_analysis))
     if (!with_peaks) {
@@ -60,7 +60,7 @@ plot_peaks_analysis = function(x,
     })
 
     plots = plots[!sapply(plots, is.null)]
-    if(length(plots) == 0) {
+    if (length(plots) == 0) {
       cli::cli_alert_warning("Nothing to plot")
       return(CNAqc:::eplot())
     }
@@ -76,29 +76,29 @@ plot_peaks_analysis = function(x,
           nrow = 1,
           ncol = length(plots)
         ) +
-          theme(
-            plot.title = element_text(color = qc),
-            panel.border = element_rect(colour = qc,
-                                        fill = NA)
+          ggplot2::theme(
+            plot.title = ggplot2::element_text(color = qc),
+            panel.border = ggplot2::element_rect(colour = qc,
+                                                 fill = NA)
           )
       ))
 
     return(plots)
   }
 
-  if(what %in% c('complex', 'general'))
+  if (what %in% c('complex', 'general'))
   {
     with_peaks = all(!is.null(x$peaks_analysis$general))
 
     if (!with_peaks) {
       warning("Input does not have peaks, see ?peaks_analysis to run peaks analysis.")
-      return(CNAqc:::eplot())
+      return(eplot())
     }
 
     return(plot_peaks_fit_general(x))
   }
 
-  if(what == 'subclonal')
+  if (what == 'subclonal')
   {
     with_peaks = all(!is.null(x$peaks_analysis$subclonal))
 
@@ -108,13 +108,14 @@ plot_peaks_analysis = function(x,
     }
 
     pl = plot_peaks_fit_subclonal(x)
-    if(assembly_plot)
+    if (assembly_plot)
       pl = ggpubr::ggarrange(
         plotlist = pl,
         ncol = 1,
         nrow = length(pl),
         common.legend = TRUE,
-        legend = 'bottom')
+        legend = 'bottom'
+      )
 
     return(pl)
   }
@@ -133,11 +134,11 @@ plot_peaks_fit = function(x, k)
   # Required input values
   mutations = x$mutations %>%
     dplyr::filter(karyotype == k) %>%
-    dplyr::mutate(karyotype = paste0(karyotype, " (", matching,")"))
+    dplyr::mutate(karyotype = paste0(karyotype, " (", matching, ")"))
 
   den = x$peaks_analysis$fits[[k]]$density
   expectation = x$peaks_analysis$fits[[k]]$matching %>%
-    dplyr::mutate(karyotype = paste0(karyotype, " (", matching,")"))
+    dplyr::mutate(karyotype = paste0(karyotype, " (", matching, ")"))
 
   xy_peaks = x$peaks_analysis$fits[[k]]$xy_peaks
   purity_error = x$peaks_analysis$purity_error
@@ -160,37 +161,37 @@ plot_peaks_fit = function(x, k)
   qc_color = ifelse(QC == "FAIL", "indianred3", 'forestgreen')
 
 
-  title = bquote(
-      bold(.(k)) ~
-      .(paste0(' (n = ', nrow(mutations), ', ', round(weight*100, 1),  '%)'))
-  )
+  title = bquote(bold(.(k)) ~
+                   .(paste0(
+                     ' (n = ', nrow(mutations), ', ', round(weight * 100, 1),  '%)'
+                   )))
 
   # Plot the data
   plot_data =
-    ggplot(data = mutations, aes(VAF)) +
-    geom_histogram(aes(y = ..density..), binwidth = 0.01, alpha = .3) +
-    geom_line(
+    ggplot2::ggplot(data = mutations, aes(VAF)) +
+    ggplot2::geom_histogram(ggplot2::aes(y = ..density..),
+                            binwidth = 0.01,
+                            alpha = .3) +
+    ggplot2::geom_line(
       data = data.frame(x = den$x, y = den$y),
-      aes(x = x, y = y),
+      ggplot2::aes(x = x, y = y),
       size = .3,
       color = 'black'
     ) +
     CNAqc:::my_ggplot_theme() +
-    labs(
-      title = title,
-      y = 'KDE',
-      x = "VAF"
-    ) +
-    theme(legend.position = 'bottom')  +
-    xlim(-0.01, 1.01) +
-    facet_wrap(~karyotype) +
-    theme(strip.background = element_rect(fill = qc_color))
+    ggplot2::labs(title = title,
+                  y = 'KDE',
+                  x = "VAF") +
+    ggplot2::theme(legend.position = 'bottom')  +
+    ggplot2::xlim(-0.01, 1.01) +
+    ggplot2::facet_wrap( ~ karyotype) +
+    ggplot2::theme(strip.background = ggplot2::element_rect(fill = qc_color))
 
   # Add points for peaks to plot
   plot_data = plot_data +
-    geom_point(
+    ggplot2::geom_point(
       data = xy_peaks,
-      aes(
+      ggplot2::aes(
         x = x,
         y = y,
         shape = discarded,
@@ -198,19 +199,19 @@ plot_peaks_fit = function(x, k)
       ),
       show.legend = FALSE
     ) +
-    scale_shape_manual(values = c(`TRUE` = 1, `FALSE` = 16)) +
-    scale_size(range = c(1, 3) * cex_opt)
+    ggplot2::scale_shape_manual(values = c(`TRUE` = 1, `FALSE` = 16)) +
+    ggplot2::scale_size(range = c(1, 3) * cex_opt)
 
   # Add expectation peaks, and matching colors
   plot_data = plot_data +
-    geom_point(
+    ggplot2::geom_point(
       data = expectation,
-      aes(x = x, y = y, color = matched),
+      ggplot2::aes(x = x, y = y, color = matched),
       size = 2 * cex_opt,
       shape = 4,
       show.legend = FALSE
     ) +
-    annotate(
+    ggplot2::annotate(
       geom = 'rect',
       xmin = expectation$x - expectation$VAF_tolerance,
       xmax = expectation$x + expectation$VAF_tolerance,
@@ -220,9 +221,9 @@ plot_peaks_fit = function(x, k)
       alpha = .4,
       fill = 'purple4'
     ) +
-    geom_segment(
+    ggplot2::geom_segment(
       data = expectation,
-      aes(
+      ggplot2::aes(
         x = x,
         y = y,
         xend = peak,
@@ -231,7 +232,7 @@ plot_peaks_fit = function(x, k)
       ),
       show.legend = FALSE
     ) +
-    annotate(
+    ggplot2::annotate(
       geom = 'rect',
       xmin = expectation$peak - expectation$epsilon,
       xmax = expectation$peak + expectation$epsilon,
@@ -241,20 +242,20 @@ plot_peaks_fit = function(x, k)
       alpha = .4,
       fill = 'steelblue'
     ) +
-    geom_vline(
+    ggplot2::geom_vline(
       data = expectation,
-      aes(xintercept = peak, color = matched),
+      ggplot2::aes(xintercept = peak, color = matched),
       size = .7 * cex_opt,
       linetype = 'longdash',
       show.legend = FALSE
     ) +
-    scale_color_manual(values = c(`TRUE` = 'forestgreen', `FALSE` = 'red'))
+    ggplot2::scale_color_manual(values = c(`TRUE` = 'forestgreen', `FALSE` = 'red'))
 
   # Annotate the offset number
   plot_data = plot_data +
     ggrepel::geom_text_repel(
       data = expectation %>% filter(!matched),
-      aes(
+      ggplot2::aes(
         x = x,
         y = y,
         label = round(offset, 2),
@@ -304,33 +305,25 @@ plot_peaks_fit_general = function(x)
   x$mutations %>%
     filter(karyotype %in% analysis) %>%
     add_counts() %>%
-    ggplot(aes(VAF)) +
-    geom_histogram(aes(y=..density..), binwidth = 0.01, fill = 'gray') +
-    facet_wrap(~karyotype, scales = 'free_y') +
+    ggplot2::ggplot(aes(VAF)) +
+    ggplot2::geom_histogram(aes(y = ..density..), binwidth = 0.01, fill = 'gray') +
+    ggplot2::facet_wrap( ~ karyotype, scales = 'free_y') +
     CNAqc:::my_ggplot_theme() +
-    geom_line(
-      data = data_densities,
-      aes(x = x, y = y),
-      inherit.aes = FALSE
-    ) +
-    geom_vline(
+    ggplot2::geom_line(data = data_densities,
+                       ggplot2::aes(x = x, y = y),
+                       inherit.aes = FALSE) +
+    ggplot2::geom_vline(
       data = expected_peaks,
-      aes(xintercept = peak, color = matched),
+      ggplot2::aes(xintercept = peak, color = matched),
       linetype = 'dashed',
       show.legend = FALSE
     ) +
-    geom_point(
-      data = data_peaks,
-      aes(x = x, y = y),
-      inherit.aes = FALSE
-    ) +
-    scale_color_manual(
-      values = c(`FALSE` = 'indianred3', `TRUE` = 'forestgreen')
-    ) +
-    scale_fill_manual(
-      values = c(`FALSE` = 'indianred3', `TRUE` = 'forestgreen')
-    ) +
-    geom_rect(
+    ggplot2::geom_point(data = data_peaks,
+                        ggplot2::aes(x = x, y = y),
+                        inherit.aes = FALSE) +
+    ggplot2::scale_color_manual(values = c(`FALSE` = 'indianred3', `TRUE` = 'forestgreen')) +
+    ggplot2::scale_fill_manual(values = c(`FALSE` = 'indianred3', `TRUE` = 'forestgreen')) +
+    ggplot2::geom_rect(
       data = data.frame(
         xmin = expected_peaks$peak - epsilon,
         xmax = expected_peaks$peak + epsilon,
@@ -339,15 +332,24 @@ plot_peaks_fit_general = function(x)
         matched = expected_peaks$matched,
         karyotype = expected_peaks$karyotype
       ),
-      aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = matched),
+      ggplot2::aes(
+        xmin = xmin,
+        xmax = xmax,
+        ymin = ymin,
+        ymax = ymax,
+        fill = matched
+      ),
       inherit.aes = FALSE,
       alpha = .3
     ) +
-    guides(fill = guide_legend("Matched peak", override.aes = aes(alpha = 1))) +
-    labs(title = bquote(
-      "Generalised peak detection ("
-      * n['min'] * ' > ' *.(n_min) *', ' *epsilon* ' = ' * .(epsilon*100) * '%)'),
-      caption = bquote(n['nbootstrap']* ' = ' *.(n_bootstrap))
+    ggplot2::guides(fill = ggplot2::guide_legend("Matched peak", override.aes = ggplot2::aes(alpha = 1))) +
+    ggplot2::labs(
+      title = bquote(
+        "Generalised peak detection ("
+        * n['min'] * ' > ' * .(n_min) * ', ' * epsilon * ' = ' * .(epsilon *
+                                                                     100) * '%)'
+      ),
+      caption = bquote(n['nbootstrap'] * ' = ' * .(n_bootstrap))
     )
 }
 
@@ -384,10 +386,11 @@ plot_peaks_fit_subclonal = function(x)
     names(strip_colors) = rank_models
     strip_colors[which_best] = "goldenrod3"
 
-    rep_muts = lapply(this_model_ids, function(x){
+    rep_muts = lapply(this_model_ids, function(x) {
       subclonal_mutations %>%
         filter(segment_id == !!segment_id) %>%
-        mutate(model_id = x, model = ifelse(grepl('->', x), "linear", 'branching'))
+        mutate(model_id = x,
+               model = ifelse(grepl('->', x), "linear", 'branching'))
     }) %>% Reduce(f = bind_rows)
 
     # rep_muts$model_id
@@ -398,47 +401,43 @@ plot_peaks_fit_subclonal = function(x)
       select(segment_id, size, clones) %>% unlist() %>% paste(collapse = ' ')
 
     rep_muts %>%
-      ggplot()  +
-      geom_histogram(aes(x = VAF, y = ..density..), binwidth = 0.01, fill = 'gray') +
-      xlim(-0.1, 1.1) +
+      ggplot2::ggplot()  +
+      ggplot2::geom_histogram(aes(x = VAF, y = ..density..),
+                              binwidth = 0.01,
+                              fill = 'gray') +
+      ggplot2::xlim(-0.1, 1.1) +
       CNAqc:::my_ggplot_theme() +
-      geom_rect(
+      ggplot2::geom_rect(
         data = this_model_peaks,
-        aes(xmin = peak - epsilon, xmax = peak + epsilon,  fill = matched),
+        ggplot2::aes(
+          xmin = peak - epsilon,
+          xmax = peak + epsilon,
+          fill = matched
+        ),
         inherit.aes = FALSE,
         alpha = .3,
-        ymin = 0, ymax = Inf
+        ymin = 0,
+        ymax = Inf
       ) +
-      # geom_rect(
-      #   data = data.frame(
-      #     xmin = this_model_peaks$peak - epsilon,
-      #     xmax = this_model_peaks$peak + epsilon,
-      #     ymin = 0,
-      #     ymax = Inf,
-      #     model = this_model_peaks$model,
-      #     matched = this_model_peaks$matched,
-      #     model_id = this_model_peaks$model_id
-      #   ),
-      #   aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = matched),
-      #   inherit.aes = FALSE,
-      #   alpha = .3
-      # ) +
-      scale_color_manual(
-        values = c(`FALSE` = 'indianred3', `TRUE` = 'forestgreen')
+      ggplot2::scale_color_manual(values = c(`FALSE` = 'indianred3', `TRUE` = 'forestgreen')) +
+      ggplot2::scale_fill_manual(values = c(`FALSE` = 'indianred3', `TRUE` = 'forestgreen')) +
+      ggplot2::geom_line(
+        data = data_densities %>% filter(segment_id == !!segment_id),
+        ggplot2::aes(x = x, y = y),
+        inherit.aes = FALSE
       ) +
-      scale_fill_manual(
-        values = c(`FALSE` = 'indianred3', `TRUE` = 'forestgreen')
+      ggplot2::geom_point(data = data_peaks %>% filter(segment_id == !!segment_id),
+                          ggplot2::aes(x = x, y = y)) +
+      ggplot2::geom_vline(
+        data = expected_peaks %>% filter(segment_id == !!segment_id),
+        ggplot2::aes(
+          xintercept = peak,
+          linetype = role,
+          color = matched
+        )
       ) +
-      geom_line(data = data_densities %>% filter(segment_id == !!segment_id),
-                aes(x = x, y = y),
-                inherit.aes = FALSE) +
-      geom_point(data = data_peaks%>% filter(segment_id == !!segment_id),
-                 aes(x = x, y = y)) +
-      geom_vline(data = expected_peaks %>% filter(segment_id == !!segment_id),
-                 aes(xintercept = peak, linetype = role, color = matched)) +
-      facet_wrap(~factor(model_id, levels = rank_models)) +
-      labs(title = this_title)
-      # theme(strip.background = element_rect(fill=strip_colors))
+      ggplot2::facet_wrap( ~ factor(model_id, levels = rank_models)) +
+      ggplot2::labs(title = this_title)
 
 
     # if(subclonal_mutations$segment_id %>% unique() %>% length() > 5)
@@ -450,7 +449,7 @@ plot_peaks_fit_subclonal = function(x)
 
   decision_table$segment_id %>% unique() %>% lapply(plot_model_id)
 
-    # what_model= expected_peaks$model_id %>% unique()
+  # what_model= expected_peaks$model_id %>% unique()
 
   # plotting
   # s1 = subclonal_mutations %>% mutate(model = 'branching')

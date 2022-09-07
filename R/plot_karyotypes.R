@@ -47,14 +47,14 @@ plot_karyotypes = function(x,
 
   if(type == 'number')
   {
-    pl = ggplot(segments,
-                 aes(x = '', fill = label, y = size)) +
+    pl = ggplot2::ggplot(segments,
+                         ggplot2::aes(x = '', fill = label, y = size)) +
       my_ggplot_theme() +
-      geom_bar(alpha = 1, color = 'white', size = .1, stat = 'identity') +
-      scale_fill_manual(values = colors) +
-      labs(y = "Count", x = 'Karyotypes', title = "Length of segments") +
-      guides(fill = guide_legend('')) +
-      facet_wrap(~call)
+      ggplot2::geom_bar(alpha = 1, color = 'white', size = .1, stat = 'identity') +
+      ggplot2::scale_fill_manual(values = colors) +
+      ggplot2::labs(y = "Count", x = 'Karyotypes', title = "Length of segments") +
+      ggplot2::guides(fill = ggplot2::guide_legend('')) +
+      ggplot2::facet_wrap(~call)
 
     return(pl)
   }
@@ -75,15 +75,15 @@ plot_karyotypes = function(x,
 
     colors = get_karyotypes_colors(unique(segments$label))
 
-    pl = ggplot(segments,
-           aes(x = '', y = p, fill = label)) +
+    pl = ggplot2::ggplot(segments,
+                         ggplot2::aes(x = '', y = p, fill = label)) +
       my_ggplot_theme() +
-      ylim(0, 1) +
-      geom_bar(stat = 'identity', alpha = 1, color = 'white', size = .1) +
-      scale_fill_manual(values = colors) +
-      labs(y = "Percentage", x = 'Karyotype', title = "Genome coverage") +
-      guides(fill = guide_legend('')) +
-      facet_wrap(~call)
+      ggplot2::ylim(0, 1) +
+      ggplot2::geom_bar(stat = 'identity', alpha = 1, color = 'white', size = .1) +
+      ggplot2::scale_fill_manual(values = colors) +
+      ggplot2::labs(y = "Percentage", x = 'Karyotype', title = "Genome coverage") +
+      ggplot2::guides(fill = ggplot2::guide_legend('')) +
+      ggplot2::facet_wrap(~call)
 
     return(pl)
   }

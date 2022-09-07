@@ -18,7 +18,7 @@
 #'
 #' @examples
 #' data('example_dataset_CNAqc')
-#' x = init(example_dataset_CNAqc$snvs, example_dataset_CNAqc$cna, example_dataset_CNAqc$purity)
+#' x = init(mutations = example_dataset_CNAqc$mutations, cna =example_dataset_CNAqc$cna, purity = example_dataset_CNAqc$purity)
 #'
 #' x = compute_CCF(x)
 #' CCF(x)

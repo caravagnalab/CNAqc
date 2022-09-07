@@ -32,12 +32,16 @@
 #' plot_multisample_CNA(list(`S1` = x, `S2` = x), layout = 'circular')
 plot_multisample_CNA = function(x, layout = 'flat', ...)
 {
-  ok_input = sapply(x, function(x) inherits(x, what = 'cnaqc')) %>% all()
+  ok_input = sapply(x, function(x)
+    inherits(x, what = 'cnaqc')) %>% all()
 
-  if(!ok_input) stop("Input x must be a list of CNAqc objects!")
+  if (!ok_input)
+    stop("Input x must be a list of CNAqc objects!")
 
-  if(layout == "flat") return(x %>% aux_plot_cohort_CNA(...))
-  if(layout == "circular") return(x %>% aux_plot_cohort_CNA_circular(...))
+  if (layout == "flat")
+    return(x %>% aux_plot_cohort_CNA(...))
+  if (layout == "circular")
+    return(x %>% aux_plot_cohort_CNA_circular(...))
 
   return(ggplot())
 }
@@ -74,7 +78,8 @@ aux_plot_cohort_CNA = function(x, delta = 1e5)
         # Expand all bins with relevant information
         x_chr = x_chr %>% filter(CNA != "None")
 
-        if(nrow(x_chr) == 0) return(NULL)
+        if (nrow(x_chr) == 0)
+          return(NULL)
 
         lapply(1:nrow(x_chr),
                function(i) {
@@ -100,19 +105,20 @@ aux_plot_cohort_CNA = function(x, delta = 1e5)
   }
 
   # Check all references
-  n_refs = sapply(x, function(x) x$reference_genome) %>% table()
+  n_refs = sapply(x, function(x)
+    x$reference_genome) %>% table()
 
-  if(n_refs != length(x)) stop("The input objects have different references")
+  if (n_refs != length(x))
+    stop("The input objects have different references")
 
   # Chop everything
-  delta_kb = round(delta/1e3, 0)
+  delta_kb = round(delta / 1e3, 0)
   cli::cli_h3("Breaking input segments at {.field {delta_kb} Kb} resolution")
 
   segments = lapply(x %>% seq_along,
                     function(z)
                       chop_clonal_segments(x[[z]], delta) %>%
-                      dplyr::mutate(sample = z)
-  ) %>%
+                      dplyr::mutate(sample = z)) %>%
     Reduce(f = bind_rows)
 
   # Count everything
@@ -124,7 +130,7 @@ aux_plot_cohort_CNA = function(x, delta = 1e5)
   # Scale to absolute coordinates
   segments_binned = x[[1]] %>%
     relative_to_absolute_coordinates(segments_binned) %>%
-    dplyr::mutate(n = ifelse(CNA == 'Deletion', -1 * n, n))
+    dplyr::mutate(n = ifelse(CNA == 'Deletion',-1 * n, n))
 
   # Blank plot
   reference_coordinates = get_reference(x[[1]]$reference_genome)
@@ -132,10 +138,10 @@ aux_plot_cohort_CNA = function(x, delta = 1e5)
   low = min(reference_coordinates$from)
   upp = max(reference_coordinates$to)
 
-  segments_plot = ggplot(reference_coordinates) +
+  segments_plot = ggplot2::ggplot(reference_coordinates) +
     my_ggplot_theme() +
-    geom_rect(
-      aes(
+    ggplot2::geom_rect(
+      ggplot2::aes(
         xmin = centromerStart,
         xmax = centromerEnd,
         ymin = -Inf,
@@ -144,9 +150,9 @@ aux_plot_cohort_CNA = function(x, delta = 1e5)
       alpha = .3,
       colour = 'gainsboro'
     ) +
-    geom_segment(
+    ggplot2::geom_segment(
       data = reference_coordinates,
-      aes(
+      ggplot2::aes(
         x = from,
         xend = from,
         y = -Inf,
@@ -156,20 +162,28 @@ aux_plot_cohort_CNA = function(x, delta = 1e5)
       color = 'black',
       linetype = 8
     ) +
-    geom_hline(yintercept = 0,
-               size = 1,
-               colour = 'gainsboro') +
-    labs(x = "Chromosome", y = paste0("Cases (out of ", length(x), ')')) +
-    scale_x_continuous(
+    ggplot2::geom_hline(yintercept = 0,
+                        size = 1,
+                        colour = 'gainsboro') +
+    ggplot2::labs(x = "Chromosome", y = paste0("Cases (out of ", length(x), ')')) +
+    ggplot2::scale_x_continuous(
       breaks = c(0, reference_coordinates$from, upp),
-      labels = c("", gsub(pattern = 'chr', replacement = '', reference_coordinates$chr), "")
+      labels = c(
+        "",
+        gsub(
+          pattern = 'chr',
+          replacement = '',
+          reference_coordinates$chr
+        ),
+        ""
+      )
     )
 
   # Label genome covered
   labels_segments = segments_binned %>%
     dplyr::group_by(CNA) %>%
-    dplyr::mutate(Mb = abs(n) * (to-from)) %>%
-    dplyr::summarise(Mb = sum(Mb)/1e6) %>%
+    dplyr::mutate(Mb = abs(n) * (to - from)) %>%
+    dplyr::summarise(Mb = sum(Mb) / 1e6) %>%
     dplyr::mutate(label = paste0(CNA, " (", Mb, " Mb)"))
 
   v_labels_segments = labels_segments$label
@@ -183,9 +197,9 @@ aux_plot_cohort_CNA = function(x, delta = 1e5)
 
   # Add info to plot
   segments_plot = segments_plot +
-    geom_rect(
+    ggplot2::geom_rect(
       data = segments_binned,
-      aes(
+      ggplot2::aes(
         xmin = from,
         xmax = to,
         ymin = 0,
@@ -194,16 +208,17 @@ aux_plot_cohort_CNA = function(x, delta = 1e5)
       ),
       alpha = .8
     ) +
-    scale_fill_manual(values = colours) +
-    guides(fill = guide_legend('', override.aes = list(alpha = 1)))
+    ggplot2::scale_fill_manual(values = colours) +
+    ggplot2::guides(fill = ggplot2::guide_legend('', override.aes = list(alpha = 1)))
 
   brks_y = segments_binned$n %>% abs %>% max
-  brks_step = (brks_y/10) %>% floor
+  brks_step = (brks_y / 10) %>% floor
   brks_y = seq(-brks_y, brks_y, ifelse(brks_step < 1, 1, brks_step))
-  brks_y_labels = abs(brks_y) %>% sapply(function(r) paste0(r, ' (', round(100 * r/length(x), 0), '%)'))
+  brks_y_labels = abs(brks_y) %>% sapply(function(r)
+    paste0(r, ' (', round(100 * r / length(x), 0), '%)'))
 
   segments_plot = segments_plot +
-    scale_y_continuous(breaks = brks_y, labels = brks_y_labels)
+    ggplot2::scale_y_continuous(breaks = brks_y, labels = brks_y_labels)
 
   # Maybe later we add these...
   # drivers = lapply(x, function(x)
@@ -226,7 +241,7 @@ aux_plot_cohort_CNA = function(x, delta = 1e5)
 aux_plot_cohort_CNA_circular = function(x, ...)
 {
   Ln = names(x)
-  if(is.null(Ln)) {
+  if (is.null(Ln)) {
     Ln = paste0("Sample ", 1:length(L))
     names(L) = Ln
 
@@ -251,14 +266,14 @@ aux_plot_cohort_CNA_circular = function(x, ...)
                  })
 
   calls_flat =
-    suppressWarnings(
-      Reduce(
-        function(x, y) full_join(x, y, by = c("chr", "from", "to", "label", "CN", "sample")),
-        calls) %>%
-        mutate(
-          label = ifelse(label %in% names(KARYO_colors), label, 'other')
-        )
-    )
+    suppressWarnings(Reduce(function(x, y)
+      full_join(
+        x, y, by = c("chr", "from", "to", "label", "CN", "sample")
+      ),
+      calls) %>%
+        mutate(label = ifelse(
+          label %in% names(KARYO_colors), label, 'other'
+        )))
 
   KARYO_colors = c(KARYO_colors, `other` = 'gray')
 
@@ -271,20 +286,23 @@ aux_plot_cohort_CNA_circular = function(x, ...)
 
   # Default blank genome -- remove labels with label_chr = NA
   bl_genome = suppressMessages(
-    CNAqc:::blank_genome(ref = x[[1]]$reference_genome, chromosomes = chromosomes,
-                         label_chr = NA) +
-      labs(x = "", y = "")
+    CNAqc:::blank_genome(
+      ref = x[[1]]$reference_genome,
+      chromosomes = chromosomes,
+      label_chr = NA
+    ) +
+      ggplot2::labs(x = "", y = "")
   )
 
   # Segment id for the y-axis
-  seg_id = pio:::nmfy(Ln, seq_along(Ln))
+  seg_id = nmfy(Ln, seq_along(Ln))
   calls_flat$sample_id = seg_id[calls_flat$sample]
 
   # bl_genome =
   bl_genome +
-    geom_segment(
+    ggplot2::geom_segment(
       data = calls_flat,
-      aes(
+      ggplot2::aes(
         x = from,
         xend = to,
         y = sample_id,
@@ -293,22 +311,19 @@ aux_plot_cohort_CNA_circular = function(x, ...)
       ),
       size = 5
     ) +
-    scale_color_manual(values = KARYO_colors) +
-    coord_polar(theta = 'x', clip = 'off') +
-    guides(color = guide_legend('Karyotype', nrow = 1)) +
-    ylim(-5, max(seg_id) + 3) +
-    labs(
-      title = "Comparative CNA",
-      subtitle = paste0('Tracks: ', paste(Ln, collapse = ', '))
-    ) +
-    theme(
+    ggplot2::scale_color_manual(values = KARYO_colors) +
+    ggplot2::coord_polar(theta = 'x', clip = 'off') +
+    ggplot2::guides(color = ggplot2::guide_legend('Karyotype', nrow = 1)) +
+    ggplot2::ylim(-5, max(seg_id) + 3) +
+    ggplot2::labs(title = "Comparative CNA",
+                  subtitle = paste0('Tracks: ', paste(Ln, collapse = ', '))) +
+    ggplot2::theme(
       legend.key.height = unit(.1, "cm"),
-      axis.text.y = element_blank(),
-      panel.grid.major = element_blank(),
-      panel.grid.minor = element_blank(),
-      panel.border = element_rect(size = .3)
+      axis.text.y = ggplot2::element_blank(),
+      panel.grid.major = ggplot2::element_blank(),
+      panel.grid.minor = ggplot2::element_blank(),
+      panel.border = ggplot2::element_rect(size = .3)
     )
 
 
 }
-

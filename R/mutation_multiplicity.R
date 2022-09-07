@@ -731,12 +731,12 @@ plot_mutation_multiplicity_entropy = function(x, karyotype)
   vaf_label = paste0("VAF (", ns_counts, '% NA', ')')
 
   join_ln = bind_rows(
-    tibble(
+    tibble::tibble(
       value = mutations_k$CCF,
       Multiplicity = mutations_k$mutation_multiplicity
     ) %>% mutate(var = ccf_label,
                  x = row_number()),
-    tibble(
+    tibble::tibble(
       value = mutations_k$VAF,
       Multiplicity = mutations_k$mutation_multiplicity
     ) %>% mutate(var = vaf_label,
@@ -756,26 +756,26 @@ plot_mutation_multiplicity_entropy = function(x, karyotype)
   nccf = paste0("(n = ", sum(!is.na(mutations_k$CCF)), ')')
   caption = bquote(bold(.(karyotype)) ~ .(nccf))
 
-  oneplot = ggplot(join_ln, aes(value, y = ..count.. / sum(..count..))) +
-    geom_histogram(bins = 100, aes(fill = factor(Multiplicity))) +
+  oneplot = ggplot2::ggplot(join_ln, ggplot2::aes(value, y = ..count.. / sum(..count..))) +
+    ggplot2::geom_histogram(bins = 100, aes(fill = factor(Multiplicity))) +
     CNAqc:::my_ggplot_theme() +
     # scale_color_manual(values = colors) +
-    scale_fill_manual(values = colors, na.value = 'gray') +
-    guides(color = FALSE) +
-    labs(y = paste0('Density'),
-         title = caption) +
-    xlim(-0.01, NA) +
-    facet_wrap(~ var, scales = 'free_x') +
+    ggplot2::scale_fill_manual(values = colors, na.value = 'gray') +
+    ggplot2::guides(color = 'none') +
+    ggplot2::labs(y = paste0('Density'),
+                  title = caption) +
+    ggplot2::xlim(-0.01, NA) +
+    ggplot2::facet_wrap( ~ var, scales = 'free_x') +
     # labs(caption = caption) +
     # theme(plot.title = element_text(color = color)) +
-    theme(
-      strip.background = element_rect(fill = color),
+    ggplot2::theme(
+      strip.background = ggplot2::element_rect(fill = color),
       legend.position = c(0, .98),
-      legend.background = element_rect(fill = alpha('gainsboro', 0.1)),
+      legend.background = ggplot2::element_rect(fill = ggplot2::alpha('gainsboro', 0.1)),
       legend.justification = c(0, 1)
     ) +
-    guides(fill = guide_legend(NULL, nrow = 1)) +
-    labs(x = 'Value by multiplicity')
+    ggplot2::guides(fill = ggplot2::guide_legend(NULL, nrow = 1)) +
+    ggplot2::labs(x = 'Value by multiplicity')
 
 
   #
@@ -804,17 +804,17 @@ plot_mutation_multiplicity_entropy = function(x, karyotype)
     rp = computation$params$cuts[2]
 
     oneplot = oneplot +
-      geom_line(
+      ggplot2::geom_line(
         data = joint %>% mutate(var = rev(join_ln$var)[1]),
-        aes(x = x, y = entropy),
+        ggplot2::aes(x = x, y = entropy),
         color = 'azure4',
         size = .5,
         inherit.aes = T,
         linetype = 'longdash'
       ) +
-      geom_vline(
+      ggplot2::geom_vline(
         data = data.frame(xintercept = c(lp, rp)) %>% mutate(var = rev(join_ln$var)[1]),
-        aes(xintercept = xintercept),
+        ggplot2::aes(xintercept = xintercept),
         color = 'chocolate2',
         linetype = 'dashed',
         size = .3
@@ -982,12 +982,12 @@ plot_mutation_multiplicity_rough = function(x, karyotype)
   vaf_label = paste0("VAF (", ns_counts, '% NA', ')')
 
   join_ln = bind_rows(
-    tibble(
+    tibble::tibble(
       value = mutations_k$CCF,
       Multiplicity = mutations_k$mutation_multiplicity
     ) %>% mutate(var = ccf_label,
                  x = row_number()),
-    tibble(
+    tibble::tibble(
       value = mutations_k$VAF,
       Multiplicity = mutations_k$mutation_multiplicity
     ) %>% mutate(var = vaf_label,
@@ -1007,26 +1007,26 @@ plot_mutation_multiplicity_rough = function(x, karyotype)
   nccf = paste0("(n = ", sum(!is.na(mutations_k$CCF)), ')')
   caption = bquote(bold(.(karyotype)) ~ .(nccf))
 
-  oneplot = ggplot(join_ln, aes(value, y = ..count.. / sum(..count..))) +
-    geom_histogram(bins = 100, aes(fill = factor(Multiplicity))) +
+  oneplot = ggplot2::ggplot(join_ln, ggplot2::aes(value, y = ..count.. / sum(..count..))) +
+    ggplot2::geom_histogram(bins = 100, ggplot2::aes(fill = factor(Multiplicity))) +
     CNAqc:::my_ggplot_theme() +
     # scale_color_manual(values = colors) +
-    scale_fill_manual(values = colors, na.value = 'gray') +
-    guides(color = FALSE) +
-    labs(y = paste0('Density'),
-         title = caption) +
-    xlim(-0.01, NA) +
-    facet_wrap(~ var, scales = 'free_x') +
+    ggplot2::scale_fill_manual(values = colors, na.value = 'gray') +
+    ggplot2::guides(color = 'none') +
+    ggplot2::labs(y = paste0('Density'),
+                  title = caption) +
+    ggplot2::xlim(-0.01, NA) +
+    ggplot2::facet_wrap( ~ var, scales = 'free_x') +
     # labs(caption = caption) +
     # theme(plot.title = element_text(color = color)) +
-    theme(
-      strip.background = element_rect(fill = color),
+    ggplot2::theme(
+      strip.background = ggplot2::element_rect(fill = color),
       legend.position = c(0, .98),
-      legend.background = element_rect(fill = alpha('gainsboro', 0.1)),
+      legend.background = ggplot2::element_rect(fill = alpha('gainsboro', 0.1)),
       legend.justification = c(0, 1)
     ) +
-    guides(fill = guide_legend(NULL, nrow = 1)) +
-    labs(x = 'Value by multiplicity')
+    ggplot2::guides(fill = ggplot2::guide_legend(NULL, nrow = 1)) +
+    ggplot2::labs(x = 'Value by multiplicity')
 
   #
   # oneplot +
@@ -1046,20 +1046,20 @@ plot_mutation_multiplicity_rough = function(x, karyotype)
     expectation = computation$params$cuts
 
     oneplot = oneplot +
-      geom_vline(
+      ggplot2::geom_vline(
         data = data.frame(x = expectation) %>% mutate(var = rev(join_ln$var)[1]),
-        aes(xintercept = expectation),
+        ggplot2::aes(xintercept = expectation),
         size = .5,
         linetype = 'dashed',
         color = 'black',
         inherit.aes = T
       ) +
-      geom_vline(
+      ggplot2::geom_vline(
         data = computation$params$expectation %>% mutate(var = rev(join_ln$var)[1]),
         size = .7,
         linetype = 'dashed',
         color = 'gray',
-        aes(xintercept = peak, color = label)
+        ggplot2::aes(xintercept = peak, color = label)
       )
   }
 
@@ -1178,7 +1178,9 @@ qc_plot = function(x, QC)
   qc = ifelse(QC == "FAIL", "indianred3", 'forestgreen')
 
   x +
-    theme(title = element_text(color = qc),
-          panel.border = element_rect(colour = qc,
-                                      fill = NA))
+    ggplot2::theme(
+      title = ggplot2::element_text(color = qc),
+      panel.border = ggplot2::element_rect(colour = qc,
+                                           fill = NA)
+    )
 }

@@ -199,7 +199,7 @@ branching_evolution = function(starting, left, right, CCF_1, purity)
   branch_left = start %>% evolve(left)
   branch_right = start %>% evolve(right)
 
-  solutions = expand_grid(L = branch_left %>% seq_along(), R = branch_right %>% seq_along())
+  solutions = expand_grid(L =  seq_along(branch_left), R = seq_along(branch_right))
   solutions = lapply(1:nrow(solutions), function(i) {
     get_peaks(
       clone_1 = branch_left[[solutions$L[i]]],

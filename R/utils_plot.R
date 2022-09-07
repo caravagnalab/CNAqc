@@ -2,11 +2,11 @@ my_ggplot_theme = function(cex = 1)
 {
   cex_opt = getOption('CNAqc_cex', default = 1)
 
-  theme_light(base_size = 10 * cex_opt) +
-    theme(
+  ggplot2::theme_light(base_size = 10 * cex_opt) +
+    ggplot2::theme(
       legend.position = "bottom",
-      legend.key.size = unit(.3 * cex_opt, "cm"),
-      panel.background = element_rect(fill = 'white')
+      legend.key.size = ggplot2::unit(.3 * cex_opt, "cm"),
+      panel.background = ggplot2::element_rect(fill = 'white')
     )
 }
 
@@ -25,7 +25,7 @@ get_karyotypes_colors = function(karyotypes)
   nmissing = length(missing)
 
 
-  c(color, pio:::nmfy(missing, rep('gray', nmissing)))
+  c(color, nmfy(missing, rep('gray', nmissing)))
 }
 
 add_segments_to_plot = function(segments, base_plot, cn)
@@ -37,9 +37,9 @@ add_segments_to_plot = function(segments, base_plot, cn)
     m_seg = segments %>% dplyr::select(from, to, minor) %>% dplyr::rename(value = minor)
 
     base_plot = base_plot +
-      geom_segment(
+      ggplot2::geom_segment(
         data = M_seg %>% dplyr::mutate(Allele = "Major allele (clonal)"),
-        aes(
+        ggplot2::aes(
           x = from,
           xend = to,
           y = value,
@@ -48,9 +48,9 @@ add_segments_to_plot = function(segments, base_plot, cn)
         ),
         size = 1.5
       ) +
-      geom_segment(
+      ggplot2::geom_segment(
         data = m_seg %>% dplyr::mutate(Allele = "minor allele (clonal)"),
-        aes(
+        ggplot2::aes(
           x = from,
           xend = to,
           y = value - 0.1,
@@ -59,26 +59,26 @@ add_segments_to_plot = function(segments, base_plot, cn)
         ),
         size = 1
       ) +
-      scale_color_manual(values = c(`Major allele (clonal)` = 'red', `minor allele (clonal)` = 'steelblue')) +
-      guides(color = guide_legend(''))
+      ggplot2::scale_color_manual(values = c(`Major allele (clonal)` = 'red', `minor allele (clonal)` = 'steelblue')) +
+      ggplot2::guides(color = ggplot2::guide_legend(''))
 
     # Some layout
     base_plot = base_plot +
-      theme(
+      ggplot2::theme(
         legend.position = "bottom",
         legend.justification = "right",
-        legend.margin = margin(0, 0, 0, 0)
+        legend.margin = ggplot2::margin(0, 0, 0, 0)
       ) +
-      labs(y = "Absolute allele counts")
+      ggplot2::labs(y = "Absolute allele counts")
 
   }
 
   if (cn == 'total')
   {
     base_plot = base_plot +
-      geom_segment(
+      ggplot2::geom_segment(
         data = segments %>% dplyr::select(from, to, total) %>% dplyr::mutate(Allele = "Segment ploidy"),
-        aes(
+        ggplot2::aes(
           x = from,
           xend = to,
           y = total,
@@ -124,8 +124,8 @@ add_subclonal_segments_to_plot = function(segments, base_plot, cn)
     # Map colours
     base_plot = suppressWarnings(suppressMessages(
       base_plot +
-        scale_color_manual(values = my_colors)+
-        guides(linetype = guide_legend("Subclone CCF"))
+        ggplot2::scale_color_manual(values = my_colors)+
+        ggplot2::guides(linetype = ggplot2::guide_legend("Subclone CCF"))
     ))
 
     for(i in 1:nrow(segments))
@@ -148,7 +148,7 @@ add_subclonal_segments_to_plot = function(segments, base_plot, cn)
       #   ))
 
       base_plot = base_plot +
-        geom_segment(
+        ggplot2::geom_segment(
           data = i_segments %>% filter(grepl("Major", Allele)),
           aes(
             x = from,
@@ -195,9 +195,9 @@ add_shadow_to_plot = function(segments, base_plot,  highlight)
 
   if (nrow(segments) > 0)
     base_plot = base_plot +
-    geom_rect(
+    ggplot2::geom_rect(
       data = segments,
-      aes(
+      ggplot2::aes(
         xmin = from,
         xmax = to,
         ymin = -Inf,
@@ -206,8 +206,8 @@ add_shadow_to_plot = function(segments, base_plot,  highlight)
       ),
       alpha = .3
     ) +
-    scale_fill_manual(values = all_karyotypes) +
-    guides(fill = guide_legend('', override.aes = list(alpha = 1)))
+    ggplot2::scale_fill_manual(values = all_karyotypes) +
+    ggplot2::guides(fill = ggplot2::guide_legend('', override.aes = list(alpha = 1)))
 
   return(base_plot)
 }
@@ -221,7 +221,7 @@ add_breakpoints_to_plot = function(segments, base_plot, max_Y_height, circular)
   if (nrow(off_plot) > 0)
   {
     base_plot = base_plot +
-      geom_hline(
+      ggplot2::geom_hline(
         yintercept = max_Y_height,
         size = .2,
         color = 'darkgray',
@@ -229,17 +229,17 @@ add_breakpoints_to_plot = function(segments, base_plot, max_Y_height, circular)
       )
 
     # Simulate an internal legendq
-    L = ggplot_build(base_plot)$layout$panel_params[[1]]
+    L = ggplot2::ggplot_build(base_plot)$layout$panel_params[[1]]
     Lx = abs(L$x.range[2] - L$x.range[1]) * .85
 
     base_plot = base_plot +
-      geom_label(
+      ggplot2::geom_label(
         data = data.frame(
           x = Lx,
           y = L$y.range[2] - 0.5,
           label = paste0('< ', max_Y_height)
         ),
-        aes(x = x, y = y, label = label),
+        ggplot2::aes(x = x, y = y, label = label),
         fill = 'darkgray',
         color = 'white',
         size = 2,
@@ -250,11 +250,11 @@ add_breakpoints_to_plot = function(segments, base_plot, max_Y_height, circular)
   }
 
   # Minimum height of the plot
-  L = ggplot_build(base_plot)$layout$panel_params[[1]]
+  L = ggplot2::ggplot_build(base_plot)$layout$panel_params[[1]]
 
   if(!circular){
     if (L$y.range[2] <= 5) {
-      base_plot = base_plot + ylim(-0.5, 5)
+      base_plot = base_plot + ggplot2::ylim(-0.5, 5)
     }
   }
 
@@ -269,14 +269,14 @@ add_breakpoints_to_plot = function(segments, base_plot, max_Y_height, circular)
   )
 
   base_plot = base_plot +
-    geom_point(
+    ggplot2::geom_point(
       data = breakpoints %>% filter(!outern),
-      aes(x = x, y = y),
+      ggplot2::aes(x = x, y = y),
       size = .5,
       shape = 1,
       color = 'darkgray'
     ) +
-    geom_point(
+    ggplot2::geom_point(
       data = breakpoints %>% filter(outern),
       aes(x = x, y = y),
       size = .5,

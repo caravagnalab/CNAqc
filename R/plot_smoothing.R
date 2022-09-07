@@ -31,14 +31,14 @@ plot_smoothing = function(x)
   Mb = ggplot_build(bpb)$layout$panel_scales_y[[1]]$range$range
 
   bpa = plot_segment_size_distribution(x)
-  Ma = ggplot_build(bpa)$layout$panel_scales_y[[1]]$range$range
+  Ma = ggplot2::ggplot_build(bpa)$layout$panel_scales_y[[1]]$range$range
 
   Y_max_bplot = max(Mb, Ma)
 
 
   before = cowplot::plot_grid(
-    plot_segments(x$before_smoothing) + labs(title = "Before smoothing"),
-    bpb + ylim(0, Y_max_bplot),
+    plot_segments(x$before_smoothing) + ggplot2::labs(title = "Before smoothing"),
+    bpb + ggplot2::ylim(0, Y_max_bplot),
     nrow = 1,
     ncol = 2,
     rel_widths = c(4, 1),
@@ -46,8 +46,8 @@ plot_smoothing = function(x)
   )
 
   after = cowplot::plot_grid(
-    plot_segments(x) + labs(title = "After smoothing"),
-    bpa + ylim(0, Y_max_bplot),
+    plot_segments(x) + ggplot2::labs(title = "After smoothing"),
+    bpa + ggplot2::ylim(0, Y_max_bplot),
     nrow = 1,
     ncol = 2,
     rel_widths = c(4, 1),

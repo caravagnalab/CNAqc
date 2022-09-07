@@ -8,8 +8,6 @@
 #' @exportS3Method print cnaqc
 #' @export print.cnaqc
 #'
-#' @import pio
-#'
 #' @examples
 #' data('example_dataset_CNAqc', package = 'CNAqc')
 #' x = init(example_dataset_CNAqc$mutations, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
@@ -93,7 +91,7 @@ print.cnaqc = function(x, ...)
     prop = x$peaks_analysis$matches %>%
       dplyr::group_by(QC) %>%
       dplyr::summarise(prop = sum(weight), .groups = 'drop') %>%
-      dplyr::arrange(desc(prop)) %>%
+      dplyr::arrange(dplyr::desc(prop)) %>%
       dplyr::filter(dplyr::row_number() == 1) %>%
       dplyr::pull(prop)
     prop = round(prop * 100, digits = 0)
@@ -149,8 +147,8 @@ print.cnaqc = function(x, ...)
     if('general' %in% (x$peaks_analysis %>% names))
     {
       gen =  x$peaks_analysis$general$summary %>%
-        ungroup() %>%
-        mutate(prop = round(n/sum(n) * 100, 0))
+        dplyr::ungroup() %>%
+        dplyr::mutate(prop = round(n/sum(n) * 100, 0))
 
       n_matched =  gen$matched %>% sum
       n_mismatched =  gen$mismatched %>% sum
@@ -190,13 +188,13 @@ print.cnaqc = function(x, ...)
 
       general_table = x$peaks_analysis$subclonal$summary %>%
         # filter(prop > 0) %>%
-        group_by(segment_id) %>%
-        summarise(BR = sum(model == 'branching' & prop > 0), LI = sum(model == 'linear'& prop > 0)) %>%
-        arrange(BR %>% desc, LI %>% desc)
+        dplyr::group_by(segment_id) %>%
+        dplyr::summarise(BR = sum(model == 'branching' & prop > 0), LI = sum(model == 'linear'& prop > 0)) %>%
+        dplyr::arrange(dplyr::desc(BR), dplyr::desc(LI))
 
-      certainly_linear = general_table %>% filter(BR == 0, LI > 0) %>% nrow()
-      certainly_branching = general_table %>% filter(BR > 0, LI == 0) %>% nrow()
-      ambiguous = general_table %>% filter(BR > 0, LI > 0) %>% nrow()
+      certainly_linear = general_table %>% dplyr::filter(BR == 0, LI > 0) %>% nrow()
+      certainly_branching = general_table %>% dplyr::filter(BR > 0, LI == 0) %>% nrow()
+      ambiguous = general_table %>% dplyr::filter(BR > 0, LI > 0) %>% nrow()
 
       all_bad = nsegs - (certainly_linear + certainly_branching + ambiguous)
 
@@ -224,21 +222,21 @@ print.cnaqc = function(x, ...)
        # cat(s)
 
         hb = x$peaks_analysis$subclonal$summary %>%
-          filter(segment_id == s) %>%
-          arrange(desc(prop)) %>%
-          mutate(prop = prop * 100) %>%
-          mutate(prop = case_when(
+          dplyr::filter(segment_id == s) %>%
+          dplyr::arrange(dplyr::desc(prop)) %>%
+          dplyr::mutate(prop = prop * 100) %>%
+          dplyr::mutate(prop = case_when(
             prop == 0 ~ crayon::red('0'),
             prop == 100 ~ crayon::green('100'),
             TRUE ~ crayon::yellow(prop)
           )) %>%
-          mutate(label = paste0(model_id, " [", prop, "]")) %>%
-          pull(label) %>%
+          dplyr::mutate(label = paste0(model_id, " [", prop, "]")) %>%
+          dplyr::pull(label) %>%
           paste(collapse = '; ')
 
 
-        n = x$peaks_analysis$subclonal$summary %>% filter(segment_id == s) %>% filter(row_number() == 1) %>% pull(size)
-        cl = x$peaks_analysis$subclonal$summary %>% filter(segment_id == s) %>% filter(row_number() == 1) %>% pull(clones)
+        n = x$peaks_analysis$subclonal$summary %>% filter(segment_id == s) %>% filter(row_number() == 1) %>% dplyr::pull(size)
+        cl = x$peaks_analysis$subclonal$summary %>% filter(segment_id == s) %>% filter(row_number() == 1) %>% dplyr::pull(clones)
         cl = strsplit(cl, ' ')[[1]]
         cl = paste0(cl[1], ' (', cl[2] %>% as.numeric *100, ') + ', cl[3], ' (', cl[4] %>% as.numeric * 100, ')')
         cl = sprintf("%17s", cl)
@@ -260,8 +258,8 @@ print.cnaqc = function(x, ...)
         cli::cli_h3(paste(ppass(), "Linear models"))
 
         general_table %>%
-          filter(BR == 0, LI > 0) %>%
-          pull(segment_id) %>%
+          dplyr::filter(BR == 0, LI > 0) %>%
+          dplyr::pull(segment_id) %>%
           lapply(my_print, b = ml)
       }
 
@@ -270,8 +268,8 @@ print.cnaqc = function(x, ...)
         cli::cli_h3(paste(ppass(), "Branching models"))
 
         general_table %>%
-          filter(BR > 0, LI == 0) %>%
-          pull(segment_id) %>%
+          dplyr::filter(BR > 0, LI == 0) %>%
+          dplyr::pull(segment_id) %>%
           lapply(my_print, b = ml)
       }
 
@@ -279,8 +277,9 @@ print.cnaqc = function(x, ...)
       {
         cli::cli_h3(paste(puncertain(), "Either branching or linear models"))
 
-        general_table %>% filter(BR > 0, LI > 0) %>%
-          pull(segment_id) %>%
+        general_table %>%
+          dplyr::filter(BR > 0, LI > 0) %>%
+          dplyr::pull(segment_id) %>%
           lapply(my_print, b = ml)
       }
 
@@ -288,8 +287,9 @@ print.cnaqc = function(x, ...)
       {
         cli::cli_h3(paste(pfail(), "Bad models"))
 
-        general_table %>% filter(BR == 0, LI == 0) %>%
-          pull(segment_id) %>%
+        general_table %>%
+          dplyr::filter(BR == 0, LI == 0) %>%
+          dplyr::pull(segment_id) %>%
           lapply(my_print, b = ml)
       }
 
@@ -468,9 +468,9 @@ bar_print_console_scl = function(x, top = nrow(x$cna_subclonal))
   max_bars = 10
 
   L_table =  x$cna_subclonal %>%
-    mutate(Mb = round(length/1e6, 2), CCF = round(CCF, 2), bars = n/max(n) * max_bars)  %>%
-    arrange(desc(n)) %>%
-    filter(row_number() <= top)
+    dplyr::mutate(Mb = round(length/1e6, 2), CCF = round(CCF, 2), bars = n/max(n) * max_bars)  %>%
+    dplyr::arrange(dplyr::desc(n)) %>%
+    dplyr::filter(dplyr::row_number() <= top)
 
   label_width = 30
 

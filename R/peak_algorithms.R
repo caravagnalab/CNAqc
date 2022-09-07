@@ -51,8 +51,8 @@ analyze_peaks_common = function(x,
 
   # Run peak detection
   data_fits = x$mutations %>%
-    filter(karyotype %in% analysis) %>%
-    group_split(karyotype) %>%
+    dplyr::filter(karyotype %in% analysis) %>%
+    dplyr::group_split(karyotype) %>%
     lapply(
       FUN = function(w) {
         cli::cli_alert_info("Mixed type peak detection for karyotype {.field {w$karyotype[1]}} ({.field {x$n_karyotype[w$karyotype[1]]}} mutations)")
@@ -63,8 +63,8 @@ analyze_peaks_common = function(x,
     )
 
   names(data_fits) = x$mutations %>%
-    filter(karyotype %in% analysis) %>%
-    group_split(karyotype) %>%
+    dplyr::filter(karyotype %in% analysis) %>%
+    dplyr::group_split(karyotype) %>%
     sapply(function(e) e$karyotype[1])
 
   # Weights by karyotype

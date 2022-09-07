@@ -112,8 +112,9 @@ intogen_drivers
 ```
 
 We plot the list of genes that appear in at least 20 tumour types.
-```{r, fig.width=8, fig.height=12}
+```{r, fig.width=8, fig.height=12, warning=FALSE}
 library(RColorBrewer)
+library(ggplot2)
 
 n <- 60
 qual_col_pals = brewer.pal.info[brewer.pal.info$category == 'qual',]

@@ -60,7 +60,7 @@ annotate_drivers_to_histogram = function(x, drivers_list, p, which)
   if(nrow(drivers_list) == 0) return(p)
 
   # Coordinate of the plot, place label in top part
-  L = ggplot_build(p)$layout$panel_params[[1]]
+  L = ggplot2::ggplot_build(p)$layout$panel_params[[1]]
 
   drivers_list$y = L$y.range[2] * .7
 
@@ -93,17 +93,17 @@ annotate_drivers_to_histogram = function(x, drivers_list, p, which)
   #     coord_cartesian(clip = 'off')
 
   p = p +
-    geom_vline(
+    ggplot2::geom_vline(
       data = drivers_list,
       show.legend = FALSE,
-      aes(color = karyotype, xintercept = eval(parse(text = which))),
+      ggplot2::aes(color = karyotype, xintercept = eval(parse(text = which))),
       linetype = 'dashed',
       size = .3
     ) +
-    scale_color_manual(values = CNAqc:::get_karyotypes_colors(unique(drivers_list$karyotype))) +
+    ggplot2::scale_color_manual(values = CNAqc:::get_karyotypes_colors(unique(drivers_list$karyotype))) +
     ggrepel::geom_label_repel(
       data = drivers_list,
-      aes(
+      ggplot2::aes(
         x = eval(parse(text = which)),
         y =  L$y.range[2] * .5,
         label = driver_label,
@@ -115,7 +115,7 @@ annotate_drivers_to_histogram = function(x, drivers_list, p, which)
       nudge_x = 0,
       show.legend = FALSE
     ) +
-  coord_cartesian(clip = 'off')
+  ggplot2::coord_cartesian(clip = 'off')
 
 
 
@@ -130,7 +130,7 @@ add_drivers_to_segment_plot = function(x, drivers_list, base_plot)
   if (nrow(drivers_list) == 0) return(base_plot)
 
   # Coordinate of the plot, place label in top part
-  L = ggplot_build(base_plot)$layout$panel_params[[1]]
+  L = ggplot2::ggplot_build(base_plot)$layout$panel_params[[1]]
 
   drivers_list = CNAqc:::relative_to_absolute_coordinates(
     x,
@@ -140,17 +140,17 @@ add_drivers_to_segment_plot = function(x, drivers_list, base_plot)
   drivers_list$y = L$y.range[2] * .9
 
   base_plot +
-    geom_vline(
+    ggplot2::geom_vline(
       data = drivers_list,
       show.legend = FALSE,
-      aes(xintercept = from),
+      ggplot2::aes(xintercept = from),
       linetype = 'dashed',
       color = 'black',
       size = .3
     ) +
     ggrepel::geom_label_repel(
       data = drivers_list,
-      aes(
+      ggplot2::aes(
         x = from,
         y = y,
         label = driver_label,
@@ -162,8 +162,8 @@ add_drivers_to_segment_plot = function(x, drivers_list, base_plot)
       nudge_x = 0,
       show.legend = FALSE
     ) +
-    scale_fill_manual(values = CNAqc:::get_karyotypes_colors(unique(drivers_list$karyotype))) +
-    coord_cartesian(clip = 'off')
+    ggplot2::scale_fill_manual(values = CNAqc:::get_karyotypes_colors(unique(drivers_list$karyotype))) +
+    ggplot2::coord_cartesian(clip = 'off')
 
 
 

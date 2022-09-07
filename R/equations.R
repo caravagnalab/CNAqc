@@ -425,7 +425,7 @@ expectations_subclonal = function(starting, CCF_1, karyotype_1, karyotype_2, pur
       new_entry = copy_state %>% filter(allele == which_allele)
       new_entry$allele = new_allele
 
-      copy_state %>% bind_rows(new_entry) %>% arrange(allele)
+      copy_state %>% bind_rows(new_entry) %>% dplyr::arrange(allele)
     }
 
     copy_state %>%
@@ -571,13 +571,13 @@ expectations_subclonal = function(starting, CCF_1, karyotype_1, karyotype_2, pur
       purity * ( CCF_1 * (clone_1 %>% as_ploidy()) + (1 - CCF_1) * (clone_2 %>% as_ploidy()))
 
     m_c1 %>%
-      full_join(m_c2, by = 'mutation', suffix = c('.clone_1', '.clone_2')) %>%
-      replace_na(list(n.clone_1 = 0, x.clone_1 = 0, n.clone_2 = 0, x.clone_2 = 0)) %>%
-      mutate(peak = (x.clone_1 + x.clone_2) * purity) %>%
-      distinct(peak, .keep_all = TRUE) %>%
-      mutate(peak = peak/denominator) %>%
-      select(mutation, karyotype_1, genotype_1, karyotype_2, genotype_2, n.clone_1, n.clone_2, peak) %>%
-      arrange(peak)
+      dplyr::full_join(m_c2, by = 'mutation', suffix = c('.clone_1', '.clone_2')) %>%
+      tidyr::replace_na(list(n.clone_1 = 0, x.clone_1 = 0, n.clone_2 = 0, x.clone_2 = 0)) %>%
+      dplyr::mutate(peak = (x.clone_1 + x.clone_2) * purity) %>%
+      dplyr::distinct(peak, .keep_all = TRUE) %>%
+      dplyr::mutate(peak = peak/denominator) %>%
+      dplyr::select(mutation, karyotype_1, genotype_1, karyotype_2, genotype_2, n.clone_1, n.clone_2, peak) %>%
+      dplyr::arrange(peak)
   }
 
   branching_evolution = function(starting, left, right, CCF_1, purity)
@@ -586,7 +586,7 @@ expectations_subclonal = function(starting, CCF_1, karyotype_1, karyotype_2, pur
     branch_left = start %>% evolve(left)
     branch_right = start %>% evolve(right)
 
-    solutions = expand_grid(L = branch_left %>% seq_along(), R = branch_right %>% seq_along())
+    solutions = tidyr::expand_grid(L = seq_along(branch_left), R = seq_along(branch_right))
     solutions = lapply(1:nrow(solutions), function(i) {
       get_peaks(
         clone_1 = branch_left[[solutions$L[i]]],

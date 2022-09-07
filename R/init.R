@@ -56,8 +56,6 @@
 #'
 #' @export
 #'
-#' @import tidyverse
-#' @import pio
 #' @import crayon
 #' @import vcfR
 #' @import clisymbols
@@ -71,7 +69,7 @@
 #' print(x)
 init = function(mutations, snvs = NULL, cna, purity, ref = "GRCh38")
 {
-  pio::pioHdr("CNAqc - CNA Quality Check")
+  cli::cli_h1("CNAqc - CNA Quality Check")
   cat('\n')
 
   if(!is.null(snvs))

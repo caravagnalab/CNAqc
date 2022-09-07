@@ -54,7 +54,7 @@ plot_data_histogram = function(x,
     plot_f = CNAqc:::plot_CCF_data(x, karyotypes = karyotypes)
 
     if (with_CCF)
-      plot_f = plot_f + facet_wrap( ~ type, ncol = 1, scales = 'free_y')
+      plot_f = plot_f + ggplot2::facet_wrap(~ type, ncol = 1, scales = 'free_y')
   }
 
   if (!CNAqc:::has_driver_data(x))
@@ -97,14 +97,14 @@ plot_CCF_data = function(x,
   # Whatever is fit
   meth = x$CCF_estimates[[1]]$QC_table$method
 
-  ggplot(data = ccf_data,
-         aes(CCF, fill = karyotype)) +
-    geom_histogram(binwidth = 0.01) +
-    xlim(-0.01, 0.01 + max(ccf_data$CCF, na.rm = T) %>% ceiling) +
+  ggplot2::ggplot(data = ccf_data,
+                  ggplot2::aes(CCF, fill = karyotype)) +
+    ggplot2::geom_histogram(binwidth = 0.01) +
+    ggplot2::xlim(-0.01, 0.01 + max(ccf_data$CCF, na.rm = T) %>% ceiling) +
     CNAqc:::my_ggplot_theme() +
-    labs(title = bquote("CCF (" * bold(.(meth)) * ')'),
-         caption = paste0("n = ", nrow(ccf_data))) +
-    scale_fill_manual(values = CNAqc:::get_karyotypes_colors(unique(ccf_data$karyotype)))
+    ggplot2::labs(title = bquote("CCF (" * bold(.(meth)) * ')'),
+                  caption = paste0("n = ", nrow(ccf_data))) +
+    ggplot2::scale_fill_manual(values = CNAqc:::get_karyotypes_colors(unique(ccf_data$karyotype)))
 }
 
 
@@ -124,19 +124,19 @@ plot_VAF_data = function(x,
   colors = get_karyotypes_colors(unique(raw_muts$karyotype))
   colors['subclonal'] = ggplot2::alpha('purple4', .7)
 
-  ggplot(data = raw_muts, aes(VAF, fill = karyotype)) +
-    geom_histogram(binwidth = 0.01) +
-    xlim(-0.01, 1.01) +
+  ggplot2::ggplot(data = raw_muts, ggplot2::aes(VAF, fill = karyotype)) +
+    ggplot2::geom_histogram(binwidth = 0.01) +
+    ggplot2::xlim(-0.01, 1.01) +
     CNAqc:::my_ggplot_theme() +
-    labs(title = "VAF",
-         caption = paste0(
-           "n = ",
-           nrow(raw_muts),
-           "; VAF < 0.05 (5%) = ",
-           sum(x$mutations$VAF < 0.05)
-         )) +
-    scale_fill_manual(values = colors) +
-    facet_wrap(type ~ paste("CNA", cna), scales = 'free_y')
+    ggplot2::labs(title = "VAF",
+                  caption = paste0(
+                    "n = ",
+                    nrow(raw_muts),
+                    "; VAF < 0.05 (5%) = ",
+                    sum(x$mutations$VAF < 0.05)
+                  )) +
+    ggplot2::scale_fill_manual(values = colors) +
+    ggplot2::facet_wrap(type ~ paste("CNA", cna), scales = 'free_y')
 }
 
 # Plot the same for DP
@@ -151,20 +151,20 @@ plot_DP_data = function(x,
   colors = get_karyotypes_colors(unique(raw_muts$karyotype))
   colors['subclonal'] = ggplot2::alpha('purple4', .7)
 
-  ggplot(data = raw_muts, aes(DP, fill = karyotype)) +
-    geom_histogram(bins = 100) +
-    scale_x_log10() +
+  ggplot2::ggplot(data = raw_muts, ggplot2::aes(DP, fill = karyotype)) +
+    ggplot2::geom_histogram(bins = 100) +
+    ggplot2::scale_x_log10() +
     CNAqc:::my_ggplot_theme() +
-    labs(title = "Sequencing depth",
-         caption = paste0("Median DP ", median(raw_muts$DP), 'x')) +
-    geom_vline(
+    ggplot2::labs(title = "Sequencing depth",
+                  caption = paste0("Median DP ", median(raw_muts$DP), 'x')) +
+    ggplot2::geom_vline(
       xintercept = median(raw_muts$DP),
       color = 'black',
       linetype = 'dashed',
       size = .5
     ) +
-    scale_fill_manual(values = colors) +
-    facet_wrap(type ~ paste("CNA", cna), scales = 'free_y')
+    ggplot2::scale_fill_manual(values = colors) +
+    ggplot2::facet_wrap(type ~ paste("CNA", cna), scales = 'free_y')
 
 }
 
@@ -187,18 +187,18 @@ plot_NV_data = function(x,
   colors = get_karyotypes_colors(unique(raw_muts$karyotype))
   colors['subclonal'] = ggplot2::alpha('purple4', .7)
 
-  ggplot(data = raw_muts, aes(NV, fill = karyotype)) +
-    geom_histogram(bins = 100) +
-    scale_x_log10() +
+  ggplot2::ggplot(data = raw_muts, ggplot2::aes(NV, fill = karyotype)) +
+    ggplot2::geom_histogram(bins = 100) +
+    ggplot2::scale_x_log10() +
     CNAqc:::my_ggplot_theme() +
-    labs(title = "Variant reads",
-         caption = paste0("Median NV ", median(raw_muts$NV), 'x')) +
-    geom_vline(
+    ggplot2::labs(title = "Variant reads",
+                  caption = paste0("Median NV ", median(raw_muts$NV), 'x')) +
+    ggplot2::geom_vline(
       xintercept = median(raw_muts$NV),
       color = 'black',
       linetype = 'dashed',
       size = .5
     ) +
-    scale_fill_manual(values = colors) +
-    facet_wrap(type ~ paste("CNA", cna), scales = 'free_y')
+    ggplot2::scale_fill_manual(values = colors) +
+    ggplot2::facet_wrap(type ~ paste("CNA", cna), scales = 'free_y')
 }

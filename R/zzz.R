@@ -3,9 +3,8 @@
   # =-=-=-=-=-=-
   # Required packages will be listed here
   # =-=-=-=-=-=-
-  requirements = c('tidyverse', 'pio', 'crayon', 'ggpubr', 'peakPick', 'RColorBrewer')
-
-  suppressMessages(sapply(requirements, require, character.only = TRUE))
+  # requirements = c('tidyverse', 'pio', 'crayon', 'ggpubr', 'peakPick', 'RColorBrewer')
+  # suppressMessages(sapply(requirements, require, character.only = TRUE))
 
   # =-=-=-=-=-=-
   # Package options
@@ -48,6 +47,6 @@
 }
 
 resucitate = function(){
-  devtools::install("~/Documents/Github/CNAqc", dependencies = FALSE)
-  devtools::load_all("~/Documents/Github/CNAqc")
+  devtools::install("/Volumes/Data/Github/CNAqc", dependencies = FALSE)
+  devtools::load_all("/Volumes/Data/Github/CNAqc")
 }

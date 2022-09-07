@@ -41,7 +41,7 @@ plot of the report of this analysis.
 \examples{
 
 data('example_dataset_CNAqc')
-x = init(example_dataset_CNAqc$mutations, example_dataset_CNAqc$cna, example_dataset_CNAqc$purity)
+x = init(mutations = example_dataset_CNAqc$mutations, cna =example_dataset_CNAqc$cna, purity = example_dataset_CNAqc$purity)
 
 x = compute_CCF(x, karyotypes = c('1:0', '1:1', '2:1', '2:0', '2:2'))
 print(x)

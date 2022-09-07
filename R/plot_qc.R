@@ -166,42 +166,45 @@ plot_qc = function(x)
   NA_tests = xqc$NA_tests
 
   top_table = QC_table %>%
-    ggplot(aes(x = karyotype, y = type, fill = paste(QC))) +
-    facet_wrap(~paste0("QC (% of PASS is ", pPASS, '%, - NA tests are ', NA_tests, '%)')) +
-    geom_tile(aes(width = .8, height = .8)) +
-    scale_fill_manual(values = c(
+    ggplot2::ggplot(aes(x = karyotype, y = type, fill = paste(QC))) +
+    ggplot2::facet_wrap( ~ paste0("QC (% of PASS is ", pPASS, '%, - NA tests are ', NA_tests, '%)')) +
+    ggplot2::geom_tile(aes(width = .8, height = .8)) +
+    ggplot2::scale_fill_manual(values = c(
       `PASS` = 'forestgreen',
       `FAIL` = 'indianred3',
       `NA` = 'gainsboro'
     )) +
     CNAqc:::my_ggplot_theme() +
-    labs(x = NULL, y = NULL, title = "Simple clonal CNAs ") +
-    guides(fill = guide_legend('QC (NA not available)'))
+    ggplot2::labs(x = NULL, y = NULL, title = "Simple clonal CNAs ") +
+    ggplot2::guides(fill = ggplot2::guide_legend('QC (NA not available)'))
 
   # Other peaks
-  secondary_table = ggplot() + labs(title = "Complex clonal CNAs")
-  if(!is.null(x$peaks_analysis$general))
+  secondary_table = ggplot2::ggplot() + ggplot2::labs(title = "Complex clonal CNAs")
+  if (!is.null(x$peaks_analysis$general))
     secondary_table = secondary_table +
-      geom_tile(
-        data = x$peaks_analysis$general$expected_peaks,
-        aes(y = karyotype, x = multiplicity, fill = matched,
-            width = .8, height = .8)
-      ) +
-      CNAqc:::my_ggplot_theme() +
-      scale_fill_manual(
-        values = c(`FALSE` = 'indianred3', `TRUE` = 'forestgreen')
-      ) +
-    facet_wrap(~"General peaks")
+    ggplot2::geom_tile(
+      data = x$peaks_analysis$general$expected_peaks,
+      ggplot2::aes(
+        y = karyotype,
+        x = multiplicity,
+        fill = matched,
+        width = .8,
+        height = .8
+      )
+    ) +
+    CNAqc:::my_ggplot_theme() +
+    ggplot2::scale_fill_manual(values = c(`FALSE` = 'indianred3', `TRUE` = 'forestgreen')) +
+    ggplot2::facet_wrap( ~ "General peaks")
 
   # Subclonal peaks
   third_table = ggplot() + labs(title = "Subclonal CNAs")
-  if(!is.null(x$peaks_analysis$subclonal))
+  if (!is.null(x$peaks_analysis$subclonal))
   {
     expected_peaks = x$peaks_analysis$subclonal$expected_peaks
 
-    third_table = ggplot(expected_peaks %>% group_by(segment_id, model) %>% mutate(peak = row_number())) +
-      geom_tile(
-        aes(
+    third_table = ggplot2::ggplot(expected_peaks %>% group_by(segment_id, model) %>% mutate(peak = row_number())) +
+      ggplot2::geom_tile(
+        ggplot2::aes(
           y = segment_id,
           x = peak,
           fill = matched,
@@ -211,25 +214,33 @@ plot_qc = function(x)
         size = 1,
         height = .8
       ) +
-      scale_fill_manual(values = c(
+      ggplot2::scale_fill_manual(values = c(
         `TRUE` = 'forestgreen',
         `FALSE` = 'indianred',
         `NA` = 'gray'
       )) +
-      facet_wrap(~ model) +
+      ggplot2::facet_wrap( ~ model) +
       CNAqc:::my_ggplot_theme() +
-      scale_y_discrete(limits = expected_peaks$segment_id %>% unique %>% gtools::mixedsort(decreasing = TRUE)) +
+      ggplot2::scale_y_discrete(limits = expected_peaks$segment_id %>% unique %>% gtools::mixedsort(decreasing = TRUE)) +
       # scale_x_discrete(limits = c(1:2) %>% paste) +
-      guides(fill = guide_legend(ncol = 1),
-             color = guide_legend(override.aes = aes(fill = NA), ncol = 1)) +
-      labs(y = 'Subclonal CNA segment') +
-      scale_color_manual(values = c(`private` = 'gray', `shared` = 'black')) +
-      coord_flip() +
-      theme(axis.text.x = element_text(angle = 90)) +
-      labs(title = 'Subclonal CNAs')
+      ggplot2::guides(
+        fill = ggplot2::guide_legend(ncol = 1),
+        color = ggplot2::guide_legend(override.aes = ggplot2::aes(fill = NA), ncol = 1)
+      ) +
+      ggplot2::labs(y = 'Subclonal CNA segment') +
+      ggplot2::scale_color_manual(values = c(`private` = 'gray', `shared` = 'black')) +
+      ggplot2::coord_flip() +
+      ggplot2::theme(axis.text.x = element_text(angle = 90)) +
+      ggplot2::labs(title = 'Subclonal CNAs')
   }
 
-  p1 = cowplot::plot_grid(top_table, secondary_table,  axis = 'tb', align = 'h', ncol = 2)
+  p1 = cowplot::plot_grid(
+    top_table,
+    secondary_table,
+    axis = 'tb',
+    align = 'h',
+    ncol = 2
+  )
   cowplot::plot_grid(p1, third_table, ncol = 1)
 
   # cowplot::plot_grid(top_table, secondary_table, third_table, axis = 'tb', align = 'h', ncol = 3)
@@ -241,7 +252,7 @@ compute_QC_table = function(x)
   all_karyptypes = c("1:0", "1:1", "2:1", "2:0", '2:2')
 
   # Tables for peaks
-  if(all(is.null(x$peaks_analysis)))
+  if (all(is.null(x$peaks_analysis)))
   {
     peaks_QC = data.frame(
       karyotype = all_karyptypes,
@@ -254,11 +265,11 @@ compute_QC_table = function(x)
   {
     peaks_QC = x$peaks_analysis$matches %>%
       dplyr::select(karyotype, QC) %>%
-      dplyr::full_join(data.frame(karyotype = all_karyptypes, stringsAsFactors = F), by = 'karyotype') %>%
+      dplyr::full_join(data.frame(karyotype = all_karyptypes, stringsAsFactors = F),
+                       by = 'karyotype') %>%
       dplyr::distinct(karyotype, QC, .keep_all = T) %>%
       dplyr::arrange(karyotype) %>%
-      dplyr::mutate(
-        # value = 1,
+      dplyr::mutate(# value = 1,
         # lab.ypos = cumsum(value) - 0.5 * value,
         QC = paste(QC),
         # label = karyotype,
@@ -266,7 +277,7 @@ compute_QC_table = function(x)
   }
 
   # Table for CCF
-  if(all(is.null(x$CCF_estimates)))
+  if (all(is.null(x$CCF_estimates)))
   {
     CCF_QC = data.frame(
       karyotype = all_karyptypes,
@@ -277,12 +288,14 @@ compute_QC_table = function(x)
   }
   else
   {
-    CCF_QC = Reduce(dplyr::bind_rows, lapply(x$CCF_estimates, function(x) x$QC_table)) %>%
+    CCF_QC = Reduce(dplyr::bind_rows,
+                    lapply(x$CCF_estimates, function(x)
+                      x$QC_table)) %>%
       dplyr::select(karyotype, QC) %>%
-      dplyr::full_join(data.frame(karyotype = all_karyptypes, stringsAsFactors = F), by = 'karyotype') %>%
+      dplyr::full_join(data.frame(karyotype = all_karyptypes, stringsAsFactors = F),
+                       by = 'karyotype') %>%
       dplyr::arrange(karyotype) %>%
-      dplyr::mutate(
-        # value = 1,
+      dplyr::mutate(# value = 1,
         # lab.ypos = cumsum(value) - 0.5 * value,
         QC = paste(QC),
         # label = karyotype,
@@ -291,9 +304,7 @@ compute_QC_table = function(x)
 
   # Bind both tables
   QC_table = dplyr::bind_rows(peaks_QC, CCF_QC) %>%
-    dplyr::mutate(
-      QC = ifelse(!is.na(QC) & QC == "NA", NA, QC)
-    )
+    dplyr::mutate(QC = ifelse(!is.na(QC) & QC == "NA", NA, QC))
 
   # QC_table$karyotype = factor(QC_table$karyotype, all_karyptypes)
   # QC_table$type = factor(QC_table$type, levels = c('Peaks', 'CCF'))
@@ -304,16 +315,14 @@ compute_QC_table = function(x)
 
   # Percentage of PASS cases, out of not-NA ones
   pPASS =
-    sum(QC_table$QC == "PASS", na.rm = T)/(sum(QC_table$QC == "PASS", na.rm = T) + sum(QC_table$QC == "FAIL", na.rm = T)) * 100
+    sum(QC_table$QC == "PASS", na.rm = T) / (sum(QC_table$QC == "PASS", na.rm = T) + sum(QC_table$QC == "FAIL", na.rm = T)) * 100
 
   # Total number of NA tests
-  NA_tests = sum(is.na(QC_table$QC))/nrow(QC_table) * 100
+  NA_tests = sum(is.na(QC_table$QC)) / nrow(QC_table) * 100
 
-  return(
-    list(
-      QC_table = QC_table,
-      percentage_PASS = pPASS,
-      NA_tests = NA_tests
-    )
-  )
+  return(list(
+    QC_table = QC_table,
+    percentage_PASS = pPASS,
+    NA_tests = NA_tests
+  ))
 }

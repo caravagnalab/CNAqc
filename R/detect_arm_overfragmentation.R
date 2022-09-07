@@ -35,7 +35,7 @@ detect_arm_overfragmentation = function(x,
   expanded_reference = CNAqc:::expand_reference_chr_to_arms(x)
 
   # Chromosome length
-  L = pio:::nmfy(expanded_reference$chr,
+  L = nmfy(expanded_reference$chr,
                  expanded_reference$length)
 
   # Break segments by arm
@@ -134,4 +134,10 @@ detect_arm_overfragmentation = function(x,
     )
 
   return(x)
+}
+
+nmfy = function (x, y)
+{
+  names(y) = x
+  y
 }

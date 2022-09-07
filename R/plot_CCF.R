@@ -23,7 +23,7 @@
 #'
 #' @examples
 #' data('example_dataset_CNAqc')
-#' x = init(example_dataset_CNAqc$mutations, example_dataset_CNAqc$cna, example_dataset_CNAqc$purity)
+#' x = init(mutations = example_dataset_CNAqc$mutations, cna =example_dataset_CNAqc$cna, purity = example_dataset_CNAqc$purity)
 #'
 #' x = compute_CCF(x)
 #' plot_CCF(x)
@@ -58,8 +58,8 @@ plot_CCF = function(x,
         else return(NULL)
       }
 
-      if(method == 'ENTROPY') return(suppressWarnings(CNAqc:::plot_mutation_multiplicity_entropy(x, k)))
-      if(method == 'ROUGH') return(suppressWarnings(CNAqc:::plot_mutation_multiplicity_rough(x, k)))
+      if(method == 'ENTROPY') return(suppressWarnings(plot_mutation_multiplicity_entropy(x, k)))
+      if(method == 'ROUGH') return(suppressWarnings(plot_mutation_multiplicity_rough(x, k)))
       return(CNAqc:::eplot())
     }
   )
@@ -94,8 +94,8 @@ plot_CCF_strip = function(x)
     {
       if(!(k %in% names(x$CCF_estimates))) return(CNAqc:::eplot())
 
-      if(method == 'ENTROPY') return(suppressWarnings(CNAqc:::plot_mutation_multiplicity_entropy_strip(x, k)))
-      if(method == 'ROUGH') return(suppressWarnings(CNAqc:::plot_mutation_multiplicity_rough_strip(x, k)))
+      if(method == 'ENTROPY') return(suppressWarnings(plot_mutation_multiplicity_entropy_strip(x, k)))
+      if(method == 'ROUGH') return(suppressWarnings(plot_mutation_multiplicity_rough_strip(x, k)))
       return(CNAqc:::eplot())
     }
   )

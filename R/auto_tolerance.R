@@ -13,8 +13,6 @@
 #' @return The $\epsilon$ value estimated from data, constrained to be in
 #' `epsilon_range`, in order to limit the false positive rate to be `fpr`.
 #'
-#' @importFrom  gtools mixedsort
-#'
 #' @export
 #'
 #' @examples
@@ -129,7 +127,7 @@ auto_tolerance = function(
   # names(ggp_data) = fpr_test$key %>% unique
 
   # Evaluate regression test - inverse function
-  cli::cli_alert("Inverting training from regression; requireing epsilon in range {.field [{epsilon_range[1]} - {epsilon_range[2]}]}.")
+  cli::cli_alert("Inverting training from regression; requiring epsilon in range {.field [{epsilon_range[1]} - {epsilon_range[2]}]}.")
 
   # regression_data = tidyr::expand_grid(coverage = fpr_test$coverage %>% unique,
   #                                      purity = fpr_test$purity %>% unique) %>%

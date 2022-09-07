@@ -131,9 +131,9 @@ plot_segments = function(x,
       #   )
 
       base_plot = base_plot +
-        geom_label(
+        ggplot2::geom_label(
           data = expanded_reference,
-          aes(
+          ggplot2::aes(
             x = from,
             label = gsub(pattern = 'chr', replacement = '', chr),
             y = -0.2
@@ -166,7 +166,7 @@ plot_segments = function(x,
       ' fragmented arms'
     )
 
-  base_plot = base_plot + labs(caption = capt_label)
+  base_plot = base_plot + ggplot2::labs(caption = capt_label)
 
   # =-=-=-=-=-=-=-=-=-=-=-=-
   # Breakpoints annotations
@@ -198,19 +198,19 @@ plot_segments_circular = function(x, chromosomes = paste0('chr', c(1:22, 'X', 'Y
       circular = FALSE,
       label_chr = NA
     ) +
-      coord_polar(
+      ggplot2::coord_polar(
         theta = 'x',
         start = 0,
         clip = 'off'
       ) +
-      ylim(-2, 5) +
-      labs(x = "",
+      ggplot2::ylim(-2, 5) +
+      ggplot2::labs(x = "",
            y = "") +
-      theme(
-        axis.text.y = element_blank(),
-        panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(),
-        panel.border = element_rect(size = .3)
+      ggplot2::theme(
+        axis.text.y = ggplot2::element_blank(),
+        panel.grid.major = ggplot2::element_blank(),
+        panel.grid.minor = ggplot2::element_blank(),
+        panel.border = ggplot2::element_rect(size = .3)
       )
   )
 }

@@ -25,7 +25,7 @@
 plot_arm_fragmentation = function(x, zoom = 0)
 {
   # add a test: if there are any, etc
-  if(all(is.null(x$arm_fragmentation))) {
+  if (all(is.null(x$arm_fragmentation))) {
     cli::cli_alert_danger("Arm overfragmentation is not available for this object, compute it first.")
     return(CNAqc:::eplot())
   }
@@ -40,8 +40,12 @@ plot_arm_fragmentation = function(x, zoom = 0)
   ###### ###### ###### ###### ######
   # Plot the fragments table
   ###### ###### ###### ###### ######
-  squaring = max(c(x$arm_fragmentation$table$n_long, x$arm_fragmentation$table$n_short))
-  if(squaring <= 10) squaring = 15
+  squaring = max(c(
+    x$arm_fragmentation$table$n_long,
+    x$arm_fragmentation$table$n_short
+  ))
+  if (squaring <= 10)
+    squaring = 15
 
   # fragments_table_plot =
   #   ggplot(
@@ -69,23 +73,26 @@ plot_arm_fragmentation = function(x, zoom = 0)
   #     xlim = 10
   #   )
 
-  fragments_table_plot = ggplot(x$arm_fragmentation$table) +
-    geom_point(aes(
+  fragments_table_plot = ggplot2::ggplot(x$arm_fragmentation$table) +
+    ggplot2::geom_point(ggplot2::aes(
       x = n_long,
       y = n_short,
       size = jumps,
       color = significant
     )) +
-    scale_size_continuous(range = c(1, 3) * cex_opt)  +
+    ggplot2::scale_size_continuous(range = c(1, 3) * cex_opt)  +
     CNAqc:::my_ggplot_theme() +
-    geom_abline(size = .3,
-                color = 'red',
-                linetype = 'dashed') +
-    xlim(0, squaring) +
-    ylim(0, squaring) +
-    scale_color_manual(values = c(`FALSE` = 'orange', `TRUE` = 'steelblue')) +
+    ggplot2::geom_abline(size = .3,
+                         color = 'red',
+                         linetype = 'dashed') +
+    ggplot2::xlim(0, squaring) +
+    ggplot2::ylim(0, squaring) +
+    ggplot2::scale_color_manual(values = c(`FALSE` = 'orange', `TRUE` = 'steelblue')) +
     labs(
-      title = bquote(.(nrow(fragments))~"overfragmented arms at"~ alpha ~'=' ~.(x$arm_fragmentation$alpha) ~'with FWER'),
+      title = bquote(
+        .(nrow(fragments)) ~ "overfragmented arms at" ~ alpha ~ '=' ~ .(x$arm_fragmentation$alpha) ~
+          'with FWER'
+      ),
       x = paste0(
         'Long segments (>',
         100 * x$arm_fragmentation$genome_percentage_cutoff,
@@ -99,10 +106,12 @@ plot_arm_fragmentation = function(x, zoom = 0)
       caption = paste0(
         "Bonferroni adjusted alpha = ",
         x$arm_fragmentation$table$Bonferroni_cutoff[1],
-        '~ ', sum(fragments$significant), ' significant tests.'
+        '~ ',
+        sum(fragments$significant),
+        ' significant tests.'
       )
     ) +
-    guides(size = guide_legend("Jump", nrow = 1), color = FALSE) +
+    ggplot2::guides(size = ggplot2::guide_legend("Jump", nrow = 1), color = 'none') +
     ggrepel::geom_text_repel(
       data = fragments,
       segment.size = 0.2,
@@ -116,7 +125,9 @@ plot_arm_fragmentation = function(x, zoom = 0)
       color = 'steelblue',
       xlim = 10
     ) +
-    theme(plot.caption = element_text(color = ifelse(sum(fragments$significant) > 0, "steelblue",  "orange")))
+    ggplot2::theme(plot.caption = ggplot2::element_text(color = ifelse(
+      sum(fragments$significant) > 0, "steelblue",  "orange"
+    )))
 
   # ###### ###### ###### ###### ######
   # # Plot the jumps
@@ -154,15 +165,13 @@ plot_arm_fragmentation = function(x, zoom = 0)
   # ###### ###### ###### ###### ######
   # plots_zoom = NULL
 
-  if(zoom > 0)
+  if (zoom > 0)
   {
     # Zoom in each chromosome
     chr_to_plot = fragments$chr %>% unique
 
-    if(length(chr_to_plot) > zoom) {
-      cli::cli_alert_danger(
-        "Increare zoom to see more chromosomes."
-      )
+    if (length(chr_to_plot) > zoom) {
+      cli::cli_alert_danger("Increare zoom to see more chromosomes.")
       chr_to_plot = chr_to_plot[1:zoom]
     }
 
@@ -170,29 +179,42 @@ plot_arm_fragmentation = function(x, zoom = 0)
     max_Y_height = 6
 
     plots_zoom = lapply(chr_to_plot,
-                        function(chr){
+                        function(chr) {
                           # Add breaks for every segment
-                          segments_plot = CNAqc::plot_segments(x, chromosomes = chr, circular = T, max_Y_height = max_Y_height)
+                          segments_plot = CNAqc::plot_segments(
+                            x,
+                            chromosomes = chr,
+                            circular = T,
+                            max_Y_height = max_Y_height
+                          )
                           chr_breakpoints = segments %>%
                             filter(chr == !!chr) %>%
-                            mutate(
-                              y = Inf,
-                              outern = Major > max_Y_height
-                            )
+                            mutate(y = Inf,
+                                   outern = Major > max_Y_height)
 
                           j = x$arm_fragmentation$table %>% filter(chr == !!chr) %>% pull(jumps)
 
                           segments_plot +
-                            labs(
+                            ggplot2::labs(
                               caption = NULL,
                               title = chr,
-                              subtitle = paste0('B = ', nrow(chr_breakpoints), ', J = ', paste(j, collapse = ' + '))
+                              subtitle = paste0(
+                                'B = ',
+                                nrow(chr_breakpoints),
+                                ', J = ',
+                                paste(j, collapse = ' + ')
+                              )
                             ) +
-                            geom_vline(xintercept = chr_breakpoints %>%
-                                         filter(outern) %>%
-                                         pull(from), size = .2, linetype = 'dashed', color = 'orange') +
-                            theme(plot.margin = margin(0.2, 0, 0, 0, "cm")) +
-                            theme_void()
+                            ggplot2::geom_vline(
+                              xintercept = chr_breakpoints %>%
+                                filter(outern) %>%
+                                pull(from),
+                              size = .2,
+                              linetype = 'dashed',
+                              color = 'orange'
+                            ) +
+                            ggplot2::theme(plot.margin = margin(0.2, 0, 0, 0, "cm")) +
+                            ggplot2::theme_void()
                         })
 
   }
@@ -223,19 +245,17 @@ plot_arm_fragmentation = function(x, zoom = 0)
   # top_panel = cowplot::plot_grid(top_panel, legend_b, ncol = 1, rel_heights = c(1, .1))
   figure = top_panel
 
-  if(zoom > 0)
+  if (zoom > 0)
   {
-    NP = ceiling(length(plots_zoom)/4)
+    NP = ceiling(length(plots_zoom) / 4)
 
     zoom_panel =
-      ggarrange(
-        plotlist = plots_zoom,
-        nrow =  NP,
-        ncol = 4
-      )
+      ggpubr::ggarrange(plotlist = plots_zoom,
+                        nrow =  NP,
+                        ncol = 4)
 
     figure =
-      ggarrange(
+      ggpubr::ggarrange(
         top_panel,
         zoom_panel,
         nrow = 2,
@@ -247,26 +267,23 @@ plot_arm_fragmentation = function(x, zoom = 0)
   return(figure)
 }
 
-plot_arm_fragmentation3d = function(x)
-{
-  # add a test: if there are any, etc
-  if(all(is.null(x$arm_fragmentation))) {
-    cli::cli_alert_danger("Arm overfragmentation is not available for this object, compute it first.")
-    return(CNAqc:::eplot())
-  }
-
-  require(plotly)
-
-  p <- plot_ly(
-    x$arm_fragmentation$table,
-    x = ~n_long, y = ~n_short, z = ~jumps, color = ~significant, colors = c(`TRUE` = '#BF382A', `FALSE`='#0C4B8E')) %>%
-    add_markers() %>%
-    layout(scene = list(xaxis = list(title = 'Long'),
-                        yaxis = list(title = 'Short'),
-                        zaxis = list(title = 'Jumps')))
-
-  p
-}
-
-
-
+# plot_arm_fragmentation3d = function(x)
+# {
+#   # add a test: if there are any, etc
+#   if(all(is.null(x$arm_fragmentation))) {
+#     cli::cli_alert_danger("Arm overfragmentation is not available for this object, compute it first.")
+#     return(CNAqc:::eplot())
+#   }
+#
+#   require(plotly)
+#
+#   p <- plot_ly(
+#     x$arm_fragmentation$table,
+#     x = ~n_long, y = ~n_short, z = ~jumps, color = ~significant, colors = c(`TRUE` = '#BF382A', `FALSE`='#0C4B8E')) %>%
+#     add_markers() %>%
+#     layout(scene = list(xaxis = list(title = 'Long'),
+#                         yaxis = list(title = 'Short'),
+#                         zaxis = list(title = 'Jumps')))
+#
+#   p
+# }

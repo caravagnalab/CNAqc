@@ -19,13 +19,13 @@
 plot_segment_size_distribution = function(x, annotate_cut = 1e7)
 {
   x$cna %>%
-    ggplot() +
-    geom_histogram(aes(length), bins = 30) +
+    ggplot2::ggplot() +
+    ggplot2::geom_histogram(ggplot2::aes(length), bins = 30) +
     CNAqc:::my_ggplot_theme() +
-    labs(
+    ggplot2::labs(
       x = "Segments size",
       title = "Segments size distribution",
-      captionn = paste0("Dashed line: ", annotate_cut)
+      caption = paste0("Dashed line: ", annotate_cut)
     ) +
-    geom_vline(xintercept = annotate_cut, color = 'red', linetype = 'dashed', size = .3)
+    ggplot2::geom_vline(xintercept = annotate_cut, color = 'red', linetype = 'dashed', size = .3)
 }

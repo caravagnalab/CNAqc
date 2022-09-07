@@ -20,14 +20,13 @@ plot_gw_counts = function(x, chromosomes = paste0('chr', c(1:22, 'X', 'Y')))
 
   mutations = x$mutations %>% dplyr::filter(chr %in% chromosomes)
 
-  if(x$n_cna_subclonal > 0)
+  if (x$n_cna_subclonal > 0)
   {
     mutations = mutations %>% bind_rows(x$cna_subclonal$mutations %>% Reduce(f = bind_rows))
   }
 
-  mutations = CNAqc:::relative_to_absolute_coordinates(
-    x,
-    mutations)
+  mutations = CNAqc:::relative_to_absolute_coordinates(x,
+                                                       mutations)
 
   bl_plot = CNAqc:::blank_genome(ref = x$reference_genome, chromosomes = chromosomes)
 
@@ -40,14 +39,19 @@ plot_gw_counts = function(x, chromosomes = paste0('chr', c(1:22, 'X', 'Y')))
   binsize = 1e6
 
   hplot = bl_plot +
-    geom_histogram(data = mutations, aes(x = from, y = ..count..), binwidth = binsize, fill = 'black') +
-    CNAqc:::my_ggplot_theme() +
-    theme(
-      # axis.text.x = element_blank(),
-      axis.ticks.x = element_blank(),
-      axis.title.x = element_blank()
+    ggplot2::geom_histogram(
+      data = mutations,
+      aes(x = from, y = ..count..),
+      binwidth = binsize,
+      fill = 'black'
     ) +
-    labs(y = 'n')
+    CNAqc:::my_ggplot_theme() +
+    ggplot2::theme(
+      # axis.text.x = element_blank(),
+      axis.ticks.x = ggplot2::element_blank(),
+      axis.title.x = ggplot2::element_blank()
+    ) +
+    ggplot2::labs(y = 'n')
 
   hplot
 
@@ -74,21 +78,21 @@ plot_gw_counts = function(x, chromosomes = paste0('chr', c(1:22, 'X', 'Y')))
 #' plot_gw_depth(x, N = 100)
 #' plot_gw_depth(x, N = 1000)
 #' plot_gw_depth(x, N = 10000)
-plot_gw_depth = function(x, N = 5000, chromosomes = paste0('chr', c(1:22, 'X', 'Y')))
+plot_gw_depth = function(x,
+                         N = 5000,
+                         chromosomes = paste0('chr', c(1:22, 'X', 'Y')))
 {
   stopifnot(inherits(x, 'cnaqc'))
 
   mutations = x$mutations %>% dplyr::filter(chr %in% chromosomes)
 
-  if(x$n_cna_subclonal > 0)
+  if (x$n_cna_subclonal > 0)
   {
     mutations = mutations %>% bind_rows(x$cna_subclonal$mutations %>% Reduce(f = bind_rows))
   }
 
-  mutations = relative_to_absolute_coordinates(
-    x,
-    mutations
-  )
+  mutations = relative_to_absolute_coordinates(x,
+                                               mutations)
 
 
   bl_plot = CNAqc:::blank_genome(ref = x$reference_genome, chromosomes = chromosomes)
@@ -106,36 +110,49 @@ plot_gw_depth = function(x, N = 5000, chromosomes = paste0('chr', c(1:22, 'X', '
   mutations = mutations %>%
     filter(DP > quant[1], DP < quant[2])
 
-  if(nrow(mutations) > N)
+  if (nrow(mutations) > N)
     mutations = mutations %>% sample_n(N)
 
   maxY = max(mutations$DP) * .9
-  label_maxY = paste0("N = ", N, ' (', round(N/N_all * 100), '%)')
+  label_maxY = paste0("N = ", N, ' (', round(N / N_all * 100), '%)')
 
   cex_opt = getOption('CNAqc_cex', default = 1)
 
   dp = bl_plot +
-    geom_point(data = mutations,
-               aes(x = from, y = DP),
-               size = .05 * cex_opt) +
-    scale_fill_viridis_c() +
+    ggplot2::geom_point(data = mutations,
+                        ggplot2::aes(x = from, y = DP),
+                        size = .05 * cex_opt) +
+    ggplot2::scale_fill_viridis_c() +
     # xlim(low, upp) +
     CNAqc:::my_ggplot_theme() +
-    theme(
+    ggplot2::theme(
       # axis.text.x = element_blank(),
-      axis.ticks.x = element_blank(),
-      axis.title.x = element_blank()
+      axis.ticks.x = ggplot2::element_blank(),
+      axis.title.x = ggplot2::element_blank()
     ) +
-    labs(y = "DP") +
-    geom_hline(yintercept = med_DP, size = .4, linetype = 'dashed', color = 'darkred') +
-    guides(fill = "none") +
-    ylim(min(mutations$DP, na.rm = T) * .85, NA)
+    ggplot2::labs(y = "DP") +
+    ggplot2::geom_hline(
+      yintercept = med_DP,
+      size = .4,
+      linetype = 'dashed',
+      color = 'darkred'
+    ) +
+    ggplot2::guides(fill = "none") +
+    ggplot2::ylim(min(mutations$DP, na.rm = T) * .85, NA)
 
   # Simulate an internal legend
-  L = ggplot_build(dp)$layout$panel_params[[1]]
+  L = ggplot2::ggplot_build(dp)$layout$panel_params[[1]]
   Lx = abs(L$x.range[2] - L$x.range[1]) * .85
 
-  dp + annotate("label", fill = 'white', x = Lx, y = maxY, label = label_maxY, size = 2, hjust = 1)
+  dp + ggplot2::annotate(
+    "label",
+    fill = 'white',
+    x = Lx,
+    y = maxY,
+    label = label_maxY,
+    size = 2,
+    hjust = 1
+  )
 }
 
 #' Plot a genome-wide scatter plot of VAF
@@ -159,21 +176,21 @@ plot_gw_depth = function(x, N = 5000, chromosomes = paste0('chr', c(1:22, 'X', '
 #' plot_gw_vaf(x, N = 100)
 #' plot_gw_vaf(x, N = 1000)
 #' plot_gw_vaf(x, N = 10000)
-plot_gw_vaf = function(x, N = 5000, chromosomes = paste0('chr', c(1:22, 'X', 'Y')))
+plot_gw_vaf = function(x,
+                       N = 5000,
+                       chromosomes = paste0('chr', c(1:22, 'X', 'Y')))
 {
   stopifnot(inherits(x, 'cnaqc'))
 
   mutations = x$mutations %>% dplyr::filter(chr %in% chromosomes)
 
-  if(x$n_cna_subclonal > 0)
+  if (x$n_cna_subclonal > 0)
   {
     mutations = mutations %>% bind_rows(x$cna_subclonal$mutations %>% Reduce(f = bind_rows))
   }
 
-  mutations = relative_to_absolute_coordinates(
-    x,
-    mutations
-  )
+  mutations = relative_to_absolute_coordinates(x,
+                                               mutations)
 
   bl_plot = CNAqc:::blank_genome(ref = x$reference_genome, chromosomes = chromosomes)
 
@@ -190,36 +207,49 @@ plot_gw_vaf = function(x, N = 5000, chromosomes = paste0('chr', c(1:22, 'X', 'Y'
   mutations = mutations %>%
     filter(DP > quant[1], DP < quant[2])
 
-  if(nrow(mutations) > N)
+  if (nrow(mutations) > N)
     mutations = mutations %>% sample_n(N)
 
   maxY = max(mutations$VAF) * .9
-  label_maxY = paste0("N = ", N, ' (', round(N/N_all * 100), '%)')
+  label_maxY = paste0("N = ", N, ' (', round(N / N_all * 100), '%)')
 
   vaf = bl_plot +
-    geom_point(data = mutations, aes(x = from, y = VAF), size = .05) +
+    ggplot2::geom_point(data = mutations,
+                        ggplot2::aes(x = from, y = VAF),
+                        size = .05) +
     CNAqc:::my_ggplot_theme() +
     # scale_x_continuous(
     #   breaks = c(0, upp),
     #   labels = c("", "")
     # ) +
     # xlim(low, upp) +
-    theme(
-      # axis.text.x = element_blank(),
-      axis.ticks.x = element_blank(),
-      axis.title.x = element_blank()
+    ggplot2::theme(# axis.text.x = element_blank(),
+      axis.ticks.x = ggplot2::element_blank(),
+      axis.title.x = ggplot2::element_blank()) +
+    ggplot2::ylim(0, 1) +
+    ggplot2::labs(y = "VAF") +
+    ggplot2::geom_hline(
+      yintercept = med_VAF,
+      size = .4,
+      linetype = 'dashed',
+      color = 'darkred'
     ) +
-    ylim(0,1) +
-    labs(y = "VAF") +
-    geom_hline(yintercept = med_VAF, size = .4, linetype = 'dashed', color = 'darkred') +
-    guides(fill = "none")
+    ggplot2::guides(fill = "none")
 
 
   # Simulate an internal legend
   L = ggplot_build(vaf)$layout$panel_params[[1]]
   Lx = abs(L$x.range[2] - L$x.range[1]) * .85
 
-  vaf + annotate("label", fill = 'white', x = Lx, y = maxY, label = label_maxY, size = 2, hjust = 1)
+  vaf + ggplot2::annotate(
+    "label",
+    fill = 'white',
+    x = Lx,
+    y = maxY,
+    label = label_maxY,
+    size = 2,
+    hjust = 1
+  )
 }
 
 #' Plot a genome-wide scatter plot of VAF
@@ -245,21 +275,21 @@ plot_gw_vaf = function(x, N = 5000, chromosomes = paste0('chr', c(1:22, 'X', 'Y'
 #' plot_gw_ccf(x, N = 100)
 #' plot_gw_ccf(x, N = 1000)
 #' plot_gw_ccf(x, N = 10000)
-plot_gw_ccf = function(x, N = 5000, chromosomes = paste0('chr', c(1:22, 'X', 'Y')))
+plot_gw_ccf = function(x,
+                       N = 5000,
+                       chromosomes = paste0('chr', c(1:22, 'X', 'Y')))
 {
   stopifnot(inherits(x, 'cnaqc'))
 
   with_CCF = all(!is.null(x$CCF_estimates))
 
-  if(!with_CCF) {
+  if (!with_CCF) {
     warning("Input does not have CCF estimates, see ?compute_CCF to determine CCF values.")
     return(CNAqc:::eplot())
   }
 
-  mutations = CNAqc:::relative_to_absolute_coordinates(
-    x,
-    CNAqc::CCF(x) %>% dplyr::filter(chr %in% chromosomes)
-    )
+  mutations = CNAqc:::relative_to_absolute_coordinates(x,
+                                                       CNAqc::CCF(x) %>% dplyr::filter(chr %in% chromosomes))
 
   bl_plot = CNAqc:::blank_genome(ref = x$reference_genome, chromosomes = chromosomes) +
     ylim(-0.1, NA)
@@ -277,36 +307,47 @@ plot_gw_ccf = function(x, N = 5000, chromosomes = paste0('chr', c(1:22, 'X', 'Y'
   mutations = mutations %>%
     filter(DP > quant[1], DP < quant[2])
 
-  if(nrow(mutations) > N)
+  if (nrow(mutations) > N)
     mutations = mutations %>% sample_n(N)
 
   maxY = max(mutations$VAF) * .9
-  label_maxY = paste0("N = ", N, ' (', round(N/N_all * 100), '%)')
+  label_maxY = paste0("N = ", N, ' (', round(N / N_all * 100), '%)')
 
-  ccf = ggplot(mutations,
-               aes(x = from, y = CCF)) +
-    geom_point(size = .05) +
+  ccf = ggplot2::ggplot(mutations,
+                        ggplot2::aes(x = from, y = CCF)) +
+    ggplot2::geom_point(size = .05) +
     CNAqc:::my_ggplot_theme() +
     # scale_x_continuous(
     #   breaks = c(0, upp),
     #   labels = c("", "")
     # ) +
     # xlim(low, upp) +
-    theme(
+    ggplot2::theme(
       # axis.text.x = element_blank(),
-      axis.ticks.x = element_blank(),
-      axis.title.x = element_blank()
+      axis.ticks.x = ggplot2::element_blank(),
+      axis.title.x = ggplot2::element_blank()
     ) +
-    labs(y = "CCF") +
-    geom_hline(yintercept = med_CCF, size = .4, linetype = 'dashed', color = 'darkred') +
-    guides(fill = "none")
+    ggplot2::labs(y = "CCF") +
+    ggplot2::geom_hline(
+      yintercept = med_CCF,
+      size = .4,
+      linetype = 'dashed',
+      color = 'darkred'
+    ) +
+    ggplot2::guides(fill = "none")
 
 
   # Simulate an internal legend
-  L = ggplot_build(ccf)$layout$panel_params[[1]]
+  L = ggplot2::ggplot_build(ccf)$layout$panel_params[[1]]
   Lx = abs(L$x.range[2] - L$x.range[1]) * .85
 
-  ccf + annotate("label", fill = 'white', x = Lx, y = maxY, label = label_maxY, size = 2, hjust = 1)
+  ccf + ggplot2::annotate(
+    "label",
+    fill = 'white',
+    x = Lx,
+    y = maxY,
+    label = label_maxY,
+    size = 2,
+    hjust = 1
+  )
 }
-
-

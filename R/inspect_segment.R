@@ -52,7 +52,7 @@ inspect_segment = function(x,
     ungroup %>%
     filter(segment_id %in% segment_ids) %>%
     ggplot(aes(VAF)) +
-    facet_grid(karyotype ~ chr, scales = 'free') +
+    ggplot2::facet_grid(karyotype ~ chr, scales = 'free') +
     CNAqc:::my_ggplot_theme() +
     scale_x_continuous(breaks = c(0,  1), limits = c(0, 1)) +
     guides(fill = FALSE) +

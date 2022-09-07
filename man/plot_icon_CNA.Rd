@@ -18,10 +18,7 @@ has the same layout of function \code{plot_multisample_CNA}.
 }
 \examples{
 data('example_dataset_CNAqc', package = 'CNAqc')
-x = init(example_dataset_CNAqc$mutations, example_dataset_CNAqc$cna,example_dataset_CNAqc$purity)
+x = init(mutations = example_dataset_CNAqc$mutations, cna = example_dataset_CNAqc$cna, purity = example_dataset_CNAqc$purity)
 
 plot_icon_CNA(x)
-
-# Same legend of this
-plot_multisample_CNA(list(`S1` = x, `S2` = x))
 }

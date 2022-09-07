@@ -19,6 +19,8 @@ options(crayon.enabled=F)
 
 ```{r setup, warning=FALSE}
 library(CNAqc)
+
+require(dplyr)
 ```
 
 # Input format
@@ -208,7 +210,7 @@ You can use a hidden function to plot a reference
 
 ```{r, fig.width=9.5, fig.height=3}
 CNAqc:::blank_genome(ref = 'hg19') + 
-  labs(title = "HG19 genome reference")
+  ggplot2::labs(title = "HG19 genome reference")
 ```
 
 ## Example CNAqc object(s)
