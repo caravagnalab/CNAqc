@@ -9,9 +9,11 @@
 #' @export print.cnaqc
 #'
 #' @examples
+#' \dontrun{
 #' data('example_PCAWG', package = 'CNAqc')
 #'
 #' print(example_PCAWG)
+#' }
 print.cnaqc = function(x, ...)
 {
   stopifnot(inherits(x, "cnaqc"))
@@ -510,9 +512,11 @@ bar_print_console_scl = function(x, top = nrow(x$cna_subclonal))
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' data('example_PCAWG', package = 'CNAqc')
 #'
 #' plot(example_PCAWG)
+#' }
 plot.cnaqc = function(x, ...)
 {
   stopifnot(inherits(x, "cnaqc"))
