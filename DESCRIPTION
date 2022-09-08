@@ -53,7 +53,8 @@ Imports:
     ggplot2,
     cli,
     tibble,
-    tidyr
+    tidyr,
+    akima
 biocViews:
 Remotes: 
     caravagn/pio,
@@ -65,7 +66,6 @@ Suggests:
     knitr,
     rmarkdown,
     org.Hs.eg.db,
-    akima,
     Organism.dplyr
 VignetteBuilder: knitr
 URL: https://github.com/caravagnalab/CNAqc

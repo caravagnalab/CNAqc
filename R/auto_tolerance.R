@@ -153,8 +153,8 @@ auto_tolerance = function(
       purity,
       levels = gtools::mixedsort(regression_data$purity %>% unique)
     )) %>%
-    ggplot() +
-    geom_tile(aes(
+    ggplot2::ggplot() +
+    ggplot2::geom_tile(aes(
       x = coverage,
       y = purity,
       fill = epsilon,
@@ -162,10 +162,10 @@ auto_tolerance = function(
       height = 0.9
     )) +
     CNAqc:::my_ggplot_theme() +
-    scale_fill_gradientn(colours = c('indianred3', 'forestgreen', 'steelblue')) +
+    ggplot2::scale_fill_gradientn(colours = c('indianred3', 'forestgreen', 'steelblue')) +
     # scale_fill_viridis_c(option = 'C', limits = c(0, NA)) +
-    guides(fill = guide_colorbar(bquote("Regressed " * epsilon * "  "), barwidth = unit(3, 'cm'))) +
-    labs(title = bquote("Regressed " * epsilon * ' for FPR < ' * .(fpr)))
+    ggplot2::guides(fill = ggplot2::guide_colorbar(bquote("Regressed " * epsilon * "  "), barwidth = unit(3, 'cm'))) +
+    ggplot2::labs(title = bquote("Regressed " * epsilon * ' for FPR < ' * .(fpr)))
 
   # 2D interpolation
   cli::cli_alert("Generating interpolated 2D regression map.")
@@ -200,15 +200,15 @@ auto_tolerance = function(
                            levels = gtools::mixedsort(plot_grid$purity %>% unique))) %>%
     mutate(fit = ifelse(fit > epsilon_range[2], epsilon_range[2], fit)) %>%
     mutate(fit = ifelse(fit < epsilon_range[1], epsilon_range[1], fit)) %>%
-    ggplot() +
-    geom_tile(aes(x = coverage, y = purity, fill = fit)) +
-    scale_y_discrete(breaks = regression_data$purity %>% unique) +
+    ggplot2::ggplot() +
+    ggplot2::geom_tile(ggplot2::aes(x = coverage, y = purity, fill = fit)) +
+    ggplot2::scale_y_discrete(breaks = regression_data$purity %>% unique) +
     CNAqc:::my_ggplot_theme() +
     # scale_fill_viridis_c(option = 'C', limits = c(0, NA)) +
-    guides(fill = guide_colorbar(bquote("Extrapolated " * .(epsilon_range[1]) * "<" * epsilon * "<" * .(epsilon_range[2]) *"  "), barwidth = unit(3, 'cm'))) +
-    labs(title = bquote("Extrapolated " * epsilon * ' map')) +
-    scale_fill_gradientn(colours = c('indianred3', 'forestgreen', 'steelblue')) +
-    scale_x_discrete(breaks = regression_data$coverage %>% unique)
+    ggplot2::guides(fill = ggplot2::guide_colorbar(bquote("Extrapolated " * .(epsilon_range[1]) * "<" * epsilon * "<" * .(epsilon_range[2]) *"  "), barwidth = unit(3, 'cm'))) +
+    ggplot2::labs(title = bquote("Extrapolated " * epsilon * ' map')) +
+    ggplot2::scale_fill_gradientn(colours = c('indianred3', 'forestgreen', 'steelblue')) +
+    ggplot2::scale_x_discrete(breaks = regression_data$coverage %>% unique)
 
   # Point_estimate
   point_estimate = akima::interp(
@@ -231,9 +231,9 @@ auto_tolerance = function(
                            levels = gtools::mixedsort(purity_x)))
 
   plot_grid = plot_grid +
-    geom_point(
+    ggplot2::geom_point(
       data = p_est,
-      aes(x = coverage, y = purity),
+      ggplot2::aes(x = coverage, y = purity),
       fill = 'black',
       size = 2,
       pch = 23
