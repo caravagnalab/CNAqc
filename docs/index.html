@@ -52,7 +52,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">CNAqc</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.0</span>
       </span>
     </div>
 
@@ -121,26 +121,12 @@
       </header><div class="row">
   <div class="contents col-md-9">
 <div class="section level1">
-<div class="page-header"><h1 id="cnaqc-">CNAqc
-<a href="caravagnalab.github.io/CNAqc"><img src="reference/figures/logo.png" align="right" height="139"></a>
+<div class="page-header"><h1 id="cnaqc-">CNAqc <a href="caravagnalab.github.io/CNAqc"><img src="reference/figures/logo.png" align="right" height="69"></a>
 <a class="anchor" aria-label="anchor" href="#cnaqc-"></a>
 </h1></div>
 <!-- badges: start -->
 
-<p><code>CNAqc</code> is a package that contains different methods to
-inspect the quality, visualise and process allele-specific Copy Number
-Alteration (CNA) calls generated from bulk sequencing of tumour samples,
-jointly with tumour somatic mutations and other covariates.</p>
-<p>Methods are available to integrate somatic mutation data, clonal and
-subclonal CNA segments, and tumour purity estimates. Quality control
-procedures can be easily used to select among alternative tumour
-segmentations and purity/ ploidy estimates; an automatic pipeline to
-optimize CNA calling is available by interfacing CNAqc with Sequenza.
-The package provides also methods to estimate the Cancer Cell Fractions
-(CCFs) values of the input variants, and estimate their uncertainty. The
-package contains also statistical tests to identify patterns of
-over-fragmentation of chromosome arms, smooth and subset segments, and
-annotate putative driver mutations.</p>
+<p>CNAqc is a package to quality control (QC) bulk cancer sequencing data. Methods are available to , visualise and manipulate i) somatic mutation data of both single-nucleotide variants and insertion-deletions, ii) allele-specific Copy Number Alterations (CNAs) and iii) tumour purity estimates. QC procedures in CNAqc can be used to validate copy number segmentations against variant allele frequencies of somatic mutations; QC scores can be used to rank alternative tumour segmentations and purity/ ploidy estimates. The tool also provides an automatic copy number calling pipeline that uses the Sequenza caller algorithm. CNAqc provides also algorithms to phase mutation multiplicities against CNAs and estimate Cancer Cell Fractions (CCFs) with their uncertainty. The package contains also statistical tests to identify patterns of over-fragmentation of chromosome arms (excessively short and numerous DNA fragments) and perform various manipulation tasks for somatic tumour data.</p>
 <div class="section level4">
 <h4 id="citation">Citation<a class="anchor" aria-label="anchor" href="#citation"></a>
 </h4>
@@ -148,12 +134,7 @@ annotate putative driver mutations.</p>
 <p>If you use <code>CNAqc</code>, please cite:</p>
 <ul>
 <li>
-<em>Integrated quality control of allele-specific copy numbers,
-mutations and tumour purity from cancer whole genome sequencing
-assays</em> Jacob Househam, Riccardo Bergamin, Salvatore Milite, Nicola
-Calonaci, Alice Antonello, Marc J Williams, William CH Cross, Giulio
-Caravagna. <a href="https://www.biorxiv.org/content/10.1101/2021.02.13.429885v3" class="external-link">biorXiv
-2022</a>.</li>
+<em>Integrated quality control of allele-specific copy numbers, mutations and tumour purity from cancer whole genome sequencing assays</em> Jacob Househam, Riccardo Bergamin, Salvatore Milite, Nicola Calonaci, Alice Antonello, Marc J Williams, William CH Cross, Giulio Caravagna. <a href="https://www.biorxiv.org/content/10.1101/2021.02.13.429885v3" class="external-link">biorXiv 2022</a>.</li>
 </ul>
 </div>
 <div class="section level4">
@@ -167,7 +148,6 @@ Caravagna. <a href="https://www.biorxiv.org/content/10.1101/2021.02.13.429885v3"
 <div class="section level3">
 <h3 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h3>
-<p>You can install the released version of <code>CNAqc</code> with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># install.packages("devtools")</span>
 <span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/remote-reexports.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"caravagnalab/CNAqc"</span><span class="op">)</span></code></pre></div>
@@ -175,9 +155,8 @@ Caravagna. <a href="https://www.biorxiv.org/content/10.1101/2021.02.13.429885v3"
 <div class="section level4">
 <h4 id="copyright-and-contacts">Copyright and contacts<a class="anchor" aria-label="anchor" href="#copyright-and-contacts"></a>
 </h4>
-<p>Giulio Caravagna. Cancer Data Science (CDS) Laboratory.</p>
-<p><a href="https://github.com/caravagnalab" class="external-link"><img src="https://img.shields.io/badge/CDS%20Lab%20Github-caravagnalab-seagreen.svg"></a>
-<a href="https://www.caravagnalab.org/" class="external-link"><img src="https://img.shields.io/badge/CDS%20Lab%20webpage-https://www.caravagnalab.org/-red.svg"></a></p>
+<p>Cancer Data Science (CDS) Laboratory, University of Trieste, Italy.</p>
+<p><a href="https://github.com/caravagnalab" class="external-link"><img src="https://img.shields.io/badge/CDS%20Lab%20Github-caravagnalab-seagreen.svg"></a> <a href="https://www.caravagnalab.org/" class="external-link"><img src="https://img.shields.io/badge/CDS%20Lab%20webpage-https://www.caravagnalab.org/-red.svg"></a></p>
 </div>
 </div>
 </div>
@@ -196,7 +175,8 @@ Caravagna. <a href="https://www.biorxiv.org/content/10.1101/2021.02.13.429885v3"
 <div class="license">
 <h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
-<li>GPL</li>
+<li><a href="LICENSE.html">Full license</a></li>
+<li><small>GPL (&gt;= 3)</small></li>
 </ul>
 </div>
 
@@ -213,6 +193,7 @@ Caravagna. <a href="https://www.biorxiv.org/content/10.1101/2021.02.13.429885v3"
 <ul class="list-unstyled">
 <li>
 <a href="https://www.caravagnalab.org" class="external-link">Giulio Caravagna</a> <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0003-4240-3265" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li><a href="authors.html">More about authors...</a></li>
 </ul>
 </div>
 
@@ -231,14 +212,12 @@ Caravagna. <a href="https://www.biorxiv.org/content/10.1101/2021.02.13.429885v3"
 
       <footer><div class="copyright">
   <p></p>
-<p>Developed by <a href="https://www.caravagnalab.org" class="external-link">Giulio
-Caravagna</a>.</p>
+<p>Developed by <a href="https://www.caravagnalab.org" class="external-link">Giulio Caravagna</a>.</p>
 </div>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
 </div>
 
       </footer>

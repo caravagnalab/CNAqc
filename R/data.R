@@ -11,7 +11,6 @@
 #' @keywords datasets
 #'
 #' @references hg19
-#' @export
 #' @examples
 #' data(chr_coordinates_hg19)
 #' chr_coordinates_hg19
@@ -29,7 +28,6 @@
 #' centromers.
 #'
 #' @keywords datasets
-#' @export
 #' @references GRCh38
 #'
 #' @examples
@@ -48,7 +46,6 @@
 #' can be used with CNAqc. This tumour does not contain subclonal CNAs.
 #'
 #' @keywords datasets
-#' @export
 #' @examples
 #' data(example_dataset_CNAqc)
 #' example_dataset_CNAqc
@@ -69,7 +66,6 @@
 #' @references The ICGC/TCGA Pan-Cancer Analysis of Whole Genomes Consortium.
 #' Pan-cancer analysis of whole genomes. Nature 578, 82–93 (2020).
 #'  https://doi.org/10.1038/s41586-020-1969-6
-#' @export
 #' @examples
 #' data(example_PCAWG)
 #' example_PCAWG
@@ -87,7 +83,6 @@
 #' @keywords datasets
 #'
 #' @references
-#' @export
 #' @examples
 #' data(fpr_test)
 #' fpr_test
@@ -105,7 +100,6 @@
 #' @keywords datasets
 #'
 #' @references
-#' @export
 #' @examples
 #' data(intogen_drivers)
 #' intogen_drivers

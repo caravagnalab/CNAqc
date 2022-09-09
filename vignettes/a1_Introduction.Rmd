@@ -54,7 +54,7 @@ Chromosome names and alleles should be in character format; chromosomes must be 
 ```{r}
 # Example input SNVs
 example_dataset_CNAqc$mutations %>%
-  select(chr, from, to, # Genomic coordinates
+  dplyr::select(chr, from, to, # Genomic coordinates
          ref, alt,      # Alleles (reference and alternative)
          DP, NV, VAF    # Read counts (depth, number of variant reads, tumour VAF)
          ) %>%
@@ -70,7 +70,7 @@ Optionally, you can annotate _driver mutations_ by adding the following columns 
 
 ```{r}
 example_dataset_CNAqc$mutations %>%
-  select(chr, from, to, ref, alt, is_driver, driver_label) %>%
+  dplyr::select(chr, from, to, ref, alt, is_driver, driver_label) %>%
   filter(is_driver) %>% 
 print()
 ```

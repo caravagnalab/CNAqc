@@ -73,7 +73,7 @@ sample_mutations = lapply(geno_tidy, function(x) {
     full_join(x, by = "Key") %>%
     mutate(DP = as.numeric(gt_NR), NV = as.numeric(gt_NV)) %>%
     mutate(VAF = NV / DP) %>%
-    select(chr, from, to, ref, alt, NV, DP, VAF, everything()) %>%
+    dplyr::select(chr, from, to, ref, alt, NV, DP, VAF, everything()) %>%
     filter(!is.na(VAF), VAF > 0)
 })
 
