@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CNAqc</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.0</span>
       </span>
     </div>
 
@@ -93,15 +93,6 @@
         </td>
         <td><p>Coordinates for GRCh38 chromosomes.</p></td>
       </tr><tr><td>
-          <p><code><a href="gene_coordinates_GRCh38.html">gene_coordinates_GRCh38</a></code> </p>
-        </td>
-        <td><p>Coordinates for GRCh38 genes</p></td>
-      </tr><tr><td>
-          <p><code><a href="DriverDBv3.html">DriverDBv3</a></code> </p>
-        </td>
-        <td><p>Driver mutations released with the DriverDBv3 database
-<a href="http://driverdb.tms.cmu.edu.tw/" class="external-link">http://driverdb.tms.cmu.edu.tw/</a></p></td>
-      </tr><tr><td>
           <p><code><a href="example_dataset_CNAqc.html">example_dataset_CNAqc</a></code> </p>
         </td>
         <td><p>Example CNAqc dataset.</p></td>
@@ -114,74 +105,65 @@
         </td>
         <td><p>Data (simulation performance) from the trainig set to auto-tune epsilon.</p></td>
       </tr><tr><td>
-          <p><code><a href="boostDM_drivers.html">boostDM_drivers</a></code> </p>
+          <p><code><a href="intogen_drivers.html">intogen_drivers</a></code> </p>
         </td>
-        <td><p>Driver mutations released with the boost DM method the DriverDBv3 database
-<a href="https://www.intogen.org/boostdm/" class="external-link">https://www.intogen.org/boostdm/</a></p></td>
+        <td><p>List of Intogen driver genes per tumour type.</p></td>
       </tr></tbody><tbody><tr><th colspan="2">
           <h2 id="data-processing">Data processing <a href="#data-processing" class="anchor" aria-hidden="true"></a></h2>
           <p class="section-desc"></p><p>Functions to manipulate and visualise the data.</p>
         </th>
       </tr></tbody><tbody><tr><td>
-          <p><code><a href="annotate_variants.html">annotate_variants()</a></code> </p>
-        </td>
-        <td><p>Annotate variant with VariantAnnotation.</p></td>
-      </tr><tr><td>
           <p><code><a href="init.html">init()</a></code> </p>
         </td>
         <td><p>Creates a CNAqc object.</p></td>
       </tr><tr><td>
-          <p><code><a href="Mutations.html">Mutations()</a></code> <code><a href="Mutations.html">Mutations()</a></code> </p>
+          <p><code><a href="Mutations.html">Mutations()</a></code> </p>
         </td>
-        <td><p>Extract mutation information.</p></td>
+        <td><p>Extract mutations.</p></td>
       </tr><tr><td>
-          <p><code><a href="CNA.html">CNA()</a></code> <code><a href="CNA.html">CNA()</a></code> </p>
+          <p><code><a href="CNA.html">CNA()</a></code> </p>
         </td>
-        <td><p>Extract CNA information.</p></td>
-      </tr><tr><td>
-          <p><code><a href="inspect_segment.html">inspect_segment()</a></code> </p>
-        </td>
-        <td><p>Plot the VAF of a set of segments</p></td>
+        <td><p>Extract CNAs.</p></td>
       </tr><tr><td>
           <p><code><a href="get_drivers.html">get_drivers()</a></code> </p>
         </td>
-        <td><p>Extract driver data.</p></td>
-      </tr><tr><td>
-          <p><code><a href="plot_segment_size_distribution.html">plot_segment_size_distribution()</a></code> </p>
-        </td>
-        <td><p>Plot the segments' size distribution.</p></td>
-      </tr><tr><td>
-          <p><code><a href="plot_karyotypes.html">plot_karyotypes()</a></code> </p>
-        </td>
-        <td><p>Plot a barplot for the segments.</p></td>
+        <td><p>Extract drivers data.</p></td>
       </tr><tr><td>
           <p><code><a href="plot_data_histogram.html">plot_data_histogram()</a></code> </p>
         </td>
-        <td><p>Plot the data histogram.</p></td>
-      </tr><tr><td>
-          <p><code><a href="plot_gw_counts.html">plot_gw_counts()</a></code> </p>
-        </td>
-        <td><p>Plot a genome-wide histogram of mutation counts.</p></td>
-      </tr><tr><td>
-          <p><code><a href="plot_gw_depth.html">plot_gw_depth()</a></code> </p>
-        </td>
-        <td><p>Plot a genome-wide scatter plot of coverage.</p></td>
-      </tr><tr><td>
-          <p><code><a href="plot_gw_vaf.html">plot_gw_vaf()</a></code> </p>
-        </td>
-        <td><p>Plot a genome-wide scatter plot of VAF</p></td>
+        <td><p>Plot the read-counts data histograms.</p></td>
       </tr><tr><td>
           <p><code><a href="plot_segments.html">plot_segments()</a></code> </p>
         </td>
         <td><p>Plot CNA segments.</p></td>
       </tr><tr><td>
-          <p><code><a href="plot_multisample_CNA.html">plot_multisample_CNA()</a></code> </p>
+          <p><code><a href="plot_segment_size_distribution.html">plot_segment_size_distribution()</a></code> </p>
         </td>
-        <td><p>Plots CNAs from multiple samples.</p></td>
+        <td><p>Plot the length of clonal simple CNAs.</p></td>
+      </tr><tr><td>
+          <p><code><a href="plot_karyotypes.html">plot_karyotypes()</a></code> </p>
+        </td>
+        <td><p>Plot counts and numbers of clonal simple CNAs.</p></td>
+      </tr><tr><td>
+          <p><code><a href="plot_gw_counts.html">plot_gw_counts()</a></code> </p>
+        </td>
+        <td><p>Plot genome-wide mutation counts.</p></td>
+      </tr><tr><td>
+          <p><code><a href="plot_gw_depth.html">plot_gw_depth()</a></code> </p>
+        </td>
+        <td><p>Plot genome-wide coverage.</p></td>
+      </tr><tr><td>
+          <p><code><a href="plot_gw_vaf.html">plot_gw_vaf()</a></code> </p>
+        </td>
+        <td><p>Plot genome-wide VAFs.</p></td>
       </tr><tr><td>
           <p><code><a href="plot_icon_CNA.html">plot_icon_CNA()</a></code> </p>
         </td>
-        <td><p>Plot icon for these segments.</p></td>
+        <td><p>A circular plot for simple clonal CNAs.</p></td>
+      </tr><tr><td>
+          <p><code><a href="plot_qc.html">plot_qc()</a></code> </p>
+        </td>
+        <td><p>Plot a summary of QC results.</p></td>
       </tr><tr><td>
           <p><code><a href="split_by_chromosome.html">split_by_chromosome()</a></code> </p>
         </td>
@@ -189,51 +171,51 @@
       </tr><tr><td>
           <p><code><a href="subsample.html">subsample()</a></code> </p>
         </td>
-        <td><p>Randomly subsample a dataset's mutations.</p></td>
+        <td><p>Randomly subsample mutations.</p></td>
       </tr><tr><td>
           <p><code><a href="subset_by_segment_karyotype.html">subset_by_segment_karyotype()</a></code> </p>
         </td>
-        <td><p>Subset calls by segments' karyotype.</p></td>
+        <td><p>Subset by clonal simple segments.</p></td>
       </tr><tr><td>
           <p><code><a href="subset_by_segment_totalcn.html">subset_by_segment_totalcn()</a></code> </p>
         </td>
-        <td><p>Subset calls by segments total copy number</p></td>
+        <td><p>Subset clonal simple segments total copy number.</p></td>
       </tr><tr><td>
           <p><code><a href="subset_by_minimum_CCF.html">subset_by_minimum_CCF()</a></code> </p>
         </td>
-        <td><p>Subset mutations with minimum CCF values.</p></td>
+        <td><p>Subset mutations by minimum CCF</p></td>
       </tr><tr><td>
           <p><code><a href="subset_snvs.html">subset_snvs()</a></code> </p>
         </td>
-        <td><p>Retain only SNVs.</p></td>
+        <td><p>Subset only SNVs.</p></td>
       </tr><tr><td>
-          <p><code><a href="print.cnaqc.html">print.cnaqc()</a></code> </p>
+          <p><code><a href="print.cnaqc.html">print(<i>&lt;cnaqc&gt;</i>)</a></code> </p>
         </td>
         <td><p>Print for class <code>'cnaqc'</code>.</p></td>
       </tr><tr><td>
-          <p><code><a href="plot.cnaqc.html">plot.cnaqc()</a></code> </p>
+          <p><code><a href="plot.cnaqc.html">plot(<i>&lt;cnaqc&gt;</i>)</a></code> </p>
         </td>
         <td><p>Plot for class <code>'cnaqc'</code>.</p></td>
       </tr></tbody><tbody><tr><th colspan="2">
           <h2 id="purity-and-ploidy-qc">Purity and ploidy QC <a href="#purity-and-ploidy-qc" class="anchor" aria-hidden="true"></a></h2>
-          <p class="section-desc"></p><p>Analysis of CNA calls by peak detection.</p>
+          <p class="section-desc"></p><p>Analysis of calls by peak detection.</p>
         </th>
       </tr></tbody><tbody><tr><td>
           <p><code><a href="analyze_peaks.html">analyze_peaks()</a></code> </p>
         </td>
-        <td><p>Analyze calls by peak detection.</p></td>
+        <td><p>QC by peak-detection algorithms.</p></td>
       </tr><tr><td>
           <p><code><a href="auto_tolerance.html">auto_tolerance()</a></code> </p>
         </td>
-        <td><p>Determine the optimal error tolerance based on data</p></td>
+        <td><p>Determine the optimal error tolerance to QC clonal simple  CNAs.</p></td>
+      </tr><tr><td>
+          <p><code><a href="inspect_segment.html">inspect_segment()</a></code> </p>
+        </td>
+        <td><p>Plot VAFs across chromosomes.</p></td>
       </tr><tr><td>
           <p><code><a href="plot_peaks_analysis.html">plot_peaks_analysis()</a></code> </p>
         </td>
         <td><p>Plot the results of peak analysis.</p></td>
-      </tr><tr><td>
-          <p><code><a href="plot_qc.html">plot_qc()</a></code> </p>
-        </td>
-        <td><p>Plot a summary of QC results.</p></td>
       </tr></tbody><tbody><tr><th colspan="2">
           <h2 id="ccf-estimation">CCF estimation <a href="#ccf-estimation" class="anchor" aria-hidden="true"></a></h2>
           <p class="section-desc"></p><p>Computation of Cancer Cell Fractions data.</p>
@@ -241,11 +223,11 @@
       </tr></tbody><tbody><tr><td>
           <p><code><a href="compute_CCF.html">compute_CCF()</a></code> </p>
         </td>
-        <td><p>Compute CCF values for the available mutations.</p></td>
+        <td><p>Compute CCF values.</p></td>
       </tr><tr><td>
-          <p><code><a href="CCF.html">CCF()</a></code> <code><a href="CCF.html">CCF()</a></code> </p>
+          <p><code><a href="CCF.html">CCF()</a></code> </p>
         </td>
-        <td><p>Return the available mutation CCF estimates in the data.</p></td>
+        <td><p>Extract CCF estimates.</p></td>
       </tr><tr><td>
           <p><code><a href="plot_CCF.html">plot_CCF()</a></code> </p>
         </td>
@@ -253,7 +235,7 @@
       </tr><tr><td>
           <p><code><a href="plot_gw_ccf.html">plot_gw_ccf()</a></code> </p>
         </td>
-        <td><p>Plot a genome-wide scatter plot of VAF</p></td>
+        <td><p>Plot genome-wide CCFs.</p></td>
       </tr></tbody><tbody><tr><th colspan="2">
           <h2 id="smoothing">Smoothing <a href="#smoothing" class="anchor" aria-hidden="true"></a></h2>
           <p class="section-desc"></p><p>Analysis and plotting functions to smooth segments.</p>
@@ -261,11 +243,11 @@
       </tr></tbody><tbody><tr><td>
           <p><code><a href="smooth_segments.html">smooth_segments()</a></code> </p>
         </td>
-        <td><p>Smooth copy number segments.</p></td>
+        <td><p>Smooth simple clonal CNAs.</p></td>
       </tr><tr><td>
           <p><code><a href="plot_smoothing.html">plot_smoothing()</a></code> </p>
         </td>
-        <td><p>Plot smoothed segments data</p></td>
+        <td><p>Plot smoothed and non-smoohted segments.</p></td>
       </tr></tbody><tbody><tr><th colspan="2">
           <h2 id="overfragmentation-detection">Overfragmentation detection <a href="#overfragmentation-detection" class="anchor" aria-hidden="true"></a></h2>
           <p class="section-desc"></p><p>Analysis and plotting functions to smooth segments.</p>
@@ -273,23 +255,39 @@
       </tr></tbody><tbody><tr><td>
           <p><code><a href="detect_arm_overfragmentation.html">detect_arm_overfragmentation()</a></code> </p>
         </td>
-        <td><p>Determines fragmentation of copy number segments</p></td>
+        <td><p>Determines arm-level over-fragmentation patterns.</p></td>
       </tr><tr><td>
           <p><code><a href="plot_arm_fragmentation.html">plot_arm_fragmentation()</a></code> </p>
         </td>
-        <td><p>Plot patterns of arm level fragmentation.</p></td>
+        <td><p>Plot the arm level fragmentation test.</p></td>
       </tr></tbody><tbody><tr><th colspan="2">
-          <h2 id="pipelines">Pipelines <a href="#pipelines" class="anchor" aria-hidden="true"></a></h2>
-          <p class="section-desc"></p><p>Pipelines implemented with CNAqc.</p>
+          <h2 id="pipelines-and-parsers">Pipelines and parsers <a href="#pipelines-and-parsers" class="anchor" aria-hidden="true"></a></h2>
+          <p class="section-desc"></p><p>Pipelines and parsers implemented with CNAqc.</p>
         </th>
       </tr></tbody><tbody><tr><td>
           <p><code><a href="Sequenza_CNAqc.html">Sequenza_CNAqc()</a></code> </p>
         </td>
-        <td><p>CNAqc-based purity-optimisation pipeline for Sequenza CNA calling.</p></td>
+        <td><p>CNAqc-based purity-optimisation pipeline for Sequenza.</p></td>
       </tr><tr><td>
           <p><code><a href="parse_Battenberg.html">parse_Battenberg()</a></code> </p>
         </td>
-        <td><p>Parse Battenberg clonal/ subclonal calls</p></td>
+        <td><p>Parse Battenberg calls.</p></td>
+      </tr></tbody><tbody><tr><th colspan="2">
+          <h2 id="variants-annotation-detection">Variants annotation detection <a href="#variants-annotation-detection" class="anchor" aria-hidden="true"></a></h2>
+          <p class="section-desc"></p><p>Annotation of putative variant drivers.</p>
+        </th>
+      </tr></tbody><tbody><tr><td>
+          <p><code><a href="annotate_variants.html">annotate_variants()</a></code> </p>
+        </td>
+        <td><p>Annotate variants and drivers.</p></td>
+      </tr></tbody><tbody><tr><th colspan="2">
+          <h2 id="cohort-functions">Cohort functions <a href="#cohort-functions" class="anchor" aria-hidden="true"></a></h2>
+          <p class="section-desc"></p><p>Functions to visualise multiple objects at once.</p>
+        </th>
+      </tr></tbody><tbody><tr><td>
+          <p><code><a href="plot_multisample_CNA.html">plot_multisample_CNA()</a></code> </p>
+        </td>
+        <td><p>Plots CNAs from multiple samples.</p></td>
       </tr></tbody></table></div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CNAqc</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.0</span>
       </span>
     </div>
 
@@ -121,9 +121,17 @@
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/caravagnalab/CNAqc" class="external-link">CNAqc</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Loading <span style="color: #00BB00;">BMix</span>, <span style="font-style: italic;">'Binomial and Beta-Binomial univariate mixtures'</span>. Support : <span style="color: #0000BB; font-style: italic;">&lt;https://caravagnalab.github.io/BMix/&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Loading <span style="color: #00BB00;">CNAqc</span>, <span style="font-style: italic;">'Copy Number Alteration quality check'</span>. Support : <span style="color: #0000BB; font-style: italic;">&lt;https://caravagn.github.io/CNAqc/&gt;</span></span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></code></pre></div>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; Loading required package: dplyr</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Attaching package: 'dplyr'</span></span>
+<span><span class="co">#&gt; The following objects are masked from 'package:stats':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     filter, lag</span></span>
+<span><span class="co">#&gt; The following objects are masked from 'package:base':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     intersect, setdiff, setequal, union</span></span></code></pre></div>
 <p>All CNAqc plotting functions use:</p>
 <ul>
 <li>
@@ -140,8 +148,8 @@
 <span>  cna <span class="op">=</span> <span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">cna</span>,</span>
 <span>  purity <span class="op">=</span> <span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">purity</span>,</span>
 <span>  ref <span class="op">=</span> <span class="st">'hg19'</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #BBBBBB; background-color: #0000BB;"> [ CNAqc - CNA Quality Check ] </span></span></span>
-<span><span class="co"><span style="color: #BBBBBB; background-color: #0000BB;">#&gt; </span></span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">CNAqc - CNA Quality Check</span> <span style="color: #00BBBB;">───────────────────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Using reference genome coordinates for: <span style="color: #00BB00;">hg19</span>.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Drivers are annotated, but 'gene' column is missing, using mutation location.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Fortified calls for <span style="color: #00BB00;">12963</span> somatic mutations: <span style="color: #00BB00;">12963</span> SNVs (<span style="color: #00BB00;">100%</span>) and <span style="color: #00BB00;">0</span> indels.</span></span>
@@ -197,26 +205,26 @@
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Shadow other segments</span></span>
 <span><span class="fu"><a href="../reference/plot_segments.html">plot_segments</a></span><span class="op">(</span><span class="va">x</span>, highlight <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2:1"</span>, <span class="st">"2:0"</span>, <span class="st">"2:2"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu">labs</span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Annotate different karyotypes"</span><span class="op">)</span></span>
+<span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Annotate different karyotypes"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Scale for 'fill' is already present. Adding another scale for 'fill', which</span></span>
 <span><span class="co">#&gt; will replace the existing scale.</span></span></code></pre></div>
 <p><img src="a2_Plots_files/figure-html/unnamed-chunk-5-1.png" width="912"></p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># Subset the genome</span></span>
-<span><span class="fu"><a href="../reference/plot_segments.html">plot_segments</a></span><span class="op">(</span><span class="va">x</span>, chromosomes <span class="op">=</span> <span class="st">'chr17'</span><span class="op">)</span> <span class="op">+</span> <span class="fu">labs</span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Chromosome 17 zoom"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/plot_segments.html">plot_segments</a></span><span class="op">(</span><span class="va">x</span>, chromosomes <span class="op">=</span> <span class="st">'chr17'</span><span class="op">)</span> <span class="op">+</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Chromosome 17 zoom"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Scale for 'fill' is already present. Adding another scale for 'fill', which</span></span>
 <span><span class="co">#&gt; will replace the existing scale.</span></span></code></pre></div>
 <p><img src="a2_Plots_files/figure-html/unnamed-chunk-5-2.png" width="912"></p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_segments.html">plot_segments</a></span><span class="op">(</span><span class="va">x</span>, chromosomes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'chr17'</span>, <span class="st">'chr13'</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu">labs</span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Chromosome 17 and 13 zoom"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_segments.html">plot_segments</a></span><span class="op">(</span><span class="va">x</span>, chromosomes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'chr17'</span>, <span class="st">'chr13'</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Chromosome 17 and 13 zoom"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Scale for 'fill' is already present. Adding another scale for 'fill', which</span></span>
 <span><span class="co">#&gt; will replace the existing scale.</span></span></code></pre></div>
 <p><img src="a2_Plots_files/figure-html/unnamed-chunk-5-3.png" width="912"></p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># Total copy number</span></span>
-<span><span class="fu"><a href="../reference/plot_segments.html">plot_segments</a></span><span class="op">(</span><span class="va">x</span>, cn <span class="op">=</span> <span class="st">'total'</span><span class="op">)</span> <span class="op">+</span> <span class="fu">labs</span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Total copy number"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/plot_segments.html">plot_segments</a></span><span class="op">(</span><span class="va">x</span>, cn <span class="op">=</span> <span class="st">'total'</span><span class="op">)</span> <span class="op">+</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Total copy number"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Scale for 'fill' is already present. Adding another scale for 'fill', which</span></span>
 <span><span class="co">#&gt; will replace the existing scale.</span></span></code></pre></div>
 <p><img src="a2_Plots_files/figure-html/unnamed-chunk-5-4.png" width="912"></p>
@@ -226,7 +234,7 @@
 </h4>
 <p>We use the <a href="https://dcc.icgc.org/pcawg" class="external-link">PCAWG</a> object released with the package</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">CNAqc</span><span class="fu">::</span><span class="va"><a href="../reference/example_PCAWG.html">example_PCAWG</a></span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu">CNAqc</span><span class="fu">::</span><span class="va"><a href="../reference/example_PCAWG.html">example_PCAWG</a></span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; ── <span style="color: #000000; background-color: #BBBB00;">[ CNAqc ] </span> <span style="color: #00BB00;">293736</span> mutations in <span style="color: #00BB00;">667</span> segments (<span style="color: #00BB00;">654</span> clonal, <span style="color: #00BB00;">13</span> subclonal). Genom</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ── Clonal CNAs</span></span>
@@ -363,7 +371,7 @@
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># With facet from a data histogram</span></span>
 <span><span class="fu"><a href="../reference/plot_data_histogram.html">plot_data_histogram</a></span><span class="op">(</span><span class="va">x</span>, which <span class="op">=</span> <span class="st">'VAF'</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu">facet_grid</span><span class="op">(</span><span class="va">karyotype</span><span class="op">~</span><span class="va">chr</span>, scales <span class="op">=</span> <span class="st">'free'</span><span class="op">)</span></span>
+<span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_grid.html" class="external-link">facet_grid</a></span><span class="op">(</span><span class="va">karyotype</span><span class="op">~</span><span class="va">chr</span>, scales <span class="op">=</span> <span class="st">'free'</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning: Removed 56 rows containing missing values (geom_bar).</span></span></code></pre></div>
 <p><img src="a2_Plots_files/figure-html/unnamed-chunk-12-1.png" width="2880"></p>
 </div>
@@ -438,8 +446,8 @@
 <span>  purity <span class="op">=</span> <span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">purity</span>,</span>
 <span>  ref <span class="op">=</span> <span class="st">'hg19'</span></span>
 <span>  <span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #BBBBBB; background-color: #0000BB;"> [ CNAqc - CNA Quality Check ] </span></span></span>
-<span><span class="co"><span style="color: #BBBBBB; background-color: #0000BB;">#&gt; </span></span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">CNAqc - CNA Quality Check</span> <span style="color: #00BBBB;">───────────────────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Using reference genome coordinates for: <span style="color: #00BB00;">hg19</span>.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Drivers are annotated, but 'gene' column is missing, using mutation location.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Fortified calls for <span style="color: #00BB00;">12963</span> somatic mutations: <span style="color: #00BB00;">12963</span> SNVs (<span style="color: #00BB00;">100%</span>) and <span style="color: #00BB00;">0</span> indels.</span></span>
@@ -450,15 +458,15 @@
 <span><span class="co"># Object 1 with some modifications</span></span>
 <span><span class="va">y</span> <span class="op">=</span> <span class="fu">CNAqc</span><span class="fu">::</span><span class="fu"><a href="../reference/init.html">init</a></span><span class="op">(</span></span>
 <span>  mutations <span class="op">=</span> <span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">mutations</span>, </span>
-<span>  cna <span class="op">=</span> <span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">cna</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  cna <span class="op">=</span> <span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">cna</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
 <span>      Major <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">chr</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"chr3"</span>, <span class="st">"chr4"</span>, <span class="st">"chr1"</span><span class="op">)</span>, <span class="fl">1</span>, <span class="va">Major</span><span class="op">)</span>,</span>
 <span>      minor <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">chr</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"chr3"</span>, <span class="st">"chr4"</span>, <span class="st">"chr1"</span><span class="op">)</span>, <span class="fl">1</span>, <span class="va">minor</span><span class="op">)</span></span>
 <span>      <span class="op">)</span>,</span>
 <span>  purity <span class="op">=</span> <span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">purity</span>,</span>
 <span>  ref <span class="op">=</span> <span class="st">'hg19'</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #BBBBBB; background-color: #0000BB;"> [ CNAqc - CNA Quality Check ] </span></span></span>
-<span><span class="co"><span style="color: #BBBBBB; background-color: #0000BB;">#&gt; </span></span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">CNAqc - CNA Quality Check</span> <span style="color: #00BBBB;">───────────────────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Using reference genome coordinates for: <span style="color: #00BB00;">hg19</span>.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Drivers are annotated, but 'gene' column is missing, using mutation location.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Fortified calls for <span style="color: #00BB00;">12963</span> somatic mutations: <span style="color: #00BB00;">12963</span> SNVs (<span style="color: #00BB00;">100%</span>) and <span style="color: #00BB00;">0</span> indels.</span></span>
@@ -479,7 +487,9 @@
 <code class="sourceCode R"><span><span class="co"># Comparative CNA plot - default delta</span></span>
 <span><span class="fu"><a href="../reference/plot_multisample_CNA.html">plot_multisample_CNA</a></span><span class="op">(</span><span class="va">inputs</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; ── Breaking input segments at <span style="color: #00BB00;">100 Kb</span> resolution</span></span></code></pre></div>
+<span><span class="co">#&gt; ── Breaking input segments at <span style="color: #00BB00;">100 Kb</span> resolution</span></span>
+<span><span class="co">#&gt; Warning: replacing previous import 'cli::num_ansi_colors' by</span></span>
+<span><span class="co">#&gt; 'crayon::num_ansi_colors' when loading 'easypar'</span></span></code></pre></div>
 <p><img src="a2_Plots_files/figure-html/unnamed-chunk-17-1.png" width="768"></p>
 <p>The binning <span class="math inline">\(\delta\)</span> of the tumour genome can be changed to get larger/ shorter segments</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">

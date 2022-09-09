@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CNAqc</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.0</span>
       </span>
     </div>
 
@@ -121,19 +121,10 @@
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/caravagnalab/CNAqc" class="external-link">CNAqc</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: replacing previous import 'cli::num_ansi_colors' by</span></span>
-<span><span class="co">#&gt; 'crayon::num_ansi_colors' when loading 'BMix'</span></span>
-<span><span class="co">#&gt; Warning: replacing previous import 'crayon::%+%' by 'ggplot2::%+%' when loading</span></span>
-<span><span class="co">#&gt; 'BMix'</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Loading <span style="color: #00BB00;">BMix</span>, <span style="font-style: italic;">'Binomial and Beta-Binomial univariate mixtures'</span>. Support : <span style="color: #0000BB; font-style: italic;">&lt;https://caravagnalab.github.io/BMix/&gt;</span></span></span>
-<span><span class="co">#&gt; Warning: replacing previous import 'cli::num_ansi_colors' by</span></span>
-<span><span class="co">#&gt; 'crayon::num_ansi_colors' when loading 'easypar'</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Loading <span style="color: #00BB00;">CNAqc</span>, <span style="font-style: italic;">'Copy Number Alteration quality check'</span>. Support : <span style="color: #0000BB; font-style: italic;">&lt;https://caravagn.github.io/CNAqc/&gt;</span></span></span></code></pre></div>
-<p>Smoothing works with a simple algorithm that merges, inside each chromosome, all contiguous segments that have the same absolute copy number values (minnor and major allele counts), and are separated by up to <span class="math inline">\(\delta\)</span> base pairs. Only clonal CNAs can be smoothed; subclonal CNAs are retained (they cannot be smoothed usually because the CCF of conrtiguous segments might be different, even if the allele-specific profiles are equivalent).</p>
-<p>The default value of <span class="math inline">\(\delta = 10^6\)</span> (1 megabase).</p>
-<pre><code><span><span class="co">#&gt; <span style="color: #BBBBBB; background-color: #0000BB;"> [ CNAqc - CNA Quality Check ] </span></span></span>
-<span><span class="co"><span style="color: #BBBBBB; background-color: #0000BB;">#&gt; </span></span></span></code></pre>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<p>Smoothing merges, for each chromosome, all contiguous segments that have the same minnor and major allele counts, and are separated by up to <span class="math inline">\(\delta\)</span> base pairs (default <span class="math inline">\(\delta = 10^6\)</span>, 1 megabase).</p>
+<p>Only clonal CNAs can be smoothed; subclonal CNAs are retained but cannot be smoothed because the CCF of contiguous segments might be different.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Before smoothing</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span><span class="co">#&gt; ── <span style="color: #000000; background-color: #BBBB00;">[ CNAqc ] </span> <span style="color: #00BB00;">12963</span> mutations in <span style="color: #00BB00;">267</span> segments (<span style="color: #00BB00;">267</span> clonal, <span style="color: #00BB00;">0</span> subclonal). Genome</span></span>
@@ -183,8 +174,8 @@
 <span><span class="co">#&gt; → <span style="color: #0000BB;">chrX</span> <span style="color: #BB0000;">6</span> -<span style="color: #00BB00;">2</span> @</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Smoothed from 267 to 87 segments with 1e+06 gap (bases).</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Creating a new CNAqc object. The old object will be retained in the $before_smoothing field.</span></span>
-<span><span class="co">#&gt; <span style="color: #BBBBBB; background-color: #0000BB;"> [ CNAqc - CNA Quality Check ] </span></span></span>
-<span><span class="co"><span style="color: #BBBBBB; background-color: #0000BB;">#&gt; </span></span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">CNAqc - CNA Quality Check</span> <span style="color: #00BBBB;">───────────────────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Using reference genome coordinates for: <span style="color: #00BB00;">hg19</span>.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Fortified calls for <span style="color: #00BB00;">12963</span> somatic mutations: <span style="color: #00BB00;">12963</span> SNVs (<span style="color: #00BB00;">100%</span>) and <span style="color: #00BB00;">0</span> indels.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Fortified CNAs for <span style="color: #00BB00;">87</span> segments: <span style="color: #00BB00;">87</span> clonal and <span style="color: #00BB00;">0</span> subclonal.</span></span>
@@ -192,7 +183,7 @@
 <span><span class="co">#&gt; karyotype column is present in CNA calls, and will be overwritten</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #00BB00;">12963</span> mutations mapped to clonal CNAs.</span></span></code></pre></div>
 <p>The old CNAqc object is retained inside the new one</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">before_smoothing</span><span class="op">)</span></span>
 <span><span class="co">#&gt; ── <span style="color: #000000; background-color: #BBBB00;">[ CNAqc ] </span> <span style="color: #00BB00;">12963</span> mutations in <span style="color: #00BB00;">267</span> segments (<span style="color: #00BB00;">267</span> clonal, <span style="color: #00BB00;">0</span> subclonal). Genome</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -215,7 +206,7 @@
 <span><span class="co">#&gt;        chr16  67646006  67646007   C   T 120 54 0.4500000         CTCF      TRUE</span></span>
 <span><span class="co">#&gt;        chr17   7577106   7577107   G   C  84 78 0.9285714         TP53      TRUE</span></span>
 <span></span>
-<span><span class="co"># The new should have fewer segments</span></span>
+<span><span class="co"># The new one should have fewer segments</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span><span class="co">#&gt; ── <span style="color: #000000; background-color: #BBBB00;">[ CNAqc ] </span> <span style="color: #00BB00;">12963</span> mutations in <span style="color: #00BB00;">87</span> segments (<span style="color: #00BB00;">87</span> clonal, <span style="color: #00BB00;">0</span> subclonal). Genome re</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -238,8 +229,8 @@
 <span><span class="co">#&gt;        chr16  67646006  67646007   C   T 120 54 0.4500000         CTCF      TRUE</span></span>
 <span><span class="co">#&gt;        chr17   7577106   7577107   G   C  84 78 0.9285714         TP53      TRUE</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> These segments are smoothed; before smoothing there were 267 segments.</span></span></code></pre></div>
-<p>You can visualise the effect of the smoothing automatically using <code>CNAqc</code> functions.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<p>You can visualise the effect of the smoothing.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_smoothing.html">plot_smoothing</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Scale for 'fill' is already present. Adding another scale for 'fill', which</span></span>
 <span><span class="co">#&gt; will replace the existing scale.</span></span>
@@ -250,10 +241,12 @@
 <span><span class="co">#&gt; Warning: Graphs cannot be horizontally aligned unless the axis parameter is set.</span></span>
 <span><span class="co">#&gt; Placing graphs unaligned.</span></span></code></pre></div>
 <p><img src="a5_smoothing_files/figure-html/unnamed-chunk-5-1.png" width="1440"></p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_multisample_CNA.html">plot_multisample_CNA</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>`Before` <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">before_smoothing</span>, `After` <span class="op">=</span> <span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; ── Breaking input segments at <span style="color: #00BB00;">100 Kb</span> resolution</span></span></code></pre></div>
+<span><span class="co">#&gt; ── Breaking input segments at <span style="color: #00BB00;">100 Kb</span> resolution</span></span>
+<span><span class="co">#&gt; Warning: replacing previous import 'cli::num_ansi_colors' by</span></span>
+<span><span class="co">#&gt; 'crayon::num_ansi_colors' when loading 'easypar'</span></span></code></pre></div>
 <p><img src="a5_smoothing_files/figure-html/unnamed-chunk-6-1.png" width="576"></p>
   </div>
 

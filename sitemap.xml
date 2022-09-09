@@ -7,6 +7,9 @@
     <loc>caravagnalab.github.io/CNAqc/LICENSE-text.html</loc>
   </url>
   <url>
+    <loc>caravagnalab.github.io/CNAqc/LICENSE.html</loc>
+  </url>
+  <url>
     <loc>caravagnalab.github.io/CNAqc/articles/CNAqc.html</loc>
   </url>
   <url>
@@ -52,7 +55,7 @@
     <loc>caravagnalab.github.io/CNAqc/reference/CNA.html</loc>
   </url>
   <url>
-    <loc>caravagnalab.github.io/CNAqc/reference/DriverDBv3.html</loc>
+    <loc>caravagnalab.github.io/CNAqc/reference/CNAqc-package.html</loc>
   </url>
   <url>
     <loc>caravagnalab.github.io/CNAqc/reference/Mutations.html</loc>
@@ -68,9 +71,6 @@
   </url>
   <url>
     <loc>caravagnalab.github.io/CNAqc/reference/auto_tolerance.html</loc>
-  </url>
-  <url>
-    <loc>caravagnalab.github.io/CNAqc/reference/boostDM_drivers.html</loc>
   </url>
   <url>
     <loc>caravagnalab.github.io/CNAqc/reference/chr_coordinates_GRCh38.html</loc>
@@ -94,9 +94,6 @@
     <loc>caravagnalab.github.io/CNAqc/reference/fpr_test.html</loc>
   </url>
   <url>
-    <loc>caravagnalab.github.io/CNAqc/reference/gene_coordinates_GRCh38.html</loc>
-  </url>
-  <url>
     <loc>caravagnalab.github.io/CNAqc/reference/get_drivers.html</loc>
   </url>
   <url>
@@ -109,7 +106,13 @@
     <loc>caravagnalab.github.io/CNAqc/reference/inspect_segment.html</loc>
   </url>
   <url>
+    <loc>caravagnalab.github.io/CNAqc/reference/intogen_drivers.html</loc>
+  </url>
+  <url>
     <loc>caravagnalab.github.io/CNAqc/reference/parse_Battenberg.html</loc>
+  </url>
+  <url>
+    <loc>caravagnalab.github.io/CNAqc/reference/pipe.html</loc>
   </url>
   <url>
     <loc>caravagnalab.github.io/CNAqc/reference/plot.cnaqc.html</loc>
