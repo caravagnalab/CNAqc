@@ -221,21 +221,22 @@ to compute CCF.</p></dd>
 <span class="r-in"><span class="co"># Extract the values with these other functions</span></span>
 <span class="r-in"><span class="fu"><a href="CCF.html">CCF</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 9,122 × 19</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    chr      from      to ref   alt   FILTER    DP    NV    VAF ANNOVAR_FUNCTION</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> chr2   <span style="text-decoration: underline;">357</span>969  <span style="text-decoration: underline;">357</span>970 C     A     PASS     104    58 0.558  intergenic      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> chr2   <span style="text-decoration: underline;">909</span>304  <span style="text-decoration: underline;">909</span>305 A     G     PASS      15     7 0.467  ncRNA_intronic  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> chr2  1<span style="text-decoration: underline;">035</span>751 1<span style="text-decoration: underline;">035</span>752 C     T     PASS      93    57 0.613  intronic        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> chr2  1<span style="text-decoration: underline;">326</span>719 1<span style="text-decoration: underline;">326</span>720 A     T     PASS     104    55 0.529  intronic        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> chr2  1<span style="text-decoration: underline;">515</span>962 1<span style="text-decoration: underline;">515</span>963 C     T     PASS      90    50 0.556  intronic        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> chr2  2<span style="text-decoration: underline;">198</span>361 2<span style="text-decoration: underline;">198</span>362 G     T     PASS     125    42 0.336  intronic        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> chr2  2<span style="text-decoration: underline;">898</span>536 2<span style="text-decoration: underline;">898</span>537 C     T     PASS     109    58 0.532  downstream      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> chr2  3<span style="text-decoration: underline;">125</span>481 3<span style="text-decoration: underline;">125</span>482 A     G     PASS     134    35 0.261  ncRNA_intronic  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> chr2  3<span style="text-decoration: underline;">832</span>360 3<span style="text-decoration: underline;">832</span>361 A     T     PASS     120    68 0.567  intergenic      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> chr2  3<span style="text-decoration: underline;">878</span>408 3<span style="text-decoration: underline;">878</span>409 T     A     PASS     126    10 0.079<span style="text-decoration: underline;">4</span> intergenic      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 9,112 more rows, and 9 more variables: GENE &lt;chr&gt;, is_driver &lt;lgl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    chr      from      to ref   alt   FILTER    DP    NV    VAF ANNOVAR_F…¹ GENE </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> chr2   <span style="text-decoration: underline;">357</span>969  <span style="text-decoration: underline;">357</span>970 C     A     PASS     104    58 0.558  intergenic  AC07…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> chr2   <span style="text-decoration: underline;">909</span>304  <span style="text-decoration: underline;">909</span>305 A     G     PASS      15     7 0.467  ncRNA_intr… AC11…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> chr2  1<span style="text-decoration: underline;">035</span>751 1<span style="text-decoration: underline;">035</span>752 C     T     PASS      93    57 0.613  intronic    SNTG2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> chr2  1<span style="text-decoration: underline;">326</span>719 1<span style="text-decoration: underline;">326</span>720 A     T     PASS     104    55 0.529  intronic    SNTG2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> chr2  1<span style="text-decoration: underline;">515</span>962 1<span style="text-decoration: underline;">515</span>963 C     T     PASS      90    50 0.556  intronic    TPO  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> chr2  2<span style="text-decoration: underline;">198</span>361 2<span style="text-decoration: underline;">198</span>362 G     T     PASS     125    42 0.336  intronic    MYT1L</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> chr2  2<span style="text-decoration: underline;">898</span>536 2<span style="text-decoration: underline;">898</span>537 C     T     PASS     109    58 0.532  downstream  AC01…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> chr2  3<span style="text-decoration: underline;">125</span>481 3<span style="text-decoration: underline;">125</span>482 A     G     PASS     134    35 0.261  ncRNA_intr… AC01…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> chr2  3<span style="text-decoration: underline;">832</span>360 3<span style="text-decoration: underline;">832</span>361 A     T     PASS     120    68 0.567  intergenic  DCDC…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> chr2  3<span style="text-decoration: underline;">878</span>408 3<span style="text-decoration: underline;">878</span>409 T     A     PASS     126    10 0.079<span style="text-decoration: underline;">4</span> intergenic  NONE…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 9,112 more rows, 8 more variables: is_driver &lt;lgl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   driver_label &lt;chr&gt;, gene &lt;chr&gt;, type &lt;chr&gt;, karyotype &lt;chr&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   segment_id &lt;chr&gt;, mutation_multiplicity &lt;dbl&gt;, CCF &lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   segment_id &lt;chr&gt;, mutation_multiplicity &lt;dbl&gt;, CCF &lt;dbl&gt;, and abbreviated</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   variable name ¹​ANNOVAR_FUNCTION</span></span>
 <span class="r-in"><span class="fu"><a href="plot_CCF.html">plot_CCF</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 4 rows containing missing values (geom_bar).</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 22 rows containing non-finite values (stat_bin).</span>
@@ -253,11 +254,13 @@ to compute CCF.</p></dd>
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by <a href="https://www.caravagnalab.org" class="external-link">Giulio Caravagna</a>.</p>
+  <p></p><p>Developed by <a href="https://www.caravagnalab.org" class="external-link">Giulio
+Caravagna</a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
+2.0.2.</p>
 </div>
 
       </footer></div>

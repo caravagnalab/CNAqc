@@ -256,8 +256,8 @@ aux_plot_cohort_CNA_circular = function(x, ...)
 {
   Ln = names(x)
   if (is.null(Ln)) {
-    Ln = paste0("Sample ", 1:length(L))
-    names(L) = Ln
+    Ln = paste0("Sample ", 1:length(x))
+    names(x) = Ln
 
     cli::cli_alert_warning("The input list is un-named, using default naming scheme Sample*")
   }

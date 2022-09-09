@@ -113,25 +113,25 @@ across the used karyotypes, and extracted from the
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"example_PCAWG"</span>, package <span class="op">=</span> <span class="st">'CNAqc'</span><span class="op">)</span></span>
 <span class="r-in"><span class="fu">CCF</span><span class="op">(</span><span class="va">example_PCAWG</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 120,065 × 59</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    chr        from        to ref   alt   sample       icgc_donor_id project_code</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> chr1  240<span style="text-decoration: underline;">197</span>260 240<span style="text-decoration: underline;">197</span>260 G     A     51893d3f-e7… DO220903      MELA-AU     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> chr1  240<span style="text-decoration: underline;">197</span>743 240<span style="text-decoration: underline;">197</span>743 T     -     51893d3f-e7… DO220903      MELA-AU     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> chr1  240<span style="text-decoration: underline;">209</span>355 240<span style="text-decoration: underline;">209</span>355 G     A     51893d3f-e7… DO220903      MELA-AU     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> chr10  42<span style="text-decoration: underline;">871</span>855  42<span style="text-decoration: underline;">871</span>855 G     A     51893d3f-e7… DO220903      MELA-AU     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> chr10  42<span style="text-decoration: underline;">874</span>161  42<span style="text-decoration: underline;">874</span>161 G     A     51893d3f-e7… DO220903      MELA-AU     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> chr10  42<span style="text-decoration: underline;">886</span>327  42<span style="text-decoration: underline;">886</span>327 C     T     51893d3f-e7… DO220903      MELA-AU     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> chr10  42<span style="text-decoration: underline;">887</span>738  42<span style="text-decoration: underline;">887</span>738 G     A     51893d3f-e7… DO220903      MELA-AU     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> chr10  42<span style="text-decoration: underline;">888</span>438  42<span style="text-decoration: underline;">888</span>438 C     T     51893d3f-e7… DO220903      MELA-AU     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> chr10  42<span style="text-decoration: underline;">888</span>486  42<span style="text-decoration: underline;">888</span>486 G     A     51893d3f-e7… DO220903      MELA-AU     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> chr10  42<span style="text-decoration: underline;">891</span>609  42<span style="text-decoration: underline;">891</span>609 C     T     51893d3f-e7… DO220903      MELA-AU     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 120,055 more rows, and 51 more variables: icgc_specimen_id &lt;chr&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   icgc_sample_id &lt;chr&gt;, submitted_sample_id &lt;chr&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    chr        from        to ref   alt   sample  icgc_…¹ proje…² icgc_…³ icgc_…⁴</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> chr1  240<span style="text-decoration: underline;">197</span>260 240<span style="text-decoration: underline;">197</span>260 G     A     51893d… DO2209… MELA-AU SP1244… SA5575…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> chr1  240<span style="text-decoration: underline;">197</span>743 240<span style="text-decoration: underline;">197</span>743 T     -     51893d… DO2209… MELA-AU SP1244… SA5575…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> chr1  240<span style="text-decoration: underline;">209</span>355 240<span style="text-decoration: underline;">209</span>355 G     A     51893d… DO2209… MELA-AU SP1244… SA5575…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> chr10  42<span style="text-decoration: underline;">871</span>855  42<span style="text-decoration: underline;">871</span>855 G     A     51893d… DO2209… MELA-AU SP1244… SA5575…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> chr10  42<span style="text-decoration: underline;">874</span>161  42<span style="text-decoration: underline;">874</span>161 G     A     51893d… DO2209… MELA-AU SP1244… SA5575…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> chr10  42<span style="text-decoration: underline;">886</span>327  42<span style="text-decoration: underline;">886</span>327 C     T     51893d… DO2209… MELA-AU SP1244… SA5575…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> chr10  42<span style="text-decoration: underline;">887</span>738  42<span style="text-decoration: underline;">887</span>738 G     A     51893d… DO2209… MELA-AU SP1244… SA5575…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> chr10  42<span style="text-decoration: underline;">888</span>438  42<span style="text-decoration: underline;">888</span>438 C     T     51893d… DO2209… MELA-AU SP1244… SA5575…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> chr10  42<span style="text-decoration: underline;">888</span>486  42<span style="text-decoration: underline;">888</span>486 G     A     51893d… DO2209… MELA-AU SP1244… SA5575…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> chr10  42<span style="text-decoration: underline;">891</span>609  42<span style="text-decoration: underline;">891</span>609 C     T     51893d… DO2209… MELA-AU SP1244… SA5575…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 120,055 more rows, 49 more variables: submitted_sample_id &lt;chr&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   submitted_matched_sample_id &lt;chr&gt;, chromosome_strand &lt;dbl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   assembly_version &lt;chr&gt;, mutation_type &lt;chr&gt;, reference_genome_allele &lt;chr&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   quality_score &lt;lgl&gt;, probability &lt;lgl&gt;, verification_status &lt;chr&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   verification_platform &lt;lgl&gt;, biological_validation_status &lt;chr&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   biological_validation_platform &lt;lgl&gt;, gene_build_version &lt;dbl&gt;, …</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   biological_validation_platform &lt;lgl&gt;, gene_build_version &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   platform &lt;chr&gt;, experimental_protocol &lt;lgl&gt;, sequencing_strategy &lt;chr&gt;, …</span></span>
 </code></pre></div>
     </div>
   </div>
@@ -142,11 +142,13 @@ across the used karyotypes, and extracted from the
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by <a href="https://www.caravagnalab.org" class="external-link">Giulio Caravagna</a>.</p>
+  <p></p><p>Developed by <a href="https://www.caravagnalab.org" class="external-link">Giulio
+Caravagna</a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
+2.0.2.</p>
 </div>
 
       </footer></div>

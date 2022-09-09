@@ -427,7 +427,6 @@ bar_print_console = function(x, top = length(x$n_karyotype)) {
   e = x$n_karyotype %>% sort(decreasing = TRUE)
   l =  round(x$l_karyotype / 10 ^ 6, digits = 0)
 
-
   width = options("width")$width / 3 %>% round
   bars = (e / max(e) * width) %>% round
 

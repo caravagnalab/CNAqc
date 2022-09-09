@@ -124,13 +124,14 @@ annotated <code>NULL</code> is returned.</p>
 <span class="r-in"></span>
 <span class="r-in"><span class="fu">get_drivers</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 3 × 17</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   chr        from       to ref   alt   FILTER    DP    NV   VAF ANNOVAR_FUNCTION</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> chr2  179<span style="text-decoration: underline;">431</span>633   1.79<span style="color: #949494;">e</span>8 C     T     PASS     117    77 0.658 exonic          </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> chr16  67<span style="text-decoration: underline;">646</span>006   6.76<span style="color: #949494;">e</span>7 C     T     PASS     120    54 0.45  exonic          </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> chr17   7<span style="text-decoration: underline;">577</span>106   7.58<span style="color: #949494;">e</span>6 G     C     PASS      84    78 0.929 exonic          </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 7 more variables: GENE &lt;chr&gt;, is_driver &lt;lgl&gt;, driver_label &lt;chr&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   gene &lt;chr&gt;, type &lt;chr&gt;, karyotype &lt;chr&gt;, segment_id &lt;chr&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   chr     from     to ref   alt   FILTER    DP    NV   VAF ANNOV…¹ GENE  is_dr…²</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> chr2  1.79<span style="color: #949494;">e</span>8 1.79<span style="color: #949494;">e</span>8 C     T     PASS     117    77 0.658 exonic  TTN   TRUE   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> chr16 6.76<span style="color: #949494;">e</span>7 6.76<span style="color: #949494;">e</span>7 C     T     PASS     120    54 0.45  exonic  CTCF  TRUE   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> chr17 7.58<span style="color: #949494;">e</span>6 7.58<span style="color: #949494;">e</span>6 G     C     PASS      84    78 0.929 exonic  TP53  TRUE   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 5 more variables: driver_label &lt;chr&gt;, gene &lt;chr&gt;, type &lt;chr&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   karyotype &lt;chr&gt;, segment_id &lt;chr&gt;, and abbreviated variable names</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   ¹​ANNOVAR_FUNCTION, ²​is_driver</span></span>
 </code></pre></div>
     </div>
   </div>
@@ -141,11 +142,13 @@ annotated <code>NULL</code> is returned.</p>
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by <a href="https://www.caravagnalab.org" class="external-link">Giulio Caravagna</a>.</p>
+  <p></p><p>Developed by <a href="https://www.caravagnalab.org" class="external-link">Giulio
+Caravagna</a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
+2.0.2.</p>
 </div>
 
       </footer></div>

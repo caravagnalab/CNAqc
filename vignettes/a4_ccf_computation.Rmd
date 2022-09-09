@@ -18,6 +18,7 @@ options(crayon.enabled=F)
 
 ```{r setup, warning=FALSE}
 library(CNAqc)
+require(dplyr)
 ```
 
 CNAqc can compute a CCF  per mutation, reporting a measure of uncertainty of the estimate.
