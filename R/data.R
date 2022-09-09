@@ -48,7 +48,7 @@
 #' can be used with CNAqc. This tumour does not contain subclonal CNAs.
 #'
 #' @keywords datasets
-#'
+#' @export
 #' @examples
 #' data(example_dataset_CNAqc)
 #' example_dataset_CNAqc
