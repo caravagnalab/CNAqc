@@ -48,28 +48,30 @@ plot_data_histogram = function(x,
   plot_f = CNAqc:::eplot()
 
   if (which == 'VAF')
-    plot_f = CNAqc:::plot_VAF_data(x, karyotypes = karyotypes)
+    plot_f = plot_VAF_data(x, karyotypes = karyotypes)
 
   if (which == 'DP')
-    plot_f = CNAqc:::plot_DP_data(x, karyotypes = karyotypes)
+    plot_f = plot_DP_data(x, karyotypes = karyotypes)
 
   if (which == 'NV')
-    plot_f = CNAqc:::plot_NV_data(x, karyotypes = karyotypes)
+    plot_f = plot_NV_data(x, karyotypes = karyotypes)
 
   with_CCF = all(!is.null(x$CCF_estimates))
   if (which == 'CCF') {
-    plot_f = CNAqc:::plot_CCF_data(x, karyotypes = karyotypes)
+    plot_f = plot_CCF_data(x, karyotypes = karyotypes)
 
     if (with_CCF)
       plot_f = plot_f + ggplot2::facet_wrap( ~ type, ncol = 1, scales = 'free_y')
   }
+
+  plot_f = plot_f + ggplot2::guides(fill = ggplot2::guide_legend(''))
 
   if (!CNAqc:::has_driver_data(x))
     return(plot_f)
 
   # Drivers
   if (which != "CCF" | with_CCF)
-    plot_f = CNAqc:::annotate_drivers_to_histogram(
+    plot_f = annotate_drivers_to_histogram(
       drivers_list = get_drivers(x,  which = ifelse(which %in% c("VAF", "CCF"), which, 'VAF')) %>%
         dplyr::mutate(karyotype = ifelse(
           karyotype %in% karyotypes, karyotype, "other"
@@ -78,7 +80,7 @@ plot_data_histogram = function(x,
       which = which
     )
 
-  return(plot_f)
+  return(plot_f +)
 }
 
 

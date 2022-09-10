@@ -7,7 +7,7 @@
 #'
 #' A regression has been used to measure the rate of false positives
 #' from simulated tumours with variable coverage and purity. This allows to determine
-#' an optimal value of $\epsilon$, the parameter `purity_error` of function
+#' an optimal value of $\eqn{\epsilon}$, the parameter `purity_error` of function
 #' \code{analyze_peaks}, for a desired rate of alse positives basde on the sample
 #' coverage and putative purity.
 #'
@@ -16,7 +16,7 @@
 #' @param fpr Desired false positive rate.
 #' @param epsilon_range Range of values to constrain $epsilon$.
 #'
-#' @return The $\epsilon$ value estimated from data, constrained to be in
+#' @return The $\eqn{\epsilon}$ value estimated from data, constrained to be in
 #' `epsilon_range`, in order to limit the false positive rate to be at most `fpr`.
 #'
 #' @export

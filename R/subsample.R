@@ -197,7 +197,7 @@ subset_by_minimum_CCF = function(x, min_target_CCF = 0.1)
   )
   cuts_table$n = x$n_karyotype[cuts_table$karyotype]
 
-  observed_minima = x$snv %>%
+  observed_minima = x %>% Mutations() %>%
     dplyr::group_by(karyotype) %>%
     dplyr::summarise(VAF_minimum = min(VAF), .groups = 'drop') %>%
     dplyr::full_join(cuts_table, by = 'karyotype') %>%

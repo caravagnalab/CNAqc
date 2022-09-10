@@ -114,7 +114,8 @@ annotate_drivers_to_histogram = function(x, drivers_list, p, which)
       nudge_x = 0,
       show.legend = FALSE
     ) +
-  ggplot2::coord_cartesian(clip = 'off')
+  ggplot2::coord_cartesian(clip = 'off') +
+  ggplot2::labs(y = 'count')
 
 
 
