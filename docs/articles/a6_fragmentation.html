@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CNAqc</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.0</span>
       </span>
     </div>
 
@@ -121,28 +121,15 @@
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/caravagnalab/CNAqc" class="external-link">CNAqc</a></span><span class="op">)</span>
-<span class="co">#&gt; Warning: replacing previous import 'cli::num_ansi_colors' by</span>
-<span class="co">#&gt; 'crayon::num_ansi_colors' when loading 'BMix'</span>
-<span class="co">#&gt; Warning: replacing previous import 'crayon::%+%' by 'ggplot2::%+%' when loading</span>
-<span class="co">#&gt; 'BMix'</span>
-<span class="co">#&gt; <span style="color: #00BB00;">✔</span> Loading <span style="color: #00BB00;">BMix</span>, <span style="font-style: italic;">'Binomial and Beta-Binomial univariate mixtures'</span>. Support : <span style="color: #0000BB; font-style: italic;">&lt;https://caravagnalab.github.io/BMix/&gt;</span></span>
-<span class="co">#&gt; Warning: replacing previous import 'cli::num_ansi_colors' by</span>
-<span class="co">#&gt; 'crayon::num_ansi_colors' when loading 'easypar'</span>
-<span class="co">#&gt; Warning: package 'tidyr' was built under R version 4.0.5</span>
-<span class="co">#&gt; Warning: package 'readr' was built under R version 4.0.5</span>
-<span class="co">#&gt; Warning: package 'crayon' was built under R version 4.0.5</span>
-<span class="co">#&gt; Warning: package 'RColorBrewer' was built under R version 4.0.5</span>
 <span class="co">#&gt; <span style="color: #00BB00;">✔</span> Loading <span style="color: #00BB00;">CNAqc</span>, <span style="font-style: italic;">'Copy Number Alteration quality check'</span>. Support : <span style="color: #0000BB; font-style: italic;">&lt;https://caravagn.github.io/CNAqc/&gt;</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="fragmentation-of-individual-arms">Fragmentation of individual arms<a class="anchor" aria-label="anchor" href="#fragmentation-of-individual-arms"></a>
 </h3>
 <p>The fragmentation of a chromosome arm is assessed with a statistical
 test based on counting the size of the copy number segments mapping to
-the arm. This analysis works only at the level of clonal CNAs.</p>
+the arm. This analysis works only at the level of clonal segments</p>
 <p>We work with the template dataset.</p>
-<pre><code><span class="co">#&gt; <span style="color: #BBBBBB; background-color: #0000BB;"> [ CNAqc - CNA Quality Check ] </span></span>
-<span class="co"><span style="color: #BBBBBB; background-color: #0000BB;">#&gt; </span></span>
-<span class="co">#&gt; </span>
+<pre><code><span class="co">#&gt; </span>
 <span class="co">#&gt;    2:2  [n = 7478, L = 1483 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { <span style="color: #BBBB00;">CTCF</span> }</span>
 <span class="co">#&gt;    4:2  [n = 1893, L =  331 Mb] ■■■■■■■</span>
 <span class="co">#&gt;    3:2  [n = 1625, L =  357 Mb] ■■■■■■</span>
@@ -234,9 +221,7 @@ Those with low <span class="math inline">\(J\)</span> are more uniform,
 as they show little no copy number change, and can be possibly smoothed
 (see below).</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/plot_arm_fragmentation.html">plot_arm_fragmentation</a></span><span class="op">(</span><span class="va">x</span>, zoom <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>
-<span class="co">#&gt; Warning: `guides(&lt;scale&gt; = FALSE)` is deprecated. Please use `guides(&lt;scale&gt; =</span>
-<span class="co">#&gt; "none")` instead.</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="../reference/plot_arm_fragmentation.html">plot_arm_fragmentation</a></span><span class="op">(</span><span class="va">x</span>, zoom <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></code></pre></div>
 <p><img src="a6_fragmentation_files/figure-html/unnamed-chunk-5-1.png" width="576"></p>
 <p>Once available, these results appear in any call to
 <code>plot_segments</code> as annotated purple squares sorrounding the
@@ -247,10 +232,8 @@ arms.</p>
 <span class="co">#&gt; Scale for 'fill' is already present. Adding another scale for 'fill', which</span>
 <span class="co">#&gt; will replace the existing scale.</span></code></pre></div>
 <p><img src="a6_fragmentation_files/figure-html/unnamed-chunk-6-1.png" width="912"></p>
-<p><a href="https://caravagn.github.io/CNAqc/articles/smoothing.html" class="external-link">Smoothing</a>
-is a good way to start cleaning up the fragmented sets of arms, as it
-merges segments that have no karyotype change, and are closer than a
-certain distance.</p>
+<p>Smoothing is a good way to start cleaning up the fragmented sets of
+arms.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Smooth with default parameters</span>
 <span class="va">x</span> <span class="op">=</span> <span class="fu"><a href="../reference/smooth_segments.html">smooth_segments</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
@@ -278,8 +261,8 @@ certain distance.</p>
 <span class="co">#&gt; → <span style="color: #0000BB;">chrX</span> <span style="color: #BB0000;">6</span> -<span style="color: #00BB00;">2</span> @</span>
 <span class="co">#&gt; <span style="color: #00BB00;">✔</span> Smoothed from 267 to 87 segments with 1e+06 gap (bases).</span>
 <span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Creating a new CNAqc object. The old object will be retained in the $before_smoothing field.</span>
-<span class="co">#&gt; <span style="color: #BBBBBB; background-color: #0000BB;"> [ CNAqc - CNA Quality Check ] </span></span>
-<span class="co"><span style="color: #BBBBBB; background-color: #0000BB;">#&gt; </span></span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">CNAqc - CNA Quality Check</span> <span style="color: #00BBBB;">───────────────────────────────────────────────────</span></span>
 <span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Using reference genome coordinates for: <span style="color: #00BB00;">hg19</span>.</span>
 <span class="co">#&gt; <span style="color: #00BB00;">✔</span> Fortified calls for <span style="color: #00BB00;">12963</span> somatic mutations: <span style="color: #00BB00;">12963</span> SNVs (<span style="color: #00BB00;">100%</span>) and <span style="color: #00BB00;">0</span> indels.</span>
 <span class="co">#&gt; <span style="color: #00BB00;">✔</span> Fortified CNAs for <span style="color: #00BB00;">87</span> segments: <span style="color: #00BB00;">87</span> clonal and <span style="color: #00BB00;">0</span> subclonal.</span>
@@ -318,9 +301,7 @@ certain distance.</p>
 <span class="co">#&gt; <span style="color: #00BB00;">✔</span> These segments are smoothed; before smoothing there were 267 segments.</span>
 <span class="co">#&gt; <span style="color: #00BB00;">✔</span> Arm-level fragmentation analysis: 2 segments overfragmented.</span></code></pre></div>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/plot_arm_fragmentation.html">plot_arm_fragmentation</a></span><span class="op">(</span><span class="va">x</span>, zoom <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>
-<span class="co">#&gt; Warning: `guides(&lt;scale&gt; = FALSE)` is deprecated. Please use `guides(&lt;scale&gt; =</span>
-<span class="co">#&gt; "none")` instead.</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="../reference/plot_arm_fragmentation.html">plot_arm_fragmentation</a></span><span class="op">(</span><span class="va">x</span>, zoom <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></code></pre></div>
 <p><img src="a6_fragmentation_files/figure-html/unnamed-chunk-8-1.png" width="576"></p>
 </div>
   </div>

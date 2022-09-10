@@ -18,7 +18,6 @@ options(crayon.enabled=F)
 
 ```{r setup, warning=FALSE}
 library(CNAqc)
-require(dplyr)
 ```
 
 CNAqc can compute a CCF  per mutation, reporting a measure of uncertainty of the estimate.
@@ -144,7 +143,7 @@ A tibble of CCF values (getter function `CCF`)  reports the computed values  in 
 
 ```{r,fig.width=11, fig.height=7}
 # Tibble
-CCF(x) %>% select(VAF, mutation_multiplicity, CCF)
+CCF(x) %>% dplyr::select(VAF, mutation_multiplicity, CCF)
 ```
 
 Fit plot as above.
@@ -198,7 +197,7 @@ If we take the data of `x` and just scale by a constant the read counts, we pres
 
 ```{r,fig.width=11, fig.height=10, warning=F, message=T}
 x_s = init(
-  mutations = x$mutations %>% mutate(DP = DP * .6, NV = NV * .6),
+  mutations = x$mutations %>% dplyr::mutate(DP = DP * .6, NV = NV * .6),
   cna = x$cna,
   purity = x$purity)
 
