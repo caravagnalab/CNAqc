@@ -25,7 +25,7 @@
 #' look like a circos plot. This visualisation can save space.
 #' @param cn Type of copy number segment to show on the plot. Either \code{"absolute"} for
 #' Major and minor annotation, or \code{"total"} for the total (Major plus minor) annotation.
-#'
+#' @param ... Extra parameters passed to the hidden function \code{blank_genome}.
 #' @return A \code{ggplot2} plot.
 #' @export
 #'

@@ -82,7 +82,6 @@
 #'
 #' @keywords datasets
 #'
-#' @references
 #' @examples
 #' data(fpr_test)
 #' fpr_test
@@ -99,7 +98,11 @@
 #'
 #' @keywords datasets
 #'
-#' @references
+#' @references Francisco Martínez-Jiménez, Ferran Muiños, Inés Sentís, Jordi
+#' Deu-Pons, Iker Reyes-Salazar, Claudia Arnedo-Pac, Loris Mularoni, Oriol Pich,
+#' Jose Bonet, Hanna Kranas, Abel Gonzalez-Perez & Nuria Lopez-Bigas.
+#' A compendium of mutational cancer driver genes Nat Rev Cancer (2020).;
+#' doi:10.1038/s41568-020-0290-x
 #' @examples
 #' data(intogen_drivers)
 #' intogen_drivers

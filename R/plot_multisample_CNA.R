@@ -19,7 +19,8 @@
 #' is plot on a lane, like in a donut plot.
 #'
 #' @param x A list of `CNAqc` objects; names are optional for the circular layout.
-#'
+#' @param layout If `"flat"` the common layout with amplificaitons and deletions
+#'  is used, otherwise with `"circular"` a circos-alike plot is used.
 #' @return A `ggplot2` plot.
 #' @export
 #'

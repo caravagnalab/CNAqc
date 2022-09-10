@@ -8,7 +8,7 @@ map_mutations_to_clonal_segments = function(mutations, cna)
 
   # pb <- progress_estimated(nrow(cna), min_time = 0)
 
-  pb = progress::progress_bar$new(format = paste0(" ▣ :spin [:bar] :percent [ETA :eta] ▶ :elapsedfull"),
+  pb = progress::progress_bar$new(format = paste0(" \u25a3 :spin [:bar] :percent [ETA :eta] \u25B6 :elapsedfull"),
                                   total = nrow(cna), clear = TRUE, complete = "~", incomplete = " ",
                                   current = ">", width = 90)
 

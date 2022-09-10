@@ -130,7 +130,8 @@ Sequenza_CNAqc = function(sample_id,
                           max.mut.types = 1,
                           delta_cellularity = 0.05,
                           delta_ploidy = 0.25,
-                          verbose = FALSE)
+                          verbose = FALSE,
+                          ...)
 {
 
   # Auxiliary function: Sequenza check input parameters
@@ -278,7 +279,8 @@ Sequenza_CNAqc = function(sample_id,
                                       ploidy,
                                       sample_id,
                                       out_dir = paste0("run_", run_index),
-                                      reference = reference)
+                                      reference = reference,
+                                      ...)
 
     L_cache = L_cache %>% bind_rows(L_cache_new)
 
@@ -356,7 +358,8 @@ sequenza_fit_runner = function(seqzExt,
                                ploidy,
                                sample_id,
                                out_dir,
-                               reference)
+                               reference,
+                               ...)
 {
   # Auxiliary function: Sequenza outputs parser
   parse_Sequenza_CNAs = function(out, x)
@@ -507,13 +510,14 @@ sequenza_fit_runner = function(seqzExt,
       cli::cli_alert("Using the input set {.field {mutations}} as mutation calls")
       cat("\n")
     }
+
     CNAqc::init(
       mutations =  mutations,
       cna = fits$segments,
       purity = fits$purity,
       ref = reference
     ) %>%
-      CNAqc::analyze_peaks()
+      CNAqc::analyze_peaks(...)
   },
   error = function(e)
   {

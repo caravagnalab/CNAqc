@@ -45,7 +45,7 @@ subsample = function(x, N = 15000, keep_drivers = TRUE)
 #' Retains only a subset of clonal simple segments, e.g., all `2:1` segments.
 #'
 #' @param x A CNAqc object.
-#' @param karyotype A list of karyotype ids in \code{"Major:minor"} notation
+#' @param karyotypes A list of karyotype ids in \code{"Major:minor"} notation
 #' (e.g., \code{"1:1", "2,1", ...}) that will be retained.
 #'
 #' @param x A new CNAqc object with subset data.
@@ -88,9 +88,9 @@ subset_by_segment_karyotype = function(x, karyotypes)
 #' total ploidy 2.
 #'
 #' @param x A CNAqc object.
-#' @param total The total (Major + minor) copy numbers to filter.
+#' @param totalcn The total (Major + minor) copy numbers to filter.
 #'
-#' @param x A new CNAqc object with subset data.
+#' @return x A new CNAqc object with subset data.
 #'
 #' @export
 #'

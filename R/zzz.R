@@ -46,7 +46,7 @@
   invisible()
 }
 
-resucitate = function(){
-  devtools::install("/Volumes/Data/Github/CNAqc", dependencies = FALSE)
-  devtools::load_all("/Volumes/Data/Github/CNAqc")
-}
+# resucitate = function(){
+#   devtools::install("/Volumes/Data/Github/CNAqc", dependencies = FALSE)
+#   devtools::load_all("/Volumes/Data/Github/CNAqc")
+# }

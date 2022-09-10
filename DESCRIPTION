@@ -26,7 +26,7 @@ Description: CNAqc is a package to provide a set of metrics to quality control (
   be applied downstream of any bioinformatics pipeline. Routines to determine Cancer Cell Franctions (CCFs)
   for each mutation are also available, along with a model of CCF uncertainty that can be used to identify
   high-quality CCF calls for downstream analyses. 
-License: GPL (>= 3)
+License: GPL (>= 3) + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Depends: 
@@ -54,7 +54,15 @@ Imports:
     cli,
     tibble,
     tidyr,
-    akima
+    akima,
+    AnnotationDbi,
+    cowplot,
+    ggsci,
+    progress,
+    readr,
+    sequenza,
+    R.utils,
+    ComplexHeatmap
 biocViews:
 Remotes: 
     caravagn/pio,

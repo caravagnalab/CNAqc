@@ -14,7 +14,7 @@
 #'
 #' @param x A CNAqc object.
 #' @param which One of \code{"VAF"}, \code{"DP"}, \code{"NV"} or \code{"CCF"}.
-#' @param karyotype A list of karyotypes in \code{"Major:minor"} notation
+#' @param karyotypes A list of karyotypes in \code{"Major:minor"} notation
 #' (e.g., \code{"1:1", "2,1", ...}) for the plot. By default \code{c("1:0", '1:1', '2:0', '2:1', '2:2')}
 #' are used.
 #'
