@@ -80,7 +80,7 @@ plot_data_histogram = function(x,
       which = which
     )
 
-  return(plot_f +)
+  return(plot_f)
 }
 
 
