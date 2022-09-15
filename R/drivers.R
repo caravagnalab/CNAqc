@@ -1,6 +1,18 @@
 has_driver_data = function(x)
 {
-  if (all(c("is_driver", "driver_label") %in% colnames(x$mutations))) return(TRUE)
+  stopifnot(inherits(x, 'cnaqc'))
+
+  cn = colnames(x$mutations)
+
+  if (all(c("is_driver", "driver_label") %in% cn)) return(TRUE)
+
+  if ("is_driver" %in% cn & !("driver_label" %in% cn)){
+    cli::cli_warn("Column 'is_driver' is annotated but 'driver_label' no -- did you try to add drivers data?")
+  }
+
+  if ("driver_label" %in% cn & !("is_driver" %in% cn)){
+    cli::cli_warn("Column 'driver_label' is annotated but 'is_driver' no -- did you try to add drivers data?")
+  }
 
   return(FALSE)
 }
