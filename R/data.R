@@ -109,3 +109,40 @@
 #'
 "intogen_drivers"
 
+#' Coordinates for GRCh38 genes
+#'
+#' @docType data
+#'
+#' @usage data(gene_coordinates_GRCh38)
+#'
+#' @format A tibble that represents the coordinates for genes in the GRCh38 genome assembly,
+#' reporting the gene symbol, from and to (chromosome range).
+#'
+#' @keywords datasets
+#'
+#' @references GRCh38
+#'
+#' @examples
+#' data(gene_coordinates_GRCh38)
+#' gene_coordinates_GRCh38
+#'
+"gene_coordinates_GRCh38"
+
+#' Coordinates for hg19 genes
+#'
+#' @docType data
+#'
+#' @usage data(gene_coordinates_hg19)
+#'
+#' @format A tibble that represents the coordinates for genes in the hg19 genome assembly,
+#' reporting the gene symbol, from and to (chromosome range).
+#'
+#' @keywords datasets
+#'
+#' @references hg19
+#'
+#' @examples
+#' data(gene_coordinates_hg19)
+#' gene_coordinates_hg19
+#'
+"gene_coordinates_hg19"

@@ -22,7 +22,8 @@ Sequenza_CNAqc(
   max.mut.types = 1,
   delta_cellularity = 0.05,
   delta_ploidy = 0.25,
-  verbose = FALSE
+  verbose = FALSE,
+  ...
 )
 }
 \arguments{

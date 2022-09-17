@@ -18,7 +18,4 @@ data(fpr_test)
 fpr_test
 
 }
-\references{
-
-}
 \keyword{datasets}

@@ -9,7 +9,7 @@ subset_by_segment_karyotype(x, karyotypes)
 \arguments{
 \item{x}{A new CNAqc object with subset data.}
 
-\item{karyotype}{A list of karyotype ids in \code{"Major:minor"} notation
+\item{karyotypes}{A list of karyotype ids in \code{"Major:minor"} notation
 (e.g., \code{"1:1", "2,1", ...}) that will be retained.}
 }
 \description{
