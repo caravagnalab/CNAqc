@@ -17,6 +17,15 @@ has_driver_data = function(x)
   return(FALSE)
 }
 
+has_drivers = function(x)
+{
+  if(!has_driver_data(x)) return(FALSE)
+
+  x$mutations %>%
+    dplyr::filter(is_driver) %>%
+    nrow() > 0
+}
+
 #' Extract drivers data.
 #'
 #' @description

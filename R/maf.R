@@ -47,6 +47,16 @@ augment_with_maf = function(x, maf)
 {
   cli::cli_h1("Augmenting a CNAqc object with its MAF")
 
+  if(x %>% has_MAF_annotations())
+  {
+    cli::cli_alert_warning("Input has already MAF annotations that will be dropped")
+
+    cn = colnames(x$mutations)
+    cn = grepl("MAF.", cn)
+
+    x$mutations = x$mutations[, !cn, drop = FALSE]
+  }
+
   cli::cli_h2("Input CNAqc object")
 
   x %>% print()
@@ -60,32 +70,85 @@ augment_with_maf = function(x, maf)
   print(MAF_input)
 
   # MAF conversion
-  MAF_input = MAF_input@data %>% as_tibble()
+  MAF_input = MAF_input@data %>% tibble::as_tibble()
 
   shared_colnames = intersect(x$mutations %>% colnames,
                               MAF_input %>% colnames)
 
   cn = colnames(MAF_input)
-  colnames(MAF_input)[!(cn %in% shared_colnames)] = paste0("MAF.", cn[!(cn %in% shared_colnames)])
+  cn_match = !(cn %in% shared_colnames)
+  colnames(MAF_input)[cn_match] = paste0("MAF.", cn[cn_match])
 
-  MAF_input = MAF_input %>%
-    dplyr::mutate(
-      chr = MAF.Chromosome,
-      from = MAF.Start_Position,
-      to = MAF.End_Position + 1,
-      # re-scaling required
-      ref = MAF.Reference_Allele,
-      alt = ifelse(
-        MAF.Tumor_Seq_Allele1 == ref,
-        MAF.Tumor_Seq_Allele2,
-        MAF.Tumor_Seq_Allele1
-      )
-    )
+  # MAF_input = MAF_input %>%
+  #   dplyr::mutate(
+  #     chr = MAF.Chromosome,
+  #     from = MAF.Start_Position,
+  #     to = MAF.End_Position + 1,
+  #     # re-scaling required
+  #     ref = MAF.Reference_Allele,
+  #     alt = ifelse(
+  #       MAF.Tumor_Seq_Allele1 == ref,
+  #       MAF.Tumor_Seq_Allele2,
+  #       MAF.Tumor_Seq_Allele1
+  #     )
+  #   )
 
+  # Matching in MAF style
+  MAF_input$maf_match_id = MAF_input$match_distance_maf = NA
+  x$mutations$maf_match_id = 1:nrow(x$mutations)
 
-  x$mutations = x$mutations %>%
-    dplyr::left_join(MAF_input,
-                     by = c("chr", "from", "to", "ref", "alt", shared_colnames))
+  for(i in 1:nrow(MAF_input))
+  {
+    f_cnaqc = x$mutations %>%
+      dplyr::filter(chr == MAF_input$MAF.Chromosome[i]) %>%
+      dplyr::mutate(dist_maf = abs(from - MAF_input$MAF.Start_Position[i])) %>%
+      dplyr::arrange(dist_maf)
+
+    # MAF variant i-th matches CNAqc variant f_cnaqc$id[1]
+    # with distance f_cnaqc$dist_maf[1]
+    MAF_input$maf_match_id[i] = f_cnaqc$maf_match_id[1]
+    MAF_input$match_distance_maf[i] = f_cnaqc$dist_maf[1]
+  }
+
+  if(any(is.na(MAF_input$maf_match_id)))
+  {
+    cli::cli_alert_warning("Some MAF mutations are not matched")
+    MAF_input %>%
+      dplyr::filter(is.na(maf_match_id)) %>%
+      dplyr::select(
+        MAF.Hugo_Symbol,
+        MAF.Chromosome,
+        MAF.Start_Position,
+        MAF.End_Position,
+        MAF.Variant_Type,
+        MAF.Variant_Classification
+      ) %>%
+      print()
+  }
+
+  if(any(MAF_input$match_distance_maf > 0)) {
+    cli::cli_alert_warning("The following MAF mutations are assigned, but not matched exactly -- might be indels?")
+
+    MAF_input %>%
+      dplyr::filter(match_distance_maf > 0) %>%
+      dplyr::select(
+        MAF.Hugo_Symbol,
+        MAF.Chromosome,
+        MAF.Start_Position,
+        MAF.End_Position,
+        MAF.Variant_Type,
+        MAF.Variant_Classification
+        ) %>%
+      print()
+  }
+
+  x$mutations =
+    x$mutations %>%
+    dplyr::left_join(MAF_input, by = c("maf_match_id", shared_colnames))
+
+  # x$mutations = x$mutations %>%
+  #   dplyr::left_join(MAF_input,
+  #                    by = c("chr", "from", "to", "ref", "alt", shared_colnames))
 
   return(x)
 }
@@ -109,7 +172,8 @@ augment_with_maf = function(x, maf)
 #' @param x A CNAqc object with MAF annotations.
 #' @param only_drivers If `TRUE`, only driver mutations are used, otherwised all.
 #' When `TRUE`, if drivers are not annotated, an error is thrown.
-#' @param CNA_genes
+#' @param CNA_genes The list of genes for ....
+#' @param assembly If `TRUE`...
 #'
 #' @return
 #'
@@ -135,14 +199,15 @@ augment_with_maf = function(x, maf)
 #' }
 as_maftools_obj = function(x,
                            only_drivers = TRUE,
-                           CNA_genes = NULL)
+                           CNA_genes = NULL,
+                           cross_reference = TRUE,
+                           assembly = TRUE)
 {
-
-  if(!(inherits(x, 'cnaqc'))){
+  if (!(inherits(x, 'cnaqc'))) {
     cli::cli_abort("The input object is not a CNAqc object.")
   }
 
-  if(!(x %>% has_MAF_annotations)){
+  if (!(x %>% has_MAF_annotations)) {
     cli::cli_abort("MAF annotations are missing, cannot use this function.")
   }
 
@@ -153,7 +218,7 @@ as_maftools_obj = function(x,
 
   if (only_drivers)
   {
-    if(!(x %>% has_driver_data)){
+    if (!(x %>% has_drivers)) {
       cli::cli_abort("Driver data is missing, cannot use only_drivers = TRUE.")
     }
 
@@ -167,6 +232,9 @@ as_maftools_obj = function(x,
   {
     cli::cli_alert("Extracting CNA data for {.field {length(CNA_genes)}} genes")
 
+    if(cross_reference)
+      CNA_genes = intersect(CNA_genes, mutations_data$Hugo_Symbol)
+
     # CNA mapping
     genes_map = CNA_gene(x, genes = CNA_genes)
 
@@ -174,18 +242,33 @@ as_maftools_obj = function(x,
       dplyr::rename(Gene = gene,
                     CN = karyotype) %>%
       dplyr::mutate(Sample_name = x$sample) %>%
-      dplyr::select(-chr,-from,-to,-Major,-minor) %>%
+      dplyr::select(-chr, -from, -to, -Major, -minor) %>%
       dplyr::select(Gene, Sample_name, CN)
 
-    m =  maftools::read.maf(mutations_data,
-                            cnTable = genes_map,
-                            verbose = FALSE)
+    if (assembly)
+    {
+      return(maftools::read.maf(mutations_data,
+                                cnTable = genes_map,
+                                verbose = FALSE))
+    }
+    else
+    {
+      return(list(mutations = mutations_data,
+                  CNA = genes_map))
+    }
+
+  }
+
+  # No CNA data
+  if (assembly)
+  {
+    return(maftools::read.maf(mutations_data,
+                              verbose = FALSE))
   }
   else
-    m =  maftools::read.maf(mutations_data,
-                            verbose = FALSE)
-
-  return(m)
+  {
+    return(list(mutations = mutations_data, CNA = NULL))
+  }
 }
 
 
@@ -230,11 +313,34 @@ as_maftools_cohort = function(x,
                               only_drivers = TRUE,
                               CNA_genes = NULL)
 {
-  lapply(x,
-         as_maftools_obj,
-         only_drivers = only_drivers,
-         CNA_genes = CNA_genes) %>%
-    maftools::merge_mafs()
+  inputs = lapply(x,
+                  as_maftools_obj,
+                  only_drivers = only_drivers,
+                  CNA_genes = CNA_genes,
+                  cross_reference = TRUE,
+                  assembly = FALSE)
+
+  pooled_mutations = lapply(inputs, function(x) x[[1]]) %>% Reduce(f = dplyr::bind_rows)
+  pooled_CNA = lapply(inputs, function(x) x[[2]]) %>% Reduce(f = dplyr::bind_rows)
+
+  pooled_CNA = pooled_CNA %>% mutate(CN = ifelse(CN %in% c("1:0", "2:0", "2:1", "2:2"), CN, 'Other'))
+
+
+  if(!is.null(pooled_CNA) & nrow(pooled_CNA) > 0)
+  {
+    return(maftools::read.maf(pooled_mutations,
+                              cnTable = pooled_CNA,
+                              verbose = FALSE))
+  }
+
+  return(maftools::read.maf(pooled_mutations,
+                            verbose = FALSE))
+
+  # lapply(x,
+  #        as_maftools_obj,
+  #        only_drivers = only_drivers,
+  #        CNA_genes = CNA_genes) %>%
+  #   maftools::merge_mafs()
 }
 
 #' Extract per-gene copy number status.
@@ -281,7 +387,6 @@ CNA_gene = function(x, genes = NULL)
     coordinates = gene_coordinates_GRCh38
   }
   else{
-
     if (x$reference_genome %in% c("hg19", "GRCh37"))
     {
       data('gene_coordinates_hg19', package = 'CNAqc')
@@ -298,7 +403,7 @@ CNA_gene = function(x, genes = NULL)
   cna = x %>% CNA(type = 'clonal')
 
   # Scan CNA by gene or viceversa depends on what is faster
-  if(nrow(cna) < length(genes))
+  if (nrow(cna) < length(genes))
   {
     # cli::cli_alert("Scanning by  ")
 
