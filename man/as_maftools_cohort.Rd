@@ -2,7 +2,7 @@
 % Please edit documentation in R/maf.R
 \name{as_maftools_cohort}
 \alias{as_maftools_cohort}
-\title{Convert a list of CNAqc object to a [maftools](https://bioconductor.org/packages/release/bioc/html/maftools.html) object.}
+\title{Convert a list of CNAqc object to a maftools object.}
 \usage{
 as_maftools_cohort(x, only_drivers = TRUE, CNA_genes = NULL)
 }

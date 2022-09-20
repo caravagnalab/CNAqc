@@ -1,34 +1,61 @@
-#' Import MAF annotations into a CNAqc object
+#' Import MAF annotations.
 #'
 #' @description
 #'
-#' This function import MAF annotations into a CNAqc object. MAF annotations
-#' should have been created using the [vcf2maf](https://github.com/mskcc/vcf2maf)
+#' This function imports
+#' \href{https://docs.gdc.cancer.gov/Data/File_Formats/MAF_Format/#introduction}{Mutation Annotation Formats (MAF)}
+#' data into a CNAqc object, or to a mutations
+#' dataframe in the format ready for CNAqc. Therefore the expected uses are
+#'
+#' \itemize{
+#'  \item{"[Option 1]"}{Mutations + CNA + Purity -> CNAqc -> MAF annotation}
+#'  \item{"[Option 2]"}{Mutations -> MAF annotation -> Mutations (with MAF) + CNA + Purity -> CNAqc}
+#' }
+#'
+#' MAF annotations should have been created using the
+#' \href{https://github.com/mskcc/vcf2maf}{vcf2maf}
 #' utility. At this point, if one has created the input data for CNAqc from the
-#' original VCF file, the MAF can be added to the CNAqc object. Mutations are
-#' associated based on genome locations and substitutions. Once many CNAqc objects
-#' have been augmented with their MAF annotations, a cohort of MAFs can be
-#' exported and functions from Bioconductor package [maftools](https://bioconductor.org/packages/release/bioc/html/maftools.html)
+#' original VCF file, the MAF can be added to the CNAqc object (Option 1), or to
+#' the available mutations before creating the CNAqc obejct (Option 2).
+#'
+#' Mutations are associated based on genome locations and substitutions. Since
+#' MAFs tend to use some different convention for genome location (especially
+#' for indels), mutations are matched by closes genomic coordinates.
+#'
+#' Note that if one has many CNAqc objects with their MAF annotations, a cohort of
+#' MAFs can be exported and functions from Bioconductor package
+#' \href{https://bioconductor.org/packages/release/bioc/html/maftools.html}{maftools}
 #' can be used to plot data from multiple patients.
 #'
-#' @param x A CNAqc object.
-#' @param maf The file MAF associated containing the annotations in MAF format
-#' for the input object `x`.
+#' @param x A CNAqc object, or a dataframe of mutations in the input format
+#' for CNAqc.
+#' @param maf The file MAF associated containing the annotations in MAF format.
 #'
 #' @seealso function \code{\link{as_maftools_cohort}} to convert multiple CNAqc
 #' objects with MAF annotations into a single MAF cohort;  package
-#' [maftools](https://bioconductor.org/packages/release/bioc/html/maftools.html) to
-#' summarize, analyze and visualize MAF Files; the utility [vcf2maf](https://github.com/mskcc/vcf2maf)
-#' to create MAF files from VCFs, using the [Ensembl Variant Effect Predictor (VEP)](https://www.ensembl.org/info/docs/tools/vep/index.html)
+#' \href{https://bioconductor.org/packages/release/bioc/html/maftools.html}{maftools}
+#' to summarize, analyze and visualize MAF Files; the utility
+#' \href{https://github.com/mskcc/vcf2maf}{vcf2maf} to create MAF files from VCFs,
+#' using the
+#' \href{https://www.ensembl.org/info/docs/tools/vep/index.html}{Ensembl Variant Effect Predictor (VEP)}
 #' utility.
 #'
-#' @return A CNAqc object like `x` where the mutations are associated to the
-#' MAF annotations, matched by genomic coordinates of the mutations. The S3
-#' print method for `x` will report the presence of MAF annotaitons.
+#' @return It depends on `x`
+#' \itemize{
+#'  \item{"[Option 1]"}{
+#'  A CNAqc object like `x` where the mutations are associated to the
+#'  MAF annotations, if `x` is a CNAqc object. In this case the S3 print method for `x` will report the
+#' presence of MAF annotations.
+#' }
+#'  \item{"[Option 2]"}{
+#'  If `x` is a dataframe, the same dataframe augmented with MAF annotations.
+#' }
+#' }
 #'
 #' @export
 #'
 #' @examples
+#' # Example with a CNAqc input object
 #' if(FALSE)
 #' {
 #'    # Create your CNAqc object (omissis here) from an original "file.vcf"
@@ -45,21 +72,47 @@
 #' }
 augment_with_maf = function(x, maf)
 {
-  cli::cli_h1("Augmenting a CNAqc object with its MAF")
-
-  if(x %>% has_MAF_annotations())
+  # Manage inputs
+  if(inherits(x, 'cnaqc'))
   {
-    cli::cli_alert_warning("Input has already MAF annotations that will be dropped")
+    cli::cli_h1("Augmenting a CNAqc object with its MAF")
 
-    cn = colnames(x$mutations)
-    cn = grepl("MAF.", cn)
+    if(x %>% has_MAF_annotations())
+    {
+      cli::cli_alert_warning("Input has already MAF annotations that will be dropped")
 
-    x$mutations = x$mutations[, !cn, drop = FALSE]
+      cn = colnames(x$mutations)
+      cn = grepl("MAF.", cn)
+
+      x$mutations = x$mutations[, !cn, drop = FALSE]
+    }
+
+    cli::cli_h2("Input CNAqc object")
+
+    x %>% print()
   }
 
-  cli::cli_h2("Input CNAqc object")
+  if(x %>% is.data.frame())
+  {
+    cli::cli_h1("Augmenting a mutation dataframe with MAF annotations")
+    cat("\n")
 
-  x %>% print()
+    required_columns = c('chr', 'from', 'to', 'ref', 'alt', 'DP', 'NV', 'VAF')
+
+    if (!all(required_columns %in% colnames(x)))
+      stop("Bad mutation format, see the manual.")
+
+    print(x)
+  }
+
+  # Mutations table
+  mutations_table = NULL
+
+  if(inherits(x, 'cnaqc'))
+    mutations_table = x %>% Mutations() # so we take those for subclonal CNAs as well
+
+  if(x %>% is.data.frame())
+    mutations_table = x
 
   # MAF loading
   cli::cli_h2("MAF input")
@@ -72,7 +125,7 @@ augment_with_maf = function(x, maf)
   # MAF conversion
   MAF_input = MAF_input@data %>% tibble::as_tibble()
 
-  shared_colnames = intersect(x$mutations %>% colnames,
+  shared_colnames = intersect(mutations_table %>% colnames,
                               MAF_input %>% colnames)
 
   cn = colnames(MAF_input)
@@ -95,11 +148,11 @@ augment_with_maf = function(x, maf)
 
   # Matching in MAF style
   MAF_input$maf_match_id = MAF_input$match_distance_maf = NA
-  x$mutations$maf_match_id = 1:nrow(x$mutations)
+  mutations_table$maf_match_id = 1:nrow(mutations_table)
 
   for(i in 1:nrow(MAF_input))
   {
-    f_cnaqc = x$mutations %>%
+    f_cnaqc = mutations_table %>%
       dplyr::filter(chr == MAF_input$MAF.Chromosome[i]) %>%
       dplyr::mutate(dist_maf = abs(from - MAF_input$MAF.Start_Position[i])) %>%
       dplyr::arrange(dist_maf)
@@ -131,6 +184,7 @@ augment_with_maf = function(x, maf)
 
     MAF_input %>%
       dplyr::filter(match_distance_maf > 0) %>%
+      dplyr::arrange(dplyr::desc(match_distance_maf)) %>%
       dplyr::select(
         MAF.Hugo_Symbol,
         MAF.Chromosome,
@@ -142,13 +196,25 @@ augment_with_maf = function(x, maf)
       print()
   }
 
-  x$mutations =
-    x$mutations %>%
+  mutations_table =
+    mutations_table %>%
     dplyr::left_join(MAF_input, by = c("maf_match_id", shared_colnames))
 
-  # x$mutations = x$mutations %>%
-  #   dplyr::left_join(MAF_input,
-  #                    by = c("chr", "from", "to", "ref", "alt", shared_colnames))
+  # Restore inside the object if required
+  if(inherits(x, 'cnaqc'))
+  {
+    cli::cli_alert_info("Assemblying and returning a new CNAqc object")
+
+    new_objs = init(
+      mutations = mutations_table,
+      cna = x %>% CNA(),
+      purity = x$purity,
+      ref = x$reference_genome,
+      sample = x$sample
+    )
+
+    return(new_objs)
+  }
 
   return(x)
 }

@@ -2,32 +2,57 @@
 % Please edit documentation in R/maf.R
 \name{augment_with_maf}
 \alias{augment_with_maf}
-\title{Import MAF annotations into a CNAqc object}
+\title{Import MAF annotations.}
 \usage{
 augment_with_maf(x, maf)
 }
 \arguments{
-\item{x}{A CNAqc object.}
+\item{x}{A CNAqc object, or a dataframe of mutations in the input format
+for CNAqc.}
 
-\item{maf}{The file MAF associated containing the annotations in MAF format
-for the input object `x`.}
+\item{maf}{The file MAF associated containing the annotations in MAF format.}
 }
 \value{
-A CNAqc object like `x` where the mutations are associated to the
-MAF annotations, matched by genomic coordinates of the mutations. The S3
-print method for `x` will report the presence of MAF annotaitons.
+It depends on `x`
+\itemize{
+ \item{"[Option 1]"}{
+ A CNAqc object like `x` where the mutations are associated to the
+ MAF annotations, if `x` is a CNAqc object. In this case the S3 print method for `x` will report the
+presence of MAF annotations.
+}
+ \item{"[Option 2]"}{
+ If `x` is a dataframe, the same dataframe augmented with MAF annotations.
+}
+}
 }
 \description{
-This function import MAF annotations into a CNAqc object. MAF annotations
-should have been created using the [vcf2maf](https://github.com/mskcc/vcf2maf)
+This function imports
+\href{https://docs.gdc.cancer.gov/Data/File_Formats/MAF_Format/#introduction}{Mutation Annotation Formats (MAF)}
+data into a CNAqc object, or to a mutations
+dataframe in the format ready for CNAqc. Therefore the expected uses are
+
+\itemize{
+ \item{"[Option 1]"}{Mutations + CNA + Purity -> CNAqc -> MAF annotation}
+ \item{"[Option 2]"}{Mutations -> MAF annotation -> Mutations (with MAF) + CNA + Purity -> CNAqc}
+}
+
+MAF annotations should have been created using the
+\href{https://github.com/mskcc/vcf2maf}{vcf2maf}
 utility. At this point, if one has created the input data for CNAqc from the
-original VCF file, the MAF can be added to the CNAqc object. Mutations are
-associated based on genome locations and substitutions. Once many CNAqc objects
-have been augmented with their MAF annotations, a cohort of MAFs can be
-exported and functions from Bioconductor package [maftools](https://bioconductor.org/packages/release/bioc/html/maftools.html)
+original VCF file, the MAF can be added to the CNAqc object (Option 1), or to
+the available mutations before creating the CNAqc obejct (Option 2).
+
+Mutations are associated based on genome locations and substitutions. Since
+MAFs tend to use some different convention for genome location (especially
+for indels), mutations are matched by closes genomic coordinates.
+
+Note that if one has many CNAqc objects with their MAF annotations, a cohort of
+MAFs can be exported and functions from Bioconductor package
+\href{https://bioconductor.org/packages/release/bioc/html/maftools.html}{maftools}
 can be used to plot data from multiple patients.
 }
 \examples{
+# Example with a CNAqc input object
 if(FALSE)
 {
    # Create your CNAqc object (omissis here) from an original "file.vcf"
@@ -46,8 +71,10 @@ if(FALSE)
 \seealso{
 function \code{\link{as_maftools_cohort}} to convert multiple CNAqc
 objects with MAF annotations into a single MAF cohort;  package
-[maftools](https://bioconductor.org/packages/release/bioc/html/maftools.html) to
-summarize, analyze and visualize MAF Files; the utility [vcf2maf](https://github.com/mskcc/vcf2maf)
-to create MAF files from VCFs, using the [Ensembl Variant Effect Predictor (VEP)](https://www.ensembl.org/info/docs/tools/vep/index.html)
+\href{https://bioconductor.org/packages/release/bioc/html/maftools.html}{maftools}
+to summarize, analyze and visualize MAF Files; the utility
+\href{https://github.com/mskcc/vcf2maf}{vcf2maf} to create MAF files from VCFs,
+using the
+\href{https://www.ensembl.org/info/docs/tools/vep/index.html}{Ensembl Variant Effect Predictor (VEP)}
 utility.
 }

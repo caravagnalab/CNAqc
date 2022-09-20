@@ -2,9 +2,15 @@
 % Please edit documentation in R/maf.R
 \name{as_maftools_obj}
 \alias{as_maftools_obj}
-\title{Convert a CNAqc object to a [maftools](https://bioconductor.org/packages/release/bioc/html/maftools.html) object.}
+\title{Convert a CNAqc object to a maftools object.}
 \usage{
-as_maftools_obj(x, only_drivers = TRUE, CNA_genes = NULL)
+as_maftools_obj(
+  x,
+  only_drivers = TRUE,
+  CNA_genes = NULL,
+  cross_reference = TRUE,
+  assembly = TRUE
+)
 }
 \arguments{
 \item{x}{A CNAqc object with MAF annotations.}
@@ -12,7 +18,9 @@ as_maftools_obj(x, only_drivers = TRUE, CNA_genes = NULL)
 \item{only_drivers}{If `TRUE`, only driver mutations are used, otherwised all.
 When `TRUE`, if drivers are not annotated, an error is thrown.}
 
-\item{CNA_genes}{}
+\item{CNA_genes}{The list of genes for ....}
+
+\item{assembly}{If `TRUE`...}
 }
 \value{
 
