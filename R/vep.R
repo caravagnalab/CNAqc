@@ -62,8 +62,7 @@
 #'    x %>% Mutations %>% colnames
 #' }
 augment_with_vep = function(x,
-                            vep,
-                            annotation_files, files_type)
+                            vep)
 {
   # Input selection
   if(inherits(x, 'cnaqc'))
