@@ -92,7 +92,7 @@ CNA = function(x, type = c("clonal", "subclonal"))
   if(("subclonal" %in% type) & x$has_subclonal_CNA)
     subclonal = x$cna_subclonal
 
-  cna = bind_rows(clonal, subclonal) %>%
+  cna = dplyr::bind_rows(clonal, subclonal) %>%
     dplyr::select(chr, from, to, starts_with('Major'), starts_with('minor'), CCF, everything())
 
   if((cna %>% nrow())== 0) cli::cli_alert_danger("No CNAs with these parameters: {.field {cna}}.")
