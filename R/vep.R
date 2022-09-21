@@ -126,7 +126,7 @@ augment_with_vep = function(x,
       VEP.chr, VEP.from, VEP.to, VEP.ref, VEP.alt, dplyr::everything()
     )
 
-  cat("\n")
+  # cat("\n")
   print(VEP_input)
 
   # Mutations table

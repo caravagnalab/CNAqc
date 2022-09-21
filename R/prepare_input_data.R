@@ -135,7 +135,7 @@ prepare_input_data = function(mutations, cna, tumour_purity)
 
     missing_drivers = which(!(driver_ids %in% all_ids), arr.ind = TRUE)
 
-    if(length(driver_mutations) > 0)
+    if(length(missing_drivers) > 0)
     {
       missing = driver_mutations$driver_label[missing_drivers]
       missing = paste("Driver(s): ", paste(missing, collapse = ', '))
