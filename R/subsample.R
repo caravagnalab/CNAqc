@@ -363,34 +363,54 @@ split_by_chromosome = function(x,
 {
   stopifnot(inherits(x, 'cnaqc'))
 
-  objs = NULL
-  nm = NULL
+  # objs = NULL
+  # nm = NULL
+  #
+  # for(chr in chromosomes)
+  # {
+  #   clonal_mutations = x$mutations %>% filter(chr == !!chr)
+  #
+  #   if((clonal_mutations %>% nrow()) == 0) next
+  #
+  #   cli::cli_h3(chr)
+  #   cat("\n")
+  #
+  #   subclonal_mutations = x$cna_subclonal %>% filter(chr == !!chr) %>% pull(mutations) %>% Reduce(f = bind_rows)
+  #   cnas = x$cna %>% filter(chr == !!chr)
+  #
+  #   cnaqc_obj = init(
+  #     clonal_mutations %>% bind_rows(subclonal_mutations),
+  #     cna = cnas,
+  #     purity = x$purity,
+  #     ref = x$reference_genome,
+  #     sample = x$sample
+  #   )
+  #
+  #   objs = append(objs, list(cnaqc_obj))
+  #   nm = c(nm, chr)
+  # }
+  #
+  # names(objs) = nm
 
-  for(chr in chromosomes)
-  {
-    clonal_mutations = x$mutations %>% filter(chr == !!chr)
+  x_muts = x %>%
+    Mutations() %>%
+    dplyr::group_split(chr)
 
-    if((clonal_mutations %>% nrow()) == 0) next
+  objs = lapply(
+    x_muts,
+    function(m){
+      init(
+        mutations = m,
+        cna = x %>% CNA,
+        purity = x$purity,
+        ref = x$reference_genome,
+        sample = x$sample
+      )
+    })
 
-    cli::cli_h3(chr)
-    cat("\n")
+  names(objs) = sapply(x_muts, function(m) m$chr[1])
 
-    subclonal_mutations = x$cna_subclonal %>% filter(chr == !!chr) %>% pull(mutations) %>% Reduce(f = bind_rows)
-    cnas = x$cna %>% filter(chr == !!chr)
-
-    cnaqc_obj = init(
-      clonal_mutations %>% bind_rows(subclonal_mutations),
-      cna = cnas,
-      purity = x$purity,
-      ref = x$reference_genome,
-      sample = x$sample
-    )
-
-    objs = append(objs, list(cnaqc_obj))
-    nm = c(nm, chr)
-  }
-
-  names(objs) = nm
+  objs = objs[gtools::mixedsort(names(objs))]
 
   return(objs)
 }

@@ -122,7 +122,10 @@ annotate_drivers_to_histogram = function(x, drivers_list, p, which)
     ) +
     ggplot2::scale_color_manual(values = CNAqc:::get_karyotypes_colors(unique(drivers_list$karyotype))) +
     ggrepel::geom_label_repel(
-      data = drivers_list,
+      data = drivers_list %>%
+        dplyr::mutate(
+          driver_label = ifelse(nchar(driver_label) > 15, gsub(' ', '\n', driver_label), driver_label)
+        ),
       ggplot2::aes(
         x = eval(parse(text = which)),
         y =  L$y.range[2] * .5,
@@ -138,6 +141,54 @@ annotate_drivers_to_histogram = function(x, drivers_list, p, which)
   ggplot2::coord_cartesian(clip = 'off') +
   ggplot2::labs(y = 'count')
 
+
+  # p = p +
+  #   ggplot2::geom_vline(
+  #     data = drivers_list,
+  #     show.legend = FALSE,
+  #     ggplot2::aes(color = karyotype, xintercept = eval(parse(text = which))),
+  #     linetype = 'dashed',
+  #     size = .3
+  #   ) +
+  #   ggplot2::scale_color_manual(values = CNAqc:::get_karyotypes_colors(unique(drivers_list$karyotype))) +
+  #   ggplot2::coord_cartesian(clip = 'off') +
+  #   ggplot2::labs(y = 'count')
+  #
+  # p+
+  #   # ggrepel::geom_label_repel(
+  #   #   data = drivers_list %>%
+  #   #     dplyr::mutate(
+  #   #       driver_label = ifelse(nchar(driver_label) > 15, gsub(' ', '\n', driver_label), driver_label)
+  #   #     ),
+  #   #   ggplot2::aes(
+  #   #     x = eval(parse(text = which)),
+  #   #     y =  L$y.range[2] * .5,
+  #   #     label = driver_label,
+  #   #   ),
+  #   #   color = 'black',
+  #   #   # ylim = c(0.7, L$y.range[2] * .9),
+  #   #   ylim = c(L$y.range[2] * .5, L$y.range[2]),
+  #   #   size = 2,
+  #   #   nudge_x = 0,
+  #   #   show.legend = FALSE
+  #   # ) +
+  #   geom_text_repel(
+  #     data = drivers_list,
+  #     ggplot2::aes(
+  #       x = eval(parse(text = which)),
+  #       y =  1000,
+  #       label = driver_label,
+  #     ),
+  #     force_pull   = 0, # do not pull toward data points
+  #     nudge_y      = 0.05,
+  #     direction    = "x",
+  #     angle        = 90,
+  #     hjust        = 1,
+  #     segment.size = 0.2,
+  #     max.iter = 1e4,
+  #     max.time = 1,
+  #     size = 2
+  #   )
 
 
   return(p)

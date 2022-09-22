@@ -66,7 +66,7 @@ plot_data_histogram = function(x,
 
   plot_f = plot_f + ggplot2::guides(fill = ggplot2::guide_legend(''))
 
-  if (!CNAqc:::has_driver_data(x))
+  if (!has_driver_data(x))
     return(plot_f)
 
   # Drivers

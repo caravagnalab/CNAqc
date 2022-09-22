@@ -93,59 +93,60 @@ print.cnaqc = function(x, ...)
 
   if (with_peaks)
   {
-    prop = x$peaks_analysis$matches %>%
-      dplyr::group_by(QC) %>%
-      dplyr::summarise(prop = sum(weight), .groups = 'drop') %>%
-      dplyr::arrange(dplyr::desc(prop)) %>%
-      dplyr::filter(dplyr::row_number() == 1) %>%
-      dplyr::pull(prop)
-    prop = round(prop * 100, digits = 0)
-
-    pur_sc = round(x$peaks_analysis$score, digits = 4)
-    pur_ch = paste0(round(x$peaks_analysis$score * 100, digits = 0), '%')
-
-    if (x$peaks_analysis$QC == "PASS")
-      cli::cli_h1(
-        paste0(
-          ppass(),
-          " Peaks QC {crayon::bold(x$peaks_analysis$matching_strategy)}: {crayon::green(paste0(prop, '%'))}, {crayon::green(paste('\u03bb =', pur_sc))}. Purity correction: {.value {pur_ch}}."
-        )
-      )
-    else
-      cli::cli_h1(
-        paste0(
-          pfail(),
-          " Peaks QC {crayon::bold(x$peaks_analysis$matching_strategy)}: {crayon::red(paste0(prop, '%'))}, {crayon::red(paste('\u03bb =', pur_sc))}. Purity correction: {.value {pur_ch}}."
-        )
-      )
-
-    cat('\n')
-
-    xx = x$peaks_analysis$matches %>%
-      dplyr::mutate(QC = ifelse(QC == "PASS", ppass(), pfail()))
-
-    for (karyo in xx$karyotype %>% unique)
+    if ("matches" %in% names(x$peaks_analysis))
     {
-      xxx = xx %>%
-        dplyr::filter(karyotype == karyo)
+      prop = x$peaks_analysis$matches %>%
+        dplyr::group_by(QC) %>%
+        dplyr::summarise(prop = sum(weight), .groups = 'drop') %>%
+        dplyr::arrange(dplyr::desc(prop)) %>%
+        dplyr::filter(dplyr::row_number() == 1) %>%
+        dplyr::pull(prop)
+      prop = round(prop * 100, digits = 0)
 
-      qc = paste(xxx$QC, sprintf("%-7s", round(xxx$offset, 3)), collapse = ' ')
-      # qc = paste0("[", xx$karyotype[1], "]",  qc)
+      pur_sc = round(x$peaks_analysis$score, digits = 4)
+      pur_ch = paste0(round(x$peaks_analysis$score * 100, digits = 0), '%')
 
-      n = sprintf("%-5s", x$n_karyotype[karyo])
-      p = x$n_karyotype[karyo] / sum(x$n_karyotype[xx$karyotype %>% unique])
-      p = format(p * 100, digits = 1)
-      p = sprintf("%3s", p)
+      if (x$peaks_analysis$QC == "PASS")
+        cli::cli_h1(
+          paste0(
+            ppass(),
+            " Peaks QC {crayon::bold(x$peaks_analysis$matching_strategy)}: {crayon::green(paste0(prop, '%'))}, {crayon::green(paste('\u03bb =', pur_sc))}. Purity correction: {.value {pur_ch}}."
+          )
+        )
+      else
+        cli::cli_h1(
+          paste0(
+            pfail(),
+            " Peaks QC {crayon::bold(x$peaks_analysis$matching_strategy)}: {crayon::red(paste0(prop, '%'))}, {crayon::red(paste('\u03bb =', pur_sc))}. Purity correction: {.value {pur_ch}}."
+          )
+        )
 
-      cli::cli_alert_info(
-        paste0(
+      cat('\n')
+
+      xx = x$peaks_analysis$matches %>%
+        dplyr::mutate(QC = ifelse(QC == "PASS", ppass(), pfail()))
+
+      for (karyo in xx$karyotype %>% unique)
+      {
+        xxx = xx %>%
+          dplyr::filter(karyotype == karyo)
+
+        qc = paste(xxx$QC, sprintf("%-7s", round(xxx$offset, 3)), collapse = ' ')
+        # qc = paste0("[", xx$karyotype[1], "]",  qc)
+
+        n = sprintf("%-5s", x$n_karyotype[karyo])
+        p = x$n_karyotype[karyo] / sum(x$n_karyotype[xx$karyotype %>% unique])
+        p = format(p * 100, digits = 1)
+        p = sprintf("%3s", p)
+
+        cli::cli_alert_info(paste0(
           crayon::blue(xxx$karyotype[1]),
           " ~ n = {n} ({p}%) {clisymbols::symbol$arrow_right} ",
           qc,
           ""
-        )
-      )
+        ))
 
+      }
     }
 
     # General karyotypes
