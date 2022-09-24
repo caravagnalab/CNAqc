@@ -2,7 +2,7 @@
 % Please edit documentation in R/subsample.R
 \name{subset_by_segment_karyotype}
 \alias{subset_by_segment_karyotype}
-\title{Subset by clonal simple segments.}
+\title{Subset by clonal segments.}
 \usage{
 subset_by_segment_karyotype(x, karyotypes)
 }
@@ -13,7 +13,7 @@ subset_by_segment_karyotype(x, karyotypes)
 (e.g., \code{"1:1", "2,1", ...}) that will be retained.}
 }
 \description{
-Retains only a subset of clonal simple segments, e.g., all `2:1` segments.
+Retains only a subset of clonal segments, e.g., all `2:1` segments.
 }
 \examples{
 data('example_dataset_CNAqc', package = 'CNAqc')

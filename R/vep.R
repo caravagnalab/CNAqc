@@ -62,7 +62,8 @@
 #'    x %>% Mutations %>% colnames
 #' }
 augment_with_vep = function(x,
-                            vep)
+                            vep,
+                            columns = NULL)
 {
   # Input selection
   if(inherits(x, 'cnaqc'))
@@ -102,29 +103,50 @@ augment_with_vep = function(x,
   # VEP loading
   cli::cli_h2("VEP input")
 
-  VEP_input = readr::read_tsv(
-    vep,
-    col_names = c(
-      "VEP.chr",
-      "VEP.from",
-      "VEP.ref",
-      "VEP.alt",
-      "VEP.filter",
-      "VEP.annotation",
-      "VEP.impact",
-      "VEP.gene_name",
-      "VEP.gene_code",
-      "VEP.exon"
-    ),
-    col_types = readr::cols()
-  ) %>%
+  if(is.null(columns))
+  {
+    VEP_input = readr::read_tsv(vep, col_types = readr::cols())
+
+    if(
+      !all(c('CHROM', "POS", "END", "REF", "ALT") %in% colnames(VEP_input))
+    )
+      stop("Missing required colnames into VEP inputs")
+
+    VEP_input = VEP_input %>%
+      dplyr::rename(
+        chr = CHROM,
+        from = POS,
+        to = END,
+        ref = REF,
+        alt = ALT
+      )
+
+    colnames(VEP_input) = paste0('VEP.', VEP_input %>% colnames)
+  }
+  else
+  {
+    VEP_input = readr::read_tsv(
+      vep,
+      col_names = columns,
+      col_types = readr::cols()
+    )
+
+    if(
+      !all(c('chr', "from", "ref", "alt") %in% colnames(VEP_input))
+    )
+      stop("Missing required colnames into VEP inputs")
+
+    colnames(VEP_input) = paste0('VEP.', VEP_input %>% colnames)
+  }
+
+  VEP_input = VEP_input %>%
     dplyr::mutate(
       VEP.to = VEP.from + nchar(VEP.alt),
-      # vep_id_matching = dplyr::row_number()
-      ) %>%
+    ) %>%
     dplyr::select(
       VEP.chr, VEP.from, VEP.to, VEP.ref, VEP.alt, dplyr::everything()
     )
+
 
   # cat("\n")
   print(VEP_input)
@@ -176,7 +198,7 @@ augment_with_vep = function(x,
   # Mark exonic mutations
   mutations_table = mutations_table %>%
     dplyr::mutate(
-      VEP.EXONIC = ifelse(VEP.exon != "." & !is.na(VEP.exon), TRUE, FALSE)
+      VEP.EXONIC = ifelse(VEP.EXON != "." & !is.na(VEP.EXON), TRUE, FALSE)
       )
 
   # Restore inside the object if required
