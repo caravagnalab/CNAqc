@@ -351,7 +351,16 @@ as_maftools_obj = function(x,
 #' @param x A list of CNAqc objects with MAF annotations.
 #' @param only_drivers If `TRUE`, only driver mutations are used, otherwised all.
 #' When `TRUE`, if drivers are not annotated, an error is thrown.
-#' @param CNA_genes
+#' @param CNA_genes Gene names (from MAF.Hugo_Symbol) for which we want to report
+#' the copy number value.
+#' @param clinicalData Clinical data in the format of the maftools package, in the
+#' form of a dataframe with a column `"Tumor_Sample_Barcode"` reporting sample names
+#' and a column for every clinical annotation to include.
+#' @param CNA_map_function A function that returns, for a copy number value
+#' in CNAqc format (e.g., `"1:0"`) a label that is used by the MAF cohort. By
+#' default, for instance, `"1:0"` is mapped to `"LOH"`, `"2:0"` to `"CNLOH"`,
+#' `"2:1"` and `"2:2"` to `"Amplification"`, and `"1:1"` to `NA`. Use `NA` to
+#' avoid reporting the copy number in the MAF cohort.
 #'
 #' @return
 #'
@@ -377,7 +386,30 @@ as_maftools_obj = function(x,
 #' }
 as_maftools_cohort = function(x,
                               only_drivers = TRUE,
-                              CNA_genes = NULL)
+                              CNA_genes = NULL,
+                              clinicalData = NULL,
+                              CNA_map_function = function(cn){
+
+                                if(is.na(cn)) return(NA)
+
+                                A = strsplit(cn, ':')[[1]][1]
+                                B = strsplit(cn, ':')[[1]][2]
+
+                                if(A == "NA" | is.na(A)) return(NA)
+                                if(B == "NA" | is.na(B)) return(NA)
+
+                                if(cn == "1:1") return(NA)
+                                if(cn == "1:0") return('LOH')
+                                if(cn == "2:0") return('CNLOH')
+                                if(cn == "2:1") return('Amplification')
+                                if(cn == "2:2") return('Amplification')
+
+
+                                if(B == "0") return('LOH')
+
+                                return('Amplification')
+                              }
+                              )
 {
   inputs = lapply(x,
                   as_maftools_obj,
@@ -389,17 +421,52 @@ as_maftools_cohort = function(x,
   pooled_mutations = lapply(inputs, function(x) x[[1]]) %>% Reduce(f = dplyr::bind_rows)
   pooled_CNA = lapply(inputs, function(x) x[[2]]) %>% Reduce(f = dplyr::bind_rows)
 
-  pooled_CNA = pooled_CNA %>% mutate(CN = ifelse(CN %in% c("1:0", "2:0", "2:1", "2:2"), CN, 'Other'))
+  # pooled_CNA = pooled_CNA %>% mutate(CN = ifelse(CN %in% c("1:0", "2:0", "2:1", "2:2"), CN, 'Other'))
+  pooled_CNA$CN = sapply(pooled_CNA$CN, CNA_map_function)
 
+  tab_gene = pooled_CNA %>%
+    dplyr::group_by(Gene, CN) %>%
+    dplyr::summarise(N = dplyr::n(), .groups = 'drop') %>%
+    dplyr::ungroup() %>%
+    dplyr::arrange(Gene, dplyr::desc(N))
+
+  # for (g in tab_gene$Gene %>% unique) {
+  #   cli::cli_h3(crayon::red(g))
+  #   tab_gene %>% dplyr::filter(Gene == g) %>% data.frame() %>% print(row.names = FALSE)
+  # }
+
+  spots = tab_gene$CN %>% unique %>% paste()
+  nc = 3 + (nchar(spots) %>% max)
+
+  for (g in tab_gene$Gene %>% unique) {
+    g_l = sprintf("%25s", crayon::red(g))
+    g_spots = rep(0, length(spots))
+    names(g_spots) = spots
+
+    t_g = tab_gene %>% dplyr::filter(Gene == g)
+
+    for(i in 1:nrow(t_g))
+      g_spots[paste(t_g$CN[i])] = t_g$N[i]
+
+    g_print = paste(
+      sprintf(paste0("%", nc, 's'), names(g_spots)),
+      sprintf("%-5s", g_spots)
+    ) %>%
+      paste0(collapse = '')
+
+    cat(g_l, g_print, '\n')
+  }
 
   if(!is.null(pooled_CNA) & nrow(pooled_CNA) > 0)
   {
     return(maftools::read.maf(pooled_mutations,
+                              clinicalData = clinicalData,
                               cnTable = pooled_CNA,
                               verbose = FALSE))
   }
 
   return(maftools::read.maf(pooled_mutations,
+                            clinicalData = clinicalData,
                             verbose = FALSE))
 
   # lapply(x,
@@ -447,6 +514,7 @@ as_maftools_cohort = function(x,
 CNA_gene = function(x, genes = NULL)
 {
   # Coordinates
+  coordinates = NULL
   if (x$reference_genome %in% c("hg38", "GRCh38"))
   {
     data('gene_coordinates_GRCh38', package = 'CNAqc')
@@ -522,4 +590,108 @@ CNA_gene = function(x, genes = NULL)
 
     return(coordinates)
   }
+}
+
+#' Compute WT and mutant alleles per gene
+#'
+#' @description
+#'
+#' This function works on a CNAqc object with annotated driver mutations and
+#' a column (in mutation data) reporting gene symbols in human-readable format
+#' (e.g., TP53, KRAS, etc).
+#'
+#' This function retains only driver genes, maps them to clonal copy number
+#' segments, and then computes mutation phasing by VAFs. This phasing is the
+#' same operation carried out to compute CCFs in CNAqc; despite being an
+#' approximation to the canonical SNP-based phasing, this operation can easily
+#' determine from VAFs how many genome copies carry out a somatic mutation.
+#'
+#' With the complete information altogether (major/minor allele copies and mutation
+#' multiplicity), it is straightforward to identify, for instance, driver genes
+#' that are mutated with a matched LOH status (e.g., complete inactivation of
+#' suppressor genes, or amplification of oncogenic mutations).
+#'
+#' @param x A CNAqc object.
+#' @param gene_column The gene column where the human-redable gene name should
+#' be. By default it is `"VEP.SYMBOL"` assuming that this function gets run on
+#' a dataset where VEP annotations have been augmented.
+#'
+#' @return
+#' @seealso function \code{\link{augment_with_vep}} to add VEP annotations to
+#' a CNAqc object.
+#' @export
+#'
+#' @examples
+#' # Example with a CNAqc input object, and MAF annotations
+#' if(FALSE)
+#' {
+#'    # Create your CNAqc object (omissis here) from an original "file.vcf"
+#'    x = init(mutations = ..., cna = ..., purity = ...)
+#'
+#'    # Offline, create your MAF annotations as file "file_vcf.maf" from "file.vcf"
+#'    # vcf2maf file.vcf .... file_vcf.maf
+#'
+#'    # Import into R/CNAqc
+#'    x = augment_with_maf(x, maf = "file_vcf.maf")
+#'
+#'    # check they are in (there should be many columns with "MAF." prefix)
+#'    x %>% Mutations %>% colnames
+#'
+#'    # With MAF-imported that is the target column
+#'    wt_mutant_alleles(x, gene_column = 'MAF.Hugo_Symbol')
+#' }
+wt_mutant_alleles = function(x, gene_column = "VEP.SYMBOL")
+{
+  cli::cli_h1(paste0(x$sample," - WT/Mutant alleles table generation"))
+
+  stopifnot(inherits(x, 'cnaqc'))
+
+  if(!(x %>% has_drivers()))
+    cli::cli_abort("Input object has no drivers associated, aborting.")
+
+  if(!(gene_column %in% colnames(x$mutations)))
+    cli::cli_abort(paste("Column", gene_column, "is not present in the data, aborting."))
+
+  # Get driver genes
+  driver_genes = x %>% get_drivers()
+  driver_genes_names = driver_genes[[gene_column]]
+
+  # Get CNAs for them
+  cnas = CNA_gene(x, genes = driver_genes_names)
+
+  # Phase by VAFs
+  x_phased = x %>% subset_by_segment_karyotype(
+    karyotypes = cnas$karyotype %>% unique
+  ) %>%
+    advanced_phasing()
+
+  # Aggregate multiple mutaitons on the same gene
+  x_phased = x_phased$phasing %>%
+    dplyr::filter(is_driver) %>%
+    dplyr::select(!!gene_column, multiplicity) %>%
+    dplyr::group_by_at(gene_column) %>%
+    dplyr::summarise(mutant_alleles = sum(multiplicity))
+
+  colnames(x_phased)[1] = "gene"
+
+  cnas = cnas %>%
+    dplyr::left_join(x_phased, by = 'gene') %>%
+    dplyr::mutate(
+      wt_alleles = (Major + minor) - mutant_alleles,
+      wt_alleles = ifelse(wt_alleles < 0, 0, wt_alleles)
+      # interpretation = dplyr::case_when(
+      #   mutant_alleles >= (Major + minor) & minor == 0 ~ "No WT alleles",
+      #   mutant_alleles < (Major + minor) ~ paste0(wt_alleles, '/', mutant_alleles, " WT alleles")
+      #
+      # )
+    )
+
+  if(any(cnas$Major + cnas$minor < cnas$mutant_alleles, na.rm = TRUE))
+  {
+    warning("For some driver there are more mutant_alleles
+            than copy numbers. This can only be if there are multiple mutations
+            on the same chromsome; you should phase your data with a proper phaser.")
+  }
+
+  return(cnas)
 }

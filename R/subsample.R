@@ -72,12 +72,12 @@ subset_by_segment_karyotype = function(x, karyotypes)
 
   to_remove = c("segment_id", "n", "CCF") %in% colnames(cna_calls)
   to_remove = c("segment_id", "n", "CCF")[to_remove]
-  cna_calls %>% dplyr::select(-to_remove)
+  # cna_calls = cna_calls %>% dplyr::select(-to_remove)
 
   return(
     init(
       mutations = x %>% Mutations(),
-      cna = cna_calls %>% dplyr::select(to_remove),
+      cna = cna_calls %>% dplyr::select(-to_remove),
       purity = x$purity,
       ref = x$reference_genome,
       sample = x$sample
