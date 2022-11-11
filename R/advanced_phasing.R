@@ -89,7 +89,7 @@ advanced_phasing = function(x, cutoff_n = 50)
     ggplot2::labs(title = "Multiplicity phasing") +
     ggsci::scale_fill_jama()
 
-  if(x %>% has_drivers())
+  if(nrow(phasing %>% filter(is_driver)) > 0)
     plot_m = annotate_phased_drivers(x, plot_m, phasing)
 
   plot_ccf = phasing %>%
@@ -103,7 +103,7 @@ advanced_phasing = function(x, cutoff_n = 50)
     ggplot2::labs(title = "CCF per segment") +
     ggsci::scale_fill_jama()
 
-  if(x %>% has_drivers())
+  if(nrow(phasing %>% filter(is_driver)) > 0)
     plot_ccf = annotate_phased_drivers(x, plot_ccf, phasing)
 
   colors = get_karyotypes_colors(c("1:0", "2:0", '1:1', '2:1', '2:2', '0:0'))
@@ -122,7 +122,7 @@ advanced_phasing = function(x, cutoff_n = 50)
     ggplot2::labs(title = "CCF") +
     ggplot2::scale_fill_manual(values = colors)
 
-  if(x %>% has_drivers())
+  if(nrow(phasing %>% filter(is_driver)) > 0)
   {
     # CCF special
     ymax = ggplot_build(plot_ccf_overall)$layout$panel_params[[1]]$y.range[2]
