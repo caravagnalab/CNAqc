@@ -114,7 +114,7 @@ smooth_segments = function(x, maximum_distance = 1e6)
   cli::cli_alert_info("Creating a new CNAqc object. The old object will be retained in the $before_smoothing field.")
 
   if("mutations" %in% colnames(smoothed_segments)) smoothed_segments = smoothed_segments %>% dplyr::select(-mutations)
-  if(grepl('karyotype', colnames(smoothed_segments)) %>% any) smoothed_segments = smoothed_segments %>% dplyr::select(-mutations)
+  if(grepl('karyotype', colnames(smoothed_segments)) %>% any) smoothed_segments = smoothed_segments %>% dplyr::select(-karyotype)
   if("segment_id" %in% colnames(smoothed_segments)) smoothed_segments = smoothed_segments %>% dplyr::select(-segment_id)
   if("n" %in% colnames(smoothed_segments)) smoothed_segments = smoothed_segments %>% dplyr::select(-n)
 
