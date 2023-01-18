@@ -188,8 +188,8 @@
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Default plot</span></span>
 <span><span class="fu"><a href="../reference/plot_segments.html">plot_segments</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Scale for 'fill' is already present. Adding another scale for 'fill', which</span></span>
-<span><span class="co">#&gt; will replace the existing scale.</span></span></code></pre></div>
+<span><span class="co">#&gt; Scale for <span style="color: #00BB00;">fill</span> is already present.</span></span>
+<span><span class="co">#&gt; Adding another scale for <span style="color: #00BB00;">fill</span>, which will replace the existing scale.</span></span></code></pre></div>
 <p><img src="a2_Plots_files/figure-html/unnamed-chunk-3-1.png" width="912"></p>
 <blockquote>
 <p>Note: the colour scheme in CNAqc is fixed for certain segments. The colour scheme is adopted also for other information, e.g., to report the segment where a certain driver is mapped.</p>
@@ -206,27 +206,27 @@
 <code class="sourceCode R"><span><span class="co"># Shadow other segments</span></span>
 <span><span class="fu"><a href="../reference/plot_segments.html">plot_segments</a></span><span class="op">(</span><span class="va">x</span>, highlight <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2:1"</span>, <span class="st">"2:0"</span>, <span class="st">"2:2"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Annotate different karyotypes"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Scale for 'fill' is already present. Adding another scale for 'fill', which</span></span>
-<span><span class="co">#&gt; will replace the existing scale.</span></span></code></pre></div>
+<span><span class="co">#&gt; Scale for <span style="color: #00BB00;">fill</span> is already present.</span></span>
+<span><span class="co">#&gt; Adding another scale for <span style="color: #00BB00;">fill</span>, which will replace the existing scale.</span></span></code></pre></div>
 <p><img src="a2_Plots_files/figure-html/unnamed-chunk-5-1.png" width="912"></p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># Subset the genome</span></span>
 <span><span class="fu"><a href="../reference/plot_segments.html">plot_segments</a></span><span class="op">(</span><span class="va">x</span>, chromosomes <span class="op">=</span> <span class="st">'chr17'</span><span class="op">)</span> <span class="op">+</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Chromosome 17 zoom"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Scale for 'fill' is already present. Adding another scale for 'fill', which</span></span>
-<span><span class="co">#&gt; will replace the existing scale.</span></span></code></pre></div>
+<span><span class="co">#&gt; Scale for <span style="color: #00BB00;">fill</span> is already present.</span></span>
+<span><span class="co">#&gt; Adding another scale for <span style="color: #00BB00;">fill</span>, which will replace the existing scale.</span></span></code></pre></div>
 <p><img src="a2_Plots_files/figure-html/unnamed-chunk-5-2.png" width="912"></p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_segments.html">plot_segments</a></span><span class="op">(</span><span class="va">x</span>, chromosomes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'chr17'</span>, <span class="st">'chr13'</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Chromosome 17 and 13 zoom"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Scale for 'fill' is already present. Adding another scale for 'fill', which</span></span>
-<span><span class="co">#&gt; will replace the existing scale.</span></span></code></pre></div>
+<span><span class="co">#&gt; Scale for <span style="color: #00BB00;">fill</span> is already present.</span></span>
+<span><span class="co">#&gt; Adding another scale for <span style="color: #00BB00;">fill</span>, which will replace the existing scale.</span></span></code></pre></div>
 <p><img src="a2_Plots_files/figure-html/unnamed-chunk-5-3.png" width="912"></p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># Total copy number</span></span>
 <span><span class="fu"><a href="../reference/plot_segments.html">plot_segments</a></span><span class="op">(</span><span class="va">x</span>, cn <span class="op">=</span> <span class="st">'total'</span><span class="op">)</span> <span class="op">+</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Total copy number"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Scale for 'fill' is already present. Adding another scale for 'fill', which</span></span>
-<span><span class="co">#&gt; will replace the existing scale.</span></span></code></pre></div>
+<span><span class="co">#&gt; Scale for <span style="color: #00BB00;">fill</span> is already present.</span></span>
+<span><span class="co">#&gt; Adding another scale for <span style="color: #00BB00;">fill</span>, which will replace the existing scale.</span></span></code></pre></div>
 <p><img src="a2_Plots_files/figure-html/unnamed-chunk-5-4.png" width="912"></p>
 </div>
 <div class="section level4">
@@ -305,8 +305,8 @@
 <p>Subclonal segments of each subclone have different colours compared to red/blue clonal segments.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_segments.html">plot_segments</a></span><span class="op">(</span><span class="fu">CNAqc</span><span class="fu">::</span><span class="va"><a href="../reference/example_PCAWG.html">example_PCAWG</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; Scale for 'fill' is already present. Adding another scale for 'fill', which</span></span>
-<span><span class="co">#&gt; will replace the existing scale.</span></span></code></pre></div>
+<span><span class="co">#&gt; Scale for <span style="color: #00BB00;">fill</span> is already present.</span></span>
+<span><span class="co">#&gt; Adding another scale for <span style="color: #00BB00;">fill</span>, which will replace the existing scale.</span></span></code></pre></div>
 <p><img src="a2_Plots_files/figure-html/unnamed-chunk-7-1.png" width="912"></p>
 <blockquote>
 <p>Note: the CCF of each subclone is not reported in this plot.</p>
@@ -352,7 +352,7 @@
 <span>  ncol <span class="op">=</span> <span class="fl">3</span>,</span>
 <span>  nrow <span class="op">=</span> <span class="fl">1</span></span>
 <span>  <span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: Removed 8 rows containing missing values (geom_bar).</span></span></code></pre></div>
+<span><span class="co">#&gt; Warning: Removed 8 rows containing missing values (`geom_bar()`).</span></span></code></pre></div>
 <p><img src="a2_Plots_files/figure-html/unnamed-chunk-10-1.png" width="960"></p>
 <blockquote>
 <p>Note: if you compute CCFs you can use <code>plot_data_histogram(x, which = 'CCF')</code> as well.</p>
@@ -364,15 +364,17 @@
 <p>VAFs per segment, split by chromosome, can help identify miscalled segments (i.e., for segments with the same major/minor allele copies the VAF distributions should be similar)</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/inspect_segment.html">inspect_segment</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: `guides(&lt;scale&gt; = FALSE)` is deprecated. Please use `guides(&lt;scale&gt; =</span></span>
-<span><span class="co">#&gt; "none")` instead.</span></span>
-<span><span class="co">#&gt; Warning: Removed 30 rows containing missing values (geom_bar).</span></span></code></pre></div>
+<span><span class="co">#&gt; Warning: The `&lt;scale&gt;` argument of `guides()` cannot be `FALSE`. Use "none" instead as</span></span>
+<span><span class="co">#&gt; of ggplot2 3.3.4.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> The deprecated feature was likely used in the <span style="color: #0000BB;">CNAqc</span> package.</span></span>
+<span><span class="co">#&gt;   Please report the issue at <span style="color: #0000BB; font-style: italic;">&lt;https://github.com/caravagnalab/CNAqc/issues&gt;</span>.</span></span>
+<span><span class="co">#&gt; Warning: Removed 30 rows containing missing values (`geom_bar()`).</span></span></code></pre></div>
 <p><img src="a2_Plots_files/figure-html/unnamed-chunk-11-1.png" width="1152"></p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># With facet from a data histogram</span></span>
 <span><span class="fu"><a href="../reference/plot_data_histogram.html">plot_data_histogram</a></span><span class="op">(</span><span class="va">x</span>, which <span class="op">=</span> <span class="st">'VAF'</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_grid.html" class="external-link">facet_grid</a></span><span class="op">(</span><span class="va">karyotype</span><span class="op">~</span><span class="va">chr</span>, scales <span class="op">=</span> <span class="st">'free'</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: Removed 56 rows containing missing values (geom_bar).</span></span></code></pre></div>
+<span><span class="co">#&gt; Warning: Removed 56 rows containing missing values (`geom_bar()`).</span></span></code></pre></div>
 <p><img src="a2_Plots_files/figure-html/unnamed-chunk-12-1.png" width="2880"></p>
 </div>
 <div class="section level3">
@@ -381,7 +383,11 @@
 <p>Genome-wide plots that follow the layout of <code>plot_segments</code> are avaiable to view the genome-wide distributions of the number of mutations, their VAF and depth. VAF and depth-plotting functions (scatterplots) can subset the input data to speed up rendering and reduce the size of output files - by default <span class="math inline">\(5000\)</span> points are shown Counts plot, instead, bin the genome locations by one megabase (<span class="math inline">\(10^6\)</span> bases).</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># All genome, all data - counts of mutations per megabase</span></span>
-<span><span class="fu"><a href="../reference/plot_gw_counts.html">plot_gw_counts</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="../reference/plot_gw_counts.html">plot_gw_counts</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: The dot-dot notation (`..count..`) was deprecated in ggplot2 3.4.0.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Please use `after_stat(count)` instead.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> The deprecated feature was likely used in the <span style="color: #0000BB;">CNAqc</span> package.</span></span>
+<span><span class="co">#&gt;   Please report the issue at <span style="color: #0000BB; font-style: italic;">&lt;https://github.com/caravagnalab/CNAqc/issues&gt;</span>.</span></span></code></pre></div>
 <p><img src="a2_Plots_files/figure-html/unnamed-chunk-13-1.png" width="768"></p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># An example effect of downsampling the data</span></span>
@@ -391,18 +397,18 @@
 <span>  <span class="fu"><a href="../reference/plot_gw_depth.html">plot_gw_depth</a></span><span class="op">(</span><span class="va">x</span>, N <span class="op">=</span> <span class="fl">10000</span><span class="op">)</span>,</span>
 <span>  ncol <span class="op">=</span> <span class="fl">1</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: Removed 24 rows containing missing values (geom_segment).</span></span>
-<span><span class="co">#&gt; Warning: Removed 24 rows containing missing values (geom_rect).</span></span>
-<span><span class="co">#&gt; Warning: Removed 1 rows containing missing values (geom_hline).</span></span>
-<span><span class="co">#&gt; Removed 1 rows containing missing values (geom_hline).</span></span>
-<span><span class="co">#&gt; Warning: Removed 24 rows containing missing values (geom_segment).</span></span>
-<span><span class="co">#&gt; Warning: Removed 24 rows containing missing values (geom_rect).</span></span>
-<span><span class="co">#&gt; Warning: Removed 1 rows containing missing values (geom_hline).</span></span>
-<span><span class="co">#&gt; Removed 1 rows containing missing values (geom_hline).</span></span>
-<span><span class="co">#&gt; Warning: Removed 24 rows containing missing values (geom_segment).</span></span>
-<span><span class="co">#&gt; Warning: Removed 24 rows containing missing values (geom_rect).</span></span>
-<span><span class="co">#&gt; Warning: Removed 1 rows containing missing values (geom_hline).</span></span>
-<span><span class="co">#&gt; Removed 1 rows containing missing values (geom_hline).</span></span></code></pre></div>
+<span><span class="co">#&gt; Warning: Removed 24 rows containing missing values (`geom_segment()`).</span></span>
+<span><span class="co">#&gt; Warning: Removed 24 rows containing missing values (`geom_rect()`).</span></span>
+<span><span class="co">#&gt; Warning: Removed 1 rows containing missing values (`geom_hline()`).</span></span>
+<span><span class="co">#&gt; Removed 1 rows containing missing values (`geom_hline()`).</span></span>
+<span><span class="co">#&gt; Warning: Removed 24 rows containing missing values (`geom_segment()`).</span></span>
+<span><span class="co">#&gt; Warning: Removed 24 rows containing missing values (`geom_rect()`).</span></span>
+<span><span class="co">#&gt; Warning: Removed 1 rows containing missing values (`geom_hline()`).</span></span>
+<span><span class="co">#&gt; Removed 1 rows containing missing values (`geom_hline()`).</span></span>
+<span><span class="co">#&gt; Warning: Removed 24 rows containing missing values (`geom_segment()`).</span></span>
+<span><span class="co">#&gt; Warning: Removed 24 rows containing missing values (`geom_rect()`).</span></span>
+<span><span class="co">#&gt; Warning: Removed 1 rows containing missing values (`geom_hline()`).</span></span>
+<span><span class="co">#&gt; Removed 1 rows containing missing values (`geom_hline()`).</span></span></code></pre></div>
 <p><img src="a2_Plots_files/figure-html/unnamed-chunk-14-1.png" width="768"></p>
 </div>
 <div class="section level3">
@@ -419,12 +425,12 @@
 <span>  align <span class="op">=</span> <span class="st">'v'</span>,</span>
 <span>  nrow <span class="op">=</span> <span class="fl">4</span>,</span>
 <span>  rel_heights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.15</span>, <span class="fl">.15</span>, <span class="fl">.15</span>, <span class="fl">.8</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Scale for 'fill' is already present. Adding another scale for 'fill', which</span></span>
-<span><span class="co">#&gt; will replace the existing scale.</span></span>
-<span><span class="co">#&gt; Warning: Removed 24 rows containing missing values (geom_segment).</span></span>
-<span><span class="co">#&gt; Warning: Removed 24 rows containing missing values (geom_rect).</span></span>
-<span><span class="co">#&gt; Warning: Removed 1 rows containing missing values (geom_hline).</span></span>
-<span><span class="co">#&gt; Removed 1 rows containing missing values (geom_hline).</span></span></code></pre></div>
+<span><span class="co">#&gt; Scale for <span style="color: #00BB00;">fill</span> is already present.</span></span>
+<span><span class="co">#&gt; Adding another scale for <span style="color: #00BB00;">fill</span>, which will replace the existing scale.</span></span>
+<span><span class="co">#&gt; Warning: Removed 24 rows containing missing values (`geom_segment()`).</span></span>
+<span><span class="co">#&gt; Warning: Removed 24 rows containing missing values (`geom_rect()`).</span></span>
+<span><span class="co">#&gt; Warning: Removed 1 rows containing missing values (`geom_hline()`).</span></span>
+<span><span class="co">#&gt; Removed 1 rows containing missing values (`geom_hline()`).</span></span></code></pre></div>
 <p><img src="a2_Plots_files/figure-html/unnamed-chunk-15-1.png" width="912"></p>
 </div>
 </div>
@@ -524,7 +530,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>
