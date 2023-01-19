@@ -462,12 +462,12 @@ as_maftools_cohort = function(x,
     return(maftools::read.maf(pooled_mutations,
                               clinicalData = clinicalData,
                               cnTable = pooled_CNA,
-                              verbose = FALSE))
+                              verbose = TRUE))
   }
 
   return(maftools::read.maf(pooled_mutations,
                             clinicalData = clinicalData,
-                            verbose = FALSE))
+                            verbose = TRUE))
 
   # lapply(x,
   #        as_maftools_obj,
