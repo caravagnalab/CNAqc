@@ -86,7 +86,7 @@ advanced_phasing = function(x, cutoff_n = 50)
     ggplot2::facet_wrap(~karyotype, scales = 'free') +
     CNAqc:::my_ggplot_theme() +
     ggplot2:: guides(fill = ggplot2::guide_legend("Multiplicity")) +
-    ggplot2::labs(title = "Multiplicity phasing") +
+    ggplot2::labs(title = "Multiplicity phasing", y = "counts") +
     ggsci::scale_fill_jama()
 
   if(nrow(phasing %>% filter(is_driver)) > 0)
@@ -100,7 +100,7 @@ advanced_phasing = function(x, cutoff_n = 50)
     ggplot2::facet_wrap(~karyotype, scales = 'free') +
     CNAqc:::my_ggplot_theme() +
     ggplot2::guides(fill = ggplot2::guide_legend("Multiplicity")) +
-    ggplot2::labs(title = "CCF per segment") +
+    ggplot2::labs(title = "CCF per segment",y = "counts") +
     ggsci::scale_fill_jama()
 
   if(nrow(phasing %>% filter(is_driver)) > 0)
@@ -119,7 +119,7 @@ advanced_phasing = function(x, cutoff_n = 50)
       ) +
     CNAqc:::my_ggplot_theme() +
     ggplot2::guides(fill = ggplot2::guide_legend("Segment")) +
-    ggplot2::labs(title = "CCF") +
+    ggplot2::labs(title = "CCF",y = "counts") +
     ggplot2::scale_fill_manual(values = colors)
 
   if(nrow(phasing %>% filter(is_driver)) > 0)
