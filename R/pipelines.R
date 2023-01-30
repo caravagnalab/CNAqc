@@ -552,7 +552,7 @@ get_proposals = function(sequenza, cnaqc)
   sqz = sequenza$alternative_solutions %>% select(-SLPP)
 
   cnq = tibble(
-    cellularity = cnaqc$purity + cnaqc$peaks_analysis$score,
+    cellularity = cnaqc$purity - cnaqc$peaks_analysis$score,
     ploidy = sequenza$ploidy
   )
 
