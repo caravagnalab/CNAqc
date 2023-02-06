@@ -314,7 +314,20 @@ Sequenza_CNAqc = function(sample_id,
   }
 
   # End of pipeline
-  best_fit = which.min(L_cache %>% filter(QC == "PASS") %>% pull(score) %>%  abs())
+  best_run = L_cache %>% 
+    filter(QC=="PASS") %>% 
+    arrange(abs(score)) %>% 
+    slice(1) %>% 
+    pull(run)
+  
+  if((best_run %>% length()) == 0){
+    best_run = L_cache %>% 
+      arrange(abs(score)) %>% 
+      slice(1) %>% 
+      pull(run)
+  }
+  
+  best_fit = which(L_cache$run == best_run)
   qc_status = L_cache$QC[best_fit]
 
   cli::cli_h2("Best fit with score {.field {L_cache$score[best_fit]}} and QC {.field {qc_status}}")
