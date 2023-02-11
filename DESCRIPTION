@@ -69,7 +69,7 @@ Remotes:
     caravagnalab/BMix,
     caravagn/easypar,
     cran/peakPick
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.3
 Suggests: 
     knitr,
     rmarkdown,

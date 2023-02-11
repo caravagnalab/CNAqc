@@ -32,6 +32,8 @@ Major and minor annotation, or \code{"total"} for the total (Major plus minor) a
 \item{highlight}{A list of karyotype ids in \code{"Major:minor"} notation
 (e.g., \code{"1:1", "2,1", ...}) that will be shadowed with a transparent area.
 By default, it plots the most prevalent karyotype using `x$most_prevalent_karyotype`.}
+
+\item{...}{Extra parameters passed to the hidden function \code{blank_genome}.}
 }
 \value{
 A \code{ggplot2} plot.

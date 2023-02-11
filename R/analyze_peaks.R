@@ -76,6 +76,7 @@
 #' @param KDE Deprecated parameter.
 #' @param starting_state_subclonal_evolution For subclonal simple CNAs, the starting state to determine linear versus
 #' branching evolutionary models. By default this is an heterozygous diploid `1:1` state.
+#' @param cluster_subclonal_CCF For subclonal segments, should the tool try to merge segments with similar CCF and the same copy number alteration?
 #'
 #' @return An object of class \code{cnaqc}, modified to hold the results from this analysis. For every type
 #' of segment analyzed tables with summary peaks are available in \code{x$peaks_analysis}. The most helpful table
@@ -121,7 +122,8 @@ analyze_peaks = function(x,
                          kernel_adjust = 1,
                          matching_strategy = "closest",
                          KDE = TRUE,
-                         starting_state_subclonal_evolution = "1:1")
+                         starting_state_subclonal_evolution = "1:1",
+                         cluster_subclonal_CCF = FALSE)
 {
 
   if (!is.null(matching_epsilon)) {
@@ -193,7 +195,8 @@ analyze_peaks = function(x,
       epsilon = purity_error,
       kernel_adjust = kernel_adjust,
       n_bootstrap = n_bootstrap,
-      starting_state = starting_state_subclonal_evolution
+      starting_state = starting_state_subclonal_evolution,
+      cluster_subclonal_CCF = cluster_subclonal_CCF
     )
 
     if(!is.null(x$peaks_analysis$subclonal))

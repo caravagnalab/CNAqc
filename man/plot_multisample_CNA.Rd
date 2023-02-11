@@ -8,6 +8,9 @@ plot_multisample_CNA(x, layout = "flat", ...)
 }
 \arguments{
 \item{x}{A list of `CNAqc` objects; names are optional for the circular layout.}
+
+\item{layout}{If `"flat"` the common layout with amplificaitons and deletions
+is used, otherwise with `"circular"` a circos-alike plot is used.}
 }
 \value{
 A `ggplot2` plot.
