@@ -74,7 +74,8 @@ Suggests:
     knitr,
     rmarkdown,
     org.Hs.eg.db,
-    Organism.dplyr
+    Organism.dplyr,
+    mclust
 VignetteBuilder: knitr
 URL: https://github.com/caravagnalab/CNAqc
 BugReports: https://github.com/caravagnalab/CNAqc/issues
