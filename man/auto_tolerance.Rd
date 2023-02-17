@@ -16,7 +16,7 @@ auto_tolerance(purity, coverage, fpr = 0.1, epsilon_range = c(0.01, 0.08))
 \item{epsilon_range}{Range of values to constrain $epsilon$.}
 }
 \value{
-The $\epsilon$ value estimated from data, constrained to be in
+The $\eqn{\epsilon}$ value estimated from data, constrained to be in
 `epsilon_range`, in order to limit the false positive rate to be at most `fpr`.
 }
 \description{
@@ -25,7 +25,7 @@ pass or fail a sample based on a custom purity error (maximum error to allow).
 
 A regression has been used to measure the rate of false positives
 from simulated tumours with variable coverage and purity. This allows to determine
-an optimal value of $\epsilon$, the parameter `purity_error` of function
+an optimal value of $\eqn{\epsilon}$, the parameter `purity_error` of function
 \code{analyze_peaks}, for a desired rate of alse positives basde on the sample
 coverage and putative purity.
 }

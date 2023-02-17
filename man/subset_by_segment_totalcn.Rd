@@ -7,9 +7,12 @@
 subset_by_segment_totalcn(x, totalcn)
 }
 \arguments{
-\item{x}{A new CNAqc object with subset data.}
+\item{x}{A CNAqc object.}
 
-\item{total}{The total (Major + minor) copy numbers to filter.}
+\item{totalcn}{The total (Major + minor) copy numbers to filter.}
+}
+\value{
+x A new CNAqc object with subset data.
 }
 \description{
 Retains only a subset of clonal simple segments, e.g., all segments with

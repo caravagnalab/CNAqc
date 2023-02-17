@@ -317,7 +317,8 @@ analyze_peaks_subclonal = function(x,
                                    n_min = 100,
                                    n_bootstrap = 5,
                                    kernel_adjust = 1,
-                                   starting_state = '1:1')
+                                   starting_state = '1:1',
+                                   cluster_subclonal_CCF = FALSE)
 {
   if (is.null(x$cna_subclonal) | nrow(x$cna_subclonal) == 0)
     return(x)
@@ -327,47 +328,101 @@ analyze_peaks_subclonal = function(x,
 
   if (nrow(subclonal_calls) == 0)
     return(x)
-
-  # Add segment id to mutations data
-  subclonal_mutations = lapply(1:nrow(subclonal_calls),
-                               function(i)
-                               {
-                                 CCF_1 = subclonal_calls$CCF[i] %>% round(2)
-                                 karyotype_1 = subclonal_calls$karyotype[i]
-                                 karyotype_2 = subclonal_calls$karyotype_2[i]
-
-                                 L = round((subclonal_calls$to[i] - subclonal_calls$from[i]) /
-                                             1e6, 1)
-
-                                 subclonal_calls$mutations[[i]] %>% mutate(
-                                   segment_id = paste0(
-                                     subclonal_calls$chr[i],
-                                     ' ',
-                                     subclonal_calls$from[i],
-                                     ' ',
-                                     "\n(",
-                                     L,
-                                     "Mb, n = ",
-                                     subclonal_calls$n[i],
-                                     ')\n',
-                                     karyotype_1,
-                                     ' ',
-                                     CCF_1,
-                                     ' ',
-                                     karyotype_2,
-                                     ' ',
-                                     1 - CCF_1
+  
+  # if we cluster CCF in subclones than we don't run sample by sample
+  if(cluster_subclonal_CCF & nrow(subclonal_calls) > 1) {
+    
+    # cluster mutations
+    clusts <- Mclust(subclonal_calls$CCF,1:20, modelNames = "E")
+    
+    cli::cli_alert(
+      "Clustered CCFs into {.field {clusts$G}} subclones with BIC={.field {round(clusts$bic,2)}}"
+    )
+    
+    subclonal_calls$mclusters <- clusts$classification
+    # aggregate mutations with the same clusters
+    subclonal_calls_old <- subclonal_calls
+    
+    subclonal_calls <- subclonal_calls %>% group_by(mclusters, karyotype,karyotype_2) %>% 
+      summarize(CCF = mean(CCF),
+                n = sum(n), mutations = list(do.call(rbind, mutations))) 
+    
+    # Add segment id to mutations data
+    subclonal_mutations = lapply(1:nrow(subclonal_calls),
+                                 function(i)
+                                 {
+                                   CCF_1 = subclonal_calls$CCF[i] %>% round(2)
+                                   karyotype_1 = subclonal_calls$karyotype[i]
+                                   karyotype_2 = subclonal_calls$karyotype_2[i]
+                                   mclusters = subclonal_calls$mclusters[i]
+                                   n = subclonal_calls$n[i]
+                                   
+                                   subclonal_calls$mutations[[i]] %>% mutate(
+                                     segment_id = paste0(
+                                       'Subclone ', mclusters,
+                                       " ( ",karyotype_1, " | ", karyotype_2,
+                                       " ) \n n = ",
+                                       n,
+                                       ' \n',
+                                       karyotype_1,
+                                       ' ',
+                                       CCF_1,
+                                       ' ',
+                                       karyotype_2,
+                                       ' ',
+                                       1 - CCF_1)
                                    )
-                                 )
-                               }) %>%
-    Reduce(f = bind_rows)
+                                 }) %>%
+      Reduce(f = bind_rows)
+    
+  # Our QC atom is the segment 
+  } else {
+    
+    # Add segment id to mutations data
+    subclonal_mutations = lapply(1:nrow(subclonal_calls),
+                                 function(i)
+                                 {
+                                   CCF_1 = subclonal_calls$CCF[i] %>% round(2)
+                                   karyotype_1 = subclonal_calls$karyotype[i]
+                                   karyotype_2 = subclonal_calls$karyotype_2[i]
+                                   
+                                   L = round((subclonal_calls$to[i] - subclonal_calls$from[i]) /
+                                               1e6, 1)
+                                   
+                                   subclonal_calls$mutations[[i]] %>% mutate(
+                                     segment_id = paste0(
+                                       subclonal_calls$chr[i],
+                                       ' ',
+                                       subclonal_calls$from[i],
+                                       ' ',
+                                       "\n(",
+                                       L,
+                                       "Mb, n = ",
+                                       subclonal_calls$n[i],
+                                       ')\n',
+                                       karyotype_1,
+                                       ' ',
+                                       CCF_1,
+                                       ' ',
+                                       karyotype_2,
+                                       ' ',
+                                       1 - CCF_1
+                                     )
+                                   )
+                                 }) %>%
+      Reduce(f = bind_rows)
+    
+    
+  }
+    
+    
 
   all_segments = subclonal_mutations$segment_id %>% unique()
-
+  
   cli::cli_alert(
     "Computing evolution models for subclonal CNAs - starting from {.field {starting_state}}"
   )
-
+  
   expected_peaks = easypar::run(
     FUN = function(i) {
       expectations_subclonal(
@@ -378,14 +433,14 @@ analyze_peaks_subclonal = function(x,
         purity = x$purity
       ) %>%
         mutate(segment_id = (subclonal_mutations$segment_id %>% unique)[i])
-
+      
     },
     PARAMS = lapply(1:nrow(subclonal_calls), list),
     parallel = FALSE
   )
-
+  
   expected_peaks = Reduce(bind_rows, expected_peaks)
-
+  
   all(expected_peaks$segment_id %>% unique() %in% all_segments)
 
   # Data peaks and densities
@@ -449,34 +504,56 @@ analyze_peaks_subclonal = function(x,
     decision_table = bind_rows(decision_table, rankings)
   }
 
-  splitter = function(x)
-  {
-    x$size = strsplit(x$segment_id, split = '\\n') %>%
-      sapply(function(x)
-        x[[2]])
-    x$clones = strsplit(x$segment_id, split = '\\n') %>%
-      sapply(function(x)
-        x[[3]])
-    x$segment_id = strsplit(x$segment_id, split = '\\n') %>%
-      sapply(function(x)
-        x[[1]]) %>%
-      strsplit(split = ' ') %>%
-      sapply(function(x) {
-        paste(x[1], x[2], sep = '@')
-      })
-
-    x
+  if(cluster_subclonal_CCF & nrow(subclonal_calls) > 1){
+    splitter = function(x)
+    {
+      x$size = strsplit(x$segment_id, split = '\\n') %>%
+        sapply(function(x)
+          x[[2]])
+      x$clones = strsplit(x$segment_id, split = '\\n') %>%
+        sapply(function(x)
+          x[[3]])
+      x$segment_id = strsplit(x$segment_id, split = '\\n') %>%
+        sapply(function(x)
+          x[[1]]) 
+      
+      x
+    }
+  } else {
+    splitter = function(x)
+    {
+      x$size = strsplit(x$segment_id, split = '\\n') %>%
+        sapply(function(x)
+          x[[2]])
+      x$clones = strsplit(x$segment_id, split = '\\n') %>%
+        sapply(function(x)
+          x[[3]])
+      x$segment_id = strsplit(x$segment_id, split = '\\n') %>%
+        sapply(function(x)
+          x[[1]]) %>%
+        strsplit(split = ' ') %>%
+        sapply(function(x) {
+          paste(x[1], x[2], sep = '@')
+        })
+      
+      x
+    }
   }
+  
 
   # Results
   x$peaks_analysis$subclonal$params = list(n_min = n_min,
                                            epsilon = epsilon,
-                                           n_bootstrap = n_bootstrap)
+                                           n_bootstrap = n_bootstrap,
+                                           clustered = cluster_subclonal_CCF)
   x$peaks_analysis$subclonal$expected_peaks = expected_peaks %>% splitter
   x$peaks_analysis$subclonal$data_peaks = data_peaks %>% splitter
   x$peaks_analysis$subclonal$data_densities = data_densities %>% splitter
   x$peaks_analysis$subclonal$mutations = subclonal_mutations %>% splitter
   x$peaks_analysis$subclonal$summary = decision_table %>% splitter
+  
+  if(cluster_subclonal_CCF & nrow(subclonal_calls) > 1) 
+    x$peaks_analysis$subclonal$mclust <- clusts
 
   return(x)
 }

@@ -104,7 +104,7 @@ peak_detector = function(mutations,
     xy_peaks = xy_peaks %>%
       mutate(discarded = ifelse(
         counts_per_bin == max(xy_peaks$counts_per_bin),
-        TRUE,
+        FALSE,
         discarded
       ))
   }

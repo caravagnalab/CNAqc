@@ -327,8 +327,13 @@ split_by_chromosome = function(x,
 
     cli::cli_h3(chr)
     cat("\n")
+    
+    subclonal_mutations = NULL
 
-    subclonal_mutations = x$cna_subclonal %>% filter(chr == !!chr) %>% pull(mutations) %>% Reduce(f = bind_rows)
+    if(nrow(x$cna_subclonal) > 0) subclonal_mutations = x$cna_subclonal %>%
+      filter(chr == !!chr) %>% pull(mutations) %>%
+      Reduce(f = bind_rows)
+    
     cnas = x$cna %>% filter(chr == !!chr)
 
     cnaqc_obj = init(
