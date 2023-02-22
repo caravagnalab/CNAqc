@@ -392,26 +392,42 @@ split_by_chromosome = function(x,
   #
   # names(objs) = nm
 
-  x_muts = x %>%
-    Mutations() %>%
-    dplyr::group_split(chr)
-
+  # x_muts = x %>%
+  #   Mutations() %>%
+  #   dplyr::group_split(chr)
+  # 
+  # objs = lapply(
+  #   x_muts,
+  #   function(m){
+  #     init(
+  #       mutations = m,
+  #       cna = x %>% CNA,
+  #       purity = x$purity,
+  #       ref = x$reference_genome,
+  #       sample = x$sample
+  #     )
+  #   })
+  # 
+  # names(objs) = sapply(x_muts, function(m) m$chr[1])
+  # 
+  # objs = objs[gtools::mixedsort(names(objs))]
+  
   objs = lapply(
-    x_muts,
-    function(m){
+    x$mutations %>% pull(chr) %>% unique(),
+    function(c){
       init(
-        mutations = m,
+        mutations = x$mutations %>% filter(chr == c),
         cna = x %>% CNA,
         purity = x$purity,
         ref = x$reference_genome,
         sample = x$sample
       )
     })
-
-  names(objs) = sapply(x_muts, function(m) m$chr[1])
-
-  objs = objs[gtools::mixedsort(names(objs))]
-
-  return(objs)
+  
+  names(objs) = lapply(objs,function(a){ a$mutations$chr[1]})
+  
+  
+return(objs)
+  
 }
 
