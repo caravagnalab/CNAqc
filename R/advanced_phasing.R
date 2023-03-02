@@ -15,6 +15,7 @@ advanced_phasing = function(x, cutoff_n = 50)
                       x_k = x$mutations %>% dplyr::filter(karyotype == !!karyotype)
 
                       n_ploidy = strsplit(karyotype, ':')[[1]] %>% as.numeric() %>% max
+                      n_ploidy = 1 + n_ploidy
 
                       x_fit = BMix::bmixfit(
                         data = x_k %>% dplyr::select(NV, DP) %>% as.data.frame(),
@@ -42,12 +43,44 @@ advanced_phasing = function(x, cutoff_n = 50)
 
                       p_v = peaks$multiplicity
                       names(p_v) = peaks$cluster
-
+                      
+                      # Add potential tail cluster with minimum multiplicity
+                      missing_label = setdiff(x_fit$labels %>% unique, names(p_v))
+                      if(length(missing_label) > 0)
+                      {
+                        n_missing = missing_label %>% length()
+                        
+                        np_v = rep(min(p_v), n_missing)
+                        names(np_v) = setdiff(x_fit$labels %>% unique, names(p_v))
+                        
+                        p_v = c(p_v, np_v)
+                      }
+                      
                       print(peaks %>% dplyr::select(multiplicity, peak, cluster, offset))
 
+                      # 762 2351
+                      # xx_k = x_k %>% select(VEP.SYMBOL, is_driver, VAF) 
+                      # xx_k$multiplicity = x_fit$labels
+                      # 
+                      # xx_k %>%
+                      #   dplyr::mutate(
+                      #     # multiplicity = x_fit$labels[dplyr::row_number()],
+                      #     # multiplicity = p_v[multiplicity],
+                      #     # CCF = ccf_adjustment_fun(
+                      #     #   v = VAF,
+                      #     #   m = strsplit(karyotype, ':')[[1]][2] %>% as.numeric(),
+                      #     #   M = strsplit(karyotype, ':')[[1]][1] %>% as.numeric(),
+                      #     #   p = x$purity,
+                      #     #   mut.allele = multiplicity
+                      #     # )
+                      #   ) %>% 
+                      #   filter(is_driver)
+                      
+                      x_k$multiplicity = x_fit$labels
+                      
                       x_k %>%
                         dplyr::mutate(
-                          multiplicity = x_fit$labels[dplyr::row_number()],
+                          # multiplicity = x_fit$labels[dplyr::row_number()],
                           multiplicity = p_v[multiplicity],
                           CCF = ccf_adjustment_fun(
                             v = VAF,
@@ -196,6 +229,7 @@ annotate_phased_drivers = function(x, plot, phasing)
       facet_p %>% dplyr::select(karyotype, y_max),
       by = c('karyotype')
     ) %>%
+    as_tibble() %>% 
     dplyr::group_split(karyotype)
 
   for(i in 1:length(drivers))
