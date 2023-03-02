@@ -106,7 +106,7 @@ init = function(mutations, snvs = NULL, cna, purity, sample = "MySample", ref = 
   fit = list()
   class(fit) <- "cnaqc"
 
-  # Sample name
+# Sample name
   fit$sample = sample
 
   # Reference genome

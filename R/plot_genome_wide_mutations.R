@@ -111,8 +111,8 @@ plot_gw_depth = function(x,
   mutations = mutations %>%
     filter(DP > quant[1], DP < quant[2])
 
-  if (nrow(mutations) > N)
-    mutations = mutations %>% sample_n(N)
+  # if (nrow(mutations) > N)
+  #   mutations = mutations %>% sample_n(N)
 
   maxY = max(mutations$DP) * .9
   label_maxY = paste0("N = ", N, ' (', round(N / N_all * 100), '%)')
@@ -209,8 +209,8 @@ plot_gw_vaf = function(x,
   mutations = mutations %>%
     filter(DP > quant[1], DP < quant[2])
 
-  if (nrow(mutations) > N)
-    mutations = mutations %>% sample_n(N)
+  # if (nrow(mutations) > N)
+  #   mutations = mutations %>% sample_n(N)
 
   maxY = max(mutations$VAF) * .9
   label_maxY = paste0("N = ", N, ' (', round(N / N_all * 100), '%)')
@@ -310,8 +310,8 @@ plot_gw_ccf = function(x,
   mutations = mutations %>%
     filter(DP > quant[1], DP < quant[2])
 
-  if (nrow(mutations) > N)
-    mutations = mutations %>% sample_n(N)
+  # if (nrow(mutations) > N)
+  #   mutations = mutations %>% sample_n(N)
 
   maxY = max(mutations$VAF) * .9
   label_maxY = paste0("N = ", N, ' (', round(N / N_all * 100), '%)')

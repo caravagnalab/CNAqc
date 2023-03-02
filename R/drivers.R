@@ -103,6 +103,7 @@ annotate_drivers_to_histogram = function(x,  p, which)
         facet_p %>% dplyr::select(type, cna, y_max),
         by = c('cna', 'type')
       ) %>%
+      as_tibble() %>% 
       dplyr::group_split(cna, type)
 
     for(i in 1:length(drivers))
