@@ -201,22 +201,21 @@
 <span><span class="co"># What we annotate</span></span>
 <span><span class="va">x</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="va">Mutations</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 12,963 × 18</span></span></span>
-<span><span class="co">#&gt;    chr      from      to ref   alt      NV    DP    VAF FILTER ANNOVAR_F…¹ GENE </span></span>
-<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> chr1  1<span style="text-decoration: underline;">027</span>104 1<span style="text-decoration: underline;">027</span>105 T     G         6    60 0.1    PASS   UTR5        C1or…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> chr1  2<span style="text-decoration: underline;">248</span>588 2<span style="text-decoration: underline;">248</span>589 A     C         9   127 0.070<span style="text-decoration: underline;">9</span> PASS   intergenic  SKI(…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> chr1  2<span style="text-decoration: underline;">461</span>999 2<span style="text-decoration: underline;">462</span>000 G     A        65   156 0.417  PASS   upstream    HES5 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> chr1  2<span style="text-decoration: underline;">727</span>935 2<span style="text-decoration: underline;">727</span>936 T     C        90   180 0.5    PASS   downstream  RP11…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> chr1  2<span style="text-decoration: underline;">763</span>397 2<span style="text-decoration: underline;">763</span>398 C     T        61   183 0.333  PASS   intergenic  RP11…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> chr1  2<span style="text-decoration: underline;">768</span>208 2<span style="text-decoration: underline;">768</span>209 C     T       130   203 0.640  PASS   intergenic  RP11…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> chr1  2<span style="text-decoration: underline;">935</span>590 2<span style="text-decoration: underline;">935</span>591 C     T       132   228 0.579  PASS   intergenic  RP11…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> chr1  2<span style="text-decoration: underline;">980</span>032 2<span style="text-decoration: underline;">980</span>033 C     T        85   196 0.434  PASS   ncRNA_exon… LINC…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> chr1  3<span style="text-decoration: underline;">387</span>161 3<span style="text-decoration: underline;">387</span>162 T     G         6   124 0.048<span style="text-decoration: underline;">4</span> PASS   intronic    ARHG…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> chr1  3<span style="text-decoration: underline;">502</span>517 3<span style="text-decoration: underline;">502</span>518 G     A        10    88 0.114  PASS   intronic    MEGF6</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># … with 12,953 more rows, 7 more variables: is_driver &lt;lgl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   driver_label &lt;chr&gt;, gene &lt;chr&gt;, type &lt;chr&gt;, karyotype &lt;chr&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   segment_id &lt;chr&gt;, cna &lt;chr&gt;, and abbreviated variable name</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   ¹​ANNOVAR_FUNCTION</span></span></span></code></pre></div>
+<span><span class="co">#&gt;    chr      from      to ref   alt      NV    DP    VAF FILTER ANNOVAR_FUNCTION</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> chr1  1<span style="text-decoration: underline;">027</span>104 1<span style="text-decoration: underline;">027</span>105 T     G         6    60 0.1    PASS   UTR5            </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> chr1  2<span style="text-decoration: underline;">248</span>588 2<span style="text-decoration: underline;">248</span>589 A     C         9   127 0.070<span style="text-decoration: underline;">9</span> PASS   intergenic      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> chr1  2<span style="text-decoration: underline;">461</span>999 2<span style="text-decoration: underline;">462</span>000 G     A        65   156 0.417  PASS   upstream        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> chr1  2<span style="text-decoration: underline;">727</span>935 2<span style="text-decoration: underline;">727</span>936 T     C        90   180 0.5    PASS   downstream      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> chr1  2<span style="text-decoration: underline;">763</span>397 2<span style="text-decoration: underline;">763</span>398 C     T        61   183 0.333  PASS   intergenic      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> chr1  2<span style="text-decoration: underline;">768</span>208 2<span style="text-decoration: underline;">768</span>209 C     T       130   203 0.640  PASS   intergenic      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> chr1  2<span style="text-decoration: underline;">935</span>590 2<span style="text-decoration: underline;">935</span>591 C     T       132   228 0.579  PASS   intergenic      </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> chr1  2<span style="text-decoration: underline;">980</span>032 2<span style="text-decoration: underline;">980</span>033 C     T        85   196 0.434  PASS   ncRNA_exonic    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> chr1  3<span style="text-decoration: underline;">387</span>161 3<span style="text-decoration: underline;">387</span>162 T     G         6   124 0.048<span style="text-decoration: underline;">4</span> PASS   intronic        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> chr1  3<span style="text-decoration: underline;">502</span>517 3<span style="text-decoration: underline;">502</span>518 G     A        10    88 0.114  PASS   intronic        </span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 12,953 more rows</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 8 more variables: GENE &lt;chr&gt;, is_driver &lt;lgl&gt;, driver_label &lt;chr&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   gene &lt;chr&gt;, type &lt;chr&gt;, karyotype &lt;chr&gt;, segment_id &lt;chr&gt;, cna &lt;chr&gt;</span></span></span></code></pre></div>
 <div class="section level3">
 <h3 id="required-packages">Required packages<a class="anchor" aria-label="anchor" href="#required-packages"></a>
 </h3>
@@ -230,13 +229,13 @@
 <span>    <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, repos<span class="op">=</span><span class="st">"http://cran.us.r-project.org"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; The downloaded binary packages are in</span></span>
-<span><span class="co">#&gt;  /var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpfwGVxe/downloaded_packages</span></span>
+<span><span class="co">#&gt;  /var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpSFle6H/downloaded_packages</span></span>
 <span></span>
 <span><span class="co"># We have to install the corresponding txdb package for transcript annotations</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"TxDb.Hsapiens.UCSC."</span>,<span class="va">reference_genome</span>, <span class="st">".knownGene"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html" class="external-link">install</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; The downloaded binary packages are in</span></span>
-<span><span class="co">#&gt;  /var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpfwGVxe/downloaded_packages</span></span>
+<span><span class="co">#&gt;  /var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpSFle6H/downloaded_packages</span></span>
 <span></span>
 <span><span class="co"># We have to install also the BS database for the sequences (it may take some time)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"BSgenome.Hsapiens.UCSC."</span>,<span class="va">reference_genome</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html" class="external-link">install</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -457,7 +456,7 @@
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> ACKR3 OV     Ovary cancer          </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> ACSL3 AML    Acute myeloid leukemia</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> ACVR1 HGG    High-grade Glioma     </span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># … with 2,070 more rows</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 2,070 more rows</span></span></span></code></pre></div>
 <p>We plot the list of genes that appear in at least 20 tumour types.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">RColorBrewer</span><span class="op">)</span></span>
@@ -485,14 +484,13 @@
 <span><span class="va">x_new</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/annotate_variants.html">annotate_variants</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 18</span></span></span>
-<span><span class="co">#&gt;   chr     from     to ref   alt      NV    DP   VAF FILTER ANNOV…¹ GENE  is_dr…²</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> chr2  1.79<span style="color: #949494;">e</span>8 1.79<span style="color: #949494;">e</span>8 C     T        77   117 0.658 PASS   exonic  TTN   TRUE   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> chr16 6.76<span style="color: #949494;">e</span>7 6.76<span style="color: #949494;">e</span>7 C     T        54   120 0.45  PASS   exonic  CTCF  TRUE   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> chr17 7.58<span style="color: #949494;">e</span>6 7.58<span style="color: #949494;">e</span>6 G     C        78    84 0.929 PASS   exonic  TP53  TRUE   </span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># … with 6 more variables: driver_label &lt;chr&gt;, gene &lt;chr&gt;, type &lt;chr&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   karyotype &lt;chr&gt;, segment_id &lt;chr&gt;, cna &lt;chr&gt;, and abbreviated variable</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   names ¹​ANNOVAR_FUNCTION, ²​is_driver</span></span></span>
+<span><span class="co">#&gt;   chr        from       to ref   alt      NV    DP   VAF FILTER ANNOVAR_FUNCTION</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> chr2  179<span style="text-decoration: underline;">431</span>633   1.79<span style="color: #949494;">e</span>8 C     T        77   117 0.658 PASS   exonic          </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> chr16  67<span style="text-decoration: underline;">646</span>006   6.76<span style="color: #949494;">e</span>7 C     T        54   120 0.45  PASS   exonic          </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> chr17   7<span style="text-decoration: underline;">577</span>106   7.58<span style="color: #949494;">e</span>6 G     C        78    84 0.929 PASS   exonic          </span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 8 more variables: GENE &lt;chr&gt;, is_driver &lt;lgl&gt;, driver_label &lt;chr&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   gene &lt;chr&gt;, type &lt;chr&gt;, karyotype &lt;chr&gt;, segment_id &lt;chr&gt;, cna &lt;chr&gt;</span></span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;       chr      from        to   consequence refAA varAA</span></span>
 <span><span class="co">#&gt; 1    chr1  19181096  19181096 nonsynonymous     R     C</span></span>
@@ -607,13 +605,12 @@
 <span><span class="co">#&gt; 258  chrX 129349850 129349850 nonsynonymous     A     T</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 10</span></span></span>
-<span><span class="co">#&gt;   chr       from       to gene_sym…¹ locat…² conse…³ refAA varAA drive…⁴ is_dr…⁵</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> chr16 67<span style="text-decoration: underline;">646</span>006 67<span style="text-decoration: underline;">646</span>006 CTCF       coding  nonsyn… H     Y     CTCF_H… TRUE   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> chr17  7<span style="text-decoration: underline;">577</span>106  7<span style="text-decoration: underline;">577</span>106 TP53       coding… nonsyn… P     A     TP53_P… TRUE   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> chr19 50<span style="text-decoration: underline;">919</span>900 50<span style="text-decoration: underline;">919</span>900 POLD1      coding  nonsyn… T     M     POLD1_… TRUE   </span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># … with abbreviated variable names ¹​gene_symbol, ²​location, ³​consequence,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   ⁴​driver_label, ⁵​is_driver</span></span></span>
+<span><span class="co">#&gt;   chr      from     to gene_symbol location consequence refAA varAA driver_label</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> chr16  6.76<span style="color: #949494;">e</span>7 6.76<span style="color: #949494;">e</span>7 CTCF        coding   nonsynonym… H     Y     CTCF_H-&gt;Y   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> chr17  7.58<span style="color: #949494;">e</span>6 7.58<span style="color: #949494;">e</span>6 TP53        coding:… nonsynonym… P     A     TP53_P-&gt;A   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> chr19  5.09<span style="color: #949494;">e</span>7 5.09<span style="color: #949494;">e</span>7 POLD1       coding   nonsynonym… T     M     POLD1_T-&gt;M  </span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 1 more variable: is_driver &lt;lgl&gt;</span></span></span>
 <span></span>
 <span><span class="va">x_new</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -703,244 +700,243 @@
 <span id="cb8-16"><a href="#cb8-16"></a><span class="co">#&gt;  [36mℹ [39m Preparing mutationsut data</span></span>
 <span id="cb8-17"><a href="#cb8-17"></a><span class="co">#&gt; </span></span>
 <span id="cb8-18"><a href="#cb8-18"></a><span class="co">#&gt;  [38;5;246m# A tibble: 3 × 18 [39m</span></span>
-<span id="cb8-19"><a href="#cb8-19"></a><span class="co">#&gt;   chr     from     to ref   alt      NV    DP   VAF FILTER ANNOV…¹ GENE  is_dr…²</span></span>
-<span id="cb8-20"><a href="#cb8-20"></a><span class="co">#&gt;    [3m [38;5;246m&lt;chr&gt; [39m [23m   [3m [38;5;246m&lt;dbl&gt; [39m [23m   [3m [38;5;246m&lt;dbl&gt; [39m [23m  [3m [38;5;246m&lt;chr&gt; [39m [23m  [3m [38;5;246m&lt;chr&gt; [39m [23m  [3m [38;5;246m&lt;dbl&gt; [39m [23m  [3m [38;5;246m&lt;dbl&gt; [39m [23m  [3m [38;5;246m&lt;dbl&gt; [39m [23m  [3m [38;5;246m&lt;chr&gt; [39m [23m   [3m [38;5;246m&lt;chr&gt; [39m [23m    [3m [38;5;246m&lt;chr&gt; [39m [23m  [3m [38;5;246m&lt;lgl&gt; [39m [23m  </span></span>
-<span id="cb8-21"><a href="#cb8-21"></a><span class="co">#&gt;  [38;5;250m1 [39m chr2  1.79 [38;5;246me [39m8 1.79 [38;5;246me [39m8 C     T        77   117 0.658 PASS   exonic  TTN   TRUE   </span></span>
-<span id="cb8-22"><a href="#cb8-22"></a><span class="co">#&gt;  [38;5;250m2 [39m chr16 6.76 [38;5;246me [39m7 6.76 [38;5;246me [39m7 C     T        54   120 0.45  PASS   exonic  CTCF  TRUE   </span></span>
-<span id="cb8-23"><a href="#cb8-23"></a><span class="co">#&gt;  [38;5;250m3 [39m chr17 7.58 [38;5;246me [39m6 7.58 [38;5;246me [39m6 G     C        78    84 0.929 PASS   exonic  TP53  TRUE   </span></span>
-<span id="cb8-24"><a href="#cb8-24"></a><span class="co">#&gt;  [38;5;246m# … with 6 more variables: driver_label &lt;chr&gt;, gene &lt;chr&gt;, type &lt;chr&gt;, [39m</span></span>
-<span id="cb8-25"><a href="#cb8-25"></a><span class="co">#&gt;  [38;5;246m#   karyotype &lt;chr&gt;, segment_id &lt;chr&gt;, cna &lt;chr&gt;, and abbreviated variable [39m</span></span>
-<span id="cb8-26"><a href="#cb8-26"></a><span class="co">#&gt;  [38;5;246m#   names ¹​ANNOVAR_FUNCTION, ²​is_driver [39m</span></span>
-<span id="cb8-27"><a href="#cb8-27"></a><span class="co">#&gt;  [32m✔ [39m Preparing mutationsut data ... done</span></span>
-<span id="cb8-28"><a href="#cb8-28"></a><span class="co">#&gt; </span></span>
-<span id="cb8-29"><a href="#cb8-29"></a><span class="co">#&gt;  [36mℹ [39m Locating variants with  [33mVariantAnnotation [39m</span></span>
-<span id="cb8-30"><a href="#cb8-30"></a><span class="co">#&gt; Warning in valid.GenomicRanges.seqinfo(x, suggest.trim = TRUE): GRanges object contains 364 out-of-bound ranges located on sequences</span></span>
-<span id="cb8-31"><a href="#cb8-31"></a><span class="co">#&gt;   4529, 4631, 4632, 1653, 1654, 1655, 1656, 12192, 12362, 12363, 12364,</span></span>
-<span id="cb8-32"><a href="#cb8-32"></a><span class="co">#&gt;   12365, 12366, 12367, 12517, 12518, 12519, 12520, 13123, 13124, 13974,</span></span>
-<span id="cb8-33"><a href="#cb8-33"></a><span class="co">#&gt;   13975, 13976, 13994, 13995, 17007, 17008, 17009, 17010, 17011, 17012,</span></span>
-<span id="cb8-34"><a href="#cb8-34"></a><span class="co">#&gt;   17014, 17015, 17016, 17793, 18007, 20532, 22527, 22954, 22955, 22956,</span></span>
-<span id="cb8-35"><a href="#cb8-35"></a><span class="co">#&gt;   23347, 27275, 27276, 28075, 28085, 28893, 29046, 29047, 29242, 31362,</span></span>
-<span id="cb8-36"><a href="#cb8-36"></a><span class="co">#&gt;   32048, 32050, 33339, 33714, 33715, 32912, 32913, 40960, 40961, 44219,</span></span>
-<span id="cb8-37"><a href="#cb8-37"></a><span class="co">#&gt;   44220, 44242, 44262, 44263, 44356, 46050, 46054, 46062, 46063, 46064,</span></span>
-<span id="cb8-38"><a href="#cb8-38"></a><span class="co">#&gt;   46065, 46066, 53476, 53477, 53497, 53498, 59180, 57764, 57766, 61092,</span></span>
-<span id="cb8-39"><a href="#cb8-39"></a><span class="co">#&gt;   69815, 69930, 70330, 70331, 70332, 77129, 77130, 76239, 76240, 76241,</span></span>
-<span id="cb8-40"><a href="#cb8-40"></a><span class="co">#&gt;   77987, and 77988. Note that ranges located on a sequence whose length</span></span>
-<span id="cb8-41"><a href="#cb8-41"></a><span class="co">#&gt;   is unknown (NA) or on a circular sequence are not considered</span></span>
-<span id="cb8-42"><a href="#cb8-42"></a><span class="co">#&gt;   out-of-bound (use seqlengths() and isCircular() to get the lengths and</span></span>
-<span id="cb8-43"><a href="#cb8-43"></a><span class="co">#&gt;   circularity flags of the underlying sequences). You can use trim() to</span></span>
-<span id="cb8-44"><a href="#cb8-44"></a><span class="co">#&gt;   trim these ranges. See ?`trim,GenomicRanges-method` for more</span></span>
-<span id="cb8-45"><a href="#cb8-45"></a><span class="co">#&gt;   information.</span></span>
+<span id="cb8-19"><a href="#cb8-19"></a><span class="co">#&gt;   chr        from       to ref   alt      NV    DP   VAF FILTER ANNOVAR_FUNCTION</span></span>
+<span id="cb8-20"><a href="#cb8-20"></a><span class="co">#&gt;    [3m [38;5;246m&lt;chr&gt; [39m [23m      [3m [38;5;246m&lt;dbl&gt; [39m [23m     [3m [38;5;246m&lt;dbl&gt; [39m [23m  [3m [38;5;246m&lt;chr&gt; [39m [23m  [3m [38;5;246m&lt;chr&gt; [39m [23m  [3m [38;5;246m&lt;dbl&gt; [39m [23m  [3m [38;5;246m&lt;dbl&gt; [39m [23m  [3m [38;5;246m&lt;dbl&gt; [39m [23m  [3m [38;5;246m&lt;chr&gt; [39m [23m   [3m [38;5;246m&lt;chr&gt; [39m [23m           </span></span>
+<span id="cb8-21"><a href="#cb8-21"></a><span class="co">#&gt;  [38;5;250m1 [39m chr2  179 [4m4 [24m [4m3 [24m [4m1 [24m633   1.79 [38;5;246me [39m8 C     T        77   117 0.658 PASS   exonic          </span></span>
+<span id="cb8-22"><a href="#cb8-22"></a><span class="co">#&gt;  [38;5;250m2 [39m chr16  67 [4m6 [24m [4m4 [24m [4m6 [24m006   6.76 [38;5;246me [39m7 C     T        54   120 0.45  PASS   exonic          </span></span>
+<span id="cb8-23"><a href="#cb8-23"></a><span class="co">#&gt;  [38;5;250m3 [39m chr17   7 [4m5 [24m [4m7 [24m [4m7 [24m106   7.58 [38;5;246me [39m6 G     C        78    84 0.929 PASS   exonic          </span></span>
+<span id="cb8-24"><a href="#cb8-24"></a><span class="co">#&gt;  [38;5;246m# ℹ 8 more variables: GENE &lt;chr&gt;, is_driver &lt;lgl&gt;, driver_label &lt;chr&gt;, [39m</span></span>
+<span id="cb8-25"><a href="#cb8-25"></a><span class="co">#&gt;  [38;5;246m#   gene &lt;chr&gt;, type &lt;chr&gt;, karyotype &lt;chr&gt;, segment_id &lt;chr&gt;, cna &lt;chr&gt; [39m</span></span>
+<span id="cb8-26"><a href="#cb8-26"></a><span class="co">#&gt;  [32m✔ [39m Preparing mutationsut data ... done</span></span>
+<span id="cb8-27"><a href="#cb8-27"></a><span class="co">#&gt; </span></span>
+<span id="cb8-28"><a href="#cb8-28"></a><span class="co">#&gt;  [36mℹ [39m Locating variants with  [33mVariantAnnotation [39m</span></span>
+<span id="cb8-29"><a href="#cb8-29"></a><span class="co">#&gt; Warning in valid.GenomicRanges.seqinfo(x, suggest.trim = TRUE): GRanges object contains 364 out-of-bound ranges located on sequences</span></span>
+<span id="cb8-30"><a href="#cb8-30"></a><span class="co">#&gt;   4529, 4631, 4632, 1653, 1654, 1655, 1656, 12192, 12362, 12363, 12364,</span></span>
+<span id="cb8-31"><a href="#cb8-31"></a><span class="co">#&gt;   12365, 12366, 12367, 12517, 12518, 12519, 12520, 13123, 13124, 13974,</span></span>
+<span id="cb8-32"><a href="#cb8-32"></a><span class="co">#&gt;   13975, 13976, 13994, 13995, 17007, 17008, 17009, 17010, 17011, 17012,</span></span>
+<span id="cb8-33"><a href="#cb8-33"></a><span class="co">#&gt;   17014, 17015, 17016, 17793, 18007, 20532, 22527, 22954, 22955, 22956,</span></span>
+<span id="cb8-34"><a href="#cb8-34"></a><span class="co">#&gt;   23347, 27275, 27276, 28075, 28085, 28893, 29046, 29047, 29242, 31362,</span></span>
+<span id="cb8-35"><a href="#cb8-35"></a><span class="co">#&gt;   32048, 32050, 33339, 33714, 33715, 32912, 32913, 40960, 40961, 44219,</span></span>
+<span id="cb8-36"><a href="#cb8-36"></a><span class="co">#&gt;   44220, 44242, 44262, 44263, 44356, 46050, 46054, 46062, 46063, 46064,</span></span>
+<span id="cb8-37"><a href="#cb8-37"></a><span class="co">#&gt;   46065, 46066, 53476, 53477, 53497, 53498, 59180, 57764, 57766, 61092,</span></span>
+<span id="cb8-38"><a href="#cb8-38"></a><span class="co">#&gt;   69815, 69930, 70330, 70331, 70332, 77129, 77130, 76239, 76240, 76241,</span></span>
+<span id="cb8-39"><a href="#cb8-39"></a><span class="co">#&gt;   77987, and 77988. Note that ranges located on a sequence whose length</span></span>
+<span id="cb8-40"><a href="#cb8-40"></a><span class="co">#&gt;   is unknown (NA) or on a circular sequence are not considered</span></span>
+<span id="cb8-41"><a href="#cb8-41"></a><span class="co">#&gt;   out-of-bound (use seqlengths() and isCircular() to get the lengths and</span></span>
+<span id="cb8-42"><a href="#cb8-42"></a><span class="co">#&gt;   circularity flags of the underlying sequences). You can use trim() to</span></span>
+<span id="cb8-43"><a href="#cb8-43"></a><span class="co">#&gt;   trim these ranges. See ?`trim,GenomicRanges-method` for more</span></span>
+<span id="cb8-44"><a href="#cb8-44"></a><span class="co">#&gt;   information.</span></span>
+<span id="cb8-45"><a href="#cb8-45"></a><span class="co">#&gt; 'select()' returned many:1 mapping between keys and columns</span></span>
 <span id="cb8-46"><a href="#cb8-46"></a><span class="co">#&gt; 'select()' returned many:1 mapping between keys and columns</span></span>
-<span id="cb8-47"><a href="#cb8-47"></a><span class="co">#&gt; 'select()' returned many:1 mapping between keys and columns</span></span>
-<span id="cb8-48"><a href="#cb8-48"></a><span class="co">#&gt; 'select()' returned 1:1 mapping between keys and columns</span></span>
-<span id="cb8-49"><a href="#cb8-49"></a><span class="co">#&gt; 'select()' returned many:1 mapping between keys and columns</span></span>
-<span id="cb8-50"><a href="#cb8-50"></a><span class="co">#&gt; 'select()' returned 1:1 mapping between keys and columns</span></span>
-<span id="cb8-51"><a href="#cb8-51"></a><span class="co">#&gt; 'select()' returned many:1 mapping between keys and columns</span></span>
-<span id="cb8-52"><a href="#cb8-52"></a><span class="co">#&gt;  [32m✔ [39m Locating variants with  [33mVariantAnnotation [39m ... done</span></span>
-<span id="cb8-53"><a href="#cb8-53"></a><span class="co">#&gt; </span></span>
-<span id="cb8-54"><a href="#cb8-54"></a><span class="co">#&gt;  [36mℹ [39m Traslating Entrez ids</span></span>
-<span id="cb8-55"><a href="#cb8-55"></a><span class="co">#&gt;  [32m✔ [39m Traslating Entrez ids ... done</span></span>
-<span id="cb8-56"><a href="#cb8-56"></a><span class="co">#&gt; </span></span>
-<span id="cb8-57"><a href="#cb8-57"></a><span class="co">#&gt;  [36mℹ [39m Transforming data</span></span>
-<span id="cb8-58"><a href="#cb8-58"></a><span class="co">#&gt;  [32m✔ [39m Transforming data ... done</span></span>
-<span id="cb8-59"><a href="#cb8-59"></a><span class="co">#&gt; </span></span>
-<span id="cb8-60"><a href="#cb8-60"></a><span class="co">#&gt;  [36mℹ [39m Predicting coding</span></span>
-<span id="cb8-61"><a href="#cb8-61"></a><span class="co">#&gt; Warning in valid.GenomicRanges.seqinfo(x, suggest.trim = TRUE): GRanges object contains 315 out-of-bound ranges located on sequences</span></span>
-<span id="cb8-62"><a href="#cb8-62"></a><span class="co">#&gt;   4529, 4631, 4632, 1653, 1654, 1655, 1656, 12192, 12362, 12363, 12364,</span></span>
-<span id="cb8-63"><a href="#cb8-63"></a><span class="co">#&gt;   12365, 12366, 12367, 12517, 12518, 12519, 12520, 13123, 13124, 13974,</span></span>
-<span id="cb8-64"><a href="#cb8-64"></a><span class="co">#&gt;   13975, 13976, 13994, 13995, 17007, 17008, 17009, 17010, 17011, 17012,</span></span>
-<span id="cb8-65"><a href="#cb8-65"></a><span class="co">#&gt;   17014, 17015, 17016, 17793, 18007, 20532, 22527, 22954, 22955, 22956,</span></span>
-<span id="cb8-66"><a href="#cb8-66"></a><span class="co">#&gt;   23347, 27275, 27276, 28075, 28085, 28893, 29046, 29047, 29242, 31362,</span></span>
-<span id="cb8-67"><a href="#cb8-67"></a><span class="co">#&gt;   32048, 32050, 33339, 33714, 33715, 32912, 32913, 40960, 40961, 44219,</span></span>
-<span id="cb8-68"><a href="#cb8-68"></a><span class="co">#&gt;   44220, 44242, 44262, 44263, 44356, 53476, 53477, 53497, 53498, 59180,</span></span>
-<span id="cb8-69"><a href="#cb8-69"></a><span class="co">#&gt;   57764, 57766, 61092, 69815, 69930, 70330, 70331, 70332, 77129, 77130,</span></span>
-<span id="cb8-70"><a href="#cb8-70"></a><span class="co">#&gt;   76239, 76240, 76241, 77987, and 77988. Note that ranges located on a</span></span>
-<span id="cb8-71"><a href="#cb8-71"></a><span class="co">#&gt;   sequence whose length is unknown (NA) or on a circular sequence are not</span></span>
-<span id="cb8-72"><a href="#cb8-72"></a><span class="co">#&gt;   considered out-of-bound (use seqlengths() and isCircular() to get the</span></span>
-<span id="cb8-73"><a href="#cb8-73"></a><span class="co">#&gt;   lengths and circularity flags of the underlying sequences). You can use</span></span>
-<span id="cb8-74"><a href="#cb8-74"></a><span class="co">#&gt;   trim() to trim these ranges. See ?`trim,GenomicRanges-method` for more</span></span>
-<span id="cb8-75"><a href="#cb8-75"></a><span class="co">#&gt;   information.</span></span>
-<span id="cb8-76"><a href="#cb8-76"></a><span class="co">#&gt; </span></span>
-<span id="cb8-77"><a href="#cb8-77"></a><span class="co">#&gt;  [36mℹ [39m Predicting coding</span></span>
-<span id="cb8-78"><a href="#cb8-78"></a>── Coding substitutions found </span>
-<span id="cb8-79"><a href="#cb8-79"></a><span class="co">#&gt;  [36mℹ [39m Predicting coding</span></span>
-<span id="cb8-80"><a href="#cb8-80"></a><span class="co">#&gt;       chr      from        to   consequence refAA varAA</span></span>
-<span id="cb8-81"><a href="#cb8-81"></a><span class="co">#&gt; 1    chr1  19181096  19181096 nonsynonymous     R     C</span></span>
-<span id="cb8-82"><a href="#cb8-82"></a><span class="co">#&gt; 2    chr1  22174512  22174512    synonymous     N     N</span></span>
-<span id="cb8-83"><a href="#cb8-83"></a><span class="co">#&gt; 4    chr1  53555518  53555518    synonymous     L     L</span></span>
-<span id="cb8-84"><a href="#cb8-84"></a><span class="co">#&gt; 8    chr1  53905657  53905657 nonsynonymous     V     L</span></span>
-<span id="cb8-85"><a href="#cb8-85"></a><span class="co">#&gt; 9    chr1  60331554  60331554    synonymous     I     I</span></span>
-<span id="cb8-86"><a href="#cb8-86"></a><span class="co">#&gt; 12   chr1  82447611  82447611 nonsynonymous     A     D</span></span>
-<span id="cb8-87"><a href="#cb8-87"></a><span class="co">#&gt; 18   chr1  92446883  92446883 nonsynonymous     E     D</span></span>
-<span id="cb8-88"><a href="#cb8-88"></a><span class="co">#&gt; 25   chr1 104160689 104160689    synonymous     F     F</span></span>
-<span id="cb8-89"><a href="#cb8-89"></a><span class="co">#&gt; 27   chr1 216538391 216538391 nonsynonymous     V     M</span></span>
-<span id="cb8-90"><a href="#cb8-90"></a><span class="co">#&gt; 29   chr1 237729903 237729903 nonsynonymous     R     M</span></span>
-<span id="cb8-91"><a href="#cb8-91"></a><span class="co">#&gt; 30   chr1 248263060 248263060 nonsynonymous     S     C</span></span>
-<span id="cb8-92"><a href="#cb8-92"></a><span class="co">#&gt; 32   chr2 164466573 164466573 nonsynonymous     L     P</span></span>
-<span id="cb8-93"><a href="#cb8-93"></a><span class="co">#&gt; 33   chr2 166850776 166850776 nonsynonymous     L     M</span></span>
-<span id="cb8-94"><a href="#cb8-94"></a><span class="co">#&gt; 36   chr2 179431633 179431633 nonsynonymous     R     H</span></span>
-<span id="cb8-95"><a href="#cb8-95"></a><span class="co">#&gt; 42   chr2 200213658 200213658 nonsynonymous     M     I</span></span>
-<span id="cb8-96"><a href="#cb8-96"></a><span class="co">#&gt; 47   chr3   8787442   8787442 nonsynonymous     Q     H</span></span>
-<span id="cb8-97"><a href="#cb8-97"></a><span class="co">#&gt; 49   chr3  36779518  36779518    synonymous     T     T</span></span>
-<span id="cb8-98"><a href="#cb8-98"></a><span class="co">#&gt; 50   chr3  38357967  38357967 nonsynonymous     T     M</span></span>
-<span id="cb8-99"><a href="#cb8-99"></a><span class="co">#&gt; 52   chr3  57283510  57283510      nonsense     S     *</span></span>
-<span id="cb8-100"><a href="#cb8-100"></a><span class="co">#&gt; 55   chr3  58154222  58154222    synonymous     S     S</span></span>
-<span id="cb8-101"><a href="#cb8-101"></a><span class="co">#&gt; 61   chr3  58792166  58792166 nonsynonymous     R     H</span></span>
-<span id="cb8-102"><a href="#cb8-102"></a><span class="co">#&gt; 63   chr3 119316821 119316821 nonsynonymous     V     I</span></span>
-<span id="cb8-103"><a href="#cb8-103"></a><span class="co">#&gt; 65   chr3 124398309 124398309 nonsynonymous     T     M</span></span>
-<span id="cb8-104"><a href="#cb8-104"></a><span class="co">#&gt; 67   chr3 168838908 168838908    synonymous     T     T</span></span>
-<span id="cb8-105"><a href="#cb8-105"></a><span class="co">#&gt; 77   chr4  40104548  40104548    synonymous     P     P</span></span>
-<span id="cb8-106"><a href="#cb8-106"></a><span class="co">#&gt; 80   chr4  71275513  71275513 nonsynonymous     N     K</span></span>
-<span id="cb8-107"><a href="#cb8-107"></a><span class="co">#&gt; 81   chr4  74453626  74453626 nonsynonymous     D     N</span></span>
-<span id="cb8-108"><a href="#cb8-108"></a><span class="co">#&gt; 85   chr4 115544477 115544477    synonymous     I     I</span></span>
-<span id="cb8-109"><a href="#cb8-109"></a><span class="co">#&gt; 87   chr4 188924096 188924096    synonymous     A     A</span></span>
-<span id="cb8-110"><a href="#cb8-110"></a><span class="co">#&gt; 90   chr4 189061712 189061712 nonsynonymous     R     C</span></span>
-<span id="cb8-111"><a href="#cb8-111"></a><span class="co">#&gt; 91   chr5    169493    169493 nonsynonymous     T     R</span></span>
-<span id="cb8-112"><a href="#cb8-112"></a><span class="co">#&gt; 92   chr5  23523442  23523442 nonsynonymous     D     Y</span></span>
-<span id="cb8-113"><a href="#cb8-113"></a><span class="co">#&gt; 93   chr5  52183723  52183723 nonsynonymous     S     P</span></span>
-<span id="cb8-114"><a href="#cb8-114"></a><span class="co">#&gt; 94   chr5  74441953  74441953 nonsynonymous     V     F</span></span>
-<span id="cb8-115"><a href="#cb8-115"></a><span class="co">#&gt; 95   chr5 106722968 106722968 nonsynonymous     N     I</span></span>
-<span id="cb8-116"><a href="#cb8-116"></a><span class="co">#&gt; 96   chr5 135692398 135692398    synonymous     A     A</span></span>
-<span id="cb8-117"><a href="#cb8-117"></a><span class="co">#&gt; 100  chr5 140263104 140263104    synonymous     S     S</span></span>
-<span id="cb8-118"><a href="#cb8-118"></a><span class="co">#&gt; 103  chr5 158745750 158745750 nonsynonymous     R     S</span></span>
-<span id="cb8-119"><a href="#cb8-119"></a><span class="co">#&gt; 104  chr6  26157225  26157225 nonsynonymous     T     A</span></span>
-<span id="cb8-120"><a href="#cb8-120"></a><span class="co">#&gt; 105  chr6  27861573  27861573    synonymous     A     A</span></span>
-<span id="cb8-121"><a href="#cb8-121"></a><span class="co">#&gt; 106  chr6  36946316  36946316 nonsynonymous     A     T</span></span>
-<span id="cb8-122"><a href="#cb8-122"></a><span class="co">#&gt; 109  chr6 110763563 110763563 nonsynonymous     T     M</span></span>
-<span id="cb8-123"><a href="#cb8-123"></a><span class="co">#&gt; 111  chr6 111621324 111621324    synonymous     H     H</span></span>
-<span id="cb8-124"><a href="#cb8-124"></a><span class="co">#&gt; 115  chr6 121768896 121768896      nonsense     Y     *</span></span>
-<span id="cb8-125"><a href="#cb8-125"></a><span class="co">#&gt; 119  chr7  20725372  20725372    synonymous     R     R</span></span>
-<span id="cb8-126"><a href="#cb8-126"></a><span class="co">#&gt; 121  chr7  21847599  21847599 nonsynonymous     G     R</span></span>
-<span id="cb8-127"><a href="#cb8-127"></a><span class="co">#&gt; 123  chr7  70880969  70880969    synonymous     R     R</span></span>
-<span id="cb8-128"><a href="#cb8-128"></a><span class="co">#&gt; 124  chr7  91793446  91793446    synonymous     A     A</span></span>
-<span id="cb8-129"><a href="#cb8-129"></a><span class="co">#&gt; 125  chr7  94293707  94293707 nonsynonymous     R     H</span></span>
-<span id="cb8-130"><a href="#cb8-130"></a><span class="co">#&gt; 128  chr7 100350058 100350058 nonsynonymous     T     I</span></span>
-<span id="cb8-131"><a href="#cb8-131"></a><span class="co">#&gt; 130  chr7 106509682 106509682 nonsynonymous     I     R</span></span>
-<span id="cb8-132"><a href="#cb8-132"></a><span class="co">#&gt; 133  chr7 113558721 113558721 nonsynonymous     D     Y</span></span>
-<span id="cb8-133"><a href="#cb8-133"></a><span class="co">#&gt; 134  chr7 114619804 114619804 nonsynonymous     V     A</span></span>
-<span id="cb8-134"><a href="#cb8-134"></a><span class="co">#&gt; 135  chr7 128521730 128521730 nonsynonymous     P     L</span></span>
-<span id="cb8-135"><a href="#cb8-135"></a><span class="co">#&gt; 136  chr7 141629952 141629952    synonymous     A     A</span></span>
-<span id="cb8-136"><a href="#cb8-136"></a><span class="co">#&gt; 139  chr8  10480111  10480111 nonsynonymous     G     R</span></span>
-<span id="cb8-137"><a href="#cb8-137"></a><span class="co">#&gt; 140  chr8  24171006  24171006 nonsynonymous     K     N</span></span>
-<span id="cb8-138"><a href="#cb8-138"></a><span class="co">#&gt; 142  chr8  38003841  38003841 nonsynonymous     M     K</span></span>
-<span id="cb8-139"><a href="#cb8-139"></a><span class="co">#&gt; 143  chr8  40389750  40389750 nonsynonymous     N     D</span></span>
-<span id="cb8-140"><a href="#cb8-140"></a><span class="co">#&gt; 145  chr8  72969169  72969169      nonsense     R     *</span></span>
-<span id="cb8-141"><a href="#cb8-141"></a><span class="co">#&gt; 146  chr8  87679166  87679166 nonsynonymous     G     V</span></span>
-<span id="cb8-142"><a href="#cb8-142"></a><span class="co">#&gt; 148  chr8 145095790 145095790 nonsynonymous     H     P</span></span>
-<span id="cb8-143"><a href="#cb8-143"></a><span class="co">#&gt; 150  chr8 145577702 145577702 nonsynonymous     R     W</span></span>
-<span id="cb8-144"><a href="#cb8-144"></a><span class="co">#&gt; 151  chr8 145577702 145577702    synonymous     R     R</span></span>
-<span id="cb8-145"><a href="#cb8-145"></a><span class="co">#&gt; 153  chr9  14662289  14662289    synonymous     L     L</span></span>
-<span id="cb8-146"><a href="#cb8-146"></a><span class="co">#&gt; 154  chr9  19049697  19049697 nonsynonymous     G     R</span></span>
-<span id="cb8-147"><a href="#cb8-147"></a><span class="co">#&gt; 155  chr9 135930484 135930484 nonsynonymous     G     R</span></span>
-<span id="cb8-148"><a href="#cb8-148"></a><span class="co">#&gt; 156 chr11   1250475   1250475 nonsynonymous     R     H</span></span>
-<span id="cb8-149"><a href="#cb8-149"></a><span class="co">#&gt; 158 chr11  59423175  59423175    synonymous     R     R</span></span>
-<span id="cb8-150"><a href="#cb8-150"></a><span class="co">#&gt; 160 chr11  59829993  59829993 nonsynonymous     G     V</span></span>
-<span id="cb8-151"><a href="#cb8-151"></a><span class="co">#&gt; 161 chr11  60899918  60899918 nonsynonymous     V     I</span></span>
-<span id="cb8-152"><a href="#cb8-152"></a><span class="co">#&gt; 162 chr11  61300539  61300539    synonymous     H     H</span></span>
-<span id="cb8-153"><a href="#cb8-153"></a><span class="co">#&gt; 164 chr11  62886736  62886736 nonsynonymous     A     V</span></span>
-<span id="cb8-154"><a href="#cb8-154"></a><span class="co">#&gt; 166 chr12  47629501  47629501 nonsynonymous     R     C</span></span>
-<span id="cb8-155"><a href="#cb8-155"></a><span class="co">#&gt; 169 chr12  54790107  54790107    synonymous     Q     Q</span></span>
-<span id="cb8-156"><a href="#cb8-156"></a><span class="co">#&gt; 170 chr12  54790131  54790131      nonsense     Y     *</span></span>
-<span id="cb8-157"><a href="#cb8-157"></a><span class="co">#&gt; 171 chr12  58016861  58016861 nonsynonymous     P     S</span></span>
-<span id="cb8-158"><a href="#cb8-158"></a><span class="co">#&gt; 172 chr12 108589877 108589877 nonsynonymous     G     R</span></span>
-<span id="cb8-159"><a href="#cb8-159"></a><span class="co">#&gt; 174 chr12 117723962 117723962 nonsynonymous     A     T</span></span>
-<span id="cb8-160"><a href="#cb8-160"></a><span class="co">#&gt; 178 chr12 132636090 132636090 nonsynonymous     A     P</span></span>
-<span id="cb8-161"><a href="#cb8-161"></a><span class="co">#&gt; 179 chr14  22102490  22102490 nonsynonymous     R     H</span></span>
-<span id="cb8-162"><a href="#cb8-162"></a><span class="co">#&gt; 180 chr14  39772697  39772697 nonsynonymous     G     V</span></span>
-<span id="cb8-163"><a href="#cb8-163"></a><span class="co">#&gt; 192 chr14  61746872  61746872 nonsynonymous     G     S</span></span>
-<span id="cb8-164"><a href="#cb8-164"></a><span class="co">#&gt; 193 chr14 104216175 104216175      nonsense     R     *</span></span>
-<span id="cb8-165"><a href="#cb8-165"></a><span class="co">#&gt; 195 chr14 105411929 105411929 nonsynonymous     G     C</span></span>
-<span id="cb8-166"><a href="#cb8-166"></a><span class="co">#&gt; 197 chr15  62456770  62456770    synonymous     A     A</span></span>
-<span id="cb8-167"><a href="#cb8-167"></a><span class="co">#&gt; 199 chr16  11137915  11137915      nonsense     R     *</span></span>
-<span id="cb8-168"><a href="#cb8-168"></a><span class="co">#&gt; 202 chr16  21213539  21213539    synonymous     L     L</span></span>
-<span id="cb8-169"><a href="#cb8-169"></a><span class="co">#&gt; 204 chr16  30735316  30735316 nonsynonymous     P     H</span></span>
-<span id="cb8-170"><a href="#cb8-170"></a><span class="co">#&gt; 206 chr16  67646006  67646006 nonsynonymous     H     Y</span></span>
-<span id="cb8-171"><a href="#cb8-171"></a><span class="co">#&gt; 207 chr17   4576719   4576719 nonsynonymous     M     I</span></span>
-<span id="cb8-172"><a href="#cb8-172"></a><span class="co">#&gt; 209 chr17   7577106   7577106 nonsynonymous     P     A</span></span>
-<span id="cb8-173"><a href="#cb8-173"></a><span class="co">#&gt; 218 chr17   8812440   8812440 nonsynonymous     P     L</span></span>
-<span id="cb8-174"><a href="#cb8-174"></a><span class="co">#&gt; 220 chr17  37903076  37903076 nonsynonymous     V     M</span></span>
-<span id="cb8-175"><a href="#cb8-175"></a><span class="co">#&gt; 224 chr19  14952247  14952247 nonsynonymous     S     Y</span></span>
-<span id="cb8-176"><a href="#cb8-176"></a><span class="co">#&gt; 225 chr19  15292495  15292495 nonsynonymous     P     L</span></span>
-<span id="cb8-177"><a href="#cb8-177"></a><span class="co">#&gt; 227 chr19  49002070  49002070    synonymous     A     A</span></span>
-<span id="cb8-178"><a href="#cb8-178"></a><span class="co">#&gt; 228 chr19  50397717  50397717 nonsynonymous     H     Q</span></span>
-<span id="cb8-179"><a href="#cb8-179"></a><span class="co">#&gt; 233 chr19  50919900  50919900 nonsynonymous     T     M</span></span>
-<span id="cb8-180"><a href="#cb8-180"></a><span class="co">#&gt; 236 chr19  52001351  52001351    synonymous     G     G</span></span>
-<span id="cb8-181"><a href="#cb8-181"></a><span class="co">#&gt; 239 chr19  52249683  52249683      nonsense     E     *</span></span>
-<span id="cb8-182"><a href="#cb8-182"></a><span class="co">#&gt; 242 chr19  55711727  55711727      nonsense     R     *</span></span>
-<span id="cb8-183"><a href="#cb8-183"></a><span class="co">#&gt; 245 chr21  32185475  32185475 nonsynonymous     P     T</span></span>
-<span id="cb8-184"><a href="#cb8-184"></a><span class="co">#&gt; 246  chrX   8555871   8555871    synonymous     S     S</span></span>
-<span id="cb8-185"><a href="#cb8-185"></a><span class="co">#&gt; 247  chrX  19983163  19983163 nonsynonymous     R     W</span></span>
-<span id="cb8-186"><a href="#cb8-186"></a><span class="co">#&gt; 249  chrX 100240739 100240739    synonymous     L     L</span></span>
-<span id="cb8-187"><a href="#cb8-187"></a><span class="co">#&gt; 252  chrX 100668298 100668298 nonsynonymous     S     F</span></span>
-<span id="cb8-188"><a href="#cb8-188"></a><span class="co">#&gt; 255  chrX 115304424 115304424 nonsynonymous     D     E</span></span>
-<span id="cb8-189"><a href="#cb8-189"></a><span class="co">#&gt; 257  chrX 124454501 124454501      nonsense     L     *</span></span>
-<span id="cb8-190"><a href="#cb8-190"></a><span class="co">#&gt; 258  chrX 129349850 129349850 nonsynonymous     A     T</span></span>
-<span id="cb8-191"><a href="#cb8-191"></a><span class="co">#&gt;  [32m✔ [39m Predicting coding ... done</span></span>
-<span id="cb8-192"><a href="#cb8-192"></a><span class="co">#&gt; </span></span>
-<span id="cb8-193"><a href="#cb8-193"></a><span class="co">#&gt;  [36mℹ [39m Drivers annotation</span></span>
-<span id="cb8-194"><a href="#cb8-194"></a><span class="co">#&gt; </span></span>
-<span id="cb8-195"><a href="#cb8-195"></a><span class="co">#&gt;  [36mℹ [39m Drivers annotation</span></span>
-<span id="cb8-196"><a href="#cb8-196"></a>── Found <span class="dv">1</span> <span class="kw">driver</span>(s) </span>
-<span id="cb8-197"><a href="#cb8-197"></a><span class="co">#&gt;  [36mℹ [39m Drivers annotation</span></span>
-<span id="cb8-198"><a href="#cb8-198"></a><span class="co">#&gt;  [38;5;246m# A tibble: 1 × 10 [39m</span></span>
-<span id="cb8-199"><a href="#cb8-199"></a><span class="co">#&gt;   chr      from      to gene_symbol location conse…¹ refAA varAA drive…² is_dr…³</span></span>
-<span id="cb8-200"><a href="#cb8-200"></a><span class="co">#&gt;    [3m [38;5;246m&lt;fct&gt; [39m [23m    [3m [38;5;246m&lt;int&gt; [39m [23m    [3m [38;5;246m&lt;int&gt; [39m [23m  [3m [38;5;246m&lt;chr&gt; [39m [23m        [3m [38;5;246m&lt;chr&gt; [39m [23m     [3m [38;5;246m&lt;fct&gt; [39m [23m    [3m [38;5;246m&lt;chr&gt; [39m [23m  [3m [38;5;246m&lt;chr&gt; [39m [23m  [3m [38;5;246m&lt;chr&gt; [39m [23m    [3m [38;5;246m&lt;lgl&gt; [39m [23m  </span></span>
-<span id="cb8-201"><a href="#cb8-201"></a><span class="co">#&gt;  [38;5;250m1 [39m chr17 7 [4m5 [24m [4m7 [24m [4m7 [24m106 7 [4m5 [24m [4m7 [24m [4m7 [24m106 TP53        coding:… nonsyn… P     A     TP53_P… TRUE   </span></span>
-<span id="cb8-202"><a href="#cb8-202"></a><span class="co">#&gt;  [38;5;246m# … with abbreviated variable names ¹​consequence, ²​driver_label, ³​is_driver [39m</span></span>
-<span id="cb8-203"><a href="#cb8-203"></a><span class="co">#&gt;  [32m✔ [39m Drivers annotation ... done</span></span>
+<span id="cb8-47"><a href="#cb8-47"></a><span class="co">#&gt; 'select()' returned 1:1 mapping between keys and columns</span></span>
+<span id="cb8-48"><a href="#cb8-48"></a><span class="co">#&gt; 'select()' returned many:1 mapping between keys and columns</span></span>
+<span id="cb8-49"><a href="#cb8-49"></a><span class="co">#&gt; 'select()' returned 1:1 mapping between keys and columns</span></span>
+<span id="cb8-50"><a href="#cb8-50"></a><span class="co">#&gt; 'select()' returned many:1 mapping between keys and columns</span></span>
+<span id="cb8-51"><a href="#cb8-51"></a><span class="co">#&gt;  [32m✔ [39m Locating variants with  [33mVariantAnnotation [39m ... done</span></span>
+<span id="cb8-52"><a href="#cb8-52"></a><span class="co">#&gt; </span></span>
+<span id="cb8-53"><a href="#cb8-53"></a><span class="co">#&gt;  [36mℹ [39m Traslating Entrez ids</span></span>
+<span id="cb8-54"><a href="#cb8-54"></a><span class="co">#&gt;  [32m✔ [39m Traslating Entrez ids ... done</span></span>
+<span id="cb8-55"><a href="#cb8-55"></a><span class="co">#&gt; </span></span>
+<span id="cb8-56"><a href="#cb8-56"></a><span class="co">#&gt;  [36mℹ [39m Transforming data</span></span>
+<span id="cb8-57"><a href="#cb8-57"></a><span class="co">#&gt;  [32m✔ [39m Transforming data ... done</span></span>
+<span id="cb8-58"><a href="#cb8-58"></a><span class="co">#&gt; </span></span>
+<span id="cb8-59"><a href="#cb8-59"></a><span class="co">#&gt;  [36mℹ [39m Predicting coding</span></span>
+<span id="cb8-60"><a href="#cb8-60"></a><span class="co">#&gt; Warning in valid.GenomicRanges.seqinfo(x, suggest.trim = TRUE): GRanges object contains 315 out-of-bound ranges located on sequences</span></span>
+<span id="cb8-61"><a href="#cb8-61"></a><span class="co">#&gt;   4529, 4631, 4632, 1653, 1654, 1655, 1656, 12192, 12362, 12363, 12364,</span></span>
+<span id="cb8-62"><a href="#cb8-62"></a><span class="co">#&gt;   12365, 12366, 12367, 12517, 12518, 12519, 12520, 13123, 13124, 13974,</span></span>
+<span id="cb8-63"><a href="#cb8-63"></a><span class="co">#&gt;   13975, 13976, 13994, 13995, 17007, 17008, 17009, 17010, 17011, 17012,</span></span>
+<span id="cb8-64"><a href="#cb8-64"></a><span class="co">#&gt;   17014, 17015, 17016, 17793, 18007, 20532, 22527, 22954, 22955, 22956,</span></span>
+<span id="cb8-65"><a href="#cb8-65"></a><span class="co">#&gt;   23347, 27275, 27276, 28075, 28085, 28893, 29046, 29047, 29242, 31362,</span></span>
+<span id="cb8-66"><a href="#cb8-66"></a><span class="co">#&gt;   32048, 32050, 33339, 33714, 33715, 32912, 32913, 40960, 40961, 44219,</span></span>
+<span id="cb8-67"><a href="#cb8-67"></a><span class="co">#&gt;   44220, 44242, 44262, 44263, 44356, 53476, 53477, 53497, 53498, 59180,</span></span>
+<span id="cb8-68"><a href="#cb8-68"></a><span class="co">#&gt;   57764, 57766, 61092, 69815, 69930, 70330, 70331, 70332, 77129, 77130,</span></span>
+<span id="cb8-69"><a href="#cb8-69"></a><span class="co">#&gt;   76239, 76240, 76241, 77987, and 77988. Note that ranges located on a</span></span>
+<span id="cb8-70"><a href="#cb8-70"></a><span class="co">#&gt;   sequence whose length is unknown (NA) or on a circular sequence are not</span></span>
+<span id="cb8-71"><a href="#cb8-71"></a><span class="co">#&gt;   considered out-of-bound (use seqlengths() and isCircular() to get the</span></span>
+<span id="cb8-72"><a href="#cb8-72"></a><span class="co">#&gt;   lengths and circularity flags of the underlying sequences). You can use</span></span>
+<span id="cb8-73"><a href="#cb8-73"></a><span class="co">#&gt;   trim() to trim these ranges. See ?`trim,GenomicRanges-method` for more</span></span>
+<span id="cb8-74"><a href="#cb8-74"></a><span class="co">#&gt;   information.</span></span>
+<span id="cb8-75"><a href="#cb8-75"></a><span class="co">#&gt; </span></span>
+<span id="cb8-76"><a href="#cb8-76"></a><span class="co">#&gt;  [36mℹ [39m Predicting coding</span></span>
+<span id="cb8-77"><a href="#cb8-77"></a>── Coding substitutions found </span>
+<span id="cb8-78"><a href="#cb8-78"></a><span class="co">#&gt;  [36mℹ [39m Predicting coding</span></span>
+<span id="cb8-79"><a href="#cb8-79"></a><span class="co">#&gt;       chr      from        to   consequence refAA varAA</span></span>
+<span id="cb8-80"><a href="#cb8-80"></a><span class="co">#&gt; 1    chr1  19181096  19181096 nonsynonymous     R     C</span></span>
+<span id="cb8-81"><a href="#cb8-81"></a><span class="co">#&gt; 2    chr1  22174512  22174512    synonymous     N     N</span></span>
+<span id="cb8-82"><a href="#cb8-82"></a><span class="co">#&gt; 4    chr1  53555518  53555518    synonymous     L     L</span></span>
+<span id="cb8-83"><a href="#cb8-83"></a><span class="co">#&gt; 8    chr1  53905657  53905657 nonsynonymous     V     L</span></span>
+<span id="cb8-84"><a href="#cb8-84"></a><span class="co">#&gt; 9    chr1  60331554  60331554    synonymous     I     I</span></span>
+<span id="cb8-85"><a href="#cb8-85"></a><span class="co">#&gt; 12   chr1  82447611  82447611 nonsynonymous     A     D</span></span>
+<span id="cb8-86"><a href="#cb8-86"></a><span class="co">#&gt; 18   chr1  92446883  92446883 nonsynonymous     E     D</span></span>
+<span id="cb8-87"><a href="#cb8-87"></a><span class="co">#&gt; 25   chr1 104160689 104160689    synonymous     F     F</span></span>
+<span id="cb8-88"><a href="#cb8-88"></a><span class="co">#&gt; 27   chr1 216538391 216538391 nonsynonymous     V     M</span></span>
+<span id="cb8-89"><a href="#cb8-89"></a><span class="co">#&gt; 29   chr1 237729903 237729903 nonsynonymous     R     M</span></span>
+<span id="cb8-90"><a href="#cb8-90"></a><span class="co">#&gt; 30   chr1 248263060 248263060 nonsynonymous     S     C</span></span>
+<span id="cb8-91"><a href="#cb8-91"></a><span class="co">#&gt; 32   chr2 164466573 164466573 nonsynonymous     L     P</span></span>
+<span id="cb8-92"><a href="#cb8-92"></a><span class="co">#&gt; 33   chr2 166850776 166850776 nonsynonymous     L     M</span></span>
+<span id="cb8-93"><a href="#cb8-93"></a><span class="co">#&gt; 36   chr2 179431633 179431633 nonsynonymous     R     H</span></span>
+<span id="cb8-94"><a href="#cb8-94"></a><span class="co">#&gt; 42   chr2 200213658 200213658 nonsynonymous     M     I</span></span>
+<span id="cb8-95"><a href="#cb8-95"></a><span class="co">#&gt; 47   chr3   8787442   8787442 nonsynonymous     Q     H</span></span>
+<span id="cb8-96"><a href="#cb8-96"></a><span class="co">#&gt; 49   chr3  36779518  36779518    synonymous     T     T</span></span>
+<span id="cb8-97"><a href="#cb8-97"></a><span class="co">#&gt; 50   chr3  38357967  38357967 nonsynonymous     T     M</span></span>
+<span id="cb8-98"><a href="#cb8-98"></a><span class="co">#&gt; 52   chr3  57283510  57283510      nonsense     S     *</span></span>
+<span id="cb8-99"><a href="#cb8-99"></a><span class="co">#&gt; 55   chr3  58154222  58154222    synonymous     S     S</span></span>
+<span id="cb8-100"><a href="#cb8-100"></a><span class="co">#&gt; 61   chr3  58792166  58792166 nonsynonymous     R     H</span></span>
+<span id="cb8-101"><a href="#cb8-101"></a><span class="co">#&gt; 63   chr3 119316821 119316821 nonsynonymous     V     I</span></span>
+<span id="cb8-102"><a href="#cb8-102"></a><span class="co">#&gt; 65   chr3 124398309 124398309 nonsynonymous     T     M</span></span>
+<span id="cb8-103"><a href="#cb8-103"></a><span class="co">#&gt; 67   chr3 168838908 168838908    synonymous     T     T</span></span>
+<span id="cb8-104"><a href="#cb8-104"></a><span class="co">#&gt; 77   chr4  40104548  40104548    synonymous     P     P</span></span>
+<span id="cb8-105"><a href="#cb8-105"></a><span class="co">#&gt; 80   chr4  71275513  71275513 nonsynonymous     N     K</span></span>
+<span id="cb8-106"><a href="#cb8-106"></a><span class="co">#&gt; 81   chr4  74453626  74453626 nonsynonymous     D     N</span></span>
+<span id="cb8-107"><a href="#cb8-107"></a><span class="co">#&gt; 85   chr4 115544477 115544477    synonymous     I     I</span></span>
+<span id="cb8-108"><a href="#cb8-108"></a><span class="co">#&gt; 87   chr4 188924096 188924096    synonymous     A     A</span></span>
+<span id="cb8-109"><a href="#cb8-109"></a><span class="co">#&gt; 90   chr4 189061712 189061712 nonsynonymous     R     C</span></span>
+<span id="cb8-110"><a href="#cb8-110"></a><span class="co">#&gt; 91   chr5    169493    169493 nonsynonymous     T     R</span></span>
+<span id="cb8-111"><a href="#cb8-111"></a><span class="co">#&gt; 92   chr5  23523442  23523442 nonsynonymous     D     Y</span></span>
+<span id="cb8-112"><a href="#cb8-112"></a><span class="co">#&gt; 93   chr5  52183723  52183723 nonsynonymous     S     P</span></span>
+<span id="cb8-113"><a href="#cb8-113"></a><span class="co">#&gt; 94   chr5  74441953  74441953 nonsynonymous     V     F</span></span>
+<span id="cb8-114"><a href="#cb8-114"></a><span class="co">#&gt; 95   chr5 106722968 106722968 nonsynonymous     N     I</span></span>
+<span id="cb8-115"><a href="#cb8-115"></a><span class="co">#&gt; 96   chr5 135692398 135692398    synonymous     A     A</span></span>
+<span id="cb8-116"><a href="#cb8-116"></a><span class="co">#&gt; 100  chr5 140263104 140263104    synonymous     S     S</span></span>
+<span id="cb8-117"><a href="#cb8-117"></a><span class="co">#&gt; 103  chr5 158745750 158745750 nonsynonymous     R     S</span></span>
+<span id="cb8-118"><a href="#cb8-118"></a><span class="co">#&gt; 104  chr6  26157225  26157225 nonsynonymous     T     A</span></span>
+<span id="cb8-119"><a href="#cb8-119"></a><span class="co">#&gt; 105  chr6  27861573  27861573    synonymous     A     A</span></span>
+<span id="cb8-120"><a href="#cb8-120"></a><span class="co">#&gt; 106  chr6  36946316  36946316 nonsynonymous     A     T</span></span>
+<span id="cb8-121"><a href="#cb8-121"></a><span class="co">#&gt; 109  chr6 110763563 110763563 nonsynonymous     T     M</span></span>
+<span id="cb8-122"><a href="#cb8-122"></a><span class="co">#&gt; 111  chr6 111621324 111621324    synonymous     H     H</span></span>
+<span id="cb8-123"><a href="#cb8-123"></a><span class="co">#&gt; 115  chr6 121768896 121768896      nonsense     Y     *</span></span>
+<span id="cb8-124"><a href="#cb8-124"></a><span class="co">#&gt; 119  chr7  20725372  20725372    synonymous     R     R</span></span>
+<span id="cb8-125"><a href="#cb8-125"></a><span class="co">#&gt; 121  chr7  21847599  21847599 nonsynonymous     G     R</span></span>
+<span id="cb8-126"><a href="#cb8-126"></a><span class="co">#&gt; 123  chr7  70880969  70880969    synonymous     R     R</span></span>
+<span id="cb8-127"><a href="#cb8-127"></a><span class="co">#&gt; 124  chr7  91793446  91793446    synonymous     A     A</span></span>
+<span id="cb8-128"><a href="#cb8-128"></a><span class="co">#&gt; 125  chr7  94293707  94293707 nonsynonymous     R     H</span></span>
+<span id="cb8-129"><a href="#cb8-129"></a><span class="co">#&gt; 128  chr7 100350058 100350058 nonsynonymous     T     I</span></span>
+<span id="cb8-130"><a href="#cb8-130"></a><span class="co">#&gt; 130  chr7 106509682 106509682 nonsynonymous     I     R</span></span>
+<span id="cb8-131"><a href="#cb8-131"></a><span class="co">#&gt; 133  chr7 113558721 113558721 nonsynonymous     D     Y</span></span>
+<span id="cb8-132"><a href="#cb8-132"></a><span class="co">#&gt; 134  chr7 114619804 114619804 nonsynonymous     V     A</span></span>
+<span id="cb8-133"><a href="#cb8-133"></a><span class="co">#&gt; 135  chr7 128521730 128521730 nonsynonymous     P     L</span></span>
+<span id="cb8-134"><a href="#cb8-134"></a><span class="co">#&gt; 136  chr7 141629952 141629952    synonymous     A     A</span></span>
+<span id="cb8-135"><a href="#cb8-135"></a><span class="co">#&gt; 139  chr8  10480111  10480111 nonsynonymous     G     R</span></span>
+<span id="cb8-136"><a href="#cb8-136"></a><span class="co">#&gt; 140  chr8  24171006  24171006 nonsynonymous     K     N</span></span>
+<span id="cb8-137"><a href="#cb8-137"></a><span class="co">#&gt; 142  chr8  38003841  38003841 nonsynonymous     M     K</span></span>
+<span id="cb8-138"><a href="#cb8-138"></a><span class="co">#&gt; 143  chr8  40389750  40389750 nonsynonymous     N     D</span></span>
+<span id="cb8-139"><a href="#cb8-139"></a><span class="co">#&gt; 145  chr8  72969169  72969169      nonsense     R     *</span></span>
+<span id="cb8-140"><a href="#cb8-140"></a><span class="co">#&gt; 146  chr8  87679166  87679166 nonsynonymous     G     V</span></span>
+<span id="cb8-141"><a href="#cb8-141"></a><span class="co">#&gt; 148  chr8 145095790 145095790 nonsynonymous     H     P</span></span>
+<span id="cb8-142"><a href="#cb8-142"></a><span class="co">#&gt; 150  chr8 145577702 145577702 nonsynonymous     R     W</span></span>
+<span id="cb8-143"><a href="#cb8-143"></a><span class="co">#&gt; 151  chr8 145577702 145577702    synonymous     R     R</span></span>
+<span id="cb8-144"><a href="#cb8-144"></a><span class="co">#&gt; 153  chr9  14662289  14662289    synonymous     L     L</span></span>
+<span id="cb8-145"><a href="#cb8-145"></a><span class="co">#&gt; 154  chr9  19049697  19049697 nonsynonymous     G     R</span></span>
+<span id="cb8-146"><a href="#cb8-146"></a><span class="co">#&gt; 155  chr9 135930484 135930484 nonsynonymous     G     R</span></span>
+<span id="cb8-147"><a href="#cb8-147"></a><span class="co">#&gt; 156 chr11   1250475   1250475 nonsynonymous     R     H</span></span>
+<span id="cb8-148"><a href="#cb8-148"></a><span class="co">#&gt; 158 chr11  59423175  59423175    synonymous     R     R</span></span>
+<span id="cb8-149"><a href="#cb8-149"></a><span class="co">#&gt; 160 chr11  59829993  59829993 nonsynonymous     G     V</span></span>
+<span id="cb8-150"><a href="#cb8-150"></a><span class="co">#&gt; 161 chr11  60899918  60899918 nonsynonymous     V     I</span></span>
+<span id="cb8-151"><a href="#cb8-151"></a><span class="co">#&gt; 162 chr11  61300539  61300539    synonymous     H     H</span></span>
+<span id="cb8-152"><a href="#cb8-152"></a><span class="co">#&gt; 164 chr11  62886736  62886736 nonsynonymous     A     V</span></span>
+<span id="cb8-153"><a href="#cb8-153"></a><span class="co">#&gt; 166 chr12  47629501  47629501 nonsynonymous     R     C</span></span>
+<span id="cb8-154"><a href="#cb8-154"></a><span class="co">#&gt; 169 chr12  54790107  54790107    synonymous     Q     Q</span></span>
+<span id="cb8-155"><a href="#cb8-155"></a><span class="co">#&gt; 170 chr12  54790131  54790131      nonsense     Y     *</span></span>
+<span id="cb8-156"><a href="#cb8-156"></a><span class="co">#&gt; 171 chr12  58016861  58016861 nonsynonymous     P     S</span></span>
+<span id="cb8-157"><a href="#cb8-157"></a><span class="co">#&gt; 172 chr12 108589877 108589877 nonsynonymous     G     R</span></span>
+<span id="cb8-158"><a href="#cb8-158"></a><span class="co">#&gt; 174 chr12 117723962 117723962 nonsynonymous     A     T</span></span>
+<span id="cb8-159"><a href="#cb8-159"></a><span class="co">#&gt; 178 chr12 132636090 132636090 nonsynonymous     A     P</span></span>
+<span id="cb8-160"><a href="#cb8-160"></a><span class="co">#&gt; 179 chr14  22102490  22102490 nonsynonymous     R     H</span></span>
+<span id="cb8-161"><a href="#cb8-161"></a><span class="co">#&gt; 180 chr14  39772697  39772697 nonsynonymous     G     V</span></span>
+<span id="cb8-162"><a href="#cb8-162"></a><span class="co">#&gt; 192 chr14  61746872  61746872 nonsynonymous     G     S</span></span>
+<span id="cb8-163"><a href="#cb8-163"></a><span class="co">#&gt; 193 chr14 104216175 104216175      nonsense     R     *</span></span>
+<span id="cb8-164"><a href="#cb8-164"></a><span class="co">#&gt; 195 chr14 105411929 105411929 nonsynonymous     G     C</span></span>
+<span id="cb8-165"><a href="#cb8-165"></a><span class="co">#&gt; 197 chr15  62456770  62456770    synonymous     A     A</span></span>
+<span id="cb8-166"><a href="#cb8-166"></a><span class="co">#&gt; 199 chr16  11137915  11137915      nonsense     R     *</span></span>
+<span id="cb8-167"><a href="#cb8-167"></a><span class="co">#&gt; 202 chr16  21213539  21213539    synonymous     L     L</span></span>
+<span id="cb8-168"><a href="#cb8-168"></a><span class="co">#&gt; 204 chr16  30735316  30735316 nonsynonymous     P     H</span></span>
+<span id="cb8-169"><a href="#cb8-169"></a><span class="co">#&gt; 206 chr16  67646006  67646006 nonsynonymous     H     Y</span></span>
+<span id="cb8-170"><a href="#cb8-170"></a><span class="co">#&gt; 207 chr17   4576719   4576719 nonsynonymous     M     I</span></span>
+<span id="cb8-171"><a href="#cb8-171"></a><span class="co">#&gt; 209 chr17   7577106   7577106 nonsynonymous     P     A</span></span>
+<span id="cb8-172"><a href="#cb8-172"></a><span class="co">#&gt; 218 chr17   8812440   8812440 nonsynonymous     P     L</span></span>
+<span id="cb8-173"><a href="#cb8-173"></a><span class="co">#&gt; 220 chr17  37903076  37903076 nonsynonymous     V     M</span></span>
+<span id="cb8-174"><a href="#cb8-174"></a><span class="co">#&gt; 224 chr19  14952247  14952247 nonsynonymous     S     Y</span></span>
+<span id="cb8-175"><a href="#cb8-175"></a><span class="co">#&gt; 225 chr19  15292495  15292495 nonsynonymous     P     L</span></span>
+<span id="cb8-176"><a href="#cb8-176"></a><span class="co">#&gt; 227 chr19  49002070  49002070    synonymous     A     A</span></span>
+<span id="cb8-177"><a href="#cb8-177"></a><span class="co">#&gt; 228 chr19  50397717  50397717 nonsynonymous     H     Q</span></span>
+<span id="cb8-178"><a href="#cb8-178"></a><span class="co">#&gt; 233 chr19  50919900  50919900 nonsynonymous     T     M</span></span>
+<span id="cb8-179"><a href="#cb8-179"></a><span class="co">#&gt; 236 chr19  52001351  52001351    synonymous     G     G</span></span>
+<span id="cb8-180"><a href="#cb8-180"></a><span class="co">#&gt; 239 chr19  52249683  52249683      nonsense     E     *</span></span>
+<span id="cb8-181"><a href="#cb8-181"></a><span class="co">#&gt; 242 chr19  55711727  55711727      nonsense     R     *</span></span>
+<span id="cb8-182"><a href="#cb8-182"></a><span class="co">#&gt; 245 chr21  32185475  32185475 nonsynonymous     P     T</span></span>
+<span id="cb8-183"><a href="#cb8-183"></a><span class="co">#&gt; 246  chrX   8555871   8555871    synonymous     S     S</span></span>
+<span id="cb8-184"><a href="#cb8-184"></a><span class="co">#&gt; 247  chrX  19983163  19983163 nonsynonymous     R     W</span></span>
+<span id="cb8-185"><a href="#cb8-185"></a><span class="co">#&gt; 249  chrX 100240739 100240739    synonymous     L     L</span></span>
+<span id="cb8-186"><a href="#cb8-186"></a><span class="co">#&gt; 252  chrX 100668298 100668298 nonsynonymous     S     F</span></span>
+<span id="cb8-187"><a href="#cb8-187"></a><span class="co">#&gt; 255  chrX 115304424 115304424 nonsynonymous     D     E</span></span>
+<span id="cb8-188"><a href="#cb8-188"></a><span class="co">#&gt; 257  chrX 124454501 124454501      nonsense     L     *</span></span>
+<span id="cb8-189"><a href="#cb8-189"></a><span class="co">#&gt; 258  chrX 129349850 129349850 nonsynonymous     A     T</span></span>
+<span id="cb8-190"><a href="#cb8-190"></a><span class="co">#&gt;  [32m✔ [39m Predicting coding ... done</span></span>
+<span id="cb8-191"><a href="#cb8-191"></a><span class="co">#&gt; </span></span>
+<span id="cb8-192"><a href="#cb8-192"></a><span class="co">#&gt;  [36mℹ [39m Drivers annotation</span></span>
+<span id="cb8-193"><a href="#cb8-193"></a><span class="co">#&gt; </span></span>
+<span id="cb8-194"><a href="#cb8-194"></a><span class="co">#&gt;  [36mℹ [39m Drivers annotation</span></span>
+<span id="cb8-195"><a href="#cb8-195"></a>── Found <span class="dv">1</span> <span class="kw">driver</span>(s) </span>
+<span id="cb8-196"><a href="#cb8-196"></a><span class="co">#&gt;  [36mℹ [39m Drivers annotation</span></span>
+<span id="cb8-197"><a href="#cb8-197"></a><span class="co">#&gt;  [38;5;246m# A tibble: 1 × 10 [39m</span></span>
+<span id="cb8-198"><a href="#cb8-198"></a><span class="co">#&gt;   chr      from     to gene_symbol location consequence refAA varAA driver_label</span></span>
+<span id="cb8-199"><a href="#cb8-199"></a><span class="co">#&gt;    [3m [38;5;246m&lt;fct&gt; [39m [23m    [3m [38;5;246m&lt;int&gt; [39m [23m   [3m [38;5;246m&lt;int&gt; [39m [23m  [3m [38;5;246m&lt;chr&gt; [39m [23m        [3m [38;5;246m&lt;chr&gt; [39m [23m     [3m [38;5;246m&lt;fct&gt; [39m [23m        [3m [38;5;246m&lt;chr&gt; [39m [23m  [3m [38;5;246m&lt;chr&gt; [39m [23m  [3m [38;5;246m&lt;chr&gt; [39m [23m       </span></span>
+<span id="cb8-200"><a href="#cb8-200"></a><span class="co">#&gt;  [38;5;250m1 [39m chr17 7 [4m5 [24m [4m7 [24m [4m7 [24m106 7.58 [38;5;246me [39m6 TP53        coding:… nonsynonym… P     A     TP53_P-&gt;A   </span></span>
+<span id="cb8-201"><a href="#cb8-201"></a><span class="co">#&gt;  [38;5;246m# ℹ 1 more variable: is_driver &lt;lgl&gt; [39m</span></span>
+<span id="cb8-202"><a href="#cb8-202"></a><span class="co">#&gt;  [32m✔ [39m Drivers annotation ... done</span></span>
+<span id="cb8-203"><a href="#cb8-203"></a><span class="co">#&gt; </span></span>
 <span id="cb8-204"><a href="#cb8-204"></a><span class="co">#&gt; </span></span>
-<span id="cb8-205"><a href="#cb8-205"></a><span class="co">#&gt; </span></span>
-<span id="cb8-206"><a href="#cb8-206"></a><span class="co">#&gt;  [36m── [39m  [1mCNAqc - CNA Quality Check [22m  [36m─────────────────────────────────────────────────── [39m</span></span>
-<span id="cb8-207"><a href="#cb8-207"></a><span class="co">#&gt;  [36mℹ [39m Using reference genome coordinates for:  [32m [32mhg19 [32m [39m.</span></span>
-<span id="cb8-208"><a href="#cb8-208"></a><span class="co">#&gt;  [32m✔ [39m Fortified calls for  [32m [32m12963 [32m [39m somatic mutations:  [32m [32m12963 [32m [39m SNVs ( [32m [32m100% [32m [39m) and  [32m [32m0 [32m [39m indels.</span></span>
-<span id="cb8-209"><a href="#cb8-209"></a><span class="co">#&gt;  [32m✔ [39m Fortified CNAs for  [32m [32m267 [32m [39m segments:  [32m [32m267 [32m [39m clonal and  [32m [32m0 [32m [39m subclonal.</span></span>
-<span id="cb8-210"><a href="#cb8-210"></a><span class="co">#&gt; Warning in map_mutations_to_clonal_segments(mutations, cna_clonal): [CNAqc] a</span></span>
-<span id="cb8-211"><a href="#cb8-211"></a><span class="co">#&gt; karyotype column is present in CNA calls, and will be overwritten</span></span>
-<span id="cb8-212"><a href="#cb8-212"></a><span class="co">#&gt;  [32m✔ [39m  [32m [32m12963 [32m [39m mutations mapped to clonal CNAs.</span></span>
-<span id="cb8-213"><a href="#cb8-213"></a></span>
-<span id="cb8-214"><a href="#cb8-214"></a><span class="co"># Reference driver mutations</span></span>
-<span id="cb8-215"><a href="#cb8-215"></a>x <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">print</span>()</span>
-<span id="cb8-216"><a href="#cb8-216"></a><span class="co">#&gt; ──  [30m [43m[ CNAqc ]  [49m [39m  [32m12963 [39m mutations in  [32m267 [39m segments ( [32m267 [39m clonal,  [32m0 [39m subclonal). Genome </span></span>
-<span id="cb8-217"><a href="#cb8-217"></a><span class="co">#&gt; </span></span>
-<span id="cb8-218"><a href="#cb8-218"></a><span class="co">#&gt; ── Clonal CNAs</span></span>
-<span id="cb8-219"><a href="#cb8-219"></a><span class="co">#&gt; </span></span>
-<span id="cb8-220"><a href="#cb8-220"></a><span class="co">#&gt;    2:2  [n = 7478, L = 1483 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  {  [33mCTCF [39m }</span></span>
-<span id="cb8-221"><a href="#cb8-221"></a><span class="co">#&gt;    4:2  [n = 1893, L =  331 Mb] ■■■■■■■</span></span>
-<span id="cb8-222"><a href="#cb8-222"></a><span class="co">#&gt;    3:2  [n = 1625, L =  357 Mb] ■■■■■■</span></span>
-<span id="cb8-223"><a href="#cb8-223"></a><span class="co">#&gt;    2:1  [n = 1563, L =  420 Mb] ■■■■■■  {  [33mTTN [39m }</span></span>
-<span id="cb8-224"><a href="#cb8-224"></a><span class="co">#&gt;    3:0  [n =  312, L =  137 Mb] ■</span></span>
-<span id="cb8-225"><a href="#cb8-225"></a><span class="co">#&gt;    2:0  [n =   81, L =   39 Mb]   {  [33mTP53 [39m }</span></span>
-<span id="cb8-226"><a href="#cb8-226"></a><span class="co">#&gt;   16:2  [n =    4, L =    0 Mb] </span></span>
-<span id="cb8-227"><a href="#cb8-227"></a><span class="co">#&gt;   25:2  [n =    2, L =    1 Mb] </span></span>
-<span id="cb8-228"><a href="#cb8-228"></a><span class="co">#&gt;    3:1  [n =    2, L =    1 Mb] </span></span>
-<span id="cb8-229"><a href="#cb8-229"></a><span class="co">#&gt;  106:1  [n =    1, L =    0 Mb]</span></span>
-<span id="cb8-230"><a href="#cb8-230"></a><span class="co">#&gt;  [36mℹ [39m Sample Purity: 89% ~ Ploidy: 4.</span></span>
-<span id="cb8-231"><a href="#cb8-231"></a><span class="co">#&gt;  [36mℹ [39m There are 3 annotated driver(s) mapped to clonal CNAs.</span></span>
-<span id="cb8-232"><a href="#cb8-232"></a><span class="co">#&gt;          chr      from        to ref alt  DP NV       VAF driver_label is_driver</span></span>
-<span id="cb8-233"><a href="#cb8-233"></a><span class="co">#&gt;         chr2 179431633 179431634   C   T 117 77 0.6581197          TTN      TRUE</span></span>
-<span id="cb8-234"><a href="#cb8-234"></a><span class="co">#&gt;        chr16  67646006  67646007   C   T 120 54 0.4500000         CTCF      TRUE</span></span>
-<span id="cb8-235"><a href="#cb8-235"></a><span class="co">#&gt;        chr17   7577106   7577107   G   C  84 78 0.9285714         TP53      TRUE</span></span>
-<span id="cb8-236"><a href="#cb8-236"></a></span>
-<span id="cb8-237"><a href="#cb8-237"></a><span class="co"># New driver mutations, searching for OV drivers</span></span>
-<span id="cb8-238"><a href="#cb8-238"></a>x_new_ov <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">print</span>()</span>
-<span id="cb8-239"><a href="#cb8-239"></a><span class="co">#&gt; ──  [30m [43m[ CNAqc ]  [49m [39m  [32m12963 [39m mutations in  [32m267 [39m segments ( [32m267 [39m clonal,  [32m0 [39m subclonal). Genome </span></span>
-<span id="cb8-240"><a href="#cb8-240"></a><span class="co">#&gt; </span></span>
-<span id="cb8-241"><a href="#cb8-241"></a><span class="co">#&gt; ── Clonal CNAs</span></span>
-<span id="cb8-242"><a href="#cb8-242"></a><span class="co">#&gt; </span></span>
-<span id="cb8-243"><a href="#cb8-243"></a><span class="co">#&gt;    2:2  [n = 7478, L = 1483 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■</span></span>
-<span id="cb8-244"><a href="#cb8-244"></a><span class="co">#&gt;    4:2  [n = 1893, L =  331 Mb] ■■■■■■■</span></span>
-<span id="cb8-245"><a href="#cb8-245"></a><span class="co">#&gt;    3:2  [n = 1625, L =  357 Mb] ■■■■■■</span></span>
-<span id="cb8-246"><a href="#cb8-246"></a><span class="co">#&gt;    2:1  [n = 1563, L =  420 Mb] ■■■■■■</span></span>
-<span id="cb8-247"><a href="#cb8-247"></a><span class="co">#&gt;    3:0  [n =  312, L =  137 Mb] ■</span></span>
-<span id="cb8-248"><a href="#cb8-248"></a><span class="co">#&gt;    2:0  [n =   81, L =   39 Mb]   {  [33mTP53_P-&gt;A [39m }</span></span>
-<span id="cb8-249"><a href="#cb8-249"></a><span class="co">#&gt;   16:2  [n =    4, L =    0 Mb] </span></span>
-<span id="cb8-250"><a href="#cb8-250"></a><span class="co">#&gt;   25:2  [n =    2, L =    1 Mb] </span></span>
-<span id="cb8-251"><a href="#cb8-251"></a><span class="co">#&gt;    3:1  [n =    2, L =    1 Mb] </span></span>
-<span id="cb8-252"><a href="#cb8-252"></a><span class="co">#&gt;  106:1  [n =    1, L =    0 Mb]</span></span>
-<span id="cb8-253"><a href="#cb8-253"></a><span class="co">#&gt;  [36mℹ [39m Sample Purity: 89% ~ Ploidy: 4.</span></span>
-<span id="cb8-254"><a href="#cb8-254"></a><span class="co">#&gt;  [36mℹ [39m There are 1 annotated driver(s) mapped to clonal CNAs.</span></span>
-<span id="cb8-255"><a href="#cb8-255"></a><span class="co">#&gt;          chr    from      to ref alt DP NV       VAF driver_label is_driver</span></span>
-<span id="cb8-256"><a href="#cb8-256"></a><span class="co">#&gt;        chr17 7577106 7577107   G   C 84 78 0.9285714    TP53_P-&gt;A      TRUE</span></span></code></pre></div>
+<span id="cb8-205"><a href="#cb8-205"></a><span class="co">#&gt;  [36m── [39m  [1mCNAqc - CNA Quality Check [22m  [36m─────────────────────────────────────────────────── [39m</span></span>
+<span id="cb8-206"><a href="#cb8-206"></a><span class="co">#&gt;  [36mℹ [39m Using reference genome coordinates for:  [32m [32mhg19 [32m [39m.</span></span>
+<span id="cb8-207"><a href="#cb8-207"></a><span class="co">#&gt;  [32m✔ [39m Fortified calls for  [32m [32m12963 [32m [39m somatic mutations:  [32m [32m12963 [32m [39m SNVs ( [32m [32m100% [32m [39m) and  [32m [32m0 [32m [39m indels.</span></span>
+<span id="cb8-208"><a href="#cb8-208"></a><span class="co">#&gt;  [32m✔ [39m Fortified CNAs for  [32m [32m267 [32m [39m segments:  [32m [32m267 [32m [39m clonal and  [32m [32m0 [32m [39m subclonal.</span></span>
+<span id="cb8-209"><a href="#cb8-209"></a><span class="co">#&gt; Warning in map_mutations_to_clonal_segments(mutations, cna_clonal): [CNAqc] a</span></span>
+<span id="cb8-210"><a href="#cb8-210"></a><span class="co">#&gt; karyotype column is present in CNA calls, and will be overwritten</span></span>
+<span id="cb8-211"><a href="#cb8-211"></a><span class="co">#&gt;  [32m✔ [39m  [32m [32m12963 [32m [39m mutations mapped to clonal CNAs.</span></span>
+<span id="cb8-212"><a href="#cb8-212"></a></span>
+<span id="cb8-213"><a href="#cb8-213"></a><span class="co"># Reference driver mutations</span></span>
+<span id="cb8-214"><a href="#cb8-214"></a>x <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">print</span>()</span>
+<span id="cb8-215"><a href="#cb8-215"></a><span class="co">#&gt; ──  [30m [43m[ CNAqc ]  [49m [39m  [32m12963 [39m mutations in  [32m267 [39m segments ( [32m267 [39m clonal,  [32m0 [39m subclonal). Genome </span></span>
+<span id="cb8-216"><a href="#cb8-216"></a><span class="co">#&gt; </span></span>
+<span id="cb8-217"><a href="#cb8-217"></a><span class="co">#&gt; ── Clonal CNAs</span></span>
+<span id="cb8-218"><a href="#cb8-218"></a><span class="co">#&gt; </span></span>
+<span id="cb8-219"><a href="#cb8-219"></a><span class="co">#&gt;    2:2  [n = 7478, L = 1483 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  {  [33mCTCF [39m }</span></span>
+<span id="cb8-220"><a href="#cb8-220"></a><span class="co">#&gt;    4:2  [n = 1893, L =  331 Mb] ■■■■■■■</span></span>
+<span id="cb8-221"><a href="#cb8-221"></a><span class="co">#&gt;    3:2  [n = 1625, L =  357 Mb] ■■■■■■</span></span>
+<span id="cb8-222"><a href="#cb8-222"></a><span class="co">#&gt;    2:1  [n = 1563, L =  420 Mb] ■■■■■■  {  [33mTTN [39m }</span></span>
+<span id="cb8-223"><a href="#cb8-223"></a><span class="co">#&gt;    3:0  [n =  312, L =  137 Mb] ■</span></span>
+<span id="cb8-224"><a href="#cb8-224"></a><span class="co">#&gt;    2:0  [n =   81, L =   39 Mb]   {  [33mTP53 [39m }</span></span>
+<span id="cb8-225"><a href="#cb8-225"></a><span class="co">#&gt;   16:2  [n =    4, L =    0 Mb] </span></span>
+<span id="cb8-226"><a href="#cb8-226"></a><span class="co">#&gt;   25:2  [n =    2, L =    1 Mb] </span></span>
+<span id="cb8-227"><a href="#cb8-227"></a><span class="co">#&gt;    3:1  [n =    2, L =    1 Mb] </span></span>
+<span id="cb8-228"><a href="#cb8-228"></a><span class="co">#&gt;  106:1  [n =    1, L =    0 Mb]</span></span>
+<span id="cb8-229"><a href="#cb8-229"></a><span class="co">#&gt;  [36mℹ [39m Sample Purity: 89% ~ Ploidy: 4.</span></span>
+<span id="cb8-230"><a href="#cb8-230"></a><span class="co">#&gt;  [36mℹ [39m There are 3 annotated driver(s) mapped to clonal CNAs.</span></span>
+<span id="cb8-231"><a href="#cb8-231"></a><span class="co">#&gt;          chr      from        to ref alt  DP NV       VAF driver_label is_driver</span></span>
+<span id="cb8-232"><a href="#cb8-232"></a><span class="co">#&gt;         chr2 179431633 179431634   C   T 117 77 0.6581197          TTN      TRUE</span></span>
+<span id="cb8-233"><a href="#cb8-233"></a><span class="co">#&gt;        chr16  67646006  67646007   C   T 120 54 0.4500000         CTCF      TRUE</span></span>
+<span id="cb8-234"><a href="#cb8-234"></a><span class="co">#&gt;        chr17   7577106   7577107   G   C  84 78 0.9285714         TP53      TRUE</span></span>
+<span id="cb8-235"><a href="#cb8-235"></a></span>
+<span id="cb8-236"><a href="#cb8-236"></a><span class="co"># New driver mutations, searching for OV drivers</span></span>
+<span id="cb8-237"><a href="#cb8-237"></a>x_new_ov <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">print</span>()</span>
+<span id="cb8-238"><a href="#cb8-238"></a><span class="co">#&gt; ──  [30m [43m[ CNAqc ]  [49m [39m  [32m12963 [39m mutations in  [32m267 [39m segments ( [32m267 [39m clonal,  [32m0 [39m subclonal). Genome </span></span>
+<span id="cb8-239"><a href="#cb8-239"></a><span class="co">#&gt; </span></span>
+<span id="cb8-240"><a href="#cb8-240"></a><span class="co">#&gt; ── Clonal CNAs</span></span>
+<span id="cb8-241"><a href="#cb8-241"></a><span class="co">#&gt; </span></span>
+<span id="cb8-242"><a href="#cb8-242"></a><span class="co">#&gt;    2:2  [n = 7478, L = 1483 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■</span></span>
+<span id="cb8-243"><a href="#cb8-243"></a><span class="co">#&gt;    4:2  [n = 1893, L =  331 Mb] ■■■■■■■</span></span>
+<span id="cb8-244"><a href="#cb8-244"></a><span class="co">#&gt;    3:2  [n = 1625, L =  357 Mb] ■■■■■■</span></span>
+<span id="cb8-245"><a href="#cb8-245"></a><span class="co">#&gt;    2:1  [n = 1563, L =  420 Mb] ■■■■■■</span></span>
+<span id="cb8-246"><a href="#cb8-246"></a><span class="co">#&gt;    3:0  [n =  312, L =  137 Mb] ■</span></span>
+<span id="cb8-247"><a href="#cb8-247"></a><span class="co">#&gt;    2:0  [n =   81, L =   39 Mb]   {  [33mTP53_P-&gt;A [39m }</span></span>
+<span id="cb8-248"><a href="#cb8-248"></a><span class="co">#&gt;   16:2  [n =    4, L =    0 Mb] </span></span>
+<span id="cb8-249"><a href="#cb8-249"></a><span class="co">#&gt;   25:2  [n =    2, L =    1 Mb] </span></span>
+<span id="cb8-250"><a href="#cb8-250"></a><span class="co">#&gt;    3:1  [n =    2, L =    1 Mb] </span></span>
+<span id="cb8-251"><a href="#cb8-251"></a><span class="co">#&gt;  106:1  [n =    1, L =    0 Mb]</span></span>
+<span id="cb8-252"><a href="#cb8-252"></a><span class="co">#&gt;  [36mℹ [39m Sample Purity: 89% ~ Ploidy: 4.</span></span>
+<span id="cb8-253"><a href="#cb8-253"></a><span class="co">#&gt;  [36mℹ [39m There are 1 annotated driver(s) mapped to clonal CNAs.</span></span>
+<span id="cb8-254"><a href="#cb8-254"></a><span class="co">#&gt;          chr    from      to ref alt DP NV       VAF driver_label is_driver</span></span>
+<span id="cb8-255"><a href="#cb8-255"></a><span class="co">#&gt;        chr17 7577106 7577107   G   C 84 78 0.9285714    TP53_P-&gt;A      TRUE</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -972,6 +968,9 @@
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Please use `after_stat(count)` instead.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> The deprecated feature was likely used in the <span style="color: #0000BB;">CNAqc</span> package.</span></span>
 <span><span class="co">#&gt;   Please report the issue at <span style="color: #0000BB; font-style: italic;">&lt;https://github.com/caravagnalab/CNAqc/issues&gt;</span>.</span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">This warning is displayed once every 8 hours.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">Call `lifecycle::last_lifecycle_warnings()` to see where this warning was</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">generated.</span></span></span>
 <span><span class="co">#&gt; Warning: Removed 24 rows containing missing values (`geom_segment()`).</span></span>
 <span><span class="co">#&gt; Warning: Removed 24 rows containing missing values (`geom_rect()`).</span></span>
 <span><span class="co">#&gt; Warning: Removed 1 rows containing missing values (`geom_hline()`).</span></span>

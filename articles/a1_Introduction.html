@@ -178,7 +178,7 @@
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> chr1  2<span style="text-decoration: underline;">980</span>032 2<span style="text-decoration: underline;">980</span>033 C     T       196    85 0.434 </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> chr1  3<span style="text-decoration: underline;">387</span>161 3<span style="text-decoration: underline;">387</span>162 T     G       124     6 0.048<span style="text-decoration: underline;">4</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> chr1  3<span style="text-decoration: underline;">502</span>517 3<span style="text-decoration: underline;">502</span>518 G     A        88    10 0.114 </span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># … with 12,953 more rows</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 12,953 more rows</span></span></span></code></pre></div>
 <div class="section level4">
 <h4 id="adding-driver-mutations">Adding driver mutations<a class="anchor" aria-label="anchor" href="#adding-driver-mutations"></a>
 </h4>
@@ -264,7 +264,7 @@
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> chr1  17<span style="text-decoration: underline;">849</span>962 21<span style="text-decoration: underline;">080</span>067     3     2</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> chr1  21<span style="text-decoration: underline;">080</span>068 21<span style="text-decoration: underline;">559</span>998     3     2</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> chr1  21<span style="text-decoration: underline;">559</span>998 24<span style="text-decoration: underline;">830</span>001     3     2</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># … with 257 more rows</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 257 more rows</span></span></span></code></pre></div>
 <blockquote>
 <p>Note: the CCF of a segment can only be computed by callers that support subclonal segments. If there are no subclonal CNAs the <code>CCF</code> column can be omitted. In that case CNAqc assumes all segments to be clonal and assigns <code>CCF = 1</code>.</p>
 </blockquote>
@@ -354,21 +354,21 @@
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ── Clonal CNAs</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;    2:2  [n = 2903, L = 1483 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { <span style="color: #BBBB00;">CTCF</span> }</span></span>
-<span><span class="co">#&gt;    4:2  [n =  740, L =  331 Mb] ■■■■■■■</span></span>
-<span><span class="co">#&gt;    3:2  [n =  618, L =  357 Mb] ■■■■■■</span></span>
-<span><span class="co">#&gt;    2:1  [n =  589, L =  420 Mb] ■■■■■  { <span style="color: #BBBB00;">TTN</span> }</span></span>
-<span><span class="co">#&gt;    3:0  [n =  122, L =  137 Mb] ■</span></span>
-<span><span class="co">#&gt;    2:0  [n =   29, L =   39 Mb]   { <span style="color: #BBBB00;">TP53, TP53</span> }</span></span>
-<span><span class="co">#&gt;  106:1  [n =    1, L =    0 Mb] </span></span>
-<span><span class="co">#&gt;   16:2  [n =    1, L =    0 Mb]</span></span>
+<span><span class="co">#&gt;   2:2  [n = 2895, L = 1483 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { <span style="color: #BBBB00;">CTCF</span> }</span></span>
+<span><span class="co">#&gt;   4:2  [n =  714, L =  331 Mb] ■■■■■■■</span></span>
+<span><span class="co">#&gt;   3:2  [n =  641, L =  357 Mb] ■■■■■■</span></span>
+<span><span class="co">#&gt;   2:1  [n =  588, L =  420 Mb] ■■■■■  { <span style="color: #BBBB00;">TTN, TTN</span> }</span></span>
+<span><span class="co">#&gt;   3:0  [n =  122, L =  137 Mb] ■</span></span>
+<span><span class="co">#&gt;   2:0  [n =   41, L =   39 Mb]   { <span style="color: #BBBB00;">TP53</span> }</span></span>
+<span><span class="co">#&gt;  16:2  [n =    1, L =    0 Mb] </span></span>
+<span><span class="co">#&gt;   3:1  [n =    1, L =    1 Mb]</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample Purity: 89% ~ Ploidy: 4.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> There are 4 annotated driver(s) mapped to clonal CNAs.</span></span>
 <span><span class="co">#&gt;          chr      from        to ref alt  DP NV       VAF driver_label is_driver</span></span>
 <span><span class="co">#&gt;         chr2 179431633 179431634   C   T 117 77 0.6581197          TTN      TRUE</span></span>
 <span><span class="co">#&gt;        chr16  67646006  67646007   C   T 120 54 0.4500000         CTCF      TRUE</span></span>
 <span><span class="co">#&gt;        chr17   7577106   7577107   G   C  84 78 0.9285714         TP53      TRUE</span></span>
-<span><span class="co">#&gt;        chr17   7577106   7577107   G   C  84 78 0.9285714         TP53      TRUE</span></span></code></pre></div>
+<span><span class="co">#&gt;         chr2 179431633 179431634   C   T 117 77 0.6581197          TTN      TRUE</span></span></code></pre></div>
 <p>You can also subset data by <em>karyotype of the segments</em>, and by <em>total copy number</em> of the segment.</p>
 <p>Both subset functions do not keep drivers that map off from the selected segments.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
@@ -449,7 +449,7 @@
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> chr8  146<span style="text-decoration: underline;">364</span>022 <span style="text-decoration: underline;">1</span>392<span style="text-decoration: underline;">795</span>690 <span style="text-decoration: underline;">1</span>539<span style="text-decoration: underline;">159</span>712     <span style="text-decoration: underline;">1</span>436<span style="text-decoration: underline;">634</span>577   <span style="text-decoration: underline;">1</span>439<span style="text-decoration: underline;">634</span>577</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> chr9  141<span style="text-decoration: underline;">213</span>431 <span style="text-decoration: underline;">1</span>539<span style="text-decoration: underline;">159</span>712 <span style="text-decoration: underline;">1</span>680<span style="text-decoration: underline;">373</span>143     <span style="text-decoration: underline;">1</span>586<span style="text-decoration: underline;">527</span>391   <span style="text-decoration: underline;">1</span>589<span style="text-decoration: underline;">527</span>391</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> chr10 135<span style="text-decoration: underline;">534</span>747 <span style="text-decoration: underline;">1</span>680<span style="text-decoration: underline;">373</span>143 <span style="text-decoration: underline;">1</span>815<span style="text-decoration: underline;">907</span>890     <span style="text-decoration: underline;">1</span>719<span style="text-decoration: underline;">628</span>078   <span style="text-decoration: underline;">1</span>722<span style="text-decoration: underline;">628</span>078</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># … with 14 more rows</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 14 more rows</span></span></span>
 <span></span>
 <span><span class="fu">CNAqc</span><span class="fu">:::</span><span class="fu">get_reference</span><span class="op">(</span><span class="st">"GRCh38"</span><span class="op">)</span> <span class="co"># equivalent to CNAqc:::get_reference("hg38")</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 24 × 6</span></span></span>
@@ -465,7 +465,7 @@
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> chr8  145<span style="text-decoration: underline;">138</span>636 <span style="text-decoration: underline;">1</span>391<span style="text-decoration: underline;">350</span>276 <span style="text-decoration: underline;">1</span>536<span style="text-decoration: underline;">488</span>912     <span style="text-decoration: underline;">1</span>435<span style="text-decoration: underline;">384</span>020   <span style="text-decoration: underline;">1</span>435<span style="text-decoration: underline;">384</span>020</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> chr9  138<span style="text-decoration: underline;">394</span>717 <span style="text-decoration: underline;">1</span>536<span style="text-decoration: underline;">488</span>912 <span style="text-decoration: underline;">1</span>674<span style="text-decoration: underline;">883</span>629     <span style="text-decoration: underline;">1</span>579<span style="text-decoration: underline;">878</span>547   <span style="text-decoration: underline;">1</span>579<span style="text-decoration: underline;">878</span>547</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> chr10 133<span style="text-decoration: underline;">797</span>422 <span style="text-decoration: underline;">1</span>674<span style="text-decoration: underline;">883</span>629 <span style="text-decoration: underline;">1</span>808<span style="text-decoration: underline;">681</span>051     <span style="text-decoration: underline;">1</span>714<span style="text-decoration: underline;">570</span>311   <span style="text-decoration: underline;">1</span>716<span style="text-decoration: underline;">429</span>449</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># … with 14 more rows</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 14 more rows</span></span></span></code></pre></div>
 <p>The reference genomes has to be specified when you create a CNAqc object – see function <code>init</code>.</p>
 <blockquote>
 <p>Note: mapping of mutations onto segments is independent of the reference genome, and it will work as far as both mutation and CNA segments are mapped to the same reference.</p>
