@@ -60,7 +60,6 @@ Imports:
     ggsci,
     progress,
     readr,
-    sequenza,
     R.utils,
     ComplexHeatmap
 biocViews:
@@ -68,7 +67,8 @@ Remotes:
     caravagn/pio,
     caravagnalab/BMix,
     caravagn/easypar,
-    cran/peakPick
+    cran/peakPick,
+    cran/sequenza
 RoxygenNote: 7.2.3
 Suggests: 
     knitr,
