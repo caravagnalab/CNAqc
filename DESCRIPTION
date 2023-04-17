@@ -30,7 +30,8 @@ License: GPL (>= 3) + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Depends: 
-    R (>= 2.10)
+    R (>= 3.6)
+biocViews:
 Imports: 
     crayon,
     ggpubr,
@@ -62,7 +63,6 @@ Imports:
     readr,
     R.utils,
     ComplexHeatmap
-biocViews:
 Remotes: 
     caravagn/pio,
     caravagnalab/BMix,
