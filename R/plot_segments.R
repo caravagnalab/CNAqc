@@ -21,6 +21,9 @@
 #' @param highlight A list of karyotype ids in \code{"Major:minor"} notation
 #' (e.g., \code{"1:1", "2,1", ...}) that will be shadowed with a transparent area.
 #' By default, it plots the most prevalent karyotype using `x$most_prevalent_karyotype`.
+#' @param highlight_QC Similar to \code{highlight} but shadows segments based on the QC results and
+#' takes a boolean as an input. By default, it overrrides \code{highlight}, while if no peak analysis 
+#' has been performed reverts back to \code{highlight}
 #' @param circular Uses a circular layout in polar coordinates to make the segments
 #' look like a circos plot. This visualisation can save space.
 #' @param cn Type of copy number segment to show on the plot. Either \code{"absolute"} for
@@ -50,6 +53,7 @@ plot_segments = function(x,
                          circular = FALSE,
                          cn = 'absolute',
                          highlight = x$most_prevalent_karyotype,
+                         highlight_QC = FALSE,
                          ...)
 {
   stopifnot(inherits(x, 'cnaqc'))
@@ -59,8 +63,7 @@ plot_segments = function(x,
     base_plot = plot_segments_circular(x, chromosomes = chromosomes)
 
     return(base_plot)
-  }
-  else{
+  }else{
     # Standard plot -- baseline genome reference
     base_plot = blank_genome(chromosomes = chromosomes,
                                      ref = x$reference_genome,
@@ -80,7 +83,13 @@ plot_segments = function(x,
   # =-=-=-=-=-=-=-=-=-=-=-=-
   # Shadow for highligthing
   # =-=-=-=-=-=-=-=-=-=-=-=-
-  base_plot = CNAqc:::add_shadow_to_plot(segments, base_plot, highlight)
+  if(highlight_QC & !is.null(x$peaks_analysis)) {
+    base_plot = CNAqc:::add_shadow_to_plot_QC(segments, base_plot)
+  } else {
+    base_plot = CNAqc:::add_shadow_to_plot(segments, base_plot, highlight)
+  }
+  
+  
 
   # =-=-=-=-=-=-=-=-=-=-=-=-
   # Draw Segments
@@ -197,7 +206,11 @@ plot_segments = function(x,
   # =-=-=-=-=-=-=-=-=-=-=-=-
   drivers_list = CNAqc:::get_drivers(x, chromosomes = chromosomes)
   if(!circular)
-  base_plot = CNAqc:::add_drivers_to_segment_plot(x, drivers_list = drivers_list, base_plot)
+  base_plot = CNAqc:::add_drivers_to_segment_plot(x, 
+                                                  drivers_list = drivers_list, 
+                                                  base_plot, 
+                                                  color_by = ifelse(highlight_QC & !is.null(x$peaks_analysis), 
+                                                         "QC_PASS", "karyotype"))
 
 
   return(base_plot)

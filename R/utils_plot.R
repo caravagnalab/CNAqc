@@ -212,6 +212,33 @@ add_shadow_to_plot = function(segments, base_plot,  highlight)
   return(base_plot)
 }
 
+add_shadow_to_plot_QC = function(segments, base_plot)
+{
+  # Shadow CN segments, if any
+  colors_qc <- c("TRUE" = "forestgreen", "FALSE" = "indianred")
+  
+  segments = segments %>%
+    dplyr::filter(!is.na(QC_PASS))
+  
+  if (nrow(segments) > 0)
+    base_plot = base_plot +
+    ggplot2::geom_rect(
+      data = segments,
+      ggplot2::aes(
+        xmin = from,
+        xmax = to,
+        ymin = -Inf,
+        ymax = Inf,
+        fill = QC_PASS
+      ),
+      alpha = .3
+    ) +
+    ggplot2::scale_fill_manual(values = colors_qc) +
+    ggplot2::guides(fill = ggplot2::guide_legend('QC PASS?', override.aes = list(alpha = 1)))
+  
+  return(base_plot)
+}
+
 add_breakpoints_to_plot = function(segments, base_plot, max_Y_height, circular)
 {
   # Capped off segments too high to render the plot readable

@@ -123,11 +123,18 @@ annotate_drivers_to_histogram = function(x, drivers_list, p, which)
 }
 
 # Add driver annotation to a segments plot
-add_drivers_to_segment_plot = function(x, drivers_list, base_plot)
+add_drivers_to_segment_plot = function(x, drivers_list, base_plot, color_by = "karyotype")
 {
   # Annotate driver events if required
   if(is.null(drivers_list)) return(base_plot)
   if (nrow(drivers_list) == 0) return(base_plot)
+  
+  if( color_by == "karyotype") {
+    colors_fill = CNAqc:::get_karyotypes_colors(unique(drivers_list$karyotype))
+  } else {
+    colors_fill = c("TRUE" = "forestgreen", "FALSE" = "indianred")
+  } 
+                                                                               
 
   # Coordinate of the plot, place label in top part
   L = ggplot2::ggplot_build(base_plot)$layout$panel_params[[1]]
@@ -154,7 +161,7 @@ add_drivers_to_segment_plot = function(x, drivers_list, base_plot)
         x = from,
         y = y,
         label = driver_label,
-        fill = karyotype
+        fill = !!rlang::sym(color_by)
       ),
       ylim = c(L$y.range[2] * .9, NA),
       size = 2,
@@ -162,7 +169,7 @@ add_drivers_to_segment_plot = function(x, drivers_list, base_plot)
       nudge_x = 0,
       show.legend = FALSE
     ) +
-    ggplot2::scale_fill_manual(values = CNAqc:::get_karyotypes_colors(unique(drivers_list$karyotype))) +
+    ggplot2::scale_fill_manual(values = colors_fill) +
     ggplot2::coord_cartesian(clip = 'off')
 
 

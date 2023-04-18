@@ -100,5 +100,27 @@ CNA = function(x, type = c("clonal", "subclonal"))
   return(cna)
 }
 
+#' Returns percentage of passed segments
+#'
+#' @description Getter to the percentage of genome with pass value
+#'
+#' @param x A CNAqc object.
+#'
+#' @return A tibble with the data.
+#' @export
+#'
+#' @examples
+#' data("example_PCAWG", package = 'CNAqc')
+#' get_PASS_percentage(example_PCAWG)
+get_PASS_percentage <- function(x) {
+  stopifnot(inherits(x, 'cnaqc'))
+  
+  tb_cna <- x$cna %>% group_by(QC_PASS) %>% summarize(Length = sum(length) / sum(x$cna$length), N_segments = n()/ nrow(x$cna))
+  tb_muts <- x$mutations %>% group_by(QC_PASS) %>% summarize(N_mutations = n()/ nrow(x$mutations))
+  
+  return(dplyr::full_join(tb_cna, tb_muts))
+}
+
+
 
 

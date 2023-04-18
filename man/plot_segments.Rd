@@ -11,6 +11,7 @@ plot_segments(
   circular = FALSE,
   cn = "absolute",
   highlight = x$most_prevalent_karyotype,
+  highlight_QC = FALSE,
   ...
 )
 }
@@ -32,6 +33,10 @@ Major and minor annotation, or \code{"total"} for the total (Major plus minor) a
 \item{highlight}{A list of karyotype ids in \code{"Major:minor"} notation
 (e.g., \code{"1:1", "2,1", ...}) that will be shadowed with a transparent area.
 By default, it plots the most prevalent karyotype using `x$most_prevalent_karyotype`.}
+
+\item{highlight_QC}{Similar to \code{highlight} but shadows segments based on the QC results and
+takes a boolean as an input. By default, it overrrides \code{highlight}, while if no peak analysis 
+has been performed reverts back to \code{highlight}}
 
 \item{...}{Extra parameters passed to the hidden function \code{blank_genome}.}
 }

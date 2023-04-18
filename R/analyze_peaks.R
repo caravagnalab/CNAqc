@@ -155,6 +155,16 @@ analyze_peaks = function(x,
     n_bootstrap = n_bootstrap,
     kernel_adjust = kernel_adjust
   )
+  
+  x$cna <- dplyr::left_join(x$cna,CNAqc:::compute_QC_table(x)$QC_table %>% filter(type == "Peaks") %>% 
+                               dplyr::mutate(QC_PASS = if_else(QC == "PASS", TRUE, FALSE)) %>%
+                               tidyr::separate(karyotype, into = c("Major", "minor"), sep = ":") %>%
+                               mutate(Major = as.numeric(Major), minor = as.numeric(minor)) %>% 
+                               dplyr::select(Major, minor, QC_PASS))
+  x$mutations <- dplyr::left_join(x$mutations %>% ungroup(), CNAqc:::compute_QC_table(x)$QC_table %>%
+                                    filter(type == "Peaks") %>% 
+                                    dplyr::mutate(QC_PASS = if_else(QC == "PASS", TRUE, FALSE)) %>% 
+                                    dplyr::select(karyotype, QC_PASS))
 
   # Generalised peak analysis
   cli::cli_h1("Peak analysis: complex CNAs")
@@ -178,6 +188,15 @@ analyze_peaks = function(x,
 
     x$peaks_analysis$general$summary %>%
       print()
+    
+    x$cna <- dplyr::left_join(x$cna, x$peaks_analysis$general$summary %>% 
+                                 dplyr::mutate(QC_PASS = if_else(prop >= 0.5, TRUE, FALSE)) %>%
+                                 tidyr::separate(karyotype, into = c("Major", "minor"), sep = ":") %>%
+                                 mutate(Major = as.numeric(Major), minor = as.numeric(minor)) %>% 
+                                 dplyr::select(Major, minor, QC_PASS))
+    x$mutations <- dplyr::left_join(x$mutations, x$peaks_analysis$general$summary %>% 
+                                dplyr::mutate(QC_PASS = if_else(prop >= 0.5, TRUE, FALSE)) %>% 
+                                dplyr::select(karyotype, QC_PASS))
   }
   else
     cli::cli_alert_info(
@@ -203,6 +222,7 @@ analyze_peaks = function(x,
       x$peaks_analysis$subclonal$summary %>% print()
     else
       cli::cli_alert_info("Subclonal CNAs not analysed with the current parameters.")
+    
   }
   else
     cli::cli_alert_info("No subclonal CNAs in this sample.")
