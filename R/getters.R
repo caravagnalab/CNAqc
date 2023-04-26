@@ -115,8 +115,8 @@ CNA = function(x, type = c("clonal", "subclonal"))
 get_PASS_percentage <- function(x) {
   stopifnot(inherits(x, 'cnaqc'))
   
-  tb_cna <- x$cna %>% group_by(QC_PASS) %>% summarize(Length = sum(length) / sum(x$cna$length), N_segments = n()/ nrow(x$cna))
-  tb_muts <- x$mutations %>% group_by(QC_PASS) %>% summarize(N_mutations = n()/ nrow(x$mutations))
+  tb_cna <- x$cna %>% dplyr::group_by(QC_PASS) %>% dplyr::summarize(Length = sum(length) / sum(x$cna$length), N_segments = n()/ nrow(x$cna))
+  tb_muts <- x$mutations %>% dplyr::group_by(QC_PASS) %>% dplyr::summarize(N_mutations = n()/ nrow(x$mutations))
   
   return(dplyr::full_join(tb_cna, tb_muts))
 }
