@@ -462,11 +462,13 @@ as_maftools_cohort = function(x,
     return(maftools::read.maf(pooled_mutations,
                               clinicalData = clinicalData,
                               cnTable = pooled_CNA,
+                              vc_nonSyn = pooled_mutations$VEP.Consequence %>% unique(),
                               verbose = TRUE))
   }
 
   return(maftools::read.maf(pooled_mutations,
                             clinicalData = clinicalData,
+                            vc_nonSyn = pooled_mutations$VEP.Consequence %>% unique(),
                             verbose = TRUE))
 
   # lapply(x,
