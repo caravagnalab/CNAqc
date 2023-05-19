@@ -190,12 +190,12 @@ analyze_peaks = function(x,
       print()
     
     x$cna <- dplyr::left_join(x$cna, x$peaks_analysis$general$summary %>% 
-                                 dplyr::mutate(QC_PASS = if_else(prop >= 0.5, TRUE, FALSE)) %>%
+                                 dplyr::mutate(QC_PASS = dplyr::if_else(prop >= 0.5, TRUE, FALSE)) %>%
                                  tidyr::separate(karyotype, into = c("Major", "minor"), sep = ":") %>%
                                  mutate(Major = as.numeric(Major), minor = as.numeric(minor)) %>% 
                                  dplyr::select(Major, minor, QC_PASS))
     x$mutations <- dplyr::left_join(x$mutations, x$peaks_analysis$general$summary %>% 
-                                dplyr::mutate(QC_PASS = if_else(prop >= 0.5, TRUE, FALSE)) %>% 
+                                dplyr::mutate(QC_PASS = dplyr::if_else(prop >= 0.5, TRUE, FALSE)) %>% 
                                 dplyr::select(karyotype, QC_PASS))
   }
   else
