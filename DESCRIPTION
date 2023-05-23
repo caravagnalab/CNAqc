@@ -44,7 +44,6 @@ Imports:
     GenomicRanges,
     easypar,
     gtools,
-    peakPick,
     graphics,
     stats,
     grDevices,
@@ -64,7 +63,6 @@ Imports:
     R.utils,
     ComplexHeatmap,
     scales
-biocViews:
 Remotes: 
     caravagn/pio,
     caravagnalab/BMix,
