@@ -27,7 +27,7 @@ CCF = function(x)
   }
 
   mutations = lapply(x$CCF_estimates , function(x) x$mutations)
-  mutations = Reduce(bind_rows, mutations)
+  mutations = Reduce(bind_rows, mutations) %>% mutate(cna = "clonal")
 
   return(mutations)
 }
