@@ -53,6 +53,8 @@
 #' @param purity Value in between `0` and `1` to represent the proportion
 #' of actual tumour content (sometimes called "cellularity").
 #'
+#' @param sample Sample name (a string).
+#'
 #' @param ref A key word for the used reference coordinate system. CNAqc supports
 #' `hg19`/`GRCh37` and `hg38`/`GRCh38` references, which are embedded
 #' into the package as `CNAqc::chr_coordinates_hg19` and
@@ -75,7 +77,7 @@
 #'
 #' # An S3 method can be used to report to screen what is in the object
 #' print(x)
-init = function(mutations, snvs = NULL, cna, purity, ref = "GRCh38")
+init = function(mutations, snvs = NULL, cna, purity, sample = "MySample", ref = "GRCh38")
 {
   cli::cli_h1("CNAqc - CNA Quality Check")
   cat('\n')
@@ -103,6 +105,9 @@ init = function(mutations, snvs = NULL, cna, purity, ref = "GRCh38")
   # Output
   fit = list()
   class(fit) <- "cnaqc"
+
+# Sample name
+  fit$sample = sample
 
   # Reference genome
   fit$reference_genome = ref

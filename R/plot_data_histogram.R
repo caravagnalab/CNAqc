@@ -66,16 +66,13 @@ plot_data_histogram = function(x,
 
   plot_f = plot_f + ggplot2::guides(fill = ggplot2::guide_legend(''))
 
-  if (!CNAqc:::has_driver_data(x))
+  if (!has_driver_data(x))
     return(plot_f)
 
   # Drivers
   if (which != "CCF" | with_CCF)
     plot_f = annotate_drivers_to_histogram(
-      drivers_list = get_drivers(x,  which = ifelse(which %in% c("VAF", "CCF"), which, 'VAF')) %>%
-        dplyr::mutate(karyotype = ifelse(
-          karyotype %in% karyotypes, karyotype, "other"
-        )),
+      x = x,
       p = plot_f,
       which = which
     )
@@ -97,10 +94,11 @@ plot_CCF_data = function(x,
   }
 
   # CCFs
-  ccf_data = Reduce(dplyr::bind_rows,
-                    lapply(x$CCF_estimates, function(x)
-                      x$mutations)) %>%
-    dplyr::mutate(karyotype = ifelse(karyotype %in% karyotypes, karyotype, "other")) %>%
+  ccf_data = CCF(x) %>%
+    dplyr::mutate(
+      karyotype = ifelse(karyotype %in% karyotypes, karyotype, "other"),
+      cna = paste("CNA", cna)
+    ) %>%
     dplyr::filter(!is.na(CCF))
 
   # Whatever is fit
@@ -128,7 +126,10 @@ plot_VAF_data = function(x,
   #   dplyr::mutate(karyotype = ifelse(karyotype %in% karyotypes, karyotype, "other"))
 
   raw_muts = Mutations(x) %>%
-    dplyr::mutate(karyotype = ifelse(karyotype %in% karyotypes, karyotype, "other"))
+    dplyr::mutate(
+      karyotype = ifelse(karyotype %in% karyotypes, karyotype, "other"),
+      cna = paste("CNA", cna)
+      )
 
   colors = get_karyotypes_colors(unique(raw_muts$karyotype))
   colors['subclonal'] = ggplot2::alpha('purple4', .7)
@@ -145,7 +146,7 @@ plot_VAF_data = function(x,
                     sum(x$mutations$VAF < 0.05)
                   )) +
     ggplot2::scale_fill_manual(values = colors) +
-    ggplot2::facet_wrap(type ~ paste("CNA", cna), scales = 'free_y')
+    ggplot2::facet_wrap(type ~ cna, scales = 'free_y')
 }
 
 # Plot the same for DP
@@ -155,7 +156,10 @@ plot_DP_data = function(x,
   stopifnot(inherits(x, 'cnaqc'))
 
   raw_muts = Mutations(x) %>%
-    dplyr::mutate(karyotype = ifelse(karyotype %in% karyotypes, karyotype, "other"))
+    dplyr::mutate(
+      karyotype = ifelse(karyotype %in% karyotypes, karyotype, "other"),
+      cna = paste("CNA", cna)
+    )
 
   colors = get_karyotypes_colors(unique(raw_muts$karyotype))
   colors['subclonal'] = ggplot2::alpha('purple4', .7)
@@ -173,7 +177,7 @@ plot_DP_data = function(x,
       size = .5
     ) +
     ggplot2::scale_fill_manual(values = colors) +
-    ggplot2::facet_wrap(type ~ paste("CNA", cna), scales = 'free_y')
+    ggplot2::facet_wrap(type ~ cna, scales = 'free_y')
 
 }
 
@@ -190,7 +194,8 @@ plot_NV_data = function(x,
         karyotype %in% karyotypes ~ karyotype,
         is.na(karyotype) & cna == "subclonal" ~ 'subclonal',
         TRUE ~ "other"
-      )
+      ),
+      cna = paste("CNA", cna)
     )
 
   colors = get_karyotypes_colors(unique(raw_muts$karyotype))
@@ -209,5 +214,5 @@ plot_NV_data = function(x,
       size = .5
     ) +
     ggplot2::scale_fill_manual(values = colors) +
-    ggplot2::facet_wrap(type ~ paste("CNA", cna), scales = 'free_y')
+    ggplot2::facet_wrap(type ~ cna, scales = 'free_y')
 }

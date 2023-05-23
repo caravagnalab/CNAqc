@@ -1,0 +1,71 @@
+
+importFrom("grDevices", "dev.off", "pdf")
+importFrom("stats", "complete.cases", "dbinom", "density", "end",
+           "glm", "integrate", "median", "offset", "qbinom",
+           "quantile", "setNames", "start")
+
+usethis::use_import_from('stats', 'glm')
+usethis::use_import_from('stats', 'integrate')
+usethis::use_import_from('stats', 'median')
+usethis::use_import_from('stats', 'qbinom')
+usethis::use_import_from('stats', 'quantile')
+usethis::use_import_from('stats', 'setNames')
+usethis::use_import_from('grDevices', 'dev.off')
+usethis::use_import_from('grDevices', 'pdf')
+usethis::use_import_from('utils', 'capture.output')
+usethis::use_import_from('utils', 'object.size')
+usethis::use_import_from('tibble', 'is_tibble')
+usethis::use_import_from('tidyr', 'pivot_wider')
+
+usethis::use_import_from('ggplot2', 'ggplot')
+usethis::use_import_from('ggplot2', 'aes')
+usethis::use_import_from('ggplot2', 'ggplot_build')
+usethis::use_import_from('ggplot2', 'geom_blank')
+usethis::use_import_from('ggplot2', 'geom_histogram')
+usethis::use_import_from('ggplot2', 'geom_tile')
+usethis::use_import_from('ggplot2', 'geom_point')
+usethis::use_import_from('ggplot2', 'geom_smooth')
+usethis::use_import_from('ggplot2', 'geom_segment')
+usethis::use_import_from('ggplot2', 'geom_rect')
+usethis::use_import_from('ggplot2', 'geom_hline')
+usethis::use_import_from('ggplot2', 'geom_vline')
+usethis::use_import_from('ggplot2', 'geom_text')
+usethis::use_import_from('ggplot2', 'geom_line')
+usethis::use_import_from('ggplot2', 'geom_abline')
+usethis::use_import_from('ggplot2', 'geom_bar')
+usethis::use_import_from('ggplot2', 'theme_light')
+usethis::use_import_from('ggplot2', 'unit')
+
+usethis::use_import_from('ggplot2', 'labs')
+usethis::use_import_from('ggplot2', 'xlim')
+usethis::use_import_from('ggplot2', 'ylim')
+usethis::use_import_from('ggplot2', 'scale_fill_manual')
+usethis::use_import_from('ggplot2', 'scale_color_manual')
+usethis::use_import_from('ggplot2', 'ylim')
+usethis::use_import_from('ggplot2', 'guides')
+usethis::use_import_from('ggplot2', 'element_rect')
+usethis::use_import_from('ggplot2', 'guide_legend')
+
+usethis::use_import_from('gtools', 'mixedsort')
+usethis::use_pipe()
+
+usethis::use_package('dplyr')
+usethis::use_package('ggplot2')
+usethis::use_package('ggpubr')
+usethis::use_package('ggrepel')
+usethis::use_package('cli')
+usethis::use_package('cli')
+usethis::use_package('crayon')
+usethis::use_package('BMix')
+usethis::use_package('vcfR')
+usethis::use_package('clisymbols')
+usethis::use_package('RColorBrewer')
+usethis::use_package('VariantAnnotation')
+usethis::use_package('peakPick')
+
+
+
+usethis::use_import_from('dplyr', 'mutate')
+
+
+importFrom("grDevices", "dev.off", "pdf")

@@ -38,6 +38,7 @@ By default, it plots the most prevalent karyotype using `x$most_prevalent_karyot
 takes a boolean as an input. By default, it overrrides \code{highlight}, while if no peak analysis 
 has been performed reverts back to \code{highlight}}
 
+
 \item{...}{Extra parameters passed to the hidden function \code{blank_genome}.}
 }
 \value{

@@ -20,12 +20,10 @@ print.cnaqc = function(x, ...)
 
   cli::cli_rule(
     paste(
-      crayon::bgYellow(crayon::black("[ CNAqc ] ")),
+      crayon::bgYellow(crayon::black(paste0("[ CNAqc ] ", x$sample))),
       '{.field {x$n_mutations}} mutations in {.field {x$n_cna}} segments ({.field {x$n_cna_clonal}} clonal, {.field {x$n_cna_subclonal}} subclonal). Genome reference: {.field {x$reference_genome}}.'
     )
   )
-
-
 
   # cli::cli_alert_info(paste0(" CNA segments: ", x$n_cna_clonal, " clonal, ", x$n_cna_sbclonal, " subclonal."))
 
@@ -53,7 +51,8 @@ print.cnaqc = function(x, ...)
   with_smoothing = all(!is.null(x$before_smoothing))
   with_arm_frag = all(!is.null(x$arm_fragmentation))
   with_wg_frag = all(!is.null(x$wg_fragmentation))
-  with_drivers = all(c("driver_label", "is_driver") %in% colnames(x$mutations))
+  with_drivers = x %>% has_driver_data()
+  with_MAF = x %>% has_MAF_annotations()
 
   cli::cli_alert_info(paste0(
     "Sample Purity: ",
@@ -62,7 +61,7 @@ print.cnaqc = function(x, ...)
 
   if (with_drivers |
       with_peaks |
-      with_CCF | with_smoothing | with_arm_frag | with_wg_frag)
+      with_CCF | with_smoothing | with_arm_frag | with_wg_frag | with_MAF)
     cat('\n')
 
   if(with_drivers)
@@ -79,7 +78,12 @@ print.cnaqc = function(x, ...)
                       capture.output( w_d %>%
                           print(row.names = F)
                       )))
-    }
+  }
+
+  if(with_MAF)
+  {
+    cli::cli_alert("This sample seem to have MAF columns annotated")
+  }
 
   ppass = function()
     "{crayon::bgGreen(crayon::black(\" PASS \"))}"
@@ -89,59 +93,60 @@ print.cnaqc = function(x, ...)
 
   if (with_peaks)
   {
-    prop = x$peaks_analysis$matches %>%
-      dplyr::group_by(QC) %>%
-      dplyr::summarise(prop = sum(weight), .groups = 'drop') %>%
-      dplyr::arrange(dplyr::desc(prop)) %>%
-      dplyr::filter(dplyr::row_number() == 1) %>%
-      dplyr::pull(prop)
-    prop = round(prop * 100, digits = 0)
-
-    pur_sc = round(x$peaks_analysis$score, digits = 4)
-    pur_ch = paste0(round(x$peaks_analysis$score * 100, digits = 0), '%')
-
-    if (x$peaks_analysis$QC == "PASS")
-      cli::cli_h1(
-        paste0(
-          ppass(),
-          " Peaks QC {crayon::bold(x$peaks_analysis$matching_strategy)}: {crayon::green(paste0(prop, '%'))}, {crayon::green(paste('\u03bb =', pur_sc))}. Purity correction: {.value {pur_ch}}."
-        )
-      )
-    else
-      cli::cli_h1(
-        paste0(
-          pfail(),
-          " Peaks QC {crayon::bold(x$peaks_analysis$matching_strategy)}: {crayon::red(paste0(prop, '%'))}, {crayon::red(paste('\u03bb =', pur_sc))}. Purity correction: {.value {pur_ch}}."
-        )
-      )
-
-    cat('\n')
-
-    xx = x$peaks_analysis$matches %>%
-      dplyr::mutate(QC = ifelse(QC == "PASS", ppass(), pfail()))
-
-    for (karyo in xx$karyotype %>% unique)
+    if ("matches" %in% names(x$peaks_analysis))
     {
-      xxx = xx %>%
-        dplyr::filter(karyotype == karyo)
+      prop = x$peaks_analysis$matches %>%
+        dplyr::group_by(QC) %>%
+        dplyr::summarise(prop = sum(weight), .groups = 'drop') %>%
+        dplyr::arrange(dplyr::desc(prop)) %>%
+        dplyr::filter(dplyr::row_number() == 1) %>%
+        dplyr::pull(prop)
+      prop = round(prop * 100, digits = 0)
 
-      qc = paste(xxx$QC, sprintf("%-7s", round(xxx$offset, 3)), collapse = ' ')
-      # qc = paste0("[", xx$karyotype[1], "]",  qc)
+      pur_sc = round(x$peaks_analysis$score, digits = 4)
+      pur_ch = paste0(round(x$peaks_analysis$score * 100, digits = 0), '%')
 
-      n = sprintf("%-5s", x$n_karyotype[karyo])
-      p = x$n_karyotype[karyo] / sum(x$n_karyotype[xx$karyotype %>% unique])
-      p = format(p * 100, digits = 1)
-      p = sprintf("%3s", p)
+      if (x$peaks_analysis$QC == "PASS")
+        cli::cli_h1(
+          paste0(
+            ppass(),
+            " Peaks QC {crayon::bold(x$peaks_analysis$matching_strategy)}: {crayon::green(paste0(prop, '%'))}, {crayon::green(paste('\u03bb =', pur_sc))}. Purity correction: {.value {pur_ch}}."
+          )
+        )
+      else
+        cli::cli_h1(
+          paste0(
+            pfail(),
+            " Peaks QC {crayon::bold(x$peaks_analysis$matching_strategy)}: {crayon::red(paste0(prop, '%'))}, {crayon::red(paste('\u03bb =', pur_sc))}. Purity correction: {.value {pur_ch}}."
+          )
+        )
 
-      cli::cli_alert_info(
-        paste0(
+      cat('\n')
+
+      xx = x$peaks_analysis$matches %>%
+        dplyr::mutate(QC = ifelse(QC == "PASS", ppass(), pfail()))
+
+      for (karyo in xx$karyotype %>% unique)
+      {
+        xxx = xx %>%
+          dplyr::filter(karyotype == karyo)
+
+        qc = paste(xxx$QC, sprintf("%-7s", round(xxx$offset, 3)), collapse = ' ')
+        # qc = paste0("[", xx$karyotype[1], "]",  qc)
+
+        n = sprintf("%-5s", x$n_karyotype[karyo])
+        p = x$n_karyotype[karyo] / sum(x$n_karyotype[xx$karyotype %>% unique])
+        p = format(p * 100, digits = 1)
+        p = sprintf("%3s", p)
+
+        cli::cli_alert_info(paste0(
           crayon::blue(xxx$karyotype[1]),
           " ~ n = {n} ({p}%) {clisymbols::symbol$arrow_right} ",
           qc,
           ""
-        )
-      )
+        ))
 
+      }
     }
 
     # General karyotypes
@@ -394,8 +399,6 @@ print.cnaqc = function(x, ...)
       })
   }
 
-
-
   if (with_smoothing)
     cli::cli_alert_success(
       "These segments are smoothed; before smoothing there were {.value {x$before_smoothing$n_cna}} segments."
@@ -419,6 +422,7 @@ print.cnaqc = function(x, ...)
     "{crayon::bgGreen(crayon::black(\" PASS \"))}"
   pfail = function()
     "{crayon::bgRed(crayon::white(\" FAIL \"))}"
+
 
 }
 
@@ -449,7 +453,7 @@ bar_print_console = function(x, top = length(x$n_karyotype)) {
                cat(paste(rep("\u25A0", bars[b]), collapse = ''))
 
                drv = x$mutations %>% dplyr::filter(karyotype == b)
-               if ('is_driver' %in% colnames(x$mutations))
+               if (x %>% has_driver_data())
                {
                  drv = drv %>% dplyr::filter(is_driver) %>% dplyr::pull(driver_label)
 

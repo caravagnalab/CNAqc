@@ -4,7 +4,7 @@
 \alias{init}
 \title{Creates a CNAqc object.}
 \usage{
-init(mutations, snvs = NULL, cna, purity, ref = "GRCh38")
+init(mutations, snvs = NULL, cna, purity, sample = "MySample", ref = "GRCh38")
 }
 \arguments{
 \item{mutations}{A dataframe of mutations with the following fields:
@@ -45,6 +45,8 @@ subclonal. If a segment is subclonal:
 
 \item{purity}{Value in between `0` and `1` to represent the proportion
 of actual tumour content (sometimes called "cellularity").}
+
+\item{sample}{Sample name (a string).}
 
 \item{ref}{A key word for the used reference coordinate system. CNAqc supports
 `hg19`/`GRCh37` and `hg38`/`GRCh38` references, which are embedded

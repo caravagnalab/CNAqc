@@ -21,6 +21,20 @@ prepare_input_data = function(mutations, cna, tumour_purity)
 
   all_mutations = mutations
 
+  # Check specific mappability features for driver
+  driver_mutations = NULL
+  if(all(c("is_driver", "driver_label") %in% colnames(all_mutations)))
+  {
+    driver_mutations = all_mutations %>% filter(is_driver)
+
+    if(nrow(driver_mutations) == 0) driver_mutations = NULL
+  }
+
+  if(!is.null(driver_mutations))
+  {
+    cli::cli_alert_success("Found annotated driver mutations: {.field {driver_mutations$driver_label}}.")
+  }
+
   nsnvs = (all_mutations$type == "SNV") %>% sum()
   nindel = nrow(all_mutations) - nsnvs
   psnvs = round(nsnvs/(nsnvs + nindel) * 100)
@@ -101,6 +115,58 @@ prepare_input_data = function(mutations, cna, tumour_purity)
         "{.field {nsubcl}} mutations mapped to subclonal CNAs."
       )
     }
+  }
+
+  # Check if we mapped all the drivers
+  idfy = function(x) { x %>% dplyr::mutate(id = paste(chr, from, to, ref, alt)) }
+
+  if(!is.null(driver_mutations))
+  {
+    ids_clonal = mutations %>% idfy %>% pull(id)
+    ids_subclonal = NULL
+
+    if(!is.null(cna_subclonal))
+      ids_subclonal = cna_subclonal$mutations %>%
+        Reduce(f = dplyr::bind_rows) %>%
+        idfy %>% pull(id)
+
+    all_ids = c(ids_clonal, ids_subclonal)
+    driver_ids = driver_mutations %>% idfy %>% pull(id)
+
+    missing_drivers = which(!(driver_ids %in% all_ids), arr.ind = TRUE)
+
+    if(length(missing_drivers) > 0)
+    {
+      missing = driver_mutations$driver_label[missing_drivers]
+      missing = paste("Driver(s): ", paste(missing, collapse = ', '))
+
+      cat("\n")
+      cli::boxx(
+        "Driver cannot be mapped - out of any segment!",
+        header = missing,
+        float = "center",
+        col = 'white',
+        border_col = 'black',
+        background_col = 'indianred3'
+      ) %>% cat
+      cat("\n")
+
+      # cli::boxx(
+      #   "Lost driver mutation(s) during mappability (reported below) - out of any segment!",
+      #   float = "center",
+      #   col = 'white',
+      #   background_col = 'red'
+      #   ) %>% cat
+      # cat("\n")
+      #
+      # driver_mutations[missing_drivers, ] %>%
+      #   dplyr::select(
+      #     chr, from, to, ref, alt, NV, DP, VAF,
+      #     is_driver, driver_label
+      #   ) %>%
+      #   print()
+    }
+
   }
 
   return(list(mutations = mutations, cna_clonal = cna_clonal, cna_subclonal = cna_subclonal, tab = tab))

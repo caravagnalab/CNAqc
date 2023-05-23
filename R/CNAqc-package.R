@@ -59,6 +59,7 @@
 #' @importFrom grDevices dev.off
 #' @importFrom grDevices pdf
 #' @importFrom gtools mixedsort
+#' @importFrom scales percent
 #' @importFrom stats complete.cases
 #' @importFrom stats dbinom
 #' @importFrom stats density

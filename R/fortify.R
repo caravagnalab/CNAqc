@@ -169,7 +169,7 @@ fortify_mutation_calls = function(x)
   if(max(c(nchar(x$alt), nchar(x$ref))) > 1)
   {
     cli::cli_alert_warning(
-      "Detected indels mutation; do not forget to rely more on SNVs for data QC."
+      "Detected indels mutation (substitutions with >1 reference/alternative nucleotides)."
     )
   }
 
@@ -192,11 +192,13 @@ fortify_mutation_calls = function(x)
   # Complement required driver information if missing
   if('is_driver' %in% colnames(x))
   {
-    if(!('gene' %in% colnames(x)))
+    if(!('driver_label' %in% colnames(x)))
     {
-      cli::cli_alert_info("Drivers are annotated, but 'gene' column is missing, using mutation location.")
-      x = x %>%
-        dplyr::mutate(gene = paste(chr, from, to, ref, alt, sep = ':'))
+      cli::cli_alert_danger("Drivers are annotated, but 'driver_label' column is missing; these annotations are useless.")
+
+      # cli::cli_alert_info("Drivers are annotated, but 'gene' column is missing, using mutation location.")
+      # x = x %>%
+      #   dplyr::mutate(driver_label = paste(chr, from, to, ref, alt, sep = ':'))
     }
   }
 

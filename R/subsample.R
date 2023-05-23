@@ -31,18 +31,19 @@ subsample = function(x, N = 15000, keep_drivers = TRUE)
   if (keep_drivers & 'is_driver' %in% colnames(x$mutations))
     xx_d = x$mutations %>% dplyr::filter(is_driver)
 
-  CNAqc::init(
+  init(
     mutations = dplyr::bind_rows(xx_d, xx),
     cna = x$cna %>% dplyr::select(-segment_id,-n,-CCF),
-    purity = x$purity
+    purity = x$purity,
+    sample = x$sample
   )
 }
 
-#' Subset by clonal simple segments.
+#' Subset by clonal segments.
 #'
 #' @description
 #'
-#' Retains only a subset of clonal simple segments, e.g., all `2:1` segments.
+#' Retains only a subset of clonal segments, e.g., all `2:1` segments.
 #'
 #' @param x A CNAqc object.
 #' @param karyotypes A list of karyotype ids in \code{"Major:minor"} notation
@@ -62,19 +63,24 @@ subset_by_segment_karyotype = function(x, karyotypes)
   if (!inherits(x, "cnaqc"))
     stop("Not a CNAqc object in input.")
 
-  cna_calls = x$cna %>%
+  cna_calls = x %>% CNA() %>%
     dplyr::mutate(k = paste0(Major, ':', minor)) %>%
     dplyr::filter(k %in% karyotypes)
 
   if (nrow(cna_calls) == 0)
     stop("There are no calls with these karyotypes, cannot subset.")
 
+  to_remove = c("segment_id", "n", "CCF") %in% colnames(cna_calls)
+  to_remove = c("segment_id", "n", "CCF")[to_remove]
+  # cna_calls = cna_calls %>% dplyr::select(-to_remove)
+
   return(
-    CNAqc::init(
-      mutations = x$mutations,
-      cna = cna_calls %>% dplyr::select(-segment_id,-n,-CCF),
+    init(
+      mutations = x %>% Mutations(),
+      cna = cna_calls %>% dplyr::select(-to_remove),
       purity = x$purity,
-      ref = x$reference_genome
+      ref = x$reference_genome,
+      sample = x$sample
     )
   )
 }
@@ -112,35 +118,74 @@ subset_by_segment_totalcn = function(x, totalcn)
     stop("There are no calls with these total copy states, cannot subset.")
 
   return(
-    CNAqc::init(
+    init(
       mutations = x$mutations,
       cna = cna_calls,
       purity = x$purity,
-      ref = x$reference_genome
+      ref = x$reference_genome,
+      sample = x$sample
     )
   )
 }
 
-subset_by_segment_minmutations = function(x, totalcn)
+
+#' Retain clonal segments with minimum number of mutations.
+#'
+#' @description It retains only the set of clonal segments that have mapped
+#' at least `n` mutations mapped.
+#'
+#' @param x A CNAqc object.
+#' @param n The minimum number of mutations per segment.
+#'
+#' @return A CNAqc object that should have less segments.
+#' @export
+#'
+#' @examples
+#' data('example_dataset_CNAqc', package = 'CNAqc')
+#' x = init(mutations = example_dataset_CNAqc$mutations, cna = example_dataset_CNAqc$cna, purity = example_dataset_CNAqc$purity)
+#'
+#' subset_by_segment_minmutations(x, 0)
+#' subset_by_segment_minmutations(x, 10)
+subset_by_segment_minmutations = function(x, n = 50)
 {
   if (!inherits(x, "cnaqc"))
     stop("Not a CNAqc object in input.")
 
-  cna_calls = x$cna %>%
-    dplyr::mutate(total_cn = Major + minor) %>%
-    dplyr::filter(total_cn %in% totalcn)
+  cna_calls = x %>% CNA(type = "clonal")
 
-  if (nrow(cna_calls) == 0)
-    stop("There are no calls with these total copy states, cannot subset.")
+  removed_calls = cna_calls %>% dplyr::filter(n < !!n)
+  retained_calls = cna_calls %>% dplyr::filter(n >= !!n)
 
-  return(
-    CNAqc::init(
-      mutations = x$mutations,
-      cna = cna_calls,
-      purity = x$purity,
-      ref = x$reference_genome
+  if(nrow(retained_calls) == 0)
+    stop("Too strict filter -- no segments would remain!")
+
+  if (nrow(removed_calls) > 0)
+  {
+    nremoved_calls = removed_calls %>% nrow()
+    lmuts = removed_calls$n %>% sum
+    ptmuts = 100*(lmuts/x$n_mutations)
+    if(ptmuts < 1) ptmuts = '< 1'
+
+    cli::cli_alert_info(
+      "Dropping {.field {nremoved_calls}} clonal segments with less than {.field {n}} \\
+      mutations - losing {.field {lmuts}}/{.field {x$n_mutations}} mutations \\
+      ({.field {ptmuts}%})"
     )
-  )
+
+    return(
+      init(
+        mutations = x %>% Mutations(),
+        cna = retained_calls,
+        purity = x$purity,
+        ref = x$reference_genome,
+        sample = x$sample
+      )
+    )
+  }
+
+  cli::cli_alert_warning("This filter has no effect on the input data.")
+
+  return(x)
 
 }
 
@@ -227,7 +272,8 @@ subset_by_minimum_CCF = function(x, min_target_CCF = 0.1)
     mutations = subset_data,
     cna = x$cna %>% dplyr::select(-segment_id,-n,-CCF),
     purity = x$purity,
-    ref = x$reference_genome
+    ref = x$reference_genome,
+    sample = x$sample
   )
 }
 
@@ -269,7 +315,8 @@ subset_snvs = function(x,
       mutations = subset_mutations,
       cna = x$cna %>% dplyr::select(-segment_id,-n,-CCF),
       purity = x$purity,
-      ref = x$reference_genome
+      ref = x$reference_genome,
+      sample = x$sample
     )
   }
 
@@ -350,4 +397,6 @@ split_by_chromosome = function(x,
   names(objs) = nm
 
   return(objs)
+  
 }
+

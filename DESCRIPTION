@@ -62,14 +62,16 @@ Imports:
     progress,
     readr,
     R.utils,
-    ComplexHeatmap
+    ComplexHeatmap,
+    scales
+biocViews:
 Remotes: 
     caravagn/pio,
     caravagnalab/BMix,
     caravagn/easypar,
     cran/peakPick,
     cran/sequenza
-RoxygenNote: 7.2.3
+RoxygenNote: 7.2.2
 Suggests: 
     knitr,
     rmarkdown,

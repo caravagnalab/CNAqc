@@ -151,7 +151,7 @@ plot_peaks_fit = function(x, k)
 
   ranges = x$peaks_analysis$matches %>%
     dplyr::filter(karyotype == k) %>%
-    pull(epsilon)
+    dplyr::pull(epsilon)
 
   # Required input values
   mutations = x$mutations %>%
@@ -166,10 +166,12 @@ plot_peaks_fit = function(x, k)
   purity_error = x$peaks_analysis$purity_error
 
   # linear combination of the weight, split by number of peaks to match
-  weight = x$peaks_analysis$matches %>%
-    dplyr::filter(karyotype == k) %>%
-    dplyr::pull(weight) %>%
-    sum
+  # weight = x$peaks_analysis$matches %>%
+  #   dplyr::filter(karyotype == k) %>%
+  #   dplyr::pull(weight) %>%
+  #   sum
+  karyos = x$n_karyotype[x$peaks_analysis$matches$karyotype %>% unique]
+  weight = x$n_karyotype[k]/sum(karyos)
 
   # Plots cex for anything that is not the main theme
   cex_opt = getOption('CNAqc_cex', default = 1)

@@ -46,6 +46,8 @@ annotate_variants <- function(x,
   mutations = inputs$mutations
   reference = inputs$reference
 
+  if(reference == "GRCh38") reference = "hg38"
+
   # Check for available packages
   rqp = function(x) {
     if (!require(x,  character.only = T, quietly = T) %>% suppressWarnings()) {
@@ -106,7 +108,7 @@ annotate_variants <- function(x,
   loc$gene_symbol <- map[loc$GENEID]
 
   loc_df <- as.data.frame(loc) %>%
-    as_tibble() %>%
+    tibble::as_tibble() %>%
     dplyr::mutate(
       segment_id = paste(seqnames, start, end, sep = ":"),
       chr = seqnames,
@@ -117,14 +119,14 @@ annotate_variants <- function(x,
     dplyr::select(chr, from, to, location, gene_symbol) %>%
     dplyr::filter(gene_symbol != "NA") %>%
     unique() %>%
-    group_by(chr, from, to, gene_symbol) %>%
-    summarize(location = paste(location, collapse = ":"),
+    dplyr::group_by(chr, from, to, gene_symbol) %>%
+    dplyr::summarize(location = paste(location, collapse = ":"),
               .groups = 'keep') %>%
-    ungroup()
+    dplyr::ungroup()
 
   mutationsut_coding <-
     dplyr::left_join(loc_df %>%
-                       filter(grepl(location, pattern = "coding")),
+                       dplyr::filter(grepl(location, pattern = "coding")),
                      mutations,
                      by = c("chr", "from", "to"))
 
@@ -186,11 +188,11 @@ annotate_variants <- function(x,
 
   res <-
     dplyr::left_join(loc_df, output_coding,  by = c("chr", "from", "to")) %>%
-    mutate(
+    dplyr::mutate(
       driver_label = paste0(gene_symbol, "_", refAA, "->", varAA),
       is_driver = gene_symbol %in% driver_genes
     ) %>%
-    mutate(is_driver =
+    dplyr:: mutate(is_driver =
              ifelse(
                is.na(is_driver) |
                  !grepl(location, pattern = "coding") |
@@ -226,9 +228,9 @@ annotate_variants <- function(x,
   }
 
   # Re-assembly CNAqc obect
-  final_table = left_join(
-    mutations %>% mutate(to = to + 1),
-    res %>% mutate(to = to + 1),
+  final_table = dplyr::left_join(
+    mutations %>% dplyr::mutate(to = to + 1),
+    res %>% dplyr::mutate(to = to + 1),
     by = c("chr", "from", "to")
   ) %>%
     dplyr::arrange(-is_driver)
@@ -245,7 +247,7 @@ annotate_variants <- function(x,
 
 annotate_variants_preprocess = function(x)
 {
-  cli::cli_process_start("Preparing mutationsut data")
+  cli::cli_process_start("Preparing mutations")
 
   # Define mutationsuts
   mutations = x %>% Mutations()
@@ -256,7 +258,7 @@ annotate_variants_preprocess = function(x)
     any(c('is_driver', "driver_label") %in% colnames(mutations))
   )
   {
-    cli::cli_alert_warning("Existing annotations in your data will be cancelled.")
+    cli::cli_alert_warning("Existing driver annotations in your data will be cancelled.")
     cat("\n")
     print(mutations %>% dplyr::filter(is_driver))
     cat("\n")
