@@ -1,5 +1,5 @@
 
-# CNAqc <a href="caravagnalab.github.io/CNAqc"><img src="man/figures/logo.png" align="right" height="69" /></a>
+# CNAqc <a href="caravagnalab.github.io/CNAqc"><img src="logo.png" align="right" height="69" /></a>
 
 <!-- badges: start -->
 
