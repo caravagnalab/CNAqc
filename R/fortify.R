@@ -69,7 +69,9 @@ fortify_CNA_segments = function(x)
       cli::cli_alert_danger("{.field {sum(with_NA_subclonal)}} NA entrie(s) in subclonal CNAs; segments will be removed.")
 
       subclonal = subclonal[!with_NA_subclonal, ]
-      if(nrow(subclonal) == 0) has_subclonal = FALSE
+      if(nrow(subclonal) == 0) {
+        has_subclonal = FALSE
+        subclonal = NULL}
     }
   }
 

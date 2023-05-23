@@ -76,6 +76,7 @@
 #' @param KDE Deprecated parameter.
 #' @param starting_state_subclonal_evolution For subclonal simple CNAs, the starting state to determine linear versus
 #' branching evolutionary models. By default this is an heterozygous diploid `1:1` state.
+#' @param cluster_subclonal_CCF For subclonal segments, should the tool try to merge segments with similar CCF and the same copy number alteration?
 #'
 #' @return An object of class \code{cnaqc}, modified to hold the results from this analysis. For every type
 #' of segment analyzed tables with summary peaks are available in \code{x$peaks_analysis}. The most helpful table
@@ -121,7 +122,8 @@ analyze_peaks = function(x,
                          kernel_adjust = 1,
                          matching_strategy = "closest",
                          KDE = TRUE,
-                         starting_state_subclonal_evolution = "1:1")
+                         starting_state_subclonal_evolution = "1:1",
+                         cluster_subclonal_CCF = FALSE)
 {
 
   if (!is.null(matching_epsilon)) {
@@ -153,6 +155,16 @@ analyze_peaks = function(x,
     n_bootstrap = n_bootstrap,
     kernel_adjust = kernel_adjust
   )
+  
+  x$cna <- dplyr::left_join(x$cna,CNAqc:::compute_QC_table(x)$QC_table %>% filter(type == "Peaks") %>% 
+                               dplyr::mutate(QC_PASS = dplyr::if_else(QC == "PASS", TRUE, FALSE)) %>%
+                               tidyr::separate(karyotype, into = c("Major", "minor"), sep = ":") %>%
+                               mutate(Major = as.numeric(Major), minor = as.numeric(minor)) %>% 
+                               dplyr::select(Major, minor, QC_PASS))
+  x$mutations <- dplyr::left_join(x$mutations %>% ungroup(), CNAqc:::compute_QC_table(x)$QC_table %>%
+                                    filter(type == "Peaks") %>% 
+                                    dplyr::mutate(QC_PASS = dplyr::if_else(QC == "PASS", TRUE, FALSE)) %>% 
+                                    dplyr::select(karyotype, QC_PASS))
 
   # Generalised peak analysis
   cli::cli_h1("Peak analysis: complex CNAs")
@@ -176,6 +188,15 @@ analyze_peaks = function(x,
 
     x$peaks_analysis$general$summary %>%
       print()
+    
+    x$cna <- dplyr::left_join(x$cna, x$peaks_analysis$general$summary %>% 
+                                 dplyr::mutate(QC_PASS = dplyr::if_else(prop >= 0.5, TRUE, FALSE)) %>%
+                                 tidyr::separate(karyotype, into = c("Major", "minor"), sep = ":") %>%
+                                 mutate(Major = as.numeric(Major), minor = as.numeric(minor)) %>% 
+                                 dplyr::select(Major, minor, QC_PASS))
+    x$mutations <- dplyr::left_join(x$mutations, x$peaks_analysis$general$summary %>% 
+                                dplyr::mutate(QC_PASS = dplyr::if_else(prop >= 0.5, TRUE, FALSE)) %>% 
+                                dplyr::select(karyotype, QC_PASS))
   }
   else
     cli::cli_alert_info(
@@ -193,13 +214,15 @@ analyze_peaks = function(x,
       epsilon = purity_error,
       kernel_adjust = kernel_adjust,
       n_bootstrap = n_bootstrap,
-      starting_state = starting_state_subclonal_evolution
+      starting_state = starting_state_subclonal_evolution,
+      cluster_subclonal_CCF = cluster_subclonal_CCF
     )
 
     if(!is.null(x$peaks_analysis$subclonal))
       x$peaks_analysis$subclonal$summary %>% print()
     else
       cli::cli_alert_info("Subclonal CNAs not analysed with the current parameters.")
+    
   }
   else
     cli::cli_alert_info("No subclonal CNAs in this sample.")

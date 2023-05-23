@@ -363,71 +363,40 @@ split_by_chromosome = function(x,
 {
   stopifnot(inherits(x, 'cnaqc'))
 
-  # objs = NULL
-  # nm = NULL
-  #
-  # for(chr in chromosomes)
-  # {
-  #   clonal_mutations = x$mutations %>% filter(chr == !!chr)
-  #
-  #   if((clonal_mutations %>% nrow()) == 0) next
-  #
-  #   cli::cli_h3(chr)
-  #   cat("\n")
-  #
-  #   subclonal_mutations = x$cna_subclonal %>% filter(chr == !!chr) %>% pull(mutations) %>% Reduce(f = bind_rows)
-  #   cnas = x$cna %>% filter(chr == !!chr)
-  #
-  #   cnaqc_obj = init(
-  #     clonal_mutations %>% bind_rows(subclonal_mutations),
-  #     cna = cnas,
-  #     purity = x$purity,
-  #     ref = x$reference_genome,
-  #     sample = x$sample
-  #   )
-  #
-  #   objs = append(objs, list(cnaqc_obj))
-  #   nm = c(nm, chr)
-  # }
-  #
-  # names(objs) = nm
+  objs = NULL
+  nm = NULL
 
-  # x_muts = x %>%
-  #   Mutations() %>%
-  #   dplyr::group_split(chr)
-  # 
-  # objs = lapply(
-  #   x_muts,
-  #   function(m){
-  #     init(
-  #       mutations = m,
-  #       cna = x %>% CNA,
-  #       purity = x$purity,
-  #       ref = x$reference_genome,
-  #       sample = x$sample
-  #     )
-  #   })
-  # 
-  # names(objs) = sapply(x_muts, function(m) m$chr[1])
-  # 
-  # objs = objs[gtools::mixedsort(names(objs))]
-  
-  objs = lapply(
-    x$mutations %>% pull(chr) %>% unique(),
-    function(c){
-      init(
-        mutations = x$mutations %>% filter(chr == c),
-        cna = x %>% CNA,
-        purity = x$purity,
-        ref = x$reference_genome,
-        sample = x$sample
-      )
-    })
-  
-  names(objs) = lapply(objs,function(a){ a$mutations$chr[1]})
-  
-  
-return(objs)
+  for(chr in chromosomes)
+  {
+    clonal_mutations = x$mutations %>% filter(chr == !!chr)
+
+    if((clonal_mutations %>% nrow()) == 0) next
+
+    cli::cli_h3(chr)
+    cat("\n")
+    
+    subclonal_mutations = NULL
+
+    if(nrow(x$cna_subclonal) > 0) subclonal_mutations = x$cna_subclonal %>%
+      filter(chr == !!chr) %>% pull(mutations) %>%
+      Reduce(f = bind_rows)
+    
+    cnas = x$cna %>% filter(chr == !!chr)
+
+    cnaqc_obj = init(
+      clonal_mutations %>% bind_rows(subclonal_mutations),
+      cna = cnas,
+      purity = x$purity,
+      ref = x$reference_genome
+    )
+
+    objs = append(objs, list(cnaqc_obj))
+    nm = c(nm, chr)
+  }
+
+  names(objs) = nm
+
+  return(objs)
   
 }
 

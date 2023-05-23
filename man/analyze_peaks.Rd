@@ -17,7 +17,8 @@ analyze_peaks(
   kernel_adjust = 1,
   matching_strategy = "closest",
   KDE = TRUE,
-  starting_state_subclonal_evolution = "1:1"
+  starting_state_subclonal_evolution = "1:1",
+  cluster_subclonal_CCF = FALSE
 )
 }
 \arguments{
@@ -67,6 +68,8 @@ density. By default the \code{"closest"} strategy is used.}
 
 \item{starting_state_subclonal_evolution}{For subclonal simple CNAs, the starting state to determine linear versus
 branching evolutionary models. By default this is an heterozygous diploid `1:1` state.}
+
+\item{cluster_subclonal_CCF}{For subclonal segments, should the tool try to merge segments with similar CCF and the same copy number alteration?}
 }
 \value{
 An object of class \code{cnaqc}, modified to hold the results from this analysis. For every type
