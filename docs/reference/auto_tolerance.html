@@ -3,7 +3,7 @@
 pass or fail a sample based on a custom purity error (maximum error to allow).
 A regression has been used to measure the rate of false positives
 from simulated tumours with variable coverage and purity. This allows to determine
-an optimal value of $$, the parameter `purity_error` of function
+an optimal value of $\(\epsilon\)$, the parameter `purity_error` of function
 analyze_peaks, for a desired rate of alse positives basde on the sample
 coverage and putative purity."><meta property="og:image" content="caravagnalab.github.io/CNAqc/logo.png"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -93,55 +93,124 @@ coverage and putative purity."><meta property="og:image" content="caravagnalab.g
 pass or fail a sample based on a custom purity error (maximum error to allow).</p>
 <p>A regression has been used to measure the rate of false positives
 from simulated tumours with variable coverage and purity. This allows to determine
-an optimal value of $$, the parameter `purity_error` of function
+an optimal value of $\(\epsilon\)$, the parameter `purity_error` of function
 <code>analyze_peaks</code>, for a desired rate of alse positives basde on the sample
 coverage and putative purity.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">auto_tolerance</span><span class="op">(</span><span class="va">purity</span>, <span class="va">coverage</span>, fpr <span class="op">=</span> <span class="fl">0.1</span>, epsilon_range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.01</span>, <span class="fl">0.08</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">auto_tolerance</span><span class="op">(</span><span class="va">purity</span>, <span class="va">coverage</span>, fpr <span class="op">=</span> <span class="fl">0.1</span>, epsilon_range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.01</span>, <span class="fl">0.08</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>purity</dt>
 <dd><p>The data purity (putative) for a sample.</p></dd>
+
+
 <dt>coverage</dt>
 <dd><p>The observed data coverage.</p></dd>
+
+
 <dt>fpr</dt>
 <dd><p>Desired false positive rate.</p></dd>
+
+
 <dt>epsilon_range</dt>
 <dd><p>Range of values to constrain $epsilon$.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>The $$ value estimated from data, constrained to be in
+    
+
+<p>The $\(\epsilon\)$ value estimated from data, constrained to be in
 `epsilon_range`, in order to limit the false positive rate to be at most `fpr`.</p>
     </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># Desired 10% FPR for a 30% pure tumour at 90x</span></span>
-<span class="r-in"><span class="fu">auto_tolerance</span><span class="op">(</span><span class="fl">.3</span>, <span class="fl">90</span><span class="op">)</span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Tolerance below 1% for FPR = 0.1 - returning 0.01 (epsilon_range).</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Tolerance above 100% for FPR = 0.1 - returning 0.01 (epsilon_range).</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Tolerance below 1% for FPR = 0.1 - returning 0.01 (epsilon_range).</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Tolerance above 100% for FPR = 0.1 - returning 0.01 (epsilon_range).</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Tolerance above 100% for FPR = 0.1 - returning 0.01 (epsilon_range).</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Tolerance below 1% for FPR = 0.1 - returning 0.01 (epsilon_range).</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Tolerance below 1% for FPR = 0.1 - returning 0.01 (epsilon_range).</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Tolerance below 1% for FPR = 0.1 - returning 0.01 (epsilon_range).</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Tolerance below 1% for FPR = 0.1 - returning 0.01 (epsilon_range).</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Tolerance below 1% for FPR = 0.1 - returning 0.01 (epsilon_range).</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Tolerance above 100% for FPR = 0.1 - returning 0.01 (epsilon_range).</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Tolerance below 1% for FPR = 0.1 - returning 0.01 (epsilon_range).</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Tolerance below 1% for FPR = 0.1 - returning 0.01 (epsilon_range).</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Tolerance above 100% for FPR = 0.1 - returning 0.01 (epsilon_range).</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Tolerance below 1% for FPR = 0.1 - returning 0.01 (epsilon_range).</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Tolerance below 1% for FPR = 0.1 - returning 0.01 (epsilon_range).</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Tolerance above 100% for FPR = 0.1 - returning 0.01 (epsilon_range).</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Desired 10% FPR for a 30% pure tumour at 90x</span></span></span>
+<span class="r-in"><span><span class="fu">auto_tolerance</span><span class="op">(</span><span class="fl">.3</span>, <span class="fl">90</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>There was 1 warning in `dplyr::mutate()`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> In argument: `epsilon = inv_fun(fpr)`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> Caused by warning in `inv_fun()`:</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Tolerance below 1% for FPR = 0.1 - returning 0.01 (epsilon_range).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>There was 1 warning in `dplyr::mutate()`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> In argument: `epsilon = inv_fun(fpr)`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> Caused by warning in `inv_fun()`:</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Tolerance above 100% for FPR = 0.1 - returning 0.01 (epsilon_range).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>There was 1 warning in `dplyr::mutate()`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> In argument: `epsilon = inv_fun(fpr)`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> Caused by warning in `inv_fun()`:</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Tolerance below 1% for FPR = 0.1 - returning 0.01 (epsilon_range).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>There was 1 warning in `dplyr::mutate()`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> In argument: `epsilon = inv_fun(fpr)`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> Caused by warning in `inv_fun()`:</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Tolerance above 100% for FPR = 0.1 - returning 0.01 (epsilon_range).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>There was 1 warning in `dplyr::mutate()`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> In argument: `epsilon = inv_fun(fpr)`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> Caused by warning in `inv_fun()`:</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Tolerance above 100% for FPR = 0.1 - returning 0.01 (epsilon_range).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>There was 1 warning in `dplyr::mutate()`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> In argument: `epsilon = inv_fun(fpr)`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> Caused by warning in `inv_fun()`:</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Tolerance below 1% for FPR = 0.1 - returning 0.01 (epsilon_range).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>There was 1 warning in `dplyr::mutate()`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> In argument: `epsilon = inv_fun(fpr)`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> Caused by warning in `inv_fun()`:</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Tolerance below 1% for FPR = 0.1 - returning 0.01 (epsilon_range).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>There was 1 warning in `dplyr::mutate()`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> In argument: `epsilon = inv_fun(fpr)`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> Caused by warning in `inv_fun()`:</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Tolerance below 1% for FPR = 0.1 - returning 0.01 (epsilon_range).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>There was 1 warning in `dplyr::mutate()`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> In argument: `epsilon = inv_fun(fpr)`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> Caused by warning in `inv_fun()`:</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Tolerance below 1% for FPR = 0.1 - returning 0.01 (epsilon_range).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>There was 1 warning in `dplyr::mutate()`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> In argument: `epsilon = inv_fun(fpr)`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> Caused by warning in `inv_fun()`:</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Tolerance below 1% for FPR = 0.1 - returning 0.01 (epsilon_range).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>There was 1 warning in `dplyr::mutate()`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> In argument: `epsilon = inv_fun(fpr)`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> Caused by warning in `inv_fun()`:</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Tolerance above 100% for FPR = 0.1 - returning 0.01 (epsilon_range).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>There was 1 warning in `dplyr::mutate()`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> In argument: `epsilon = inv_fun(fpr)`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> Caused by warning in `inv_fun()`:</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Tolerance below 1% for FPR = 0.1 - returning 0.01 (epsilon_range).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>There was 1 warning in `dplyr::mutate()`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> In argument: `epsilon = inv_fun(fpr)`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> Caused by warning in `inv_fun()`:</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Tolerance below 1% for FPR = 0.1 - returning 0.01 (epsilon_range).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>There was 1 warning in `dplyr::mutate()`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> In argument: `epsilon = inv_fun(fpr)`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> Caused by warning in `inv_fun()`:</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Tolerance above 100% for FPR = 0.1 - returning 0.01 (epsilon_range).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>There was 1 warning in `dplyr::mutate()`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> In argument: `epsilon = inv_fun(fpr)`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> Caused by warning in `inv_fun()`:</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Tolerance below 1% for FPR = 0.1 - returning 0.01 (epsilon_range).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>There was 1 warning in `dplyr::mutate()`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> In argument: `epsilon = inv_fun(fpr)`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> Caused by warning in `inv_fun()`:</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Tolerance below 1% for FPR = 0.1 - returning 0.01 (epsilon_range).</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>There was 1 warning in `dplyr::mutate()`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> In argument: `epsilon = inv_fun(fpr)`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> Caused by warning in `inv_fun()`:</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Tolerance above 100% for FPR = 0.1 - returning 0.01 (epsilon_range).</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Inverting training from regression; requiring epsilon in range <span style="color: #00BB00;">[0.01 - 0.08]</span>.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Generating interpolated 2D regression map.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>There were 15352 warnings in `mutate()`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> The first warning was:</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> In argument: `fit = `%&gt;%`(...)`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> In row 1.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> Caused by warning in `akima::interp()`:</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> collinear points, trying to add some jitter to avoid colinearities!</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Run `dplyr::last_dplyr_warnings()` to see the 15351 remaining warnings.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>collinear points, trying to add some jitter to avoid colinearities!</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>success: collinearities reduced through jitter</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Suggested point estimate: <span style="color: #00BB00;">ε = 0.0121101139946641</span>.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $epsilon_range</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.01211011</span>
@@ -162,13 +231,11 @@ coverage and putative purity.</p>
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by <a href="https://www.caravagnalab.org" class="external-link">Giulio
-Caravagna</a>.</p>
+  <p></p><p>Developed by <a href="https://www.caravagnalab.org" class="external-link">Giulio Caravagna</a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>
