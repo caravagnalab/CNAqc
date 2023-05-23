@@ -112,6 +112,7 @@ copy numbers can also be plot.</p>
 <span>  circular <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  cn <span class="op">=</span> <span class="st">"absolute"</span>,</span>
 <span>  highlight <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">most_prevalent_karyotype</span>,</span>
+<span>  highlight_QC <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -148,6 +149,12 @@ Major and minor annotation, or <code>"total"</code> for the total (Major plus mi
 By default, it plots the most prevalent karyotype using `x$most_prevalent_karyotype`.</p></dd>
 
 
+<dt>highlight_QC</dt>
+<dd><p>Similar to <code>highlight</code> but shadows segments based on the QC results and
+takes a boolean as an input. By default, it overrrides <code>highlight</code>, while if no peak analysis 
+has been performed reverts back to <code>highlight</code></p></dd>
+
+
 <dt>...</dt>
 <dd><p>Extra parameters passed to the hidden function <code>blank_genome</code>.</p></dd>
 
@@ -167,7 +174,7 @@ By default, it plots the most prevalent karyotype using `x$most_prevalent_karyot
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">CNAqc - CNA Quality Check</span> <span style="color: #00BBBB;">───────────────────────────────────────────────────</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Using reference genome coordinates for: <span style="color: #00BB00;">GRCh38</span>.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Drivers are annotated, but 'gene' column is missing, using mutation location.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Found annotated driver mutations: <span style="color: #00BB00;">TTN</span>, <span style="color: #00BB00;">CTCF</span>, and <span style="color: #00BB00;">TP53</span>.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Fortified calls for <span style="color: #00BB00;">12963</span> somatic mutations: <span style="color: #00BB00;">12963</span> SNVs (<span style="color: #00BB00;">100%</span>) and <span style="color: #00BB00;">0</span> indels.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> CNAs have no CCF, assuming clonal CNAs (CCF = 1).</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Fortified CNAs for <span style="color: #00BB00;">267</span> segments: <span style="color: #00BB00;">267</span> clonal and <span style="color: #00BB00;">0</span> subclonal.</span>

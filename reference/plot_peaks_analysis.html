@@ -169,7 +169,7 @@ returned with all the plots assembled. Otherwise a list of plot is returned.</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">CNAqc - CNA Quality Check</span> <span style="color: #00BBBB;">───────────────────────────────────────────────────</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Using reference genome coordinates for: <span style="color: #00BB00;">GRCh38</span>.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Drivers are annotated, but 'gene' column is missing, using mutation location.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Found annotated driver mutations: <span style="color: #00BB00;">TTN</span>, <span style="color: #00BB00;">CTCF</span>, and <span style="color: #00BB00;">TP53</span>.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Fortified calls for <span style="color: #00BB00;">12963</span> somatic mutations: <span style="color: #00BB00;">12963</span> SNVs (<span style="color: #00BB00;">100%</span>) and <span style="color: #00BB00;">0</span> indels.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> CNAs have no CCF, assuming clonal CNAs (CCF = 1).</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Fortified CNAs for <span style="color: #00BB00;">267</span> segments: <span style="color: #00BB00;">267</span> clonal and <span style="color: #00BB00;">0</span> subclonal.</span>
@@ -189,12 +189,14 @@ returned with all the plots assembled. Otherwise a list of plot is returned.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>                     1 2:2       0.235   0.007<span style="text-decoration: underline;">00</span> 0.24   0.86             65</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span>                     2 2:2       0.471   0.014<span style="text-decoration: underline;">0</span>  0.461  8.14            625</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span>                     1 2:1       0.308   0.012<span style="text-decoration: underline;">0</span>  0.306  3.60             59</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span>                     1 2:1       0.308   0.012<span style="text-decoration: underline;">0</span>  0.307  3.60             59</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span>                     2 2:1       0.616   0.023<span style="text-decoration: underline;">9</span>  0.602  2.94             60</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 9 more variables: discarded &lt;lgl&gt;, from &lt;chr&gt;, offset_VAF &lt;dbl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   offset &lt;dbl&gt;, weight &lt;dbl&gt;, epsilon &lt;dbl&gt;, VAF_tolerance &lt;dbl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   matched &lt;lgl&gt;, QC &lt;chr&gt;</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Peak detection <span style="color: #00BB00;">PASS</span> with <span style="color: #00BB00;">r = 0.00776282580370826</span> - maximum purity error ε = <span style="color: #00BB00;">0.05</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Peak detection <span style="color: #00BB00;">PASS</span> with <span style="color: #00BB00;">r = 0.00647677487483768</span> - maximum purity error ε = <span style="color: #00BB00;">0.05</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(Major, minor)`</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(karyotype)`</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Peak analysis: complex CNAs</span> <span style="color: #00BBBB;">─────────────────────────────────────────────────</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -206,6 +208,10 @@ returned with all the plots assembled. Otherwise a list of plot is returned.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> 3:0        312              3          0     1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> 3:2       1625              3          0     1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> 4:2       1893              4          0     1</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Adding missing grouping variables: `matched`</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(Major, minor, QC_PASS)`</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Adding missing grouping variables: `matched`</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(karyotype, QC_PASS)`</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Peak analysis: subclonal CNAs</span> <span style="color: #00BBBB;">───────────────────────────────────────────────</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>

@@ -282,7 +282,7 @@ is usually the one for simple clonal CNAs `x$peaks_analysis$matches`, which repo
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">CNAqc - CNA Quality Check</span> <span style="color: #00BBBB;">───────────────────────────────────────────────────</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Using reference genome coordinates for: <span style="color: #00BB00;">GRCh38</span>.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Drivers are annotated, but 'gene' column is missing, using mutation location.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Found annotated driver mutations: <span style="color: #00BB00;">TTN</span>, <span style="color: #00BB00;">CTCF</span>, and <span style="color: #00BB00;">TP53</span>.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Fortified calls for <span style="color: #00BB00;">12963</span> somatic mutations: <span style="color: #00BB00;">12963</span> SNVs (<span style="color: #00BB00;">100%</span>) and <span style="color: #00BB00;">0</span> indels.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> CNAs have no CCF, assuming clonal CNAs (CCF = 1).</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Fortified CNAs for <span style="color: #00BB00;">267</span> segments: <span style="color: #00BB00;">267</span> clonal and <span style="color: #00BB00;">0</span> subclonal.</span>
@@ -298,7 +298,6 @@ is usually the one for simple clonal CNAs `x$peaks_analysis$matches`, which repo
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>replacing previous import ‘cli::num_ansi_colors’ by ‘crayon::num_ansi_colors’ when loading ‘BMix’</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>replacing previous import ‘crayon::%+%’ by ‘ggplot2::%+%’ when loading ‘BMix’</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Loading <span style="color: #00BB00;">BMix</span>, <span style="font-style: italic;">'Binomial and Beta-Binomial univariate mixtures'</span>. Support : <span style="color: #0000BB; font-style: italic;">&lt;https://caravagnalab.github.io/BMix/&gt;</span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>replacing previous import ‘cli::num_ansi_colors’ by ‘crayon::num_ansi_colors’ when loading ‘easypar’</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Mixed type peak detection for karyotype <span style="color: #00BB00;">2:2</span> (<span style="color: #00BB00;">7478</span> mutations)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 4 × 16</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Rowwise: </span></span>
@@ -307,11 +306,13 @@ is usually the one for simple clonal CNAs `x$peaks_analysis$matches`, which repo
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>                     1 2:2       0.235   0.007<span style="text-decoration: underline;">00</span> 0.24   0.86             65</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span>                     2 2:2       0.471   0.014<span style="text-decoration: underline;">0</span>  0.461  8.14            625</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span>                     1 2:1       0.308   0.012<span style="text-decoration: underline;">0</span>  0.306  3.60             59</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span>                     2 2:1       0.616   0.023<span style="text-decoration: underline;">9</span>  0.602  2.94             60</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span>                     2 2:1       0.616   0.023<span style="text-decoration: underline;">9</span>  0.600  2.94             60</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 9 more variables: discarded &lt;lgl&gt;, from &lt;chr&gt;, offset_VAF &lt;dbl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   offset &lt;dbl&gt;, weight &lt;dbl&gt;, epsilon &lt;dbl&gt;, VAF_tolerance &lt;dbl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   matched &lt;lgl&gt;, QC &lt;chr&gt;</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Peak detection <span style="color: #00BB00;">PASS</span> with <span style="color: #00BB00;">r = 0.00776282580370826</span> - maximum purity error ε = <span style="color: #00BB00;">0.05</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Peak detection <span style="color: #00BB00;">PASS</span> with <span style="color: #00BB00;">r = 0.00838466599059719</span> - maximum purity error ε = <span style="color: #00BB00;">0.05</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(Major, minor)`</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(karyotype)`</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Peak analysis: complex CNAs</span> <span style="color: #00BBBB;">─────────────────────────────────────────────────</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -323,6 +324,10 @@ is usually the one for simple clonal CNAs `x$peaks_analysis$matches`, which repo
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> 3:0        312              3          0     1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> 3:2       1625              3          0     1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> 4:2       1893              4          0     1</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Adding missing grouping variables: `matched`</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(Major, minor, QC_PASS)`</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Adding missing grouping variables: `matched`</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(karyotype, QC_PASS)`</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Peak analysis: subclonal CNAs</span> <span style="color: #00BBBB;">───────────────────────────────────────────────</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -330,7 +335,7 @@ is usually the one for simple clonal CNAs `x$peaks_analysis$matches`, which repo
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># More precise messages</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ── <span style="color: #000000; background-color: #BBBB00;">[ CNAqc ] </span> <span style="color: #00BB00;">12963</span> mutations in <span style="color: #00BB00;">267</span> segments (<span style="color: #00BB00;">267</span> clonal, <span style="color: #00BB00;">0</span> subclonal). Genome </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── <span style="color: #000000; background-color: #BBBB00;">[ CNAqc ] MySample</span> <span style="color: #00BB00;">12963</span> mutations in <span style="color: #00BB00;">267</span> segments (<span style="color: #00BB00;">267</span> clonal, <span style="color: #00BB00;">0</span> subclonal).</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ── Clonal CNAs </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -353,10 +358,10 @@ is usually the one for simple clonal CNAs `x$peaks_analysis$matches`, which repo
 <span class="r-out co"><span class="r-pr">#&gt;</span>        chr16  67646006  67646007   C   T 120 54 0.4500000         CTCF      TRUE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        chr17   7577106   7577107   G   C  84 78 0.9285714         TP53      TRUE</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="color: #000000; background-color: #00BB00; font-weight: bold;"> PASS </span><span style="font-weight: bold;"> Peaks QC closest: </span><span style="color: #00BB00; font-weight: bold;">200%</span><span style="font-weight: bold;">, </span><span style="color: #00BB00; font-weight: bold;">λ = 0.0078</span><span style="font-weight: bold;">. Purity correction: 1%.</span> <span style="color: #00BBBB;">───────────</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="color: #000000; background-color: #00BB00; font-weight: bold;"> PASS </span><span style="font-weight: bold;"> Peaks QC closest: </span><span style="color: #00BB00; font-weight: bold;">200%</span><span style="font-weight: bold;">, </span><span style="color: #00BB00; font-weight: bold;">λ = 0.0084</span><span style="font-weight: bold;">. Purity correction: 1%.</span> <span style="color: #00BBBB;">───────────</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">2:2</span> ~ n = 7478  ( 83%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.034  <span style="color: #000000; background-color: #00BB00;"> PASS </span> 0.035  </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">2:1</span> ~ n = 1563  ( 17%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> 0.01    <span style="color: #000000; background-color: #00BB00;"> PASS </span> 0.028  </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">2:1</span> ~ n = 1563  ( 17%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> 0.01    <span style="color: #000000; background-color: #00BB00;"> PASS </span> 0.032  </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">General peak QC (</span><span style="color: #00BB00; font-weight: bold;">3830</span><span style="font-weight: bold;"> mutations): </span><span style="color: #000000; background-color: #00BB00; font-weight: bold;"> PASS </span><span style="font-weight: bold;"> 10 </span><span style="color: #BBBBBB; background-color: #BB0000; font-weight: bold;"> FAIL </span><span style="font-weight: bold;"> 0 - epsilon = 0.05.</span> <span style="color: #00BBBB;">──────</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -367,7 +372,7 @@ is usually the one for simple clonal CNAs `x$peaks_analysis$matches`, which repo
 <span class="r-in"><span><span class="co"># The tabulars with summary results per peak and segment</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">peaks_analysis</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $score</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.007762826</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.008384666</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $fits</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $fits$`2:1`</span>
@@ -378,9 +383,9 @@ is usually the one for simple clonal CNAs `x$peaks_analysis$matches`, which repo
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> 0.08   0.27               5 FALSE     KDE  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> 0.3    3.6               78 FALSE     KDE  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> 0.6    2.94              60 FALSE     KDE  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> 0.306  3.60              59 FALSE     BMix </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> 0.602  2.94              60 FALSE     BMix </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> 0.098<span style="text-decoration: underline;">8</span> 0.256              3 FALSE     BMix </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> 0.098<span style="text-decoration: underline;">8</span> 0.256              3 FALSE     BMix </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> 0.306  3.60              59 FALSE     BMix </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> 0.600  2.94              60 FALSE     BMix </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $fits$`2:1`$density</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -403,7 +408,7 @@ is usually the one for simple clonal CNAs `x$peaks_analysis$matches`, which repo
 <span class="r-out co"><span class="r-pr">#&gt;</span>   mutation_multiplicity karyotype  peak delta_vaf     x     y counts_per_bin</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>                     1 2:1       0.308    0.012<span style="text-decoration: underline;">0</span> 0.306  3.60             59</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span>                     2 2:1       0.616    0.023<span style="text-decoration: underline;">9</span> 0.602  2.94             60</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span>                     2 2:1       0.616    0.023<span style="text-decoration: underline;">9</span> 0.600  2.94             60</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 9 more variables: discarded &lt;lgl&gt;, from &lt;chr&gt;, offset_VAF &lt;dbl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   offset &lt;dbl&gt;, weight &lt;dbl&gt;, epsilon &lt;dbl&gt;, VAF_tolerance &lt;dbl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   matched &lt;lgl&gt;, QC &lt;chr&gt;</span></span>
@@ -429,8 +434,8 @@ is usually the one for simple clonal CNAs `x$peaks_analysis$matches`, which repo
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span> 0.93  0.01               0 TRUE      KDE  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">14</span> 0.97  0.02               0 TRUE      KDE  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">15</span> 1     0.02               3 TRUE      KDE  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">16</span> 0.174 0.432             27 FALSE     BMix </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">17</span> 0.461 8.14             625 FALSE     BMix </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">16</span> 0.461 8.14             625 FALSE     BMix </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">17</span> 0.172 0.417             27 FALSE     BMix </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $fits$`2:2`$density</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -468,7 +473,7 @@ is usually the one for simple clonal CNAs `x$peaks_analysis$matches`, which repo
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>                     1 2:2       0.235   0.007<span style="text-decoration: underline;">00</span> 0.24   0.86             65</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span>                     2 2:2       0.471   0.014<span style="text-decoration: underline;">0</span>  0.461  8.14            625</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span>                     1 2:1       0.308   0.012<span style="text-decoration: underline;">0</span>  0.306  3.60             59</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span>                     2 2:1       0.616   0.023<span style="text-decoration: underline;">9</span>  0.602  2.94             60</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span>                     2 2:1       0.616   0.023<span style="text-decoration: underline;">9</span>  0.600  2.94             60</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 9 more variables: discarded &lt;lgl&gt;, from &lt;chr&gt;, offset_VAF &lt;dbl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   offset &lt;dbl&gt;, weight &lt;dbl&gt;, epsilon &lt;dbl&gt;, VAF_tolerance &lt;dbl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   matched &lt;lgl&gt;, QC &lt;chr&gt;</span></span>
@@ -586,13 +591,15 @@ is usually the one for simple clonal CNAs `x$peaks_analysis$matches`, which repo
 <span class="r-out co"><span class="r-pr">#&gt;</span>   mutation_multiplicity karyotype  peak delta_vaf     x     y counts_per_bin</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>                     1 2:2       0.235   0.007<span style="text-decoration: underline;">00</span> 0.24   0.86             65</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span>                     2 2:2       0.471   0.014<span style="text-decoration: underline;">0</span>  0.461  8.14            625</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span>                     2 2:2       0.471   0.014<span style="text-decoration: underline;">0</span>  0.46   8.14            625</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span>                     1 2:1       0.308   0.012<span style="text-decoration: underline;">0</span>  0.307  3.60             59</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span>                     2 2:1       0.616   0.023<span style="text-decoration: underline;">9</span>  0.602  2.94             60</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 9 more variables: discarded &lt;lgl&gt;, from &lt;chr&gt;, offset_VAF &lt;dbl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   offset &lt;dbl&gt;, weight &lt;dbl&gt;, epsilon &lt;dbl&gt;, VAF_tolerance &lt;dbl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   matched &lt;lgl&gt;, QC &lt;chr&gt;</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Peak detection <span style="color: #00BB00;">PASS</span> with <span style="color: #00BB00;">r = 0.00647677487483768</span> - maximum purity error ε = <span style="color: #00BB00;">0.05</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Peak detection <span style="color: #00BB00;">PASS</span> with <span style="color: #00BB00;">r = 0.00844850061748855</span> - maximum purity error ε = <span style="color: #00BB00;">0.05</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(Major, minor, QC_PASS)`</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(karyotype, QC_PASS)`</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Peak analysis: complex CNAs</span> <span style="color: #00BBBB;">─────────────────────────────────────────────────</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -604,13 +611,17 @@ is usually the one for simple clonal CNAs `x$peaks_analysis$matches`, which repo
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> 3:0        312              3          0     1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> 3:2       1625              3          0     1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> 4:2       1893              4          0     1</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Adding missing grouping variables: `matched`</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(Major, minor, QC_PASS, matched)`</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Adding missing grouping variables: `matched`</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(karyotype, QC_PASS, matched)`</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Peak analysis: subclonal CNAs</span> <span style="color: #00BBBB;">───────────────────────────────────────────────</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> No subclonal CNAs in this sample.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ── <span style="color: #000000; background-color: #BBBB00;">[ CNAqc ] </span> <span style="color: #00BB00;">12963</span> mutations in <span style="color: #00BB00;">267</span> segments (<span style="color: #00BB00;">267</span> clonal, <span style="color: #00BB00;">0</span> subclonal). Genome </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── <span style="color: #000000; background-color: #BBBB00;">[ CNAqc ] MySample</span> <span style="color: #00BB00;">12963</span> mutations in <span style="color: #00BB00;">267</span> segments (<span style="color: #00BB00;">267</span> clonal, <span style="color: #00BB00;">0</span> subclonal).</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ── Clonal CNAs </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -633,9 +644,9 @@ is usually the one for simple clonal CNAs `x$peaks_analysis$matches`, which repo
 <span class="r-out co"><span class="r-pr">#&gt;</span>        chr16  67646006  67646007   C   T 120 54 0.4500000         CTCF      TRUE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        chr17   7577106   7577107   G   C  84 78 0.9285714         TP53      TRUE</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="color: #000000; background-color: #00BB00; font-weight: bold;"> PASS </span><span style="font-weight: bold;"> Peaks QC closest: </span><span style="color: #00BB00; font-weight: bold;">200%</span><span style="font-weight: bold;">, </span><span style="color: #00BB00; font-weight: bold;">λ = 0.0065</span><span style="font-weight: bold;">. Purity correction: 1%.</span> <span style="color: #00BBBB;">───────────</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="color: #000000; background-color: #00BB00; font-weight: bold;"> PASS </span><span style="font-weight: bold;"> Peaks QC closest: </span><span style="color: #00BB00; font-weight: bold;">200%</span><span style="font-weight: bold;">, </span><span style="color: #00BB00; font-weight: bold;">λ = 0.0084</span><span style="font-weight: bold;">. Purity correction: 1%.</span> <span style="color: #00BBBB;">───────────</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">2:2</span> ~ n = 7478  ( 83%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.034  <span style="color: #000000; background-color: #00BB00;"> PASS </span> 0.035  </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">2:2</span> ~ n = 7478  ( 83%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.034  <span style="color: #000000; background-color: #00BB00;"> PASS </span> 0.037  </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">2:1</span> ~ n = 1563  ( 17%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> 0.003   <span style="color: #000000; background-color: #00BB00;"> PASS </span> 0.028  </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">General peak QC (</span><span style="color: #00BB00; font-weight: bold;">3830</span><span style="font-weight: bold;"> mutations): </span><span style="color: #000000; background-color: #00BB00; font-weight: bold;"> PASS </span><span style="font-weight: bold;"> 10 </span><span style="color: #BBBBBB; background-color: #BB0000; font-weight: bold;"> FAIL </span><span style="font-weight: bold;"> 0 - epsilon = 0.05.</span> <span style="color: #00BBBB;">──────</span></span>

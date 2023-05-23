@@ -192,7 +192,7 @@
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">CNAqc - CNA Quality Check</span> <span style="color: #00BBBB;">───────────────────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Using reference genome coordinates for: <span style="color: #00BB00;">hg19</span>.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Drivers are annotated, but 'gene' column is missing, using mutation location.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Found annotated driver mutations: <span style="color: #00BB00;">TTN</span>, <span style="color: #00BB00;">CTCF</span>, and <span style="color: #00BB00;">TP53</span>.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Fortified calls for <span style="color: #00BB00;">12963</span> somatic mutations: <span style="color: #00BB00;">12963</span> SNVs (<span style="color: #00BB00;">100%</span>) and <span style="color: #00BB00;">0</span> indels.</span></span>
 <span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> CNAs have no CCF, assuming clonal CNAs (CCF = 1).</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Fortified CNAs for <span style="color: #00BB00;">267</span> segments: <span style="color: #00BB00;">267</span> clonal and <span style="color: #00BB00;">0</span> subclonal.</span></span>
@@ -200,7 +200,7 @@
 <span></span>
 <span><span class="co"># What we annotate</span></span>
 <span><span class="va">x</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="va">Mutations</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 12,963 × 18</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 12,963 × 17</span></span></span>
 <span><span class="co">#&gt;    chr      from      to ref   alt      NV    DP    VAF FILTER ANNOVAR_FUNCTION</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> chr1  1<span style="text-decoration: underline;">027</span>104 1<span style="text-decoration: underline;">027</span>105 T     G         6    60 0.1    PASS   UTR5            </span></span>
@@ -214,8 +214,8 @@
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> chr1  3<span style="text-decoration: underline;">387</span>161 3<span style="text-decoration: underline;">387</span>162 T     G         6   124 0.048<span style="text-decoration: underline;">4</span> PASS   intronic        </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> chr1  3<span style="text-decoration: underline;">502</span>517 3<span style="text-decoration: underline;">502</span>518 G     A        10    88 0.114  PASS   intronic        </span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 12,953 more rows</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 8 more variables: GENE &lt;chr&gt;, is_driver &lt;lgl&gt;, driver_label &lt;chr&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   gene &lt;chr&gt;, type &lt;chr&gt;, karyotype &lt;chr&gt;, segment_id &lt;chr&gt;, cna &lt;chr&gt;</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 7 more variables: GENE &lt;chr&gt;, is_driver &lt;lgl&gt;, driver_label &lt;chr&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   type &lt;chr&gt;, karyotype &lt;chr&gt;, segment_id &lt;chr&gt;, cna &lt;chr&gt;</span></span></span></code></pre></div>
 <div class="section level3">
 <h3 id="required-packages">Required packages<a class="anchor" aria-label="anchor" href="#required-packages"></a>
 </h3>
@@ -229,13 +229,13 @@
 <span>    <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, repos<span class="op">=</span><span class="st">"http://cran.us.r-project.org"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; The downloaded binary packages are in</span></span>
-<span><span class="co">#&gt;  /var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpSFle6H/downloaded_packages</span></span>
+<span><span class="co">#&gt;  /var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpGvWTxe/downloaded_packages</span></span>
 <span></span>
 <span><span class="co"># We have to install the corresponding txdb package for transcript annotations</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"TxDb.Hsapiens.UCSC."</span>,<span class="va">reference_genome</span>, <span class="st">".knownGene"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html" class="external-link">install</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; The downloaded binary packages are in</span></span>
-<span><span class="co">#&gt;  /var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpSFle6H/downloaded_packages</span></span>
+<span><span class="co">#&gt;  /var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpGvWTxe/downloaded_packages</span></span>
 <span></span>
 <span><span class="co"># We have to install also the BS database for the sequences (it may take some time)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"BSgenome.Hsapiens.UCSC."</span>,<span class="va">reference_genome</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html" class="external-link">install</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -483,14 +483,14 @@
 <code class="sourceCode R"><span><span class="co"># Run default annotation function</span></span>
 <span><span class="va">x_new</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/annotate_variants.html">annotate_variants</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 18</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 17</span></span></span>
 <span><span class="co">#&gt;   chr        from       to ref   alt      NV    DP   VAF FILTER ANNOVAR_FUNCTION</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> chr2  179<span style="text-decoration: underline;">431</span>633   1.79<span style="color: #949494;">e</span>8 C     T        77   117 0.658 PASS   exonic          </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> chr16  67<span style="text-decoration: underline;">646</span>006   6.76<span style="color: #949494;">e</span>7 C     T        54   120 0.45  PASS   exonic          </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> chr17   7<span style="text-decoration: underline;">577</span>106   7.58<span style="color: #949494;">e</span>6 G     C        78    84 0.929 PASS   exonic          </span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 8 more variables: GENE &lt;chr&gt;, is_driver &lt;lgl&gt;, driver_label &lt;chr&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   gene &lt;chr&gt;, type &lt;chr&gt;, karyotype &lt;chr&gt;, segment_id &lt;chr&gt;, cna &lt;chr&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 7 more variables: GENE &lt;chr&gt;, is_driver &lt;lgl&gt;, driver_label &lt;chr&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   type &lt;chr&gt;, karyotype &lt;chr&gt;, segment_id &lt;chr&gt;, cna &lt;chr&gt;</span></span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;       chr      from        to   consequence refAA varAA</span></span>
 <span><span class="co">#&gt; 1    chr1  19181096  19181096 nonsynonymous     R     C</span></span>
@@ -634,7 +634,7 @@
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Reference driver mutations</span></span>
 <span><span class="va">x</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; ── <span style="color: #000000; background-color: #BBBB00;">[ CNAqc ] </span> <span style="color: #00BB00;">12963</span> mutations in <span style="color: #00BB00;">267</span> segments (<span style="color: #00BB00;">267</span> clonal, <span style="color: #00BB00;">0</span> subclonal). Genome</span></span>
+<span><span class="co">#&gt; ── <span style="color: #000000; background-color: #BBBB00;">[ CNAqc ] MySample</span> <span style="color: #00BB00;">12963</span> mutations in <span style="color: #00BB00;">267</span> segments (<span style="color: #00BB00;">267</span> clonal, <span style="color: #00BB00;">0</span> subclonal).</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ── Clonal CNAs</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -657,7 +657,7 @@
 <span></span>
 <span><span class="co"># New driver mutations</span></span>
 <span><span class="va">x_new</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; ── <span style="color: #000000; background-color: #BBBB00;">[ CNAqc ] </span> <span style="color: #00BB00;">12963</span> mutations in <span style="color: #00BB00;">267</span> segments (<span style="color: #00BB00;">267</span> clonal, <span style="color: #00BB00;">0</span> subclonal). Genome</span></span>
+<span><span class="co">#&gt; ── <span style="color: #000000; background-color: #BBBB00;">[ CNAqc ] MySample</span> <span style="color: #00BB00;">12963</span> mutations in <span style="color: #00BB00;">267</span> segments (<span style="color: #00BB00;">267</span> clonal, <span style="color: #00BB00;">0</span> subclonal).</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ── Clonal CNAs</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -695,19 +695,19 @@
 <span id="cb8-11"><a href="#cb8-11"></a></span>
 <span id="cb8-12"><a href="#cb8-12"></a><span class="co"># Run annotation function</span></span>
 <span id="cb8-13"><a href="#cb8-13"></a>x_new_ov &lt;-<span class="st"> </span><span class="kw">annotate_variants</span>(x, <span class="dt">drivers =</span> OV_drivers)</span>
-<span id="cb8-14"><a href="#cb8-14"></a><span class="co">#&gt;  [36mℹ [39m Preparing mutationsut data</span></span>
-<span id="cb8-15"><a href="#cb8-15"></a><span class="co">#&gt;  [33m! [39m Existing annotations in your data will be cancelled.</span></span>
-<span id="cb8-16"><a href="#cb8-16"></a><span class="co">#&gt;  [36mℹ [39m Preparing mutationsut data</span></span>
+<span id="cb8-14"><a href="#cb8-14"></a><span class="co">#&gt;  [36mℹ [39m Preparing mutations</span></span>
+<span id="cb8-15"><a href="#cb8-15"></a><span class="co">#&gt;  [33m! [39m Existing driver annotations in your data will be cancelled.</span></span>
+<span id="cb8-16"><a href="#cb8-16"></a><span class="co">#&gt;  [36mℹ [39m Preparing mutations</span></span>
 <span id="cb8-17"><a href="#cb8-17"></a><span class="co">#&gt; </span></span>
-<span id="cb8-18"><a href="#cb8-18"></a><span class="co">#&gt;  [38;5;246m# A tibble: 3 × 18 [39m</span></span>
+<span id="cb8-18"><a href="#cb8-18"></a><span class="co">#&gt;  [38;5;246m# A tibble: 3 × 17 [39m</span></span>
 <span id="cb8-19"><a href="#cb8-19"></a><span class="co">#&gt;   chr        from       to ref   alt      NV    DP   VAF FILTER ANNOVAR_FUNCTION</span></span>
 <span id="cb8-20"><a href="#cb8-20"></a><span class="co">#&gt;    [3m [38;5;246m&lt;chr&gt; [39m [23m      [3m [38;5;246m&lt;dbl&gt; [39m [23m     [3m [38;5;246m&lt;dbl&gt; [39m [23m  [3m [38;5;246m&lt;chr&gt; [39m [23m  [3m [38;5;246m&lt;chr&gt; [39m [23m  [3m [38;5;246m&lt;dbl&gt; [39m [23m  [3m [38;5;246m&lt;dbl&gt; [39m [23m  [3m [38;5;246m&lt;dbl&gt; [39m [23m  [3m [38;5;246m&lt;chr&gt; [39m [23m   [3m [38;5;246m&lt;chr&gt; [39m [23m           </span></span>
 <span id="cb8-21"><a href="#cb8-21"></a><span class="co">#&gt;  [38;5;250m1 [39m chr2  179 [4m4 [24m [4m3 [24m [4m1 [24m633   1.79 [38;5;246me [39m8 C     T        77   117 0.658 PASS   exonic          </span></span>
 <span id="cb8-22"><a href="#cb8-22"></a><span class="co">#&gt;  [38;5;250m2 [39m chr16  67 [4m6 [24m [4m4 [24m [4m6 [24m006   6.76 [38;5;246me [39m7 C     T        54   120 0.45  PASS   exonic          </span></span>
 <span id="cb8-23"><a href="#cb8-23"></a><span class="co">#&gt;  [38;5;250m3 [39m chr17   7 [4m5 [24m [4m7 [24m [4m7 [24m106   7.58 [38;5;246me [39m6 G     C        78    84 0.929 PASS   exonic          </span></span>
-<span id="cb8-24"><a href="#cb8-24"></a><span class="co">#&gt;  [38;5;246m# ℹ 8 more variables: GENE &lt;chr&gt;, is_driver &lt;lgl&gt;, driver_label &lt;chr&gt;, [39m</span></span>
-<span id="cb8-25"><a href="#cb8-25"></a><span class="co">#&gt;  [38;5;246m#   gene &lt;chr&gt;, type &lt;chr&gt;, karyotype &lt;chr&gt;, segment_id &lt;chr&gt;, cna &lt;chr&gt; [39m</span></span>
-<span id="cb8-26"><a href="#cb8-26"></a><span class="co">#&gt;  [32m✔ [39m Preparing mutationsut data ... done</span></span>
+<span id="cb8-24"><a href="#cb8-24"></a><span class="co">#&gt;  [38;5;246m# ℹ 7 more variables: GENE &lt;chr&gt;, is_driver &lt;lgl&gt;, driver_label &lt;chr&gt;, [39m</span></span>
+<span id="cb8-25"><a href="#cb8-25"></a><span class="co">#&gt;  [38;5;246m#   type &lt;chr&gt;, karyotype &lt;chr&gt;, segment_id &lt;chr&gt;, cna &lt;chr&gt; [39m</span></span>
+<span id="cb8-26"><a href="#cb8-26"></a><span class="co">#&gt;  [32m✔ [39m Preparing mutations ... done</span></span>
 <span id="cb8-27"><a href="#cb8-27"></a><span class="co">#&gt; </span></span>
 <span id="cb8-28"><a href="#cb8-28"></a><span class="co">#&gt;  [36mℹ [39m Locating variants with  [33mVariantAnnotation [39m</span></span>
 <span id="cb8-29"><a href="#cb8-29"></a><span class="co">#&gt; Warning in valid.GenomicRanges.seqinfo(x, suggest.trim = TRUE): GRanges object contains 364 out-of-bound ranges located on sequences</span></span>
@@ -888,55 +888,56 @@
 <span id="cb8-204"><a href="#cb8-204"></a><span class="co">#&gt; </span></span>
 <span id="cb8-205"><a href="#cb8-205"></a><span class="co">#&gt;  [36m── [39m  [1mCNAqc - CNA Quality Check [22m  [36m─────────────────────────────────────────────────── [39m</span></span>
 <span id="cb8-206"><a href="#cb8-206"></a><span class="co">#&gt;  [36mℹ [39m Using reference genome coordinates for:  [32m [32mhg19 [32m [39m.</span></span>
-<span id="cb8-207"><a href="#cb8-207"></a><span class="co">#&gt;  [32m✔ [39m Fortified calls for  [32m [32m12963 [32m [39m somatic mutations:  [32m [32m12963 [32m [39m SNVs ( [32m [32m100% [32m [39m) and  [32m [32m0 [32m [39m indels.</span></span>
-<span id="cb8-208"><a href="#cb8-208"></a><span class="co">#&gt;  [32m✔ [39m Fortified CNAs for  [32m [32m267 [32m [39m segments:  [32m [32m267 [32m [39m clonal and  [32m [32m0 [32m [39m subclonal.</span></span>
-<span id="cb8-209"><a href="#cb8-209"></a><span class="co">#&gt; Warning in map_mutations_to_clonal_segments(mutations, cna_clonal): [CNAqc] a</span></span>
-<span id="cb8-210"><a href="#cb8-210"></a><span class="co">#&gt; karyotype column is present in CNA calls, and will be overwritten</span></span>
-<span id="cb8-211"><a href="#cb8-211"></a><span class="co">#&gt;  [32m✔ [39m  [32m [32m12963 [32m [39m mutations mapped to clonal CNAs.</span></span>
-<span id="cb8-212"><a href="#cb8-212"></a></span>
-<span id="cb8-213"><a href="#cb8-213"></a><span class="co"># Reference driver mutations</span></span>
-<span id="cb8-214"><a href="#cb8-214"></a>x <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">print</span>()</span>
-<span id="cb8-215"><a href="#cb8-215"></a><span class="co">#&gt; ──  [30m [43m[ CNAqc ]  [49m [39m  [32m12963 [39m mutations in  [32m267 [39m segments ( [32m267 [39m clonal,  [32m0 [39m subclonal). Genome </span></span>
-<span id="cb8-216"><a href="#cb8-216"></a><span class="co">#&gt; </span></span>
-<span id="cb8-217"><a href="#cb8-217"></a><span class="co">#&gt; ── Clonal CNAs</span></span>
-<span id="cb8-218"><a href="#cb8-218"></a><span class="co">#&gt; </span></span>
-<span id="cb8-219"><a href="#cb8-219"></a><span class="co">#&gt;    2:2  [n = 7478, L = 1483 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  {  [33mCTCF [39m }</span></span>
-<span id="cb8-220"><a href="#cb8-220"></a><span class="co">#&gt;    4:2  [n = 1893, L =  331 Mb] ■■■■■■■</span></span>
-<span id="cb8-221"><a href="#cb8-221"></a><span class="co">#&gt;    3:2  [n = 1625, L =  357 Mb] ■■■■■■</span></span>
-<span id="cb8-222"><a href="#cb8-222"></a><span class="co">#&gt;    2:1  [n = 1563, L =  420 Mb] ■■■■■■  {  [33mTTN [39m }</span></span>
-<span id="cb8-223"><a href="#cb8-223"></a><span class="co">#&gt;    3:0  [n =  312, L =  137 Mb] ■</span></span>
-<span id="cb8-224"><a href="#cb8-224"></a><span class="co">#&gt;    2:0  [n =   81, L =   39 Mb]   {  [33mTP53 [39m }</span></span>
-<span id="cb8-225"><a href="#cb8-225"></a><span class="co">#&gt;   16:2  [n =    4, L =    0 Mb] </span></span>
-<span id="cb8-226"><a href="#cb8-226"></a><span class="co">#&gt;   25:2  [n =    2, L =    1 Mb] </span></span>
-<span id="cb8-227"><a href="#cb8-227"></a><span class="co">#&gt;    3:1  [n =    2, L =    1 Mb] </span></span>
-<span id="cb8-228"><a href="#cb8-228"></a><span class="co">#&gt;  106:1  [n =    1, L =    0 Mb]</span></span>
-<span id="cb8-229"><a href="#cb8-229"></a><span class="co">#&gt;  [36mℹ [39m Sample Purity: 89% ~ Ploidy: 4.</span></span>
-<span id="cb8-230"><a href="#cb8-230"></a><span class="co">#&gt;  [36mℹ [39m There are 3 annotated driver(s) mapped to clonal CNAs.</span></span>
-<span id="cb8-231"><a href="#cb8-231"></a><span class="co">#&gt;          chr      from        to ref alt  DP NV       VAF driver_label is_driver</span></span>
-<span id="cb8-232"><a href="#cb8-232"></a><span class="co">#&gt;         chr2 179431633 179431634   C   T 117 77 0.6581197          TTN      TRUE</span></span>
-<span id="cb8-233"><a href="#cb8-233"></a><span class="co">#&gt;        chr16  67646006  67646007   C   T 120 54 0.4500000         CTCF      TRUE</span></span>
-<span id="cb8-234"><a href="#cb8-234"></a><span class="co">#&gt;        chr17   7577106   7577107   G   C  84 78 0.9285714         TP53      TRUE</span></span>
-<span id="cb8-235"><a href="#cb8-235"></a></span>
-<span id="cb8-236"><a href="#cb8-236"></a><span class="co"># New driver mutations, searching for OV drivers</span></span>
-<span id="cb8-237"><a href="#cb8-237"></a>x_new_ov <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">print</span>()</span>
-<span id="cb8-238"><a href="#cb8-238"></a><span class="co">#&gt; ──  [30m [43m[ CNAqc ]  [49m [39m  [32m12963 [39m mutations in  [32m267 [39m segments ( [32m267 [39m clonal,  [32m0 [39m subclonal). Genome </span></span>
-<span id="cb8-239"><a href="#cb8-239"></a><span class="co">#&gt; </span></span>
-<span id="cb8-240"><a href="#cb8-240"></a><span class="co">#&gt; ── Clonal CNAs</span></span>
-<span id="cb8-241"><a href="#cb8-241"></a><span class="co">#&gt; </span></span>
-<span id="cb8-242"><a href="#cb8-242"></a><span class="co">#&gt;    2:2  [n = 7478, L = 1483 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■</span></span>
-<span id="cb8-243"><a href="#cb8-243"></a><span class="co">#&gt;    4:2  [n = 1893, L =  331 Mb] ■■■■■■■</span></span>
-<span id="cb8-244"><a href="#cb8-244"></a><span class="co">#&gt;    3:2  [n = 1625, L =  357 Mb] ■■■■■■</span></span>
-<span id="cb8-245"><a href="#cb8-245"></a><span class="co">#&gt;    2:1  [n = 1563, L =  420 Mb] ■■■■■■</span></span>
-<span id="cb8-246"><a href="#cb8-246"></a><span class="co">#&gt;    3:0  [n =  312, L =  137 Mb] ■</span></span>
-<span id="cb8-247"><a href="#cb8-247"></a><span class="co">#&gt;    2:0  [n =   81, L =   39 Mb]   {  [33mTP53_P-&gt;A [39m }</span></span>
-<span id="cb8-248"><a href="#cb8-248"></a><span class="co">#&gt;   16:2  [n =    4, L =    0 Mb] </span></span>
-<span id="cb8-249"><a href="#cb8-249"></a><span class="co">#&gt;   25:2  [n =    2, L =    1 Mb] </span></span>
-<span id="cb8-250"><a href="#cb8-250"></a><span class="co">#&gt;    3:1  [n =    2, L =    1 Mb] </span></span>
-<span id="cb8-251"><a href="#cb8-251"></a><span class="co">#&gt;  106:1  [n =    1, L =    0 Mb]</span></span>
-<span id="cb8-252"><a href="#cb8-252"></a><span class="co">#&gt;  [36mℹ [39m Sample Purity: 89% ~ Ploidy: 4.</span></span>
-<span id="cb8-253"><a href="#cb8-253"></a><span class="co">#&gt;  [36mℹ [39m There are 1 annotated driver(s) mapped to clonal CNAs.</span></span>
-<span id="cb8-254"><a href="#cb8-254"></a><span class="co">#&gt;          chr    from      to ref alt DP NV       VAF driver_label is_driver</span></span>
-<span id="cb8-255"><a href="#cb8-255"></a><span class="co">#&gt;        chr17 7577106 7577107   G   C 84 78 0.9285714    TP53_P-&gt;A      TRUE</span></span></code></pre></div>
+<span id="cb8-207"><a href="#cb8-207"></a><span class="co">#&gt;  [32m✔ [39m Found annotated driver mutations:  [32m [32mTP53_P-&gt;A [32m [39m.</span></span>
+<span id="cb8-208"><a href="#cb8-208"></a><span class="co">#&gt;  [32m✔ [39m Fortified calls for  [32m [32m12963 [32m [39m somatic mutations:  [32m [32m12963 [32m [39m SNVs ( [32m [32m100% [32m [39m) and  [32m [32m0 [32m [39m indels.</span></span>
+<span id="cb8-209"><a href="#cb8-209"></a><span class="co">#&gt;  [32m✔ [39m Fortified CNAs for  [32m [32m267 [32m [39m segments:  [32m [32m267 [32m [39m clonal and  [32m [32m0 [32m [39m subclonal.</span></span>
+<span id="cb8-210"><a href="#cb8-210"></a><span class="co">#&gt; Warning in map_mutations_to_clonal_segments(mutations, cna_clonal): [CNAqc] a</span></span>
+<span id="cb8-211"><a href="#cb8-211"></a><span class="co">#&gt; karyotype column is present in CNA calls, and will be overwritten</span></span>
+<span id="cb8-212"><a href="#cb8-212"></a><span class="co">#&gt;  [32m✔ [39m  [32m [32m12963 [32m [39m mutations mapped to clonal CNAs.</span></span>
+<span id="cb8-213"><a href="#cb8-213"></a></span>
+<span id="cb8-214"><a href="#cb8-214"></a><span class="co"># Reference driver mutations</span></span>
+<span id="cb8-215"><a href="#cb8-215"></a>x <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">print</span>()</span>
+<span id="cb8-216"><a href="#cb8-216"></a><span class="co">#&gt; ──  [30m [43m[ CNAqc ] MySample [49m [39m  [32m12963 [39m mutations in  [32m267 [39m segments ( [32m267 [39m clonal,  [32m0 [39m subclonal).</span></span>
+<span id="cb8-217"><a href="#cb8-217"></a><span class="co">#&gt; </span></span>
+<span id="cb8-218"><a href="#cb8-218"></a><span class="co">#&gt; ── Clonal CNAs</span></span>
+<span id="cb8-219"><a href="#cb8-219"></a><span class="co">#&gt; </span></span>
+<span id="cb8-220"><a href="#cb8-220"></a><span class="co">#&gt;    2:2  [n = 7478, L = 1483 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  {  [33mCTCF [39m }</span></span>
+<span id="cb8-221"><a href="#cb8-221"></a><span class="co">#&gt;    4:2  [n = 1893, L =  331 Mb] ■■■■■■■</span></span>
+<span id="cb8-222"><a href="#cb8-222"></a><span class="co">#&gt;    3:2  [n = 1625, L =  357 Mb] ■■■■■■</span></span>
+<span id="cb8-223"><a href="#cb8-223"></a><span class="co">#&gt;    2:1  [n = 1563, L =  420 Mb] ■■■■■■  {  [33mTTN [39m }</span></span>
+<span id="cb8-224"><a href="#cb8-224"></a><span class="co">#&gt;    3:0  [n =  312, L =  137 Mb] ■</span></span>
+<span id="cb8-225"><a href="#cb8-225"></a><span class="co">#&gt;    2:0  [n =   81, L =   39 Mb]   {  [33mTP53 [39m }</span></span>
+<span id="cb8-226"><a href="#cb8-226"></a><span class="co">#&gt;   16:2  [n =    4, L =    0 Mb] </span></span>
+<span id="cb8-227"><a href="#cb8-227"></a><span class="co">#&gt;   25:2  [n =    2, L =    1 Mb] </span></span>
+<span id="cb8-228"><a href="#cb8-228"></a><span class="co">#&gt;    3:1  [n =    2, L =    1 Mb] </span></span>
+<span id="cb8-229"><a href="#cb8-229"></a><span class="co">#&gt;  106:1  [n =    1, L =    0 Mb]</span></span>
+<span id="cb8-230"><a href="#cb8-230"></a><span class="co">#&gt;  [36mℹ [39m Sample Purity: 89% ~ Ploidy: 4.</span></span>
+<span id="cb8-231"><a href="#cb8-231"></a><span class="co">#&gt;  [36mℹ [39m There are 3 annotated driver(s) mapped to clonal CNAs.</span></span>
+<span id="cb8-232"><a href="#cb8-232"></a><span class="co">#&gt;          chr      from        to ref alt  DP NV       VAF driver_label is_driver</span></span>
+<span id="cb8-233"><a href="#cb8-233"></a><span class="co">#&gt;         chr2 179431633 179431634   C   T 117 77 0.6581197          TTN      TRUE</span></span>
+<span id="cb8-234"><a href="#cb8-234"></a><span class="co">#&gt;        chr16  67646006  67646007   C   T 120 54 0.4500000         CTCF      TRUE</span></span>
+<span id="cb8-235"><a href="#cb8-235"></a><span class="co">#&gt;        chr17   7577106   7577107   G   C  84 78 0.9285714         TP53      TRUE</span></span>
+<span id="cb8-236"><a href="#cb8-236"></a></span>
+<span id="cb8-237"><a href="#cb8-237"></a><span class="co"># New driver mutations, searching for OV drivers</span></span>
+<span id="cb8-238"><a href="#cb8-238"></a>x_new_ov <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">print</span>()</span>
+<span id="cb8-239"><a href="#cb8-239"></a><span class="co">#&gt; ──  [30m [43m[ CNAqc ] MySample [49m [39m  [32m12963 [39m mutations in  [32m267 [39m segments ( [32m267 [39m clonal,  [32m0 [39m subclonal).</span></span>
+<span id="cb8-240"><a href="#cb8-240"></a><span class="co">#&gt; </span></span>
+<span id="cb8-241"><a href="#cb8-241"></a><span class="co">#&gt; ── Clonal CNAs</span></span>
+<span id="cb8-242"><a href="#cb8-242"></a><span class="co">#&gt; </span></span>
+<span id="cb8-243"><a href="#cb8-243"></a><span class="co">#&gt;    2:2  [n = 7478, L = 1483 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■</span></span>
+<span id="cb8-244"><a href="#cb8-244"></a><span class="co">#&gt;    4:2  [n = 1893, L =  331 Mb] ■■■■■■■</span></span>
+<span id="cb8-245"><a href="#cb8-245"></a><span class="co">#&gt;    3:2  [n = 1625, L =  357 Mb] ■■■■■■</span></span>
+<span id="cb8-246"><a href="#cb8-246"></a><span class="co">#&gt;    2:1  [n = 1563, L =  420 Mb] ■■■■■■</span></span>
+<span id="cb8-247"><a href="#cb8-247"></a><span class="co">#&gt;    3:0  [n =  312, L =  137 Mb] ■</span></span>
+<span id="cb8-248"><a href="#cb8-248"></a><span class="co">#&gt;    2:0  [n =   81, L =   39 Mb]   {  [33mTP53_P-&gt;A [39m }</span></span>
+<span id="cb8-249"><a href="#cb8-249"></a><span class="co">#&gt;   16:2  [n =    4, L =    0 Mb] </span></span>
+<span id="cb8-250"><a href="#cb8-250"></a><span class="co">#&gt;   25:2  [n =    2, L =    1 Mb] </span></span>
+<span id="cb8-251"><a href="#cb8-251"></a><span class="co">#&gt;    3:1  [n =    2, L =    1 Mb] </span></span>
+<span id="cb8-252"><a href="#cb8-252"></a><span class="co">#&gt;  106:1  [n =    1, L =    0 Mb]</span></span>
+<span id="cb8-253"><a href="#cb8-253"></a><span class="co">#&gt;  [36mℹ [39m Sample Purity: 89% ~ Ploidy: 4.</span></span>
+<span id="cb8-254"><a href="#cb8-254"></a><span class="co">#&gt;  [36mℹ [39m There are 1 annotated driver(s) mapped to clonal CNAs.</span></span>
+<span id="cb8-255"><a href="#cb8-255"></a><span class="co">#&gt;          chr    from      to ref alt DP NV       VAF driver_label is_driver</span></span>
+<span id="cb8-256"><a href="#cb8-256"></a><span class="co">#&gt;        chr17 7577106 7577107   G   C 84 78 0.9285714    TP53_P-&gt;A      TRUE</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">

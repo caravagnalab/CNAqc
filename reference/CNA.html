@@ -111,7 +111,7 @@
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"example_PCAWG"</span>, package <span class="op">=</span> <span class="st">'CNAqc'</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">CNA</span><span class="op">(</span><span class="va">example_PCAWG</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 667 × 15</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 667 × 17</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    chr     from     to Major Major_2 minor minor_2   CCF length segment_id     n</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> chr1  1   <span style="color: #949494;">e</span>0 8.22<span style="color: #949494;">e</span>5     4      <span style="color: #BB0000;">NA</span>     2      <span style="color: #BB0000;">NA</span>     1 8.22<span style="color: #949494;">e</span>5 chr1:1:82…    <span style="color: #BB0000;">NA</span></span>
@@ -125,8 +125,8 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> chr1  1.53<span style="color: #949494;">e</span>8 1.53<span style="color: #949494;">e</span>8     4      <span style="color: #BB0000;">NA</span>     2      <span style="color: #BB0000;">NA</span>     1 1.23<span style="color: #949494;">e</span>5 chr1:1527…    12</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> chr1  1.53<span style="color: #949494;">e</span>8 1.53<span style="color: #949494;">e</span>8     4      <span style="color: #BB0000;">NA</span>     0      <span style="color: #BB0000;">NA</span>     1 2.78<span style="color: #949494;">e</span>4 chr1:1529…     2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 657 more rows</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 4 more variables: karyotype &lt;chr&gt;, karyotype_2 &lt;chr&gt;, analysed &lt;lgl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   mutations &lt;list&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 6 more variables: QC_PASS &lt;lgl&gt;, matched &lt;int&gt;, karyotype &lt;chr&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   karyotype_2 &lt;chr&gt;, analysed &lt;lgl&gt;, mutations &lt;list&gt;</span></span>
 </code></pre></div>
     </div>
   </div>

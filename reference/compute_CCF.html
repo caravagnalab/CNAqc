@@ -180,7 +180,7 @@ to compute CCF.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">CNAqc - CNA Quality Check</span> <span style="color: #00BBBB;">───────────────────────────────────────────────────</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Using reference genome coordinates for: <span style="color: #00BB00;">GRCh38</span>.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Drivers are annotated, but 'gene' column is missing, using mutation location.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Found annotated driver mutations: <span style="color: #00BB00;">TTN</span>, <span style="color: #00BB00;">CTCF</span>, and <span style="color: #00BB00;">TP53</span>.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Fortified calls for <span style="color: #00BB00;">12963</span> somatic mutations: <span style="color: #00BB00;">12963</span> SNVs (<span style="color: #00BB00;">100%</span>) and <span style="color: #00BB00;">0</span> indels.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> CNAs have no CCF, assuming clonal CNAs (CCF = 1).</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Fortified CNAs for <span style="color: #00BB00;">267</span> segments: <span style="color: #00BB00;">267</span> clonal and <span style="color: #00BB00;">0</span> subclonal.</span>
@@ -201,7 +201,7 @@ to compute CCF.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Mixing pre/ post aneuploidy: 0.09 and 0.91</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Not assignamble area: [0.290780141843972; 0.368794326241135]</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ── <span style="color: #000000; background-color: #BBBB00;">[ CNAqc ] </span> <span style="color: #00BB00;">12963</span> mutations in <span style="color: #00BB00;">267</span> segments (<span style="color: #00BB00;">267</span> clonal, <span style="color: #00BB00;">0</span> subclonal). Genome </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── <span style="color: #000000; background-color: #BBBB00;">[ CNAqc ] MySample</span> <span style="color: #00BB00;">12963</span> mutations in <span style="color: #00BB00;">267</span> segments (<span style="color: #00BB00;">267</span> clonal, <span style="color: #00BB00;">0</span> subclonal).</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ── Clonal CNAs </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -246,8 +246,8 @@ to compute CCF.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> chr2  3<span style="text-decoration: underline;">878</span>408 3<span style="text-decoration: underline;">878</span>409 T     A     PASS     126    10 0.079<span style="text-decoration: underline;">4</span> intergenic      </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 9,112 more rows</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 9 more variables: GENE &lt;chr&gt;, is_driver &lt;lgl&gt;, driver_label &lt;chr&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   gene &lt;chr&gt;, type &lt;chr&gt;, karyotype &lt;chr&gt;, segment_id &lt;chr&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   mutation_multiplicity &lt;dbl&gt;, CCF &lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   type &lt;chr&gt;, karyotype &lt;chr&gt;, segment_id &lt;chr&gt;, mutation_multiplicity &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   CCF &lt;dbl&gt;, cna &lt;chr&gt;</span></span>
 <span class="r-in"><span><span class="fu"><a href="plot_CCF.html">plot_CCF</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 4 rows containing missing values (`geom_bar()`).</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 22 rows containing non-finite values (`stat_bin()`).</span>

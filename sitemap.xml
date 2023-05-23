@@ -55,10 +55,19 @@
     <loc>caravagnalab.github.io/CNAqc/reference/CNA.html</loc>
   </url>
   <url>
+    <loc>caravagnalab.github.io/CNAqc/reference/CNA_gene.html</loc>
+  </url>
+  <url>
     <loc>caravagnalab.github.io/CNAqc/reference/CNAqc-package.html</loc>
   </url>
   <url>
     <loc>caravagnalab.github.io/CNAqc/reference/Mutations.html</loc>
+  </url>
+  <url>
+    <loc>caravagnalab.github.io/CNAqc/reference/SBS.html</loc>
+  </url>
+  <url>
+    <loc>caravagnalab.github.io/CNAqc/reference/SBS_counts.html</loc>
   </url>
   <url>
     <loc>caravagnalab.github.io/CNAqc/reference/Sequenza_CNAqc.html</loc>
@@ -68,6 +77,18 @@
   </url>
   <url>
     <loc>caravagnalab.github.io/CNAqc/reference/annotate_variants.html</loc>
+  </url>
+  <url>
+    <loc>caravagnalab.github.io/CNAqc/reference/as_maftools_cohort.html</loc>
+  </url>
+  <url>
+    <loc>caravagnalab.github.io/CNAqc/reference/as_maftools_obj.html</loc>
+  </url>
+  <url>
+    <loc>caravagnalab.github.io/CNAqc/reference/augment_with_maf.html</loc>
+  </url>
+  <url>
+    <loc>caravagnalab.github.io/CNAqc/reference/augment_with_vep.html</loc>
   </url>
   <url>
     <loc>caravagnalab.github.io/CNAqc/reference/auto_tolerance.html</loc>
@@ -92,6 +113,15 @@
   </url>
   <url>
     <loc>caravagnalab.github.io/CNAqc/reference/fpr_test.html</loc>
+  </url>
+  <url>
+    <loc>caravagnalab.github.io/CNAqc/reference/gene_coordinates_GRCh38.html</loc>
+  </url>
+  <url>
+    <loc>caravagnalab.github.io/CNAqc/reference/gene_coordinates_hg19.html</loc>
+  </url>
+  <url>
+    <loc>caravagnalab.github.io/CNAqc/reference/get_PASS_percentage.html</loc>
   </url>
   <url>
     <loc>caravagnalab.github.io/CNAqc/reference/get_drivers.html</loc>
@@ -119,6 +149,9 @@
   </url>
   <url>
     <loc>caravagnalab.github.io/CNAqc/reference/plot_CCF.html</loc>
+  </url>
+  <url>
+    <loc>caravagnalab.github.io/CNAqc/reference/plot_SBS.html</loc>
   </url>
   <url>
     <loc>caravagnalab.github.io/CNAqc/reference/plot_arm_fragmentation.html</loc>
@@ -181,9 +214,15 @@
     <loc>caravagnalab.github.io/CNAqc/reference/subset_by_segment_karyotype.html</loc>
   </url>
   <url>
+    <loc>caravagnalab.github.io/CNAqc/reference/subset_by_segment_minmutations.html</loc>
+  </url>
+  <url>
     <loc>caravagnalab.github.io/CNAqc/reference/subset_by_segment_totalcn.html</loc>
   </url>
   <url>
     <loc>caravagnalab.github.io/CNAqc/reference/subset_snvs.html</loc>
+  </url>
+  <url>
+    <loc>caravagnalab.github.io/CNAqc/reference/wt_mutant_alleles.html</loc>
   </url>
 </urlset>
