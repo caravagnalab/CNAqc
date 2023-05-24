@@ -26,12 +26,3 @@ These are:
 In particular, `counts` is the canonnical format to run SBS deconvolution
 in a variety of tools.
 }
-\examples{
-data('example_dataset_CNAqc')
-x = init(mutations = example_dataset_CNAqc$mutations, cna =example_dataset_CNAqc$cna, purity = example_dataset_CNAqc$purity)
-
-x = SBS(x)
-
-# All SBS data
-print(x$SBS)
-}

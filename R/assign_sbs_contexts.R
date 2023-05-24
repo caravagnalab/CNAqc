@@ -19,7 +19,7 @@
 #'
 #' @return A CNAqc object with required SBS data in the inner field `SBS`.
 #' @export
-#'
+#'\dontrun{
 #' @examples
 #' data('example_dataset_CNAqc')
 #' x = init(mutations = example_dataset_CNAqc$mutations, cna =example_dataset_CNAqc$cna, purity = example_dataset_CNAqc$purity)
@@ -28,6 +28,7 @@
 #'
 #' # All SBS data
 #' print(x$SBS)
+#' }
 SBS = function(x)
 {
   matrix_counts = function(x){
@@ -214,7 +215,7 @@ SBS = function(x)
 #'
 #' @return A one-row matrix with SBS data for 96 contexts and 6 possible substitutions.
 #' @export
-#'
+#'\dontrun{
 #' @examples
 #' data('example_dataset_CNAqc')
 #' x = init(mutations = example_dataset_CNAqc$mutations, cna =example_dataset_CNAqc$cna, purity = example_dataset_CNAqc$purity)
@@ -223,6 +224,7 @@ SBS = function(x)
 #'
 #' # SBS analysis
 #' print(SBS_counts(x))
+#' }
 SBS_counts = function(x){
 
   if(!"SBS" %in% names(x))
