@@ -121,6 +121,10 @@
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/caravagnalab/CNAqc" class="external-link">CNAqc</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; The legacy packages maptools, rgdal, and rgeos, underpinning this package</span></span>
+<span><span class="co">#&gt; will retire shortly. Please refer to R-spatial evolution reports on</span></span>
+<span><span class="co">#&gt; https://r-spatial.org/r/2023/05/15/evolution4.html for details.</span></span>
+<span><span class="co">#&gt; This package is now running under evolution status 0</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Loading <span style="color: #00BB00;">CNAqc</span>, <span style="font-style: italic;">'Copy Number Alteration quality check'</span>. Support : <span style="color: #0000BB; font-style: italic;">&lt;https://caravagn.github.io/CNAqc/&gt;</span></span></span>
 <span></span>
 <span><span class="co"># Extra packages</span></span>
@@ -562,16 +566,16 @@
 <span><span class="co">#&gt; <span style="color: #949494;"># Rowwise: </span></span></span>
 <span><span class="co">#&gt;   mutation_multiplicity karyotype  peak delta_vaf     x     y counts_per_bin</span></span>
 <span><span class="co">#&gt;                   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>                     1 1:1       0.345    0.025  0.345 3.67             500</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>                     1 1:1       0.345    0.025  0.343 3.68             500</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>                     1 2:0       0.345    0.025  0.343 1.42              19</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>                     2 2:0       0.69     0.05   0.678 0.533              8</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>                     1 1:0       0.527    0.058<span style="text-decoration: underline;">3</span> 0.538 1.26              13</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>                     2 2:0       0.69     0.05   0.676 0.535              8</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>                     1 1:0       0.527    0.058<span style="text-decoration: underline;">3</span> 0.532 1.26              12</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>                     1 2:1       0.257    0.013<span style="text-decoration: underline;">8</span> 0.284 1.51               5</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>                     2 2:1       0.513    0.027<span style="text-decoration: underline;">6</span> 0.525 0.619              5</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 9 more variables: discarded &lt;lgl&gt;, from &lt;chr&gt;, offset_VAF &lt;dbl&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   offset &lt;dbl&gt;, weight &lt;dbl&gt;, epsilon &lt;dbl&gt;, VAF_tolerance &lt;dbl&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   matched &lt;lgl&gt;, QC &lt;chr&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Peak detection <span style="color: #00BB00;">PASS</span> with <span style="color: #00BB00;">r = -0.00149686127327911</span> - maximum purity error ε = <span style="color: #00BB00;">0.05</span>.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Peak detection <span style="color: #00BB00;">PASS</span> with <span style="color: #00BB00;">r = 0.00209213226096453</span> - maximum purity error ε = <span style="color: #00BB00;">0.05</span>.</span></span>
 <span><span class="co">#&gt; Joining with `by = join_by(Major, minor)`</span></span>
 <span><span class="co">#&gt; Joining with `by = join_by(karyotype)`</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -593,10 +597,10 @@
 <span><span class="co">#&gt;  2:1  [n =   345, L =    43 Mb] ■</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample Purity: 69% ~ Ploidy: 2.</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="color: #000000; background-color: #00BB00; font-weight: bold;"> PASS </span><span style="font-weight: bold;"> Peaks QC closest: </span><span style="color: #00BB00; font-weight: bold;">111%</span><span style="font-weight: bold;">, </span><span style="color: #00BB00; font-weight: bold;">λ = -0.0015</span><span style="font-weight: bold;">. Purity correction: 0%.</span> <span style="color: #00BBBB;">──────────</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">1:1</span> ~ n = 14488 ( 84%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> 0      </span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">2:0</span> ~ n = 1552  (  9%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> 0.004   <span style="color: #000000; background-color: #00BB00;"> PASS </span> 0.012  </span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">1:0</span> ~ n = 898   (  5%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.009 </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="color: #000000; background-color: #00BB00; font-weight: bold;"> PASS </span><span style="font-weight: bold;"> Peaks QC closest: </span><span style="color: #00BB00; font-weight: bold;">111%</span><span style="font-weight: bold;">, </span><span style="color: #00BB00; font-weight: bold;">λ = 0.0021</span><span style="font-weight: bold;">. Purity correction: 0%.</span> <span style="color: #00BBBB;">───────────</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">1:1</span> ~ n = 14488 ( 84%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> 0.004  </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">2:0</span> ~ n = 1552  (  9%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> 0.004   <span style="color: #000000; background-color: #00BB00;"> PASS </span> 0.014  </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">1:0</span> ~ n = 898   (  5%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.004 </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">2:1</span> ~ n = 345   (  2%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.105  <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.023</span></span></code></pre></div>
 <p>For this sample these calls are passed by CNAqc.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
@@ -643,10 +647,10 @@
 <span><span class="co">#&gt;  2:1  [n =   345, L =    43 Mb] ■</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample Purity: 69% ~ Ploidy: 2.</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="color: #000000; background-color: #00BB00; font-weight: bold;"> PASS </span><span style="font-weight: bold;"> Peaks QC closest: </span><span style="color: #00BB00; font-weight: bold;">111%</span><span style="font-weight: bold;">, </span><span style="color: #00BB00; font-weight: bold;">λ = -0.0015</span><span style="font-weight: bold;">. Purity correction: 0%.</span> <span style="color: #00BBBB;">──────────</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">1:1</span> ~ n = 14488 ( 84%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> 0</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">2:0</span> ~ n = 1552  (  9%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> 0.004   <span style="color: #000000; background-color: #00BB00;"> PASS </span> 0.012</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">1:0</span> ~ n = 898   (  5%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.009</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="color: #000000; background-color: #00BB00; font-weight: bold;"> PASS </span><span style="font-weight: bold;"> Peaks QC closest: </span><span style="color: #00BB00; font-weight: bold;">111%</span><span style="font-weight: bold;">, </span><span style="color: #00BB00; font-weight: bold;">λ = 0.0021</span><span style="font-weight: bold;">. Purity correction: 0%.</span> <span style="color: #00BBBB;">───────────</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">1:1</span> ~ n = 14488 ( 84%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> 0.004</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">2:0</span> ~ n = 1552  (  9%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> 0.004   <span style="color: #000000; background-color: #00BB00;"> PASS </span> 0.014</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">1:0</span> ~ n = 898   (  5%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.004</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">2:1</span> ~ n = 345   (  2%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.105  <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.023</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Cancer Cell Fraction (CCF) data available for karyotypes:1:0, 1:1, 2:0, and 2:1.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #BBBBBB; background-color: #00BB00;"> PASS </span> CCF via <span style="font-weight: bold;">ENTROPY</span>.</span></span>
@@ -873,15 +877,15 @@
 <span><span class="co">#&gt;   mutation_multiplicity karyotype  peak delta_vaf     x     y counts_per_bin</span></span>
 <span><span class="co">#&gt;                   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>                     1 1:1       0.3      0.025  0.34  3.73             499</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>                     1 2:0       0.3      0.025  0.337 1.31              20</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>                     2 2:0       0.6      0.05   0.645 0.497             15</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>                     1 2:0       0.3      0.025  0.34  1.31              20</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>                     2 2:0       0.6      0.05   0.654 0.502             15</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>                     1 1:0       0.429    0.051<span style="text-decoration: underline;">0</span> 0.540 1.26              13</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>                     1 2:1       0.231    0.014<span style="text-decoration: underline;">8</span> 0.284 1.51               5</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>                     2 2:1       0.462    0.029<span style="text-decoration: underline;">6</span> 0.525 0.619              5</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>                     1 2:1       0.231    0.014<span style="text-decoration: underline;">8</span> 0.290 1.45               7</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>                     2 2:1       0.462    0.029<span style="text-decoration: underline;">6</span> 0.53  0.62               5</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 9 more variables: discarded &lt;lgl&gt;, from &lt;chr&gt;, offset_VAF &lt;dbl&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   offset &lt;dbl&gt;, weight &lt;dbl&gt;, epsilon &lt;dbl&gt;, VAF_tolerance &lt;dbl&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   matched &lt;lgl&gt;, QC &lt;chr&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Peak detection <span style="color: #00BB00;">PASS</span> with <span style="color: #00BB00;">r = -0.0896085244343898</span> - maximum purity error ε = <span style="color: #00BB00;">0.05</span>.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Peak detection <span style="color: #00BB00;">PASS</span> with <span style="color: #00BB00;">r = -0.0918272156643642</span> - maximum purity error ε = <span style="color: #00BB00;">0.05</span>.</span></span>
 <span><span class="co">#&gt; Joining with `by = join_by(Major, minor)`</span></span>
 <span><span class="co">#&gt; Joining with `by = join_by(karyotype)`</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -903,11 +907,11 @@
 <span><span class="co">#&gt;  2:1  [n =   345, L =    43 Mb] ■</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample Purity: 60% ~ Ploidy: 2.</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="color: #000000; background-color: #00BB00; font-weight: bold;"> PASS </span><span style="font-weight: bold;"> Peaks QC closest: </span><span style="color: #00BB00; font-weight: bold;">103%</span><span style="font-weight: bold;">, </span><span style="color: #00BB00; font-weight: bold;">λ = -0.0896</span><span style="font-weight: bold;">. Purity correction: -9%.</span> <span style="color: #00BBBB;">─────────</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="color: #000000; background-color: #00BB00; font-weight: bold;"> PASS </span><span style="font-weight: bold;"> Peaks QC closest: </span><span style="color: #00BB00; font-weight: bold;">103%</span><span style="font-weight: bold;">, </span><span style="color: #00BB00; font-weight: bold;">λ = -0.0918</span><span style="font-weight: bold;">. Purity correction: -9%.</span> <span style="color: #00BBBB;">─────────</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">1:1</span> ~ n = 14268 ( 83%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.08  </span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">2:0</span> ~ n = 1772  ( 10%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.074  <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.045 </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">2:0</span> ~ n = 1772  ( 10%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.08   <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.054 </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">1:0</span> ~ n = 898   (  5%) → <span style="color: #BBBBBB; background-color: #BB0000;"> FAIL </span> -0.094 </span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">2:1</span> ~ n = 345   (  2%) → <span style="color: #BBBBBB; background-color: #BB0000;"> FAIL </span> -0.206  <span style="color: #BBBBBB; background-color: #BB0000;"> FAIL </span> -0.117</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">2:1</span> ~ n = 345   (  2%) → <span style="color: #BBBBBB; background-color: #BB0000;"> FAIL </span> -0.234  <span style="color: #BBBBBB; background-color: #BB0000;"> FAIL </span> -0.127</span></span></code></pre></div>
 <p>For this sample these calls are flagged by CNAqc because the purity is off by a <code>~10%</code> factor.</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_peaks_analysis.html">plot_peaks_analysis</a></span><span class="op">(</span><span class="va">x</span>, empty_plot <span class="op">=</span> <span class="cn">FALSE</span>, assembly_plot <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
@@ -929,7 +933,7 @@
 <span></span>
 <span><span class="co">#CNAqc suggested adjustment</span></span>
 <span><span class="va">x</span><span class="op">$</span><span class="va">peaks_analysis</span><span class="op">$</span><span class="va">score</span></span>
-<span><span class="co">#&gt; [1] -0.08960852</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] -0.09182722</span></span></code></pre></div>
 </div>
   </div>
 
