@@ -129,7 +129,7 @@ If data contains driver mutation annotations, these can be forced to remain.</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">CNAqc - CNA Quality Check</span> <span style="color: #00BBBB;">───────────────────────────────────────────────────</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Using reference genome coordinates for: <span style="color: #00BB00;">GRCh38</span>.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Found annotated driver mutations: <span style="color: #00BB00;">TTN</span>, <span style="color: #00BB00;">CTCF</span>, <span style="color: #00BB00;">TP53</span>, and <span style="color: #00BB00;">TTN</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Found annotated driver mutations: <span style="color: #00BB00;">TTN</span>, <span style="color: #00BB00;">CTCF</span>, and <span style="color: #00BB00;">TP53</span>.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Fortified calls for <span style="color: #00BB00;">103</span> somatic mutations: <span style="color: #00BB00;">103</span> SNVs (<span style="color: #00BB00;">100%</span>) and <span style="color: #00BB00;">0</span> indels.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> CNAs have no CCF, assuming clonal CNAs (CCF = 1).</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Fortified CNAs for <span style="color: #00BB00;">267</span> segments: <span style="color: #00BB00;">267</span> clonal and <span style="color: #00BB00;">0</span> subclonal.</span>
@@ -139,27 +139,26 @@ If data contains driver mutation annotations, these can be forced to remain.</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ── Clonal CNAs </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2:2  [n = 57, L = 1483 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { <span style="color: #BBBB00;">CTCF</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4:2  [n = 20, L = 331 Mb] ■■■■■■■■■</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3:2  [n = 12, L = 357 Mb] ■■■■■■</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2:1  [n = 10, L = 420 Mb] ■■■■■  { <span style="color: #BBBB00;">TTN, TTN</span> }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:2  [n = 61, L = 1483 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { <span style="color: #BBBB00;">CTCF</span> }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:1  [n = 17, L = 420 Mb] ■■■■■■■  { <span style="color: #BBBB00;">TTN</span> }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:2  [n = 12, L = 357 Mb] ■■■■■</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4:2  [n =  9, L = 331 Mb] ■■■■</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  2:0  [n =  2, L = 39 Mb] ■  { <span style="color: #BBBB00;">TP53</span> }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  3:0  [n =  2, L = 137 Mb] ■</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sample Purity: 89% ~ Ploidy: 4.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> There are 4 annotated driver(s) mapped to clonal CNAs.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> There are 3 annotated driver(s) mapped to clonal CNAs.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          chr      from        to ref alt  DP NV       VAF driver_label is_driver</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         chr2 179431633 179431634   C   T 117 77 0.6581197          TTN      TRUE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        chr16  67646006  67646007   C   T 120 54 0.4500000         CTCF      TRUE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        chr17   7577106   7577107   G   C  84 78 0.9285714         TP53      TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         chr2 179431633 179431634   C   T 117 77 0.6581197          TTN      TRUE</span>
 <span class="r-in"><span><span class="fu">subsample</span><span class="op">(</span><span class="va">x</span>, N <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">CNAqc - CNA Quality Check</span> <span style="color: #00BBBB;">───────────────────────────────────────────────────</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Using reference genome coordinates for: <span style="color: #00BB00;">GRCh38</span>.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Found annotated driver mutations: <span style="color: #00BB00;">TTN</span>, <span style="color: #00BB00;">CTCF</span>, and <span style="color: #00BB00;">TP53</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Found annotated driver mutations: <span style="color: #00BB00;">TTN</span>, <span style="color: #00BB00;">CTCF</span>, <span style="color: #00BB00;">TP53</span>, and <span style="color: #00BB00;">TTN</span>.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Fortified calls for <span style="color: #00BB00;">1003</span> somatic mutations: <span style="color: #00BB00;">1003</span> SNVs (<span style="color: #00BB00;">100%</span>) and <span style="color: #00BB00;">0</span> indels.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> CNAs have no CCF, assuming clonal CNAs (CCF = 1).</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Fortified CNAs for <span style="color: #00BB00;">267</span> segments: <span style="color: #00BB00;">267</span> clonal and <span style="color: #00BB00;">0</span> subclonal.</span>
@@ -169,22 +168,21 @@ If data contains driver mutation annotations, these can be forced to remain.</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ── Clonal CNAs </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    2:2  [n = 579, L = 1483 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { <span style="color: #BBBB00;">CTCF</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    4:2  [n = 146, L = 331 Mb] ■■■■■■■</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    2:1  [n = 129, L = 420 Mb] ■■■■■■  { <span style="color: #BBBB00;">TTN</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    3:2  [n = 112, L = 357 Mb] ■■■■■</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    3:0  [n =  28, L = 137 Mb] ■</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    2:0  [n =   7, L =  39 Mb]   { <span style="color: #BBBB00;">TP53</span> }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  106:1  [n =   1, L =   0 Mb] </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    3:1  [n =   1, L =   1 Mb] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:2  [n = 614, L = 1483 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { <span style="color: #BBBB00;">CTCF</span> }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4:2  [n = 130, L = 331 Mb] ■■■■■■</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:2  [n = 119, L = 357 Mb] ■■■■■</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:1  [n = 116, L = 420 Mb] ■■■■■  { <span style="color: #BBBB00;">TTN, TTN</span> }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:0  [n =  22, L = 137 Mb] ■</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:0  [n =   2, L =  39 Mb]   { <span style="color: #BBBB00;">TP53</span> }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sample Purity: 89% ~ Ploidy: 4.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> There are 3 annotated driver(s) mapped to clonal CNAs.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> There are 4 annotated driver(s) mapped to clonal CNAs.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          chr      from        to ref alt  DP NV       VAF driver_label is_driver</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         chr2 179431633 179431634   C   T 117 77 0.6581197          TTN      TRUE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        chr16  67646006  67646007   C   T 120 54 0.4500000         CTCF      TRUE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        chr17   7577106   7577107   G   C  84 78 0.9285714         TP53      TRUE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         chr2 179431633 179431634   C   T 117 77 0.6581197          TTN      TRUE</span>
 </code></pre></div>
     </div>
   </div>
