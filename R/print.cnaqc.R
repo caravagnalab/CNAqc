@@ -17,13 +17,17 @@
 print.cnaqc = function(x, ...)
 {
   stopifnot(inherits(x, "cnaqc"))
-
-  cli::cli_rule(
-    paste(
-      crayon::bgYellow(crayon::black(paste0("[ CNAqc ] ", x$sample))),
-      '{.field {x$n_mutations}} mutations in {.field {x$n_cna}} segments ({.field {x$n_cna_clonal}} clonal, {.field {x$n_cna_subclonal}} subclonal). Genome reference: {.field {x$reference_genome}}.'
+  
+    cli::cli_rule(
+      paste(
+        crayon::bgYellow(crayon::black(paste0("[ CNAqc ] ", x$sample))),
+        '{.field {x$n_mutations}} mutations in {.field {x$n_cna}} segments ({.field {x$n_cna_clonal}} clonal, {.field {x$n_cna_subclonal}} subclonal). Genome reference: {.field {x$reference_genome}}.'
+      )
     )
-  )
+  
+    if ('snps' %in% names(x)){
+      cli::cli_rule('Average number of SNPs per segment: {.field {round(x$snps_per_seg[4])}} (min: {.field {x$snps_per_seg[1]}}, max: {.field {x$snps_per_seg[6]}})')
+    }
 
   # cli::cli_alert_info(paste0(" CNA segments: ", x$n_cna_clonal, " clonal, ", x$n_cna_sbclonal, " subclonal."))
 

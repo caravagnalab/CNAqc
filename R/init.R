@@ -33,7 +33,16 @@
 #'
 #' @param snvs Deprecated parameter.
 #'
-#' @param cna A dataframe of allele-specific copy number with the following fields:
+#' @param snp A dataframe of single nucleotide polymorphism mean BAF and DR over fixed genomic windows (bins) with the following fields:
+#'
+#' * `chr` chromosome name, e.g., \code{"chr3"}, \code{"chr8"}, \code{"chrX"}, ...
+#' * `from` where the bin start, an integer number
+#' * `to` where the bin ends, an integer number
+#' * `BAF` average B-allele frequency of the bin, a real number in [0,1]
+#' * `N.BAF` number if SNPs falling into the bin
+#' * `DR` average depth ration of the bin, a real positive number 
+#'
+#'#' @param cna A dataframe of allele-specific copy number with the following fields:
 #'
 #' * `chr` chromosome name, e.g., \code{"chr3"}, \code{"chr8"}, \code{"chrX"}, ...
 #' * `from` where the segment start, an integer number
@@ -77,7 +86,7 @@
 #'
 #' # An S3 method can be used to report to screen what is in the object
 #' print(x)
-init = function(mutations, snvs = NULL, cna, purity, sample = "MySample", ref = "GRCh38")
+init = function(mutations, snvs = NULL, cna, snps = NULL, purity, sample = "MySample", ref = "GRCh38")
 {
   cli::cli_h1("CNAqc - CNA Quality Check")
   cat('\n')
@@ -115,6 +124,9 @@ init = function(mutations, snvs = NULL, cna, purity, sample = "MySample", ref = 
 
   # Parse input
   input = prepare_input_data(mutations, cna, purity)
+  if (!is.null(snps)){
+    mapped_snps = process_snps(snps,input$cna_clonal, input$cna_subclonal)
+  }
 
   # Remove CNA segments with NA Major/minor
   # na_allele_Major = sapply(input$cna_clonal$Major, is.na)
@@ -135,6 +147,21 @@ init = function(mutations, snvs = NULL, cna, purity, sample = "MySample", ref = 
     dplyr::left_join(input$tab, by = 'segment_id') %>% as_tibble()
   fit$cna_subclonal = input$cna_subclonal %>% as_tibble()
   fit$has_subclonal_CNA = !all(is.null(input$cna_subclonal))
+  if (!is.null(snps)){
+    fit$snps = mapped_snps
+    fit$n_snps = mapped_snps %>% pull(N.BAF) %>% sum()
+    fit$snps_per_seg = mapped_snps %>% group_by(segment_id) %>% summarise(snps_per_seg = sum(N.BAF)) %>% pull(snps_per_seg) %>% summary() %>% unclass() %>% as.data.frame() %>% t()
+    
+  }
+  
+  
+  fit$segment_type = rbind(fit$cna, fit$cna_subclonal) %>% select(Major,minor,CCF,segment_id) %>%
+    mutate(segment_type = case_when(
+      (CCF == 1 & Major + minor <= 4 & Major < 3) ~ 'simple clonal',
+      (CCF < 1 & Major + minor <= 4 & Major < 3) ~ 'simple subclonal',
+      (CCF == 1 & Major + minor >= 4 & Major >= 3) ~ 'complex clonal',
+      (CCF < 1 & Major + minor >= 4 & Major >= 3) ~ 'complex subclonal'
+    )) 
 
   # Counts data
   if(!fit$has_subclonal_CNA)
