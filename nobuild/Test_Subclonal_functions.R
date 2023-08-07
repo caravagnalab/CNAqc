@@ -24,7 +24,13 @@ print(new_cnaqc_obj)
 #plot_snps(new_cnaqc_obj, what = 'DR')
 
 new_cnaqc_obj = patch(new_cnaqc_obj, all_solutions=TRUE, preselect = TRUE)
+saveRDS(new_cnaqc_obj, 'new_cnaqc_object_organoid.rds')
 
-segment_ids = new_cnaqc_obj$segment_type %>% filter(segment_type %in% c('simple clonal', 'simple subclonal')) %>% pull(segment_id)
+segment_ids = new_cnaqc_obj$patch_best_solution %>% pull(segment_id)
 my_segment = segment_ids[1]
 patch_plot(new_cnaqc_obj, my_segment)
+
+my_segment = segment_ids[10]
+patch_plot(new_cnaqc_obj, my_segment)
+
+
