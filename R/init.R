@@ -148,7 +148,7 @@ init = function(mutations, snvs = NULL, cna, snps = NULL, purity, sample = "MySa
   fit$cna_subclonal = input$cna_subclonal %>% as_tibble()
   fit$has_subclonal_CNA = !all(is.null(input$cna_subclonal))
   if (!is.null(snps)){
-    fit$snps = mapped_snps
+    fit$snps = mapped_snps %>% filter(!is.na(BAF), !is.na(DR))
     fit$n_snps = mapped_snps %>% pull(N.BAF) %>% sum()
     fit$snps_per_seg = mapped_snps %>% group_by(segment_id) %>% summarise(snps_per_seg = sum(N.BAF)) %>% pull(snps_per_seg) %>% summary() %>% unclass() %>% as.data.frame() %>% t()
     

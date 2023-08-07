@@ -256,5 +256,9 @@ plot_snps = function(x, what='BAF')
   #return(list(BAF_plot, DR_plot))
 }
 
+get_segments = function(x, which= c('simple clonal', 'complex clonal', 'simple subclonal', 'complex subclonal')){
+  segments = x$segment_type %>% filter(segment_type %in% which) %>% pull(segment_id) #%>% unique()
+  segments
+}
 
 

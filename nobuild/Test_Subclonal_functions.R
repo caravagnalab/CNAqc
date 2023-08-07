@@ -23,4 +23,14 @@ print(new_cnaqc_obj)
 plot_snps(new_cnaqc_obj, what = 'BAF')
 plot_snps(new_cnaqc_obj, what = 'DR')
 
+clonal_test(
+  SNP_df = new_cnaqc_obj$snps %>% filter(segment_id== get_segments(new_cnaqc_obj, which= c('simple clonal'))[1] ),
+  SNV_df = new_cnaqc_obj$mutations %>% filter(segment_id== get_segments(new_cnaqc_obj, which= c('simple clonal'))[1] ),
+  purity = new_cnaqc_obj$purity
+  )
 
+sub_clonal_test(
+  SNP_df = new_cnaqc_obj$snps %>% filter(segment_id== get_segments(new_cnaqc_obj, which= c('simple clonal'))[1] ), 
+  SNV_df = new_cnaqc_obj$mutations %>% filter(segment_id== get_segments(new_cnaqc_obj, which= c('simple clonal'))[1] ), 
+  purity = new_cnaqc_obj$purity
+)
