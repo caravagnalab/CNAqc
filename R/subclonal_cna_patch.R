@@ -343,7 +343,7 @@ sub_clonal_test <- function(SNP_df, SNV_df, purity, ploidy=2){
 #' @export
 #'
 #' @examples
-patch = function(x, segments= NULL, top_n=5, all_solutions=FALSE, preselect = FALSE){
+patch = function(x, segments= NULL, top_n=5, all_solutions=TRUE, preselect = FALSE){
   
   if (is.null(segments)){
     segment_ids = x$segment_type %>% filter(segment_type %in% c('simple clonal', 'simple subclonal')) %>% pull(segment_id)
@@ -368,13 +368,19 @@ patch = function(x, segments= NULL, top_n=5, all_solutions=FALSE, preselect = FA
   x$patch_best_solution = best
   
   clonal_solutions = lapply(solutions, function(y){
-    y$clonal
+    all_clonal = y$clonal 
+    #best_clonal_ll = all_clonal %>% pull(loglikelihood) %>% max()
+    #all_clonal = all_clonal %>% mutate(local_best = ifelse(loglikelihood == best_clonal_ll, 'best', ''))
+    all_clonal
   })
   clonal_solutions = Reduce(rbind, clonal_solutions)
   x$patch_clonal_solutions = clonal_solutions
   
   subclonal_solutions = lapply(solutions, function(y){
-    y$subclonal
+    all_subclonal = y$subclonal
+    #best_subclonal_ll = all_subclonal %>% pull(loglikelihood) %>% max()
+    #all_subclonal = all_subclonal %>% mutate(local_best = ifelse(loglikelihood == best_subclonal_ll, 'best', ''))
+    all_subclonal
   })
   subclonal_solutions = Reduce(rbind, subclonal_solutions)
   x$patch_subclonal_solutions = subclonal_solutions
@@ -430,6 +436,7 @@ plot_vaf_single_segment = function(SNV_df){
     my_ggplot_theme() +
     labs(x='VAF',y='')
 }
+
 plot_patch_best_solution = function(x, seg_id){
   snvs_seg = x$mutations %>% filter(segment_id == seg_id)
   snps_seg = x$snps %>% filter(segment_id == seg_id)
@@ -469,8 +476,8 @@ plot_patch_best_solution = function(x, seg_id){
   old_vaf = plot_vaf_single_segment(snvs_seg) + geom_vline(xintercept = e_peaks, color = 'forestgreen', linetype= 'dashed')
   new_vaf = plot_vaf_single_segment(snvs_seg) + geom_vline(xintercept = proposed_peaks, color = 'forestgreen', linetype= 'dashed')
   
-  st= 'AAAACC
-       BBBBCC'
+  st= 'AAACC
+       BBBCC'
   old_solution_name = paste0('Original solution: clonal segment of karyotype ', paste0(cna_seg$Major, ':', cna_seg$minor))
   old_plot = patchwork::wrap_plots(old_baf_plot, old_dr_plot, old_vaf, design=st) +  patchwork::plot_annotation(title = old_solution_name) & 
     theme(text = element_text(size = 10))
@@ -536,13 +543,25 @@ plot_patch_all_solutions_subclonal = function(x, seg_id){
   
   #grid.newpage()
   #grid.draw(grob)
-  ggpubr::as_ggplot(grob) + ggtitle('Subclonal solutions')
+  ggpubr::as_ggplot(grob) + ggplot2::ggtitle('Subclonal solutions')
 }
 
-
+plot_patch_all_solutions_clonal = function(x, seg_id){
+  snvs_seg = x$mutations %>% filter(segment_id == seg_id)
+  snps_seg = x$snps %>% filter(segment_id == seg_id)
+  cna_seg = x$cna %>% filter(segment_id == seg_id)
+  
+  clonal_solutions = x$patch_clonal_solutions %>% filter(segment_id == seg_id)
+  
+  clonal_solutions_plot = clonal_solutions %>% 
+    ggplot(aes(x = k1, y = loglikelihood)) +
+    ggplot2::geom_col(fill = '#2274A5')+ my_ggplot_theme() +#+ scale_fill_manual(c('best'='#E574BC', ''= '#2274A5')) + my_ggplot_theme() 
+    labs(x= 'CCF') +
+    ggplot2::ggtitle('Clonal solutions')
+}
 
 patch_plot = function(x,seg_id){
-  ggarrange(plotlist= list(plot_patch_best_solution(x, seg_id), plot_patch_all_solutions_subclonal(x,seg_id), ncol=2))
+  ggarrange(plotlist= list(plot_patch_best_solution(x, seg_id), plot_patch_all_solutions_subclonal(x,seg_id),plot_patch_all_solutions_clonal(x,seg_id) ), ncol=3)
 }
 
 
