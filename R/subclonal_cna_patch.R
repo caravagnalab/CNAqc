@@ -70,7 +70,6 @@ simple_karyotypes = function(){
 test_quality_segment = function(x, seg_id, var = .005, significance=.05, var_dr = 10){
   
   if (length(x$snps %>% filter(segment_id == seg_id) %>% pull(chr))> 5){
-    print(seg_id)
     
     cna_call = x$cna %>% filter(segment_id == seg_id)
     n_snps = x$snps %>% filter(segment_id == seg_id) %>% pull(N.BAF) %>% sum()
@@ -161,22 +160,23 @@ test_model <- function(x, seg_id, top_n=5, all_solutions=FALSE){
     return(NULL)
   }
   
-  if (all_solutions){
-    clonal_results <- clonal_test(SNP_df, SNV_df, purity, ploidy) %>% mutate(segment_id = seg_id)
-    sc_results <- sub_clonal_test(SNP_df, SNV_df, purity, ploidy) %>% mutate(segment_id = seg_id)
-    }else{
-      clonal_results <- clonal_test(SNP_df, SNV_df, purity)
+  clonal_results <- clonal_test(SNP_df, SNV_df, purity, ploidy) %>% mutate(segment_id = seg_id) %>% mutate(peak=peaks) %>% select(!peaks)
+  sc_results <- sub_clonal_test(SNP_df, SNV_df, purity, ploidy) %>% mutate(segment_id = seg_id)
+  
+  if (!all_solutions){
+      #clonal_results <- clonal_test(SNP_df, SNV_df, purity)
       top_n_clonal = clonal_results %>% mutate(ids = paste0(k1, vaf_ll, baf_ll, dr_ll)) 
       top_n_clonal_ids = top_n_clonal %>% pull(ids) %>% unique()
       top_n_clonal_ids=top_n_clonal_ids[1:top_n]
       top_n_clonal = top_n_clonal %>% filter(ids %in% top_n_clonal_ids) %>% select(!ids)
       clonal_results = top_n_clonal %>% mutate(segment_id = seg_id)
   
-      sc_results <- sub_clonal_test(SNP_df, SNV_df, purity)
+      #sc_results <- sub_clonal_test(SNP_df, SNV_df, purity)
       top_n_subclonal = sc_results %>% mutate(ids = paste0(model, ccf_1, vaf_ll)) 
       top_n_subclonal_ids = top_n_subclonal %>% pull(ids) %>% unique() 
       top_n_subclonal_ids =  top_n_subclonal_ids[1:top_n]
       sc_results = top_n_subclonal %>% filter(ids %in% top_n_subclonal_ids) %>% select(!ids) %>% mutate(segment_id = seg_id)
+    
     }
   
   seg_cl_baf_ll = clonal_results[1,] %>% pull(baf_ll)
@@ -194,7 +194,7 @@ test_model <- function(x, seg_id, top_n=5, all_solutions=FALSE){
                                      vaf_ll== first_row$vaf_ll,
                                      baf_ll==first_row$baf_ll,
                                      dr_ll==first_row$dr_ll, 
-                                     loglikelihood==first_row$loglikelihood )
+                                     loglikelihood==first_row$loglikelihood ) 
   }else{
     first_row = sc_results[1,]
     best = sc_results %>% filter(k1== first_row$k1, 
@@ -224,7 +224,7 @@ clonal_test <- function(SNP_df, SNV_df, purity, ploidy=2){
   
   results = lapply(simple_karyotypes(), function(k){
       
-    peaks <- data.frame('peak'=get_clonal_peaks(k, purity))
+    peaks <- data.frame('peaks'=get_clonal_peaks(k, purity))
     # VAF
     v <- VAF_LL(NV= SNV_df$NV, DP= SNV_df$DP, peaks = peaks)
     # BAF
@@ -232,7 +232,7 @@ clonal_test <- function(SNP_df, SNV_df, purity, ploidy=2){
     # DR
     d <- clonal_dr_ll(SNP_df$DR, n = SNP_df$N.BAF, k, purity, ploidy)
     ll <- v + sum(log(b)) + sum(log(d))
-    r <- data.frame(k1 = k, k2 = "", ccf_1 = 1, model = "Clonal", vaf_ll=v, baf_ll=sum(log(b)), dr_ll=sum(log(d)), loglikelihood = ll, peaks=peaks$peak)
+    r <- data.frame(k1 = k, k2 = "", ccf_1 = 1, model = "Clonal", vaf_ll=v, baf_ll=sum(log(b)), dr_ll=sum(log(d)), loglikelihood = ll, peaks=peaks$peaks)
     r
   })
   results= Reduce(rbind, results)
@@ -338,8 +338,10 @@ patch = function(x, segments= NULL, top_n=5, all_solutions=FALSE, preselect = FA
     segment_ids = pre_select_segments(x)
   }
   
-  solutions = lapply(segment_ids, test_model, x=x, top_n=top_n, all_solutions=all_solutions)
+  cli::cli_h3("Computing solutions for {length(segment_ids)} segments")
+  solutions = pbapply::pblapply(segment_ids, test_model, x=x, top_n=top_n, all_solutions=all_solutions)
   solutions <- solutions[!sapply(solutions,is.null)]
+  #cli::cli_h3("Segments tesed")
   
   best = lapply(solutions, function(y){
     y$best
@@ -360,7 +362,12 @@ patch = function(x, segments= NULL, top_n=5, all_solutions=FALSE, preselect = FA
   subclonal_solutions = Reduce(rbind, subclonal_solutions)
   x$patch_subclonal_solutions = subclonal_solutions
   
+  x
+  
 }
+
+
+#plot_patch = function(x, segment_id){}
 
 
 
