@@ -69,61 +69,74 @@ simple_karyotypes = function(){
 #' @examples
 test_quality_segment = function(x, seg_id, var = .005, significance=.05, var_dr = 10){
   
-  if (length(x$snps$chr)>0){
-  cna_call = x$cna %>% filter(segment_id == seg_id)
-  n_snps = x$snps %>% filter(segment_id == seg_id) %>% pull(N.BAF) %>% sum()
-  # Expected BAF distrbution
-  exp_baf <- clonal_expected_baf(paste0(cna_call$Major, ':',cna_call$minor), x$purity)
-  exp_dist_alpha <- ((1 - exp_baf) / var - 1 / exp_baf) * exp_baf ^ 2
-  exp_dist_beta <- exp_dist_alpha * (1 / exp_baf - 1)
-  e_baf <- rbeta(n_snps, exp_dist_alpha, exp_dist_beta)
-  # Observed BAF distrubution
-  obs_mean_baf = x$snps %>% filter(segment_id == seg_id) %>% pull(BAF)
-  obs_alpha = ((1 - obs_mean_baf) / var - 1 / obs_mean_baf) * obs_mean_baf ^ 2
-  obs_beta = obs_alpha * (1 / obs_mean_baf - 1)
-  o_baf = sapply(x$snps %>% filter(segment_id == seg_id) %>% pull(N.BAF), rbeta, shape1=obs_alpha, shape2=obs_beta) %>% unlist()
+  if (length(x$snps %>% filter(segment_id == seg_id) %>% pull(chr))> 5){
+    print(seg_id)
+    
+    cna_call = x$cna %>% filter(segment_id == seg_id)
+    n_snps = x$snps %>% filter(segment_id == seg_id) %>% pull(N.BAF) %>% sum()
+    # Expected BAF distrbution
+    exp_baf <- clonal_expected_baf(paste0(cna_call$Major, ':',cna_call$minor), x$purity)
+    if (exp_baf < .01){exp_baf=.01}
+    #exp_baf = .01
+    #var = .005
+    exp_dist_alpha <- ((1 - exp_baf) / var - 1 / exp_baf) * exp_baf ^ 2
+    exp_dist_beta <- exp_dist_alpha * (1 / exp_baf - 1)
+    e_baf <- rbeta(n_snps, exp_dist_alpha, exp_dist_beta)
+    #hist(rbeta(1000, exp_dist_alpha, exp_dist_beta))
+    
+    # Observed BAF distrubution
+    obs_mean_baf = x$snps %>% filter(segment_id == seg_id) %>% pull(BAF) 
+    obs_mean_baf = sapply(obs_mean_baf, function(x){
+      if(x<.01){
+        x=.01
+        }
+      return(x)
+      })
+    obs_alpha = ((1 - obs_mean_baf) / var - 1 / obs_mean_baf) * obs_mean_baf ^ 2
+    obs_beta = obs_alpha * (1 / obs_mean_baf - 1)
+    o_baf = sapply(x$snps %>% filter(segment_id == seg_id) %>% pull(N.BAF), rbeta, shape1=obs_alpha, shape2=obs_beta) %>% unlist()
+    
+    ks.test(e_baf, o_baf)
+    baf_test_p = ks.test(e_baf, o_baf)[["p.value"]]
   
-  baf_test_p = ks.test(e_baf, o_baf)[["p.value"]]
+    # Expected DR distribution
+    exp_dr <- clonal_expected_dr(paste0(cna_call$Major, ':',cna_call$minor), x$purity)
+    exp_dist_shape = exp_dr * var_dr
+    e_dr = rgamma(n_snps,exp_dist_shape, var_dr)
+    # Observed DR distribution
+    obs_mean_dr = x$snps %>% filter(segment_id == seg_id) %>% pull(DR)
+    obs_shape = obs_mean_dr * var_dr
+    o_dr = sapply(x$snps %>% filter(segment_id == seg_id) %>% pull(N.BAF), rgamma, shape=obs_shape, rate=var_dr) %>% unlist()
+    
+    ks.test(e_dr, o_dr)
+    dr_test_p = ks.test(e_dr, o_dr)[["p.value"]]
   
-  # Expected DR distribution
-  exp_dr <- clonal_expected_dr(paste0(cna_call$Major, ':',cna_call$minor), x$purity)
-  exp_dist_shape = exp_dr * var_dr
-  e_dr = rgamma(n_snps,exp_dist_shape, var_dr)
-  # Observed DR distribution
-  obs_mean_dr = x$snps %>% filter(segment_id == seg_id) %>% pull(DR)
-  obs_shape = obs_mean_dr * var_dr
-  o_dr = sapply(x$snps %>% filter(segment_id == seg_id) %>% pull(N.BAF), rgamma, shape=obs_shape, rate=var_dr) %>% unlist()
-  
-  dr_test_p = ks.test(e_dr, o_dr)[["p.value"]]
-  
-  if (baf_test_p < significance | dr_test_p < significance){
-    TRUE
-  }else{
-    FALSE
-  }
+    if (baf_test_p < significance | dr_test_p < significance){
+      TRUE
+    }else{
+      FALSE
+    }
   }else{
     FALSE
   }
   #return(params = list(alpha = alpha, beta = beta))
 }
 
+#' Pre-filters the segments with suspect copy number calls based on DR and BAF
+#'
+#' @param x a cnaqc object
+#'
+#' @return a vector with the pre-selected segment ids
+#' @export
+#'
+#' @examples
 pre_select_segments = function(x){
-  
-  segment <- PDO74_CNAqc$cna[1,1:ncol(PDO74_CNAqc$cna)]
-  exp_baf <- clonal_expected_baf(paste0(segment$Major, ':',segment$minor), PDO74_CNAqc$purity) 
-  dp <- mean(PDO74_CNAqc$mutations$DP)
-  
-  alpha <- ((dp - 2) * exp_baf + 1) / (1 - exp_baf)
-  n_mut <- segment$N.BAF
-  e_baf <- rbeta(n_mut, shape1 = alpha, shape2 = dp) 
-  
-  
-  
-  baf_obs <-segment$Bf
-  alpha <- ((dp - 2) * baf_obs + 1) / (1 - baf_obs)
-  o_baf <- rbeta(n_mut, shape1 = alpha, shape2 = dp) 
-  
-  ks.test(e_baf, o_baf)
+  segment_ids = x$segment_type %>% filter(segment_type %in% c('simple clonal', 'simple subclonal')) %>% pull(segment_id)
+  selected_segs = sapply(segment_ids, test_quality_segment, x=x) 
+  selected_segs = selected_segs %>% as.data.frame() %>% mutate(segment_ids=segment_ids)
+  colnames(selected_segs) = c('passed', 'segment_ids')
+  selected_segs = selected_segs %>% filter(passed == TRUE) %>% pull(segment_ids)
+  return(selected_segs)
 }
 
 #' Test models for a single segment
@@ -298,7 +311,22 @@ sub_clonal_test <- function(SNP_df, SNV_df, purity, ploidy=2){
 }
 
 
-patch = function(x, segments= NULL, top_n=5, all_solutions=FALSE){
+#' Given a vector of segments to test, finds the best copy number solution based on VAF, BAF and DR
+#'
+#' @param x a cnaqc object
+#' @param segments optional, a user-defined vector of segment ids
+#' @param top_n optional, alternative to all_solutions, integer declaring how many solutions are to be saved 
+#' @param all_solutions optional, alternative to top_n, TRUE/FALSE whether to save all solutions
+#' @param preselect optional, whether to pre-select the segment to be tested based on BAF and DR
+#'
+#' @return the cnaqc object with three new fields : 
+#'              - patch_best_solution : the best solutions for each tested segment
+#'              - patch_clonal_solution : top n / all clonal solutions for the tested segments
+#'              - patch_sunclonal_solution : top n / all subclonal solutions for the tested segments
+#' @export
+#'
+#' @examples
+patch = function(x, segments= NULL, top_n=5, all_solutions=FALSE, preselect = FALSE){
   
   if (is.null(segments)){
     segment_ids = x$segment_type %>% filter(segment_type %in% c('simple clonal', 'simple subclonal')) %>% pull(segment_id)
@@ -306,7 +334,11 @@ patch = function(x, segments= NULL, top_n=5, all_solutions=FALSE){
     segment_ids = x$segment_type %>% filter(segment_type %in% segments) %>% pull(segment_id)
   }
   
-  solutions = lapply(segment_ids[1:4], test_model, x=x, top_n=top_n, all_solutions=all_solutions)
+  if (preselect){
+    segment_ids = pre_select_segments(x)
+  }
+  
+  solutions = lapply(segment_ids, test_model, x=x, top_n=top_n, all_solutions=all_solutions)
   solutions <- solutions[!sapply(solutions,is.null)]
   
   best = lapply(solutions, function(y){
@@ -329,3 +361,11 @@ patch = function(x, segments= NULL, top_n=5, all_solutions=FALSE){
   x$patch_subclonal_solutions = subclonal_solutions
   
 }
+
+
+
+
+
+
+
+
