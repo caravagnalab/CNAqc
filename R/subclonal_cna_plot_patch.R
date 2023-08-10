@@ -156,6 +156,8 @@ plot_patch_all_solutions_subclonal = function(x, seg_id){
   subclonal_solutions_plot = subclonal_solutions %>% 
     ggplot(aes(x = ccf_1, y = loglikelihood, color= model_type)) +
     geom_point(size=1) +
+    scale_x_continuous(breaks = scales::pretty_breaks(2))+
+    ggplot2::scale_y_continuous(breaks = scales::pretty_breaks(2))+
     scale_color_manual(values = c('branching 1' = '#D741A7', 'branching 2' = '#3A1772', 'linear 1'= '#F2CD5D', 'linear 2'= '#DEA54B'))+
     ggh4x::facet_grid2(k1~k2, scales = 'free') + my_ggplot_theme() + labs(x= 'CCF') +
     guides(color = guide_legend(title = "Model type"))
@@ -171,7 +173,7 @@ plot_patch_all_solutions_subclonal = function(x, seg_id){
   
   # Move x axes up
   idx <- which(grob$layout$name %in% c("axis-b-1-5"))
-  grob$layout[idx, c("t", "b")] <- grob$layout[idx, c("t", "b")] - c(14, 2)
+  grob$layout[idx, c("t", "b")] <- grob$layout[idx, c("t", "b")] - c(16, 2)
   
   idx <- which(grob$layout$name %in% c("axis-b-2-5"))
   grob$layout[idx, c("t", "b")] <- grob$layout[idx, c("t", "b")] - c(12, 2)
