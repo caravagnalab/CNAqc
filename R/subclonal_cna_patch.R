@@ -69,7 +69,7 @@ simple_karyotypes = function(){
 #' @examples
 test_quality_segment = function(x, seg_id, var = .005, significance=.05, var_dr = 10){
   
-  if (length(x$snps %>% filter(segment_id == seg_id) %>% pull(chr))> 5){
+  if (length(x$snps %>% filter(segment_id == seg_id) %>% pull(chr))> 5 & length(x$cna %>% filter(segment_id == seg_id) %>% pull(chr)) ==1  ){
     
     cna_call = x$cna %>% filter(segment_id == seg_id)
     n_snps = x$snps %>% filter(segment_id == seg_id) %>% pull(N.BAF) %>% sum()
@@ -132,6 +132,7 @@ test_quality_segment = function(x, seg_id, var = .005, significance=.05, var_dr 
 pre_select_segments = function(x){
   segment_ids = x$segment_type %>% filter(segment_type %in% c('simple clonal', 'simple subclonal')) %>% pull(segment_id)
   selected_segs = sapply(segment_ids, test_quality_segment, x=x) 
+  
   selected_segs = selected_segs %>% as.data.frame() %>% mutate(segment_ids=segment_ids)
   colnames(selected_segs) = c('passed', 'segment_ids')
   selected_segs = selected_segs %>% filter(passed == TRUE) %>% pull(segment_ids)

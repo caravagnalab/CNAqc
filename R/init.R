@@ -154,8 +154,14 @@ init = function(mutations, snvs = NULL, cna, snps = NULL, purity, sample = "MySa
     
   }
   
+  temp_cna = fit$cna %>% select(Major,minor,CCF,segment_id)
+  if (!is.null(input$cna_subclonal)){
+    temp_subcl_cna = fit$cna_subclonal %>% select(Major,minor,CCF,segment_id)
+    temp_cna = rbind(temp_cna, temp_subcl_cna)
+  }
   
-  fit$segment_type = rbind(fit$cna, fit$cna_subclonal) %>% select(Major,minor,CCF,segment_id) %>%
+  
+  fit$segment_type = temp_cna %>% #select(Major,minor,CCF,segment_id) %>%
     mutate(segment_type = case_when(
       (CCF == 1 & Major + minor <= 4 & Major < 3) ~ 'simple clonal',
       (CCF < 1 & Major + minor <= 4 & Major < 3) ~ 'simple subclonal',
