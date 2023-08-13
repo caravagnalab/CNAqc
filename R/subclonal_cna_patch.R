@@ -161,8 +161,8 @@ test_model <- function(x, seg_id, top_n=5, all_solutions=FALSE){
     return(NULL)
   }
   
-  clonal_results <- clonal_test(SNP_df, SNV_df, purity, ploidy) %>% mutate(segment_id = seg_id) %>% mutate(peak=peaks) %>% select(!peaks)
-  sc_results <- sub_clonal_test(SNP_df, SNV_df, purity, ploidy) %>% mutate(segment_id = seg_id)
+  clonal_results <- clonal_test(SNP_df, SNV_df, purity, ploidy) %>% mutate(segment_id = seg_id) %>% mutate(peak=peaks) %>% select(!peaks) #%>% filter(loglikelihood < -1e10)
+  sc_results <- sub_clonal_test(SNP_df, SNV_df, purity, ploidy) %>% mutate(segment_id = seg_id) %>% filter(!(ccf_1 ==1))
   
   if (!all_solutions){
       #clonal_results <- clonal_test(SNP_df, SNV_df, purity)
@@ -188,7 +188,7 @@ test_model <- function(x, seg_id, top_n=5, all_solutions=FALSE){
   cl_ll = clonal_results[1,] %>% pull(loglikelihood)
   scl_ll = sc_results[1,] %>% pull(loglikelihood)
   
-  if ( ((seg_cl_baf_ll> seg_scl_baf_ll) & (seg_cl_dr_ll> seg_scl_dr_ll)) | (cl_ll > scl_ll) ){
+  if ( (seg_cl_baf_ll> seg_scl_baf_ll) | (seg_cl_dr_ll> seg_scl_dr_ll) | (cl_ll > scl_ll) ){
     first_row = clonal_results[1,]
     best = clonal_results %>% filter(k1== first_row$k1, 
                                      k2== first_row$k2, 
@@ -203,7 +203,8 @@ test_model <- function(x, seg_id, top_n=5, all_solutions=FALSE){
                                  vaf_ll== first_row$vaf_ll,
                                  baf_ll==first_row$baf_ll,
                                  dr_ll==first_row$dr_ll, 
-                                 loglikelihood==first_row$loglikelihood )
+                                 loglikelihood==first_row$loglikelihood,
+                                 ccf_1 == first_row$ccf_1)
   }
   
   #results <- bind_rows(clonal_results, sc_results)
@@ -251,10 +252,10 @@ clonal_test <- function(SNP_df, SNV_df, purity, ploidy=2){
 #' @export
 #'
 #' @examples
-sub_clonal_test <- function(SNP_df, SNV_df, purity, ploidy=2){
+sub_clonal_test <- function(SNP_df, SNV_df, purity, ploidy=2, penalty = 300){
   
-  possible_ccf = seq(0.1, 1, by=0.1)
-  discrete_ccf = seq(from=0, to= 1, by= .05)
+  possible_ccf = seq(0.1, .9, by=0.1)
+  discrete_ccf = seq(from=0, to= .9, by= .05)
   temp_pur= discrete_ccf[which(abs(discrete_ccf - purity) == min(abs(discrete_ccf - purity)))]
   all_models = names(get_models())
   
@@ -294,7 +295,7 @@ sub_clonal_test <- function(SNP_df, SNV_df, purity, ploidy=2){
         v <- VAF_LL(
           NV = SNV_df$NV,
           DP = SNV_df$DP,
-          peaks = peak)
+          peaks = peak) - penalty*n_peaks
         # BAF Likelihood
         b <- BAF_LL(baf_obs = SNP_df$BAF,
                       n = SNP_df$N.BAF,
@@ -349,7 +350,7 @@ patch = function(x, segments= NULL, top_n=5, all_solutions=TRUE, preselect = FAL
   if (is.null(segments)){
     segment_ids = x$segment_type %>% filter(segment_type %in% c('simple clonal', 'simple subclonal')) %>% pull(segment_id)
   }else{
-    segment_ids = x$segment_type %>% filter(segment_type %in% segments) %>% pull(segment_id)
+    segment_ids = segments # x$segment_type %>% filter(segment_id %in% segments) %>% pull(segment_id)
   }
   
   if (preselect){

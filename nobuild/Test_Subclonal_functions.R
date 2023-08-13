@@ -20,17 +20,16 @@ snps = BAF_DR$binned
 new_cnaqc_obj = init(mutations=mutations, cna= cna, snps = snps, purity= purity, sample = "PDO74", ref = ref_genome)
 print(new_cnaqc_obj)
 
-#plot_snps(new_cnaqc_obj, what = 'BAF')
-#plot_snps(new_cnaqc_obj, what = 'DR')
 
 new_cnaqc_obj = patch(new_cnaqc_obj, all_solutions=TRUE, preselect = TRUE)
-saveRDS(new_cnaqc_obj, 'new_cnaqc_object_organoid.rds')
+saveRDS(new_cnaqc_obj, '../nobuild/new_cnaqc_object_organoid.rds')
 
-segment_ids = new_cnaqc_obj$patch_best_solution %>% pull(segment_id)
-my_segment = segment_ids[1]
-patch_plot(new_cnaqc_obj, my_segment)
+segment_ids = new_cnaqc_obj$patch_best_solution %>% pull(segment_id) %>% unique()
+for (i in 1:length(segment_ids)){
+  print(segment_ids[i])
+  pp = patch_plot(new_cnaqc_obj, segment_ids[i])
+  ggsave(pp, filename= paste0('../nobuild/PDO74_results/', segment_ids[i], '.png'), width = 20, height = 10)
+}
 
-my_segment = segment_ids[10]
-patch_plot(new_cnaqc_obj, my_segment)
 
 

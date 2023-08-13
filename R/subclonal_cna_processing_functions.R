@@ -157,7 +157,7 @@ get_segment_type = function(x, seg_id){
 #' @export
 #'
 #' @examples
-plot_snps = function(x, what='BAF')
+plot_snps = function(x, what='BAF', s= 1)
 {
   #BAF_DR = extract_sequenza_baf_dr(x)
   BAF_DR = list(binned = x$snps, segmented = x$cna )
@@ -192,7 +192,7 @@ plot_snps = function(x, what='BAF')
         y = BAF,
         yend = BAF
       ),
-      size = 1,
+      size = s,
       colour = 'black'
     ) +
     # ggplot2::geom_segment(
@@ -217,14 +217,14 @@ plot_snps = function(x, what='BAF')
       size = .4
     ) +
     ggplot2::geom_segment(
-      data = BAF_DR$binned %>% filter(DR <= 2.1),
+      data = BAF_DR$binned, #%>% filter(DR <= 2.1),
       ggplot2::aes(
         x = from,
         xend = to,
         y = DR,
         yend = DR
       ),
-      size = 1,
+      size = s,
       colour = 'black'
     ) +
     # ggplot2::geom_segment(

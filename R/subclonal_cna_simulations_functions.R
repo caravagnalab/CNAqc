@@ -140,24 +140,67 @@ compute_approx_ploidy = function(cnas){
   ploidy
 }
 
+# simulate_clonal_cnas = function(t_subclone_mrca = 5, cna_rate = 5){
+#   n_cnas = rpois(1, cna_rate)
+#   times = runif(n_cnas, 0, t_subclone_mrca) %>% sort()
+#   
+#   clonal_cnas = data.frame()
+#   for (i in 1:n_cnas){
+#     karyotypes = sample_karyo()
+#     chrs = sample_chr()
+#     form_to = sample_from_to(chrs)
+#     from = form_to[1]
+#     to = form_to[2]
+#     genotype = sample_genotype(karyotypes) 
+#     cc = data.frame('chr' = chrs, 'from'=from, 'to'= to, 'karyotype'= karyotypes, 'genotype'= genotype)
+#     clonal_cnas = rbind(cc, clonal_cnas)
+#   }
+#   clonal_cnas = clonal_cnas %>% mutate('times'= times) %>% fill_the_gaps() %>% rowwise() %>% 
+#     mutate('Major'= strsplit(karyotype, ':')[[1]][1], 'minor' = strsplit(karyotype, ':')[[1]][2]) %>%
+#     mutate(segment_id = paste0(chr,':' ,from,':' ,to, ':',Major, ':',minor, ':1'))
+# }
+
 simulate_clonal_cnas = function(t_subclone_mrca = 5, cna_rate = 5){
   n_cnas = rpois(1, cna_rate)
   times = runif(n_cnas, 0, t_subclone_mrca) %>% sort()
+
+  clonal_cnas = get_reference(ref= 'hg19') %>% select(chr, length) %>% 
+    mutate(from=0, to= length, karyotype= '1:1', genotype = 'A1B1', times =0, Major=1, minor=1) %>% select(!length)
   
-  clonal_cnas = data.frame()
   for (i in 1:n_cnas){
     karyotypes = sample_karyo()
     chrs = sample_chr()
     form_to = sample_from_to(chrs)
-    from = form_to[1]
-    to = form_to[2]
+    from_i = form_to[1]
+    to_i = form_to[2]
     genotype = sample_genotype(karyotypes) 
-    cc = data.frame('chr' = chrs, 'from'=from, 'to'= to, 'karyotype'= karyotypes, 'genotype'= genotype)
-    clonal_cnas = rbind(cc, clonal_cnas)
+    clonal_cnas = clonal_cnas %>% filter(chr!=chrs)
+    
+    if (from_i ==0){
+      r1 = data.frame(chr= chrs, from=from_i, to= to_i, karyotype= karyotypes, genotype = genotype, 
+                      times = times[i], Major=strsplit(karyotypes, ':')[[1]][1], minor=strsplit(karyotypes, ':')[[1]][2])
+      r2 = data.frame(chr= chrs, from=to_i+1, to= get_chr_length(chrs), karyotype= '1:1', genotype = 'A1B1', times =0, Major=1, minor=1)
+      r = rbind(r1,r2)
+    }
+    if (to_i == get_chr_length(chrs)){
+      r1 = data.frame(chr= chrs, from=0, to= from_i-1, karyotype= '1:1', genotype = 'A1B1', times =0, Major=1, minor=1)
+      r2 = data.frame(chr= chrs, from=from_i, to= to_i, karyotype= karyotypes, genotype = genotype, 
+                      times = times[i], Major=strsplit(karyotypes, ':')[[1]][1], minor=strsplit(karyotypes, ':')[[1]][2])
+      r = rbind(r1,r2)
+    }
+    if (from_i > 0 & to_i < get_chr_length(chrs)){
+      r1 = data.frame(chr= chrs, from=0, to= from_i-1, karyotype= '1:1', genotype = 'A1B1', times =0, Major=1, minor=1)
+      r2 = data.frame(chr= chrs, from=from_i, to= to_i, karyotype= karyotypes, genotype = genotype, 
+                      times = times[i], Major=strsplit(karyotypes, ':')[[1]][1], minor=strsplit(karyotypes, ':')[[1]][2])
+      r3 = data.frame(chr= chrs, from= to_i+1, to= get_chr_length(chrs), karyotype= '1:1', genotype = 'A1B1', times =0, Major=1, minor=1)
+      r = rbind(r1, r2,r3)
+    }
+    
+    
+    clonal_cnas = rbind(clonal_cnas, r)
   }
-  clonal_cnas = clonal_cnas %>% mutate('times'= times) %>% fill_the_gaps() %>% rowwise() %>% 
-    mutate('Major'= strsplit(karyotype, ':')[[1]][1], 'minor' = strsplit(karyotype, ':')[[1]][2]) %>%
-    mutate(segment_id = paste0(chr,':' ,from,':' ,to, ':',Major, ':',minor, ':1'))
+  
+  clonal_cnas= clonal_cnas #%>% mutate(segment_id = paste0(chr,':' ,from,':' ,to, ':',Major, ':',minor, ':1'))
 }
 
 # 2. SIMULATE CLONAL SNVs 
@@ -166,7 +209,7 @@ simulate_clonal_cnas = function(t_subclone_mrca = 5, cna_rate = 5){
 #           mutation rate and growth rate, over a period of time going from 0 to time of segment formation
 #         - the newer ones with rate depending on a period going from the time of segment formation to subclone birth
 
-generate_clonal_snvs = function(seg_id, karyotype, chromosome, al='A1B1',
+generate_clonal_snvs = function(cna, seg_id, karyotype, chromosome, #al='A1B1',
                                 mu= 1e-8, w= 2, t_subclone_mrca = 5, 
                                 coverage = 100, purity=1, t_cna){
   
@@ -188,11 +231,13 @@ generate_clonal_snvs = function(seg_id, karyotype, chromosome, al='A1B1',
   
   dp = rpois(n_snvs, coverage)
   peak_mean = get_clonal_peaks(karyotype, purity)
-  p = rbeta(n_snvs, round(20*peak_mean), round(20*(1-peak_mean)))
+  #p = rbeta(n_snvs, round(100*peak_mean), round(100*(1-peak_mean)))
+  p = peak_mean
   nv = rbinom(n_snvs, dp, p)
-  from = sample.int(get_chr_length(chromosome)-1, n_snvs)
-  to = from +1
-  allele = c()
+  from_i = runif(n_snvs, cna$from, cna$to-1)
+  #from_i = sample.int(get_chr_length(chromosome)-1, n_snvs)
+  to_i = from_i +1
+  #allele = c()
   ref= c()
   alt = c()
   for (i in 1:n_snvs){
@@ -200,28 +245,35 @@ generate_clonal_snvs = function(seg_id, karyotype, chromosome, al='A1B1',
     ref[i] = bases[1]
     alt[i] = bases[2]
   }
-  for (i in 1:n_snvs){allele[i]=sample_allele(al)}
+  #for (i in 1:n_snvs){allele[i]=sample_allele(al)}
   #allele = rep(sample_allele('A1B1'), n_snvs)
   maj = strsplit(karyotype, ':')[[1]][1]
   minor = strsplit(karyotype, ':')[[1]][2]
-  snvs_df = data.frame('chr' = chromosome, 'from'=from, 'to'= to, 'ref'= ref, 'alt'=alt,
+  snvs_df = data.frame('chr' = chromosome, 'from'=from_i, 'to'= to_i, 'ref'= ref, 'alt'=alt,
                        'Major'= maj,'minor'=minor,'NV'=nv,'DP'=dp, 'VAF'=nv/dp,
-                       'allele'= allele, 'segment_id'= seg_id)
+                       #'allele'= allele, 
+                       'segment_id'= seg_id)
+  snvs_df
   
 }
 
 simulate_clonal_snvs_df = function(cnas, mu= 1e-8, w= 2, t_subclone_mrca = 5, coverage = 100, purity=1){
-  segments = cnas$segment_id
+  segments = cnas %>% filter(model_id == 'clonal') %>% pull(segment_id)
   clonal_snvs_df = lapply(segments, function(x){
     chromosome = strsplit(x, ':')[[1]][1]
-    
     snvs_df = data.frame()
     cna_s = cnas %>% filter(segment_id ==x)
-    
-    snvs_df_i = generate_clonal_snvs(seg_id=x, karyotype= cna_s$karyotype,
-                                     chromosome=chromosome, al= cna_s$genotype,
+    k = paste0(cna_s$Major, ':', cna_s$minor)
+    #muts=0
+    #while (muts < 50){
+      #print(x)
+    snvs_df_i = generate_clonal_snvs(cna = cnas %>% filter(segment_id == x), seg_id=x, karyotype= k,
+                                     chromosome=chromosome, #al= cna_s$genotype,
                                      mu=mu, w= w, t_subclone_mrca = t_subclone_mrca,
                                      coverage = coverage, purity=purity, t_cna=cna_s$times)
+    
+    #muts = length(snvs_df_i$chr)
+    #}
     snvs_df = rbind(snvs_df_i, snvs_df)
   })
   clonal_snvs_df = Reduce(rbind, clonal_snvs_df)
@@ -268,47 +320,62 @@ simulate_subclonal_cnas = function(cnas, sub_cnas_rate= 3, t_subclone_mrca = 5, 
     subclonal_cnas = rbind(sc, subclonal_cnas)
   }
   subclonal_cnas = subclonal_cnas %>% mutate('times'= times) %>% rowwise() %>% 
-    mutate('Major'=1,'minor'=1,'Major_2'= strsplit(karyotype, ':')[[1]][1], 'minor_2' = strsplit(karyotype, ':')[[1]][2]) %>%
-    mutate(segment_id = paste0(chr,':' ,from,':' ,to, ':',Major, ':',minor, ':', ccf), CCF = ccf)
+    mutate('Major'=1,'minor'=1,'Major_2'= strsplit(karyotype, ':')[[1]][1], 'minor_2' = strsplit(karyotype, ':')[[1]][2], CCF = ccf) #%>%
+    #mutate(segment_id = paste0(chr,':' ,from,':' ,to, ':',Major, ':',minor, ':', ccf), CCF = ccf)
   subclonal_cnas
 }
 
 merge_clonal_subclonal_cnas = function(cnas, sub_cnas){
   
-  subclonal_chrs = sub_cnas$chr
-  sub_cnas = sub_cnas %>% mutate(genotype= model_id)
+  subclonal_chr = sub_cnas %>% pull(chr)
+  cnas = cnas %>% filter(!(chr %in% subclonal_chr))
   
-  new_rows = data.frame()
-  for (i in 1:length(subclonal_chrs)){
-    new_row_11 = data.frame('chr' = subclonal_chrs[i], 'from'=0, 
-                            'to'= sub_cnas[i,]$from, 'karyotype'= '1:1', 'genotype'= 'A1B1', 
-                            'times'= 0, model_id='clonal', Major_2=NA,minor_2=NA,  Major=1,minor=1, 'CCF'=1) %>%
-      mutate(segment_id = paste0(chr,':' ,from,':' ,to, ':',Major, ':',minor, ':1'))
-    new_row_12 = data.frame('chr' = subclonal_chrs[i], 'from'=sub_cnas[i,]$to, 'to'= get_chr_length(subclonal_chrs[i]), 
-                            'karyotype'= '1:1', 'genotype'= 'A1B1', 'times'= 0, 
-                            model_id='clonal', Major_2=NA,minor_2=NA,Major=1,minor=1,'CCF'=1) %>%
-      mutate(segment_id = paste0(chr,':' ,from,':' ,to, ':',Major, ':',minor, ':1'))
-    new_rows = rbind(new_rows, new_row_11, new_row_12)
+  new_subclonal_cnas = data.frame()
+  for (i in 1:length(subclonal_chr)){
+    from_i= sub_cnas[i,]$from
+    to_i= sub_cnas[i,]$to
+    chrs= sub_cnas[i,]$chr
+    if (from_i ==0){
+      r1 = sub_cnas[i,]
+      r2 = sub_cnas[i,] %>% mutate(from = to_i+1, to = get_chr_length(sub_cnas[i,]$chr), karyotype='1:1', 
+                                   Major_2=0, minor_2=0, CCF=1, times=0)
+      r = rbind(r1,r2)
+    }
+    if (to_i == get_chr_length(chrs)){
+      r1 = sub_cnas[i,] %>% mutate(to= from_i-1) %>% mutate(from = 0, karyotype='1:1', 
+                                   Major_2=0, minor_2=0, CCF=1, times=0)
+      r2 = sub_cnas[i,]
+      r = rbind(r1,r2)
+    }
+    if (from_i > 0 & to_i < get_chr_length(chrs)){
+      r1 = sub_cnas[i,] %>% mutate(to =from_i-1) %>% mutate(from = 0, karyotype='1:1', 
+                                   Major_2=0, minor_2=0, CCF=1, times=0)
+      r2 = sub_cnas[i,]
+      r3 = sub_cnas[i,] %>% mutate(from = to_i+1, to = get_chr_length(sub_cnas[i,]$chr), karyotype='1:1', 
+                                   Major_2=0, minor_2=0, CCF=1, times=0)
+      r = rbind(r1, r2,r3)
+    }
+    new_subclonal_cnas = rbind(new_subclonal_cnas, r)
   }
-  
-  cnas = cnas %>% mutate('Major_2'= NA, 'minor_2'=NA, 'model_id'= 'clonal', 'CCF'=1) %>% filter(!(chr %in% subclonal_chrs))
-  merged_cnas = rbind(new_rows, cnas,sub_cnas)
-  merged_cnas
+  cnas= cnas %>% mutate(model_id='clonal', Major_2=0, minor_2=0, CCF=1) %>% select(!genotype)
+  all_cnas = rbind(cnas, new_subclonal_cnas)
 }
 
 # 4. SIMULATE SUBCLONAL SNVs :
 simulate_subclonal_snvs_df = function(sub_cnas, mu= 1e-8, w= 2, t_f = 10, coverage = 100, purity=1){
+  sub_cnas = sub_cnas %>% filter(CCF<1)
   snvs_df = data.frame()
   #sub_cnas_ids
   for (i in 1:length(sub_cnas$chr)){
     n_muts = rpois(1, 2*mu*w*t_f*get_chr_length(sub_cnas$chr[i]))
-    kc = paste0('1:1-', sub_cnas$karyotype[i])
+    k = paste0(sub_cnas$Major_2[i], ':', sub_cnas$minor_2[i])
+    kc = paste0('1:1-', k)
     peaks = get_models(karyotype_combination= kc, purity= purity, ccf= sub_cnas$CCF[i]) %>% 
       filter(model_id==sub_cnas$model_id[i]) %>% pull(peak)
     dp = rpois(n_muts, coverage)
     nv = rbinom(n_muts, dp, peaks)
-    from = runif(n_muts, sub_cnas$from[i], sub_cnas$to[i] ) #sample.int(sub_cnas$to[i] - sub_cnas$from[i], n_muts)
-    to = from+1
+    from_i = runif(n_muts, sub_cnas$from[i], sub_cnas$to[i]-1 ) #sample.int(sub_cnas$to[i] - sub_cnas$from[i], n_muts)
+    to_i = from_i+1
     
     ref= c()
     alt = c()
@@ -319,7 +386,7 @@ simulate_subclonal_snvs_df = function(sub_cnas, mu= 1e-8, w= 2, t_f = 10, covera
     }
     
     c = sub_cnas$chr[i]
-    snvs_df_i = data.frame('chr' = sub_cnas$chr[i], 'from'= from, 'to'= to, 'ref' = ref, 'alt'= alt,
+    snvs_df_i = data.frame('chr' = sub_cnas$chr[i], 'from'= from_i, 'to'= to_i, 'ref' = ref, 'alt'= alt,
                            #'Major'= sub_cnas$Major_2[i],'minor'=sub_cnas$minor_2[i],
                            'Major'= 1,'minor'=1,
                            'NV'=nv,'DP'=dp, 'VAF'=nv/dp,
@@ -414,16 +481,17 @@ simulate_snps_seg = function(segment, bin_size= 50000, purity= 1, ploidy=2){
   n_baf = rpois(n_bins, (1/1000)*bin_size)
   
   if (segment$CCF==1){
-    exp_baf <- clonal_expected_baf(segment$karyotype, purity)
-    exp_dr <- clonal_expected_dr(segment$karyotype, purity,ploidy)
+    exp_baf <- min(clonal_expected_baf(paste0(segment$Major, ':', segment$minor), purity))
+    exp_dr <- clonal_expected_dr(paste0(segment$Major, ':', segment$minor), purity,ploidy)
   }else{
-    kc= paste0('1:1-', segment$karyotype)
+    kc= paste0('1:1-', segment$Major_2, ':', segment$minor_2)
     g1 = get_models(karyotype_combination= kc, purity= purity, ccf=segment$CCF) %>% 
       filter(model_id==segment$model_id) %>% pull(genotype_1)
     g2 = get_models(karyotype_combination= kc, purity= purity, ccf=segment$CCF) %>% 
       filter(model_id==segment$model_id) %>% pull(genotype_2)
-    exp_baf= expected_baf(k1='1:1', k2=segment$karyotype, purity=purity, ccf=segment$CCF, g1, g2)
-    exp_dr= expected_dr(k1='1:1', k2=segment$karyotype, purity=purity, ccf=segment$CCF, ploidy = ploidy)
+    exp_baf= min(expected_baf(k1='1:1', paste0(segment$Major_2, ':', segment$minor_2), purity=purity, ccf=segment$CCF, g1, g2) )
+    
+    exp_dr= expected_dr(k1='1:1', k2= paste0(segment$Major_2, ':', segment$minor_2), purity=purity, ccf=segment$CCF, ploidy = ploidy)
   }
   
 
@@ -433,8 +501,8 @@ simulate_snps_seg = function(segment, bin_size= 50000, purity= 1, ploidy=2){
   
   SNP_df <- data.frame(
     chr = segment$chr,
-    from = seq(from=1, to=get_chr_length(segment$chr), by=50000)[1:n_bins],
-    to = seq(from=50000, to=get_chr_length(segment$chr), by=50000)[1:n_bins],
+    from = seq(from=segment$from, to=segment$to - 50000, by=50000)[1:n_bins],
+    to = seq(from=segment$from+50000, to=segment$to, by=50000)[1:n_bins],
     BAF = baf, N.BAF = n_baf, DR = dr,
     segment_id = segment$segment_id
   )
@@ -442,32 +510,47 @@ simulate_snps_seg = function(segment, bin_size= 50000, purity= 1, ploidy=2){
   return(SNP_df)
 }
 
+
 simulate_snps = function(all_cnas, bin_size= 50000, purity= 1, ploidy=2){
+  #chromosomes = c(paste0('chr', 1:22), 'chrX', 'chrY')
   all_snps = lapply(all_cnas$segment_id, function(x){
     current_cna = all_cnas %>% filter(segment_id==x)
     snps = simulate_snps_seg(current_cna, bin_size= bin_size, purity= purity, ploidy=ploidy)
     snps
   })
+  
   all_snps = Reduce(rbind, all_snps)
   all_snps
 }
 
 # 7. GET THE CNAQC SAMPLE
 
+# t_subclone_mrca = 5
+# cna_rate = 5
+# mu= 1e-8 
+# w= 2 
+# coverage = 100 
+# purity=1
+# sub_cnas_rate= 3 
+# t_f= 10 
+# ccf = .5 
+# bin_size= 50000
+
 simulate_sample = function(t_subclone_mrca = 5, cna_rate = 5,
                            mu= 1e-8, w= 2, coverage = 100, purity=1,
                            sub_cnas_rate= 3, t_f= 10, ccf = .5, bin_size= 50000){
   cnas = simulate_clonal_cnas(t_subclone_mrca = t_subclone_mrca, cna_rate = cna_rate)
-  cl_snvs = simulate_clonal_snvs_df(cnas=cnas,
-                                    mu= mu, w= w, t_subclone_mrca = t_subclone_mrca, 
-                                    coverage = coverage, purity=purity)
   sub_cnas = simulate_subclonal_cnas(cna=cnas,
                                      sub_cnas_rate= sub_cnas_rate, t_subclone_mrca = t_subclone_mrca, 
                                      t_final= t_f, ccf = ccf, purity =purity)
-  all_cnas = merge_clonal_subclonal_cnas(cnas, sub_cnas)
-  subclonal_muts = simulate_subclonal_snvs_df(sub_cnas, mu= mu, w= w, t_f = t_f, coverage = coverage, purity=purity)
-  tail_muts = simulate_tail_snvs(all_cnas, mu= mu, w= w, t_f = t_f, coverage = coverage, purity= purity)
-  all_snvs = rbind(cl_snvs, subclonal_muts, tail_muts)
+  all_cnas = merge_clonal_subclonal_cnas(cnas, sub_cnas) %>% select(!karyotype) %>% mutate(segment_id= paste0(chr,':' ,from,':' ,to, ':',Major, ':',minor, ':', CCF))
+  
+  cl_snvs = simulate_clonal_snvs_df(cnas=all_cnas,
+                                    mu= mu, w= w, t_subclone_mrca = t_subclone_mrca, 
+                                    coverage = coverage, purity=purity) 
+  subclonal_muts = simulate_subclonal_snvs_df(all_cnas, mu= mu, w= w, t_f = t_f, coverage = coverage, purity=purity) %>% select(!allele)
+  tail_muts = simulate_tail_snvs(all_cnas, mu= mu, w= w, t_f = t_f, coverage = coverage, purity= purity) %>% select(!allele)
+  all_snvs = rbind(cl_snvs, subclonal_muts, tail_muts) %>% mutate(NV = as.integer(NV), DP = as.integer(DP)) 
   ploidy= compute_approx_ploidy(all_cnas)
   all_snps = simulate_snps(all_cnas, bin_size= bin_size, purity= purity, ploidy=ploidy)
   
@@ -475,7 +558,8 @@ simulate_sample = function(t_subclone_mrca = 5, cna_rate = 5,
 }
 
 
-#hist(all_snvs %>% filter(Major==2, minor==1) %>% pull(VAF), breaks =50)
+# 8. CHECK SOLUTION
+
 
 
 

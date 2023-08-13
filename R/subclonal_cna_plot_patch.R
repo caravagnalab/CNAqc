@@ -7,7 +7,9 @@
 #'
 #' @examples
 plot_baf_single_segment = function(SNP_df){
-  CNAqc:::blank_genome(ref = 'GRCh38', chromosomes = SNP_df$chr[1]) +
+  
+  ggplot()+
+  #CNAqc:::blank_genome(ref = 'GRCh38', chromosomes = SNP_df$chr[1]) +
     ggplot2::geom_hline(
       yintercept = 0.5,
       color = 'indianred3',
@@ -24,7 +26,11 @@ plot_baf_single_segment = function(SNP_df){
       ),
       size = 1,
       colour = 'black'
-    ) +ggplot2::labs(y = 'BAF', x= SNP_df$chr[1])
+    ) +ggplot2::labs(y = 'BAF', x= SNP_df$chr[1])+
+    CNAqc:::my_ggplot_theme(cex = 1)+
+    theme(
+      axis.text.x = element_blank(),
+      axis.ticks.x = element_blank()) + ylim(0,1)
 }
 
 #' Plot the DR of bins sitting on a selected segment
@@ -36,7 +42,11 @@ plot_baf_single_segment = function(SNP_df){
 #'
 #' @examples
 plot_dr_single_segment = function(SNP_df){
-  CNAqc:::blank_genome(ref = 'GRCh38', chromosomes = SNP_df$chrs[1]) +
+  
+  upper= max(2, max(SNP_df$DR))
+  
+  ggplot()+
+  #CNAqc:::blank_genome(ref = 'GRCh38', chromosomes = SNP_df$chrs[1]) +
     ggplot2::geom_hline(
       yintercept = 1,
       color = 'indianred3',
@@ -44,7 +54,7 @@ plot_dr_single_segment = function(SNP_df){
       size = .4
     ) +
     ggplot2::geom_segment(
-      data = SNP_df %>% filter(DR <= 2.1),
+      data = SNP_df ,#%>% filter(DR <= 2.1),
       ggplot2::aes(
         x = from,
         xend = to,
@@ -54,7 +64,11 @@ plot_dr_single_segment = function(SNP_df){
       size = 1,
       colour = 'black'
     ) +
-    ggplot2::labs(y = 'Depth ratio', x = SNP_df$chrs[1])
+    ggplot2::labs(y = 'Depth ratio', x = SNP_df$chrs[1])+
+    CNAqc:::my_ggplot_theme(cex = 1)+
+    theme(
+      axis.text.x = element_blank(),
+      axis.ticks.x = element_blank()) + ylim(0, upper)
 }
 
 
@@ -70,7 +84,7 @@ plot_vaf_single_segment = function(SNV_df){
   ggplot(SNV_df, aes(x= VAF))+
     geom_histogram(bins=100, fill= 'forestgreen', alpha= .5) +
     my_ggplot_theme() +
-    labs(x='VAF',y='')
+    labs(x='VAF',y='') + xlim(0, 1)
 }
 
 #' Plot comparing the original solution with the best one found by function patch (BAF, DR, VAF)
