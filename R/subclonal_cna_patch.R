@@ -139,6 +139,13 @@ pre_select_segments = function(x){
   return(selected_segs)
 }
 
+choose_model = function(ll_df, baf_coef = 30, dr_coef = 30, vaf_coef= 100){
+  ll_df = ll_df %>% filter(baf_ll > max(ll_df$baf_ll) - baf_coef)
+  ll_df = ll_df %>% filter(dr_ll > max(ll_df$dr_ll) - dr_coef)
+  ll_df = ll_df %>% filter(vaf_ll > max(ll_df$vaf_ll) - vaf_coef)
+  ll_df = ll_df %>% filter(loglikelihood == max(loglikelihood))
+}
+
 #' Test models for a single segment
 #'
 #' @param x cnaqc object
@@ -178,37 +185,47 @@ test_model <- function(x, seg_id, top_n=5, all_solutions=FALSE){
       top_n_subclonal_ids =  top_n_subclonal_ids[1:top_n]
       sc_results = top_n_subclonal %>% filter(ids %in% top_n_subclonal_ids) %>% select(!ids) %>% mutate(segment_id = seg_id)
     
-    }
+  }
+  
+  all_clonal_res = clonal_results
+  all_sub_res = sc_results
+  
+  clonal_results = choose_model(clonal_results) 
+  sc_results = choose_model(sc_results) 
   
   seg_cl_baf_ll = clonal_results[1,] %>% pull(baf_ll)
   seg_cl_dr_ll = clonal_results[1,] %>% pull(dr_ll)
   seg_scl_baf_ll = sc_results[1,] %>% pull(baf_ll)
   seg_scl_dr_ll = sc_results[1,] %>% pull(dr_ll)
   
+  seg_scl_k1 = sc_results[1,] %>% pull(k1)
+  seg_scl_k2 = sc_results[1,] %>% pull(k2)
+  
   cl_ll = clonal_results[1,] %>% pull(loglikelihood)
   scl_ll = sc_results[1,] %>% pull(loglikelihood)
   
-  if ( (seg_cl_baf_ll> seg_scl_baf_ll) | (seg_cl_dr_ll> seg_scl_dr_ll) | (cl_ll > scl_ll) ){
+  if ( (seg_cl_baf_ll> seg_scl_baf_ll) | (seg_cl_dr_ll> seg_scl_dr_ll) | (cl_ll > scl_ll) | (seg_scl_k1==seg_scl_k2)){
     first_row = clonal_results[1,]
-    best = clonal_results %>% filter(k1== first_row$k1, 
-                                     k2== first_row$k2, 
+    best = clonal_results %>% filter(k1== first_row$k1,
+                                     k2== first_row$k2,
                                      vaf_ll== first_row$vaf_ll,
                                      baf_ll==first_row$baf_ll,
-                                     dr_ll==first_row$dr_ll, 
-                                     loglikelihood==first_row$loglikelihood ) 
+                                     dr_ll==first_row$dr_ll,
+                                     loglikelihood==first_row$loglikelihood )
   }else{
     first_row = sc_results[1,]
-    best = sc_results %>% filter(k1== first_row$k1, 
-                                 k2== first_row$k2, 
+    best = sc_results %>% filter(k1== first_row$k1,
+                                 k2== first_row$k2,
                                  vaf_ll== first_row$vaf_ll,
                                  baf_ll==first_row$baf_ll,
-                                 dr_ll==first_row$dr_ll, 
+                                 dr_ll==first_row$dr_ll,
                                  loglikelihood==first_row$loglikelihood,
                                  ccf_1 == first_row$ccf_1)
   }
+
+  results <- bind_rows(clonal_results, sc_results)
+  results <- results %>% dplyr::arrange(desc(loglikelihood))
   
-  #results <- bind_rows(clonal_results, sc_results)
-  #results <- results %>% dplyr::arrange(desc(loglikelihood))
   return(list('best'=best, 'clonal'=clonal_results, 'subclonal'=sc_results))
 }
 
@@ -252,7 +269,7 @@ clonal_test <- function(SNP_df, SNV_df, purity, ploidy=2){
 #' @export
 #'
 #' @examples
-sub_clonal_test <- function(SNP_df, SNV_df, purity, ploidy=2, penalty = 300){
+sub_clonal_test <- function(SNP_df, SNV_df, purity, ploidy=2, penalty = 0){
   
   possible_ccf = seq(0.1, .9, by=0.1)
   discrete_ccf = seq(from=0, to= .9, by= .05)
@@ -314,7 +331,8 @@ sub_clonal_test <- function(SNP_df, SNV_df, purity, ploidy=2, penalty = 300){
                    ploidy=ploidy)
         # Overall log-likelihood
         ll <- v + sum(log(b)) + sum(log(d))
-        r <- data.frame(k1 = k1, k2 = k2, ccf_1 = ccf, model = m, vaf_ll = v, baf_ll=sum(log(b)), dr_ll=sum(log(d)), loglikelihood = ll, peak=peak, model_type= model_type)
+        r <- data.frame(k1 = k1, k2 = k2, ccf_1 = ccf, model = m, 
+                        vaf_ll = v, baf_ll=sum(log(b)), dr_ll=sum(log(d)), loglikelihood = ll, peak=peak, model_type= model_type)
         results_model_nm = rbind(results_model_nm,r)
       }
       results_model_nm

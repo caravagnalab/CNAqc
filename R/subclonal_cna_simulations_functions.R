@@ -480,16 +480,16 @@ simulate_snps_seg = function(segment, bin_size= 50000, purity= 1, ploidy=2){
   n_bins <- (segment$to - segment$from) / bin_size
   n_baf = rpois(n_bins, (1/1000)*bin_size)
   
-  if (segment$CCF==1){
+  if (segment$model_id=='clonal'){
     exp_baf <- min(clonal_expected_baf(paste0(segment$Major, ':', segment$minor), purity))
     exp_dr <- clonal_expected_dr(paste0(segment$Major, ':', segment$minor), purity,ploidy)
   }else{
     kc= paste0('1:1-', segment$Major_2, ':', segment$minor_2)
     g1 = get_models(karyotype_combination= kc, purity= purity, ccf=segment$CCF) %>% 
-      filter(model_id==segment$model_id) %>% pull(genotype_1)
+      filter(model_id==segment$model_id) %>% filter(!is.na(genotype_1)) %>% pull(genotype_1) %>% unique()
     g2 = get_models(karyotype_combination= kc, purity= purity, ccf=segment$CCF) %>% 
-      filter(model_id==segment$model_id) %>% pull(genotype_2)
-    exp_baf= min(expected_baf(k1='1:1', paste0(segment$Major_2, ':', segment$minor_2), purity=purity, ccf=segment$CCF, g1, g2) )
+      filter(model_id==segment$model_id) %>% filter(!is.na(genotype_2)) %>% pull(genotype_2) %>% unique()
+    exp_baf= min(expected_baf(k1='1:1', paste0(segment$Major_2, ':', segment$minor_2), purity=purity, ccf=segment$CCF, g1, g2))
     
     exp_dr= expected_dr(k1='1:1', k2= paste0(segment$Major_2, ':', segment$minor_2), purity=purity, ccf=segment$CCF, ploidy = ploidy)
   }
@@ -527,13 +527,13 @@ simulate_snps = function(all_cnas, bin_size= 50000, purity= 1, ploidy=2){
 
 # t_subclone_mrca = 5
 # cna_rate = 5
-# mu= 1e-8 
-# w= 2 
-# coverage = 100 
+# mu= 1e-8
+# w= 2
+# coverage = 100
 # purity=1
-# sub_cnas_rate= 3 
-# t_f= 10 
-# ccf = .5 
+# sub_cnas_rate= 3
+# t_f= 10
+# ccf = .5
 # bin_size= 50000
 
 simulate_sample = function(t_subclone_mrca = 5, cna_rate = 5,
@@ -552,6 +552,7 @@ simulate_sample = function(t_subclone_mrca = 5, cna_rate = 5,
   tail_muts = simulate_tail_snvs(all_cnas, mu= mu, w= w, t_f = t_f, coverage = coverage, purity= purity) %>% select(!allele)
   all_snvs = rbind(cl_snvs, subclonal_muts, tail_muts) %>% mutate(NV = as.integer(NV), DP = as.integer(DP)) 
   ploidy= compute_approx_ploidy(all_cnas)
+  all_cnas = all_cnas %>% mutate(model_id = ifelse(CCF==1, 'clonal', model_id))
   all_snps = simulate_snps(all_cnas, bin_size= bin_size, purity= purity, ploidy=ploidy)
   
   return(list('cna'= all_cnas, 'mutations'= all_snvs, 'snps'= all_snps, 'purity'= purity, 'reference_genome'='hg19'))
@@ -560,6 +561,297 @@ simulate_sample = function(t_subclone_mrca = 5, cna_rate = 5,
 
 # 8. CHECK SOLUTION
 
+# Expected BAF clonal and subclonal distributions
+clonal_baf_ditribution = function(n, k1, purity, n_points) {
+  E_baf <- clonal_expected_baf(k1, purity)
+  alpha <- ((n - 2) * E_baf + 1) / (1 - E_baf)
+  s = rbeta(n_points, shape1 = alpha, shape2 = n)
+  #s <- dbeta(baf_obs, shape1 = alpha, shape2 = n) 
+  return(s)
+}
+subclonal_baf_distribution = function(n, k1, k2, purity, ccf, g1, g2, n_points){
+  E_baf <- expected_baf(k1, k2, purity, ccf, g1, g2)
+  alpha <- ((n - 2) * E_baf + 1) / (1 - E_baf)
+  s <- rbeta(n_points, shape1 = alpha, shape2 = n) 
+  #s <- dbeta(baf_obs, shape1 = alpha, shape2 = n) 
+  return(s)
+}
+expected_baf_ditribution= function(n, k1, k2='', purity, ccf=1, g1='', g2='', n_points){
+  if (ccf ==1){
+    expected_baf_distr = clonal_baf_ditribution(n, k1, purity, n_points)
+  }else{
+    expected_baf_distr = subclonal_baf_distribution(n, k1, k2, purity, ccf, g1, g2, n_points)
+  }
+  expected_baf_distr
+}
+# Plot Baf expecteed vs observed distributions
+plot_baf_exp_vs_obs = function(patched_x, all_res_seg, n_snps, n_points, which, s= 5){
+
+  # compute expected baf distribution according to model (given, correct, best)
+  if (which=='given'){
+    sim_color='steelblue'
+    expected_baf_d = expected_baf_ditribution(n= n_snps, k1= all_res_seg$k1[1], k2='', 
+                                            purity =  patched_x$purity, ccf=1, g1='', g2='', n_points)
+  }
+  
+  if (which == 'correct'){
+    sim_color='forestgreen'
+    if (all_res_seg$k2[1]==''){
+      expected_baf_d = expected_baf_ditribution(n= n_snps, k1= all_res_seg$k1[1], k2='', 
+                                                purity =  patched_x$purity, ccf=1, g1='', g2='', n_points)
+    }else{
+      genotypes = get_models(karyotype_combination = paste0(all_res_seg$k1[1],'-' ,all_res_seg$k2[1]),
+                             purity = x$purity, ccf = all_res_seg$CCF_sim[1]) %>% filter(model_id == all_res_seg$model_id[1]) %>% 
+        select(genotype_1,genotype_2) 
+      g1 = genotypes %>% filter(!is.na(genotype_1)) %>% pull(genotype_1) %>% unique()
+      g2 = genotypes %>% filter(!is.na(genotype_2)) %>% pull(genotype_2) %>% unique()
+      expected_baf_d = expected_baf_ditribution(n= n_snps, k1= all_res_seg$k1[1], k2= all_res_seg$k2[1], 
+                                                purity =  patched_x$purity, ccf= all_res_seg$CCF_sim[1], g1, g2, n_points)
+    }
+    
+  }
+  
+  if (which == 'inferred'){
+    sim_color='indianred'
+    if (all_res_seg$k2_best[1]==''){
+      expected_baf_d = expected_baf_ditribution(n= n_snps, k1= all_res_seg$k1_best[1], k2='', 
+                                                purity =  patched_x$purity, ccf=1, g1='', g2='', n_points)
+    }else{
+      genotypes = get_models(karyotype_combination = paste0(all_res_seg$k1_best[1],'-' ,all_res_seg$k2_best[1]),
+                             purity = x$purity, ccf = all_res_seg$CCF_best[1]) %>% filter(model_id == all_res_seg$model_id_best[1]) %>% 
+        select(genotype_1,genotype_2) 
+      g1 = genotypes %>% filter(!is.na(genotype_1)) %>% pull(genotype_1) %>% unique()
+      g2 = genotypes %>% filter(!is.na(genotype_2)) %>% pull(genotype_2) %>% unique()
+      expected_baf_d = expected_baf_ditribution(n= n_snps, k1= all_res_seg$k1_best[1], k2= all_res_seg$k2_best[1], 
+                                                purity =  patched_x$purity, ccf= all_res_seg$CCF_best[1], g1, g2, n_points)
+    }
+    
+  }
+  
+  e_baf_d = patched_x$snps %>% filter(segment_id==all_res_seg$segment_id[1]) %>% 
+    select(from, to) %>% mutate(exp_baf = expected_baf_d) %>% as_tibble() %>% mutate(from=as.integer(from), to=as.integer(to))
+  
+  # the observed baf distribution is constant 
+  observed_baf_d = patched_x$snps %>% filter(segment_id==all_res_seg$segment_id[1]) %>% select(from, to, BAF)
+  
+  ggplot() +
+    geom_segment(data= e_baf_d, aes(x = from, xend= to, y= exp_baf, yend = exp_baf), color= sim_color, size = s)+
+    #geom_density_2d(data= e_baf_d, aes(x = from, y= exp_baf))+
+    geom_segment(data = observed_baf_d %>% as_tibble(), aes(x = from, xend= to, y= BAF, yend = BAF), color= 'black', size = s)+
+    theme_bw() + labs(x= '', y= 'BAF') + ylim(0,1)
+}
+
+# Expected DR clonal and subclonal distributions
+clonal_dr_distribution = function(n, k1, purity, ploidy=2, n_points){
+  expected_dpr <- clonal_expected_dr(k1, purity, ploidy)
+  dr <- rgamma(n_points, shape = expected_dpr * sqrt(n) + 1, rate = sqrt(n))
+  return(dr)
+}
+subclonal_dr_distribution = function(n, k1, k2, purity, ccf, ploidy = 2, n_points){
+  expected_dpr <- expected_dr(k1, k2, purity, ccf, ploidy)
+  dr <- rgamma(n_points, shape = expected_dpr * sqrt(n) + 1, rate = sqrt(n))
+  return(dr)
+}
+expected_dr_distribution = function(n, k1, k2='', purity, ccf=1, ploidy = 2, n_points){
+  if (ccf==1){
+    distr = clonal_dr_distribution(n, k1, purity, ploidy, n_points)
+  }else{
+    distr = subclonal_dr_distribution(n, k1, k2, purity, ccf, ploidy, n_points)
+  }
+}
+# Plot dr expecteed vs observed distributions
+plot_dr_exp_vs_obs = function(patched_x, all_res_seg, n_snps, n_points, which, s= 5){
+  
+  # compute expected baf distribution according to model (given, correct, best)
+  if (which=='given'){
+    sim_color = 'steelblue'
+    expected_dr_d = expected_dr_distribution(n= n_snps, k1= all_res_seg$k1[1], k2='', 
+                                              purity =  patched_x$purity, ccf=1, ploidy = patched_x$ploidy, n_points)
+  }
+  
+  if (which == 'correct'){
+    sim_color = 'forestgreen'
+    if (all_res_seg$k2[1]==''){
+    expected_dr_d = expected_dr_distribution(n= n_snps, k1= all_res_seg$k1[1], k2='', 
+                                             purity =  patched_x$purity, ccf=1, ploidy = patched_x$ploidy, n_points)
+    }else{
+      expected_dr_d = expected_dr_distribution(n= n_snps, k1= all_res_seg$k1[1], k2=all_res_seg$k2[1], 
+                                               purity =  patched_x$purity, ccf=all_res_seg$CCF_sim[1], 
+                                               ploidy = patched_x$ploidy, n_points)
+    }
+  }
+  
+  if (which == 'inferred'){
+    sim_color = 'indianred'
+    if (all_res_seg$k2_best[1]==''){
+      expected_dr_d = expected_dr_distribution(n= n_snps, k1= all_res_seg$k1_best[1], k2='', 
+                                               purity =  patched_x$purity, ccf=1, ploidy = patched_x$ploidy, n_points)
+    }else{
+      expected_dr_d = expected_dr_distribution(n= n_snps, k1= all_res_seg$k1_best[1], k2=all_res_seg$k2_best[1], 
+                                               purity =  patched_x$purity, ccf=all_res_seg$CCF_best[1], 
+                                               ploidy = patched_x$ploidy, n_points)
+    }
+    
+  }
+  
+  e_dr_d = patched_x$snps %>% filter(segment_id==all_res_seg$segment_id[1]) %>% 
+    select(from, to) %>% mutate(exp_dr = expected_dr_d) %>% as_tibble() %>% mutate(from=as.integer(from), to=as.integer(to))
+  # the observed baf distribution is constant 
+  observed_dr_d = patched_x$snps %>% filter(segment_id==all_res_seg$segment_id[1]) %>% select(from, to, DR)
+  
+  ggplot() +
+    geom_segment(data= e_dr_d, aes(x = from, xend= to, y= exp_dr, yend = exp_dr), color= sim_color, size=s)+
+    geom_segment(data = observed_dr_d %>% as_tibble(), aes(x = from, xend= to, y= DR, yend = DR), color= 'black',size=s)+
+    theme_bw() + labs(x= '', y= 'DR')
+}
+
+# Expected VAF distribution
+vaf_distribution = function(n_points, coverage = NULL, peaks){
+  dp = c()
+  nv = c()
+  for (i in 1:length(peaks)){
+    dp = c(dp, rpois(as.integer(n_points/length(peaks)), coverage))
+    nv = c(nv, rbinom(as.integer(n_points/length(peaks)), size=dp, prob=peaks[i]))
+  }
+  
+  return(data.frame('nv'= nv, 'dp'= dp))
+}
+plot_vaf_exp_vs_obs = function(patched_x, all_res_seg, n_points, coverage, which){
+  if (which == 'given'){
+    sim_color ='steelblue'
+    peaks = get_clonal_peaks(all_res_seg$k1[1], patched_x$purity)
+  }
+  if (which == 'correct'){
+    sim_color='forestgreen'
+    if (all_res_seg$k2[1]==''){
+      peaks = get_clonal_peaks(all_res_seg$k1[1], patched_x$purity)
+    }else{
+    peaks = get_models(karyotype_combination = paste0(all_res_seg$k1[1],'-' ,all_res_seg$k2[1]),
+                       purity = x$purity, ccf = all_res_seg$CCF_sim[1]) %>% filter(model_id == all_res_seg$model_id[1]) %>% pull(peak)
+    }
+  }
+  if (which == 'inferred'){
+    sim_color='indianred'
+    peaks = all_res_seg %>% pull(peak)
+  }
+  vd = vaf_distribution(n_points, coverage, peaks)
+  ggplot(vd) +
+    geom_histogram(aes(x= nv/dp), fill= sim_color, alpha=.5)+
+    geom_histogram(data = patched_x$mutations %>% filter(segment_id==all_res_seg$segment_id), aes(x= VAF), fill= 'black', alpha=.5)+
+    theme_bw()+labs(y='', x='VAF') + xlim(0,1)
+}
+
+# Get likelihood Given and Correct models 
+get_likelihood_simulated_model = function(patched_x, all_res_seg, muts, snps, which){
+  
+  if (which == 'given'){
+  # Given solution LL
+  v <- VAF_LL(NV= muts$NV, DP= muts$DP, peaks = data.frame('peak'=get_clonal_peaks(all_res_seg$k1[1], purity=patched_x$purity)))
+  b = sum(log(clonal_baf_ll(baf_obs= snps$BAF, n = snps$N.BAF, k1=all_res_seg$k1[1], purity=patched_x$purity)))
+  d <- sum(log(clonal_dr_ll(snps$DR, n = snps$N.BAF, all_res_seg$k1[1], patched_x$purity, patched_x$ploidy)))
+}else{
+  if (all_res_seg$k2[1]==''){
+    v <- VAF_LL(NV= muts$NV, DP= muts$DP, peaks = data.frame('peak'=get_clonal_peaks(all_res_seg$k1[1], purity=patched_x$purity)))
+    b = sum(log(clonal_baf_ll(baf_obs= snps$BAF, n = snps$N.BAF, k1=all_res_seg$k1[1], purity=patched_x$purity)))
+    d <- sum(log(clonal_dr_ll(snps$DR, n = snps$N.BAF, all_res_seg$k1[1], patched_x$purity, patched_x$ploidy)))
+  }else{
+    peaks = data.frame('peak' = get_models(karyotype_combination = paste0(all_res_seg$k1[1],'-' ,all_res_seg$k2[1]),
+                       purity = x$purity, ccf = all_res_seg$CCF_sim[1]) %>% filter(model_id == all_res_seg$model_id[1]) %>% pull(peak))
+    v <- VAF_LL(NV = muts$NV, DP = muts$DP, peaks = peaks) 
+    genotypes = get_models(karyotype_combination = paste0(all_res_seg$k1[1],'-' ,all_res_seg$k2[1]),
+                           purity = x$purity, ccf = all_res_seg$CCF_sim[1]) %>% filter(model_id == all_res_seg$model_id[1]) %>% 
+      select(genotype_1,genotype_2) 
+    g1 = genotypes %>% filter(!is.na(genotype_1)) %>% pull(genotype_1) %>% unique()
+    g2 = genotypes %>% filter(!is.na(genotype_2)) %>% pull(genotype_2) %>% unique()
+    b <- sum(log(BAF_LL(baf_obs = snps$BAF, n = snps$N.BAF,
+                k1 = all_res_seg$k1[1], k2 = all_res_seg$k2[1],
+                purity = patched_x$purity,
+                ccf = all_res_seg$CCF_sim[1],
+                g1 = g1, 
+                g2 = g2)))
+    
+    d <- sum(log(DR_LL(dpr_obs = snps$DR,
+               n = snps$N.BAF,
+               k1 = all_res_seg$k1[1],
+               k2 = all_res_seg$k1[1],
+               purity = patched_x$purity, 
+               ccf = all_res_seg$CCF_sim[1],
+               ploidy=patched_x$ploidy)))
+  }
+}
+  
+  return(data.frame('vaf_ll'=v, 'baf_ll'=b, 'dr_ll'=d))
+  
+  
+}
+
+# patched_x : analysed cnaqc obj
+# all_res_seg : results for a single segment
+plot_simulation = function(patched_x, all_res_seg){
+  
+  n_snps = patched_x$snps %>% filter(segment_id==all_res_seg$segment_id[1]) %>% pull(N.BAF) %>% sum()
+  n_points = patched_x$snps %>% filter(segment_id==all_res_seg$segment_id[1]) %>% pull(N.BAF) %>% length()
+  n_points_vaf = patched_x$mutations  %>% filter(segment_id==all_res_seg$segment_id[1]) %>% pull(chr) %>% length()
+  coverage= mean(patched_x$mutations$DP)
+  st = 'aaaacc
+        bbbbcc'
+  
+  muts = patched_x$mutations %>% filter(segment_id==all_res_seg$segment_id[1])
+  snps = patched_x$snps %>% filter(segment_id==all_res_seg$segment_id[1])
+  
+  # Given solution name
+  given_solution_name = paste0('Clonal ', all_res_seg$k1[1], ' purity ', patched_x$purity)
+  # Correct solution name
+  if (all_res_seg$k2[1] == ''){
+    correct_solution_name = paste0('Clonal ', all_res_seg$k1[1], ' purity ', patched_x$purity)
+  }else{
+    correct_solution_name = paste0('Subclonal ', all_res_seg$k1[1],',', all_res_seg$k2[1], ' CCF ', all_res_seg$CCF_sim[1])
+  }
+  # Inferred solution name
+  if (all_res_seg$k2_best[1] == ''){
+    inferred_solution_name = paste0('Clonal ', all_res_seg$k1_best[1], ' purity ', patched_x$purity)
+  }else{
+    inferred_solution_name = paste0('Subclonal ', all_res_seg$k1_best[1],',', all_res_seg$k2_best[1], ' CCF ', all_res_seg$CCF_best[1])
+  }
+  
+  
+  given_baf = plot_baf_exp_vs_obs(patched_x, all_res_seg, n_snps, n_points, which='given') + ggtitle(given_solution_name)
+  given_dr = plot_dr_exp_vs_obs(patched_x, all_res_seg, n_snps, n_points, which='given')
+  given_vaf = plot_vaf_exp_vs_obs(patched_x, all_res_seg, n_points=n_points_vaf, coverage=coverage, which='given')
+  given_solution_plot = patchwork::wrap_plots(given_baf, given_dr, given_vaf, design = st)
+  # Given solution LL
+  given_ll = get_likelihood_simulated_model(patched_x, all_res_seg, muts, snps, which='given') %>% mutate(id='given')
+  
+  # Correct solution plots
+  correct_baf = plot_baf_exp_vs_obs(patched_x, all_res_seg, n_snps, n_points, which='correct') + ggtitle(correct_solution_name)
+  correct_dr = plot_dr_exp_vs_obs(patched_x, all_res_seg, n_snps, n_points, which='correct')
+  correct_vaf = plot_vaf_exp_vs_obs(patched_x, all_res_seg, n_points=n_points_vaf, coverage=coverage, which='correct')
+  correct_solution_plot = patchwork::wrap_plots(correct_baf, correct_dr, correct_vaf, design = st)
+  # Correct solution LL
+  correct_ll = get_likelihood_simulated_model(patched_x, all_res_seg, muts, snps, which='correct') %>% mutate(id='correct')
+  
+  # Inferred solution
+  inferred_baf = plot_baf_exp_vs_obs(patched_x, all_res_seg, n_snps, n_points, which='inferred') + ggtitle(inferred_solution_name)
+  inferred_dr = plot_dr_exp_vs_obs(patched_x, all_res_seg, n_snps, n_points, which='inferred')
+  inferred_vaf = plot_vaf_exp_vs_obs(patched_x, all_res_seg, n_points=n_points_vaf, coverage=coverage, which='inferred')
+  inferred_solution_plot = patchwork::wrap_plots(inferred_baf, inferred_dr, inferred_vaf, design = st)
+  # Inferred likelohood 
+  inferred_ll = all_res_seg %>% select(vaf_ll,baf_ll,dr_ll) %>% mutate(id = 'inferred') 
+  inferred_ll = inferred_ll[1,]
+  
+  ll_df = rbind(given_ll, correct_ll, inferred_ll) %>% pivot_longer(1:3) #reshape2::melt()
+  
+  ll_plot = ggplot(ll_df) +
+    geom_col(aes(x= name, y=value, fill= id), position = "dodge")+theme_bw()+
+    labs(x='',y='likelihood')+
+    scale_fill_manual(values = c('correct'='forestgreen', 'given'='steelblue', 'inferred'='indianred'))
+  
+  compasison_plot = ggarrange(plotlist= list(given_solution_plot, correct_solution_plot, inferred_solution_plot), ncol= 1)
+  
+  final_plot = ggarrange(plotlist= list(compasison_plot, ll_plot), ncol= 2, heights = c(1, .5), widths = c(1, .5))
+  
+  final_plot
+}
 
 
 

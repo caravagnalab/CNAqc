@@ -35,6 +35,8 @@ clonal_baf_ll <- function(baf_obs, n, k1, purity) {
   E_baf <- clonal_expected_baf(k1, purity)
   alpha <- ((n - 2) * E_baf + 1) / (1 - E_baf)
   s <- dbeta(baf_obs, shape1 = alpha, shape2 = n) 
+  if (is.infinite(s) && 1000<s){s=1000}
+  if (is.infinite(s) && 1000>s){s=-1000}
   return(s)
 }
 
@@ -159,6 +161,8 @@ BAF_LL <- function(baf_obs, n, k1, k2, purity, ccf, g1, g2){
   E_baf <- expected_baf(k1, k2, purity, ccf, g1, g2)
   alpha <- ((n - 2) * E_baf + 1) / (1 - E_baf)
   s <- dbeta(baf_obs, shape1 = alpha, shape2 = n) 
+  if (is.infinite(s) && 1000<s){s=1000}
+  if (is.infinite(s) && 1000>s){s=-1000}
   return(s)
 }
 
