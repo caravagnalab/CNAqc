@@ -4,7 +4,7 @@ options = expand.grid(purity = seq(.1, 1, .1), coverage = seq(30, 100, 10), ccf 
 
 overall_res = lapply(seq(1, length(options$purity), by =1), function(i){
   
- # tryCatch({
+  tryCatch({
     
     x = simulate_sample(t_subclone_mrca = 5, cna_rate = 5, mu= 6e-8, w= 10, coverage = options[i,]$coverage, purity= options[i,]$purity,
                         sub_cnas_rate= 7, t_f= 10, ccf = options[i,]$ccf, bin_size= 50000)
@@ -66,7 +66,7 @@ overall_res = lapply(seq(1, length(options$purity), by =1), function(i){
                                                           replicate = options[i,]$replicate,
                                                           ccf = options[i,]$ccf)
   return(summary_table)
-#  }, error=function(e){cat("ERROR :",conditionMessage(e), "\n")})
+  }, error=function(e){cat("ERROR :",conditionMessage(e), "\n")})
 })
 
 overall_res = Reduce(rbind, overall_res) 
