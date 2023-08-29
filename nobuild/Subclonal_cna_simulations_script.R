@@ -2,11 +2,17 @@ devtools::load_all('~/Documents/Documents/GitHub/CNAqc/R')
 
 options = expand.grid(purity = seq(.1, 1, .1), coverage = seq(30, 100, 10), ccf = seq(.1, .9, .1), replicates = seq(1, 10, 1))
 
-overall_res = lapply(seq(1, length(options$purity), by =1), function(i){
-  
-  tryCatch({
-    
-    x = simulate_sample(t_subclone_mrca = 5, cna_rate = 5, mu= 6e-8, w= 10, coverage = options[i,]$coverage, purity= options[i,]$purity,
+# overall_res = lapply(seq(1, length(options$purity), by =1), function(i){
+#overall_res = lapply(seq(129, 132, by =1), function(i){
+
+overall_res = data.frame()
+  #tryCatch({
+for (i in 1:length(options$purity)){
+ 
+  print(paste0('Computing solution for purity ',options[i,]$purity, 
+        ' CCF ',options[i,]$ccf, ' Coverage ',options[i,]$coverage, ' Replicate ',options[i,]$replicates, ' (',i,'/',length(options$purity),')'))
+  tryCatch({  
+  x = simulate_sample(t_subclone_mrca = 5, cna_rate = 5, mu= 6e-8, w= 10, coverage = options[i,]$coverage, purity= options[i,]$purity,
                         sub_cnas_rate= 7, t_f= 10, ccf = options[i,]$ccf, bin_size= 50000)
     
     mutations = x$mutations %>% mutate(Major= as.integer(Major),  minor = as.integer(minor)) %>% select(!segment_id)#%>% mutate(ref = 'A', alt = 'T')
@@ -24,7 +30,7 @@ overall_res = lapply(seq(1, length(options$purity), by =1), function(i){
       dir.create(paste0('../nobuild/simulations/', dir))
       }
     
-    original_res = x$cna %>% mutate('k1'= paste0(Major, ':', minor), k2 = ifelse(Major_2==0, '', paste0(Major_2, ':', minor_2))) %>%
+    original_res = patched_x$cna %>% mutate('k1'= paste0(Major, ':', minor), k2 = ifelse(Major_2==0, '', paste0(Major_2, ':', minor_2))) %>%
       select(k1, k2, CCF, segment_id, model_id) %>% mutate(CCF_sim = options[i,]$ccf)
     
     new_res = patched_x$patch_best_solution %>% mutate('k1_best'= k1, 'k2_best' = k2, 'CCF_best'= ccf_1, 'model_id_best'= model) %>% select(!c(k1, k2, ccf_1, model))
@@ -43,7 +49,7 @@ overall_res = lapply(seq(1, length(options$purity), by =1), function(i){
         axis.text.x = element_text(angle = 45, hjust=1)
         )
     
-    segment_ids = patched_x$patch_best_solution %>% pull(segment_id) %>% unique()
+    segment_ids = patched_x$patch_best_solution %>% filter(k2!='') %>% pull(segment_id) %>% unique()
   
   for (j in 1:length(segment_ids)){
     #print(segment_ids[i])
@@ -65,11 +71,14 @@ overall_res = lapply(seq(1, length(options$purity), by =1), function(i){
                                                           coverage = options[i,]$coverage, 
                                                           replicate = options[i,]$replicate,
                                                           ccf = options[i,]$ccf)
-  return(summary_table)
-  }, error=function(e){cat("ERROR :",conditionMessage(e), "\n")})
-})
+  #return(summary_table)
 
-overall_res = Reduce(rbind, overall_res) 
+  overall_res = rbind(overall_res, summary_table)
+}, error=function(e){cat("ERROR :",conditionMessage(e), "\n")})
+}
+#overall_res = Reduce(rbind, overall_res) 
+  
+  
 write.csv(overall_res, file= '../nobuild/simulations/simulation_results.csv')
 
 overall_res =overall_res %>%

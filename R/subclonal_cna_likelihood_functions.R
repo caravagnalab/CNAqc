@@ -71,6 +71,10 @@ clonal_expected_dr <- function(k1, purity, ploidy =2){
 clonal_dr_ll <- function(dpr_obs, n, k1, purity, ploidy=2){
   expected_dpr <- clonal_expected_dr(k1, purity, ploidy)
   ll <- dgamma(dpr_obs, shape = expected_dpr * sqrt(n) + 1, rate = sqrt(n))
+  
+  if (is.infinite(ll) && 1000<ll){ll=1000}
+  if (is.infinite(ll) && 1000>s){ll=-1000}
+  
   return(ll)
 }
 
@@ -94,6 +98,8 @@ vaf_ll <- function(k, n, ps){
   for (peak in 1:length(ps)){
     #s <- s + max(dbinom(k, size=n, prob=ps[peak]))
     s <- s + (1/length(ps)) * dbinom(k, size=n, prob=ps[peak])
+    if (is.infinite(s) && 1000<s){s=1000}
+    if (is.infinite(s) && 1000>s){s=-1000}
   }
   return(s)
 }
@@ -109,10 +115,13 @@ vaf_ll <- function(k, n, ps){
 #' @examples
 VAF_LL <- function(NV, DP, peaks){
   vaf_ll <- 0
+  peaks = peaks[peaks>.15]
   for (i in 1:length(NV)) {
-    v <- vaf_ll(k = NV[i], n = DP[i], ps = peaks$peak)
+    v <- vaf_ll(k = NV[i], n = DP[i], ps = peaks) #peaks$peak
     vaf_ll <- vaf_ll + log(v)
   }
+  if (is.infinite(vaf_ll) && 100<vaf_ll){vaf_ll=1000000000}
+  if (is.infinite(vaf_ll) && 100>vaf_ll){vaf_ll=-100000000}
   return(vaf_ll)
 }
 
@@ -137,7 +146,7 @@ expected_baf <- function(k1, k2, purity, ccf, g1, g2){
   nB2 <- lengths(regmatches(g2, gregexpr("B", g2)))
   
   
-  num <- min(c(nA1 * ccf + nA2 * (1 - ccf), nB1 * ccf + nB2 * (1 - ccf)))
+  num <- min(c( (nA1 * ccf + nA2 * (1 - ccf))*purity , (nB1 * ccf + nB2 * (1 - ccf))*purity)) + (1- purity)
   den <- purity * ((nA1 + nB1) * ccf + (1 - ccf) * (nA2 + nB2)) + 2 * (1 - purity)
   exp_baf <- num / den
   return(exp_baf)
@@ -206,6 +215,8 @@ expected_dr <- function(k1, k2, purity, ccf, ploidy = 2){
 DR_LL <- function(dpr_obs, n, k1, k2, purity, ccf, ploidy = 2){
   expected_dpr <- expected_dr(k1, k2, purity, ccf, ploidy)
   ll <- dgamma(dpr_obs, shape = expected_dpr * sqrt(n) + 1, rate = sqrt(n))
+  if (is.infinite(ll) && 1000<ll){ll=1000}
+  if (is.infinite(ll) && 1000>ll){ll=-1000}
   return(ll)
 }
 

@@ -481,7 +481,7 @@ simulate_snps_seg = function(segment, bin_size= 50000, purity= 1, ploidy=2){
   n_baf = rpois(n_bins, (1/1000)*bin_size)
   
   if (segment$model_id=='clonal'){
-    exp_baf <- min(clonal_expected_baf(paste0(segment$Major, ':', segment$minor), purity))
+    exp_baf <- clonal_expected_baf(paste0(segment$Major, ':', segment$minor), purity)
     exp_dr <- clonal_expected_dr(paste0(segment$Major, ':', segment$minor), purity,ploidy)
   }else{
     kc= paste0('1:1-', segment$Major_2, ':', segment$minor_2)

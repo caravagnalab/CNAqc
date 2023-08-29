@@ -149,6 +149,7 @@ plot_patch_best_solution = function(x, seg_id){
   new_plot = patchwork::wrap_plots(new_baf_plot, new_dr_plot, new_vaf, design=st) +  patchwork::plot_annotation(title = new_solution_name) &  theme(text = element_text(size = 10))
   
   final_plot = ggarrange(plotlist = list(old_plot, new_plot), ncol= 1)
+  final_plot
 }
 
 #' Plot summarising all subclonal solutions for a single segment found by patch in terms of loglikelihood and CCF, dividing them by karyotype combination and model type

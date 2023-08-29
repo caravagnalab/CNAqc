@@ -139,11 +139,17 @@ pre_select_segments = function(x){
   return(selected_segs)
 }
 
-choose_model = function(ll_df, baf_coef = 30, dr_coef = 30, vaf_coef= 100){
-  ll_df = ll_df %>% filter(baf_ll > max(ll_df$baf_ll) - baf_coef)
+choose_model = function(ll_df, baf_coef = 30, dr_coef = 10, vaf_coef= 1000){
+  
   ll_df = ll_df %>% filter(dr_ll > max(ll_df$dr_ll) - dr_coef)
+  ll_df = ll_df %>% filter(baf_ll > max(ll_df$baf_ll) - baf_coef)
   ll_df = ll_df %>% filter(vaf_ll > max(ll_df$vaf_ll) - vaf_coef)
+  
+  #if (model == 'subclonal'){}
+  
   ll_df = ll_df %>% filter(loglikelihood == max(loglikelihood))
+  return(ll_df)
+  #}
 }
 
 #' Test models for a single segment
@@ -157,7 +163,7 @@ choose_model = function(ll_df, baf_coef = 30, dr_coef = 30, vaf_coef= 100){
 #' @export
 #'
 #' @examples
-test_model <- function(x, seg_id, top_n=5, all_solutions=FALSE){
+test_model <- function(x, seg_id, top_n=5, all_solutions=FALSE, baf_coef = 30, dr_coef = 10, vaf_coef= 1000){
   
   SNV_df = x$mutations %>% filter(segment_id==seg_id)
   SNP_df = x$snps %>% filter(segment_id==seg_id) #%>% filter(!is.na(BAF))
@@ -190,8 +196,8 @@ test_model <- function(x, seg_id, top_n=5, all_solutions=FALSE){
   all_clonal_res = clonal_results
   all_sub_res = sc_results
   
-  clonal_results = choose_model(clonal_results) 
-  sc_results = choose_model(sc_results) 
+  clonal_results = choose_model(clonal_results, baf_coef = baf_coef, dr_coef = dr_coef, vaf_coef= vaf_coef) 
+  sc_results = choose_model(sc_results, baf_coef = baf_coef, dr_coef = dr_coef, vaf_coef= vaf_coef) 
   
   seg_cl_baf_ll = clonal_results[1,] %>% pull(baf_ll)
   seg_cl_dr_ll = clonal_results[1,] %>% pull(dr_ll)
@@ -204,7 +210,7 @@ test_model <- function(x, seg_id, top_n=5, all_solutions=FALSE){
   cl_ll = clonal_results[1,] %>% pull(loglikelihood)
   scl_ll = sc_results[1,] %>% pull(loglikelihood)
   
-  if ( (seg_cl_baf_ll> seg_scl_baf_ll) | (seg_cl_dr_ll> seg_scl_dr_ll) | (cl_ll > scl_ll) | (seg_scl_k1==seg_scl_k2)){
+  if ( (seg_cl_baf_ll> seg_scl_baf_ll + 10 ) | (seg_cl_dr_ll> seg_scl_dr_ll + 10) | (cl_ll > scl_ll) | (seg_scl_k1==seg_scl_k2)){
     first_row = clonal_results[1,]
     best = clonal_results %>% filter(k1== first_row$k1,
                                      k2== first_row$k2,
@@ -226,7 +232,7 @@ test_model <- function(x, seg_id, top_n=5, all_solutions=FALSE){
   results <- bind_rows(clonal_results, sc_results)
   results <- results %>% dplyr::arrange(desc(loglikelihood))
   
-  return(list('best'=best, 'clonal'=clonal_results, 'subclonal'=sc_results))
+  return(list('best'=best, 'clonal'=all_clonal_res, 'subclonal'=all_sub_res))
 }
 
 #' Clonal test for a segment 
@@ -250,8 +256,18 @@ clonal_test <- function(SNP_df, SNV_df, purity, ploidy=2){
     b = clonal_baf_ll(baf_obs= SNP_df$BAF, n = SNP_df$N.BAF, k1=k, purity=purity)
     # DR
     d <- clonal_dr_ll(SNP_df$DR, n = SNP_df$N.BAF, k, purity, ploidy)
-    ll <- v + sum(log(b)) + sum(log(d))
-    r <- data.frame(k1 = k, k2 = "", ccf_1 = 1, model = "Clonal", vaf_ll=v, baf_ll=sum(log(b)), dr_ll=sum(log(d)), loglikelihood = ll, peaks=peaks$peaks, model_type= 'Clonal')
+    
+    log_baf = sum(log(b))
+    if (is.infinite(log_baf) && 1000<log_baf){log_baf=100000000}
+    if (is.infinite(log_baf) && 1000>log_baf){log_baf=-100000000}
+    
+    log_d = sum(log(d))
+    if (is.infinite(log_d) && 1000<log_d){log_d=100000000}
+    if (is.infinite(log_d) && 1000>log_d){log_d=-100000000}
+    
+    ll <- v + log_baf + log_d
+    r <- data.frame(k1 = k, k2 = "", ccf_1 = 1, model = "Clonal", vaf_ll=v, baf_ll=log_baf, dr_ll=log_d, 
+                    loglikelihood = ll, peaks=peaks$peaks, model_type= 'Clonal')
     r
   })
   results= Reduce(rbind, results)
@@ -330,9 +346,18 @@ sub_clonal_test <- function(SNP_df, SNV_df, purity, ploidy=2, penalty = 0){
                      ccf = ccf,
                    ploidy=ploidy)
         # Overall log-likelihood
-        ll <- v + sum(log(b)) + sum(log(d))
+        
+        log_baf = sum(log(b))
+        if (is.infinite(log_baf) && 1000<log_baf){log_baf=100000000}
+        if (is.infinite(log_baf) && 1000>log_baf){log_baf=-100000000}
+        
+        log_d = sum(log(d))
+        if (is.infinite(log_d) && 1000<log_d){log_d=100000000}
+        if (is.infinite(log_d) && 1000>log_d){log_d=-100000000}
+        
+        ll <- v + log_baf + log_d
         r <- data.frame(k1 = k1, k2 = k2, ccf_1 = ccf, model = m, 
-                        vaf_ll = v, baf_ll=sum(log(b)), dr_ll=sum(log(d)), loglikelihood = ll, peak=peak, model_type= model_type)
+                        vaf_ll = v, baf_ll=log_baf, dr_ll=log_d, loglikelihood = ll, peak=peak, model_type= model_type)
         results_model_nm = rbind(results_model_nm,r)
       }
       results_model_nm
@@ -363,7 +388,9 @@ sub_clonal_test <- function(SNP_df, SNV_df, purity, ploidy=2, penalty = 0){
 #' @export
 #'
 #' @examples
-patch = function(x, segments= NULL, top_n=5, all_solutions=TRUE, preselect = FALSE){
+patch = function(x, segments= NULL, top_n=5, 
+                 all_solutions=TRUE, preselect = FALSE,
+                 baf_coef = 30, dr_coef = 10, vaf_coef= 1000){
   
   if (is.null(segments)){
     segment_ids = x$segment_type %>% filter(segment_type %in% c('simple clonal', 'simple subclonal')) %>% pull(segment_id)
@@ -376,7 +403,7 @@ patch = function(x, segments= NULL, top_n=5, all_solutions=TRUE, preselect = FAL
   }
   
   cli::cli_h3("Computing solutions for {length(segment_ids)} segments")
-  solutions = pbapply::pblapply(segment_ids, test_model, x=x, top_n=top_n, all_solutions=all_solutions)
+  solutions = pbapply::pblapply(segment_ids, test_model, x=x, top_n=top_n, all_solutions=all_solutions, baf_coef = baf_coef, dr_coef = dr_coef, vaf_coef= vaf_coef)
   solutions <- solutions[!sapply(solutions,is.null)]
   #cli::cli_h3("Segments tesed")
   
