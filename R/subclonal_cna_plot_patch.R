@@ -29,8 +29,8 @@ plot_baf_single_segment = function(SNP_df){
     ) +ggplot2::labs(y = 'BAF', x= SNP_df$chr[1])+
     CNAqc:::my_ggplot_theme(cex = 1)+
     theme(
-      axis.text.x = element_blank(),
-      axis.ticks.x = element_blank()) + ylim(0,1)
+      axis.text.x = ggplot2::element_blank(),
+      axis.ticks.x = ggplot2::element_blank()) + ylim(0,1)
 }
 
 #' Plot the DR of bins sitting on a selected segment
@@ -67,8 +67,8 @@ plot_dr_single_segment = function(SNP_df){
     ggplot2::labs(y = 'Depth ratio', x = SNP_df$chrs[1])+
     CNAqc:::my_ggplot_theme(cex = 1)+
     theme(
-      axis.text.x = element_blank(),
-      axis.ticks.x = element_blank()) + ylim(0, upper)
+      axis.text.x = ggplot2::element_blank(),
+      axis.ticks.x = ggplot2::element_blank()) + ylim(0, upper)
 }
 
 

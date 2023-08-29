@@ -35,10 +35,10 @@ segment_ids = new_cnaqc_obj$patch_best_solution %>%
 for (i in 1:length(segment_ids)){
   print(segment_ids[i])
   pp = patch_plot(new_cnaqc_obj, segment_ids[i])
-  ggsave(pp, filename= paste0('../nobuild/PDO74_results/plots1/', segment_ids[i], '.png'), width = 20, height = 10)
+  ggplot2::ggsave(pp, filename= paste0('../nobuild/PDO74_results/plots1/', segment_ids[i], '.png'), width = 20, height = 10)
 }
 
-
+require(ggplot2)
 new_vs_old_res = function(x, selected_segment){
   
   seg1_muts= x$mutations %>% filter(segment_id==selected_segment)
@@ -144,10 +144,10 @@ new_vs_old_res = function(x, selected_segment){
   
   old_res_plot = patchwork::wrap_plots(old_baf, old_dr, old_vaf, design = st) + patchwork::plot_annotation(title = old_title)
   
-  k1_best = x$patch_best_solution[1,]$k1
-  k2_best = x$patch_best_solution[1,]$k2
-  model_best = x$patch_best_solution[1,]$model
-  ccf_best = x$patch_best_solution[1,]$ccf
+  k1_best = x$patch_best_solution %>% filter(segment_id== selected_segment) %>% pull(k1) %>% unique()
+  k2_best = x$patch_best_solution %>% filter(segment_id== selected_segment) %>% pull(k2) %>% unique()
+  model_best = x$patch_best_solution %>% filter(segment_id== selected_segment) %>% pull(model) %>% unique()
+  ccf_best = x$patch_best_solution %>% filter(segment_id== selected_segment) %>% pull(ccf_1) %>% unique()
   
   if (ccf_best==1){
     new_title = paste0('Clonal segment with karyotype ', k1_best)
@@ -173,9 +173,9 @@ new_vs_old_res = function(x, selected_segment){
   final_plot
 }
 
-segments = new_cnaqc_obj$patch_best_solution %>% pull(segment_id) %>% unique()
+#segments = new_cnaqc_obj$patch_best_solution %>% pull(segment_id) %>% unique()
 
-lapply(segments, function(i){
+lapply(segment_ids, function(i){
   res_plot= new_vs_old_res(new_cnaqc_obj,i)
   ggsave(res_plot, filename= paste0('../nobuild/PDO74_results/plots2/', i, '.png'), width = 20, height = 10)
 })
