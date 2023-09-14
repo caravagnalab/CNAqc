@@ -107,7 +107,7 @@ plot_patch_best_solution = function(x, seg_id){
   e_dr = clonal_expected_dr(paste0(cna_seg$Major, ':', cna_seg$minor), x$purity, x$ploidy)
   e_peaks = get_clonal_peaks(paste0(cna_seg$Major, ':', cna_seg$minor), x$purity)
   
-  if (x$patch_best_solution$model[1] == 'Clonal'){
+  if (best_solution$model[1] == 'Clonal'){
     
     proposed_baf = clonal_expected_baf(best_solution$k1, x$purity)
     proposed_dr = clonal_expected_dr(best_solution$k1, x$purity, x$ploidy)
