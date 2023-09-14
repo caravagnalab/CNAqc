@@ -142,10 +142,153 @@ plot_patch_best_solution = function(x, seg_id){
     theme(text = element_text(size = 10))
   #ggplot2::ggtitle(old_solution_name)
   which_solution = 'subclonal'
-  if (x$patch_best_solution$model[1] == 'Clonal'){
+  if (best_solution$model[1] == 'Clonal'){
     which_solution = 'clonal'
   }
   new_solution_name = paste0('Proposed solution: ', which_solution, ' segment with karyotype ', best_solution$k1 %>% unique() , ' ', best_solution$k2 %>% unique(), ', CCF ', ccf = best_solution$ccf_1 %>% unique())          
+  new_plot = patchwork::wrap_plots(new_baf_plot, new_dr_plot, new_vaf, design=st) +  patchwork::plot_annotation(title = new_solution_name) &  theme(text = element_text(size = 10))
+  
+  final_plot = ggarrange(plotlist = list(old_plot, new_plot), ncol= 1)
+  final_plot
+}
+
+rank_solutions = function(solutions_df, clonality){
+  if (clonality == 'clonal'){
+  solutions_df_ranks = solutions_df %>% group_by(k1, ccf_1, vaf_ll, baf_ll, dr_ll, loglikelihood) %>%
+    summarise(n=n()) %>% arrange(desc(loglikelihood))
+  }
+  else{
+    solutions_df_ranks = solutions_df %>% group_by(k1,k2 ,ccf_1,model,vaf_ll,baf_ll,dr_ll,loglikelihood,model_type)%>%
+      summarise(n=n()) %>% arrange(desc(loglikelihood))
+  }
+  n_solutions = nrow(solutions_df_ranks)
+  solutions_df_ranks$rank = 1:n_solutions
+  if (clonality == 'clonal'){
+  solutions_df = merge(solutions_df, solutions_df_ranks, by.x= c('k1','ccf_1','vaf_ll','baf_ll','dr_ll', 'loglikelihood'), 
+                       by.y= c('k1','ccf_1','vaf_ll','baf_ll','dr_ll', 'loglikelihood'), all=T) 
+  }else{
+    solutions_df = merge(solutions_df, solutions_df_ranks, by.x= c('k1','k2' ,'ccf_1','model','vaf_ll','baf_ll','dr_ll','loglikelihood','model_type'), 
+                         by.y= c('k1','k2' ,'ccf_1','model','vaf_ll','baf_ll','dr_ll','loglikelihood','model_type'), all=T)
+  }
+  solutions_df
+  }
+
+plot_solution_selected_by_index = function(x, seg_id, clonality, solution_idex){
+  
+  snvs_seg = x$mutations %>% filter(segment_id == seg_id)
+  snps_seg = x$snps %>% filter(segment_id == seg_id)
+  cna_seg = x$cna %>% filter(segment_id == seg_id)
+  
+  if (clonality == 'clonal'){
+    selected_solution = x$patch_clonal_solutions %>% filter(segment_id == seg_id) %>% rank_solutions(clonality= 'clonal') %>% 
+      filter(rank==solution_idex)
+  }else{
+    selected_solution = x$patch_subclonal_solutions %>% filter(segment_id == seg_id) %>% rank_solutions(clonality= 'subclonal') %>%
+    filter(rank==solution_idex)
+  }
+  
+  e_baf = clonal_expected_baf(paste0(cna_seg$Major, ':', cna_seg$minor), x$purity)
+  e_dr = clonal_expected_dr(paste0(cna_seg$Major, ':', cna_seg$minor), x$purity, x$ploidy)
+  e_peaks = get_clonal_peaks(paste0(cna_seg$Major, ':', cna_seg$minor), x$purity)
+  
+  if (selected_solution$model[1] == 'Clonal'){
+    
+    proposed_baf = clonal_expected_baf(selected_solution$k1, x$purity)
+    proposed_dr = clonal_expected_dr(selected_solution$k1, x$purity, x$ploidy)
+    proposed_peaks = get_clonal_peaks(selected_solution$k1, x$purity)
+    
+  }else{
+    k1 = selected_solution$k1 %>% unique()
+    k2 = selected_solution$k2 %>% unique()
+    ccf = selected_solution$ccf_1 %>% unique()
+    g1 = strsplit(selected_solution$model[1], '->')[[1]][1]
+    g2 = strsplit(selected_solution$model[1], '->')[[1]][2]
+    
+    proposed_baf = expected_baf(k1, k2, x$purity, ccf, g1, g2)
+    proposed_dr = expected_dr(k1, k2, x$purity, ccf, x$ploidy)
+    proposed_peaks = selected_solution$peak
+  }
+  
+  
+  old_baf_plot = plot_baf_single_segment(snps_seg) + geom_hline(yintercept = e_baf, color= 'forestgreen')
+  new_baf_plot = plot_baf_single_segment(snps_seg) + geom_hline(yintercept = proposed_baf, color= 'forestgreen')
+  
+  old_dr_plot = plot_dr_single_segment(snps_seg) + geom_hline(yintercept = e_dr, color= 'forestgreen')
+  new_dr_plot = plot_dr_single_segment(snps_seg) + geom_hline(yintercept = proposed_dr, color= 'forestgreen')
+  
+  old_vaf = plot_vaf_single_segment(snvs_seg) + geom_vline(xintercept = e_peaks, color = 'forestgreen', linetype= 'dashed')
+  new_vaf = plot_vaf_single_segment(snvs_seg) + geom_vline(xintercept = proposed_peaks, color = 'forestgreen', linetype= 'dashed')
+  
+  st= 'AAACC
+       BBBCC'
+  old_solution_name = paste0('Original solution: clonal segment of karyotype ', paste0(cna_seg$Major, ':', cna_seg$minor))
+  old_plot = patchwork::wrap_plots(old_baf_plot, old_dr_plot, old_vaf, design=st) +  patchwork::plot_annotation(title = old_solution_name) & 
+    theme(text = element_text(size = 10))
+  #ggplot2::ggtitle(old_solution_name)
+  which_solution = 'subclonal'
+  if (selected_solution$model[1] == 'Clonal'){
+    which_solution = 'clonal'
+  }
+  new_solution_name = paste0('Proposed solution: ', which_solution, ' segment with karyotype ', selected_solution$k1 %>% unique() , ' ', selected_solution$k2 %>% unique(), ', CCF ', ccf = selected_solution$ccf_1 %>% unique())          
+  new_plot = patchwork::wrap_plots(new_baf_plot, new_dr_plot, new_vaf, design=st) +  patchwork::plot_annotation(title = new_solution_name) &  theme(text = element_text(size = 10))
+  
+  final_plot = ggarrange(plotlist = list(old_plot, new_plot), ncol= 1)
+  final_plot
+}
+
+plot_manually_selected_solution = function(x, seg_id, k1, k2= '', ccf_1, model='clonal'){
+  
+  snvs_seg = x$mutations %>% filter(segment_id == seg_id)
+  snps_seg = x$snps %>% filter(segment_id == seg_id)
+  cna_seg = x$cna %>% filter(segment_id == seg_id)
+  
+  e_baf = clonal_expected_baf(paste0(cna_seg$Major, ':', cna_seg$minor), x$purity)
+  e_dr = clonal_expected_dr(paste0(cna_seg$Major, ':', cna_seg$minor), x$purity, x$ploidy)
+  e_peaks = get_clonal_peaks(paste0(cna_seg$Major, ':', cna_seg$minor), x$purity)
+  
+  if (k2==''){
+    
+    proposed_baf = clonal_expected_baf(k1, x$purity)
+    proposed_dr = clonal_expected_dr(k1, x$purity, x$ploidy)
+    proposed_peaks = get_clonal_peaks(k1, x$purity)
+  }else{
+    discrete_ccf = seq(0.1, 1, by=0.1)
+    discrete_pur = seq(from=0, to= 1, by= .05)
+    purity= x$purity
+    temp_pur= discrete_pur[which(abs(discrete_pur - purity) == min(abs(discrete_pur - purity)))]
+    temp_ccf= discrete_ccf[which(abs(discrete_ccf - ccf_1) == min(abs(discrete_ccf - ccf_1)))]
+    
+    df = get_models(karyotype_combination= paste0(k1,'-',k2), purity= temp_pur, ccf= temp_ccf) %>% filter(model_id == model)
+    peak <- df %>% dplyr::select(peak) 
+    genotypes <- df %>% dplyr::select(genotype_1, genotype_2)
+    g1 <- (genotypes$genotype_1 %>% na.omit())[1]
+    g2 <- (genotypes$genotype_2 %>% na.omit())[1]
+    proposed_baf = expected_baf(k1, k2, x$purity, ccf=ccf_1, g1, g2)
+    proposed_dr = expected_dr(k1, k2, x$purity, ccf=ccf_1, x$ploidy)
+    proposed_peaks = peak$peak
+  }
+  
+  
+  old_baf_plot = plot_baf_single_segment(snps_seg) + geom_hline(yintercept = e_baf, color= 'forestgreen')
+  new_baf_plot = plot_baf_single_segment(snps_seg) + geom_hline(yintercept = proposed_baf, color= 'forestgreen')
+  
+  old_dr_plot = plot_dr_single_segment(snps_seg) + geom_hline(yintercept = e_dr, color= 'forestgreen')
+  new_dr_plot = plot_dr_single_segment(snps_seg) + geom_hline(yintercept = proposed_dr, color= 'forestgreen')
+  
+  old_vaf = plot_vaf_single_segment(snvs_seg) + geom_vline(xintercept = e_peaks, color = 'forestgreen', linetype= 'dashed')
+  new_vaf = plot_vaf_single_segment(snvs_seg) + geom_vline(xintercept = proposed_peaks, color = 'forestgreen', linetype= 'dashed')
+  
+  st= 'AAACC
+       BBBCC'
+  old_solution_name = paste0('Original solution: clonal segment of karyotype ', paste0(cna_seg$Major, ':', cna_seg$minor))
+  old_plot = patchwork::wrap_plots(old_baf_plot, old_dr_plot, old_vaf, design=st) +  patchwork::plot_annotation(title = old_solution_name) & 
+    theme(text = element_text(size = 10))
+  #ggplot2::ggtitle(old_solution_name)
+  which_solution = 'subclonal'
+  if (model == 'clonal'){
+    which_solution = 'clonal'
+  }
+  new_solution_name = paste0('Proposed solution: ', which_solution, ' segment with karyotype ', k1 , ' ', k2, ', CCF ', ccf = ccf_1 %>% unique())          
   new_plot = patchwork::wrap_plots(new_baf_plot, new_dr_plot, new_vaf, design=st) +  patchwork::plot_annotation(title = new_solution_name) &  theme(text = element_text(size = 10))
   
   final_plot = ggarrange(plotlist = list(old_plot, new_plot), ncol= 1)
