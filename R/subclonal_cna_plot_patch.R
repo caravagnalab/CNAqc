@@ -117,8 +117,14 @@ plot_patch_best_solution = function(x, seg_id){
     k1 = best_solution$k1 %>% unique()
     k2 = best_solution$k2 %>% unique()
     ccf = best_solution$ccf_1 %>% unique()
-    g1 = strsplit(best_solution$model[1], '->')[[1]][1]
-    g2 = strsplit(best_solution$model[1], '->')[[1]][2]
+    if (!grepl('|', best_solution$model[1])){
+      g1 = strsplit(best_solution$model[1], '->')[[1]][1]
+      g2 = strsplit(best_solution$model[1], '->')[[1]][2]
+    }else{
+      g = strsplit(best_solution$model[1], '->')[[1]][2]
+      g1 = strsplit(g, '\\|')[[1]][1]
+      g2 = strsplit(g, '\\|')[[1]][2]
+    }
     
     proposed_baf = expected_baf(k1, k2, x$purity, ccf, g1, g2)
     proposed_dr = expected_dr(k1, k2, x$purity, ccf, x$ploidy)

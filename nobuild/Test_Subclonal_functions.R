@@ -1,4 +1,4 @@
-devtools::load_all('~/Documents/Documents/GitHub/CNAqc/R')
+devtools::load_all('~/Documents/Documents/GitHub/CNAqc')
 
 x = readRDS('../data/Test_subclonalCNA_organoid.rds')
 
