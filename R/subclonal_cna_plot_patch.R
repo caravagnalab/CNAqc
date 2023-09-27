@@ -111,7 +111,7 @@ plot_patch_best_solution = function(x, seg_id){
     
     proposed_baf = clonal_expected_baf(best_solution$k1, x$purity)
     proposed_dr = clonal_expected_dr(best_solution$k1, x$purity, x$ploidy)
-    proposed_peaks = get_clonal_peaks(best_solution$k1, x$purity)
+    proposed_peaks = get_clonal_peaks(best_solution$k1 %>% unique(), x$purity)
     
   }else{
     k1 = best_solution$k1 %>% unique()
