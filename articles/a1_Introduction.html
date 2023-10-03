@@ -122,13 +122,11 @@
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/caravagnalab/CNAqc" class="external-link">CNAqc</a></span><span class="op">)</span></span>
 <span><span class="co">#&gt; The legacy packages maptools, rgdal, and rgeos, underpinning the sp package,</span></span>
-<span><span class="co">#&gt; which was just loaded, will retire in October 2023.</span></span>
+<span><span class="co">#&gt; which was just loaded, were retired in October 2023.</span></span>
 <span><span class="co">#&gt; Please refer to R-spatial evolution reports for details, especially</span></span>
 <span><span class="co">#&gt; https://r-spatial.org/r/2023/05/15/evolution4.html.</span></span>
 <span><span class="co">#&gt; It may be desirable to make the sf package available;</span></span>
 <span><span class="co">#&gt; package maintainers should consider adding sf to Suggests:.</span></span>
-<span><span class="co">#&gt; The sp package is now running under evolution status 2</span></span>
-<span><span class="co">#&gt;      (status 2 uses the sf package in place of rgdal)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Loading <span style="color: #00BB00;">CNAqc</span>, <span style="font-style: italic;">'Copy Number Alteration quality check'</span>. Support : <span style="color: #0000BB; font-style: italic;">&lt;https://caravagn.github.io/CNAqc/&gt;</span></span></span>
 <span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
@@ -349,7 +347,7 @@
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">CNAqc - CNA Quality Check</span> <span style="color: #00BBBB;">───────────────────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Using reference genome coordinates for: <span style="color: #00BB00;">GRCh38</span>.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Found annotated driver mutations: <span style="color: #00BB00;">TTN</span>, <span style="color: #00BB00;">CTCF</span>, <span style="color: #00BB00;">TP53</span>, <span style="color: #00BB00;">CTCF</span>, and <span style="color: #00BB00;">TTN</span>.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Found annotated driver mutations: <span style="color: #00BB00;">TTN</span>, <span style="color: #00BB00;">CTCF</span>, <span style="color: #00BB00;">TP53</span>, <span style="color: #00BB00;">CTCF</span>, and <span style="color: #00BB00;">TP53</span>.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Fortified calls for <span style="color: #00BB00;">5003</span> somatic mutations: <span style="color: #00BB00;">5003</span> SNVs (<span style="color: #00BB00;">100%</span>) and <span style="color: #00BB00;">0</span> indels.</span></span>
 <span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> CNAs have no CCF, assuming clonal CNAs (CCF = 1).</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Fortified CNAs for <span style="color: #00BB00;">267</span> segments: <span style="color: #00BB00;">267</span> clonal and <span style="color: #00BB00;">0</span> subclonal.</span></span>
@@ -363,14 +361,16 @@
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ── Clonal CNAs</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;   2:2  [n = 2902, L = 1483 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { <span style="color: #BBBB00;">CTCF, CTCF</span> }</span></span>
-<span><span class="co">#&gt;   4:2  [n =  722, L =  331 Mb] ■■■■■■■</span></span>
-<span><span class="co">#&gt;   3:2  [n =  614, L =  357 Mb] ■■■■■■</span></span>
-<span><span class="co">#&gt;   2:1  [n =  602, L =  420 Mb] ■■■■■■  { <span style="color: #BBBB00;">TTN, TTN</span> }</span></span>
-<span><span class="co">#&gt;   3:0  [n =  126, L =  137 Mb] ■</span></span>
-<span><span class="co">#&gt;   2:0  [n =   33, L =   39 Mb]   { <span style="color: #BBBB00;">TP53</span> }</span></span>
-<span><span class="co">#&gt;  16:2  [n =    3, L =    0 Mb] </span></span>
-<span><span class="co">#&gt;  25:2  [n =    1, L =    1 Mb]</span></span>
+<span><span class="co">#&gt;    2:2  [n = 2888, L = 1483 Mb] ■■■■■■■■■■■■■■■■■■■■■■■■■■■  { <span style="color: #BBBB00;">CTCF, CTCF</span> }</span></span>
+<span><span class="co">#&gt;    4:2  [n =  736, L =  331 Mb] ■■■■■■■</span></span>
+<span><span class="co">#&gt;    3:2  [n =  629, L =  357 Mb] ■■■■■■</span></span>
+<span><span class="co">#&gt;    2:1  [n =  600, L =  420 Mb] ■■■■■■  { <span style="color: #BBBB00;">TTN</span> }</span></span>
+<span><span class="co">#&gt;    3:0  [n =  119, L =  137 Mb] ■</span></span>
+<span><span class="co">#&gt;    2:0  [n =   25, L =   39 Mb]   { <span style="color: #BBBB00;">TP53, TP53</span> }</span></span>
+<span><span class="co">#&gt;   16:2  [n =    2, L =    0 Mb] </span></span>
+<span><span class="co">#&gt;   25:2  [n =    2, L =    1 Mb] </span></span>
+<span><span class="co">#&gt;  106:1  [n =    1, L =    0 Mb] </span></span>
+<span><span class="co">#&gt;    3:1  [n =    1, L =    1 Mb]</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample Purity: 89% ~ Ploidy: 4.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> There are 5 annotated driver(s) mapped to clonal CNAs.</span></span>
 <span><span class="co">#&gt;          chr      from        to ref alt  DP NV       VAF driver_label is_driver</span></span>
@@ -378,7 +378,7 @@
 <span><span class="co">#&gt;        chr16  67646006  67646007   C   T 120 54 0.4500000         CTCF      TRUE</span></span>
 <span><span class="co">#&gt;        chr17   7577106   7577107   G   C  84 78 0.9285714         TP53      TRUE</span></span>
 <span><span class="co">#&gt;        chr16  67646006  67646007   C   T 120 54 0.4500000         CTCF      TRUE</span></span>
-<span><span class="co">#&gt;         chr2 179431633 179431634   C   T 117 77 0.6581197          TTN      TRUE</span></span></code></pre></div>
+<span><span class="co">#&gt;        chr17   7577106   7577107   G   C  84 78 0.9285714         TP53      TRUE</span></span></code></pre></div>
 <p>You can also subset data by <em>karyotype of the segments</em>, and by <em>total copy number</em> of the segment.</p>
 <p>Both subset functions do not keep drivers that map off from the selected segments.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
