@@ -403,7 +403,7 @@ patch = function(x, segments= NULL, top_n=5,
   }
   
   cli::cli_h3("Computing solutions for {length(segment_ids)} segments")
-  solutions = pbapply::pblapply(segment_ids, test_model, x=x, top_n=top_n, all_solutions=all_solutions, baf_coef = baf_coef, dr_coef = dr_coef, vaf_coef= vaf_coef)
+  solutions = pbapply::pblapply(segment_ids, CNAqc:::test_model, x=x, top_n=top_n, all_solutions=all_solutions, baf_coef = baf_coef, dr_coef = dr_coef, vaf_coef= vaf_coef)
   solutions <- solutions[!sapply(solutions,is.null)]
   #cli::cli_h3("Segments tesed")
   
