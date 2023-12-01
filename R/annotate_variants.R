@@ -10,6 +10,10 @@
 #'
 #' @param x A CNAqc object.
 #' @param drivers A dataframe in the format of the `intogen_drivers` one released with
+#' @param make_0_span Remove -1 from the coloumn `to`, in case SNPs is indicated by `from` and `to = from + 1` to make
+#' it effectively a point mutation.
+#' @param collapse if the same mutation has more than one consqeunce or location in different transcript, it collapse them
+#' by concatenating them using `:`
 #' CNAqc. In particular, it must contain a column named `gene` to identify gene names.
 #'
 #' @return A CNAqc object with variants annotated. For each variant this object contains:
@@ -37,7 +41,9 @@
 #' }
 #'
 annotate_variants <- function(x,
-                              drivers = CNAqc::intogen_drivers)
+                              drivers = CNAqc::intogen_drivers,
+                              make_0_span = FALSE,
+                              collapse = TRUE)
 {
   # Old params, now fixed.
   collapse = TRUE
@@ -47,6 +53,7 @@ annotate_variants <- function(x,
   reference = inputs$reference
 
   if(reference == "GRCh38") reference = "hg38"
+  if(reference == "GRCh37") reference = "hg19"
 
   # Check for available packages
   rqp = function(x) {
@@ -66,7 +73,7 @@ annotate_variants <- function(x,
 
   # Get data and ranges
   txdb <- eval(parse(text = tx_pkg))
-  mutations <- mutations %>% mutate(to = to - 1)
+  if(make_0_span) mutations <- mutations %>% mutate(from = to - 1)
 
   rd <-
     GenomicRanges::makeGRangesFromDataFrame(
@@ -127,7 +134,7 @@ annotate_variants <- function(x,
   mutationsut_coding <-
     dplyr::left_join(loc_df %>%
                        dplyr::filter(grepl(location, pattern = "coding")),
-                     mutations,
+                     mutations %>% mutate(from = as.integer(from), to = as.integer(to)),
                      by = c("chr", "from", "to"))
 
   mutationsut_coding <-  dplyr::left_join(
@@ -229,11 +236,13 @@ annotate_variants <- function(x,
 
   # Re-assembly CNAqc obect
   final_table = dplyr::left_join(
-    mutations %>% dplyr::mutate(to = to + 1),
-    res %>% dplyr::mutate(to = to + 1),
+    mutations,
+    res,
     by = c("chr", "from", "to")
   ) %>%
     dplyr::arrange(-is_driver)
+
+  if(make_0_span)  final_table <- final_table %>% dplyr::mutate(to = to + 1)
 
   x_new = CNAqc::init(
     mutations = final_table,
