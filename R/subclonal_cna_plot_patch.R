@@ -502,7 +502,12 @@ patch_plot_segments = function(x, subclonal_cna= TRUE, what='best', s=1,a=.6){
   
   segmentation = compute_expected_baf_dr_df(x, subclonal_cna= subclonal_cna, what=what)
   
-  segmentation = CNAqc:::relative_to_absolute_coordinates(x, segmentation)
+  segmentation = CNAqc:::relative_to_absolute_coordinates(x, segmentation) 
+  
+  if (subclonal_cna== TRUE){
+    segmentation = segmentation %>% 
+      mutate(is_subclonal=ifelse(model=='Clonal', 'c', 's'))
+  }
   
   if (!subclonal_cna){
     
@@ -531,9 +536,10 @@ patch_plot_segments = function(x, subclonal_cna= TRUE, what='best', s=1,a=.6){
     new_baf_plot =  baf_plot + 
       geom_segment(
         data = segmentation,
-        aes(x= from, xend= to, y= expected_baf_new, yend= expected_baf_new),
-        color='forestgreen', size=s, alpha=a
-      ) 
+        aes(x= from, xend= to, y= expected_baf_new, yend= expected_baf_new, 
+            color=is_subclonal), size=s, alpha=a
+      ) + scale_color_manual(values = c('c'= 'forestgreen', 's'= 'darkorange'))
+    
     old_baf_plot =  baf_plot + geom_segment(
       data = segmentation ,
       aes(x= from, xend= to, y= expected_baf_old, yend= expected_baf_old),
@@ -543,9 +549,10 @@ patch_plot_segments = function(x, subclonal_cna= TRUE, what='best', s=1,a=.6){
     new_dr_plot =  dr_plot + 
       geom_segment(
         data = segmentation,
-        aes(x= from, xend= to, y= expected_dr_new, yend= expected_dr_new),
-        color='forestgreen', size=s, alpha=a
-      ) 
+        aes(x= from, xend= to, y= expected_dr_new, yend= expected_dr_new,
+            color=is_subclonal), size=s, alpha=a
+      ) + scale_color_manual(values = c('c'= 'forestgreen', 's'= 'darkorange'))
+    
     old_dr_plot =  dr_plot + geom_segment(
       data = segmentation ,
       aes(x= from, xend= to, y= expected_dr_old, yend= expected_dr_old),
