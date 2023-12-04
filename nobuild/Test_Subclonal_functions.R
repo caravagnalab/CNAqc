@@ -1,6 +1,6 @@
-devtools::load_all('~/Documents/Documents/GitHub/CNAqc')
+devtools::load_all() # '~/Documents/Documents/GitHub/CNAqc'
 
-x = readRDS('../data/Test_subclonalCNA_organoid.rds')
+x = readRDS('~/Documents/Documents/GitHub/CNAqc/data/Test_subclonalCNA_organoid.rds')
 
 mutations = x$mutations
 cna = x$cna
@@ -15,16 +15,14 @@ r = get(r)
 BAF_DR = extract_sequenza_baf_dr(r)
 snps = BAF_DR$binned
 
-new_cnaqc_obj = init(mutations=mutations, cna= cna, snps = snps, purity= purity, sample = "PDO74", ref = ref_genome)
-#print(new_cnaqc_obj)
+new_cnaqc_obj = init(mutations=mutations, cna= cna, snps = snps, purity= purity, 
+                     sample = "PDO74", ref = ref_genome)
 
 inspect_segment(new_cnaqc_obj)
 baf_plot= plot_snps(new_cnaqc_obj)
 dr_plot= plot_snps(new_cnaqc_obj, what = 'DR')
-#my_baf_dr_plot = baf_plot / dr_plot
 
-new_cnaqc_obj = patch(new_cnaqc_obj, all_solutions=TRUE, baf_coef = 15, dr_coef = 10, vaf_coef= 20)
-saveRDS(new_cnaqc_obj, '../nobuild/new_cnaqc_object_organoid.rds')
+new_cnaqc_obj = patch(new_cnaqc_obj, all_solutions=TRUE,  baf_coef= 10, dr_coef= 0) 
 
 segment_ids = new_cnaqc_obj$patch_best_solution %>% 
   mutate(from = stringr::str_split(segment_id, pattern= ':', simplify = T)[, 2], 
@@ -35,8 +33,13 @@ segment_ids = new_cnaqc_obj$patch_best_solution %>%
 for (i in 1:length(segment_ids)){
   print(segment_ids[i])
   pp = patch_plot(new_cnaqc_obj, segment_ids[i])
-  ggplot2::ggsave(pp, filename= paste0('../nobuild/PDO74_results/plots1/', segment_ids[i], '.png'), width = 20, height = 10)
+  ggplot2::ggsave(pp, filename= paste0('~/Documents/Documents/prova/', segment_ids[i], '.png'), width = 20, height = 10)
 }
+
+
+
+patch_plot_segments(new_cnaqc_obj)
+patch_plot_segments(new_cnaqc_obj, what='clonal')
 
 # require(ggplot2)
 # new_vs_old_res = function(x, selected_segment){

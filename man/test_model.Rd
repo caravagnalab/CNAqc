@@ -9,9 +9,8 @@ test_model(
   seg_id,
   top_n = 5,
   all_solutions = FALSE,
-  baf_coef = 30,
-  dr_coef = 10,
-  vaf_coef = 1000
+  baf_coef = 10,
+  dr_coef = 5
 )
 }
 \arguments{

@@ -139,15 +139,21 @@ pre_select_segments = function(x){
   return(selected_segs)
 }
 
-choose_model = function(ll_df, baf_coef = 30, dr_coef = 10, vaf_coef= 1000){
+choose_model = function(ll_df, baf_coef, dr_coef 
+                        #vaf_coef= 1000
+                        ){
   
-  ll_df = ll_df %>% filter(dr_ll > max(ll_df$dr_ll) - dr_coef)
-  ll_df = ll_df %>% filter(baf_ll > max(ll_df$baf_ll) - baf_coef)
-  ll_df = ll_df %>% filter(vaf_ll > max(ll_df$vaf_ll) - vaf_coef)
+  # skim best solutions
+  ll_df = ll_df %>% filter(dr_ll >= max(ll_df$dr_ll) - dr_coef)
+  ll_df = ll_df %>% filter(baf_ll >= max(ll_df$baf_ll) - baf_coef)
+  ll_df = ll_df %>% filter(vaf_ll >= max(ll_df$vaf_ll) ) #- vaf_coef)
   
-  #if (model == 'subclonal'){}
-  
+  # select a unique best one
   ll_df = ll_df %>% filter(loglikelihood == max(loglikelihood))
+  ll_df = ll_df %>% filter(dr_ll == max(ll_df$dr_ll))
+  ll_df = ll_df %>% filter(baf_ll == max(ll_df$baf_ll))
+  ll_df = ll_df %>% filter(vaf_ll == max(ll_df$vaf_ll))
+  
   return(ll_df)
   #}
 }
@@ -163,7 +169,9 @@ choose_model = function(ll_df, baf_coef = 30, dr_coef = 10, vaf_coef= 1000){
 #' @export
 #'
 #' @examples
-test_model <- function(x, seg_id, top_n=5, all_solutions=FALSE, baf_coef = 30, dr_coef = 10, vaf_coef= 1000){
+test_model <- function(x, seg_id, top_n=5, all_solutions=FALSE, baf_coef = 10, dr_coef = 5
+                       #, vaf_coef= 1000
+                       ){
   
   SNV_df = x$mutations %>% filter(segment_id==seg_id)
   SNP_df = x$snps %>% filter(segment_id==seg_id) #%>% filter(!is.na(BAF))
@@ -196,8 +204,12 @@ test_model <- function(x, seg_id, top_n=5, all_solutions=FALSE, baf_coef = 30, d
   all_clonal_res = clonal_results
   all_sub_res = sc_results
   
-  clonal_results = choose_model(clonal_results, baf_coef = baf_coef, dr_coef = dr_coef, vaf_coef= vaf_coef) 
-  sc_results = choose_model(sc_results, baf_coef = baf_coef, dr_coef = dr_coef, vaf_coef= vaf_coef) 
+  clonal_results = choose_model(clonal_results, baf_coef = baf_coef, dr_coef = dr_coef
+                                #, vaf_coef= vaf_coef
+                                ) 
+  sc_results = choose_model(sc_results, baf_coef = baf_coef, dr_coef = dr_coef
+                            #, vaf_coef= vaf_coef
+                            ) 
   
   seg_cl_baf_ll = clonal_results[1,] %>% pull(baf_ll)
   seg_cl_dr_ll = clonal_results[1,] %>% pull(dr_ll)
@@ -380,6 +392,8 @@ sub_clonal_test <- function(SNP_df, SNV_df, purity, ploidy=2, penalty = 0){
 #' @param top_n optional, alternative to all_solutions, integer declaring how many solutions are to be saved 
 #' @param all_solutions optional, alternative to top_n, TRUE/FALSE whether to save all solutions
 #' @param preselect optional, whether to pre-select the segment to be tested based on BAF and DR
+#' @param baf_coef otional, indicates the weight of the measurement in choosing the best solution (the higher the weigh, the lower the relevance)
+#' @param dr_coef 
 #'
 #' @return the cnaqc object with three new fields : 
 #'              - patch_best_solution : the best solutions for each tested segment
@@ -390,7 +404,10 @@ sub_clonal_test <- function(SNP_df, SNV_df, purity, ploidy=2, penalty = 0){
 #' @examples
 patch = function(x, segments= NULL, top_n=5, 
                  all_solutions=TRUE, preselect = FALSE,
-                 baf_coef = 30, dr_coef = 10, vaf_coef= 1000){
+                 baf_coef = 30, dr_coef = 10
+                 #, vaf_coef= 1000
+                 #baf_coef = 15, dr_coef = 10, vaf_coef= 20
+                 ){
   
   if (is.null(segments)){
     segment_ids = x$segment_type %>% filter(segment_type %in% c('simple clonal', 'simple subclonal')) %>% pull(segment_id)
@@ -403,7 +420,9 @@ patch = function(x, segments= NULL, top_n=5,
   }
   
   cli::cli_h3("Computing solutions for {length(segment_ids)} segments")
-  solutions = pbapply::pblapply(segment_ids, test_model, x=x, top_n=top_n, all_solutions=all_solutions, baf_coef = baf_coef, dr_coef = dr_coef, vaf_coef= vaf_coef)
+  solutions = pbapply::pblapply(segment_ids, test_model, x=x, top_n=top_n, all_solutions=all_solutions, baf_coef = baf_coef, dr_coef = dr_coef
+                                #, vaf_coef= vaf_coef
+                                )
   solutions <- solutions[!sapply(solutions,is.null)]
   #cli::cli_h3("Segments tesed")
   

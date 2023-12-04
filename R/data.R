@@ -148,13 +148,14 @@
 "gene_coordinates_hg19"
 
 
-#' Title
+#' Expected VAF for different evolutionary models 
 #'
 #' @docType data
 #'
 #' @usage data(model_ccf_purity)
 #'
-#' @format 
+#' @format a nested list of dataframes reporting all expected VAF peaks computed for different 
+#' combinations of karyotipes, 
 #'
 #' @keywords datasets
 #'

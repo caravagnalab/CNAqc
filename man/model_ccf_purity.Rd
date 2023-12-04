@@ -3,15 +3,16 @@
 \docType{data}
 \name{model_ccf_purity}
 \alias{model_ccf_purity}
-\title{Title}
+\title{Expected VAF for different evolutionary models}
 \format{
-An object of class \code{list} of length 14.
+a nested list of dataframes reporting all expected VAF peaks computed for different 
+combinations of karyotipes,
 }
 \usage{
 data(model_ccf_purity)
 }
 \description{
-Title
+Expected VAF for different evolutionary models
 }
 \examples{
 data(model_ccf_purity)

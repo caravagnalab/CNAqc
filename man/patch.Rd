@@ -11,8 +11,7 @@ patch(
   all_solutions = TRUE,
   preselect = FALSE,
   baf_coef = 30,
-  dr_coef = 10,
-  vaf_coef = 1000
+  dr_coef = 10
 )
 }
 \arguments{
@@ -25,6 +24,10 @@ patch(
 \item{all_solutions}{optional, alternative to top_n, TRUE/FALSE whether to save all solutions}
 
 \item{preselect}{optional, whether to pre-select the segment to be tested based on BAF and DR}
+
+\item{baf_coef}{otional, indicates the weight of the measurement in choosing the best solution (the higher the weigh, the lower the relevance)}
+
+\item{dr_coef}{}
 }
 \value{
 the cnaqc object with three new fields : 

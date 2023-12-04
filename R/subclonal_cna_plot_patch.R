@@ -401,3 +401,173 @@ plot_patch_all_solutions_clonal = function(x, seg_id){
 patch_plot = function(x,seg_id){
   ggarrange(plotlist= list(plot_patch_best_solution(x, seg_id), plot_patch_all_solutions_subclonal(x,seg_id),plot_patch_all_solutions_clonal(x,seg_id) ), ncol=3)
 }
+
+
+
+#' Title
+#'
+#' @param x cnaqc object
+#' @param subclonal_cna boolean, whether or not the patch function has been applied 
+#' @param what string, either 'best' or 'subclonal', relevant only if the patch function has been run
+#'
+#' @return dataframe. Computes the expected BAF and DR for the current CNA calls. If the patch function has 
+#' been run, it will compute the BAF/DR corresponding both to the new and the old calls, otherwise it will compute exclusively 
+#' those corresponding to the input CNAqc calls.
+#' @export
+#'
+#' @examples
+compute_expected_baf_dr_df = function(x, subclonal_cna= TRUE, what='best'){
+  
+  if (subclonal_cna== FALSE){
+    cna= x$cna
+    cna = cna %>% rowwise() %>%
+      mutate(
+        expected_baf = clonal_expected_baf(paste0(Major,':', minor), x$purity),
+        expected_dr = clonal_expected_dr(paste0(Major,':', minor), x$purity, x$ploidy)
+      )
+  }else{
+    
+    cna = x$patch_best_solution
+    if (what=='clonal'){
+      cna = x$patch_clonal_solutions %>%
+        group_by(segment_id) %>%
+        filter(dr_ll >= max(dr_ll) - 5) %>%
+        filter(baf_ll >= max(baf_ll) - 30) %>%
+        filter(vaf_ll == max(vaf_ll))
+    }
+    
+    cna = merge(x$cna,cna, by = 'segment_id') %>%
+      rowwise() %>%
+      mutate(
+        new_Major1 = strsplit(k1, ':')[[1]][1],
+        new_minor1 = strsplit(k1, ':')[[1]][2],
+        
+        new_Major2 = strsplit(k2, ':')[[1]][1],
+        new_minor2 = strsplit(k2, ':')[[1]][2]
+      ) 
+    
+    cna = cna %>% rowwise() %>%
+      mutate(
+        g1= ifelse(
+          !grepl('|', model), strsplit(model, '->')[[1]][1],
+          strsplit(strsplit(model, '->')[[1]][2], '\\|')[[1]][1] 
+        ),
+        
+        g2= ifelse(
+          !grepl('|', model), strsplit(model, '->')[[1]][2],
+          strsplit(strsplit(model, '->')[[1]][2], '\\|')[[1]][2] 
+        )
+      )
+    
+    cna = cna %>% rowwise() %>%
+      mutate(
+        expected_baf_new=
+          ifelse(
+            model=='Clonal', clonal_expected_baf(k1, x$purity),
+            expected_baf(k1, k2, x$purity, ccf_1, g1, g2)
+          ),
+        
+        expected_dr_new=
+          ifelse(
+            model=='Clonal', clonal_expected_dr(k1, x$purity, x$ploidy),
+            expected_dr(k1, k2, x$purity, ccf_1, x$ploidy)
+          ),
+        expected_baf_old = clonal_expected_baf(paste0(Major,':', minor), x$purity),
+        expected_dr_old = clonal_expected_dr(paste0(Major,':', minor), x$purity, x$ploidy)
+      )
+  }
+  
+  return(cna)
+  
+}
+
+#' Title
+#'
+#' @param x cnaqc object
+#' @param subclonal_cna boolean, whether or not the patch function has been applied 
+#' @param what string, either 'best' or 'subclonal', relevant only if the patch function has been run
+#' @param s size of the expected BAF/DR segments
+#' @param a alpha of the expected BAF/DR segments
+#'
+#' @return plot. If the patch function has been run, it will show how
+#' the expected BAF and DR of the newly called CNAs match the one observed in data. Otherwise, it
+#' will show how the expected BAF and DR of the original call match the observed data
+#' @export
+#'
+#' @examples
+patch_plot_segments = function(x, subclonal_cna= TRUE, what='best', s=1,a=.6){
+  
+  baf_plot = plot_snps(x)
+  dr_plot = plot_snps(x,what = 'DR')
+  
+  segmentation = compute_expected_baf_dr_df(x, subclonal_cna= subclonal_cna, what=what)
+  
+  segmentation = CNAqc:::relative_to_absolute_coordinates(x, segmentation)
+  
+  if (!subclonal_cna){
+    
+    baf_plot =  baf_plot + 
+      geom_segment(
+        data = segmentation,
+        aes(x= from, xend= to, y= expected_baf, yend= expected_baf),
+        color='forestgreen', size=s, alpha=a
+      ) 
+    
+    dr_plot =  dr_plot + 
+      geom_segment(
+        data = segmentation,
+        aes(x= from, xend= to, y= expected_dr, yend= expected_dr),
+        color='forestgreen', size=s, alpha=a
+      ) + ylim(0,2)
+    
+    final_plot = patchwork::wrap_plots(
+      baf_plot, dr_plot,
+      design = 
+        'AB'
+    )
+    
+  }else{
+    
+    new_baf_plot =  baf_plot + 
+      geom_segment(
+        data = segmentation,
+        aes(x= from, xend= to, y= expected_baf_new, yend= expected_baf_new),
+        color='forestgreen', size=s, alpha=a
+      ) 
+    old_baf_plot =  baf_plot + geom_segment(
+      data = segmentation ,
+      aes(x= from, xend= to, y= expected_baf_old, yend= expected_baf_old),
+      color='forestgreen', size=s, alpha=a
+    )
+    
+    new_dr_plot =  dr_plot + 
+      geom_segment(
+        data = segmentation,
+        aes(x= from, xend= to, y= expected_dr_new, yend= expected_dr_new),
+        color='forestgreen', size=s, alpha=a
+      ) 
+    old_dr_plot =  dr_plot + geom_segment(
+      data = segmentation ,
+      aes(x= from, xend= to, y= expected_dr_old, yend= expected_dr_old),
+      color='forestgreen', size=s, alpha=a
+    )
+    
+    old_plot = ggpubr::ggarrange(old_baf_plot, old_dr_plot, nrow = 1) + 
+      ggplot2::ggtitle('Old CNA calls results')
+    new_plot = ggpubr::ggarrange(new_baf_plot, new_dr_plot, nrow = 1) + 
+      ggplot2::ggtitle('New CNA calls results')
+    
+    final_plot = ggpubr::ggarrange(old_plot, new_plot, ncol = 1)
+  }
+  
+  return(final_plot)
+  
+  
+}
+
+
+
+
+
+
+

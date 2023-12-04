@@ -159,10 +159,8 @@ get_segment_type = function(x, seg_id){
 #' @examples
 plot_snps = function(x, what='BAF', s= 1)
 {
-  #BAF_DR = extract_sequenza_baf_dr(x)
-  BAF_DR = list(binned = x$snps, segmented = x$cna )
   
-  #chrs = BAF_DR$segmented$chr %>% unique()
+  BAF_DR = list(binned = x$snps, segmented = x$cna )
   chrs = x$cna$chr %>% unique()
   
   BAF_DR$binned= CNAqc:::relative_to_absolute_coordinates(list(reference_genome = 'GRCh38'),
@@ -170,7 +168,6 @@ plot_snps = function(x, what='BAF', s= 1)
   
   BAF_DR$segmented = CNAqc:::relative_to_absolute_coordinates(list(reference_genome = 'GRCh38'),
                                                               BAF_DR$segmented)
-  
   no_x_axis =
     ggplot2::theme(
       axis.text.x = ggplot2::element_blank(),
@@ -195,19 +192,7 @@ plot_snps = function(x, what='BAF', s= 1)
       size = s,
       colour = 'black'
     ) +
-    # ggplot2::geom_segment(
-    #   data = BAF_DR$segmented,
-    #   ggplot2::aes(
-    #     x = from,
-    #     xend = to,
-    #     y = Bf,
-    #     yend = Bf
-    #   ),
-    #   size = 1,
-    #   colour = 'black'
-    # ) +
     ggplot2::labs(y = 'BAF')
-  # no_x_axis
   
   DR_plot = CNAqc:::blank_genome(ref = 'GRCh38', chromosomes = chrs) +
     ggplot2::geom_hline(
@@ -227,25 +212,8 @@ plot_snps = function(x, what='BAF', s= 1)
       size = s,
       colour = 'black'
     ) +
-    # ggplot2::geom_segment(
-    #   data = BAF_DR$segmented %>% filter(depth.ratio <= 2.1),
-    #   ggplot2::aes(
-    #     x = from,
-    #     xend = to,
-    #     y = depth.ratio,
-    #     yend = depth.ratio
-    #   ),
-    #   size = 1,
-    #   colour = 'black'
-    # ) +
     ggplot2::labs(y = 'Depth ratio')
-  # no_x_axis
   
-  # cowplot::plot_grid(
-  #   BAF_plot ,
-  #   DR_plot,
-  #   ncol = 1
-  # )
   if (what == 'BAF'){
     return(BAF_plot)
   }
@@ -253,7 +221,6 @@ plot_snps = function(x, what='BAF', s= 1)
     return(DR_plot)
   }
   
-  #return(list(BAF_plot, DR_plot))
 }
 
 get_segments = function(x, which= c('simple clonal', 'complex clonal', 'simple subclonal', 'complex subclonal')){
