@@ -4,7 +4,15 @@
 \alias{init}
 \title{Creates a CNAqc object.}
 \usage{
-init(mutations, snvs = NULL, cna, purity, sample = "MySample", ref = "GRCh38")
+init(
+  mutations,
+  snvs = NULL,
+  cna,
+  snps = NULL,
+  purity,
+  sample = "MySample",
+  ref = "GRCh38"
+)
 }
 \arguments{
 \item{mutations}{A dataframe of mutations with the following fields:
@@ -26,7 +34,28 @@ needs to report:
 
 \item{snvs}{Deprecated parameter.}
 
-\item{cna}{A dataframe of allele-specific copy number with the following fields:
+\item{purity}{Value in between `0` and `1` to represent the proportion
+of actual tumour content (sometimes called "cellularity").}
+
+\item{sample}{Sample name (a string).}
+
+\item{ref}{A key word for the used reference coordinate system. CNAqc supports
+`hg19`/`GRCh37` and `hg38`/`GRCh38` references, which are embedded
+into the package as `CNAqc::chr_coordinates_hg19` and
+`CNAqc::chr_coordinates_GRCh38`. An abitrary reference can also be
+provided if `ref` is a dataframe in the same format as `CNAqc::chr_coordinates_hg19`
+or `CNAqc::chr_coordinates_GRCh38`. The default reference is `GRCh38`.}
+
+\item{snp}{A dataframe of single nucleotide polymorphism mean BAF and DR over fixed genomic windows (bins) with the following fields:
+
+* `chr` chromosome name, e.g., \code{"chr3"}, \code{"chr8"}, \code{"chrX"}, ...
+* `from` where the bin start, an integer number
+* `to` where the bin ends, an integer number
+* `BAF` average B-allele frequency of the bin, a real number in [0,1]
+* `N.BAF` number if SNPs falling into the bin
+* `DR` average depth ration of the bin, a real positive number 
+
+#' @param cna A dataframe of allele-specific copy number with the following fields:
 
 * `chr` chromosome name, e.g., \code{"chr3"}, \code{"chr8"}, \code{"chrX"}, ...
 * `from` where the segment start, an integer number
@@ -42,18 +71,6 @@ subclonal. If a segment is subclonal:
 
 * the columns `Major` and `minor` are interpreted as those for a subclone with proportion equal to the `CCF` value;
 * the columns `Major_2` and `minor_2` are interpreted as those for a second subclone with proportion equal to the `1 - CCF` value;}
-
-\item{purity}{Value in between `0` and `1` to represent the proportion
-of actual tumour content (sometimes called "cellularity").}
-
-\item{sample}{Sample name (a string).}
-
-\item{ref}{A key word for the used reference coordinate system. CNAqc supports
-`hg19`/`GRCh37` and `hg38`/`GRCh38` references, which are embedded
-into the package as `CNAqc::chr_coordinates_hg19` and
-`CNAqc::chr_coordinates_GRCh38`. An abitrary reference can also be
-provided if `ref` is a dataframe in the same format as `CNAqc::chr_coordinates_hg19`
-or `CNAqc::chr_coordinates_GRCh38`. The default reference is `GRCh38`.}
 }
 \value{
 A CNAqc object of class `cnaqc`, with S3 methods for printing,

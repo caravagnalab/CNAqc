@@ -385,7 +385,7 @@ sub_clonal_test <- function(SNP_df, SNV_df, purity, ploidy=2, penalty = 0){
 #'              - patch_best_solution : the best solutions for each tested segment
 #'              - patch_clonal_solution : top n / all clonal solutions for the tested segments
 #'              - patch_sunclonal_solution : top n / all subclonal solutions for the tested segments
-#' @export
+#' @export patch
 #'
 #' @examples
 patch = function(x, segments= NULL, top_n=5, 

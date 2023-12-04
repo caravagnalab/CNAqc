@@ -9,6 +9,7 @@ as_maftools_cohort(
   only_drivers = TRUE,
   CNA_genes = NULL,
   clinicalData = NULL,
+  Variant_classification = NULL,
   CNA_map_function = function(cn) {
      if (is.na(cn)) 
          return(NA)

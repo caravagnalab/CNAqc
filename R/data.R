@@ -146,3 +146,21 @@
 #' gene_coordinates_hg19
 #'
 "gene_coordinates_hg19"
+
+
+#' Title
+#'
+#' @docType data
+#'
+#' @usage data(model_ccf_purity)
+#'
+#' @format 
+#'
+#' @keywords datasets
+#'
+#' @examples
+#' data(model_ccf_purity)
+#' model_ccf_purity
+#'
+"model_ccf_purity"
+

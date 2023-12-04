@@ -4,12 +4,23 @@
 \alias{annotate_variants}
 \title{Annotate variants and drivers.}
 \usage{
-annotate_variants(x, drivers = CNAqc::intogen_drivers)
+annotate_variants(
+  x,
+  drivers = CNAqc::intogen_drivers,
+  make_0_span = FALSE,
+  collapse = TRUE
+)
 }
 \arguments{
 \item{x}{A CNAqc object.}
 
-\item{drivers}{A dataframe in the format of the `intogen_drivers` one released with
+\item{drivers}{A dataframe in the format of the `intogen_drivers` one released with}
+
+\item{make_0_span}{Remove -1 from the coloumn `to`, in case SNPs is indicated by `from` and `to = from + 1` to make
+it effectively a point mutation.}
+
+\item{collapse}{if the same mutation has more than one consqeunce or location in different transcript, it collapse them
+by concatenating them using `:`
 CNAqc. In particular, it must contain a column named `gene` to identify gene names.}
 }
 \value{
