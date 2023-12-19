@@ -1,12 +1,12 @@
 devtools::load_all('~/Documents/Documents/GitHub/CNAqc/R')
 
-options = expand.grid(purity = seq(.1, 1, .1), coverage = seq(30, 100, 10), ccf = seq(.1, .9, .1), replicates = seq(1, 10, 1))
+options = expand.grid(purity = seq(.2, 1, .15), coverage = seq(40, 100, 15), ccf = seq(.1, .9, .15), replicates = seq(1, 1, 1))
 
 # overall_res = lapply(seq(1, length(options$purity), by =1), function(i){
 #overall_res = lapply(seq(129, 132, by =1), function(i){
 
 overall_res = data.frame()
-  #tryCatch({
+
 for (i in 1:length(options$purity)){
  
   print(paste0('Computing solution for purity ',options[i,]$purity, 
@@ -14,42 +14,44 @@ for (i in 1:length(options$purity)){
   tryCatch({  
   x = simulate_sample(t_subclone_mrca = 5, cna_rate = 5, mu= 6e-8, w= 10, coverage = options[i,]$coverage, purity= options[i,]$purity,
                         sub_cnas_rate= 7, t_f= 10, ccf = options[i,]$ccf, bin_size= 50000)
-    
-    mutations = x$mutations %>% mutate(Major= as.integer(Major),  minor = as.integer(minor)) %>% select(!segment_id)#%>% mutate(ref = 'A', alt = 'T')
-    cna = x$cna %>% mutate(Major= as.integer(Major),  minor = as.integer(minor)) %>% mutate(CCF=1) %>% select(!segment_id)
-    snps = x$snps %>% select(!segment_id)
-    ref_genome = 'hg19'
-    purity = x$purity
-    x = init(mutations=mutations, cna= cna, snps = snps, purity= purity, sample = "simulation", ref = ref_genome)
-    
-    patched_x = patch(x, all_solutions=TRUE)
-    
-    dir = paste0('Coverage_',options[i,]$coverage, '_Purity_', options[i,]$purity*10, '_CCF_',ccf = options[i,]$ccf*10)
-    
-    if (!file.exists(paste0('../nobuild/simulations/', dir))){
-      dir.create(paste0('../nobuild/simulations/', dir))
-      }
-    
-    original_res = patched_x$cna %>% mutate('k1'= paste0(Major, ':', minor), k2 = ifelse(Major_2==0, '', paste0(Major_2, ':', minor_2))) %>%
+  
+  mutations = x$mutations %>% mutate(Major= as.integer(Major),  minor = as.integer(minor)) %>% select(!segment_id)#%>% mutate(ref = 'A', alt = 'T')
+  cna = x$cna %>% mutate(Major= as.integer(Major),  minor = as.integer(minor)) %>% mutate(CCF=1) %>% select(!segment_id)
+  snps = x$snps %>% select(!segment_id)
+  ref_genome = 'hg19'
+  purity = x$purity
+  x = init(mutations=mutations, cna= cna, snps = snps, purity= purity, sample = "simulation", ref = ref_genome)
+  
+  patched_x = patch(x, all_solutions=TRUE)
+  dir = paste0('Coverage_',options[i,]$coverage, '_Purity_', options[i,]$purity*10, '_CCF_',ccf = options[i,]$ccf*10)
+  
+  if (!file.exists(paste0('../nobuild/simulations/', dir))){
+    dir.create(paste0('../nobuild/simulations/', dir))
+    }
+  
+  original_res = patched_x$cna %>% 
+    mutate('k1'= paste0(Major, ':', minor), k2 = ifelse(Major_2==0, '', paste0(Major_2, ':', minor_2))) %>%
       select(k1, k2, CCF, segment_id, model_id) %>% mutate(CCF_sim = options[i,]$ccf)
-    
-    new_res = patched_x$patch_best_solution %>% mutate('k1_best'= k1, 'k2_best' = k2, 'CCF_best'= ccf_1, 'model_id_best'= model) %>% select(!c(k1, k2, ccf_1, model))
-    
-    all_res = merge(original_res, new_res, 
+  
+  new_res = patched_x$patch_best_solution %>% 
+    mutate('k1_best'= k1, 'k2_best' = k2, 'CCF_best'= ccf_1, 'model_id_best'= model) %>% 
+    select(!c(k1, k2, ccf_1, model))
+  
+  all_res = merge(original_res, new_res, 
                     by.x='segment_id', by.y='segment_id')
-    
-    merged_res = all_res %>% 
-      mutate(k_res = (k1==k1_best & k2==k2_best), ccf_res = (CCF==CCF_best), all = (k1==k1_best & k2==k2_best & CCF==CCF_best) )
-    
-    res_plot= merged_res %>% select(segment_id, k_res, ccf_res, all) %>% as_tibble() %>% reshape2::melt(id = 'segment_id') %>% 
+  
+  merged_res = all_res %>% 
+    mutate(k_res = (k1==k1_best & k2==k2_best), ccf_res = (CCF==CCF_best), all = (k1==k1_best & k2==k2_best & CCF==CCF_best) )
+  
+  res_plot= merged_res %>% select(segment_id, k_res, ccf_res, all) %>% as_tibble() %>% reshape2::melt(id = 'segment_id') %>% 
       ggplot() +
       geom_bar(aes(x=variable, fill=value)) + theme_bw() + labs(x='', y='')+scale_fill_manual(values = c('TRUE'='forestgreen', 'FALSE'='indianred'))+
       scale_x_discrete(labels=c('matched karyotype', 'matched ccf', 'match'))+
       theme(
         axis.text.x = element_text(angle = 45, hjust=1)
         )
-    
-    segment_ids = patched_x$patch_best_solution %>% filter(k2!='') %>% pull(segment_id) %>% unique()
+  
+  segment_ids = patched_x$patch_best_solution %>% filter(k2!='') %>% pull(segment_id) %>% unique()
   
   for (j in 1:length(segment_ids)){
     #print(segment_ids[i])
@@ -58,6 +60,8 @@ for (i in 1:length(options$purity)){
     pp = plot_simulation(patched_x, all_res_seg)
     ggsave(pp, filename= paste0('../nobuild/simulations/', dir,'/', segment_ids[j], '.png'), width = 20, height = 10)
   }
+  
+  
   
   
   patched_file_name = paste0('../nobuild/simulations/', dir, '/', options[i,]$replicates, '.rds')

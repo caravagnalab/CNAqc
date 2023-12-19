@@ -115,9 +115,11 @@ vaf_ll <- function(k, n, ps){
 #' @examples
 VAF_LL <- function(NV, DP, peaks){
   vaf_ll <- 0
-  peaks = peaks[peaks>.15]
+  
+  #peaks = peaks[peaks>.15]
+  
   for (i in 1:length(NV)) {
-    v <- vaf_ll(k = NV[i], n = DP[i], ps = peaks) #peaks$peak
+    v <- vaf_ll(k = NV[i], n = DP[i], ps = peaks$peak) #peaks$peak
     vaf_ll <- vaf_ll + log(v)
   }
   if (is.infinite(vaf_ll) && 100<vaf_ll){vaf_ll=1000000000}
