@@ -70,9 +70,11 @@ annotate_variants <- function(x,
   bs_pkg %>% rqp()
   "Organism.dplyr" %>% rqp()
   "org.Hs.eg.db" %>% rqp()
+  "GenomicRanges" %>% rqp()
 
   # Get data and ranges
   txdb <- eval(parse(text = tx_pkg))
+
   if(make_0_span) mutations <- mutations %>% mutate(from = to - 1)
 
   rd <-
@@ -83,7 +85,10 @@ annotate_variants <- function(x,
       seqnames.field = "chr",
       keep.extra.columns = F
     )
-
+  rd <- rd[as.character(seqnames(rd)) %in% unique(as.character(seqlevels(txdb)))]
+  seqlevels(rd) <- as.character(unique(seqnames(rd)))
+  
+  
   # VariantAnnotation package
   cli::cli_process_start("Locating variants with {crayon::yellow('VariantAnnotation')}")
 
@@ -95,7 +100,7 @@ annotate_variants <- function(x,
   # Src organism DB
   cli::cli_process_start("Traslating Entrez ids")
 
-  src <- src_organism(tx_pkg)
+  src <- src_organism(tx_pkg, overwrite = TRUE)
 
   translated_enttrz <-
     AnnotationDbi::select(
