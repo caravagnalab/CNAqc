@@ -121,12 +121,6 @@
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/caravagnalab/CNAqc" class="external-link">CNAqc</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; The legacy packages maptools, rgdal, and rgeos, underpinning the sp package,</span></span>
-<span><span class="co">#&gt; which was just loaded, were retired in October 2023.</span></span>
-<span><span class="co">#&gt; Please refer to R-spatial evolution reports for details, especially</span></span>
-<span><span class="co">#&gt; https://r-spatial.org/r/2023/05/15/evolution4.html.</span></span>
-<span><span class="co">#&gt; It may be desirable to make the sf package available;</span></span>
-<span><span class="co">#&gt; package maintainers should consider adding sf to Suggests:.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Loading <span style="color: #00BB00;">CNAqc</span>, <span style="font-style: italic;">'Copy Number Alteration quality check'</span>. Support : <span style="color: #0000BB; font-style: italic;">&lt;https://caravagn.github.io/CNAqc/&gt;</span></span></span>
 <span></span>
 <span><span class="co"># We work with the PCAWG object</span></span>
@@ -224,18 +218,18 @@
 <span><span class="co">#&gt; <span style="color: #949494;"># Rowwise: </span></span></span>
 <span><span class="co">#&gt;   mutation_multiplicity karyotype  peak delta_vaf     x     y counts_per_bin</span></span>
 <span><span class="co">#&gt;                   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>                     1 2:1       0.268   0.013<span style="text-decoration: underline;">4</span>  0.268 4.13            <span style="text-decoration: underline;">3</span>720</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>                     2 2:1       0.537   0.026<span style="text-decoration: underline;">8</span>  0.536 3.00            <span style="text-decoration: underline;">2</span>729</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>                     1 2:1       0.268   0.013<span style="text-decoration: underline;">4</span>  0.264 4.14            <span style="text-decoration: underline;">3</span>138</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>                     2 2:1       0.537   0.026<span style="text-decoration: underline;">8</span>  0.54  3               <span style="text-decoration: underline;">2</span>729</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>                     1 2:2       0.212   0.008<span style="text-decoration: underline;">31</span> 0.21  0.93             198</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>                     2 2:2       0.423   0.016<span style="text-decoration: underline;">6</span>  0.423 6.85            <span style="text-decoration: underline;">1</span>732</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>                     2 2:2       0.423   0.016<span style="text-decoration: underline;">6</span>  0.425 6.84            <span style="text-decoration: underline;">1</span>732</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>                     1 2:0       0.367   0.025   0.359 0.864             50</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>                     2 2:0       0.734   0.05    0.735 5.43             265</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span>                     1 1:1       0.367   0.025   0.37  2.42              15</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span>                     1 1:1       0.367   0.025   0.368 2.42              15</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">8</span>                     1 1:0       0.580   0.062<span style="text-decoration: underline;">4</span>  0.570 4.16               7</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 9 more variables: discarded &lt;lgl&gt;, from &lt;chr&gt;, offset_VAF &lt;dbl&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   offset &lt;dbl&gt;, weight &lt;dbl&gt;, epsilon &lt;dbl&gt;, VAF_tolerance &lt;dbl&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   matched &lt;lgl&gt;, QC &lt;chr&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Peak detection <span style="color: #00BB00;">PASS</span> with <span style="color: #00BB00;">r = 0.0065302547724665</span> - maximum purity error ε = <span style="color: #00BB00;">0.05</span>.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Peak detection <span style="color: #00BB00;">PASS</span> with <span style="color: #00BB00;">r = 0.00994303100355026</span> - maximum purity error ε = <span style="color: #00BB00;">0.05</span>.</span></span>
 <span><span class="co">#&gt; Joining with `by = join_by(Major, minor, QC_PASS)`</span></span>
 <span><span class="co">#&gt; Joining with `by = join_by(karyotype, QC_PASS)`</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -315,11 +309,11 @@
 <span><span class="co">#&gt;         chr7 140453136 140453136   A   T 95 54 0.5684211         BRAF      TRUE</span></span>
 <span><span class="co">#&gt;         chr9  21971120  21971120   G   A 23 14 0.6086957       CDKN2A      TRUE</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="color: #000000; background-color: #00BB00; font-weight: bold;"> PASS </span><span style="font-weight: bold;"> Peaks QC closest: </span><span style="color: #00BB00; font-weight: bold;">199%</span><span style="font-weight: bold;">, </span><span style="color: #00BB00; font-weight: bold;">λ = 0.0065</span><span style="font-weight: bold;">. Purity correction: 1%.</span> <span style="color: #00BBBB;">───────────</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">2:1</span> ~ n = 88422 ( 74%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> 0.003   <span style="color: #000000; background-color: #00BB00;"> PASS </span> 0.002  </span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">2:2</span> ~ n = 25290 ( 21%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> 0.01    <span style="color: #000000; background-color: #00BB00;"> PASS </span> 0.002  </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="color: #000000; background-color: #00BB00; font-weight: bold;"> PASS </span><span style="font-weight: bold;"> Peaks QC closest: </span><span style="color: #00BB00; font-weight: bold;">199%</span><span style="font-weight: bold;">, </span><span style="color: #00BB00; font-weight: bold;">λ = 0.0099</span><span style="font-weight: bold;">. Purity correction: 1%.</span> <span style="color: #00BBBB;">───────────</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">2:1</span> ~ n = 88422 ( 74%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> 0.017   <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.006 </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">2:2</span> ~ n = 25290 ( 21%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> 0.01    <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.004 </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">2:0</span> ~ n = 5374  (  4%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> 0.015   <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.001 </span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">1:1</span> ~ n = 855   (0.7%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.006 </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">1:1</span> ~ n = 855   (0.7%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.002 </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">1:0</span> ~ n = 124   (0.1%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> 0.008  </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">General peak QC (</span><span style="color: #00BB00; font-weight: bold;">154430</span><span style="font-weight: bold;"> mutations): </span><span style="color: #000000; background-color: #00BB00; font-weight: bold;"> PASS </span><span style="font-weight: bold;"> 27 </span><span style="color: #BBBBBB; background-color: #BB0000; font-weight: bold;"> FAIL </span><span style="font-weight: bold;"> 13 - epsilon = 0.05.</span> <span style="color: #00BBBB;">───</span></span></span>
@@ -414,13 +408,13 @@
 <span><span class="co">#&gt; <span style="color: #949494;"># Rowwise: </span></span></span>
 <span><span class="co">#&gt;   mutation_multiplicity karyotype  peak delta_vaf     x     y counts_per_bin</span></span>
 <span><span class="co">#&gt;                   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>                     1 2:1       0.268   0.013<span style="text-decoration: underline;">4</span>  0.268 4.13            <span style="text-decoration: underline;">3</span>720</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>                     2 2:1       0.537   0.026<span style="text-decoration: underline;">8</span>  0.536 3.00            <span style="text-decoration: underline;">2</span>729</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>                     1 2:1       0.268   0.013<span style="text-decoration: underline;">4</span>  0.264 4.14            <span style="text-decoration: underline;">3</span>138</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>                     2 2:1       0.537   0.026<span style="text-decoration: underline;">8</span>  0.54  3               <span style="text-decoration: underline;">2</span>729</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>                     1 2:2       0.212   0.008<span style="text-decoration: underline;">31</span> 0.21  0.93             198</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>                     2 2:2       0.423   0.016<span style="text-decoration: underline;">6</span>  0.423 6.85            <span style="text-decoration: underline;">1</span>732</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>                     2 2:2       0.423   0.016<span style="text-decoration: underline;">6</span>  0.425 6.84            <span style="text-decoration: underline;">1</span>732</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>                     1 2:0       0.367   0.025   0.359 0.864             50</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>                     2 2:0       0.734   0.05    0.735 5.43             265</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span>                     1 1:1       0.367   0.025   0.37  2.42              15</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span>                     1 1:1       0.367   0.025   0.368 2.42              15</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">8</span>                     1 1:0       0.580   0.062<span style="text-decoration: underline;">4</span>  0.570 4.16               7</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 9 more variables: discarded &lt;lgl&gt;, from &lt;chr&gt;, offset_VAF &lt;dbl&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   offset &lt;dbl&gt;, weight &lt;dbl&gt;, epsilon &lt;dbl&gt;, VAF_tolerance &lt;dbl&gt;,</span></span></span>
@@ -448,16 +442,16 @@
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 91 × 16</span></span></span>
 <span><span class="co">#&gt;    mutation karyotype_1 genotype_1 karyotype_2 genotype_2 n.clone_1 n.clone_2</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> MFQVDMWJ 2:1         A1A2B1     <span style="color: #BB0000;">NA</span>          <span style="color: #BB0000;">NA</span>                 1         0</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> HEWYOYVO <span style="color: #BB0000;">NA</span>          <span style="color: #BB0000;">NA</span>         2:2         A1A2B1B2           0         1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> MQUKGOZW 2:1         A1A2B1     2:2         A1A2B1B2           1         2</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> AOWDZWJG 2:1         A1A2B1     2:2         A1A2B1B2           2         2</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> EKABKWGQ <span style="color: #BB0000;">NA</span>          <span style="color: #BB0000;">NA</span>         2:2         A1A2B1B2           0         1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> GNPQFGCB 2:1         A1A2B1     2:2         A1A2B1B2           1         1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> MBAGQIOK 2:1         A1A2B1     2:2         A1A2B1B2           1         2</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> EMFRAWTK 2:1         A1A2B1     2:2         A1A2B1B2           2         2</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> GRRXPWHJ <span style="color: #BB0000;">NA</span>          <span style="color: #BB0000;">NA</span>         2:1         A2B1B2             0         1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> OVQKSETB 2:2         A1A2B1B2   <span style="color: #BB0000;">NA</span>          <span style="color: #BB0000;">NA</span>                 1         0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> CWAQILCZ 2:1         A1A2B1     <span style="color: #BB0000;">NA</span>          <span style="color: #BB0000;">NA</span>                 1         0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> CIDHQEKB <span style="color: #BB0000;">NA</span>          <span style="color: #BB0000;">NA</span>         2:2         A1A2B1B2           0         1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> USRVFMQB 2:1         A1A2B1     2:2         A1A2B1B2           1         2</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> DBUKRVTC 2:1         A1A2B1     2:2         A1A2B1B2           2         2</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> DGMWDQBK <span style="color: #BB0000;">NA</span>          <span style="color: #BB0000;">NA</span>         2:2         A1A2B1B2           0         1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> PEIPYMZC 2:1         A1A2B1     2:2         A1A2B1B2           1         1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> AOAVUXKU 2:1         A1A2B1     2:2         A1A2B1B2           1         2</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> LKKONMUL 2:1         A1A2B1     2:2         A1A2B1B2           2         2</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> DHBWDHHR <span style="color: #BB0000;">NA</span>          <span style="color: #BB0000;">NA</span>         2:1         A2B1B2             0         1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> EJCCOWSD 2:2         A1A2B1B2   <span style="color: #BB0000;">NA</span>          <span style="color: #BB0000;">NA</span>                 1         0</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 81 more rows</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 9 more variables: peak &lt;dbl&gt;, genotype_initial &lt;chr&gt;, model &lt;chr&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   model_id &lt;chr&gt;, role &lt;chr&gt;, segment_id &lt;chr&gt;, matched &lt;lgl&gt;, size &lt;chr&gt;,</span></span></span>
