@@ -108,6 +108,14 @@
           <p><code><a href="intogen_drivers.html">intogen_drivers</a></code> </p>
         </td>
         <td><p>List of Intogen driver genes per tumour type.</p></td>
+      </tr><tr><td>
+          <p><code><a href="gene_coordinates_hg19.html">gene_coordinates_hg19</a></code> </p>
+        </td>
+        <td><p>Coordinates for hg19 genes</p></td>
+      </tr><tr><td>
+          <p><code><a href="gene_coordinates_GRCh38.html">gene_coordinates_GRCh38</a></code> </p>
+        </td>
+        <td><p>Coordinates for GRCh38 genes</p></td>
       </tr></tbody><tbody><tr><th colspan="2">
           <h2 id="data-processing">Data processing <a href="#data-processing" class="anchor" aria-hidden="true"></a></h2>
           <p class="section-desc"></p><p>Functions to manipulate and visualise the data.</p>
@@ -124,6 +132,10 @@
           <p><code><a href="CNA.html">CNA()</a></code> </p>
         </td>
         <td><p>Extract CNAs.</p></td>
+      </tr><tr><td>
+          <p><code><a href="CNA_gene.html">CNA_gene()</a></code> </p>
+        </td>
+        <td><p>Extract per-gene copy number status.</p></td>
       </tr><tr><td>
           <p><code><a href="get_drivers.html">get_drivers()</a></code> </p>
         </td>
@@ -175,7 +187,7 @@
       </tr><tr><td>
           <p><code><a href="subset_by_segment_karyotype.html">subset_by_segment_karyotype()</a></code> </p>
         </td>
-        <td><p>Subset by clonal simple segments.</p></td>
+        <td><p>Subset by clonal segments.</p></td>
       </tr><tr><td>
           <p><code><a href="subset_by_segment_totalcn.html">subset_by_segment_totalcn()</a></code> </p>
         </td>
@@ -184,6 +196,10 @@
           <p><code><a href="subset_by_minimum_CCF.html">subset_by_minimum_CCF()</a></code> </p>
         </td>
         <td><p>Subset mutations by minimum CCF</p></td>
+      </tr><tr><td>
+          <p><code><a href="subset_by_segment_minmutations.html">subset_by_segment_minmutations()</a></code> </p>
+        </td>
+        <td><p>Retain clonal segments with minimum number of mutations.</p></td>
       </tr><tr><td>
           <p><code><a href="subset_snvs.html">subset_snvs()</a></code> </p>
         </td>
@@ -196,6 +212,10 @@
           <p><code><a href="plot.cnaqc.html">plot(<i>&lt;cnaqc&gt;</i>)</a></code> </p>
         </td>
         <td><p>Plot for class <code>'cnaqc'</code>.</p></td>
+      </tr><tr><td>
+          <p><code><a href="wt_mutant_alleles.html">wt_mutant_alleles()</a></code> </p>
+        </td>
+        <td><p>Compute WT and mutant alleles per gene</p></td>
       </tr></tbody><tbody><tr><th colspan="2">
           <h2 id="purity-and-ploidy-qc">Purity and ploidy QC <a href="#purity-and-ploidy-qc" class="anchor" aria-hidden="true"></a></h2>
           <p class="section-desc"></p><p>Analysis of calls by peak detection.</p>
@@ -216,6 +236,10 @@
           <p><code><a href="plot_peaks_analysis.html">plot_peaks_analysis()</a></code> </p>
         </td>
         <td><p>Plot the results of peak analysis.</p></td>
+      </tr><tr><td>
+          <p><code><a href="get_PASS_percentage.html">get_PASS_percentage()</a></code> </p>
+        </td>
+        <td><p>Returns percentage of passed segments</p></td>
       </tr></tbody><tbody><tr><th colspan="2">
           <h2 id="ccf-estimation">CCF estimation <a href="#ccf-estimation" class="anchor" aria-hidden="true"></a></h2>
           <p class="section-desc"></p><p>Computation of Cancer Cell Fractions data.</p>
@@ -288,6 +312,42 @@
           <p><code><a href="plot_multisample_CNA.html">plot_multisample_CNA()</a></code> </p>
         </td>
         <td><p>Plots CNAs from multiple samples.</p></td>
+      </tr></tbody><tbody><tr><th colspan="2">
+          <h2 id="mutational-signatures">Mutational Signatures <a href="#mutational-signatures" class="anchor" aria-hidden="true"></a></h2>
+          <p class="section-desc"></p><p>Functions to convert and store mutational signature tables</p>
+        </th>
+      </tr></tbody><tbody><tr><td>
+          <p><code><a href="SBS.html">SBS()</a></code> </p>
+        </td>
+        <td><p>Augment SBS data for mutational signatures deconvolution</p></td>
+      </tr><tr><td>
+          <p><code><a href="SBS_counts.html">SBS_counts()</a></code> </p>
+        </td>
+        <td><p>Extract SBS count data</p></td>
+      </tr><tr><td>
+          <p><code><a href="plot_SBS.html">plot_SBS()</a></code> </p>
+        </td>
+        <td><p>Plost SBS counts</p></td>
+      </tr></tbody><tbody><tr><th colspan="2">
+          <h2 id="maf-interface">MAF interface <a href="#maf-interface" class="anchor" aria-hidden="true"></a></h2>
+          <p class="section-desc"></p><p>Functions to convert from CNAqc to Maf format.</p>
+        </th>
+      </tr></tbody><tbody><tr><td>
+          <p><code><a href="as_maftools_obj.html">as_maftools_obj()</a></code> </p>
+        </td>
+        <td><p>Convert a CNAqc object to a maftools object.</p></td>
+      </tr><tr><td>
+          <p><code><a href="as_maftools_cohort.html">as_maftools_cohort()</a></code> </p>
+        </td>
+        <td><p>Convert a list of CNAqc object to a maftools object.</p></td>
+      </tr><tr><td>
+          <p><code><a href="augment_with_maf.html">augment_with_maf()</a></code> </p>
+        </td>
+        <td><p>Import MAF annotations.</p></td>
+      </tr><tr><td>
+          <p><code><a href="augment_with_vep.html">augment_with_vep()</a></code> </p>
+        </td>
+        <td><p>Import VEP annotations.</p></td>
       </tr></tbody></table></div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -297,13 +357,11 @@
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by <a href="https://www.caravagnalab.org" class="external-link">Giulio
-Caravagna</a>.</p>
+  <p></p><p>Developed by <a href="https://www.caravagnalab.org" class="external-link">Giulio Caravagna</a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

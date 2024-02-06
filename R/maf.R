@@ -388,6 +388,7 @@ as_maftools_cohort = function(x,
                               only_drivers = TRUE,
                               CNA_genes = NULL,
                               clinicalData = NULL,
+                              Variant_classification = NULL,
                               CNA_map_function = function(cn){
 
                                 if(is.na(cn)) return(NA)
@@ -460,15 +461,15 @@ as_maftools_cohort = function(x,
   if(!is.null(pooled_CNA) & nrow(pooled_CNA) > 0)
   {
     return(maftools::read.maf(pooled_mutations,
-                              clinicalData = clinicalData,
+                              clinicalData = Variant_classification,
                               cnTable = pooled_CNA,
-                              vc_nonSyn = pooled_mutations$VEP.Consequence %>% unique(),
+                              vc_nonSyn = NULL,
                               verbose = TRUE))
   }
 
   return(maftools::read.maf(pooled_mutations,
                             clinicalData = clinicalData,
-                            vc_nonSyn = pooled_mutations$VEP.Consequence %>% unique(),
+                            vc_nonSyn = Variant_classification,
                             verbose = TRUE))
 
   # lapply(x,

@@ -87,26 +87,31 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">CNA</span><span class="op">(</span><span class="va">x</span>, type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"clonal"</span>, <span class="st">"subclonal"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">CNA</span><span class="op">(</span><span class="va">x</span>, type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"clonal"</span>, <span class="st">"subclonal"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>x</dt>
 <dd><p>A CNAqc object.</p></dd>
+
+
 <dt>type</dt>
 <dd><p><code>"clonal"</code> for clonal CNAs, <code>"subclonal"</code> for subclonal CNAs.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A tibble with the data.</p>
+    
+
+<p>A tibble with the data.</p>
     </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"example_PCAWG"</span>, package <span class="op">=</span> <span class="st">'CNAqc'</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">CNA</span><span class="op">(</span><span class="va">example_PCAWG</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 667 × 15</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"example_PCAWG"</span>, package <span class="op">=</span> <span class="st">'CNAqc'</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">CNA</span><span class="op">(</span><span class="va">example_PCAWG</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 667 × 17</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    chr        from     to Major Major_2 minor minor_2   CCF length segme…¹     n</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> chr1          1 8.22<span style="color: #949494;">e</span>5     4      <span style="color: #BB0000;">NA</span>     2      <span style="color: #BB0000;">NA</span>     1 8.22<span style="color: #949494;">e</span>5 chr1:1…    <span style="color: #BB0000;">NA</span></span>
@@ -119,8 +124,9 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> chr1  151<span style="text-decoration: underline;">727</span>433 1.52<span style="color: #949494;">e</span>8     5      <span style="color: #BB0000;">NA</span>     2      <span style="color: #BB0000;">NA</span>     1 6.72<span style="color: #949494;">e</span>3 chr1:1…     2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> chr1  152<span style="text-decoration: underline;">781</span>129 1.53<span style="color: #949494;">e</span>8     4      <span style="color: #BB0000;">NA</span>     2      <span style="color: #BB0000;">NA</span>     1 1.23<span style="color: #949494;">e</span>5 chr1:1…    12</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> chr1  152<span style="text-decoration: underline;">904</span>497 1.53<span style="color: #949494;">e</span>8     4      <span style="color: #BB0000;">NA</span>     0      <span style="color: #BB0000;">NA</span>     1 2.78<span style="color: #949494;">e</span>4 chr1:1…     2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 657 more rows, 4 more variables: karyotype &lt;chr&gt;, karyotype_2 &lt;chr&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   analysed &lt;lgl&gt;, mutations &lt;list&gt;, and abbreviated variable name ¹​segment_id</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 657 more rows, 6 more variables: QC_PASS &lt;lgl&gt;, matched &lt;int&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   karyotype &lt;chr&gt;, karyotype_2 &lt;chr&gt;, analysed &lt;lgl&gt;, mutations &lt;list&gt;, and</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   abbreviated variable name ¹​segment_id</span></span>
 </code></pre></div>
     </div>
   </div>
@@ -131,13 +137,11 @@
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by <a href="https://www.caravagnalab.org" class="external-link">Giulio
-Caravagna</a>.</p>
+  <p></p><p>Developed by <a href="https://www.caravagnalab.org" class="external-link">Giulio Caravagna</a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

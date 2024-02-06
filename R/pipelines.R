@@ -313,6 +313,8 @@ Sequenza_CNAqc = function(sample_id,
       break
   }
 
+  if(!("QC" %in% names(L_cache))) cli::cli_abort("CNAqc cannot run on this sample. Aborting the pipeline.")
+    
   # End of pipeline
   best_run = L_cache %>% 
     filter(QC=="PASS") %>% 
@@ -476,8 +478,7 @@ sequenza_fit_runner = function(seqzExt,
   if(run == 1){
     nbins_cellularity = 100
     nbins_ploidy = 50
-  }
-  else{
+  } else {
     nbins_cellularity = 10
     nbins_ploidy = 10
   }
@@ -523,6 +524,7 @@ sequenza_fit_runner = function(seqzExt,
       cli::cli_alert("Using the input set {.field {mutations}} as mutation calls")
       cat("\n")
     }
+    
 
     CNAqc::init(
       mutations =  mutations,

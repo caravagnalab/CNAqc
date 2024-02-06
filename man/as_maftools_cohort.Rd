@@ -4,7 +4,42 @@
 \alias{as_maftools_cohort}
 \title{Convert a list of CNAqc object to a maftools object.}
 \usage{
-as_maftools_cohort(x, only_drivers = TRUE, CNA_genes = NULL)
+as_maftools_cohort(
+  x,
+  only_drivers = TRUE,
+  CNA_genes = NULL,
+  clinicalData = NULL,
+  CNA_map_function = function(cn) {
+     if (is.na(cn)) 
+         return(NA)
+     A =
+    strsplit(cn, ":")[[1]][1]
+     B = strsplit(cn, ":")[[1]][2]
+     if (A == "NA" |
+    is.na(A)) 
+         return(NA)
+     if (B == "NA" | is.na(B)) 
+         return(NA)
+  
+      if (cn == "1:1") 
+         return(NA)
+     if (cn == "1:0") 
+        
+    return("LOH")
+     if (cn == "2:0") 
+         return("CNLOH")
+     if (cn == "2:1") 
+
+            return("Amplification")
+     if (cn == "2:2") 
+        
+    return("Amplification")
+     if (B == "0") 
+         return("LOH")
+    
+    return("Amplification")
+ }
+)
 }
 \arguments{
 \item{x}{A list of CNAqc objects with MAF annotations.}
@@ -12,10 +47,18 @@ as_maftools_cohort(x, only_drivers = TRUE, CNA_genes = NULL)
 \item{only_drivers}{If `TRUE`, only driver mutations are used, otherwised all.
 When `TRUE`, if drivers are not annotated, an error is thrown.}
 
-\item{CNA_genes}{}
-}
-\value{
+\item{CNA_genes}{Gene names (from MAF.Hugo_Symbol) for which we want to report
+the copy number value.}
 
+\item{clinicalData}{Clinical data in the format of the maftools package, in the
+form of a dataframe with a column `"Tumor_Sample_Barcode"` reporting sample names
+and a column for every clinical annotation to include.}
+
+\item{CNA_map_function}{A function that returns, for a copy number value
+in CNAqc format (e.g., `"1:0"`) a label that is used by the MAF cohort. By
+default, for instance, `"1:0"` is mapped to `"LOH"`, `"2:0"` to `"CNLOH"`,
+`"2:1"` and `"2:2"` to `"Amplification"`, and `"1:1"` to `NA`. Use `NA` to
+avoid reporting the copy number in the MAF cohort.}
 }
 \description{
 Like \code{\link{as_maftools_obj}} but for multiple CNAqc objects, it creates

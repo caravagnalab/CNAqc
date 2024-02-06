@@ -29,6 +29,10 @@ reference:
   - example_PCAWG
   - fpr_test
   - intogen_drivers
+  - gene_coordinates_hg19
+  - gene_coordinates_GRCh38
+
+  
 
 - title: Data processing
   desc:  Functions to manipulate and visualise the data.
@@ -36,6 +40,7 @@ reference:
   - init
   - Mutations
   - CNA
+  - CNA_gene
   - get_drivers
   - plot_data_histogram
   - plot_segments
@@ -51,9 +56,11 @@ reference:
   - subset_by_segment_karyotype
   - subset_by_segment_totalcn
   - subset_by_minimum_CCF
+  - subset_by_segment_minmutations
   - subset_snvs
   - print.cnaqc
   - plot.cnaqc
+  - wt_mutant_alleles
 
 - title: Purity and ploidy QC
   desc:  Analysis of calls by peak detection.
@@ -62,6 +69,7 @@ reference:
   - auto_tolerance
   - inspect_segment
   - plot_peaks_analysis
+  - get_PASS_percentage
 
 - title: CCF estimation
   desc:  Computation of Cancer Cell Fractions data.
@@ -98,4 +106,20 @@ reference:
   desc:  Functions to visualise multiple objects at once.
   contents:
   - plot_multisample_CNA
+
+- title: Mutational Signatures
+  desc:  Functions to convert and store mutational signature tables
+  contents:
+  - SBS
+  - SBS_counts
+  - plot_SBS
+
+- title: MAF interface
+  desc:  Functions to convert from CNAqc to Maf format.
+  contents:
+  - as_maftools_obj
+  - as_maftools_cohort
+  - augment_with_maf
+  - augment_with_vep
+
 

@@ -44,7 +44,6 @@ Imports:
     GenomicRanges,
     easypar,
     gtools,
-    peakPick,
     graphics,
     stats,
     grDevices,
@@ -59,19 +58,19 @@ Imports:
     AnnotationDbi,
     cowplot,
     ggsci,
+    peakPick,
     progress,
     readr,
     R.utils,
     ComplexHeatmap,
     scales
-biocViews:
 Remotes: 
     caravagn/pio,
     caravagnalab/BMix,
     caravagn/easypar,
     cran/peakPick,
     cran/sequenza
-RoxygenNote: 7.2.2
+RoxygenNote: 7.2.3
 Suggests: 
     knitr,
     rmarkdown,

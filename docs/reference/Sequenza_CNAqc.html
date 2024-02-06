@@ -143,82 +143,125 @@ pointing to the best Sequenza solution, based on CNAqc score is created.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">Sequenza_CNAqc</span><span class="op">(</span>
-  <span class="va">sample_id</span>,
-  <span class="va">seqz_file</span>,
-  mutations <span class="op">=</span> <span class="cn">NULL</span>,
-  <span class="va">sex</span>,
-  cellularity <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.05</span>, <span class="fl">1</span><span class="op">)</span>,
-  ploidy <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.8</span>, <span class="fl">5.4</span><span class="op">)</span>,
-  reference <span class="op">=</span> <span class="st">"GRCh38"</span>,
-  normalization.method <span class="op">=</span> <span class="st">"median"</span>,
-  window <span class="op">=</span> <span class="fl">1e+05</span>,
-  gamma <span class="op">=</span> <span class="fl">280</span>,
-  kmin <span class="op">=</span> <span class="fl">300</span>,
-  min.reads.baf <span class="op">=</span> <span class="fl">50</span>,
-  min.reads <span class="op">=</span> <span class="fl">50</span>,
-  min.reads.normal <span class="op">=</span> <span class="fl">15</span>,
-  max.mut.types <span class="op">=</span> <span class="fl">1</span>,
-  delta_cellularity <span class="op">=</span> <span class="fl">0.05</span>,
-  delta_ploidy <span class="op">=</span> <span class="fl">0.25</span>,
-  verbose <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">Sequenza_CNAqc</span><span class="op">(</span></span>
+<span>  <span class="va">sample_id</span>,</span>
+<span>  <span class="va">seqz_file</span>,</span>
+<span>  mutations <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">sex</span>,</span>
+<span>  cellularity <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.05</span>, <span class="fl">1</span><span class="op">)</span>,</span>
+<span>  ploidy <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.8</span>, <span class="fl">5.4</span><span class="op">)</span>,</span>
+<span>  reference <span class="op">=</span> <span class="st">"GRCh38"</span>,</span>
+<span>  normalization.method <span class="op">=</span> <span class="st">"median"</span>,</span>
+<span>  window <span class="op">=</span> <span class="fl">1e+05</span>,</span>
+<span>  gamma <span class="op">=</span> <span class="fl">280</span>,</span>
+<span>  kmin <span class="op">=</span> <span class="fl">300</span>,</span>
+<span>  min.reads.baf <span class="op">=</span> <span class="fl">50</span>,</span>
+<span>  min.reads <span class="op">=</span> <span class="fl">50</span>,</span>
+<span>  min.reads.normal <span class="op">=</span> <span class="fl">15</span>,</span>
+<span>  max.mut.types <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  delta_cellularity <span class="op">=</span> <span class="fl">0.05</span>,</span>
+<span>  delta_ploidy <span class="op">=</span> <span class="fl">0.25</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>sample_id</dt>
 <dd><p>The id of the sample.</p></dd>
+
+
 <dt>seqz_file</dt>
 <dd><p>A binned <code>.seqz</code> file.</p></dd>
+
+
 <dt>mutations</dt>
 <dd><p>If not NULL (default), an external set of mutation calls,
 in tibble format. Must include colummns "chr", "from", "to", "NV", "NR", "VAF".</p></dd>
+
+
 <dt>sex</dt>
 <dd><p>Sex of the patient from whom the sample is drawn.</p></dd>
+
+
 <dt>cellularity</dt>
 <dd><p>Input to <code>sequenza.fit</code>, see <a href="https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html" class="external-link">https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html</a>.</p></dd>
+
+
 <dt>ploidy</dt>
 <dd><p>Input to <code>sequenza.fit</code>, see <a href="https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html" class="external-link">https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html</a>.</p></dd>
+
+
 <dt>reference</dt>
 <dd><p>Reference genome among supported by CNAqc (GRCh38 or hg19/GRCh37).</p></dd>
+
+
 <dt>normalization.method</dt>
 <dd><p>Input to <code>sequenza.extract</code>, see <a href="https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html" class="external-link">https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html</a>.</p></dd>
+
+
 <dt>window</dt>
 <dd><p>Input to <code>sequenza.extract</code>, see <a href="https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html" class="external-link">https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html</a>.</p></dd>
+
+
 <dt>gamma</dt>
 <dd><p>Input to <code>sequenza.extract</code>, see <a href="https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html" class="external-link">https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html</a>.</p></dd>
+
+
 <dt>kmin</dt>
 <dd><p>Input to <code>sequenza.extract</code>, see <a href="https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html" class="external-link">https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html</a>.</p></dd>
+
+
 <dt>min.reads.baf</dt>
 <dd><p>Input to <code>sequenza.extract</code>, see <a href="https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html" class="external-link">https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html</a>.</p></dd>
+
+
 <dt>min.reads</dt>
 <dd><p>Input to <code>sequenza.extract</code>, see <a href="https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html" class="external-link">https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html</a>.</p></dd>
+
+
 <dt>min.reads.normal</dt>
 <dd><p>Input to <code>sequenza.extract</code>, see <a href="https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html" class="external-link">https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html</a>.</p></dd>
+
+
 <dt>max.mut.types</dt>
 <dd><p>Input to <code>sequenza.extract</code>, see <a href="https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html" class="external-link">https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html</a>.</p></dd>
+
+
 <dt>delta_cellularity</dt>
 <dd><p>When a proposed solution of purity and ploidy is tested,
 Sequenza is run on an interval of purity centered at the proposed value, of half
 width <code>delta_cellularity</code>.</p></dd>
+
+
 <dt>delta_ploidy</dt>
 <dd><p>When a proposed solution of purity and ploidy is tested,
 Sequenza is run on an interval of ploidy centered at the proposed value, of half
 width <code>delta_ploidy</code>.</p></dd>
+
+
 <dt>verbose</dt>
 <dd><p>If TRUE (default FALSE) at each Sequenza fitting step, print the updated
 list of purity and ploidy pairs to test.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Optional parameters passed to the <code>analyse_peaks</code> function
 by CNAqc. Tune these to change error tolerance or karyotypes to use for QC.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A <code>tibble</code> containing for each run its number
+    
+
+<p>A <code>tibble</code> containing for each run its number
 <code>run</code>, the solution values of <code>purity</code> and <code>ploidy</code>, the corresponding
 CNAqc <code>score</code> and quality control status <code>QC</code>, a list <code>sequenza</code> of the
-input and output of the Sequenza fitting procedure, and the object of class <code>CNAqc</code>created by the <code><a href="init.html">init()</a></code> and <code><a href="analyze_peaks.html">analyze_peaks()</a></code> functions.</p>
+input and output of the Sequenza fitting procedure, and the object of class <code>CNAqc</code></p>
+
+
+<p>created by the <code><a href="init.html">init()</a></code> and <code><a href="analyze_peaks.html">analyze_peaks()</a></code> functions.</p>
     </div>
     <div id="note">
     <h2>Note</h2>
@@ -239,13 +282,11 @@ to adjust manually the range of <code>ploidy</code>.</p>
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by <a href="https://www.caravagnalab.org" class="external-link">Giulio
-Caravagna</a>.</p>
+  <p></p><p>Developed by <a href="https://www.caravagnalab.org" class="external-link">Giulio Caravagna</a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

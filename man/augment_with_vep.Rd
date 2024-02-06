@@ -4,7 +4,7 @@
 \alias{augment_with_vep}
 \title{Import VEP annotations.}
 \usage{
-augment_with_vep(x, vep)
+augment_with_vep(x, vep, columns = NULL)
 }
 \arguments{
 \item{x}{A CNAqc object, or a dataframe of mutations in the input format
