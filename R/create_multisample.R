@@ -128,7 +128,7 @@ prepare_input_data_multiple <- function(cnaqc_objs, cna_type) {
 ##                from the col.names of the original tibble.
 
 get_segment_info = function(data, chr, sample, new_from, new_to, keep_columns){
-  x %>%
+  data %>%
     dplyr::filter(sample_id == sample,
                   chr == !!chr,
                   from <= new_from,
