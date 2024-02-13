@@ -211,11 +211,18 @@ join_segments = function(cnaqc_objs, cna_type){
   
   
 # remove all the segments that are not correctly shared across samples
-  keep_segments = out %>% 
-    dplyr::filter(!is.na(Major) & !is.na(minor)) %>% 
+  remove_segments = out %>% 
+    dplyr::filter(is.na(Major)) %>% 
+    dplyr::filter(is.na(minor)) %>% 
     dplyr::pull(segment_id) %>% 
     unique()
-    
+  
+  all_segments = out %>% 
+    pull(segment_id) %>% 
+    unique()
+  
+  keep_segments = setdiff(all_segments, remove_segments)
+  
   out = out %>% 
     dplyr::filter(segment_id %in% keep_segments)
 
