@@ -147,7 +147,7 @@ join_segments = function(cnaqc_objs, cna_type){
       dplyr::mutate(sample_id = x)
     
   }) %>%
-    do.call(rbind, .) %>%
+    do.call(bind_rows, .) %>%
     dplyr::select(sample_id, dplyr::everything())
   
   out = lapply(x$chr %>% unique(), function(chr) {
@@ -205,9 +205,9 @@ join_segments = function(cnaqc_objs, cna_type){
           dplyr::bind_cols(tmp) %>% 
           dplyr::mutate(segment_id = paste(chr, from, to, sep = ":")) 
         
-      }) %>% do.call(rbind, .)
-    }) %>% do.call(rbind, .)
-  })  %>% do.call(rbind, .) # create a unique big tibble with the new segmentation
+      }) %>% do.call(bind_rows, .)
+    }) %>% do.call(bind_rows, .)
+  })  %>% do.call(bind_rows, .) # create a unique big tibble with the new segmentation
   
   
 # remove all the segments that are not correctly shared across samples
