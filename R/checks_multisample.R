@@ -29,10 +29,19 @@ checking_input <- function(cnaqc_objs) {
     
     cli::cli_abort(c("{.var cnaqc_objs} is not a named list", 
                    "x" = "Names of {.var cnaqc_objs} must correspond to the sample_id"))
-    
   }
   
-  # if (lapply(cnaqc_objs, function(x) {exists(x$sample)})) add checking that the sample field exists in each cnaqc object
+  if (lapply(cnaqc_objs, function(x) {x$sample}) %>% unique()%>% unlist %>% duplicated() %>% any() == TRUE) {
+    
+    cli::cli_abort(c("{.field sample} is the same in all CNAqc objects",
+      "x"="Must provide a unique sample_id as {.field sample} in each CNAqc object"))
+  }
+  
+  if ((lapply(cnaqc_objs, function(x) {x$peaks_analysis %>% is.null()}) %>% unlist %>% unique) %>% any() == TRUE) {
+    
+    cli::cli_abort(c("{.field peaks_analysis} is not present in all CNAqc objects",
+                     "x" = "You should create a {.cls multi_CNAqc} object only after having performed the peak analysis on all samples"))
+    
+  } 
+  
 }
-
-
