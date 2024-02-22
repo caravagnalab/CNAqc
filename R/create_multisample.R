@@ -91,7 +91,7 @@ multisample_init <- function(cnaqc_objs,
   cli::cli_rule("Selecting new segments")
   #cat("\n")
   
-  multi_cna <- join_segments(cnaqc_objs = cnaqc_objs, cna_type)
+  multi_cna <- join_segments(cnaqc_objs = cnaqc_objs, cna_type, QC_filter)
   
   # map the original mutations on the new segments for each segment
   
@@ -99,7 +99,7 @@ multisample_init <- function(cnaqc_objs,
   cat("\n")
   
   multi_mutations <- lapply(names(multi_cna), function(x) {
-    set_elements(cnaqc_obj = cnaqc_objs[[x]], new_cna_list = multi_cna[[x]], cna_type = cna_type)
+    set_elements(cnaqc_obj = cnaqc_objs[[x]], new_cna_list = multi_cna[[x]], cna_type = cna_type, QC_filter = QC_filter)
   })
   
   names(multi_mutations) = names(multi_cna)
@@ -395,7 +395,7 @@ join_segments = function(cnaqc_objs, cna_type, QC_filter){
 # map mutations on new segments
 ## uses CNAqc function "prepare_input_data" to map mutations on the newly defined segments.
 
-set_elements <- function(cnaqc_obj, new_cna_list, cna_type) {
+set_elements <- function(cnaqc_obj, new_cna_list, cna_type, QC_filter) {
 
   cli::cli_rule(
     crayon::bgCyan(crayon::white(cnaqc_obj$sample))
