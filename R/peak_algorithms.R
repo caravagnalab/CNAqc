@@ -10,7 +10,8 @@ analyze_peaks_common = function(x,
                                 n_bootstrap = 1,
                                 kernel_adjust = 1,
                                 matching_strategy = "closest",
-                                KDE = TRUE)
+                                KDE = TRUE, 
+                                VAF_cut = "none")
 {
   # Karyotypes of interest, and filter for karyotype size
   analysis_type = x$n_karyotype[names(x$n_karyotype) %in%  karyotypes] %>% names()
@@ -43,14 +44,24 @@ analyze_peaks_common = function(x,
                           }) %>%
     Reduce(f = bind_rows) %>%
     left_join(
-      delta_vaf_karyo(epsilon_error = purity_error,
+      CNAqc:::delta_vaf_karyo(epsilon_error = purity_error,
                       purity = x$purity) %>%
         filter(karyotype %in% analysis),
       by = c('karyotype', 'mutation_multiplicity')
     )
   
+  # apply eventual VAF filters before running peak detection
+  
+  if(VAF_cut == "none") {
+    mutations_filt = x$mutations
+  } else {
+    mutations_filt = x$mutations %>% 
+      filter(VAF > VAF_cut)
+  }
+  
   # Run peak detection
-  data_fits = x$mutations %>%
+  
+  data_fits = mutations_filt %>%
     dplyr::filter(karyotype %in% analysis) %>%
     dplyr::group_split(karyotype) %>%
     lapply(
@@ -62,7 +73,7 @@ analyze_peaks_common = function(x,
       }
     )
   
-  names(data_fits) = x$mutations %>%
+  names(data_fits) = mutations_filt %>%
     dplyr::filter(karyotype %in% analysis) %>%
     dplyr::group_split(karyotype) %>%
     sapply(function(e) e$karyotype[1])
@@ -199,10 +210,20 @@ analyze_peaks_general = function(x,
                                  n_min = 50,
                                  epsilon = 0.03,
                                  kernel_adjust = 1,
-                                 n_bootstrap = 5)
+                                 n_bootstrap = 5, 
+                                 VAF_cut = VAF_cut)
 {
+  # apply eventual VAF filters before running peak detection
+  
+  if(VAF_cut == "none") {
+    mutations_filt = x$mutations
+  } else {
+    mutations_filt = x$mutations %>% 
+      filter(VAF > VAF_cut)
+  }
+  
   # Filter small segments
-  candidates = x$mutations$karyotype %>% unique
+  candidates = mutations_filt$karyotype %>% unique
   candidates = setdiff(candidates,  c("1:1", "1:0", "2:0", "2:1", "2:2", "NA:NA"))
   n_cand = x$n_karyotype[candidates] >= n_min
   
@@ -220,14 +241,14 @@ analyze_peaks_general = function(x,
     Reduce(f = bind_rows)
   
   # Data peaks and densities
-  data_fit = x$mutations %>%
+  data_fit = mutations_filt %>%
     filter(karyotype %in% analysis) %>%
     group_split(karyotype) %>%
     lapply(simple_peak_detector,
            kernel_adjust = kernel_adjust,
            n_bootstrap = n_bootstrap)
   
-  names(data_fit) = x$mutations %>%
+  names(data_fit) = mutations_filt %>%
     filter(karyotype %in% analysis) %>%
     group_split(karyotype) %>%
     sapply(function(e) e$karyotype[1])

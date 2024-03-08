@@ -77,7 +77,11 @@
 #' @param starting_state_subclonal_evolution For subclonal simple CNAs, the starting state to determine linear versus
 #' branching evolutionary models. By default this is an heterozygous diploid `1:1` state.
 #' @param cluster_subclonal_CCF For subclonal segments, should the tool try to merge segments with similar CCF and the same copy number alteration?
-#'
+#' 
+#' @param VAF_cut Only mutations with VAF higher than the supplied cut-off will be used for the QC. Defaul is "none" (will not apply any filtering and use all the mutations.)
+#' NB: if you are not filtering for mutations with VAF > 0 when creating the CNAqc object you will need to set this parameter equal to 0. Will not remove mutations from the 
+#' CNAqc attribute, but they will not be included in the peak analysis (and therefore their corresponding value in the column 'QC_pass' will be NA).
+#' 
 #' @return An object of class \code{cnaqc}, modified to hold the results from this analysis. For every type
 #' of segment analyzed tables with summary peaks are available in \code{x$peaks_analysis}. The most helpful table
 #' is usually the one for simple clonal CNAs `x$peaks_analysis$matches`, which reports several information:
@@ -123,7 +127,8 @@ analyze_peaks = function(x,
                          matching_strategy = "closest",
                          KDE = TRUE,
                          starting_state_subclonal_evolution = "1:1",
-                         cluster_subclonal_CCF = FALSE)
+                         cluster_subclonal_CCF = FALSE,
+                         VAF_cut = "none")
 {
 
   if (!is.null(matching_epsilon)) {
@@ -153,7 +158,8 @@ analyze_peaks = function(x,
     purity_error = purity_error,
     VAF_tolerance = VAF_tolerance,
     n_bootstrap = n_bootstrap,
-    kernel_adjust = kernel_adjust
+    kernel_adjust = kernel_adjust, 
+    VAF_cut = VAF_cut
   )
   
   x$cna <- dplyr::left_join(x$cna,CNAqc:::compute_QC_table(x)$QC_table %>% filter(type == "Peaks") %>% 
