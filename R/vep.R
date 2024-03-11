@@ -42,6 +42,7 @@
 #'  \item{"[Option 2]"}{
 #'  If `x` is a dataframe, the same dataframe augmented with MAF annotations.
 #' }
+#' }
 #'
 #' @export
 #'
