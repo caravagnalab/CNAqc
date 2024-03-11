@@ -1,46 +1,151 @@
 ---
-title: "a10_MultiCNAqc"
+title: "10. multiCNAqc object"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{9. Automatic CNA calling}
+  %\VignetteIndexEntry{10. multiCNAqc object}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r setup, include=FALSE}
+```{r, include=FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE, 
   comment = "#>"
 )
 
 options(crayon.enabled=F)
+
+VCF_url = "https://raw.githubusercontent.com/caravagnalab/CNAqc_datasets/main/MSeq_Set06/Mutations/Set.06.WGS.merged_filtered.vcf"
+
+# Download, load and cancel data
+download.file(VCF_url, "Set.06.WGS.merged_filtered.vcf",)
+
+set6 = vcfR::read.vcfR("Set.06.WGS.merged_filtered.vcf")
+file.remove("Set.06.WGS.merged_filtered.vcf")
+
+require(CNAqc)
+require(tidyverse)
+
+# INFO fields 
+info_tidy = vcfR::extract_info_tidy(set6)
+
+# Fixed fields (genomic coordinates)
+fix_tidy = set6@fix %>%
+  as_tibble %>%
+  rename(
+    chr = CHROM,
+    from = POS,
+    ref = REF,
+    alt = ALT
+  ) %>%
+  mutate(from = as.numeric(from), to = from + nchar(alt))
+
+# Genotypes
+geno_tidy = vcfR::extract_gt_tidy(set6) %>%
+  group_split(Indiv)
+
+# Sample mutations in the CNAqc format
+sample_mutations = lapply(geno_tidy, function(x) {
+  bind_cols(info_tidy, fix_tidy) %>% 
+    full_join(x, by = "Key") %>%
+    filter(FILTER == "PASS") %>% 
+    mutate(DP = as.numeric(gt_NR), NV = as.numeric(gt_NV)) %>%
+    mutate(VAF = NV / DP) %>%
+    dplyr::select(chr, from, to, ref, alt, NV, DP, VAF, everything()) %>%
+    filter(!is.na(VAF), VAF > 0)
+})
+
+# A list for all samples available
+names(sample_mutations) = sapply(sample_mutations, function(x) x$Indiv[1])
+sample_mutations = sample_mutations[!is.na(names(sample_mutations))]
+sample_mutations = sample_mutations[1:6]
+
+# Load Sequenza output
+load_SQ_output = function(URL, sample, run)
+{
+  # We can directly read them from remote URLs
+  segments_file = paste0(URL, run, '/', sample, '.smoothedSegs.txt')
+  purity_file = paste0(URL, run, '/', sample, '_confints_CP.txt')
+  
+  # Get segments
+  segments = readr::read_tsv(segments_file, col_types = readr::cols()) %>%
+    dplyr::rename(
+      chr = chromosome,
+      from = start.pos,
+      to = end.pos,
+      Major = A,
+      minor = B
+    ) %>%
+    dplyr::select(chr, from, to, Major, minor, dplyr::everything())
+  
+  # Get purity and ploidy
+  solutions = readr::read_tsv(purity_file, col_types = readr::cols())
+  
+  purity = solutions$cellularity[2]
+  ploidy = solutions$ploidy.estimate[2]
+  
+  return(
+    list(
+      segments = segments,
+      purity = purity,
+      ploidy = ploidy
+    )
+  )
+}
+
+Sequenza_URL = "https://raw.githubusercontent.com/caravagnalab/CNAqc_datasets/main/MSeq_Set06/Copy%20Number/"
+
+# Final sequenza run (good calls)
+Sequenza_good_calls = lapply(names(sample_mutations), function(x) {
+  load_SQ_output(Sequenza_URL, sample = x, run = 'final')
+}) 
+
+names(Sequenza_good_calls) = names(sample_mutations)
+
+# CNA segments and purity
+cna = lapply(Sequenza_good_calls, function(x) {x$segments})
+purity = lapply(Sequenza_good_calls, function(x) {x$purity})
+
 ```
 
-```{r setup, warning=FALSE}
-library(CNAqc)
-
-# We work with the PCAWG object
-#x = CNAqc::example_PCAWG
-
-#print(x)
+```{r setup, warning = T}
+require(CNAqc)
+require(tidyverse)
 ```
 
-## R Markdown
+# Create a multisample CNAqc object
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+For this example we will use the same data presented in the [Example data analysis](https://caravagnalab.github.io/CNAqc/articles/a7_example_MSeq.html), creating a multisample CNAqc object for the patient `Set06`.
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+After having extracted the information on mutations and CNA for each sample, we create a list of CNAqc objects. List names must be sample names. 
 
-```{r cars}
-summary(cars)
+```{r}
+CNAqc_samples = lapply(names(sample_mutations), function(x) {
+  CNAqc::init(mutations = sample_mutations[[x]], 
+              cna = cna[[x]], 
+              purity = purity[[x]], 
+              sample = x,
+              ref = "GRCh38")
+})
+
+names(CNAqc_samples) = sapply(CNAqc_samples, function(x) {x$sample})
+
+print(CNAqc_samples)
 ```
 
-## Including Plots
+Run the quality control on the created object. 
 
-You can also embed plots, for example:
+```{r}
+CNAqc_samples = lapply(CNAqc_samples, function(x) {
+  CNAqc::analyze_peaks(x, matching_strategy = 'closest')#, VAF_cut = 0)
+})
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+print(CNAqc_samples)
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+Create a `m_CNAqc` object using the clonal CNAs.
+
+```{r}
+# example_multisample = multisample_init(cnaqc_objs = CNAqc_samples, cna_type = "clonal", QC_filter = TRUE)
+# print(example_multisample)
+```
