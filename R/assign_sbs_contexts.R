@@ -19,8 +19,8 @@
 #'
 #' @return A CNAqc object with required SBS data in the inner field `SBS`.
 #' @export
-#'\dontrun{
 #' @examples
+#' \dontrun{
 #' data('example_dataset_CNAqc')
 #' x = init(mutations = example_dataset_CNAqc$mutations, cna =example_dataset_CNAqc$cna, purity = example_dataset_CNAqc$purity)
 #'
@@ -215,8 +215,8 @@ SBS = function(x)
 #'
 #' @return A one-row matrix with SBS data for 96 contexts and 6 possible substitutions.
 #' @export
-#'\dontrun{
 #' @examples
+#' \dontrun{
 #' data('example_dataset_CNAqc')
 #' x = init(mutations = example_dataset_CNAqc$mutations, cna =example_dataset_CNAqc$cna, purity = example_dataset_CNAqc$purity)
 #'

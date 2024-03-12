@@ -6,16 +6,16 @@
 #' @return Nothing.
 #'
 #' @exportS3Method print m_cnaqc
-#' @export print.cnaqc
+#' @export print.m_cnaqc
 #'
 #' @examples
 #' 
 #' ### search for an example to add here and include in the package
 #' 
 #' \dontrun{
-#' data('example_PCAWG', package = 'CNAqc')
+#' data('example_multisample', package = 'CNAqc')
 #'
-#' print(example_PCAWG)
+#' print(example_multisample)
 #' }
 #' 
 

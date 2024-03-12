@@ -1,8 +1,27 @@
-# defining getters for m_CNAqc object
+#' Extract mutations from common and private segments from multi_CNAqc object. 
+#' 
+#' @description 
+#' This function extracts the all the mutations in CNAqc format of desired samples from a multi_CNAqc object, 
+#' merging together those that belong to common segments and those private to the sample.
+#' 
+#' @param m_cnaqc_obj multi_CNAqc object (must have previously run \code{"multisample_init"})
+#' @param sample desired samples for which you want to extract the mutations. Default \code{"all"}, extracts mutations from all samples
+#' in the multi_CNAqc object. 
+#' @param cna \code{"clonal"} for clonal CNAs, \code{"subclonal"} for subclonal CNAs.
+#' @param type \code{"SNV"} for single-nucleotide variants, \code{"indel"} for insertion-deletions.
+#'
+#' @return a named list of tibbles with all the mutations.
+#' @export
+#'
+#' @examples
+#'  
+#' all_segments_mut = All_segments_mutations(example_multisample, 
+#'                                 sample = "all", 
+#'                                 cna = c("clonal", "subclonal"), 
+#'                                 type = c("SNV", "indel"))
+#' print(all_segments_mut)
 
-# getter of all mutations of a sample (private + shared)
-
-Private_segments_mutations = function(m_cnaqc_obj, 
+All_segments_mutations = function(m_cnaqc_obj, 
                             sample = "all", 
                             cna = c("clonal", "subclonal"), 
                             type = c("SNV", "indel")) {
@@ -40,7 +59,28 @@ Private_segments_mutations = function(m_cnaqc_obj,
   return(sample_mutations)
 }
 
-# getter of all common mutations across samples (shared a1 + shared a2)
+#' Extract mutations in common segments from multi_CNAqc object. 
+#' 
+#' @description 
+#' This function extracts the all the mutations belonging to common segments in CNAqc format of 
+#' desired samples from a multi_CNAqc object.
+#' 
+#' @param m_cnaqc_obj multi_CNAqc object (must have previously run \code{"multisample_init"})
+#' @param sample desired samples for which you want to extract the mutations. Default \code{"all"}, extracts mutations from all samples
+#' in the multi_CNAqc object. 
+#' @param cna \code{"clonal"} for clonal CNAs, \code{"subclonal"} for subclonal CNAs.
+#' @param type \code{"SNV"} for single-nucleotide variants, \code{"indel"} for insertion-deletions.
+#'
+#' @return a named list of tibbles with all the mutations.
+#' @export
+#'
+#' @examples
+#'  
+#' shared_segments_mut = Shared_segments_mutations(example_multisample, 
+#'                                 sample = "all", 
+#'                                 cna = c("clonal", "subclonal"), 
+#'                                 type = c("SNV", "indel"))
+#' print(shared_segments_mut)
 
 Shared_segments_mutations = function(m_cnaqc_obj,
                                      sample = "all",
