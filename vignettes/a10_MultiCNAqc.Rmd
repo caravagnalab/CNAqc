@@ -13,7 +13,7 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 
-options(crayon.enabled=F)
+# options(crayon.enabled=F)
 
 VCF_url = "https://raw.githubusercontent.com/caravagnalab/CNAqc_datasets/main/MSeq_Set06/Mutations/Set.06.WGS.merged_filtered.vcf"
 
@@ -112,6 +112,7 @@ purity = lapply(Sequenza_good_calls, function(x) {x$purity})
 require(devtools)
 require(tidyverse)
 devtools::load_all()
+require(cli)
 ```
 
 # Create a multisample CNAqc object
@@ -147,6 +148,6 @@ print(CNAqc_samples)
 Create a `m_CNAqc` object using the clonal CNAs.
 
 ```{r}
-example_multisample = multisample_init(cnaqc_objs = CNAqc_samples, cna_type = "clonal", QC_filter = TRUE)
+example_multisample = multisample_init(cnaqc_objs = CNAqc_samples)
 print(example_multisample)
 ```
