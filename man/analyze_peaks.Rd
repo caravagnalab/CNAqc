@@ -18,7 +18,8 @@ analyze_peaks(
   matching_strategy = "closest",
   KDE = TRUE,
   starting_state_subclonal_evolution = "1:1",
-  cluster_subclonal_CCF = FALSE
+  cluster_subclonal_CCF = FALSE,
+  VAF_cut = "none"
 )
 }
 \arguments{
@@ -70,6 +71,10 @@ density. By default the \code{"closest"} strategy is used.}
 branching evolutionary models. By default this is an heterozygous diploid `1:1` state.}
 
 \item{cluster_subclonal_CCF}{For subclonal segments, should the tool try to merge segments with similar CCF and the same copy number alteration?}
+
+\item{VAF_cut}{Only mutations with VAF higher than the supplied cut-off will be used for the QC. Defaul is "none" (will not apply any filtering and use all the mutations.)
+NB: if you are not filtering for mutations with VAF > 0 when creating the CNAqc object you will need to set this parameter equal to 0. Will not remove mutations from the 
+CNAqc attribute, but they will not be included in the peak analysis (and therefore their corresponding value in the column 'QC_pass' will be NA).}
 }
 \value{
 An object of class \code{cnaqc}, modified to hold the results from this analysis. For every type

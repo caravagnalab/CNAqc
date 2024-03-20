@@ -22,6 +22,9 @@ When `TRUE`, if drivers are not annotated, an error is thrown.}
 
 \item{assembly}{If `TRUE`...}
 }
+\value{
+a \code{"maftools"} object.
+}
 \description{
 A single CNAqc object for which MAF annotations have been added using function
 \code{\link{augment_with_maf}}, can be converted as an object for the Bioconductor

@@ -21,6 +21,8 @@
 #' - `original_additional_info` = additional information (i.e.: CCF, peaks analysis, etc) from the original CNAqc object stored as a list (refers to the
 #'    original segmentation!).
 #' 
+#' @export
+#' 
 #' @examples # get better dataset! --> still to check
 #' 
 #' 

@@ -13,7 +13,17 @@ for CNAqc.}
 \item{maf}{The file MAF associated containing the annotations in MAF format.}
 }
 \value{
-
+It depends on `x`
+\itemize{
+ \item{"[Option 1]"}{
+ A CNAqc object like `x` where the mutations are associated to the
+ MAF annotations, if `x` is a CNAqc object. In this case the S3 print method for `x` will report the
+presence of MAF annotations.
+}
+ \item{"[Option 2]"}{
+ If `x` is a dataframe, the same dataframe augmented with MAF annotations.
+}
+}
 }
 \description{
 This function imports

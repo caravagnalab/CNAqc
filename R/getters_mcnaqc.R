@@ -20,6 +20,9 @@
 #'                                 cna = c("clonal", "subclonal"), 
 #'                                 type = c("SNV", "indel"))
 #' print(all_segments_mut)
+###################################################################################################################################################
+
+# Extract mutations from common and private segments from multi_CNAqc object. 
 
 All_segments_mutations = function(m_cnaqc_obj, 
                             sample = "all", 
@@ -59,6 +62,7 @@ All_segments_mutations = function(m_cnaqc_obj,
   return(sample_mutations)
 }
 
+
 #' Extract mutations in common segments from multi_CNAqc object. 
 #' 
 #' @description 
@@ -81,7 +85,9 @@ All_segments_mutations = function(m_cnaqc_obj,
 #'                                 cna = c("clonal", "subclonal"), 
 #'                                 type = c("SNV", "indel"))
 #' print(shared_segments_mut)
+###################################################################################################################################################
 
+# Extract mutations in common segments from multi_CNAqc object. 
 Shared_segments_mutations = function(m_cnaqc_obj,
                                      sample = "all",
                                      cna = c("clonal", "subclonal"),

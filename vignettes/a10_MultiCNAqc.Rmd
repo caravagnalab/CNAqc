@@ -109,8 +109,9 @@ purity = lapply(Sequenza_good_calls, function(x) {x$purity})
 ```
 
 ```{r setup, warning = T}
-require(CNAqc)
+require(devtools)
 require(tidyverse)
+devtools::load_all()
 ```
 
 # Create a multisample CNAqc object
@@ -146,6 +147,6 @@ print(CNAqc_samples)
 Create a `m_CNAqc` object using the clonal CNAs.
 
 ```{r}
-# example_multisample = multisample_init(cnaqc_objs = CNAqc_samples, cna_type = "clonal", QC_filter = TRUE)
-# print(example_multisample)
+example_multisample = multisample_init(cnaqc_objs = CNAqc_samples, cna_type = "clonal", QC_filter = TRUE)
+print(example_multisample)
 ```
