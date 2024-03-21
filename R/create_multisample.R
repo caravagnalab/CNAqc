@@ -15,9 +15,9 @@
 #' @param QC_filter logical. Indicates wheter to filter or not for QC-passing mutations
 #' 
 #' @return a multi_CNAqc object. Every element of the object correspond to one of the sample, structured as follows: 
-#' - `shared_mutations` = CNAqc object for the considered sample, containing all the information (mutations, cna, purity, etc) for
+#' - `mutations_on_shared` = CNAqc object for the considered sample, containing all the information (mutations, cna, purity, etc) for
 #'    mutations mapped on segments shared across all the samples;
-#' - `private_mutations` = table including all the mutations, mapped on new segments that are not shared across all samples;
+#' - `mutations_on_private` = table including all the mutations, mapped on new segments that are not shared across all samples;
 #' - `original_additional_info` = additional information (i.e.: CCF, peaks analysis, etc) from the original CNAqc object stored as a list (refers to the
 #'    original segmentation!).
 #' 
@@ -132,8 +132,8 @@ multisample_init <- function(cnaqc_objs,
       })
     names(other_info) = original
     
-    list(shared_mutations = shared, 
-         private_mutations = private, 
+    list(mutations_on_shared = shared, 
+         mutations_on_private = private, 
          original_additional_info = other_info)
   })
 

@@ -48,9 +48,9 @@ All_segments_mutations = function(m_cnaqc_obj,
   
   sample_mutations = lapply(samples, function(x) {
     
-    mut_on_private_segments = m_cnaqc_obj[[x]][["private_mutations"]]
+    mut_on_private_segments = m_cnaqc_obj[[x]][["mutations_on_private"]]
     
-    mut_on_shared_segments = Mutations(m_cnaqc_obj[[x]][["shared_mutations"]], cna = cna, type = type)
+    mut_on_shared_segments = Mutations(m_cnaqc_obj[[x]][["mutations_on_shared"]], cna = cna, type = type)
     
     all_mutations = dplyr::bind_rows(mut_on_private_segments, mut_on_shared_segments) #%>%
       # dplyr::arrange(desc(chr))
@@ -110,7 +110,7 @@ Shared_segments_mutations = function(m_cnaqc_obj,
   }
   
   mut_on_shared_segments = lapply(samples, function(x) {
-    Mutations(m_cnaqc_obj[[x]][["shared_mutations"]], cna = cna, type = type)
+    Mutations(m_cnaqc_obj[[x]][["mutations_on_shared"]], cna = cna, type = type)
   }) %>% 
     dplyr::bind_rows(.)
    
