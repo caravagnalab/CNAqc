@@ -23,14 +23,14 @@ print.m_cnaqc <- function(x, ...) {
   
   stopifnot(inherits(x, "m_cnaqc"))
   
-  n_segments_clonal = lapply(x, function(y) y$shared_mutations$cna %>% nrow) %>% unlist %>% unique()
-  n_segments_subclonal = lapply(x, function(y) y$shared_mutations$cna_subclonal %>% nrow) %>% unlist %>% unique()
+  n_segments_clonal = lapply(x, function(y) y$mutations_on_shared$cna %>% nrow) %>% unlist %>% unique()
+  n_segments_subclonal = lapply(x, function(y) y$mutations_on_shared$cna_subclonal %>% nrow) %>% unlist %>% unique()
   tot_segments = n_segments_subclonal + n_segments_clonal
-  ref_gen = lapply(x, function(y) y$shared_mutations$reference_genome) %>% unlist %>% unique()
+  ref_gen = lapply(x, function(y) y$mutations_on_shared$reference_genome) %>% unlist %>% unique()
   
   
-  n_mutations_shared = lapply(x, function(y) y$shared_mutations$mutations %>% nrow) %>% unlist
-  n_mutations_private = lapply(x, function(y) y$private_mutations %>% nrow) %>% unlist
+  n_mutations_shared = lapply(x, function(y) y$mutations_on_shared$mutations %>% nrow) %>% unlist
+  n_mutations_private = lapply(x, function(y) y$mutations_on_private %>% nrow) %>% unlist
 
   cli::cli_rule(paste(crayon::bgCyan(crayon::white("[ multi CNAqc ]")), 
                       "{.field {tot_segments}} total shared segments ({.field {n_segments_clonal}} clonal, {.field {n_segments_subclonal}}) subclonal. Rerefence genome: {.field {ref_gen}}"))
