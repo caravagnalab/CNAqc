@@ -138,7 +138,7 @@ multisample_init <- function(cnaqc_objs,
   })
 
   
-  names(multi_input) <- lapply(multi_input, function(x) {x$shared$sample}) %>% unlist()
+  names(multi_input) <- lapply(multi_input, function(x) {x$mutations_on_shared$sample}) %>% unlist()
   class(multi_input) <- "m_cnaqc"
   # define the output as a m_cnaqc object
   

@@ -117,11 +117,11 @@ require(cli)
 
 # Create a multisample CNAqc object
 
-For this example we will use the same data presented in the [Example data analysis](https://caravagnalab.github.io/CNAqc/articles/a7_example_MSeq.html), creating a multisample CNAqc object for the patient `Set06`.
+For this example we will use the same data presented in the [example data analysis](https://caravagnalab.github.io/CNAqc/articles/a7_example_MSeq.html), creating a multisample CNAqc object for the patient `Set06`.
 
-After having extracted the information on mutations and CNA for each sample, we create a list of CNAqc objects. List names must be sample names. 
+After having extracted the information on mutations and CNA for each sample, we create a list of CNAqc objects. List names must be sample names.
 
-```{r}
+```{r, warning=FALSE, message=FALSE}
 CNAqc_samples = lapply(names(sample_mutations), function(x) {
   CNAqc::init(mutations = sample_mutations[[x]], 
               cna = cna[[x]], 
@@ -131,21 +131,18 @@ CNAqc_samples = lapply(names(sample_mutations), function(x) {
 })
 
 names(CNAqc_samples) = sapply(CNAqc_samples, function(x) {x$sample})
-
-print(CNAqc_samples)
 ```
 
-Run the quality control on the created object. 
+Run the quality control on the created object.
 
-```{r}
+```{r, warning=FALSE, message=FALSE}
 CNAqc_samples = lapply(CNAqc_samples, function(x) {
-  CNAqc::analyze_peaks(x, matching_strategy = 'closest')#, VAF_cut = 0)
+  CNAqc::analyze_peaks(x, matching_strategy = 'closest')
 })
 
-print(CNAqc_samples)
 ```
 
-Create a `m_CNAqc` object using the clonal CNAs.
+Create a `m_CNAqc` object using the clonal CNAs. This will define new segments according to which genomic regions are affected by CNAs in all samples, and remap the mutations on them. Mutations that are not mapped on segments shared across samples can be accessed by the `mutations_on_private` attribute of the final object.
 
 ```{r}
 example_multisample = multisample_init(cnaqc_objs = CNAqc_samples)
