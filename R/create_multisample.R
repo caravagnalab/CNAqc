@@ -1,6 +1,6 @@
 #' Create multisample segmentation
 #' 
-#' @description Creates a m_CNAqc object starting from a named list of CNAqc objects on which the quality control has already been 
+#' @description Creates a mCNAqc object starting from a named list of CNAqc objects on which the quality control has already been 
 #' performed individually (ie: multiple samples coming from the same patient). Breakpoints from the original CNAqc objects are
 #' used to define new breakpoints (and then segments) common across all the samples; in the resulting object, the mutations are 
 #' remapped on the newly defined segments. 
@@ -9,23 +9,20 @@
 #' @param cnaqc_objs named list of CNAqc objects, one per sample (each element must include at 
 #' least "mutations", "cna", "reference" and "purity"). Names of the list must correspond to sample_id. 
 #' 
-#' @param cna_type can be "clonal", "subclonal" or both. Specifies which mutations must be considered in the creation of the 
-#' m_CNAqc object. At the moment, the function is implemented for clonal mutations only. Default = "clonal"
+#' @param QC_filter logical. Indicates wheter to filter or not for QC-passing mutations (NB: must have performed the peak analysis before). 
+#' Default is TRUE.
 #' 
-#' @param QC_filter logical. Indicates wheter to filter or not for QC-passing mutations
+#' @param keep_original logical. Indicates wheter to keep or not mutations falling on private segments, default is FALSE.
 #' 
-#' @return a multi_CNAqc object. Every element of the object correspond to one of the sample, structured as follows: 
+#' @return a mCNAqc object. Every element of the object correspond to one of the sample, structured as follows: 
 #' - `mutations_on_shared` = CNAqc object for the considered sample, containing all the information (mutations, cna, purity, etc) for
 #'    mutations mapped on segments shared across all the samples;
-#' - `mutations_on_private` = table including all the mutations, mapped on new segments that are not shared across all samples;
-#' - `original_additional_info` = additional information (i.e.: CCF, peaks analysis, etc) from the original CNAqc object stored as a list (refers to the
-#'    original segmentation!).
+#' - `original` = original CNAqc object, only if the argument `keep_original` is set to TRUE;
+#' - `mCNAqc_info` = information related to number of mutations, 
 #' 
 #' @export
 #' 
 #' @examples # get better dataset! --> still to check
-#' 
-#' 
 #' 
 #' CNAqc_samples = lapply(names(sample_mutations), function(x) {
 #'   CNAqc::init(mutations = sample_mutations[[x]], 
@@ -45,9 +42,11 @@
 #'   
 #' })
 #' 
-#' create the multi_CNAqc object
+#' create the mCNAqc object
 #' 
-#' multisamples = CNAqc::multisample_init(cnaqc_objs = CNAqc_samples)
+#' multisamples = CNAqc::multisample_init(cnaqc_objs = CNAqc_samples, 
+#'                  QC_filter = TRUE, 
+#'                  keep_original = FALSE)
 #' 
 #' multisamples
 #' 
@@ -62,13 +61,14 @@
 # default type of mutations is clonal 
 
 multisample_init <- function(cnaqc_objs, 
-                             cna_type = "clonal", 
-                             QC_filter = TRUE) {
+                             # cna_type = "clonal",
+                             QC_filter = TRUE, 
+                             keep_original = FALSE) {
   
-  cli::cli_h1("multi_CNAqc - Defining common segments")
+  cli::cli_h1("mCNAqcqc - Defining common segments")
   cat('\n')
   
-  # perform some checkings on the input
+  # perform some checks on the input
   # - it is a list
   # - it contains all CNAqc objects
   # - it is a named list
@@ -77,14 +77,14 @@ multisample_init <- function(cnaqc_objs,
   checking_input(cnaqc_objs)
   
   len = length(cnaqc_objs)
-  cli::cli_alert_info("Selected CNA type: {.field {cna_type}}")
+  # cli::cli_alert_info("Selected CNA type: {.field {cna_type}}")
   cli::cli_alert_info("Found {.field {len}} CNAqc objects:")
   cli::cli_ul(names(cnaqc_objs)) 
   #cat('\n')
   
   # create the m_CNAqc object 
   
-  cli::cli_h2("Building a {.cls multi_CNAqc} object")
+  cli::cli_h2("Building a {.cls mCNAqcqc} object")
   cat("\n")
   
   # retrive information on breakpoints and define new segments (see the function for better explanation)
@@ -93,7 +93,10 @@ multisample_init <- function(cnaqc_objs,
   cli::cli_rule("Selecting new segments")
   #cat("\n")
   
-  multi_cna <- join_segments(cnaqc_objs = cnaqc_objs, cna_type, QC_filter)
+  multi_cna <- join_segments(cnaqc_objs = cnaqc_objs, 
+                             # cna_type, 
+                             QC_filter, 
+                             keep_original)
   
   # map the original mutations on the new segments for each segment
   
@@ -101,93 +104,138 @@ multisample_init <- function(cnaqc_objs,
   cat("\n")
   
   multi_mutations <- lapply(names(multi_cna), function(x) {
-    set_elements(cnaqc_obj = cnaqc_objs[[x]], new_cna_list = multi_cna[[x]], cna_type = cna_type, QC_filter = QC_filter)
+      set_elements(cnaqc_obj = cnaqc_objs[[x]], 
+                 new_cna_list = multi_cna[[x]], 
+                 # cna_type = cna_type, 
+                 QC_filter = QC_filter#, 
+                 # keep_original
+                 )
   })
   
   names(multi_mutations) = names(multi_cna)
   
-  # multi_input = prepare_input_data_multiple(cnaqc_objs, cna_type)
+  # take only mutations on identical positions across all the samples
+  cat("\n")
+  cli::cli_rule("Collecting only mutations on shared positions")
+  
+  shared_mut = lapply(multi_mutations, function(x) {
+    x %>%
+      dplyr::mutate(pos = paste(chr, from, to, sep = ":"))
+  } ) %>% dplyr::bind_rows(.) 
+  
+  n_samples = shared_mut$Indiv %>% unique() %>% length()
+  tot_n_mut = nrow(shared_mut)
+  shared_mut = shared_mut %>%
+    dplyr::group_by(pos) %>% 
+    dplyr::filter(n() == n_samples) %>% 
+    dplyr::ungroup() %>% 
+    dplyr::mutate(pos = NULL)
+  
+  final_n_mut = nrow(shared_mut)
+  removed_n_mut = tot_n_mut - final_n_mut
+  
+  cli::cli_alert_info(c("Found {.val {tot_n_mut}} mutations mapping common segments across {.val {n_samples}} samples. \n",
+                        "Removing {.val {removed_n_mut}} mutations on not shared positions, keeping {.val {final_n_mut}} mutations"))
+  cat("\n")
+  
+  multi_mutations_v2 = lapply(names(multi_mutations), function(x) {
+    shared_mut %>% 
+      filter(Indiv == x)
+  })
+  names(multi_mutations_v2) = names(multi_mutations)
   
   # create a list with new cnaqc objects with the new segmentation and the mutations mapped on them
   
-  cli::cli_h1("Defining the {.cls multi_CNAqc} object")
+  cli::cli_h1("Defining the {.cls mCNAqcqc} object")
+  cat("\n")
   
-  # multi_input <- list()
+  # creating the output 
+  m_cnaqc_res <- list()
   
-  multi_input = lapply(names(multi_cna), function(x) {
-    # list(
-    shared = init(
-      mutations = multi_mutations[[x]]$shared,
+  # define the output as a m_cnaqc object
+  class(m_cnaqc_res) <- "m_cnaqc"
+  
+  # creating the elements of the mCNAqc object
+    # list of CNAqc obj with the new segments
+  
+  new_segmentation_cnaqc <- lapply(names(multi_cna), function(x) {
+    #print(x)
+    CNAqc::init(
+      mutations = multi_mutations_v2[[x]],
       cna = multi_cna[[x]]$shared,
       purity = cnaqc_objs[[x]]$purity,
       sample = x
-    )#,
-    private = multi_mutations[[x]]$private#,
-    # original_additional_info = cnaqc_objs[[x]]$peaks_analysis
-    # )
+    )})
+  
+  names(new_segmentation_cnaqc) <- sapply(new_segmentation_cnaqc, function(x) {x$sample})
+  
+  # multi_input = lapply(names(multi_cna), function(x) {
+  #   #print(x)
+  #   shared = CNAqc::init(
+  #     mutations = multi_mutations_v2[[x]],
+  #     cna = multi_cna[[x]]$shared,
+  #     purity = cnaqc_objs[[x]]$purity,
+  #     sample = x
+  #   )
+  
+  m_cnaqc_res$cnaqc_obj_new_segmentation <- new_segmentation_cnaqc
+  
+  if (keep_original == TRUE) {
+    # private = multi_mutations[[x]]$private
+    # list(mutations_on_shared = shared,
+         # mutations_on_private = private,
+         # original = cnaqc_objs[[x]]) %>% return()
     
-    original = setdiff(names(cnaqc_objs[[x]]), names(shared))
-    other_info = lapply(original, function(o) {
-      o = cnaqc_objs[[x]][[o]]
-      })
-    names(other_info) = original
+    m_cnaqc_res$original_cnaqc_objc <- cnaqc_objs
     
-    list(mutations_on_shared = shared, 
-         mutations_on_private = private, 
-         original_additional_info = other_info)
-  })
-
-  
-  names(multi_input) <- lapply(multi_input, function(x) {x$mutations_on_shared$sample}) %>% unlist()
-  class(multi_input) <- "m_cnaqc"
-  # define the output as a m_cnaqc object
-  
-  
-  if(exists("multi_input", inherits = F) & length(multi_input) == length(cnaqc_objs)) {
-    cli::cli_h1("Ended")
-    cli::cli_alert_success("{.cls multi_CNAqc} object created including all samples")
+  } else {
+     
+    original_elements <- lapply(cnaqc_objs, function(x) {names(x)}) %>% unlist() %>% unique()
+    conserved_elements <- lapply(multi_input$cnaqc_obj_new_segmentation, function(x) {names(x)}) %>% unlist() %>% unique()
+    
+    to_include = setdiff(original_elements, conserved_elements)
+    
+    other_info = lapply(cnaqc_objs, function(x) {x[to_include]})
+    m_cnaqc_res$original_additional_info <- other_info
+    
+    # other_info = lapply(original, function(o) {
+    #   cnaqc_objs[[x]][[o]]
+    # })
+    # names(other_info) = original
+    # list(mutations_on_shared = shared,
+    #      # mutations_on_private = private,
+    #      original_additional_info = other_info) %>% return()
   }
   
-  return(multi_input) 
-  # the output is a m_cnaqc class object, in which each element of the list is a cnaqc object (one per sample) with all the classical attributes, but on which it has been performed the joint segmentation and mutations have been therefore remapped
+  
+  # names(multi_input) <- lapply(multi_input, function(x) {x$mutations_on_shared$sample}) %>% unlist()
+  
+  cli::cli_h2("Creating mCNAqc stats")
+  
+  n_new_mut <- sapply(multi_input$cnaqc_obj_new_segmentation, function(x) {x$n_mutations})
+  n_or_mut <- sapply(cnaqc_objs, function(x) {x$n_mutations})
+  n_new_cna <- sapply(multi_input$cnaqc_obj_new_segmentation, function(x) {x$n_cna})
+  n_or_cna <- sapply(cnaqc_objs, function(x) {x$n_cna})
+  
+  stats_mcnaqc <- data.frame(
+    n_mutations_original_segmentation = n_or_mut,
+    n_mutations_new_segmentation = n_new_mut, 
+    n_cna_original_segmentation = n_or_cna, 
+    n_cna_new_segmentation = n_new_cna
+  )
+  
+  m_cnaqc_res$m_cnaqc_stats <- stats_mcnaqc
+  
+  if(exists("m_cnaqc_res", inherits = F) & length(m_cnaqc_res$cnaqc_obj_new_segmentation) == length(cnaqc_objs)) {
+    cli::cli_h1("Ended")
+    cli::cli_alert_success("{.cls mCNAqc} object created including all samples")
+  }
+  
+  return(m_cnaqc_res) 
+  # the output is a m_cnaqc class object, in which each element of the list is a cnaqc object (one per sample) 
+  # with all the classical attributes, but on which it has been performed the joint segmentation and mutations 
+  # have been therefore remapped
 }  
-  
-
-#####################################################################################
-# internal functions
-
-# prepare the data and set them in the correct format
-
-# prepare_input_data_multiple <- function(cnaqc_objs, cna_type) {
-# 
-#   # retrive information on breakpoints and define new segments (see the function for better explanation)
-#   # for the desidered type of mutations
-#   multi_cna <- join_segments(cnaqc_objs = cnaqc_objs, cna_type)
-#   
-#   # map the original mutations on the new segments for each segment
-#   multi_mutations <- lapply(names(multi_cna), function(x) {
-#     set_elements(cnaqc_obj = cnaqc_objs[[x]], new_cna_list = multi_cna[[x]], cna_type = cna_type)
-#     })
-#   
-#   names(multi_mutations) = names(multi_cna)
-#   
-#   # create a list with new cnaqc objects with the new segmentation and the mutations mapped on them
-#   multi_input = lapply(names(multi_cna), function(x) {
-#     init(mutations = multi_mutations[[x]], 
-#       cna = multi_cna[[x]], 
-#       purity = cnaqc_objs[[x]]$purity, 
-#       sample = x)
-#     })
-#   
-#   names(multi_input) <- lapply(multi_input, function(x) {x$sample}) %>% unlist()
-#   
-#   # assign m_cnaqc class to the output
-#   class(multi_input) <- "m_cnaqc"
-#   
-#   return(multi_input)
-# 
-# }
-  
   
 ################################################################################################
 
@@ -226,12 +274,17 @@ get_segment_info = function(data, chr, sample, new_from, new_to, keep_columns){
 
 # segment definition
 
-join_segments = function(cnaqc_objs, cna_type, QC_filter){
+join_segments = function(cnaqc_objs, 
+                         # cna_type, 
+                         QC_filter, 
+                         keep_original){
 
   # Row binded segments table (with sample specification)
   x = lapply(cnaqc_objs %>% names(), function(x){
     
-    CNA(cnaqc_objs[[x]], type = cna_type) %>% 
+    CNA(cnaqc_objs[[x]]#, 
+        # type = cna_type
+        ) %>% 
       dplyr::mutate(sample_id = x)
     
   }) %>%
@@ -329,11 +382,6 @@ join_segments = function(cnaqc_objs, cna_type, QC_filter){
   
   # if(length(remove_segments) != 0) {
     
-  cat("\n")
-  cli::cli_alert_warning(
-    "Found {.val {length(remove_segments)}} not shared segments"
-  )
-  
   all_segments = out %>%
     pull(segment_id) %>%
     unique()
@@ -342,53 +390,67 @@ join_segments = function(cnaqc_objs, cna_type, QC_filter){
   
   out_shared = out %>%
     dplyr::filter(segment_id %in% keep_segments)
-  
-  out_private = out %>%
-    dplyr::filter(segment_id %in% remove_segments) %>%
-    dplyr::filter(!is.na(minor) & !is.na(Major))
     
   cli::cli_alert_info("Shared segments across samples: {.val {out_shared %>% pull(segment_id) %>% unique() %>%  length()}}")
   
   # split the shared cna table by sample id
-  out_shared_by_sample = lapply(out_shared$sample_id %>% unique(), function(x) {
-    out_shared %>%
-      dplyr::filter(sample_id == x)
+  out_by_sample = lapply(out_shared$sample_id %>% unique(), function(x) {
+    list(shared = out_shared %>%
+      dplyr::filter(sample_id == x))
   })
+  names(out_by_sample) = lapply(out_by_sample, function(x) {lapply(x, function(y) {y$sample_id %>% unique}) %>% unlist()}) %>% unlist() %>% unname()
   
-  # split the private cna table by sample id
+  # select mutations on private segments
   
-  out_private_by_sample = lapply(out_private$sample_id %>% unique(), function(x) {
-    if (nrow(out_private) == 0) {
-      out_private %>%
-        dplyr::add_row(chr = NA)
-    } else {
-      out_private %>%
-        dplyr::filter(sample_id == x)
-    }
-  })
-  
-  if(length(out_private_by_sample) == 0) {
-    lapply(x$sample_id %>% unique(), function(l) {
-      out_private_by_sample[[l]] = rep(NA, ncol(out_private)) 
-    })
+  if (keep_original == TRUE) {
+    
+    cli::cli_alert_warning("param {.arg keep_original} is set to {.var TRUE}. Original CNAqc object will be kept.")
+    
+    # out_private = out %>%
+    #   dplyr::filter(segment_id %in% remove_segments) %>%
+    #   dplyr::filter(!is.na(minor) & !is.na(Major))
+    
+    # split the private cna table by sample id
+
+    # out_private_by_sample = lapply(out_private$sample_id %>% unique(), function(x) {
+    #   if (nrow(out_private) == 0) {
+    #     out_private %>%
+    #       dplyr::add_row(chr = NA)
+    #   } else {
+    #     out_private %>%
+    #       dplyr::filter(sample_id == x)
+    #   }
+    # })
+    # 
+    # if (length(out_private_by_sample) == 0) {
+    #   lapply(x$sample_id %>% unique(), function(l) {
+    #     out_private_by_sample[[l]] = rep(NA, ncol(out_private))
+    #   })
+    # } else {
+    #   names(out_private_by_sample) = lapply(out_private_by_sample, function(x) {
+    #     x$sample_id %>% unique
+    #   }) %>% unlist()
+    # }
+    # 
+    # out_by_sample = lapply(names(out_by_sample), function(x) {
+    #   out_by_sample[[x]] = list(shared = out_by_sample[[x]]$shared, private = out_private_by_sample[[x]])
+    # })
+    
   } else {
-    names(out_private_by_sample) = lapply(out_private_by_sample, function(x) {x$sample_id %>% unique}) %>% unlist()
+    cat("\n")
+    cli::cli_alert_warning(c(
+      "param {.arg keep_original} is set to {.var FALSE}.",
+      "Found {.val {length(remove_segments)}} not shared segments. Original CNAqc object will not be saved"
+      )
+    )
   }
   
-  names(out_shared_by_sample) = lapply(out_shared_by_sample, function(x) {x$sample_id %>% unique}) %>% unlist()
+  names(out_by_sample) = lapply(out_by_sample, function(x) {x$shared$sample_id %>% unique()}) %>% unlist()
   
-  out_all_segments = lapply(x$sample_id %>% unique, function(x) {
-    
-    list(shared = out_shared_by_sample[[x]], private = out_private_by_sample[[x]])
-    
-  })
-  
-  names(out_all_segments) = lapply(out_all_segments, function(x) {x$shared$sample_id %>% unique()}) %>% unlist()
-  
-  cli::cli_alert_success("Obtained updated CNA table with shared and private segments per sample")  
+  cli::cli_alert_success("Obtained updated CNA table with shared segments across samples")  
   cat("\n")
   
-  return(out_all_segments)
+  return(out_by_sample)
   
   # returns a list with the new segmentation for each sample --> new cna of the m_cnaqc object
   
@@ -397,7 +459,12 @@ join_segments = function(cnaqc_objs, cna_type, QC_filter){
 # map mutations on new segments
 ## uses CNAqc function "prepare_input_data" to map mutations on the newly defined segments.
 
-set_elements <- function(cnaqc_obj, new_cna_list, cna_type, QC_filter) {
+set_elements <- function(cnaqc_obj, 
+                         new_cna_list, 
+                         # cna_type, 
+                         QC_filter #, 
+                         # keep_original
+                         ) {
 
   cli::cli_rule(
     crayon::bgCyan(crayon::white(cnaqc_obj$sample))
@@ -410,7 +477,9 @@ set_elements <- function(cnaqc_obj, new_cna_list, cna_type, QC_filter) {
                      "x" = "Input must be a list with the new segments"))
   }
   
-  initial_mutations = Mutations(cnaqc_obj, cna = cna_type)
+  initial_mutations = CNAqc::Mutations(cnaqc_obj
+                                       # cna = cna_type
+                                       )
   
   if(QC_filter == TRUE) {
     initial_mutations = initial_mutations %>% 
@@ -422,23 +491,36 @@ set_elements <- function(cnaqc_obj, new_cna_list, cna_type, QC_filter) {
   
   cli::cli_rule(paste(crayon::cyan("{symbol$info}"), "Mapping mutations on shared segments"))
   mutations_shared_segments = CNAqc:::prepare_input_data(mutations = initial_mutations, cna = new_cna_list$shared, tumour_purity = cnaqc_obj$purity)
-  remapped_mut_shared = mutations_shared_segments$mutations
+  remapped_mut = mutations_shared_segments$mutations
   
-  cat("\n")
-  cli::cli_rule(paste(crayon::cyan("{symbol$info}"), "Mapping mutations on private segments"))
-  
-  if(new_cna_list$private %>% is.na() %>% all() == TRUE) {
-    
-    cli::cli_alert_warning("No private segments found")
-    remapped_mut = list(shared = remapped_mut_shared, private = NA)
-    
-  } else {
-    
-    mutations_private_segments = CNAqc:::prepare_input_data(mutations = initial_mutations, cna = new_cna_list$private, tumour_purity = cnaqc_obj$purity)
-    remapped_mut_private = mutations_private_segments$mutations
-    remapped_mut = list(shared = remapped_mut_shared, private = remapped_mut_private)
-    cat("\n")
-  }
+  # if (keep_original == TRUE) {
+  #   cat("\n")
+  #   cli::cli_rule(
+  #     paste(
+  #       crayon::cyan("{symbol$info}"),
+  #       "Storing mutations on private segments in the {.cls mCNAqc} object"
+  #     )
+  #   )
+  #   
+  #   if (new_cna_list$private %>% is.na() %>% all() == TRUE) {
+  #     #
+  #     cli::cli_alert_warning("No private segments found")
+  #     remapped_mut = list(shared = remapped_mut_shared, private = NA)
+  #     #
+  #   } else {
+  #     #
+  #     mutations_private_segments = CNAqc:::prepare_input_data(
+  #       mutations = initial_mutations,
+  #       cna = new_cna_list$private,
+  #       tumour_purity = cnaqc_obj$purity
+  #     )
+  #     remapped_mut_private = mutations_private_segments$mutations
+  #     remapped_mut = list(shared = remapped_mut_shared, private = remapped_mut_private)
+  #     cat("\n")
+  #   }
+  # } else {
+    # remapped_mut = list(shared = remapped_mut_shared)
+  # }
   
   return(remapped_mut)
 }
