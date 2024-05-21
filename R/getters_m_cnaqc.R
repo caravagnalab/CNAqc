@@ -105,3 +105,18 @@ get_sample <- function(m_cnaqc_obj,
   
   return(cnaqc_samples)
 }
+
+#' Get mCNAqc statistics
+#'
+#' @param m_cnaqc_obj 
+#'
+#' @return a tibble
+#' @export
+#'
+#' @examples
+#' get_mCNAqc_stats(x)
+#' 
+get_mCNAqc_stats <- function(m_cnaqc_obj){
+  stats = m_cnaqc_obj[["m_cnaqc_stats"]]
+  return(stats)
+}

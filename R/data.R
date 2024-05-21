@@ -36,6 +36,25 @@
 #'
 "chr_coordinates_GRCh38"
 
+#' Coordinates for GRCm38 chromosomes.
+#'
+#' @docType data
+#'
+#' @usage data(chr_coordinates_GRCm38)
+#'
+#' @format A tibble that represents the coordinates for GRCm38 genome assembly, reporting the chromosome label,
+#' from and to (chromosome range), the length of the chromosome, the position (start and end) of the
+#' centromers.
+#'
+#' @keywords datasets
+#' @references GRCm38
+#'
+#' @examples
+#' data(chr_coordinates_GRCm38)
+#' chr_coordinates_GRCm38
+#'
+"chr_coordinates_GRCm38"
+
 #' Example CNAqc dataset.
 #'
 #' @docType data

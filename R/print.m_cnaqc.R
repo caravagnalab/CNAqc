@@ -66,7 +66,6 @@ print.m_cnaqc <- function(x, ...) {
 }
 
 ######################################################
-
 #' Plot for class \code{'m_cnaqc'}.
 #'
 #' @description
@@ -86,7 +85,6 @@ print.m_cnaqc <- function(x, ...) {
 #' }
 #' 
 ############################################################################
-
 # plot S3 method for m_cnaqc obj
 
 plot.m_cnaqc <- function(x, ...)

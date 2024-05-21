@@ -2,7 +2,7 @@
 title: "10. multiCNAqc"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{10. multiCNAqc object}
+  %\VignetteIndexEntry{10. multiCNAqc}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -51,7 +51,7 @@ sample_mutations = lapply(geno_tidy, function(x) {
     filter(FILTER == "PASS") %>% 
     mutate(DP = as.numeric(gt_NR), NV = as.numeric(gt_NV)) %>%
     mutate(VAF = NV / DP) %>%
-    dplyr::select(chr, from, to, ref, alt, NV, DP, VAF, everything()) %>%
+    dplyr::select(Indiv, chr, from, to, ref, alt, NV, DP, VAF, everything()) %>%
     filter(!is.na(VAF), VAF > 0)
 })
 
@@ -111,13 +111,16 @@ purity = lapply(Sequenza_good_calls, function(x) {x$purity})
 ```{r setup, warning = T}
 require(devtools)
 require(tidyverse)
-devtools::load_all()
+devtools::load_all(path = "C:/Users/lenovo/Documents/GitHub/CNAqc")
 require(cli)
+require(patchwork)
 ```
 
 # Create a multisample CNAqc object
 
-If treating data belonging to the same patient, but from different samples (ie: longitudinal or multi-region sampling), it might be handful searching for genomic regions harboring abnormal copy number states in all of the samples.
+If treating data belonging to the same patient, but from different samples (ie: longitudinal or multi-region sampling), it might be handful searching for genomic regions harboring abnormal copy number states in all of the samples. Creating a `mCNAqc` object allows to modify the existing segments, by searching for regions with altered copy number state in all samples and discarding the others. It creates new segments and remaps existing mutations on them.
+
+<!--# add cartoon with the new segmentation -->
 
 ## Analysis setup
 
@@ -141,23 +144,42 @@ Run the quality control on the created object.
 
 ```{r, include=FALSE}
 CNAqc_samples = lapply(CNAqc_samples, function(x) {
-  CNAqc::analyze_peaks(x, matching_strategy = 'closest', min_VAF = 0)
+  CNAqc::analyze_peaks(x, matching_strategy = 'closest')
 })
+```
+
+All the samples are characterized by different segments among the genome, as can be see in the plot below:
+
+```{r, echo=FALSE, dpi=300, fig.align='center', fig.width=2.5, fig.height=3}
+chr1_plot = lapply(CNAqc_samples, function(x) {CNAqc::plot_segments(x, chromosomes = "chr1") +
+    theme(axis.title = element_text(size = 4), 
+        axis.text = element_text(size = 4), strip.text = element_text(size = 4), 
+        plot.title = element_text(size = 4, hjust = 0.5), legend.text = element_text(size=6), 
+        plot.caption = element_text(size = 4))})
+
+design <- "
+1
+2
+3
+4
+"    
+wrap_plots(chr1_plot) +
+  guide_area() +
+  plot_layout(design = design, guides = "collect")
+
 ```
 
 ## Create the mCNAqc object
 
 Create a `m_CNAqc` object using the all the CNAs included in the objects. This will define new segments according to which genomic regions are affected by CNAs in all samples, and remap the mutations on them.
 
-All breakpoints (`from` and `to` of each CNA table) from all samples are selected and reordered. The list is then used to generate new segments intervals as shown in the picture; only segments that are present in all samples will be kept. Mutations are then remapped on the new segments.
+All breakpoints (`from` and `to` of each CNA table) from all samples are selected and reordered. The list is then used to generate new segments intervals; only segments that are present in all samples will be kept. Mutations are then remapped on the new segments.
 
-```{r echo=FALSE, fig.align = "center", fig.cap = "Example of common segmentation, considering three samples (A, B and C) from the same patient (original segments are represented as the red, blue and yellow orizontal lines). New segments are defined by considering the edges of all original segments (dashed vertical lines), and searching for regions that are known to show different copy number state in all the samples (regions highlighted in green).", fig.width=800}
-knitr::include_graphics("images/joint_segmentation.png")
-```
+`{# {r echo=FALSE, fig.align = "center", fig.cap = "Example of common segmentation, considering three samples (A, B and C) from the same patient (original segments are represented as the red, blue and yellow orizontal lines). New segments are defined by considering the edges of all original segments (dashed vertical lines), and searching for regions that are known to show different copy number state in all the samples (regions highlighted in green).", fig.width=800} # knitr::include_graphics("images/joint_segmentation.png")`
 
 <!-- ![](images/joint_segmentation.png){width="600"} -->
 
-**Important**: Mutations that are not mapped on segments shared across samples will be lost in the final object, while mutations that are mapped on shared segments are stored in a CNAqc object under the `mutations_on_shared` attribute of the result.
+The results will be stored as a list of CNAqc objects (one per sample) in the `cnaqc_obj_new_segmentation` attribute of the mCNAqc object. If running `multisample_init` with the `keep_original = TRUE`, the original CNAqc object will be stored in the `original_cnaqc_objc` attribute; else, results of any additional analysis performed on the original data (ie: peaks analysis or CCF estimation) will be stored in the `original_additional_info` attribute.
 
 ```{r}
 example_multisample = CNAqc::multisample_init(cnaqc_objs = CNAqc_samples, 
@@ -170,36 +192,47 @@ print(example_multisample)
 It is possible to use S3 method `plot` in order to visualize the result.
 
 ```{r}
-# TBD plot method
+# plot(example_multisample)
 ```
 
-## Getters
+We can visualize the results of the new segmentation by using the `plot_segments` function:
 
-To access all the mutations falling on the new shared segments for desired samples use the getter `shared_segments_mutations`, which returns a tibble with mutations on common segments across samples.
+```{r, echo = FALSE, dpi=300, fig.align='center', fig.width=2.5, fig.height=3}
 
-```{r}
-shared_segments_mutations(example_multisample, 
-                                 sample = "all",
-                                 type = c("SNV", "indel"))
+new_seg = lapply(get_sample(example_multisample, which_obj = "shared"), function(x) {
+  CNAqc::plot_segments(x, chromosomes = "chr1") +
+    theme(axis.title = element_text(size = 4), 
+        axis.text = element_text(size = 4), strip.text = element_text(size = 4), 
+        plot.title = element_text(size = 4, hjust = 0.5), legend.text = element_text(size=6), 
+        plot.caption = element_text(size = 4))})
+
+design <- "
+1
+2
+3
+4
+"    
+wrap_plots(new_seg) +
+  guide_area() +
+  plot_layout(design = design, 
+              guides = "collect")
 ```
 
-Mutations from the original CNAqc objects can be retrieved by using `original_segments_mutations` (returns a tibble).
+## Accessing elements inside the `mCNAqc` object
+
+Sample names can be retrieved using the `get_sample_name` function, which can also be applied on classical `CNAqc` objects.
 
 ```{r}
-original_segments_mutations(example_multisample, 
-                            sample = "all", 
-                            type = c("SNV", "indel"))
+get_sample_name(example_multisample)
 ```
 
-Original CNAqc objects of all samples can be saved if setting the argument `keep_original = TRUE`. They can be accessed by using the getter `original`.
+Elements inside the `mCNAqc` object (for desidered samples) can be accessed through the `get_sample` function. It returns a list of CNAqc objects. In this way, it is possible to obtain a joint table with all the mutations across samples:
 
 ```{r}
-original(example_multisample, 
-                sample = "all")
-```
+res = get_sample(example_multisample, 
+           sample = get_sample_name(example_multisample), 
+           which_obj = "shared")
 
-CNAqc objects with the new segmentations can be accessed by using the getter `new_segments_CNAqc`.
-
-```{r}
-new_segments_CNAqc(example_multisample)
+lapply(res, function(x) {CNAqc::Mutations(x)}) %>% 
+  dplyr::bind_rows()
 ```

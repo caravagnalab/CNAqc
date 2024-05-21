@@ -14,11 +14,11 @@
 #' 
 #' @param keep_original logical. Indicates wheter to keep or not mutations falling on private segments, default is FALSE.
 #' 
-#' @return a mCNAqc object. Every element of the object correspond to one of the sample, structured as follows: 
-#' - `mutations_on_shared` = CNAqc object for the considered sample, containing all the information (mutations, cna, purity, etc) for
-#'    mutations mapped on segments shared across all the samples;
-#' - `original` = original CNAqc object, only if the argument `keep_original` is set to TRUE;
-#' - `mCNAqc_info` = information related to number of mutations, 
+#' @return a mCNAqc object, structured as follows: 
+#' - `cnaqc_obj_new_segmentation` = list of CNAqc objects for all the samples created using the new segmentation;
+#' - `original_cnaqc_objc` = original CNAqc object, only if the argument \code{keep_original} is set to TRUE;
+#' - `original_additional_info` = additional information from the original CNAqc objects, such peaks analysis results of CCF estimation. Only if the argument \code{keep_original} is set to FALSE;
+#' - `m_cnaqc_stats` = information related to number of mutations and segments before and after the creationn of the mCNAqc object. 
 #' 
 #' @export
 #' 
@@ -191,7 +191,7 @@ multisample_init <- function(cnaqc_objs,
   } else {
      
     original_elements <- lapply(cnaqc_objs, function(x) {names(x)}) %>% unlist() %>% unique()
-    conserved_elements <- lapply(multi_input$cnaqc_obj_new_segmentation, function(x) {names(x)}) %>% unlist() %>% unique()
+    conserved_elements <- lapply(m_cnaqc_res$cnaqc_obj_new_segmentation, function(x) {names(x)}) %>% unlist() %>% unique()
     
     to_include = setdiff(original_elements, conserved_elements)
     
@@ -212,9 +212,9 @@ multisample_init <- function(cnaqc_objs,
   
   cli::cli_h2("Creating mCNAqc stats")
   
-  n_new_mut <- sapply(multi_input$cnaqc_obj_new_segmentation, function(x) {x$n_mutations})
+  n_new_mut <- sapply(m_cnaqc_res$cnaqc_obj_new_segmentation, function(x) {x$n_mutations})
   n_or_mut <- sapply(cnaqc_objs, function(x) {x$n_mutations})
-  n_new_cna <- sapply(multi_input$cnaqc_obj_new_segmentation, function(x) {x$n_cna})
+  n_new_cna <- sapply(m_cnaqc_res$cnaqc_obj_new_segmentation, function(x) {x$n_cna})
   n_or_cna <- sapply(cnaqc_objs, function(x) {x$n_cna})
   
   stats_mcnaqc <- data.frame(
