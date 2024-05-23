@@ -82,7 +82,7 @@ get_sample <- function(m_cnaqc_obj,
     
     # check if the original cnaqc obj exist
     
-    check_or = any(names(x) == type)
+    check_or = any(names(m_cnaqc_obj) == type)
 
     if (check_or == FALSE) {
       cli::cli_abort(c("mCNAqc object was build without keeping original CNAqc objects"), 
