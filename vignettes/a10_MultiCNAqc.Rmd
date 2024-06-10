@@ -151,19 +151,18 @@ CNAqc_samples = lapply(CNAqc_samples, function(x) {
 All the samples are characterized by different segments among the genome, as can be see in the plot below:
 
 ```{r, echo=FALSE, dpi=300, fig.align='center', fig.width=2.5, fig.height=3}
-chr1_plot = lapply(CNAqc_samples, function(x) {CNAqc::plot_segments(x, chromosomes = "chr1") +
-    theme(axis.title = element_text(size = 4), 
-        axis.text = element_text(size = 4), strip.text = element_text(size = 4), 
-        plot.title = element_text(size = 4, hjust = 0.5), legend.text = element_text(size=6), 
-        plot.caption = element_text(size = 4))})
+seg_plot = lapply(CNAqc_samples, function(x) {CNAqc::plot_segments(x)}) # +
+    # theme(axis.title = element_text(size = 4),
+    #     axis.text = element_text(size = 4), strip.text = element_text(size = 4),
+    #     plot.title = element_text(size = 4, hjust = 0.5), legend.text = element_text(size=6),
+    #     plot.caption = element_text(size = 4))})
 
 design <- "
 1
 2
 3
-4
 "    
-wrap_plots(chr1_plot) +
+wrap_plots(seg_plot) +
   guide_area() +
   plot_layout(design = design, guides = "collect")
 
@@ -235,4 +234,8 @@ res = get_sample(example_multisample,
 
 lapply(res, function(x) {CNAqc::Mutations(x)}) %>% 
   dplyr::bind_rows()
+```
+
+```{python}
+import os
 ```

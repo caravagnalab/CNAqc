@@ -11,7 +11,7 @@ analyze_peaks_common = function(x,
                                 kernel_adjust = 1,
                                 matching_strategy = "closest",
                                 KDE = TRUE, 
-                                min_VAF = -1)
+                                min_VAF = 0)
 {
   # Karyotypes of interest, and filter for karyotype size
   analysis_type = x$n_karyotype[names(x$n_karyotype) %in%  karyotypes] %>% names()
@@ -203,7 +203,7 @@ analyze_peaks_general = function(x,
                                  epsilon = 0.03,
                                  kernel_adjust = 1,
                                  n_bootstrap = 5, 
-                                 min_VAF = -1)
+                                 min_VAF = 0)
 {
   # Filter small segments
   candidates = x$mutations%>% dplyr::filter(VAF > min_VAF) %>% dplyr::pull(karyotype) %>% unique
@@ -325,7 +325,7 @@ analyze_peaks_subclonal = function(x,
                                    kernel_adjust = 1,
                                    starting_state = '1:1',
                                    cluster_subclonal_CCF = FALSE, 
-                                   min_VAF = -1)
+                                   min_VAF = 0)
 {
   if (is.null(x$cna_subclonal) | nrow(x$cna_subclonal) == 0)
     return(x)

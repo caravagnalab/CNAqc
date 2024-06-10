@@ -77,7 +77,7 @@
 #' @param starting_state_subclonal_evolution For subclonal simple CNAs, the starting state to determine linear versus
 #' branching evolutionary models. By default this is an heterozygous diploid `1:1` state.
 #' @param cluster_subclonal_CCF For subclonal segments, should the tool try to merge segments with similar CCF and the same copy number alteration?
-#' @param min_VAF Only mutations with VAF higher than the supplied cut-off will be used for the QC. Defaul is -1 (will not apply any filtering and use all the mutations).
+#' @param min_VAF Only mutations with VAF higher than the supplied cut-off will be used for the QC, but they will not be removed from the final object. Default is 0 (will not include mutations with VAF = 0 in the QC).
 #' @return An object of class \code{cnaqc}, modified to hold the results from this analysis. For every type
 #' of segment analyzed tables with summary peaks are available in \code{x$peaks_analysis}. The most helpful table
 #' is usually the one for simple clonal CNAs `x$peaks_analysis$matches`, which reports several information:
@@ -124,7 +124,7 @@ analyze_peaks = function(x,
                          KDE = TRUE,
                          starting_state_subclonal_evolution = "1:1",
                          cluster_subclonal_CCF = FALSE, 
-                         min_VAF = -1)
+                         min_VAF = 0)
 {
   
   if (!is.null(matching_epsilon)) {
