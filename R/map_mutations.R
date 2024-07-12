@@ -72,6 +72,7 @@ map_mutations_to_subclonal_segments = function(mutations, cna_subclonal)
   # Map mutations to the actual segments
   cna_subclonal$mutations = NULL
 
+  if (nrow(cna_subclonal)>0){
   # pb <- progress_estimated(nrow(cna_subclonal), min_time = 0)
   pb = progress::progress_bar$new(format = paste0(" ▣ :spin [:bar] :percent [ETA :eta] ▶ :elapsedfull"),
                                   total = nrow(cna_subclonal), clear = TRUE, complete = "~", incomplete = " ",
@@ -99,6 +100,7 @@ map_mutations_to_subclonal_segments = function(mutations, cna_subclonal)
   }
 
   cna_subclonal$n = sapply(cna_subclonal$mutations, nrow)
+  }
 
   return(cna_subclonal)
 }
