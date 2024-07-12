@@ -12,21 +12,19 @@
 <link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png">
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><meta property="og:title" content="4. Computation of Cancer Cell Fractions">
-<meta property="og:description" content="CNAqc">
-<meta property="og:image" content="caravagnalab.github.io/CNAqc/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -55,7 +53,7 @@
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
-     
+
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
@@ -93,7 +91,7 @@
 <li>
   <a href="https://github.com/caravagnalab/CNAqc/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul>
@@ -104,7 +102,7 @@
 </div>
 <!--/.navbar -->
 
-      
+
 
       </header><script src="a4_ccf_computation_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
@@ -112,7 +110,7 @@
       <h1 data-toc-skip>4. Computation of Cancer Cell Fractions</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/caravagnalab/CNAqcvignettes/a4_ccf_computation.Rmd" class="external-link"><code>vignettes/a4_ccf_computation.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/caravagnalab/CNAqc/vignettes/a4_ccf_computation.Rmd" class="external-link"><code>vignettes/a4_ccf_computation.Rmd</code></a></small>
       <div class="hidden name"><code>a4_ccf_computation.Rmd</code></div>
 
     </div>
@@ -168,39 +166,39 @@
 <h3 id="phasing-by-mixture-entropy">Phasing by mixture entropy<a class="anchor" aria-label="anchor" href="#phasing-by-mixture-entropy"></a>
 </h3>
 <p>The entropy-based approach will flag mutations for which we cannot phase multiplicity by VAFs with certainty; the CCFs of these mutations should be manually controlled and, unless necessary, discarded.</p>
-<p>The model uses the entropy <span class="math inline">\(H(x)\)</span> of a VAF mixture with two Binomial distributions to detect mutations happened before, and after aneuploidy. The density of these distributions are:</p>
+<p>The model uses the entropy <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">H(x)</annotation></semantics></math> of a VAF mixture with two Binomial distributions to detect mutations happened before, and after aneuploidy. The density of these distributions are:</p>
 <ul>
-<li>peaked at <span class="math inline">\(v_1\)</span>/<span class="math inline">\(v_2\)</span> for <span class="math inline">\(m = 1\)</span> (after CNA) and <span class="math inline">\(m = 2\)</span> (before CNA), where <span class="math inline">\(v_i\)</span> are peaks determined as in peak-analysis procedures;</li>
-<li>computed on the domain <span class="math inline">\([0, 1]\)</span>, after translating read counts into VAFs. The number of trials of the Binomial process is set to the median coverage <span class="math inline">\(n\)</span> of the observed mutations that map to the segments under investigation.</li>
+<li>peaked at <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>v</mi><mn>1</mn></msub><annotation encoding="application/x-tex">v_1</annotation></semantics></math>/<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>v</mi><mn>2</mn></msub><annotation encoding="application/x-tex">v_2</annotation></semantics></math> for <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">m = 1</annotation></semantics></math> (after CNA) and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>=</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">m = 2</annotation></semantics></math> (before CNA), where <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>v</mi><mi>i</mi></msub><annotation encoding="application/x-tex">v_i</annotation></semantics></math> are peaks determined as in peak-analysis procedures;</li>
+<li>computed on the domain <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[0, 1]</annotation></semantics></math>, after translating read counts into VAFs. The number of trials of the Binomial process is set to the median coverage <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math> of the observed mutations that map to the segments under investigation.</li>
 </ul>
 <p>The assumptions of CNAqc are that:</p>
 <ul>
 <li>coverage dispersion is small to justify a Binomial instead of a Beta-Binomial model;</li>
 <li>trials are well-represented by the median of the observed coverage.</li>
 </ul>
-<p><strong>Mixture construction.</strong> CNAqc computes two Binomial densities <span class="math inline">\(\text{Bin}_1\)</span> and <span class="math inline">\(\text{Bin}_2\)</span> over the set of values <span class="math inline">\([0, n]\)</span> with <span class="math inline">\(n\)</span> trials and success probability <span class="math inline">\(v_i\)</span>, i.e. <span class="math display">\[
+<p><strong>Mixture construction.</strong> CNAqc computes two Binomial densities <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mtext mathvariant="normal">Bin</mtext><mn>1</mn></msub><annotation encoding="application/x-tex">\text{Bin}_1</annotation></semantics></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mtext mathvariant="normal">Bin</mtext><mn>2</mn></msub><annotation encoding="application/x-tex">\text{Bin}_2</annotation></semantics></math> over the set of values <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo>,</mo><mi>n</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[0, n]</annotation></semantics></math> with <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math> trials and success probability <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>v</mi><mi>i</mi></msub><annotation encoding="application/x-tex">v_i</annotation></semantics></math>, i.e. <math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mtext mathvariant="normal">Bin</mtext><mi>i</mi></msub><mo>=</mo><mi>p</mi><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo>∣</mo><mi>n</mi><mo>;</mo><msub><mi>v</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">
 \text{Bin}_i = p(s \mid n; v_i)
-\]</span> as the probability of finding <span class="math inline">\(s\)</span> reads with the mutant allele out of <span class="math inline">\(n\)</span> (median depth), given the mutation expected frequency <span class="math inline">\(v_i\)</span>; recall that <span class="math inline">\(v_i\)</span> includes the effect of tumour purity.</p>
-<p>To finalize the densities CNAqc determines the mixing proportions by counting how many mutations fall below the area of each Binomial density, restricted to the 1% and 99% quantiles. Two ranges <span class="math inline">\(I_1 = [v_1^1; v_1^{99}]\)</span> and <span class="math inline">\(I_2 = [v_2^1; v_2^{99}]\)</span> are computed so that:</p>
+</annotation></semantics></math> as the probability of finding <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>s</mi><annotation encoding="application/x-tex">s</annotation></semantics></math> reads with the mutant allele out of <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math> (median depth), given the mutation expected frequency <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>v</mi><mi>i</mi></msub><annotation encoding="application/x-tex">v_i</annotation></semantics></math>; recall that <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>v</mi><mi>i</mi></msub><annotation encoding="application/x-tex">v_i</annotation></semantics></math> includes the effect of tumour purity.</p>
+<p>To finalize the densities CNAqc determines the mixing proportions by counting how many mutations fall below the area of each Binomial density, restricted to the 1% and 99% quantiles. Two ranges <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>1</mn></msub><mo>=</mo><mo stretchy="false" form="prefix">[</mo><msubsup><mi>v</mi><mn>1</mn><mn>1</mn></msubsup><mo>;</mo><msubsup><mi>v</mi><mn>1</mn><mn>99</mn></msubsup><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">I_1 = [v_1^1; v_1^{99}]</annotation></semantics></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>2</mn></msub><mo>=</mo><mo stretchy="false" form="prefix">[</mo><msubsup><mi>v</mi><mn>2</mn><mn>1</mn></msubsup><mo>;</mo><msubsup><mi>v</mi><mn>2</mn><mn>99</mn></msubsup><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">I_2 = [v_2^1; v_2^{99}]</annotation></semantics></math> are computed so that:</p>
 <ul>
 <li>
-<span class="math inline">\(n_1\)</span> are the number of mutations with VAF in <span class="math inline">\(I_1\)</span>;</li>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>n</mi><mn>1</mn></msub><annotation encoding="application/x-tex">n_1</annotation></semantics></math> are the number of mutations with VAF in <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>I</mi><mn>1</mn></msub><annotation encoding="application/x-tex">I_1</annotation></semantics></math>;</li>
 <li>
-<span class="math inline">\(n_2\)</span> are the number of mutations with VAF in <span class="math inline">\(I_2\)</span>;</li>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>n</mi><mn>2</mn></msub><annotation encoding="application/x-tex">n_2</annotation></semantics></math> are the number of mutations with VAF in <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>I</mi><mn>2</mn></msub><annotation encoding="application/x-tex">I_2</annotation></semantics></math>;</li>
 </ul>
 <p>Note that:</p>
 <ul>
-<li>the intervals might overlap (i.e., <span class="math inline">\(v_1^{99} &gt; v_2^{1}\)</span>)</li>
-<li>mutations with VAF below the smallest interval point (<span class="math inline">\(I_1 &lt; v_1^1\)</span>) are subclonal and not counted in <span class="math inline">\(n_1\)</span>, i.e., the mutations accrued after the CNA.</li>
+<li>the intervals might overlap (i.e., <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>v</mi><mn>1</mn><mn>99</mn></msubsup><mo>&gt;</mo><msubsup><mi>v</mi><mn>2</mn><mn>1</mn></msubsup></mrow><annotation encoding="application/x-tex">v_1^{99} &gt; v_2^{1}</annotation></semantics></math>)</li>
+<li>mutations with VAF below the smallest interval point (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>1</mn></msub><mo>&lt;</mo><msubsup><mi>v</mi><mn>1</mn><mn>1</mn></msubsup></mrow><annotation encoding="application/x-tex">I_1 &lt; v_1^1</annotation></semantics></math>) are subclonal and not counted in <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>n</mi><mn>1</mn></msub><annotation encoding="application/x-tex">n_1</annotation></semantics></math>, i.e., the mutations accrued after the CNA.</li>
 </ul>
-<p>The counts are normalized to create a mixture <span class="math display">\[
+<p>The counts are normalized to create a mixture <math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo>=</mo><msub><mi>μ</mi><mn>1</mn></msub><mo>*</mo><msub><mtext mathvariant="normal">Bin</mtext><mn>1</mn></msub><mo>+</mo><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>−</mo><msub><mi>μ</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>*</mo><msub><mtext mathvariant="normal">Bin</mtext><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">
 M = \mu_1 * \text{Bin}_1 + (1 - \mu_1) * \text{Bin}_2
-\]</span> where <span class="math inline">\(\mu_1 = n_1/(n_1+n_2)\)</span> and <span class="math inline">\(\mu_2 = 1 - \mu_1\)</span> are the normalized proportions.</p>
+</annotation></semantics></math> where <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>μ</mi><mn>1</mn></msub><mo>=</mo><msub><mi>n</mi><mn>1</mn></msub><mi>/</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>n</mi><mn>1</mn></msub><mo>+</mo><msub><mi>n</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\mu_1 = n_1/(n_1+n_2)</annotation></semantics></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>μ</mi><mn>2</mn></msub><mo>=</mo><mn>1</mn><mo>−</mo><msub><mi>μ</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">\mu_2 = 1 - \mu_1</annotation></semantics></math> are the normalized proportions.</p>
 <p><strong>Entropy-based assignments.</strong></p>
-<p>Assigning multiplicities is difficult at the crossing of the two densities where mutations could have multiplicity <span class="math inline">\(m=1\)</span> or <span class="math inline">\(m=2\)</span>. If mistaken, these mutations can determine aritficial peaks in the CCF distribution and compromise downstream <a href="https://caravagnalab.github.io/mobster/" class="external-link">subclonal deconvolution</a>.</p>
-<p>Mutations with VAF below <span class="math inline">\(v_1\)</span> have <span class="math inline">\(m=1\)</span>, those above <span class="math inline">\(v_2\)</span> have <span class="math inline">\(m=2\)</span>; for all others CNAqc uses the entropy <span class="math inline">\(H(x)\)</span> <span class="math display">\[
+<p>Assigning multiplicities is difficult at the crossing of the two densities where mutations could have multiplicity <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">m=1</annotation></semantics></math> or <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>=</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">m=2</annotation></semantics></math>. If mistaken, these mutations can determine aritficial peaks in the CCF distribution and compromise downstream <a href="https://caravagnalab.github.io/mobster/" class="external-link">subclonal deconvolution</a>.</p>
+<p>Mutations with VAF below <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>v</mi><mn>1</mn></msub><annotation encoding="application/x-tex">v_1</annotation></semantics></math> have <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">m=1</annotation></semantics></math>, those above <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>v</mi><mn>2</mn></msub><annotation encoding="application/x-tex">v_2</annotation></semantics></math> have <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>=</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">m=2</annotation></semantics></math>; for all others CNAqc uses the entropy <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">H(x)</annotation></semantics></math><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mo>−</mo><msub><mi>p</mi><mi>x</mi></msub><mo>log</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>p</mi><mi>x</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">
 H(x) = - p_x \log(p_x)
-\]</span> defined from the mixture’s latent variables. Peaks in <span class="math inline">\(H(x)\)</span> identify VAF ranges where one of the two densities dominates and <span class="math inline">\(m\)</span> can be estimated confidently. CNAqc uses <a href="https://cran.rstudio.com/web/packages/peakPick/index.html" class="external-link">peakPick</a> to find two peaks <span class="math inline">\(\rho_1\)</span> and <span class="math inline">\(\rho_2\)</span> and setting <span class="math inline">\(m=1\)</span> for <span class="math inline">\(x &lt; \rho_1\)</span>, <span class="math inline">\(m=2\)</span> for <span class="math inline">\(x &gt; \rho_2\)</span>, and defines <code>NA</code> for <span class="math inline">\(\rho_1 \leq x \leq \rho_2\)</span> (crossing point).</p>
+</annotation></semantics></math> defined from the mixture’s latent variables. Peaks in <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">H(x)</annotation></semantics></math> identify VAF ranges where one of the two densities dominates and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>m</mi><annotation encoding="application/x-tex">m</annotation></semantics></math> can be estimated confidently. CNAqc uses <a href="https://cran.rstudio.com/web/packages/peakPick/index.html" class="external-link">peakPick</a> to find two peaks <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>ρ</mi><mn>1</mn></msub><annotation encoding="application/x-tex">\rho_1</annotation></semantics></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>ρ</mi><mn>2</mn></msub><annotation encoding="application/x-tex">\rho_2</annotation></semantics></math> and setting <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">m=1</annotation></semantics></math> for <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>&lt;</mo><msub><mi>ρ</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">x &lt; \rho_1</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>=</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">m=2</annotation></semantics></math> for <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>&gt;</mo><msub><mi>ρ</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">x &gt; \rho_2</annotation></semantics></math>, and defines <code>NA</code> for <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>ρ</mi><mn>1</mn></msub><mo>≤</mo><mi>x</mi><mo>≤</mo><msub><mi>ρ</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">\rho_1 \leq x \leq \rho_2</annotation></semantics></math> (crossing point).</p>
 <p>CNAqc computes a QC score for CCFs; a karyotype is considered <code>PASS</code> is less than <code>p%</code> (default <code>10%</code>) mutations are not assignable (<code>CCF = NA</code>).</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># We do not assemble the fits</span></span>
@@ -220,21 +218,21 @@ H(x) = - p_x \log(p_x)
 <span><span class="co">#&gt; [[5]]</span></span></code></pre>
 <p><img src="a4_ccf_computation_files/figure-html/unnamed-chunk-3-5.png" width="576"> The plot shows the quantities described above; from left to right we have</p>
 <ul>
-<li>the CCF histogram coloured by multiplicity <span class="math inline">\(m\)</span>;</li>
-<li>the VAF histogram coloured by multiplicity <span class="math inline">\(m\)</span> with the red dashed lines representing the areas that cannot be phased;</li>
-<li>the entropy <span class="math inline">\(H(x)\)</span>, where we seek to identify are <span class="math inline">\(H(x)\)</span> peaks higher. The width of the entropy peak that determines un-assignable mutations is proportional to the variance of the counts, and therefore the sequencing coverage;</li>
-<li>the proportion of mutations assigned for each value of <span class="math inline">\(m\)</span>, and those unassigned.</li>
+<li>the CCF histogram coloured by multiplicity <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>m</mi><annotation encoding="application/x-tex">m</annotation></semantics></math>;</li>
+<li>the VAF histogram coloured by multiplicity <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>m</mi><annotation encoding="application/x-tex">m</annotation></semantics></math> with the red dashed lines representing the areas that cannot be phased;</li>
+<li>the entropy <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">H(x)</annotation></semantics></math>, where we seek to identify are <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">H(x)</annotation></semantics></math> peaks higher. The width of the entropy peak that determines un-assignable mutations is proportional to the variance of the counts, and therefore the sequencing coverage;</li>
+<li>the proportion of mutations assigned for each value of <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>m</mi><annotation encoding="application/x-tex">m</annotation></semantics></math>, and those unassigned.</li>
 </ul>
 <p>The rightmost CCF histogram plot is also surrounded by a green or red square to reflect QC status of <code>PASS</code> (green) or <code>FAIL</code> (red).</p>
 </div>
 <div class="section level3">
 <h3 id="hard-cut-based">Hard-cut based<a class="anchor" aria-label="anchor" href="#hard-cut-based"></a>
 </h3>
-<p>A method is available to compute CCFs regardless of the entropy <span class="math inline">\(H(x)\)</span>. From the 2-class Binomial mixture, CNAqc uses the means of the Binomial parameters to determine a hard split of the data.</p>
-<p>Define <span class="math inline">\(p_1\)</span> and <span class="math inline">\(p_2\)</span> the two means and the midpoint <span class="math inline">\(\hat{p} = p1 + (p_2-p_1)/2\)</span> <span class="math display">\[
+<p>A method is available to compute CCFs regardless of the entropy <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">H(x)</annotation></semantics></math>. From the 2-class Binomial mixture, CNAqc uses the means of the Binomial parameters to determine a hard split of the data.</p>
+<p>Define <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>p</mi><mn>1</mn></msub><annotation encoding="application/x-tex">p_1</annotation></semantics></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>p</mi><mn>2</mn></msub><annotation encoding="application/x-tex">p_2</annotation></semantics></math> the two means and the midpoint <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>p</mi><mo accent="true">̂</mo></mover><mo>=</mo><mi>p</mi><mn>1</mn><mo>+</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>p</mi><mn>2</mn></msub><mo>−</mo><msub><mi>p</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo><mi>/</mi><mn>2</mn></mrow><annotation encoding="application/x-tex">\hat{p} = p1 + (p_2-p_1)/2</annotation></semantics></math><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>p</mi><mo accent="true">̂</mo></mover><mo>=</mo><msub><mi>p</mi><mn>1</mn></msub><mo>+</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>p</mi><mn>2</mn></msub><mo>−</mo><msub><mi>p</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>*</mo><msub><mi>μ</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">
 \hat{p} = p_1 + (p_2 - p_1) * \mu_1
-\]</span> where <span class="math inline">\(\mu_1 = n_1/(n_1+n_2)\)</span> is the normalized proportions.</p>
-<p>We set <span class="math inline">\(m=1\)</span> for <span class="math inline">\(x \leq \hat{p}\)</span>, and <span class="math inline">\(m=2\)</span> otherwise. Since there are no <code>NA</code> assignments, the computation is always scored <code>PASS</code> for QC purposes; for this reason this computation is more “rough” than the one based on entropy.</p>
+</annotation></semantics></math> where <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>μ</mi><mn>1</mn></msub><mo>=</mo><msub><mi>n</mi><mn>1</mn></msub><mi>/</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>n</mi><mn>1</mn></msub><mo>+</mo><msub><mi>n</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\mu_1 = n_1/(n_1+n_2)</annotation></semantics></math> is the normalized proportions.</p>
+<p>We set <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">m=1</annotation></semantics></math> for <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>≤</mo><mover><mi>p</mi><mo accent="true">̂</mo></mover></mrow><annotation encoding="application/x-tex">x \leq \hat{p}</annotation></semantics></math>, and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>=</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">m=2</annotation></semantics></math> otherwise. Since there are no <code>NA</code> assignments, the computation is always scored <code>PASS</code> for QC purposes; for this reason this computation is more “rough” than the one based on entropy.</p>
 </div>
 </div>
 <div class="section level2">
@@ -379,11 +377,11 @@ H(x) = - p_x \log(p_x)
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #BBBBBB; background-color: #00BB00;"> PASS </span> CCF via <span style="font-weight: bold;">ROUGH</span>.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #BBBBBB; background-color: #00BB00;"> PASS </span> CCF via <span style="font-weight: bold;">ROUGH</span>.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #BBBBBB; background-color: #00BB00;"> PASS </span> CCF via <span style="font-weight: bold;">ROUGH</span>.</span></span></code></pre></div>
-<p>The cutoff is annotated in the panel with the mutation multiplicity <span class="math inline">\(m\)</span> assigned to each observed VAF value.</p>
+<p>The cutoff is annotated in the panel with the mutation multiplicity <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>m</mi><annotation encoding="application/x-tex">m</annotation></semantics></math> assigned to each observed VAF value.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_CCF.html">plot_CCF</a></span><span class="op">(</span><span class="va">x_r</span>, empty_plot <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <p><img src="a4_ccf_computation_files/figure-html/unnamed-chunk-10-1.png" width="1056"></p>
-<p>Notice that for <code>2:0</code> and <code>'2:1'</code> the difference among the mutation multiplicity histograms (second panel) obtained from the two methods is minimal. The results for <code>'2:2'</code> is instead quite different because there are few mutations after genome doubling (leftmost peak, <span class="math inline">\(m=1\)</span>), and therefore the weighted split of the rough method tends to assign most mutations to the rightmost peak (<span class="math inline">\(m=2\)</span>).</p>
+<p>Notice that for <code>2:0</code> and <code>'2:1'</code> the difference among the mutation multiplicity histograms (second panel) obtained from the two methods is minimal. The results for <code>'2:2'</code> is instead quite different because there are few mutations after genome doubling (leftmost peak, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">m=1</annotation></semantics></math>), and therefore the weighted split of the rough method tends to assign most mutations to the rightmost peak (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>=</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">m=2</annotation></semantics></math>).</p>
 <p>A visual plot is obtained using the internal function <code>CNAqc:::plot_mutation_multiplicity_rough</code>.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">ggpubr</span><span class="fu">::</span><span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html" class="external-link">ggarrange</a></span><span class="op">(</span></span>
@@ -21518,9 +21516,7 @@ H(x) = - p_x \log(p_x)
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
 
-        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
-    </nav>
-</div>
+      </div>
 
 </div>
 
@@ -21533,16 +21529,16 @@ H(x) = - p_x \log(p_x)
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
 
       </footer>
 </div>
 
-  
 
 
-  
+
+
 
   </body>
 </html>
