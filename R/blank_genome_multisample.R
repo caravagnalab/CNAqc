@@ -58,7 +58,7 @@ blank_genome_multisample = function(x,
     #   linetype = 'dashed'
     # ) +
     ggplot2::labs(x = "Chromosome",
-                  y = "Karyotype per sample") +
+                  y = "Samples") +
     # ggpubr::rotate_y_text() +
     # ggpubr::rotate_x_text() +
     # xlim(low, upp) +

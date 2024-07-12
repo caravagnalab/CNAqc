@@ -6,7 +6,7 @@
 #' @export
 #'
 #' @examples
-#' get_sample_name(x)
+#' \dontrun{get_sample_name(x)}
 #' 
 ###########################################################################################
 
@@ -48,7 +48,8 @@ get_sample_name <- function(x) {
 #' @return a list of CNAqc objects corresponding to the desidered samples.
 #' @export
 #'
-#' @examples get_sample(x, sample = get_sample_names(x), which_obj = "shared") 
+#' @examples 
+#' \dontrun{get_sample(x, sample = get_sample_names(x), which_obj = "shared") }
 #' 
 #######################################################################################################
 
@@ -114,7 +115,7 @@ get_sample <- function(m_cnaqc_obj,
 #' @export
 #'
 #' @examples
-#' get_mCNAqc_stats(x)
+#' \dontrun{get_mCNAqc_stats(x)}
 #' 
 get_mCNAqc_stats <- function(m_cnaqc_obj){
   stats = m_cnaqc_obj[["m_cnaqc_stats"]]

@@ -4,10 +4,11 @@
 #' @param which either "original" or "shared"
 #' @param chromosomes 
 #'
-#' @return
+#' @return a plot
 #' @export
 #'
-#' @examples
+#' @examples 
+#' \dontrun{plot_segments_multisample(x, which = "shared")}
 plot_segments_multisample <- function(x, 
                                       which, 
                                       chromosomes = paste0('chr', c(1:22, 'X', 'Y'))) {

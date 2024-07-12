@@ -76,7 +76,9 @@ Suggests:
     rmarkdown,
     org.Hs.eg.db,
     Organism.dplyr,
-    mclust
+    mclust,
+    testthat (>= 3.0.0)
 VignetteBuilder: knitr
 URL: https://github.com/caravagnalab/CNAqc
 BugReports: https://github.com/caravagnalab/CNAqc/issues
+Config/testthat/edition: 3

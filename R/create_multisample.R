@@ -24,37 +24,13 @@
 #' 
 #' @export
 #' 
-#' @examples # get better dataset! --> still to check
-#' 
-#' CNAqc_samples = lapply(names(sample_mutations), function(x) {
-#'   CNAqc::init(mutations = sample_mutations[[x]], 
-#'            cna = cna[[x]], 
-#'            purity = purity[[x]], 
-#'            sample = x,
-#'            ref = "GRCh38")
-#'   })
-#'
-#' names(CNAqc_samples) = sapply(CNAqc_samples, function(x) {x$sample})
-#' 
-#' # perform peak analysis
-#' 
-#' CNAqc_samples = lapply(CNAqc_samples, function(x) {
-#'   
-#'   CNAqc::analyze_peaks(x, matching_strategy = 'closest')
-#'   
-#' })
-#' 
-#' create the mCNAqc object
-#' 
-#' multisamples = CNAqc::multisample_init(cnaqc_objs = CNAqc_samples, 
+#' @examples 
+#' \dontrun{multisamples = CNAqc::multisample_init(cnaqc_objs = CNAqc_samples, 
 #'                  QC_filter = TRUE, 
-#'                  keep_original = FALSE)
+#'                  keep_original = FALSE, 
+#'                  discard_private = FALSE)
 #' 
-#' multisamples
-#' 
-#' 
-#' 
-#' 
+#' multisamples}
 ###################################################################################################################################################
 
 # initialize the multisample object with the new segmentation 

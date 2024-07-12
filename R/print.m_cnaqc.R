@@ -91,6 +91,6 @@ plot.m_cnaqc <- function(x, ...)
 {
   stopifnot(inherits(x, "m_cnaqc"))
   
-  shared = get_sample(x, sample = get_sample_name(x), which_obj = "shared")
-  CNAqc::plot_multisample_CNA(shared, layout = "circular")
+  plot_segments_multisample(x, which = "shared")
+ 
 }  
