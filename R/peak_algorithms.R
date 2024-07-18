@@ -624,7 +624,12 @@ simple_peak_detector = function(mutations, kernel_adjust, n_bootstrap)
     hst = hist(mutations$VAF,
                breaks = seq(0, 1, 0.01),
                plot = F)$counts
-    pks$counts_per_bin = hst[round(pks$x * 100)]
+    
+    indexes = round(pks$x * 100)
+    if (indexes[1]==0){indexes[1]=1}
+    pks$counts_per_bin = hst[indexes]
+    
+    # pks$counts_per_bin = hst[round(pks$x * 100)]
     
     # Heuristic to remove low-density peaks
     pks = pks %>%
