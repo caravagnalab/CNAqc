@@ -4,62 +4,43 @@
 \alias{multisample_init}
 \title{Create multisample segmentation}
 \usage{
-multisample_init(cnaqc_objs, cna_type = "clonal", QC_filter = TRUE)
+multisample_init(
+  cnaqc_objs,
+  QC_filter = TRUE,
+  keep_original = TRUE,
+  discard_private = FALSE
+)
 }
 \arguments{
 \item{cnaqc_objs}{named list of CNAqc objects, one per sample (each element must include at 
 least "mutations", "cna", "reference" and "purity"). Names of the list must correspond to sample_id.}
 
-\item{cna_type}{can be "clonal", "subclonal" or both. Specifies which mutations must be considered in the creation of the 
-m_CNAqc object. At the moment, the function is implemented for clonal mutations only. Default = "clonal"}
+\item{QC_filter}{logical. Indicates whether to filter or not for QC-passing mutations (NB: must have performed the peak analysis before). 
+Default is \code{TRUE}.}
 
-\item{QC_filter}{logical. Indicates wheter to filter or not for QC-passing mutations}
+\item{keep_original}{logical. Indicates whether to keep or not original CNAqc objects, default is \code{TRUE}}
+
+\item{discard_private}{logical. Indicates whether to keep or not mutations falling on private segments, default is \code{FALSE}.}
 }
 \value{
-a multi_CNAqc object. Every element of the object correspond to one of the sample, structured as follows: 
-- `mutations_on_shared` = CNAqc object for the considered sample, containing all the information (mutations, cna, purity, etc) for
-   mutations mapped on segments shared across all the samples;
-- `mutations_on_private` = table including all the mutations, mapped on new segments that are not shared across all samples;
-- `original_additional_info` = additional information (i.e.: CCF, peaks analysis, etc) from the original CNAqc object stored as a list (refers to the
-   original segmentation!).
+a mCNAqc object, structured as follows: 
+- `cnaqc_obj_new_segmentation` = list of CNAqc objects for all the samples created using the new segmentation;
+- `original_cnaqc_objc` = original CNAqc object, only if the argument \code{keep_original} is set to TRUE;
+- `original_additional_info` = additional information from the original CNAqc objects, such peaks analysis results of CCF estimation. Only if the argument \code{keep_original} is set to FALSE;
+- `m_cnaqc_stats` = information related to number of mutations and segments before and after the creationn of the mCNAqc object.
 }
 \description{
-Creates a m_CNAqc object starting from a named list of CNAqc objects on which the quality control has already been 
+Creates a mCNAqc object starting from a named list of CNAqc objects on which the quality control has already been 
 performed individually (ie: multiple samples coming from the same patient). Breakpoints from the original CNAqc objects are
 used to define new breakpoints (and then segments) common across all the samples; in the resulting object, the mutations are 
 remapped on the newly defined segments. 
 The new m_CNAqc object can be used to perform new a quality control analysis with the different segmentation.
 }
 \examples{
-# get better dataset! --> still to check
+\dontrun{multisamples = CNAqc::multisample_init(cnaqc_objs = CNAqc_samples, 
+                 QC_filter = TRUE, 
+                 keep_original = FALSE, 
+                 discard_private = FALSE)
 
-
-
-CNAqc_samples = lapply(names(sample_mutations), function(x) {
-  CNAqc::init(mutations = sample_mutations[[x]], 
-           cna = cna[[x]], 
-           purity = purity[[x]], 
-           sample = x,
-           ref = "GRCh38")
-  })
-
-names(CNAqc_samples) = sapply(CNAqc_samples, function(x) {x$sample})
-
-# perform peak analysis
-
-CNAqc_samples = lapply(CNAqc_samples, function(x) {
-  
-  CNAqc::analyze_peaks(x, matching_strategy = 'closest')
-  
-})
-
-create the multi_CNAqc object
-
-multisamples = CNAqc::multisample_init(cnaqc_objs = CNAqc_samples)
-
-multisamples
-
-
-
-
+multisamples}
 }

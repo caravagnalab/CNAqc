@@ -111,7 +111,7 @@ purity = lapply(Sequenza_good_calls, function(x) {x$purity})
 ```{r setup, warning = T}
 require(devtools)
 require(tidyverse)
-devtools::load_all(path = "C:/Users/lenovo/Documents/GitHub/CNAqc")
+devtools::load_all(path = "/Users/vvvirgy/Documents/GitHub/CNAqc")
 require(cli)
 require(patchwork)
 ```
