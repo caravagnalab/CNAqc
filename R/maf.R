@@ -643,7 +643,7 @@ CNA_gene = function(x, genes = NULL)
 #'    # With MAF-imported that is the target column
 #'    wt_mutant_alleles(x, gene_column = 'MAF.Hugo_Symbol')
 #' }
-wt_mutant_alleles = function(x, gene_column = "VEP.SYMBOL")
+wt_mutant_alleles = function(x, gene_column = "VEP.SYMBOL",cutoff_n = 10)
 {
   cli::cli_h1(paste0(x$sample," - WT/Mutant alleles table generation"))
 
@@ -666,13 +666,13 @@ wt_mutant_alleles = function(x, gene_column = "VEP.SYMBOL")
   x_phased = x %>% subset_by_segment_karyotype(
     karyotypes = cnas$karyotype %>% unique
   ) %>%
-    advanced_phasing()
+    advanced_phasing(cutoff_n = cutoff_n)
 
   # Aggregate multiple mutaitons on the same gene
   x_phased = x_phased$phasing %>%
     dplyr::filter(is_driver) %>%
-    dplyr::select(!!gene_column, multiplicity) %>%
-    dplyr::group_by_at(gene_column) %>%
+    dplyr::select(driver_label, multiplicity) %>%
+    dplyr::group_by(driver_label) %>%
     dplyr::summarise(mutant_alleles = sum(multiplicity))
 
   colnames(x_phased)[1] = "gene"
