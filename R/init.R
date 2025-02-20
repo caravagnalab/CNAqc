@@ -12,7 +12,7 @@
 #' `hg19`/`GRCh37` and `hg38`/`GRCh38` references, which are embedded
 #' into the package as `CNAqc::chr_coordinates_hg19` and
 #' `CNAqc::chr_coordinates_GRCh38`. An abitrary reference can also be
-#' provided it is stored in am equivalent format.
+#' provided it is stored in an equivalent format.
 #'
 #' @param mutations A dataframe of mutations with the following fields:
 #'

@@ -45,6 +45,7 @@
 #'
 #' # Circular layout
 #' plot_multisample_CNA(inputs, layout = 'circular')
+#' 
 plot_multisample_CNA = function(x, layout = 'flat', ...)
 {
   ok_input = sapply(x, function(x)

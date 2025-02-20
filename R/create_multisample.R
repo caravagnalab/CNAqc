@@ -25,12 +25,15 @@
 #' @export
 #' 
 #' @examples 
-#' \dontrun{multisamples = CNAqc::multisample_init(cnaqc_objs = CNAqc_samples, 
+#' \dontrun{
+#' multisamples = CNAqc::multisample_init(cnaqc_objs = CNAqc_samples, 
 #'                  QC_filter = TRUE, 
 #'                  keep_original = FALSE, 
 #'                  discard_private = FALSE)
 #' 
-#' multisamples}
+#' multisamples
+#' }
+#' 
 ###################################################################################################################################################
 
 # initialize the multisample object with the new segmentation 

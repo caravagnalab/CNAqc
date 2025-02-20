@@ -112,6 +112,7 @@
 #' x = analyze_peaks(x, matching_strategy = "rightmost")
 #'
 #' print(x)
+#' 
 analyze_peaks = function(x,
                          karyotypes = c('1:0', '1:1', '2:0', '2:1', '2:2'),
                          min_karyotype_size = 0,

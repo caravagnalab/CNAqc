@@ -7,11 +7,7 @@
 #'
 #' @examples
 #' \dontrun{get_sample_name(x)}
-#' 
-###########################################################################################
-
-# get sample names from CNAqc and mCNAqc objects
-
+#'
 get_sample_name <- function(x) {
   
   if (class(x) == "m_cnaqc") {
@@ -38,7 +34,6 @@ get_sample_name <- function(x) {
 }
 
 #############################################
-
 #' get desidered samples
 #'
 #' @param m_cnaqc_obj mCNAqc object. 
@@ -51,10 +46,6 @@ get_sample_name <- function(x) {
 #' @examples 
 #' \dontrun{get_sample(x, sample = get_sample_names(x), which_obj = "shared") }
 #' 
-#######################################################################################################
-
-# get sample
-
 get_sample <- function(m_cnaqc_obj,
                        sample,
                        which_obj) {

@@ -4,7 +4,15 @@
 \alias{init}
 \title{Creates a CNAqc object.}
 \usage{
-init(mutations, snvs = NULL, cna, purity, sample = "MySample", ref = "GRCh38")
+init(
+  mutations,
+  snvs = NULL,
+  cna,
+  purity,
+  sample = "MySample",
+  ref = "GRCh38",
+  genome_coords = NULL
+)
 }
 \arguments{
 \item{mutations}{A dataframe of mutations with the following fields:
@@ -52,8 +60,12 @@ of actual tumour content (sometimes called "cellularity").}
 `hg19`/`GRCh37` and `hg38`/`GRCh38` references, which are embedded
 into the package as `CNAqc::chr_coordinates_hg19` and
 `CNAqc::chr_coordinates_GRCh38`. An abitrary reference can also be
-provided if `ref` is a dataframe in the same format as `CNAqc::chr_coordinates_hg19`
+provided if `genome_coords` is a dataframe in the same format as `CNAqc::chr_coordinates_hg19`
 or `CNAqc::chr_coordinates_GRCh38`. The default reference is `GRCh38`.}
+
+\item{genome_coords}{A dataframe including the genomic absolute coordinates of 
+a custom reference genome, in the same format as `CNAqc::chr_coordinates_hg19`
+or `CNAqc::chr_coordinates_GRCh38`. Default is NULL}
 }
 \value{
 A CNAqc object of class `cnaqc`, with S3 methods for printing,
@@ -72,7 +84,7 @@ genome providing the length of each chromosome. CNAqc supports
 `hg19`/`GRCh37` and `hg38`/`GRCh38` references, which are embedded
 into the package as `CNAqc::chr_coordinates_hg19` and
 `CNAqc::chr_coordinates_GRCh38`. An abitrary reference can also be
-provided it is stored in am equivalent format.
+provided it is stored in an equivalent format.
 }
 \examples{
 # Example input data released with the package
