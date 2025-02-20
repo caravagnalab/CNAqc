@@ -77,5 +77,7 @@
 #' @importFrom tidyr pivot_wider
 #' @importFrom utils capture.output
 #' @importFrom utils object.size
+#' @importFrom data.table data.table
+#' @importFrom data.table dcast
 ## usethis namespace: end
 NULL
