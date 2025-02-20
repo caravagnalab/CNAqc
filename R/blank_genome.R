@@ -1,5 +1,5 @@
-blank_genome = function(ref = "GRCh38", chromosomes = paste0('chr', c(1:22, 'X', 'Y')), label_chr = -0.5, cex = 1){
-  reference_coordinates = get_reference(ref) %>%
+blank_genome = function(ref = "GRCh38", genomic_coords, chromosomes = paste0('chr', c(1:22, 'X', 'Y')), label_chr = -0.5, cex = 1){
+  reference_coordinates = get_reference(ref, genomic_coords) %>%
     filter(chr %in% chromosomes)
 
   low = min(reference_coordinates$from)

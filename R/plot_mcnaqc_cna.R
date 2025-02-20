@@ -58,13 +58,16 @@ plot_segments_multisample <- function(x,
   
   # Reference genome
   ref_gen = cnaqc_list[[1]]$reference_genome
-  reference_genome = CNAqc:::get_reference(ref_gen) %>% filter(chr %in% chromosomes)
+  ref_coords =cnaqc_list[[1]]$genomic_coordinates
+  reference_genome = CNAqc:::get_reference(ref_gen, data = ref_coords) %>% 
+    dplyr::filter(chr %in% chromosomes)
   low = min(reference_genome$from)
   upp = max(reference_genome$to)
   
   bl_genome = suppressMessages(
     blank_genome_multisample(x,
       ref = ref_gen,
+      reference_coordinates = reference_genome,
       chromosomes = chromosomes,
       label_chr = NA
     ) +

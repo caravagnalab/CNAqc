@@ -315,7 +315,7 @@ add_breakpoints_to_plot = function(segments, base_plot, max_Y_height, circular)
 
 relative_to_absolute_coordinates = function(x, cna)
 {
-  reference_genome = CNAqc:::get_reference(x$reference_genome)
+  reference_genome = CNAqc:::get_reference(x$reference_genome, data = x$genomic_coordinates)
 
   vfrom = reference_genome$from
   names(vfrom) = reference_genome$chr
@@ -327,7 +327,7 @@ relative_to_absolute_coordinates = function(x, cna)
 
 absolute_to_relative_coordinates = function(x, cna)
 {
-  reference_genome = CNAqc:::get_reference(x$reference_genome)
+  reference_genome = CNAqc:::get_reference(x$reference_genome, data = x$genomic_coordinates)
 
   vfrom = reference_genome$from
   names(vfrom) = reference_genome$chr

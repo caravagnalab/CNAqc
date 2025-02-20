@@ -1,7 +1,7 @@
 # Unused
 expand_reference_chr_to_arms = function(x)
 {
-  coordinates = CNAqc:::get_reference(ref = x$reference_genome)
+  coordinates = CNAqc:::get_reference(ref = x$reference_genome, data = x$genomic_coordinates)
 
   p_arm = apply(coordinates, 1,function(w) {
     data.frame(
@@ -48,7 +48,7 @@ expand_reference_chr_to_arms = function(x)
 split_cna_to_arms = function(x, clonal_cna)
 {
   split_clonal_cna = NULL
-  reference_genonme = CNAqc:::get_reference(ref = x$reference_genome)
+  reference_genonme = CNAqc:::get_reference(ref = x$reference_genome, data = x$genomic_coordinates)
 
   for(i in 1:nrow(clonal_cna))
   {

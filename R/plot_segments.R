@@ -66,8 +66,9 @@ plot_segments = function(x,
   }else{
     # Standard plot -- baseline genome reference
     base_plot = blank_genome(chromosomes = chromosomes,
-                                     ref = x$reference_genome,
-                                     ...)
+                             ref = x$reference_genome,
+                             genomic_coords = x$genomic_coordinates
+                             ...)
   }
 
   # Segments

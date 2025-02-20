@@ -28,7 +28,7 @@ plot_karyotypes = function(x,
   stopifnot(inherits(x, 'cnaqc'))
 
   # Get coordinates for used chromosomes
-  genome_size = CNAqc:::get_reference(x$reference_genome) %>%
+  genome_size = CNAqc:::get_reference(x$reference_genome, data = x$genomic_coordinates) %>%
     dplyr::filter(chr %in% chromosomes)
 
   segments = x$cna %>%

@@ -59,8 +59,12 @@
 #' `hg19`/`GRCh37` and `hg38`/`GRCh38` references, which are embedded
 #' into the package as `CNAqc::chr_coordinates_hg19` and
 #' `CNAqc::chr_coordinates_GRCh38`. An abitrary reference can also be
-#' provided if `ref` is a dataframe in the same format as `CNAqc::chr_coordinates_hg19`
+#' provided if `genome_coords` is a dataframe in the same format as `CNAqc::chr_coordinates_hg19`
 #' or `CNAqc::chr_coordinates_GRCh38`. The default reference is `GRCh38`.
+#' 
+#' @param genome_coords A dataframe including the genomic absolute coordinates of 
+#' a custom reference genome, in the same format as `CNAqc::chr_coordinates_hg19`
+#' or `CNAqc::chr_coordinates_GRCh38`. Default is NULL 
 #'
 #' @return A CNAqc object of class `cnaqc`, with S3 methods for printing,
 #' plotting and analyzing data.
@@ -77,7 +81,7 @@
 #'
 #' # An S3 method can be used to report to screen what is in the object
 #' print(x)
-init = function(mutations, snvs = NULL, cna, purity, sample = "MySample", ref = "GRCh38")
+init = function(mutations, snvs = NULL, cna, purity, sample = "MySample", ref = "GRCh38", genome_coords = NULL)
 {
   cli::cli_h1("CNAqc - CNA Quality Check")
   cat('\n')
@@ -112,7 +116,12 @@ init = function(mutations, snvs = NULL, cna, purity, sample = "MySample", ref = 
   # Reference genome
   fit$reference_genome = ref
   cli::cli_alert_info("Using reference genome coordinates for: {.field {ref}}.")
-
+  
+  if(!is.null(genome_coords), !ref %in% c("hg19", "GRCh37", "hg38", "GRCh38", "mm10", "GRCm38")) {
+    fit$genomic_coordinates = genome_coords
+    cli::cli_alert_info("Using custom genome coordinates for: {.field {ref}}.")
+  }
+  
   # Parse input
   input = prepare_input_data(mutations, cna, purity)
 

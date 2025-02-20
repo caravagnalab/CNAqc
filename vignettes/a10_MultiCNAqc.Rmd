@@ -148,8 +148,11 @@ CNAqc_samples = lapply(CNAqc_samples, function(x) {
 
 All the samples are characterized by different segments among the genome, as can be see in the plot below:
 
-```{r, echo=FALSE, dpi=300, fig.align='center'}
-seg_plot = lapply(CNAqc_samples, function(x) {CNAqc::plot_segments(x, chromosomes = paste0("chr", 1:3), max_Y_height = 3)}) # +
+```{r, echo=FALSE, dpi=300, fig.align='center', out.width = "100%", fig.dim = c(8,5)}
+seg_plot = lapply(CNAqc_samples, function(x) {
+  CNAqc::plot_segments(x, chromosomes = paste0("chr", 1:3), max_Y_height = 3) +
+    theme(axis.title.y = element_text(size = 7))
+  }) # +
     # theme(axis.title = element_text(size = 4),
     #     axis.text = element_text(size = 4), strip.text = element_text(size = 4),
     #     plot.title = element_text(size = 4, hjust = 0.5), legend.text = element_text(size=6),
@@ -162,13 +165,13 @@ design <- "
 "    
 wrap_plots(seg_plot) +
   guide_area() +
-  plot_layout(design = design, guides = "collect")
+  plot_layout(design = design, guides = "collect") & theme(legend.position = 'top')
 
 ```
 
 ## Create the mCNAqc object
 
-Create a `m_CNAqc` object using the all the CNAs included in the objects. This will define new segments according to which genomic regions are affected by CNAs in all samples, and remap the mutations on them.
+Create a `m_CNAqc` object using the all the CNAs included in the objects. This will define new segments according to which genomic regions are affected by CNAs in all samples, and remap the mutations on them. It is possible to create a `m_CNAqc` object either including or not the results of the peak analysis: setting the argument `QC_filter` to `TRUE` will use in the new segmentation only the segments passing the QC among the different samples.  
 
 All breakpoints (`from` and `to` of each CNA table) from all samples are selected and reordered. The list is then used to generate new segments intervals; only segments that are present in all samples will be kept. Mutations are then remapped on the new segments.
 
@@ -176,21 +179,23 @@ All breakpoints (`from` and `to` of each CNA table) from all samples are selecte
 
 <!-- ![](images/joint_segmentation.png){width="600"} -->
 
-The results will be stored as a list of CNAqc objects (one per sample) in the `cnaqc_obj_new_segmentation` attribute of the mCNAqc object. If running `multisample_init` with the `keep_original = TRUE`, the original CNAqc object will be stored in the `original_cnaqc_objc` attribute; else, results of any additional analysis performed on the original data (ie: peaks analysis or CCF estimation) will be stored in the `original_additional_info` attribute. Setting the `discard_private` argument to TRUE will keep in the new CNAqc object only those mutations falling in the same position across all samples.
+The results will be stored as a list of CNAqc objects (one per sample) in the `cnaqc_obj_new_segmentation` attribute of the mCNAqc object. If running `multisample_init` with the `keep_original = TRUE`, the original CNAqc object will be stored in the `original_cnaqc_objc` attribute; else, results of any additional analysis performed on the original data (ie: peaks analysis or CCF estimation) will be stored in the `original_additional_info` attribute. Setting the `discard_private` argument to `TRUE` will keep in the new CNAqc object only those mutations falling in the same position across all samples.
 
 ```{r}
 example_multisample = CNAqc::multisample_init(cnaqc_objs = CNAqc_samples, 
-                                              QC_filter = TRUE,
-                                              keep_original = TRUE, 
-                                              discard_private = FALSE)
+                                              QC_filter = TRUE, # use only segments passing QC
+                                              keep_original = TRUE, # keep the original CNAqc objects too
+                                              discard_private = FALSE) # keep also not private mutations among the samples
+```
 
+``` {r}
 print(example_multisample)
 ```
 
 The function `plot_segments_multisample` allows visualization of the effect of the new segmentation across all the samples included in the mCNAqc object.
 
-```{r, fig.align='center'}
-plot_segments_multisample(example_multisample, which = "shared", chromosomes = paste0("chr", 1:3))
+```{r, fig.align='center', fig.dim=c(8,4), out.width="100%", dpi=300}
+plot_segments_multisample(example_multisample, which = "shared", chromosomes = paste0("chr", 1:3)) + ggtitle("New segmentation")
 ```
 
 ## Accessing elements inside the `mCNAqc` object

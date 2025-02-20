@@ -1,16 +1,17 @@
 blank_genome_multisample = function(x,
                                     ref = "GRCh38",
+                                    reference_coordinates, # for different reference genomes or if you need to provide different genomes builds (change the name of the reference if you want to use other human builds of GRCh38/hg19)
                                     chromosomes = paste0('chr', c(1:22, 'X', 'Y')),
                                     label_chr = -0.5,
                                     cex = 1) {
-  reference_coordinates = get_reference(ref) %>%
-    filter(chr %in% chromosomes)
   
+  # reference_coordinates = get_reference(ref, ref_data) %>%
+  #   filter(chr %in% chromosomes)
   low = min(reference_coordinates$from)
   upp = max(reference_coordinates$to)
   sample_names = get_sample_name(x)
   
-  reference_coordinates = map2_dfr(1:length(get_sample_name(x)), sample_names, ~ reference_coordinates %>% 
+  reference_coordinates = purrr::map2_dfr(1:length(get_sample_name(x)), sample_names, ~ reference_coordinates %>% 
                                     mutate(sample_id = .y))
   
   p1 = ggplot2::ggplot(reference_coordinates, aes(x = from, y = sample_id)) +
