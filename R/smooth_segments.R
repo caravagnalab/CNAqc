@@ -139,14 +139,28 @@ smooth_segments = function(x, maximum_distance = 1e6)
 
 
   # Clean up the new segments table,
-  x_new = init(
-    mutations = x %>% Mutations(),
-    cna = smoothed_segments,
-    purity = x$purity,
-    ref = x$reference_genome,
-    sample = x$sample)
-
-  x_new$before_smoothing = x
+  # handle eventual weird reference genomes
+  if(!is.null(x$genome_coords) & !x$reference_genome %in% c("hg19", "GRCh37", "hg38", "GRCh38", "mm10", "GRCm38")) {
+    x_new = init(
+      mutations = x %>% Mutations(),
+      cna = smoothed_segments,
+      purity = x$purity,
+      ref = x$reference_genome,
+      sample = x$sample, 
+      genome_coords = x$genomic_coordinates
+    )
+    
+    x_new$before_smoothing = x } else {
+      x_new = init(
+        mutations = x %>% Mutations(),
+        cna = smoothed_segments,
+        purity = x$purity,
+        ref = x$reference_genome,
+        sample = x$sample)
+      
+      x_new$before_smoothing = x
+      
+    }
 
   return(x_new)
 }

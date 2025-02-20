@@ -117,7 +117,7 @@ init = function(mutations, snvs = NULL, cna, purity, sample = "MySample", ref = 
   fit$reference_genome = ref
   cli::cli_alert_info("Using reference genome coordinates for: {.field {ref}}.")
   
-  if(!is.null(genome_coords), !ref %in% c("hg19", "GRCh37", "hg38", "GRCh38", "mm10", "GRCm38")) {
+  if(!is.null(genome_coords) & !ref %in% c("hg19", "GRCh37", "hg38", "GRCh38", "mm10", "GRCm38")) {
     fit$genomic_coordinates = genome_coords
     cli::cli_alert_info("Using custom genome coordinates for: {.field {ref}}.")
   }

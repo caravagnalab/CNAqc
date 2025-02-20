@@ -31,7 +31,7 @@ subsample = function(x, N = 15000, keep_drivers = TRUE)
   if (keep_drivers & 'is_driver' %in% colnames(x$mutations))
     xx_d = x$mutations %>% dplyr::filter(is_driver)
   
-  if(!is.null(x$genome_coords), !x$reference_genome %in% c("hg19", "GRCh37", "hg38", "GRCh38", "mm10", "GRCm38")) {
+  if(!is.null(x$genome_coords) & !x$reference_genome %in% c("hg19", "GRCh37", "hg38", "GRCh38", "mm10", "GRCm38")) {
     init(
       mutations = dplyr::bind_rows(xx_d, xx),
       cna = x$cna %>% dplyr::select(-segment_id,-n,-CCF),
@@ -86,7 +86,7 @@ subset_by_segment_karyotype = function(x, karyotypes)
   # cna_calls = cna_calls %>% dplyr::select(-to_remove)
   
   return(
-    if(!is.null(x$genome_coords), !x$reference_genome %in% c("hg19", "GRCh37", "hg38", "GRCh38", "mm10", "GRCm38")) {
+    if(!is.null(x$genome_coords) & !x$reference_genome %in% c("hg19", "GRCh37", "hg38", "GRCh38", "mm10", "GRCm38")) {
       init(
         mutations = x %>% Mutations(),
         cna = x$cna %>% dplyr::select(-to_remove),
@@ -140,7 +140,7 @@ subset_by_segment_totalcn = function(x, totalcn)
     stop("There are no calls with these total copy states, cannot subset.")
 
   return(
-    if(!is.null(x$genome_coords), !x$reference_genome %in% c("hg19", "GRCh37", "hg38", "GRCh38", "mm10", "GRCm38")) {
+    if(!is.null(x$genome_coords) & !x$reference_genome %in% c("hg19", "GRCh37", "hg38", "GRCh38", "mm10", "GRCm38")) {
       init(
         mutations = x$mutations,
         cna = cna_calls,
@@ -206,7 +206,7 @@ subset_by_segment_minmutations = function(x, n = 50)
     )
 
     return(
-      if(!is.null(x$genome_coords), !x$reference_genome %in% c("hg19", "GRCh37", "hg38", "GRCh38", "mm10", "GRCm38")) {
+      if(!is.null(x$genome_coords) & !x$reference_genome %in% c("hg19", "GRCh37", "hg38", "GRCh38", "mm10", "GRCm38")) {
         init(
           mutations = x %>% Mutations(),
           cna = retained_calls,
@@ -311,7 +311,7 @@ subset_by_minimum_CCF = function(x, min_target_CCF = 0.1)
     dplyr::mutate(remove = VAF <  cutoffs[karyotype]) %>%
     dplyr::filter(!remove)
   
-  if(!is.null(x$genome_coords), !x$reference_genome %in% c("hg19", "GRCh37", "hg38", "GRCh38", "mm10", "GRCm38")) {
+  if(!is.null(x$genome_coords) & !x$reference_genome %in% c("hg19", "GRCh37", "hg38", "GRCh38", "mm10", "GRCm38")) {
     init(
       mutations = subset_data,
       cna =  x$cna %>% dplyr::select(-segment_id,-n,-CCF),
@@ -364,7 +364,7 @@ subset_snvs = function(x,
       "Retained {.field {nrow(subset_mutations)}} SNVs, removed {.field {nrow(removed_mutations)}}."
     )
     
-    if(!is.null(x$genome_coords), !x$reference_genome %in% c("hg19", "GRCh37", "hg38", "GRCh38", "mm10", "GRCm38")) {
+    if(!is.null(x$genome_coords) & !x$reference_genome %in% c("hg19", "GRCh37", "hg38", "GRCh38", "mm10", "GRCm38")) {
       x = init(
         mutations = subset_mutations,
         cna =  x$cna %>% dplyr::select(-segment_id,-n,-CCF),
@@ -447,7 +447,7 @@ split_by_chromosome = function(x,
     cnas = x$cna %>% filter(chr == !!chr)
     
     
-    if(!is.null(x$genome_coords), !x$reference_genome %in% c("hg19", "GRCh37", "hg38", "GRCh38", "mm10", "GRCm38")) {
+    if(!is.null(x$genome_coords) & !x$reference_genome %in% c("hg19", "GRCh37", "hg38", "GRCh38", "mm10", "GRCm38")) {
       cnaqc_obj = init(
         clonal_mutations %>% bind_rows(subclonal_mutations),
         cna = cnas,
