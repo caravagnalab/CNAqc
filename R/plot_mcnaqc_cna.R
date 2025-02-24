@@ -8,7 +8,9 @@
 #' @export
 #'
 #' @examples 
-#' \dontrun{plot_segments_multisample(x, which = "shared")}
+#' \dontrun{
+#' plot_segments_multisample(x, which = "shared")
+#' }
 plot_segments_multisample <- function(x, 
                                       which, 
                                       chromosomes = paste0('chr', c(1:22, 'X', 'Y'))) {

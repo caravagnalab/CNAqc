@@ -24,5 +24,7 @@ a plot
 Plot multisample cna data
 }
 \examples{
-\dontrun{plot_segments_multisample(x, which = "shared")}
+\dontrun{
+plot_segments_multisample(x, which = "shared")
+}
 }
