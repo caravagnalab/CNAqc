@@ -1,0 +1,214 @@
+---
+title: "10. multiCNAqc"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{10. multiCNAqc}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE, 
+  comment = "#>"
+)
+
+# options(crayon.enabled=F)
+
+VCF_url = "https://raw.githubusercontent.com/caravagnalab/CNAqc_datasets/main/MSeq_Set06/Mutations/Set.06.WGS.merged_filtered.vcf"
+
+# Download, load and cancel data
+download.file(VCF_url, "Set.06.WGS.merged_filtered.vcf",)
+
+set6 = vcfR::read.vcfR("Set.06.WGS.merged_filtered.vcf")
+file.remove("Set.06.WGS.merged_filtered.vcf")
+
+require(CNAqc)
+require(tidyverse)
+
+# INFO fields 
+info_tidy = vcfR::extract_info_tidy(set6)
+
+# Fixed fields (genomic coordinates)
+fix_tidy = set6@fix %>%
+  as_tibble %>%
+  rename(
+    chr = CHROM,
+    from = POS,
+    ref = REF,
+    alt = ALT
+  ) %>%
+  mutate(from = as.numeric(from), to = from + nchar(alt))
+
+# Genotypes
+geno_tidy = vcfR::extract_gt_tidy(set6) %>%
+  group_split(Indiv)
+
+# Sample mutations in the CNAqc format
+sample_mutations = lapply(geno_tidy, function(x) {
+  bind_cols(info_tidy, fix_tidy) %>% 
+    full_join(x, by = "Key") %>%
+    filter(FILTER == "PASS") %>% 
+    mutate(DP = as.numeric(gt_NR), NV = as.numeric(gt_NV)) %>%
+    mutate(VAF = NV / DP) %>%
+    dplyr::select(Indiv, chr, from, to, ref, alt, NV, DP, VAF, everything()) %>%
+    filter(!is.na(VAF), VAF > 0)
+})
+
+# A list for all samples available
+names(sample_mutations) = sapply(sample_mutations, function(x) x$Indiv[1])
+sample_mutations = sample_mutations[!is.na(names(sample_mutations))]
+sample_mutations = sample_mutations[1:3]
+
+# Load Sequenza output
+load_SQ_output = function(URL, sample, run)
+{
+  # We can directly read them from remote URLs
+  segments_file = paste0(URL, run, '/', sample, '.smoothedSegs.txt')
+  purity_file = paste0(URL, run, '/', sample, '_confints_CP.txt')
+  
+  # Get segments
+  segments = readr::read_tsv(segments_file, col_types = readr::cols()) %>%
+    dplyr::rename(
+      chr = chromosome,
+      from = start.pos,
+      to = end.pos,
+      Major = A,
+      minor = B
+    ) %>%
+    dplyr::select(chr, from, to, Major, minor, dplyr::everything())
+  
+  # Get purity and ploidy
+  solutions = readr::read_tsv(purity_file, col_types = readr::cols())
+  
+  purity = solutions$cellularity[2]
+  ploidy = solutions$ploidy.estimate[2]
+  
+  return(
+    list(
+      segments = segments,
+      purity = purity,
+      ploidy = ploidy
+    )
+  )
+}
+
+Sequenza_URL = "https://raw.githubusercontent.com/caravagnalab/CNAqc_datasets/main/MSeq_Set06/Copy%20Number/"
+
+# Final sequenza run (good calls)
+Sequenza_good_calls = lapply(names(sample_mutations), function(x) {
+  load_SQ_output(Sequenza_URL, sample = x, run = 'final')
+})[1:3]
+
+names(Sequenza_good_calls) = names(sample_mutations)
+
+# CNA segments and purity
+cna = lapply(Sequenza_good_calls, function(x) {x$segments})
+purity = lapply(Sequenza_good_calls, function(x) {x$purity})
+
+```
+
+```{r setup, warning = T}
+require(tidyverse)
+require(CNAqc)
+require(cli)
+require(patchwork)
+```
+
+# Create a multisample CNAqc object
+
+If treating data belonging to the same patient, but from different samples (ie: longitudinal or multi-region sampling), it might be handful searching for genomic regions harboring abnormal copy number states in all of the samples. Creating a `mCNAqc` object allows to modify the existing segments, by searching for regions with altered copy number state in all samples and discarding the others. It defines new segments and remaps existing mutations on them.
+
+## Analysis setup
+
+For this example we will use the same data presented in the [example data analysis](https://caravagnalab.github.io/CNAqc/articles/a7_example_MSeq.html) in order to create a multisample CNAqc object for the patient `Set06` (samples 1-3 of the same patient).
+
+After having extracted the information on mutations and CNA for each sample, we create a list of CNAqc objects. List names must be sample names.
+
+```{r, message=FALSE}
+CNAqc_samples = lapply(names(sample_mutations), function(x) {
+  CNAqc::init(mutations = sample_mutations[[x]], 
+              cna = cna[[x]], 
+              purity = purity[[x]], 
+              sample = x,
+              ref = "GRCh38")
+})
+
+names(CNAqc_samples) = sapply(CNAqc_samples, function(x) {x$sample})
+```
+
+Run the quality control on the created object.
+
+```{r, include=FALSE}
+CNAqc_samples = lapply(CNAqc_samples, function(x) {
+  CNAqc::analyze_peaks(x, matching_strategy = 'closest')
+})
+```
+
+All the samples are characterized by different segments among the genome, as can be see in the plot below:
+
+```{r, echo=FALSE, dpi=300, fig.align='center', out.width = "100%", fig.dim = c(8,5), warning=FALSE}
+seg_plot = lapply(CNAqc_samples, function(x) {
+  CNAqc::plot_segments(x, chromosomes = paste0("chr", 1:3), max_Y_height = 3) +
+    theme(axis.title.y = element_text(size = 7))
+  }) # +
+    # theme(axis.title = element_text(size = 4),
+    #     axis.text = element_text(size = 4), strip.text = element_text(size = 4),
+    #     plot.title = element_text(size = 4, hjust = 0.5), legend.text = element_text(size=6),
+    #     plot.caption = element_text(size = 4))})
+
+design <- "
+1
+2
+3
+"    
+wrap_plots(seg_plot) +
+  guide_area() +
+  plot_layout(design = design, guides = "collect") & theme(legend.position = 'top')
+
+```
+
+## Create the mCNAqc object
+
+Create a `m_CNAqc` object using the all the CNAs included in the objects. This will define new segments according to which genomic regions are affected by CNAs in all samples, and remap the mutations on them. It is possible to create a `m_CNAqc` object either including or not the results of the peak analysis: setting the argument `QC_filter` to `TRUE` will use in the new segmentation only the segments passing the QC among the different samples.  
+
+All breakpoints (`from` and `to` of each CNA table) from all samples are selected and reordered. The list is then used to generate new segments intervals; only segments that are present in all samples will be kept. Mutations are then remapped on the new segments.
+
+The results will be stored as a list of CNAqc objects (one per sample) in the `cnaqc_obj_new_segmentation` attribute of the mCNAqc object. If running `multisample_init` with the `keep_original = TRUE`, the original CNAqc object will be stored in the `original_cnaqc_objc` attribute; else, results of any additional analysis performed on the original data (ie: peaks analysis or CCF estimation) will be stored in the `original_additional_info` attribute. Setting the `discard_private` argument to `TRUE` will keep in the new CNAqc object only those mutations falling in the same position across all samples.
+
+```{r}
+example_multisample = CNAqc::multisample_init(cnaqc_objs = CNAqc_samples, 
+                                              QC_filter = TRUE, # use only segments passing QC
+                                              keep_original = TRUE, # keep the original CNAqc objects too
+                                              discard_private = FALSE) # keep also not private mutations among the samples
+```
+
+``` {r}
+print(example_multisample)
+```
+
+The function `plot_segments_multisample` allows visualization of the effect of the new segmentation across all the samples included in the mCNAqc object.
+
+```{r, fig.align='center', fig.dim=c(8,4), out.width="100%", dpi=300}
+plot_segments_multisample(example_multisample, which = "shared", chromosomes = paste0("chr", 1:3)) + ggtitle("New segmentation")
+```
+
+## Accessing elements inside the `mCNAqc` object
+
+Sample names can be retrieved using the `get_sample_name` function, which can also be applied on classical `CNAqc` objects.
+
+```{r}
+get_sample_name(example_multisample)
+```
+
+Elements inside the `mCNAqc` object (for desired samples) can be accessed through the `get_sample` function. It returns a list of CNAqc objects. In this way, it is possible to obtain a joint table with all the mutations across samples:
+
+```{r}
+res = get_sample(example_multisample, 
+           sample = get_sample_name(example_multisample), 
+           which_obj = "shared")
+
+lapply(res, function(x) {CNAqc::Mutations(x)}) %>% 
+  dplyr::bind_rows()
+```
+

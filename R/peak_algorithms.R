@@ -10,7 +10,8 @@ analyze_peaks_common = function(x,
                                 n_bootstrap = 1,
                                 kernel_adjust = 1,
                                 matching_strategy = "closest",
-                                KDE = TRUE)
+                                KDE = TRUE, 
+                                min_VAF = 0)
 {
   # Karyotypes of interest, and filter for karyotype size
   analysis_type = x$n_karyotype[names(x$n_karyotype) %in%  karyotypes] %>% names()
@@ -51,6 +52,7 @@ analyze_peaks_common = function(x,
   
   # Run peak detection
   data_fits = x$mutations %>%
+    dplyr::filter(VAF > min_VAF) %>% 
     dplyr::filter(karyotype %in% analysis) %>%
     dplyr::group_split(karyotype) %>%
     lapply(
@@ -63,6 +65,7 @@ analyze_peaks_common = function(x,
     )
   
   names(data_fits) = x$mutations %>%
+    dplyr::filter(VAF > min_VAF) %>% 
     dplyr::filter(karyotype %in% analysis) %>%
     dplyr::group_split(karyotype) %>%
     sapply(function(e) e$karyotype[1])
@@ -199,10 +202,11 @@ analyze_peaks_general = function(x,
                                  n_min = 50,
                                  epsilon = 0.03,
                                  kernel_adjust = 1,
-                                 n_bootstrap = 5)
+                                 n_bootstrap = 5, 
+                                 min_VAF = 0)
 {
   # Filter small segments
-  candidates = x$mutations$karyotype %>% unique
+  candidates = x$mutations%>% dplyr::filter(VAF > min_VAF) %>% dplyr::pull(karyotype) %>% unique
   candidates = setdiff(candidates,  c("1:1", "1:0", "2:0", "2:1", "2:2", "NA:NA"))
   n_cand = x$n_karyotype[candidates] >= n_min
   
@@ -221,6 +225,7 @@ analyze_peaks_general = function(x,
   
   # Data peaks and densities
   data_fit = x$mutations %>%
+    dplyr::filter(VAF > min_VAF) %>% 
     filter(karyotype %in% analysis) %>%
     group_split(karyotype) %>%
     lapply(simple_peak_detector,
@@ -228,6 +233,7 @@ analyze_peaks_general = function(x,
            n_bootstrap = n_bootstrap)
   
   names(data_fit) = x$mutations %>%
+    dplyr::filter(VAF > min_VAF) %>% 
     filter(karyotype %in% analysis) %>%
     group_split(karyotype) %>%
     sapply(function(e) e$karyotype[1])
@@ -318,7 +324,8 @@ analyze_peaks_subclonal = function(x,
                                    n_bootstrap = 5,
                                    kernel_adjust = 1,
                                    starting_state = '1:1',
-                                   cluster_subclonal_CCF = FALSE)
+                                   cluster_subclonal_CCF = FALSE, 
+                                   min_VAF = 0)
 {
   if (is.null(x$cna_subclonal) | nrow(x$cna_subclonal) == 0)
     return(x)
@@ -357,7 +364,9 @@ analyze_peaks_subclonal = function(x,
                                    mclusters = subclonal_calls$mclusters[i]
                                    n = subclonal_calls$n[i]
                                    
-                                   subclonal_calls$mutations[[i]] %>% mutate(
+                                   subclonal_calls$mutations[[i]] %>% 
+                                   dplyr::filter(VAF > min_VAF) %>% 
+                                   mutate(
                                      segment_id = paste0(
                                        'Subclone ', mclusters,
                                        " ( ",karyotype_1, " | ", karyotype_2,
@@ -389,7 +398,9 @@ analyze_peaks_subclonal = function(x,
                                    L = round((subclonal_calls$to[i] - subclonal_calls$from[i]) /
                                                1e6, 1)
                                    
-                                   subclonal_calls$mutations[[i]] %>% mutate(
+                                   subclonal_calls$mutations[[i]] %>%  
+                                    dplyr::filter(VAF > min_VAF) %>% 
+                                    mutate(
                                      segment_id = paste0(
                                        subclonal_calls$chr[i],
                                        ' ',
@@ -652,7 +663,7 @@ simple_peak_detector = function(mutations, kernel_adjust, n_bootstrap)
     }) %>%
       Reduce(f = bind_rows) %>%
       distinct(x, .keep_all = TRUE) %>%
-     phase_to_density(density = s_run$density)
+      phase_to_density(density = s_run$density)
     
     s_run$peaks = s_run$peaks %>%
       bind_rows(sb_run) %>%

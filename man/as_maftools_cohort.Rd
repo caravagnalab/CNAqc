@@ -9,6 +9,7 @@ as_maftools_cohort(
   only_drivers = TRUE,
   CNA_genes = NULL,
   clinicalData = NULL,
+  Variant_classification = NULL,
   CNA_map_function = function(cn) {
      if (is.na(cn)) 
          return(NA)
@@ -59,6 +60,9 @@ in CNAqc format (e.g., `"1:0"`) a label that is used by the MAF cohort. By
 default, for instance, `"1:0"` is mapped to `"LOH"`, `"2:0"` to `"CNLOH"`,
 `"2:1"` and `"2:2"` to `"Amplification"`, and `"1:1"` to `NA`. Use `NA` to
 avoid reporting the copy number in the MAF cohort.}
+}
+\value{
+A \code{"maftools"} object.
 }
 \description{
 Like \code{\link{as_maftools_obj}} but for multiple CNAqc objects, it creates

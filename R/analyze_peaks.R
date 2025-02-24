@@ -77,7 +77,9 @@
 #' @param starting_state_subclonal_evolution For subclonal simple CNAs, the starting state to determine linear versus
 #' branching evolutionary models. By default this is an heterozygous diploid `1:1` state.
 #' @param cluster_subclonal_CCF For subclonal segments, should the tool try to merge segments with similar CCF and the same copy number alteration?
-#'
+#' @param min_VAF Only mutations with VAF higher than the supplied cut-off will be used for the QC, but they will not be removed from the final object. 
+#' If the data are multisample (multi-region or longitudinal data) it is strongly advised to set as 0 (default) to avoid including private mutations of samples
+#' in the peak detection. 
 #' @return An object of class \code{cnaqc}, modified to hold the results from this analysis. For every type
 #' of segment analyzed tables with summary peaks are available in \code{x$peaks_analysis}. The most helpful table
 #' is usually the one for simple clonal CNAs `x$peaks_analysis$matches`, which reports several information:
@@ -110,6 +112,7 @@
 #' x = analyze_peaks(x, matching_strategy = "rightmost")
 #'
 #' print(x)
+#' 
 analyze_peaks = function(x,
                          karyotypes = c('1:0', '1:1', '2:0', '2:1', '2:2'),
                          min_karyotype_size = 0,
@@ -123,15 +126,16 @@ analyze_peaks = function(x,
                          matching_strategy = "closest",
                          KDE = TRUE,
                          starting_state_subclonal_evolution = "1:1",
-                         cluster_subclonal_CCF = FALSE)
+                         cluster_subclonal_CCF = FALSE, 
+                         min_VAF = 0)
 {
-
+  
   if (!is.null(matching_epsilon)) {
     stop("matching_epsilon is deprecated - using purity_error = ",
          purity_error)
     matching_epsilon = purity_error
   }
-
+  
   # Check inputs
   stopifnot(inherits(x, "cnaqc"))
   stopifnot(min_karyotype_size >= 0 & min_karyotype_size < 1)
@@ -140,11 +144,11 @@ analyze_peaks = function(x,
   stopifnot(purity_error > 0 & purity_error < 1)
   stopifnot(is.numeric(kernel_adjust))
   stopifnot(matching_strategy %in% c("closest", "rightmost"))
-
+  
   # Common peaks analysis - they must be in the sample
   cli::cli_h1("Peak analysis: simple CNAs")
   cat("\n")
-
+  
   x = x %>% analyze_peaks_common(
     karyotypes = karyotypes,
     min_karyotype_size = min_karyotype_size,
@@ -153,59 +157,61 @@ analyze_peaks = function(x,
     purity_error = purity_error,
     VAF_tolerance = VAF_tolerance,
     n_bootstrap = n_bootstrap,
-    kernel_adjust = kernel_adjust
+    kernel_adjust = kernel_adjust, 
+    min_VAF = min_VAF
   )
   
   x$cna <- dplyr::left_join(x$cna,CNAqc:::compute_QC_table(x)$QC_table %>% filter(type == "Peaks") %>% 
-                               dplyr::mutate(QC_PASS = dplyr::if_else(QC == "PASS", TRUE, FALSE)) %>%
-                               tidyr::separate(karyotype, into = c("Major", "minor"), sep = ":") %>%
-                               mutate(Major = as.numeric(Major), minor = as.numeric(minor)) %>% 
-                               dplyr::select(Major, minor, QC_PASS))
+                              dplyr::mutate(QC_PASS = dplyr::if_else(QC == "PASS", TRUE, FALSE)) %>%
+                              tidyr::separate(karyotype, into = c("Major", "minor"), sep = ":") %>%
+                              mutate(Major = as.numeric(Major), minor = as.numeric(minor)) %>% 
+                              dplyr::select(Major, minor, QC_PASS))
   x$mutations <- dplyr::left_join(x$mutations %>% ungroup(), CNAqc:::compute_QC_table(x)$QC_table %>%
                                     filter(type == "Peaks") %>% 
                                     dplyr::mutate(QC_PASS = dplyr::if_else(QC == "PASS", TRUE, FALSE)) %>% 
                                     dplyr::select(karyotype, QC_PASS))
-
+  
   # Generalised peak analysis
   cli::cli_h1("Peak analysis: complex CNAs")
   cat("\n")
-
+  
   w = x$n_karyotype[!(x$n_karyotype %>% names() %in% karyotypes)]
   w = w[w > min_absolute_karyotype_mutations]
-
+  
   if(length(w) > 0)
   {
     cli::cli_alert_info(
-        "Karyotypes {.field {names(w)}} with >{.field {min_absolute_karyotype_mutations}} mutation(s). Using epsilon = {.field {purity_error}}."
-      )
-
+      "Karyotypes {.field {names(w)}} with >{.field {min_absolute_karyotype_mutations}} mutation(s). Using epsilon = {.field {purity_error}}."
+    )
+    
     x = x %>% analyze_peaks_general(
       n_min = min_absolute_karyotype_mutations,
       epsilon = purity_error,
       kernel_adjust = kernel_adjust,
-      n_bootstrap = n_bootstrap
-      )
-
+      n_bootstrap = n_bootstrap, 
+      min_VAF = min_VAF
+    )
+    
     x$peaks_analysis$general$summary %>%
       print()
     
     x$cna <- dplyr::left_join(x$cna, x$peaks_analysis$general$summary %>% 
-                                 dplyr::mutate(QC_PASS = dplyr::if_else(prop >= 0.5, TRUE, FALSE)) %>%
-                                 tidyr::separate(karyotype, into = c("Major", "minor"), sep = ":") %>%
-                                 mutate(Major = as.numeric(Major), minor = as.numeric(minor)) %>% 
-                                 dplyr::select(Major, minor, QC_PASS))
+                                dplyr::mutate(QC_PASS = dplyr::if_else(prop >= 0.5, TRUE, FALSE)) %>%
+                                tidyr::separate(karyotype, into = c("Major", "minor"), sep = ":") %>%
+                                mutate(Major = as.numeric(Major), minor = as.numeric(minor)) %>% 
+                                dplyr::select(Major, minor, QC_PASS))
     x$mutations <- dplyr::left_join(x$mutations, x$peaks_analysis$general$summary %>% 
-                                dplyr::mutate(QC_PASS = dplyr::if_else(prop >= 0.5, TRUE, FALSE)) %>% 
-                                dplyr::select(karyotype, QC_PASS))
+                                      dplyr::mutate(QC_PASS = dplyr::if_else(prop >= 0.5, TRUE, FALSE)) %>% 
+                                      dplyr::select(karyotype, QC_PASS))
   }
   else
     cli::cli_alert_info(
       "No karyotypes with >{.field {min_absolute_karyotype_mutations}} mutation(s). "
     )
-
+  
   cli::cli_h1("Peak analysis: subclonal CNAs")
   cat("\n")
-
+  
   # Subclonal CNAs peak analysis
   if(x$n_cna_subclonal > 0)
   {
@@ -217,7 +223,7 @@ analyze_peaks = function(x,
       starting_state = starting_state_subclonal_evolution,
       cluster_subclonal_CCF = cluster_subclonal_CCF
     )
-
+    
     if(!is.null(x$peaks_analysis$subclonal))
       x$peaks_analysis$subclonal$summary %>% print()
     else
@@ -226,7 +232,7 @@ analyze_peaks = function(x,
   }
   else
     cli::cli_alert_info("No subclonal CNAs in this sample.")
-
+  
   return(x)
 }
 

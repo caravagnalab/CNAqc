@@ -45,6 +45,7 @@
 #'
 #' # Circular layout
 #' plot_multisample_CNA(inputs, layout = 'circular')
+#' 
 plot_multisample_CNA = function(x, layout = 'flat', ...)
 {
   ok_input = sapply(x, function(x)
@@ -148,7 +149,7 @@ aux_plot_cohort_CNA = function(x, delta = 1e5)
     dplyr::mutate(n = ifelse(CNA == 'Deletion',-1 * n, n))
 
   # Blank plot
-  reference_coordinates = get_reference(x[[1]]$reference_genome)
+  reference_coordinates = get_reference(x[[1]]$reference_genome, data = x[[1]]$genomic_coordinates)
 
   low = min(reference_coordinates$from)
   upp = max(reference_coordinates$to)

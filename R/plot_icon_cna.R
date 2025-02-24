@@ -52,14 +52,14 @@ plot_icon_CNA = function(x)
   chromosomes = calls_flat$chr %>% unique
 
   # Get coordinates for used chromosomes
-  reference_genome = CNAqc:::get_reference(x$reference_genome) %>% dplyr::filter(chr %in% chromosomes)
+  reference_genome = CNAqc:::get_reference(x$reference_genome, data = x$genomic_coordinates) %>% dplyr::filter(chr %in% chromosomes)
 
   low = min(reference_genome$from)
   upp = max(reference_genome$to)
 
   # Default blank genome -- remove labels with label_chr = NA
   bl_genome = suppressMessages(
-    CNAqc:::blank_genome(label_chr = NA) +
+    CNAqc:::blank_genome(label_chr = NA, ref = reference_genome, genomic_coords = x$genomic_coordinates) +
       labs(x = "", y = "")
   )
 

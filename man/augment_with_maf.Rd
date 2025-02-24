@@ -13,7 +13,7 @@ for CNAqc.}
 \item{maf}{The file MAF associated containing the annotations in MAF format.}
 }
 \value{
-It depends on `x`
+It depends on `x`. 
 \itemize{
  \item{"[Option 1]"}{
  A CNAqc object like `x` where the mutations are associated to the

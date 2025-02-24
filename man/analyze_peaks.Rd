@@ -18,7 +18,8 @@ analyze_peaks(
   matching_strategy = "closest",
   KDE = TRUE,
   starting_state_subclonal_evolution = "1:1",
-  cluster_subclonal_CCF = FALSE
+  cluster_subclonal_CCF = FALSE,
+  min_VAF = 0
 )
 }
 \arguments{
@@ -70,6 +71,10 @@ density. By default the \code{"closest"} strategy is used.}
 branching evolutionary models. By default this is an heterozygous diploid `1:1` state.}
 
 \item{cluster_subclonal_CCF}{For subclonal segments, should the tool try to merge segments with similar CCF and the same copy number alteration?}
+
+\item{min_VAF}{Only mutations with VAF higher than the supplied cut-off will be used for the QC, but they will not be removed from the final object. 
+If the data are multisample (multi-region or longitudinal data) it is strongly advised to set as 0 (default) to avoid including private mutations of samples
+in the peak detection.}
 }
 \value{
 An object of class \code{cnaqc}, modified to hold the results from this analysis. For every type
@@ -141,6 +146,7 @@ print(x$peaks_analysis)
 x = analyze_peaks(x, matching_strategy = "rightmost")
 
 print(x)
+
 }
 \seealso{
 \code{auto_tolerance}, \code{plot_peak_analysis} and \code{plot_QC}.

@@ -28,7 +28,7 @@ plot_gw_counts = function(x, chromosomes = paste0('chr', c(1:22, 'X', 'Y')))
   mutations = CNAqc:::relative_to_absolute_coordinates(x,
                                                        mutations)
 
-  bl_plot = CNAqc:::blank_genome(ref = x$reference_genome, chromosomes = chromosomes)
+  bl_plot = CNAqc:::blank_genome(ref = x$reference_genome, chromosomes = chromosomes, genomic_coords = x$genomic_coordinates)
 
   # # X-range
   # reference_genome = CNAqc:::get_reference(x$reference_genome)
@@ -96,7 +96,7 @@ plot_gw_depth = function(x,
                                                mutations)
 
 
-  bl_plot = CNAqc:::blank_genome(ref = x$reference_genome, chromosomes = chromosomes)
+  bl_plot = CNAqc:::blank_genome(ref = x$reference_genome, chromosomes = chromosomes, genomic_coords = x$genomic_coordinates)
 
   # X-range
   # reference_genome = CNAqc:::get_reference(x$reference_genome)
@@ -194,7 +194,7 @@ plot_gw_vaf = function(x,
   mutations = relative_to_absolute_coordinates(x,
                                                mutations)
 
-  bl_plot = CNAqc:::blank_genome(ref = x$reference_genome, chromosomes = chromosomes)
+  bl_plot = CNAqc:::blank_genome(ref = x$reference_genome, chromosomes = chromosomes, genomic_coords = x$genomic_coordinates)
 
   # # X-range
   # reference_genome = CNAqc:::get_reference(x$reference_genome)
@@ -294,7 +294,7 @@ plot_gw_ccf = function(x,
   mutations = CNAqc:::relative_to_absolute_coordinates(x,
                                                        CNAqc::CCF(x) %>% dplyr::filter(chr %in% chromosomes))
 
-  bl_plot = CNAqc:::blank_genome(ref = x$reference_genome, chromosomes = chromosomes) +
+  bl_plot = CNAqc:::blank_genome(ref = x$reference_genome, chromosomes = chromosomes, genomic_coords = x$genomic_coordinates) +
     ylim(-0.1, NA)
 
   # # X-range

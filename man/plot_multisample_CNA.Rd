@@ -53,4 +53,5 @@ plot_multisample_CNA(inputs)
 
 # Circular layout
 plot_multisample_CNA(inputs, layout = 'circular')
+
 }

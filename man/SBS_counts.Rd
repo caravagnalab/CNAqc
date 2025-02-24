@@ -16,3 +16,14 @@ A one-row matrix with SBS data for 96 contexts and 6 possible substitutions.
 Extract SBS data for 96 contexts and 6 possible substitutions, in matrix
 format.
 }
+\examples{
+\dontrun{
+data('example_dataset_CNAqc')
+x = init(mutations = example_dataset_CNAqc$mutations, cna =example_dataset_CNAqc$cna, purity = example_dataset_CNAqc$purity)
+
+x = SBS(x)
+
+# SBS analysis
+print(SBS_counts(x))
+}
+}

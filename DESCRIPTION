@@ -33,6 +33,8 @@ Depends:
     R (>= 3.6)
 biocViews:
 Imports: 
+    Rhtslib,
+    Rsamtools,
     crayon,
     ggpubr,
     ggrepel,
@@ -63,20 +65,23 @@ Imports:
     readr,
     R.utils,
     ComplexHeatmap,
-    scales
+    scales,
+    data.table
 Remotes: 
     caravagn/pio,
     caravagnalab/BMix,
     caravagn/easypar,
     cran/peakPick,
     cran/sequenza
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.2
 Suggests: 
     knitr,
     rmarkdown,
     org.Hs.eg.db,
     Organism.dplyr,
-    mclust
+    mclust,
+    testthat (>= 3.0.0)
 VignetteBuilder: knitr
 URL: https://github.com/caravagnalab/CNAqc
 BugReports: https://github.com/caravagnalab/CNAqc/issues
+Config/testthat/edition: 3

@@ -13,6 +13,9 @@ wt_mutant_alleles(x, gene_column = "VEP.SYMBOL")
 be. By default it is `"VEP.SYMBOL"` assuming that this function gets run on
 a dataset where VEP annotations have been augmented.}
 }
+\value{
+an unpdated CNAqc object.
+}
 \description{
 This function works on a CNAqc object with annotated driver mutations and
 a column (in mutation data) reporting gene symbols in human-readable format

@@ -40,7 +40,7 @@
 #' \href{https://www.ensembl.org/info/docs/tools/vep/index.html}{Ensembl Variant Effect Predictor (VEP)}
 #' utility.
 #'
-#' @return It depends on `x`
+#' @return It depends on `x`. 
 #' \itemize{
 #'  \item{"[Option 1]"}{
 #'  A CNAqc object like `x` where the mutations are associated to the
@@ -241,7 +241,7 @@ augment_with_maf = function(x, maf)
 #' @param CNA_genes The list of genes for ....
 #' @param assembly If `TRUE`...
 #'
-#' @return
+#' @return a \code{"maftools"} object. 
 #'
 #' @seealso function \code{\link{augment_with_maf}} to add MAF annotations to a
 #' CNAqc object, to be used before running `as_maftools_obj`.
@@ -362,7 +362,7 @@ as_maftools_obj = function(x,
 #' `"2:1"` and `"2:2"` to `"Amplification"`, and `"1:1"` to `NA`. Use `NA` to
 #' avoid reporting the copy number in the MAF cohort.
 #'
-#' @return
+#' @return A \code{"maftools"} object. 
 #'
 #' @seealso function \code{\link{augment_with_maf}} to add MAF annotations to a
 #' CNAqc object, to be used before running `as_maftools_obj`.
@@ -619,7 +619,8 @@ CNA_gene = function(x, genes = NULL)
 #' be. By default it is `"VEP.SYMBOL"` assuming that this function gets run on
 #' a dataset where VEP annotations have been augmented.
 #'
-#' @return
+#' @return an unpdated CNAqc object. 
+#' 
 #' @seealso function \code{\link{augment_with_vep}} to add VEP annotations to
 #' a CNAqc object.
 #' @export
