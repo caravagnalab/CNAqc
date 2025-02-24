@@ -64,7 +64,8 @@ Imports:
     R.utils,
     ComplexHeatmap,
     scales,
-    data.table
+    data.table,
+    Rhtslib
 Remotes: 
     caravagn/pio,
     caravagnalab/BMix,
