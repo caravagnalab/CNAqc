@@ -3,26 +3,7 @@
 \docType{data}
 \name{fpr_test}
 \alias{fpr_test}
-\title{#' Example PCAWG tumour
-#'
-#' @docType data
-#'
-#' @usage data(example_PCAWG)
-#'
-#' @format A CNAqc object created for a PCAWG sample, with subclonal CNAs
-#' called by Battenberg.
-#'
-#' @keywords datasets
-#'
-#' @references The ICGC/TCGA Pan-Cancer Analysis of Whole Genomes Consortium.
-#' Pan-cancer analysis of whole genomes. Nature 578, 82–93 (2020).
-#'  https://doi.org/10.1038/s41586-020-1969-6
-#' @examples
-#' data(example_PCAWG)
-#' example_PCAWG
-#'
-"example_PCAWG"
-Data (simulation performance) from the trainig set to auto-tune epsilon.}
+\title{Data (simulation performance) from the trainig set to auto-tune epsilon.}
 \format{
 A tibble.
 }
@@ -30,25 +11,6 @@ A tibble.
 data(fpr_test)
 }
 \description{
-#' Example PCAWG tumour
-#'
-#' @docType data
-#'
-#' @usage data(example_PCAWG)
-#'
-#' @format A CNAqc object created for a PCAWG sample, with subclonal CNAs
-#' called by Battenberg.
-#'
-#' @keywords datasets
-#'
-#' @references The ICGC/TCGA Pan-Cancer Analysis of Whole Genomes Consortium.
-#' Pan-cancer analysis of whole genomes. Nature 578, 82–93 (2020).
-#'  https://doi.org/10.1038/s41586-020-1969-6
-#' @examples
-#' data(example_PCAWG)
-#' example_PCAWG
-#'
-"example_PCAWG"
 Data (simulation performance) from the trainig set to auto-tune epsilon.
 }
 \examples{

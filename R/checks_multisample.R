@@ -1,9 +1,4 @@
-#' printing errors, warnings and processing for multi_CNAqc objects and creation
-#' 
-#' 
-#' 
-#' 
-
+# printing errors, warnings and processing for multi_CNAqc objects and creation
 # check if the input of multisample_init is actually a list of CNAqc objects and print the errors 
 checking_input <- function(cnaqc_objs) {
   
