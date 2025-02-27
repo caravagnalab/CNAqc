@@ -35,6 +35,7 @@ biocViews:
 Imports: 
     Rhtslib,
     Rsamtools,
+    GenomicRanges,
     crayon,
     ggpubr,
     ggrepel,
@@ -43,7 +44,6 @@ Imports:
     clisymbols,
     RColorBrewer,
     VariantAnnotation,
-    GenomicRanges,
     easypar,
     gtools,
     graphics,

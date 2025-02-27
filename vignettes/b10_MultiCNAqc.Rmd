@@ -32,13 +32,13 @@ info_tidy = vcfR::extract_info_tidy(set6)
 # Fixed fields (genomic coordinates)
 fix_tidy = set6@fix %>%
   as_tibble %>%
-  rename(
+  dplyr::rename(
     chr = CHROM,
     from = POS,
     ref = REF,
     alt = ALT
   ) %>%
-  mutate(from = as.numeric(from), to = from + nchar(alt))
+  dplyr::mutate(from = as.numeric(from), to = from + nchar(alt))
 
 # Genotypes
 geno_tidy = vcfR::extract_gt_tidy(set6) %>%

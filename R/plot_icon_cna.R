@@ -59,7 +59,7 @@ plot_icon_CNA = function(x)
 
   # Default blank genome -- remove labels with label_chr = NA
   bl_genome = suppressMessages(
-    CNAqc:::blank_genome(label_chr = NA, ref = reference_genome, genomic_coords = x$genomic_coordinates) +
+    CNAqc:::blank_genome(label_chr = NA, ref = x$reference_genome, genomic_coords = x$genomic_coordinates) +
       labs(x = "", y = "")
   )
 
