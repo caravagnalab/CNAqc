@@ -15,6 +15,10 @@ knitr::opts_chunk$set(
 
 # options(crayon.enabled=F)
 
+require(CNAqc)
+require(tidyverse)
+require(vcfR)
+
 VCF_url = "https://raw.githubusercontent.com/caravagnalab/CNAqc_datasets/main/MSeq_Set06/Mutations/Set.06.WGS.merged_filtered.vcf"
 
 # Download, load and cancel data
@@ -23,15 +27,12 @@ download.file(VCF_url, "Set.06.WGS.merged_filtered.vcf",)
 set6 = vcfR::read.vcfR("Set.06.WGS.merged_filtered.vcf")
 file.remove("Set.06.WGS.merged_filtered.vcf")
 
-require(CNAqc)
-require(tidyverse)
-
 # INFO fields 
 info_tidy = vcfR::extract_info_tidy(set6)
 
 # Fixed fields (genomic coordinates)
 fix_tidy = set6@fix %>%
-  as_tibble %>%
+  dplyr::as_tibble %>%
   dplyr::rename(
     chr = CHROM,
     from = POS,
@@ -162,7 +163,7 @@ design <- "
 2
 3
 "    
-wrap_plots(seg_plot) +
+patchwork::wrap_plots(seg_plot) +
   guide_area() +
   plot_layout(design = design, guides = "collect") & theme(legend.position = 'top')
 
