@@ -32,7 +32,7 @@ info_tidy = vcfR::extract_info_tidy(set6)
 
 # Fixed fields (genomic coordinates)
 fix_tidy = set6@fix %>%
-  dplyr::as_tibble %>%
+  dplyr::as_tibble() %>%
   dplyr::rename(
     chr = CHROM,
     from = POS,
