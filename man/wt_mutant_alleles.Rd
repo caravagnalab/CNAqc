@@ -4,7 +4,7 @@
 \alias{wt_mutant_alleles}
 \title{Compute WT and mutant alleles per gene}
 \usage{
-wt_mutant_alleles(x, gene_column = "VEP.SYMBOL")
+wt_mutant_alleles(x, gene_column = "VEP.SYMBOL", cutoff_n = 10)
 }
 \arguments{
 \item{x}{A CNAqc object.}

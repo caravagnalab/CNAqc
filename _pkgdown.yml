@@ -126,7 +126,6 @@ reference:
   desc: Functions to create and process mCNAqc objects. 
   contents: 
   - multisample_init
-  - checking_input
   - plot_segments_multisample
   - get_mCNAqc_stats
   - get_sample
