@@ -73,8 +73,8 @@ plot_segments_multisample <- function(x,
       chromosomes = chromosomes,
       label_chr = NA
     ) +
-      theme(axis.title.y = ggplot2::element_text(ggplot2::margin = margin(r = 20)), 
-            axis.title.x = ggplot2::element_text(ggplot2::margin = margin(t = 15)))
+      theme(axis.title.y = ggplot2::element_text(margin = ggplot2::margin(r = 20)), 
+            axis.title.x = ggplot2::element_text(margin = ggplot2::margin(t = 15)))
   )
   
   cna_multisample = bl_genome +
