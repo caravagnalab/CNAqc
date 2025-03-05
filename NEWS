@@ -1,3 +1,13 @@
+CNAqc v1.1.0 (Release date: March 2025)
+==============
+
+Changes:
+
+* Bug fixings in several functions
+* Implementing mCNAqc class to handle multisample data
+* Support for non-human and custom reference genomes avaiable
+
+
 CNAqc v1.0.0 (Release date: September 2022)
 ==============
 
