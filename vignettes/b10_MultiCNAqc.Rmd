@@ -18,6 +18,8 @@ knitr::opts_chunk$set(
 require(CNAqc)
 require(tidyverse)
 require(vcfR)
+install.packages("devtools", repos="http://cran.us.r-project.org")
+devtools::install_github("thomasp85/patchwork")
 
 VCF_url = "https://raw.githubusercontent.com/caravagnalab/CNAqc_datasets/main/MSeq_Set06/Mutations/Set.06.WGS.merged_filtered.vcf"
 
@@ -109,12 +111,10 @@ purity = lapply(Sequenza_good_calls, function(x) {x$purity})
 
 ```
 
-```{r setup, warning = T}
+```{r setup, warning = F}
 require(tidyverse)
 require(CNAqc)
 require(cli)
-install.packages("devtools", repos="http://cran.us.r-project.org")
-devtools::install_github("thomasp85/patchwork")
 require(patchwork)
 
 ```
