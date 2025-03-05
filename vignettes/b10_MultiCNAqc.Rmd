@@ -47,13 +47,13 @@ geno_tidy = vcfR::extract_gt_tidy(set6) %>%
 
 # Sample mutations in the CNAqc format
 sample_mutations = lapply(geno_tidy, function(x) {
-  bind_cols(info_tidy, fix_tidy) %>% 
-    full_join(x, by = "Key") %>%
-    filter(FILTER == "PASS") %>% 
-    mutate(DP = as.numeric(gt_NR), NV = as.numeric(gt_NV)) %>%
-    mutate(VAF = NV / DP) %>%
+  dplyr::bind_cols(info_tidy, fix_tidy) %>% 
+    dplyr::full_join(x, by = "Key") %>%
+    dplyr::filter(FILTER == "PASS") %>% 
+    dplyr::mutate(DP = as.numeric(gt_NR), NV = as.numeric(gt_NV)) %>%
+    dplyr::mutate(VAF = NV / DP) %>%
     dplyr::select(Indiv, chr, from, to, ref, alt, NV, DP, VAF, everything()) %>%
-    filter(!is.na(VAF), VAF > 0)
+    dplyr::filter(!is.na(VAF), VAF > 0)
 })
 
 # A list for all samples available
