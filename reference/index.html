@@ -61,6 +61,9 @@
     <li>
       <a href="../articles/a9_automatic.html">9. Automatic CNA calling</a>
     </li>
+    <li>
+      <a href="../articles/b10_MultiCNAqc.html">10. multiCNAqc</a>
+    </li>
   </ul></li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/caravagnalab/CNAqc/" class="external-link">
@@ -93,17 +96,21 @@
         </td>
         <td><p>Coordinates for GRCh38 chromosomes.</p></td>
       </tr><tr><td>
+          <p><code><a href="chr_coordinates_GRCm38.html">chr_coordinates_GRCm38</a></code> </p>
+        </td>
+        <td><p>Coordinates for GRCm38 chromosomes.</p></td>
+      </tr><tr><td>
           <p><code><a href="example_dataset_CNAqc.html">example_dataset_CNAqc</a></code> </p>
         </td>
         <td><p>Example CNAqc dataset.</p></td>
       </tr><tr><td>
-          <p><code><a href="example_PCAWG.html">example_PCAWG</a></code> </p>
-        </td>
-        <td><p>Example PCAWG tumour</p></td>
-      </tr><tr><td>
           <p><code><a href="fpr_test.html">fpr_test</a></code> </p>
         </td>
         <td><p>Data (simulation performance) from the trainig set to auto-tune epsilon.</p></td>
+      </tr><tr><td>
+          <p><code><a href="example_PCAWG.html">example_PCAWG</a></code> </p>
+        </td>
+        <td><p>Example PCAWG tumour</p></td>
       </tr><tr><td>
           <p><code><a href="intogen_drivers.html">intogen_drivers</a></code> </p>
         </td>
@@ -348,6 +355,38 @@
           <p><code><a href="augment_with_vep.html">augment_with_vep()</a></code> </p>
         </td>
         <td><p>Import VEP annotations.</p></td>
+      </tr></tbody><tbody><tr><th colspan="2">
+          <h2 id="mcnaqc-processing">mCNAqc processing <a href="#mcnaqc-processing" class="anchor" aria-hidden="true"></a></h2>
+          <p class="section-desc"></p><p>Functions to create and process mCNAqc objects.</p>
+        </th>
+      </tr></tbody><tbody><tr><td>
+          <p><code><a href="multisample_init.html">multisample_init()</a></code> </p>
+        </td>
+        <td><p>Create multisample segmentation</p></td>
+      </tr><tr><td>
+          <p><code><a href="plot_segments_multisample.html">plot_segments_multisample()</a></code> </p>
+        </td>
+        <td><p>Plot multisample cna data</p></td>
+      </tr><tr><td>
+          <p><code><a href="get_mCNAqc_stats.html">get_mCNAqc_stats()</a></code> </p>
+        </td>
+        <td><p>Get mCNAqc statistics</p></td>
+      </tr><tr><td>
+          <p><code><a href="get_sample.html">get_sample()</a></code> </p>
+        </td>
+        <td><p>get desidered samples</p></td>
+      </tr><tr><td>
+          <p><code><a href="get_sample_name.html">get_sample_name()</a></code> </p>
+        </td>
+        <td><p>get sample names from CNAqc and mCNAqc objects</p></td>
+      </tr><tr><td>
+          <p><code><a href="plot.m_cnaqc.html">plot(<i>&lt;m_cnaqc&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Plot for class <code>'m_cnaqc'</code>.</p></td>
+      </tr><tr><td>
+          <p><code><a href="print.m_cnaqc.html">print(<i>&lt;m_cnaqc&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Print for class <code>'m_cnaqc'</code>.</p></td>
       </tr></tbody></table></div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -361,7 +400,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
       </footer></div>

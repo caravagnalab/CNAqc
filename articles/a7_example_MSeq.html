@@ -84,6 +84,9 @@
     <li>
       <a href="../articles/a9_automatic.html">9. Automatic CNA calling</a>
     </li>
+    <li>
+      <a href="../articles/b10_MultiCNAqc.html">10. multiCNAqc</a>
+    </li>
   </ul>
 </li>
       </ul>
@@ -104,7 +107,7 @@
 
 
 
-      </header><script src="a7_example_MSeq_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>7. Example data analysis</h1>
@@ -140,12 +143,15 @@
 <span><span class="co">#&gt;      browseVignettes('vcfR') # Documentation</span></span>
 <span><span class="co">#&gt;      citation('vcfR') # Citation</span></span>
 <span><span class="co">#&gt;    *****       *****      *****       *****</span></span></code></pre></div>
-<p>We work with MSeq data discussed in the main preprint for <code>CNAqc</code>, replicating one analysis for patient <code>Set06</code>.</p>
+<p>We work with MSeq data discussed in the main preprint for
+<code>CNAqc</code>, replicating one analysis for patient
+<code>Set06</code>.</p>
 <p>The data we used is hosted at the GitHub repository <a href="https://github.com/caravagnalab/CNAqc_datasets" class="external-link">caravagnalab/CNAqc_datasets</a>.</p>
 <div class="section level2">
 <h2 id="mutation-data">Mutation data<a class="anchor" aria-label="anchor" href="#mutation-data"></a>
 </h2>
-<p>We download from Github a VCF file for MSeq sample <code>Set06</code>, and load it using the <code>vcfR</code> package.</p>
+<p>We download from Github a VCF file for MSeq sample
+<code>Set06</code>, and load it using the <code>vcfR</code> package.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">VCF_url</span> <span class="op">=</span> <span class="st">"https://raw.githubusercontent.com/caravagnalab/CNAqc_datasets/main/MSeq_Set06/Mutations/Set.06.WGS.merged_filtered.vcf"</span></span>
 <span></span>
@@ -183,7 +189,8 @@
 <span><span class="co">#&gt; Object size: 43.5 Mb</span></span>
 <span><span class="co">#&gt; 0 percent missing data</span></span>
 <span><span class="co">#&gt; *****        *****         *****</span></span></code></pre></div>
-<p>We extract all the information we need, using the tidy data representation format.</p>
+<p>We extract all the information we need, using the tidy data
+representation format.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># INFO fields </span></span>
 <span><span class="va">info_tidy</span> <span class="op">=</span> <span class="fu">vcfR</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/vcfR/man/vcfR_to_tidy_conversion.html" class="external-link">extract_info_tidy</a></span><span class="op">(</span><span class="va">set6</span><span class="op">)</span></span>
@@ -361,7 +368,8 @@
 <h2 id="copy-number-data">Copy Number data<a class="anchor" aria-label="anchor" href="#copy-number-data"></a>
 </h2>
 <p>Sequenza calls are available in the same repository.</p>
-<p>We use an extra function to load a solution (so we can easily compare multiple runs etc etc.).</p>
+<p>We use an extra function to load a solution (so we can easily compare
+multiple runs etc etc.).</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Load Sequenza output</span></span>
 <span><span class="va">load_SQ_output</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">URL</span>, <span class="va">sample</span>, <span class="va">run</span><span class="op">)</span></span>
@@ -395,7 +403,8 @@
 <span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
-<p>We can load the calls for 2 solutions of sample <code>Set6_42</code>; we begin with our final, good solution.</p>
+<p>We can load the calls for 2 solutions of sample <code>Set6_42</code>;
+we begin with our final, good solution.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">Sequenza_URL</span> <span class="op">=</span> <span class="st">"https://raw.githubusercontent.com/caravagnalab/CNAqc_datasets/main/MSeq_Set06/Copy%20Number/"</span></span>
 <span></span>
@@ -428,7 +437,8 @@
 <div class="section level2">
 <h2 id="calls-analysis">Calls analysis<a class="anchor" aria-label="anchor" href="#calls-analysis"></a>
 </h2>
-<p>For this example we work with mutations found in sample <code>Set6_42</code>.</p>
+<p>For this example we work with mutations found in sample
+<code>Set6_42</code>.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Single-nucleotide variants with VAF &gt;5%</span></span>
 <span><span class="va">snvs</span> <span class="op">=</span> <span class="va">sample_mutations</span><span class="op">[[</span><span class="st">'Set6_42'</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
@@ -572,7 +582,8 @@
 <div class="section level3">
 <h3 id="ccf">CCF<a class="anchor" aria-label="anchor" href="#ccf"></a>
 </h3>
-<p>Perform CCF computation detection with the <code>ENTROPY</code> method.</p>
+<p>Perform CCF computation detection with the <code>ENTROPY</code>
+method.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># CCF</span></span>
 <span><span class="va">x</span> <span class="op">=</span> <span class="fu">CNAqc</span><span class="fu">::</span><span class="fu"><a href="../reference/compute_CCF.html">compute_CCF</a></span><span class="op">(</span><span class="va">x</span>, method <span class="op">=</span> <span class="st">'ENTROPY'</span><span class="op">)</span></span>
@@ -627,7 +638,8 @@
 <div class="section level3">
 <h3 id="other-analyses">Other analyses<a class="anchor" aria-label="anchor" href="#other-analyses"></a>
 </h3>
-<p>Smooth segments with gaps up to 10 megabases (does not affect segments in this sample).</p>
+<p>Smooth segments with gaps up to 10 megabases (does not affect
+segments in this sample).</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span> <span class="op">=</span> <span class="fu">CNAqc</span><span class="fu">::</span><span class="fu"><a href="../reference/smooth_segments.html">smooth_segments</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span><span class="co">#&gt; → <span style="color: #0000BB;">chr1</span> <span style="color: #BB0000;">4</span> -<span style="color: #00BB00;">4</span> @</span></span>
@@ -673,7 +685,8 @@
 <span><span class="co">#&gt;  2:1  [n =   345, L =    43 Mb] ■</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample Purity: 69% ~ Ploidy: 2.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> These segments are smoothed; before smoothing there were 54 segments.</span></span></code></pre></div>
-<p>Perform fragmentation analysis (no excess of short segments in this sample).</p>
+<p>Perform fragmentation analysis (no excess of short segments in this
+sample).</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span> <span class="op">=</span> <span class="fu">CNAqc</span><span class="fu">::</span><span class="fu"><a href="../reference/detect_arm_overfragmentation.html">detect_arm_overfragmentation</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> One-tailed Binomial test: 0 tests, alpha 0.01. Short segments: 0.2% of the reference arm.</span></span>
@@ -696,7 +709,8 @@
 <div class="section level2">
 <h2 id="alternative-solutions">Alternative solutions<a class="anchor" aria-label="anchor" href="#alternative-solutions"></a>
 </h2>
-<p>We show how to discover that a tetraploid solution is not correct.</p>
+<p>We show how to discover that a tetraploid solution is not
+correct.</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Tetraploid solution sequenza  (bad calls)</span></span>
 <span><span class="va">Sequenza_bad_calls</span> <span class="op">=</span> <span class="fu">load_SQ_output</span><span class="op">(</span><span class="va">Sequenza_URL</span>, sample <span class="op">=</span> <span class="st">'Set6_42'</span>, run <span class="op">=</span> <span class="st">'tetra'</span><span class="op">)</span></span>
@@ -783,7 +797,12 @@
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">4:2</span> ~ n = 169   (  8%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> 3 <span style="color: #BBBBBB; background-color: #BB0000;"> FAIL </span> 1</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">4:0</span> ~ n = 617   ( 29%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> 2 <span style="color: #BBBBBB; background-color: #BB0000;"> FAIL </span> 2</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">3:1</span> ~ n = 1331  ( 63%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> 0 <span style="color: #BBBBBB; background-color: #BB0000;"> FAIL </span> 3</span></span></code></pre></div>
-<p>For this sample these calls are flagged by CNAqc; note that most of the mutations are mapped to tetraploid segments, but one of the two peaks is completely off. Note the overall coloring is green because most of the mutations are underneath a peak that is passed by CNAqc; however the overall karyotype can be failed because it does not show the expected 2-peaks VAF spectrum for tetraploid SNVs.</p>
+<p>For this sample these calls are flagged by CNAqc; note that most of
+the mutations are mapped to tetraploid segments, but one of the two
+peaks is completely off. Note the overall coloring is green because most
+of the mutations are underneath a peak that is passed by CNAqc; however
+the overall karyotype can be failed because it does not show the
+expected 2-peaks VAF spectrum for tetraploid SNVs.</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Do not assemble plots, and remove karyotypes with no data associated</span></span>
 <span><span class="fu"><a href="../reference/plot_peaks_analysis.html">plot_peaks_analysis</a></span><span class="op">(</span><span class="va">x</span>, empty_plot <span class="op">=</span> <span class="cn">FALSE</span>, assembly_plot <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
@@ -863,7 +882,8 @@
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">2:0</span> ~ n = 1772  ( 10%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.066  <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.045 </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">1:0</span> ~ n = 898   (  5%) → <span style="color: #BBBBBB; background-color: #BB0000;"> FAIL </span> -0.094 </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">2:1</span> ~ n = 345   (  2%) → <span style="color: #BBBBBB; background-color: #BB0000;"> FAIL </span> -0.178  <span style="color: #BBBBBB; background-color: #BB0000;"> FAIL </span> -0.093</span></span></code></pre></div>
-<p>For this sample these calls are flagged by CNAqc because the purity is off by a <code>~10%</code> factor.</p>
+<p>For this sample these calls are flagged by CNAqc because the purity
+is off by a <code>~10%</code> factor.</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_peaks_analysis.html">plot_peaks_analysis</a></span><span class="op">(</span><span class="va">x</span>, empty_plot <span class="op">=</span> <span class="cn">FALSE</span>, assembly_plot <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [[1]]</span></span></code></pre></div>
@@ -877,7 +897,9 @@
 <pre><code><span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; [[4]]</span></span></code></pre>
 <p><img src="a7_example_MSeq_files/figure-html/unnamed-chunk-21-4.png" width="384"></p>
-<p>CNAqc can help increasing the caller purity in this case; the expected adjustment (score from VAF analysis) of 5% would correspond indeed to a purity increase of <code>10%</code>.</p>
+<p>CNAqc can help increasing the caller purity in this case; the
+expected adjustment (score from VAF analysis) of 5% would correspond
+indeed to a purity increase of <code>10%</code>.</p>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">Sequenza_bad_calls</span><span class="op">$</span><span class="va">purity</span> <span class="op">-</span> <span class="va">Sequenza_good_calls</span><span class="op">$</span><span class="va">purity</span><span class="op">)</span> <span class="co"># error in these calls</span></span>
 <span><span class="co">#&gt; [1] -0.09</span></span>
@@ -903,7 +925,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
       </footer>

@@ -84,6 +84,9 @@
     <li>
       <a href="../articles/a9_automatic.html">9. Automatic CNA calling</a>
     </li>
+    <li>
+      <a href="../articles/b10_MultiCNAqc.html">10. multiCNAqc</a>
+    </li>
   </ul>
 </li>
       </ul>
@@ -104,7 +107,7 @@
 
 
 
-      </header><script src="a2_Plots_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>2. Plotting data</h1>
@@ -133,9 +136,11 @@
 <p>All CNAqc plotting functions use:</p>
 <ul>
 <li>
-<a href="https://ggplot2.tidyverse.org/" class="external-link">ggplot</a> for panel plots;</li>
+<a href="https://ggplot2.tidyverse.org/" class="external-link">ggplot</a> for panel
+plots;</li>
 <li>
-<a href="https://rpkgs.datanovia.com/ggpubr/" class="external-link">ggpubr</a> and <a href="https://cran.r-project.org/web/packages/cowplot" class="external-link">cowplot</a> for multi-panel figures assembly.</li>
+<a href="https://rpkgs.datanovia.com/ggpubr/" class="external-link">ggpubr</a> and <a href="https://cran.r-project.org/web/packages/cowplot" class="external-link">cowplot</a> for
+multi-panel figures assembly.</li>
 </ul>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Dataset available with the package </span></span>
@@ -182,7 +187,12 @@
 <div class="section level3">
 <h3 id="segments-plots">Segments plots<a class="anchor" aria-label="anchor" href="#segments-plots"></a>
 </h3>
-<p>CNAqc can plot genome-wide segments showing major and minor allele counts as red and blue bars. Bottom circles annotate breakpoints; by default this plot has limited y-axis and breakpoints for segments outside the plot (e.g. very high amplifications) are in black. Areas in the genome that are mapped to the most prevalent karyotype are shadowed by default.</p>
+<p>CNAqc can plot genome-wide segments showing major and minor allele
+counts as red and blue bars. Bottom circles annotate breakpoints; by
+default this plot has limited y-axis and breakpoints for segments
+outside the plot (e.g. very high amplifications) are in black. Areas in
+the genome that are mapped to the most prevalent karyotype are shadowed
+by default.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Default plot</span></span>
 <span><span class="fu"><a href="../reference/plot_segments.html">plot_segments</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
@@ -190,7 +200,9 @@
 <span><span class="co">#&gt; Adding another scale for <span style="color: #00BB00;">fill</span>, which will replace the existing scale.</span></span></code></pre></div>
 <p><img src="a2_Plots_files/figure-html/unnamed-chunk-3-1.png" width="912"></p>
 <blockquote>
-<p>Note: the colour scheme in CNAqc is fixed for certain segments. The colour scheme is adopted also for other information, e.g., to report the segment where a certain driver is mapped.</p>
+<p>Note: the colour scheme in CNAqc is fixed for certain segments. The
+colour scheme is adopted also for other information, e.g., to report the
+segment where a certain driver is mapped.</p>
 </blockquote>
 <p>An alternative circular layout plot is available.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
@@ -230,7 +242,8 @@
 <div class="section level4">
 <h4 id="subclonal-cnas">Subclonal CNAs<a class="anchor" aria-label="anchor" href="#subclonal-cnas"></a>
 </h4>
-<p>We use the <a href="https://dcc.icgc.org/pcawg" class="external-link">PCAWG</a> object released with the package</p>
+<p>We use the <a href="https://dcc.icgc.org/pcawg" class="external-link">PCAWG</a> object
+released with the package</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">CNAqc</span><span class="fu">::</span><span class="va"><a href="../reference/example_PCAWG.html">example_PCAWG</a></span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; ── <span style="color: #000000; background-color: #BBBB00;">[ CNAqc ] </span> <span style="color: #00BB00;">293736</span> mutations in <span style="color: #00BB00;">667</span> segments (<span style="color: #00BB00;">654</span> clonal, <span style="color: #00BB00;">13</span> subclonal). Genom</span></span>
@@ -304,7 +317,8 @@
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #BBBBBB; background-color: #00BB00;"> PASS </span> CCF via <span style="font-weight: bold;">ENTROPY</span>.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #BBBBBB; background-color: #00BB00;"> PASS </span> CCF via <span style="font-weight: bold;">ENTROPY</span>.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #BBBBBB; background-color: #00BB00;"> PASS </span> CCF via <span style="font-weight: bold;">ENTROPY</span>.</span></span></code></pre></div>
-<p>Subclonal segments of each subclone have different colours compared to red/blue clonal segments.</p>
+<p>Subclonal segments of each subclone have different colours compared
+to red/blue clonal segments.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_segments.html">plot_segments</a></span><span class="op">(</span><span class="fu">CNAqc</span><span class="fu">::</span><span class="va"><a href="../reference/example_PCAWG.html">example_PCAWG</a></span><span class="op">)</span></span>
 <span><span class="co">#&gt; Scale for <span style="color: #00BB00;">fill</span> is already present.</span></span>
@@ -318,12 +332,15 @@
 <div class="section level3">
 <h3 id="segments-summaries">Segments summaries<a class="anchor" aria-label="anchor" href="#segments-summaries"></a>
 </h3>
-<p>Based on parameter <code>type</code>, function <code>plot_karyotypes</code> reports:</p>
+<p>Based on parameter <code>type</code>, function
+<code>plot_karyotypes</code> reports:</p>
 <ul>
 <li>
-<code>type = 'percentage'</code>, the proportion of genome covered by each segment (default);</li>
+<code>type = 'percentage'</code>, the proportion of genome covered
+by each segment (default);</li>
 <li>
-<code>type = 'number'</code>, the counts of segments per karyotype.</li>
+<code>type = 'number'</code>, the counts of segments per
+karyotype.</li>
 </ul>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">ggpubr</span><span class="fu">::</span><span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html" class="external-link">ggarrange</a></span><span class="op">(</span></span>
@@ -333,7 +350,8 @@
 <span>  legend <span class="op">=</span> <span class="st">'bottom'</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="a2_Plots_files/figure-html/unnamed-chunk-8-1.png" width="432"></p>
-<p>We can also plot the segments length distribution, which is used to detect fragmentation patterns.</p>
+<p>We can also plot the segments length distribution, which is used to
+detect fragmentation patterns.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_segment_size_distribution.html">plot_segment_size_distribution</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
 <p><img src="a2_Plots_files/figure-html/unnamed-chunk-9-1.png" width="432"></p>
@@ -345,7 +363,8 @@
 <div class="section level3">
 <h3 id="data-histograms">Data histograms<a class="anchor" aria-label="anchor" href="#data-histograms"></a>
 </h3>
-<p>Read counts information can be plot using <code>plot_data_histogram</code> as histograms.</p>
+<p>Read counts information can be plot using
+<code>plot_data_histogram</code> as histograms.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">ggpubr</span><span class="fu">::</span><span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html" class="external-link">ggarrange</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="../reference/plot_data_histogram.html">plot_data_histogram</a></span><span class="op">(</span><span class="va">x</span>, which <span class="op">=</span> <span class="st">'VAF'</span><span class="op">)</span>,</span>
@@ -358,13 +377,16 @@
 <span><span class="co">#&gt; (`geom_bar()`).</span></span></code></pre></div>
 <p><img src="a2_Plots_files/figure-html/unnamed-chunk-10-1.png" width="960"></p>
 <blockquote>
-<p>Note: if you compute CCFs you can use <code>plot_data_histogram(x, which = 'CCF')</code> as well.</p>
+<p>Note: if you compute CCFs you can use
+<code>plot_data_histogram(x, which = 'CCF')</code> as well.</p>
 </blockquote>
 </div>
 <div class="section level3">
 <h3 id="segment-specific-vafs">Segment-specific VAFs<a class="anchor" aria-label="anchor" href="#segment-specific-vafs"></a>
 </h3>
-<p>VAFs per segment, split by chromosome, can help identify miscalled segments (i.e., for segments with the same major/minor allele copies the VAF distributions should be similar)</p>
+<p>VAFs per segment, split by chromosome, can help identify miscalled
+segments (i.e., for segments with the same major/minor allele copies the
+VAF distributions should be similar)</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/inspect_segment.html">inspect_segment</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning: The `&lt;scale&gt;` argument of `guides()` cannot be `FALSE`. Use "none" instead as</span></span>
@@ -388,7 +410,16 @@
 <div class="section level3">
 <h3 id="genome-wide-mutation-data">Genome-wide mutation data<a class="anchor" aria-label="anchor" href="#genome-wide-mutation-data"></a>
 </h3>
-<p>Genome-wide plots that follow the layout of <code>plot_segments</code> are avaiable to view the genome-wide distributions of the number of mutations, their VAF and depth. VAF and depth-plotting functions (scatterplots) can subset the input data to speed up rendering and reduce the size of output files - by default <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>5000</mn><annotation encoding="application/x-tex">5000</annotation></semantics></math> points are shown Counts plot, instead, bin the genome locations by one megabase (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>10</mn><mn>6</mn></msup><annotation encoding="application/x-tex">10^6</annotation></semantics></math> bases).</p>
+<p>Genome-wide plots that follow the layout of
+<code>plot_segments</code> are avaiable to view the genome-wide
+distributions of the number of mutations, their VAF and depth. VAF and
+depth-plotting functions (scatterplots) can subset the input data to
+speed up rendering and reduce the size of output files - by default
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>5000</mn><annotation encoding="application/x-tex">5000</annotation></semantics></math>
+points are shown Counts plot, instead, bin the genome locations by one
+megabase
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>10</mn><mn>6</mn></msup><annotation encoding="application/x-tex">10^6</annotation></semantics></math>
+bases).</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># All genome, all data - counts of mutations per megabase</span></span>
 <span><span class="fu"><a href="../reference/plot_gw_counts.html">plot_gw_counts</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
@@ -437,7 +468,10 @@
 <div class="section level3">
 <h3 id="combined-plots">Combined plots<a class="anchor" aria-label="anchor" href="#combined-plots"></a>
 </h3>
-<p>The default S3 <code>plot</code> function layouts a panel with segments in bottom, and all other genome-wide plots on top. This function aligns plots on the vertical axis, and stretch their relative height to obtain a nice layout.</p>
+<p>The default S3 <code>plot</code> function layouts a panel with
+segments in bottom, and all other genome-wide plots on top. This
+function aligns plots on the vertical axis, and stretch their relative
+height to obtain a nice layout.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># The actual plot function</span></span>
 <span><span class="fu">cowplot</span><span class="fu">::</span><span class="fu"><a href="https://wilkelab.org/cowplot/reference/plot_grid.html" class="external-link">plot_grid</a></span><span class="op">(</span></span>
@@ -464,13 +498,15 @@
 <div class="section level2">
 <h2 id="cohort-plots">Cohort plots<a class="anchor" aria-label="anchor" href="#cohort-plots"></a>
 </h2>
-<p>One can have multiple CNAqc objects - i.e., work with a cohort of objects - when working with</p>
+<p>One can have multiple CNAqc objects - i.e., work with a cohort of
+objects - when working with</p>
 <ul>
 <li>a group of distinct patients;</li>
 <li>multiple samples from the same patient;</li>
 <li>multiple calls from the same sample;</li>
 </ul>
-<p>Assuming all input objects have the same reference, cohort cohort-level plots are possible.</p>
+<p>Assuming all input objects have the same reference, cohort
+cohort-level plots are possible.</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Object 1</span></span>
 <span><span class="va">x</span> <span class="op">=</span> <span class="fu">CNAqc</span><span class="fu">::</span><span class="fu"><a href="../reference/init.html">init</a></span><span class="op">(</span></span>
@@ -515,7 +551,13 @@
 <div class="section level3">
 <h3 id="copy-number-segments">Copy number segments<a class="anchor" aria-label="anchor" href="#copy-number-segments"></a>
 </h3>
-<p>The frequency of deletions and amplifications relative to diploid are shown by using a certain binning (step <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>δ</mi><annotation encoding="application/x-tex">\delta</annotation></semantics></math>) of the tumour genome. Here by deletion we define anything with 0 copies of the minor allele, and by amplification anything with <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>≥</mo><mn>3</mn></mrow><annotation encoding="application/x-tex">\geq 3</annotation></semantics></math> total copies (sum of the minor and major alleles).</p>
+<p>The frequency of deletions and amplifications relative to diploid are
+shown by using a certain binning (step
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>δ</mi><annotation encoding="application/x-tex">\delta</annotation></semantics></math>)
+of the tumour genome. Here by deletion we define anything with 0 copies
+of the minor allele, and by amplification anything with
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>≥</mo><mn>3</mn></mrow><annotation encoding="application/x-tex">\geq 3</annotation></semantics></math>
+total copies (sum of the minor and major alleles).</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Comparative CNA plot - default delta</span></span>
 <span><span class="fu"><a href="../reference/plot_multisample_CNA.html">plot_multisample_CNA</a></span><span class="op">(</span><span class="va">inputs</span><span class="op">)</span></span>
@@ -524,14 +566,17 @@
 <span><span class="co">#&gt; Warning: replacing previous import 'cli::num_ansi_colors' by</span></span>
 <span><span class="co">#&gt; 'crayon::num_ansi_colors' when loading 'easypar'</span></span></code></pre></div>
 <p><img src="a2_Plots_files/figure-html/unnamed-chunk-17-1.png" width="768"></p>
-<p>The binning <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>δ</mi><annotation encoding="application/x-tex">\delta</annotation></semantics></math> of the tumour genome can be changed to get larger/ shorter segments</p>
+<p>The binning
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>δ</mi><annotation encoding="application/x-tex">\delta</annotation></semantics></math>
+of the tumour genome can be changed to get larger/ shorter segments</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Comparative CNA plot - 10 Mb delta</span></span>
 <span><span class="fu"><a href="../reference/plot_multisample_CNA.html">plot_multisample_CNA</a></span><span class="op">(</span><span class="va">inputs</span>, delta <span class="op">=</span> <span class="fl">1e7</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ── Breaking input segments at <span style="color: #00BB00;">10000 Kb</span> resolution</span></span></code></pre></div>
 <p><img src="a2_Plots_files/figure-html/unnamed-chunk-18-1.png" width="768"></p>
-<p>A circular layout is also possible, with no binning or transformation of the data.</p>
+<p>A circular layout is also possible, with no binning or transformation
+of the data.</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Comparative CNA plot</span></span>
 <span><span class="fu"><a href="../reference/plot_multisample_CNA.html">plot_multisample_CNA</a></span><span class="op">(</span><span class="va">inputs</span>, layout <span class="op">=</span> <span class="st">'circular'</span><span class="op">)</span></span></code></pre></div>
@@ -555,7 +600,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
       </footer>

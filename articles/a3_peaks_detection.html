@@ -84,6 +84,9 @@
     <li>
       <a href="../articles/a9_automatic.html">9. Automatic CNA calling</a>
     </li>
+    <li>
+      <a href="../articles/b10_MultiCNAqc.html">10. multiCNAqc</a>
+    </li>
   </ul>
 </li>
       </ul>
@@ -104,7 +107,7 @@
 
 
 
-      </header><script src="a3_peaks_detection_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>3. QC analysis via peaks detection</h1>
@@ -199,8 +202,14 @@
 <div class="section level2">
 <h2 id="peak-analysis">Peak analysis<a class="anchor" aria-label="anchor" href="#peak-analysis"></a>
 </h2>
-<p>CNAqc uses peak-detection algorithms to QC data; all leverage the idea that VAFs peaks are known for mutations mapped to a segment with given minor/ major allele copies. CNAqc therefore computes expected peaks, and compares them to peaks detected from data. The theory works with minor modifications for both clonal and subclonal segments.</p>
-<p>Three distinct algorithms are available, each one working with a different type of copy number segment; all analyses are called by function <code>analyze_peaks</code>.</p>
+<p>CNAqc uses peak-detection algorithms to QC data; all leverage the
+idea that VAFs peaks are known for mutations mapped to a segment with
+given minor/ major allele copies. CNAqc therefore computes expected
+peaks, and compares them to peaks detected from data. The theory works
+with minor modifications for both clonal and subclonal segments.</p>
+<p>Three distinct algorithms are available, each one working with a
+different type of copy number segment; all analyses are called by
+function <code>analyze_peaks</code>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span> <span class="op">=</span> <span class="fu"><a href="../reference/analyze_peaks.html">analyze_peaks</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -345,60 +354,100 @@
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #BBBBBB; background-color: #00BB00;"> PASS </span> CCF via <span style="font-weight: bold;">ENTROPY</span>.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #BBBBBB; background-color: #00BB00;"> PASS </span> CCF via <span style="font-weight: bold;">ENTROPY</span>.</span></span></code></pre></div>
 <div class="section level3">
-<h3 id="simple-clonal-segments-10-20-11-21-22">Simple clonal segments (<code>1:0</code>, <code>2:0</code>, <code>1:1</code>, <code>2:1</code>, <code>2:2</code>)<a class="anchor" aria-label="anchor" href="#simple-clonal-segments-10-20-11-21-22"></a>
+<h3 id="simple-clonal-segments-10-20-11-21-22">Simple clonal segments (<code>1:0</code>, <code>2:0</code>,
+<code>1:1</code>, <code>2:1</code>, <code>2:2</code>)<a class="anchor" aria-label="anchor" href="#simple-clonal-segments-10-20-11-21-22"></a>
 </h3>
-<p>This QC measures an error for the precision of the current purity estimate, failing a whole sample or a subset of segments the value is over a desired maximum value. The error is determined as a linear combination from the distance between VAF peaks and their theoretical expectation. For this analysis, all mutations mapping across any segment with the same major/minor alleles are pooled.</p>
+<p>This QC measures an error for the precision of the current purity
+estimate, failing a whole sample or a subset of segments the value is
+over a desired maximum value. The error is determined as a linear
+combination from the distance between VAF peaks and their theoretical
+expectation. For this analysis, all mutations mapping across any segment
+with the same major/minor alleles are pooled.</p>
 <blockquote>
-<p>Note: the score can be used to select among alternative copy number solutions, i.e., favouring a solution with lower score.</p>
+<p>Note: the score can be used to select among alternative copy number
+solutions, i.e., favouring a solution with lower score.</p>
 </blockquote>
 <p>The peaks are determined via:</p>
 <ul>
-<li><p>peak-detection algorithms from the <a href="https://cran.rstudio.com/web/packages/peakPick/index.html" class="external-link">peakPick</a> package, applied to a Gaussian kernel density estimate (gKDE) smooth of the VAF distribution;</p></li>
-<li><p>the <a href="https://caravagnalab.github.io/BMix/" class="external-link">Bmix</a> Binomial mixture model.</p></li>
+<li><p>peak-detection algorithms from the <a href="https://cran.rstudio.com/web/packages/peakPick/index.html" class="external-link">peakPick</a>
+package, applied to a Gaussian kernel density estimate (gKDE) smooth of
+the VAF distribution;</p></li>
+<li><p>the <a href="https://caravagnalab.github.io/BMix/" class="external-link">Bmix</a>
+Binomial mixture model.</p></li>
 </ul>
-<p>Peak-matching (i.e., determining what data peak is closest to the expected peak) has two possible implementations:</p>
+<p>Peak-matching (i.e., determining what data peak is closest to the
+expected peak) has two possible implementations:</p>
 <ul>
 <li>one matcheing the closest peaks by euclidean distance;</li>
-<li>the other ranking peaks from higher to lowr VAFs, and prioritising the former.</li>
+<li>the other ranking peaks from higher to lowr VAFs, and prioritising
+the former.</li>
 </ul>
-<p>Results from peak-based QC are available via <code>plot_peaks_analysis</code>.</p>
+<p>Results from peak-based QC are available via
+<code>plot_peaks_analysis</code>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_peaks_analysis.html">plot_peaks_analysis</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
 <p><img src="a3_peaks_detection_files/figure-html/unnamed-chunk-3-1.png" width="1056"></p>
-<p>Gray panels are placeholders for segments among <code>1:0</code>, <code>2:0</code>, <code>1:1</code>, <code>2:1</code>, <code>2:2</code> that are not available for the sample. Each vertical dashed line is an expected peak, the bandwidth around being the tolerance we use to match peaks (based on <code>purity_error</code>, adjusted for segment ploidy and tumour purity). Each dot is a peak detected from data, with a bandwidth of tolerance (fixed) around it.</p>
+<p>Gray panels are placeholders for segments among <code>1:0</code>,
+<code>2:0</code>, <code>1:1</code>, <code>2:1</code>, <code>2:2</code>
+that are not available for the sample. Each vertical dashed line is an
+expected peak, the bandwidth around being the tolerance we use to match
+peaks (based on <code>purity_error</code>, adjusted for segment ploidy
+and tumour purity). Each dot is a peak detected from data, with a
+bandwidth of tolerance (fixed) around it.</p>
 <p>Note that:</p>
 <ul>
 <li>A green peak is matched, a red one is mismatched;</li>
 <li>The overall segment QC is given by the colour of the facet;</li>
-<li>The overall sample QC is given by the box surrounding the whole figure assembly.</li>
+<li>The overall sample QC is given by the box surrounding the whole
+figure assembly.</li>
 </ul>
-<p>Options of function <code>plot_peaks_analysis</code> allow to separate the plots.</p>
+<p>Options of function <code>plot_peaks_analysis</code> allow to
+separate the plots.</p>
 <blockquote>
-<p>Note: a chromosome-level analysis is possible by using function <code>split_by_chromosome</code> to separate a CNAqc object into chromosomes, and then running a standard analysis on each chromosome.</p>
+<p>Note: a chromosome-level analysis is possible by using function
+<code>split_by_chromosome</code> to separate a CNAqc object into
+chromosomes, and then running a standard analysis on each
+chromosome.</p>
 </blockquote>
 </div>
 <div class="section level3">
 <h3 id="complex-clonal-segments">Complex clonal segments<a class="anchor" aria-label="anchor" href="#complex-clonal-segments"></a>
 </h3>
-<p>The QC procedure for these “general” segments uses only the gKDE and, as for simple segments, pools all mutations mapping across any segment with the same major/minor alleles.</p>
+<p>The QC procedure for these “general” segments uses only the gKDE and,
+as for simple segments, pools all mutations mapping across any segment
+with the same major/minor alleles.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_peaks_analysis.html">plot_peaks_analysis</a></span><span class="op">(</span><span class="va">x</span>, what <span class="op">=</span> <span class="st">'general'</span><span class="op">)</span></span></code></pre></div>
 <p><img src="a3_peaks_detection_files/figure-html/unnamed-chunk-4-1.png" width="768"></p>
-<p>The plot is similar to the one for simple segments, but no segment-level or sample-level scores are produced. A complex segment with many matched peaks is likely to be correct.</p>
+<p>The plot is similar to the one for simple segments, but no
+segment-level or sample-level scores are produced. A complex segment
+with many matched peaks is likely to be correct.</p>
 </div>
 <div class="section level3">
 <h3 id="subclonal-simple-segments">Subclonal simple segments<a class="anchor" aria-label="anchor" href="#subclonal-simple-segments"></a>
 </h3>
-<p>The QC procedure for these segments uses the gKDE and considers 2 subclones with distinct mixing proportions. Differently from clonal CNAs, however, here the analysis is carried out at the level of each segment, i.e., without pooling segments with the same karyotypes. This makes it possible to use subclonal calls fromcallers that report segment-specific CCF values, e.g., <a href="https://github.com/Wedge-lab/battenberg" class="external-link">Battenberg</a>.</p>
+<p>The QC procedure for these segments uses the gKDE and considers 2
+subclones with distinct mixing proportions. Differently from clonal
+CNAs, however, here the analysis is carried out at the level of each
+segment, i.e., without pooling segments with the same karyotypes. This
+makes it possible to use subclonal calls fromcallers that report
+segment-specific CCF values, e.g., <a href="https://github.com/Wedge-lab/battenberg" class="external-link">Battenberg</a>.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_peaks_analysis.html">plot_peaks_analysis</a></span><span class="op">(</span><span class="va">x</span>, what <span class="op">=</span> <span class="st">'subclonal'</span><span class="op">)</span></span></code></pre></div>
-<p><img src="a3_peaks_detection_files/figure-html/unnamed-chunk-5-1.png" width="768"> The visual layout of this plot is the same of complex clonal CNAs; not that the facet reports the distinct evolutionary models that have been generated to QC subclonal CNAs. The model in CNAqc ranks the proposed evolutionary alternatives (linear versus branching) based on the number of matched peaks. A subclonal segment with many matched peaks is likely to be correct.</p>
+<p><img src="a3_peaks_detection_files/figure-html/unnamed-chunk-5-1.png" width="768">
+The visual layout of this plot is the same of complex clonal CNAs; not
+that the facet reports the distinct evolutionary models that have been
+generated to QC subclonal CNAs. The model in CNAqc ranks the proposed
+evolutionary alternatives (linear versus branching) based on the number
+of matched peaks. A subclonal segment with many matched peaks is likely
+to be correct.</p>
 </div>
 </div>
 <div class="section level2">
 <h2 id="summary-results">Summary results<a class="anchor" aria-label="anchor" href="#summary-results"></a>
 </h2>
-<p>For every type of segment analyzed tables with summary peaks are available in <code>x$peaks_analysis</code>.</p>
+<p>For every type of segment analyzed tables with summary peaks are
+available in <code>x$peaks_analysis</code>.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Simple clonal CNAs - each segment with `discarded = FALSE` has been analysed</span></span>
 <span><span class="va">x</span><span class="op">$</span><span class="va">peaks_analysis</span><span class="op">$</span><span class="va">matches</span></span>
@@ -454,18 +503,25 @@
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 9 more variables: peak &lt;dbl&gt;, genotype_initial &lt;chr&gt;, model &lt;chr&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   model_id &lt;chr&gt;, role &lt;chr&gt;, segment_id &lt;chr&gt;, matched &lt;lgl&gt;, size &lt;chr&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   clones &lt;chr&gt;</span></span></span></code></pre></div>
-<p>The most helpful table is usually the one for simple clonal CNAs <code>x$peaks_analysis$matches</code>, which reports several information:</p>
+<p>The most helpful table is usually the one for simple clonal CNAs
+<code>x$peaks_analysis$matches</code>, which reports several
+information:</p>
 <ul>
 <li>
-<code>mutation_multiplicity</code>, the number of copies of the mutation (i.e., a phasing information);</li>
+<code>mutation_multiplicity</code>, the number of copies of the
+mutation (i.e., a phasing information);</li>
 <li>
-<code>peak</code>, <code>x</code>, <code>y</code> the expected peak, and the matched peak (<code>x</code> and <code>y</code>);</li>
+<code>peak</code>, <code>x</code>, <code>y</code> the expected peak,
+and the matched peak (<code>x</code> and <code>y</code>);</li>
 <li>
-<code>offset</code>, <code>weight</code> and <code>score</code>, the factors of the final <code>score</code>;</li>
+<code>offset</code>, <code>weight</code> and <code>score</code>, the
+factors of the final <code>score</code>;</li>
 <li>
-<code>QC</code>, a <code>"PASS"/"FAIL"</code> status for the peak.</li>
+<code>QC</code>, a <code>"PASS"/"FAIL"</code> status for the
+peak.</li>
 </ul>
-<p>The overall sample-level QC result - <code>"PASS"/"FAIL"</code> - is available in</p>
+<p>The overall sample-level QC result - <code>"PASS"/"FAIL"</code> - is
+available in</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span><span class="op">$</span><span class="va">peaks_analysis</span><span class="op">$</span><span class="va">QC</span></span>
 <span><span class="co">#&gt; [1] "PASS"</span></span></code></pre></div>
@@ -491,7 +547,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
       </footer>

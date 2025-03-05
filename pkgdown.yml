@@ -1,5 +1,5 @@
-pandoc: 2.7.3
-pkgdown: 2.1.0
+pandoc: 3.1.11
+pkgdown: 2.1.1
 pkgdown_sha: ~
 articles:
   a1_Introduction: a1_Introduction.html
@@ -11,8 +11,9 @@ articles:
   a7_example_MSeq: a7_example_MSeq.html
   a8_annotate_variants: a8_annotate_variants.html
   a9_automatic: a9_automatic.html
+  b10_MultiCNAqc: b10_MultiCNAqc.html
   CNAqc: CNAqc.html
-last_built: 2024-07-18T08:59Z
+last_built: 2025-03-05T14:11Z
 urls:
   reference: caravagnalab.github.io/CNAqc/reference
   article: caravagnalab.github.io/CNAqc/articles

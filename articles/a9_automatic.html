@@ -84,6 +84,9 @@
     <li>
       <a href="../articles/a9_automatic.html">9. Automatic CNA calling</a>
     </li>
+    <li>
+      <a href="../articles/b10_MultiCNAqc.html">10. multiCNAqc</a>
+    </li>
   </ul>
 </li>
       </ul>
@@ -104,7 +107,7 @@
 
 
 
-      </header><script src="a9_automatic_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>9. Automatic CNA calling</h1>
@@ -120,26 +123,44 @@
 <div class="section level2">
 <h2 id="iterative-cna-calling-and-qc">Iterative CNA calling and QC<a class="anchor" aria-label="anchor" href="#iterative-cna-calling-and-qc"></a>
 </h2>
-<p>We are happy to integrate any copy number caller with CNAqc; do <a href="gcaravagn@units.it">get in touch</a> to discuss how to integrate your caller.</p>
+<p>We are happy to integrate any copy number caller with CNAqc; do <a href="gcaravagn@units.it">get in touch</a> to discuss how to integrate
+your caller.</p>
 <div class="section level3">
 <h3 id="sequenza-tool">Sequenza tool<a class="anchor" aria-label="anchor" href="#sequenza-tool"></a>
 </h3>
 <p>CNAqc provides automatic integration with <a href="https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html" class="external-link">Sequenza</a></p>
 <ul>
-<li>Favero F, Joshi T, Marquard AM, Birkbak NJ, Krzystanek M, Li Q, Szallasi Z, Eklund AC “Sequenza: allele-specific copy number and mutation profiles from tumor sequencing data.” Annals of Oncology 2015 Jan;26(1):64-70. <a href="https://doi.org/10.1093/annonc/mdu479" class="external-link uri">https://doi.org/10.1093/annonc/mdu479</a>
+<li>Favero F, Joshi T, Marquard AM, Birkbak NJ, Krzystanek M, Li Q,
+Szallasi Z, Eklund AC “Sequenza: allele-specific copy number and
+mutation profiles from tumor sequencing data.” Annals of Oncology 2015
+Jan;26(1):64-70. <a href="https://doi.org/10.1093/annonc/mdu479" class="external-link uri">https://doi.org/10.1093/annonc/mdu479</a>
 </li>
 </ul>
-<p>Sequenza calls <em>clonal</em> CNAs in a multi-steps Python/R pipeline:</p>
+<p>Sequenza calls <em>clonal</em> CNAs in a multi-steps Python/R
+pipeline:</p>
 <ol style="list-style-type: decimal">
 <li>process a FASTA file to produce a GC Wiggle track file;</li>
-<li>process tumour and normal BAMs and Wiggle files to produce a <code>seqz</code> file;</li>
+<li>process tumour and normal BAMs and Wiggle files to produce a
+<code>seqz</code> file;</li>
 <li>bins the original <code>seqz</code> file;</li>
-<li>process the binned <code>seqz</code> for normalisation and segmentation;</li>
-<li>perform a grid-search approach to estimate <em>cellularity</em> and <em>ploidy</em>;</li>
+<li>process the binned <code>seqz</code> for normalisation and
+segmentation;</li>
+<li>perform a grid-search approach to estimate <em>cellularity</em> and
+<em>ploidy</em>;</li>
 </ol>
-<p>One advantage of Sequenza is that results are computed for both the best and possible alternative solutions.</p>
-<p>Here cellularity is the Sequenza terminology for tumour purity; steps 1-3 are implemented in Python, while steps 4-6 in R. In our experience we have often found the steps 1-3 to be run just once (often with default parameter values), while the last steps are iterated to optimise CNA calling.</p>
-<p>We have implemented a calling pipeline (function <code>Sequenza_CNAqc</code>) that revolves around steps 4-6, using CNAqc to drive the fitting steps of Sequenza - especially step 5 - to determine better CNA segments and purity/ploidy values. To run this pipeline steps 1-3 need to be executed beforehand; according to the <a href="https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html" class="external-link">Sequenza</a> documentation the default execution is as follows.</p>
+<p>One advantage of Sequenza is that results are computed for both the
+best and possible alternative solutions.</p>
+<p>Here cellularity is the Sequenza terminology for tumour purity; steps
+1-3 are implemented in Python, while steps 4-6 in R. In our experience
+we have often found the steps 1-3 to be run just once (often with
+default parameter values), while the last steps are iterated to optimise
+CNA calling.</p>
+<p>We have implemented a calling pipeline (function
+<code>Sequenza_CNAqc</code>) that revolves around steps 4-6, using CNAqc
+to drive the fitting steps of Sequenza - especially step 5 - to
+determine better CNA segments and purity/ploidy values. To run this
+pipeline steps 1-3 need to be executed beforehand; according to the <a href="https://cran.r-project.org/web/packages/sequenza/vignettes/sequenza.html" class="external-link">Sequenza</a>
+documentation the default execution is as follows.</p>
 <pre><code># Process a FASTA file to produce a GC Wiggle track file:
 sequenza−utils gc_wiggle −w 50 --fasta hg19.fa -o hg19.gc50Base.wig.gz
 
@@ -153,29 +174,68 @@ sequenza−utils seqz_binning --seqz out.seqz.gz -w 50 -o out small.seqz.gz</cod
 <div class="section level3">
 <h3 id="pipeline">Pipeline<a class="anchor" aria-label="anchor" href="#pipeline"></a>
 </h3>
-<div class="figure">
-<img src="sqz_pipe.png" title="Sequenza - CNAqc pipeline" alt=""><p class="caption"><em>Sequenza - CNAqc pipeline flowchart</em></p>
+<div class="float">
+<img src="sqz_pipe.png" title="Sequenza - CNAqc pipeline" alt="Sequenza - CNAqc pipeline flowchart"><div class="figcaption"><em>Sequenza - CNAqc pipeline
+flowchart</em></div>
 </div>
-<p>The pipeline starts from input ranges for cellularity and ploidy values, as canonically required by Sequenza.</p>
-<p>Parameters for segmentation are also imputed following the standard Sequenza convention, and step 4 is performed once before starting an iterative procedure that uses a caching system to avoid useless repetitions of computations. Default Sequenza parameter values we release with CNAqc have been delected to work best with whole-genome sequencing data, a type of data we often use to run this pipeline.</p>
-<p>The pipeline fits (Sequenza steps 5-6) cellularity and ploidy values, and dumps results, which are quality controlled by peak detection via CNAqc. The analysis with CNAqc can be carried out using either:</p>
+<p>The pipeline starts from input ranges for cellularity and ploidy
+values, as canonically required by Sequenza.</p>
+<p>Parameters for segmentation are also imputed following the standard
+Sequenza convention, and step 4 is performed once before starting an
+iterative procedure that uses a caching system to avoid useless
+repetitions of computations. Default Sequenza parameter values we
+release with CNAqc have been delected to work best with whole-genome
+sequencing data, a type of data we often use to run this pipeline.</p>
+<p>The pipeline fits (Sequenza steps 5-6) cellularity and ploidy values,
+and dumps results, which are quality controlled by peak detection via
+CNAqc. The analysis with CNAqc can be carried out using either:</p>
 <ul>
 <li>somatic mutations called by Sequenza,</li>
-<li>or an external set of input calls. We often prefer this option, if possibile, and take, e.g., <a href="https://gatk.broadinstitute.org/hc/en-us/articles/360037593851-Mutect2" class="external-link">Mutect2</a> calls.</li>
+<li>or an external set of input calls. We often prefer this option, if
+possibile, and take, e.g., <a href="https://gatk.broadinstitute.org/hc/en-us/articles/360037593851-Mutect2" class="external-link">Mutect2</a>
+calls.</li>
 </ul>
-<p>Besides the best solution by Sequenza, at every run up to two alternative solutions are generated:</p>
+<p>Besides the best solution by Sequenza, at every run up to two
+alternative solutions are generated:</p>
 <ol style="list-style-type: decimal">
-<li>One optional by Sequenza, which might propose new exact values for cellularity and ploidy that differ from the current best ones;</li>
-<li>One by CNAqc, adjusting the current cellularity of the best Sequenza solution, leaving the ploidy unchanged.</li>
+<li>One optional by Sequenza, which might propose new exact values for
+cellularity and ploidy that differ from the current best ones;</li>
+<li>One by CNAqc, adjusting the current cellularity of the best Sequenza
+solution, leaving the ploidy unchanged.</li>
 </ol>
-<p>These alternative solutions are queued in a list <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>L</mi><annotation encoding="application/x-tex">L</annotation></semantics></math> of cellularity and ploidy values that should be tested, based on their presence in a cache (the cache avoids to re-test solutions already visited). Until the list <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>L</mi><annotation encoding="application/x-tex">L</annotation></semantics></math> is empty, the point values of cellularity and ploidy are tested repeating steps 5-6 with small ranges built around the proposed values. For example, if a solution with cellularity <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>34</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">34\%</annotation></semantics></math> and ploidy <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>2.5</mn><annotation encoding="application/x-tex">2.5</annotation></semantics></math> is to be tested, CNAqc runs Sequenza by using ranges <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mn>34</mn><mi>%</mi><mo>−</mo><mi>d</mi><mo>;</mo><mn>34</mn><mi>%</mi><mo>+</mo><mi>d</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[34\%-d;34\%+d]</annotation></semantics></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mn>2.5</mn><mo>−</mo><mi>c</mi><mo>;</mo><mn>2.5</mn><mo>+</mo><mi>c</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[2.5-c;2.5+c]</annotation></semantics></math>, where <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>c</mi><annotation encoding="application/x-tex">c</annotation></semantics></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>d</mi><annotation encoding="application/x-tex">d</annotation></semantics></math> are parameters of the pipeline.</p>
+<p>These alternative solutions are queued in a list
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>L</mi><annotation encoding="application/x-tex">L</annotation></semantics></math>
+of cellularity and ploidy values that should be tested, based on their
+presence in a cache (the cache avoids to re-test solutions already
+visited). Until the list
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>L</mi><annotation encoding="application/x-tex">L</annotation></semantics></math>
+is empty, the point values of cellularity and ploidy are tested
+repeating steps 5-6 with small ranges built around the proposed values.
+For example, if a solution with cellularity
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>34</mn><mi>%</mi></mrow><annotation encoding="application/x-tex">34\%</annotation></semantics></math>
+and ploidy
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>2.5</mn><annotation encoding="application/x-tex">2.5</annotation></semantics></math>
+is to be tested, CNAqc runs Sequenza by using ranges
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">[</mo><mn>34</mn><mi>%</mi><mo>−</mo><mi>d</mi><mo>;</mo><mn>34</mn><mi>%</mi><mo>+</mo><mi>d</mi><mo stretchy="true" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[34\%-d;34\%+d]</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">[</mo><mn>2.5</mn><mo>−</mo><mi>c</mi><mo>;</mo><mn>2.5</mn><mo>+</mo><mi>c</mi><mo stretchy="true" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[2.5-c;2.5+c]</annotation></semantics></math>,
+where
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>c</mi><annotation encoding="application/x-tex">c</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>d</mi><annotation encoding="application/x-tex">d</annotation></semantics></math>
+are parameters of the pipeline.</p>
 <p>Therefore the pipeline follows two paths to optimise the calls:</p>
 <ul>
 <li>the gradient of correction suggested by CNAqc,</li>
 <li>Sequenza’s alternative solutions.</li>
 </ul>
-<p>Note that when CNAqc flags as PASS a solution that is visited for the first time, any further correction will not be evaluated since the solution will be found in the cache system of the pipeline.</p>
-<p>At the end of the runs all the solutions identified are scored by CNAqc and reported with a PASS/FAIL status associated; the pipeline always indicates the best among the tested ones, based on the assigned quality score.</p>
+<p>Note that when CNAqc flags as PASS a solution that is visited for the
+first time, any further correction will not be evaluated since the
+solution will be found in the cache system of the pipeline.</p>
+<p>At the end of the runs all the solutions identified are scored by
+CNAqc and reported with a PASS/FAIL status associated; the pipeline
+always indicates the best among the tested ones, based on the assigned
+quality score.</p>
 </div>
 </div>
   </div>
@@ -195,7 +255,7 @@ sequenza−utils seqz_binning --seqz out.seqz.gz -w 50 -o out small.seqz.gz</cod
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
       </footer>

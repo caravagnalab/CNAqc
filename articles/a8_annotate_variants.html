@@ -84,6 +84,9 @@
     <li>
       <a href="../articles/a9_automatic.html">9. Automatic CNA calling</a>
     </li>
+    <li>
+      <a href="../articles/b10_MultiCNAqc.html">10. multiCNAqc</a>
+    </li>
   </ul>
 </li>
       </ul>
@@ -104,7 +107,7 @@
 
 
 
-      </header><script src="a8_annotate_variants_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>8. Drivers annotation</h1>
@@ -136,12 +139,17 @@
 <span><span class="co">#if you use RStudio you will probably have to run this line</span></span>
 <span><span class="co"># options(connectionObserver = NULL)</span></span></code></pre></div>
 <blockquote>
-<p>Note: variant annotation should be carried out with dedicated tools. CNAqc functions should only be used to get a preliminary idea of the most important mutations annotated in a sample.</p>
+<p>Note: variant annotation should be carried out with dedicated tools.
+CNAqc functions should only be used to get a preliminary idea of the
+most important mutations annotated in a sample.</p>
 </blockquote>
 <div class="section level2">
 <h2 id="annotating-driver-mutations-with-variantannotation-and-intogen">Annotating driver mutations with VariantAnnotation and Intogen<a class="anchor" aria-label="anchor" href="#annotating-driver-mutations-with-variantannotation-and-intogen"></a>
 </h2>
-<p>CNAqc can annotate input mutations and flag potential <em>driver mutations</em>. Using the <a href="https://bioconductor.org/packages/release/bioc/html/VariantAnnotation.html" class="external-link">VariantAnnotation</a> package and the <a href="https://www.intogen.org/search" class="external-link">intOGen</a> database, CNAqc performs the following steps:</p>
+<p>CNAqc can annotate input mutations and flag potential <em>driver
+mutations</em>. Using the <a href="https://bioconductor.org/packages/release/bioc/html/VariantAnnotation.html" class="external-link">VariantAnnotation</a>
+package and the <a href="https://www.intogen.org/search" class="external-link">intOGen</a>
+database, CNAqc performs the following steps:</p>
 <ol style="list-style-type: decimal">
 <li>Annotates the position of each mutation, with <a href="https://bioconductor.org/packages/release/bioc/html/VariantAnnotation.html" class="external-link">VariantAnnotation</a>:
 <ul>
@@ -163,7 +171,8 @@
 <code>promoter</code>.</li>
 </ul>
 </li>
-<li>Annotates the consequence on the protein for coding mutations, with change in the amino acid if known, with <a href="https://bioconductor.org/packages/release/bioc/html/VariantAnnotation.html" class="external-link">VariantAnnotation</a>:
+<li>Annotates the consequence on the protein for coding mutations, with
+change in the amino acid if known, with <a href="https://bioconductor.org/packages/release/bioc/html/VariantAnnotation.html" class="external-link">VariantAnnotation</a>:
 <ul>
 <li>
 <code>nonsynonymous</code>,</li>
@@ -175,7 +184,8 @@
 <code>stop</code>.</li>
 </ul>
 </li>
-<li>Compares non-synonymous mutations to known driver genes from the <a href="https://www.intogen.org/search" class="external-link">intOGen</a> database or a custom list, and flags drivers.</li>
+<li>Compares non-synonymous mutations to known driver genes from the <a href="https://www.intogen.org/search" class="external-link">intOGen</a> database or a custom
+list, and flags drivers.</li>
 </ol>
 <p>This functionality works with a CNAqc object.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
@@ -217,7 +227,10 @@
 <div class="section level3">
 <h3 id="required-packages">Required packages<a class="anchor" aria-label="anchor" href="#required-packages"></a>
 </h3>
-<p>CNAqc uses databases from <a href="https://www.bioconductor.org/" class="external-link">Bioconductor</a> to annotate the variants; installation of these databases might take a bit of time because ~1GB of data have to be downloaded. This will happen only the first time the annotation is run.</p>
+<p>CNAqc uses databases from <a href="https://www.bioconductor.org/" class="external-link">Bioconductor</a> to annotate the
+variants; installation of these databases might take a bit of time
+because ~1GB of data have to be downloaded. This will happen only the
+first time the annotation is run.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Reference against which we mapped the reads</span></span>
 <span><span class="va">reference_genome</span> <span class="op">&lt;-</span> <span class="va">example_dataset_CNAqc</span><span class="op">$</span><span class="va">reference</span></span>
@@ -227,31 +240,24 @@
 <span>    <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, repos<span class="op">=</span><span class="st">"http://cran.us.r-project.org"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; The downloaded binary packages are in</span></span>
-<span><span class="co">#&gt;  /var/folders/6g/_ypptv3n2fs80_zc0xz8p1d40000gn/T//RtmpOTnPW7/downloaded_packages</span></span>
+<span><span class="co">#&gt;  /var/folders/2s/h6hvv9ps03xgz_krkkstvq_r0000gn/T//Rtmpa765qI/downloaded_packages</span></span>
 <span></span>
 <span><span class="co"># We have to install the corresponding txdb package for transcript annotations</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"TxDb.Hsapiens.UCSC."</span>,<span class="va">reference_genome</span>, <span class="st">".knownGene"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://bioconductor.github.io/BiocManager/reference/install.html" class="external-link">install</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; The downloaded binary packages are in</span></span>
-<span><span class="co">#&gt;  /var/folders/6g/_ypptv3n2fs80_zc0xz8p1d40000gn/T//RtmpOTnPW7/downloaded_packages</span></span>
 <span></span>
 <span><span class="co"># We have to install also the BS database for the sequences (it may take some time)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"BSgenome.Hsapiens.UCSC."</span>,<span class="va">reference_genome</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://bioconductor.github.io/BiocManager/reference/install.html" class="external-link">install</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Then these two packages provide useful utilities to deal with biological databases</span></span>
 <span><span class="st">"Organism.dplyr"</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://bioconductor.github.io/BiocManager/reference/install.html" class="external-link">install</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; The downloaded binary packages are in</span></span>
-<span><span class="co">#&gt;  /var/folders/6g/_ypptv3n2fs80_zc0xz8p1d40000gn/T//RtmpOTnPW7/downloaded_packages</span></span>
-<span><span class="st">"org.Hs.eg.db"</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://bioconductor.github.io/BiocManager/reference/install.html" class="external-link">install</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; The downloaded binary packages are in</span></span>
-<span><span class="co">#&gt;  /var/folders/6g/_ypptv3n2fs80_zc0xz8p1d40000gn/T//RtmpOTnPW7/downloaded_packages</span></span></code></pre></div>
+<span><span class="st">"org.Hs.eg.db"</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://bioconductor.github.io/BiocManager/reference/install.html" class="external-link">install</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="drivers-known-to-cnaqc">Drivers known to CNAqc<a class="anchor" aria-label="anchor" href="#drivers-known-to-cnaqc"></a>
 </h3>
-<p>CNAqc has pre-loaded a list of 568 driver genes for 66 cancer types, compiled from <a href="https://www.intogen.org/download" class="external-link">intOGen</a> release date 2020.02.01.</p>
+<p>CNAqc has pre-loaded a list of 568 driver genes for 66 cancer types,
+compiled from <a href="https://www.intogen.org/download" class="external-link">intOGen</a>
+release date 2020.02.01.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># The available list:</span></span>
 <span><span class="co"># - gene id</span></span>
@@ -461,7 +467,8 @@
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> ACSL3 AML    Acute myeloid leukemia</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> ACVR1 HGG    High-grade Glioma     </span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 2,070 more rows</span></span></span></code></pre></div>
-<p>We plot the list of genes that appear in at least 20 tumour types.</p>
+<p>We plot the list of genes that appear in at least 20 tumour
+types.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">RColorBrewer</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
@@ -495,7 +502,6 @@
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> chr17   7<span style="text-decoration: underline;">577</span>106   7.58<span style="color: #949494;">e</span>6 G     C        78    84 0.929 PASS   exonic          </span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 7 more variables: GENE &lt;chr&gt;, is_driver &lt;lgl&gt;, driver_label &lt;chr&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   type &lt;chr&gt;, karyotype &lt;chr&gt;, segment_id &lt;chr&gt;, cna &lt;chr&gt;</span></span></span>
-<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;       chr      from        to consequence refAA varAA</span></span>
 <span><span class="co">#&gt; 1    chr1  19181096  19181097  frameshift            </span></span>
 <span><span class="co">#&gt; 2    chr1  22174512  22174513  frameshift            </span></span>
@@ -605,8 +611,7 @@
 <span><span class="co">#&gt; 252  chrX 100668298 100668299  frameshift            </span></span>
 <span><span class="co">#&gt; 255  chrX 115304424 115304425  frameshift            </span></span>
 <span><span class="co">#&gt; 257  chrX 124454501 124454502  frameshift            </span></span>
-<span><span class="co">#&gt; 258  chrX 129349850 129349851  frameshift            </span></span>
-<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; 258  chrX 129349850 129349851  frameshift</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 5 × 10</span></span></span>
 <span><span class="co">#&gt;   chr      from     to gene_symbol location consequence refAA varAA driver_label</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       </span></span>
@@ -628,16 +633,19 @@
 <span><span class="co">#&gt;   16:2  [n =    4, L =    0 Mb] </span></span>
 <span><span class="co">#&gt;   25:2  [n =    2, L =    1 Mb] </span></span>
 <span><span class="co">#&gt;    3:1  [n =    2, L =    1 Mb] </span></span>
-<span><span class="co">#&gt;  106:1  [n =    1, L =    0 Mb] </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;  106:1  [n =    1, L =    0 Mb]</span></span>
 <span><span class="co">#&gt;          chr      from        to ref alt  DP NV       VAF driver_label is_driver</span></span>
 <span><span class="co">#&gt;         chr1  22174512  22174513   G   A 168 94 0.5595238     HSPG2_-&gt;      TRUE</span></span>
 <span><span class="co">#&gt;         chr3 168838908 168838909   C   T 192 24 0.1250000     MECOM_-&gt;      TRUE</span></span>
 <span><span class="co">#&gt;        chr16  67646006  67646007   C   T 120 54 0.4500000      CTCF_-&gt;      TRUE</span></span>
 <span><span class="co">#&gt;        chr17   7577106   7577107   G   C  84 78 0.9285714      TP53_-&gt;      TRUE</span></span>
 <span><span class="co">#&gt;        chr19  50919900  50919901   C   T 145 61 0.4206897     POLD1_-&gt;      TRUE</span></span></code></pre></div>
-<p>Note that there can be multiple locations and consequences for a single variant. This happens as we try to annotate the mutations in a transcript-agnostic manner, consequently we report all possible effects and locations for any transcript (separated by <code>:</code>). Comparison between known and newly-annotated drivers seems consistent.</p>
+<p>Note that there can be multiple locations and consequences for a
+single variant. This happens as we try to annotate the mutations in a
+transcript-agnostic manner, consequently we report all possible effects
+and locations for any transcript (separated by <code>:</code>).
+Comparison between known and newly-annotated drivers seems
+consistent.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Reference driver mutations</span></span>
 <span><span class="va">x</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -690,7 +698,9 @@
 <div class="section level3">
 <h3 id="type-specific-drivers-annotation">Type-specific drivers annotation<a class="anchor" aria-label="anchor" href="#type-specific-drivers-annotation"></a>
 </h3>
-<p>One can restrict the list of potential genes to use for drivers detection. To this extent, it is convenient to use the available database and the information regarding the input cancer type.</p>
+<p>One can restrict the list of potential genes to use for drivers
+detection. To this extent, it is convenient to use the available
+database and the information regarding the input cancer type.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># We pretend to work with OV, ovarian cancer</span></span>
 <span><span class="va">OV_drivers</span> <span class="op">=</span> <span class="va">intogen_drivers</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">tumour</span> <span class="op">==</span> <span class="st">'OV'</span><span class="op">)</span></span>
@@ -1006,7 +1016,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
       </footer>

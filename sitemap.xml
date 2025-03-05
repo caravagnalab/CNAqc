@@ -12,6 +12,7 @@
 <url><loc>caravagnalab.github.io/CNAqc/articles/a7_example_MSeq.html</loc></url>
 <url><loc>caravagnalab.github.io/CNAqc/articles/a8_annotate_variants.html</loc></url>
 <url><loc>caravagnalab.github.io/CNAqc/articles/a9_automatic.html</loc></url>
+<url><loc>caravagnalab.github.io/CNAqc/articles/b10_MultiCNAqc.html</loc></url>
 <url><loc>caravagnalab.github.io/CNAqc/articles/index.html</loc></url>
 <url><loc>caravagnalab.github.io/CNAqc/authors.html</loc></url>
 <url><loc>caravagnalab.github.io/CNAqc/index.html</loc></url>
@@ -31,6 +32,7 @@
 <url><loc>caravagnalab.github.io/CNAqc/reference/augment_with_vep.html</loc></url>
 <url><loc>caravagnalab.github.io/CNAqc/reference/auto_tolerance.html</loc></url>
 <url><loc>caravagnalab.github.io/CNAqc/reference/chr_coordinates_GRCh38.html</loc></url>
+<url><loc>caravagnalab.github.io/CNAqc/reference/chr_coordinates_GRCm38.html</loc></url>
 <url><loc>caravagnalab.github.io/CNAqc/reference/chr_coordinates_hg19.html</loc></url>
 <url><loc>caravagnalab.github.io/CNAqc/reference/compute_CCF.html</loc></url>
 <url><loc>caravagnalab.github.io/CNAqc/reference/detect_arm_overfragmentation.html</loc></url>
@@ -41,13 +43,18 @@
 <url><loc>caravagnalab.github.io/CNAqc/reference/gene_coordinates_hg19.html</loc></url>
 <url><loc>caravagnalab.github.io/CNAqc/reference/get_PASS_percentage.html</loc></url>
 <url><loc>caravagnalab.github.io/CNAqc/reference/get_drivers.html</loc></url>
+<url><loc>caravagnalab.github.io/CNAqc/reference/get_mCNAqc_stats.html</loc></url>
+<url><loc>caravagnalab.github.io/CNAqc/reference/get_sample.html</loc></url>
+<url><loc>caravagnalab.github.io/CNAqc/reference/get_sample_name.html</loc></url>
 <url><loc>caravagnalab.github.io/CNAqc/reference/index.html</loc></url>
 <url><loc>caravagnalab.github.io/CNAqc/reference/init.html</loc></url>
 <url><loc>caravagnalab.github.io/CNAqc/reference/inspect_segment.html</loc></url>
 <url><loc>caravagnalab.github.io/CNAqc/reference/intogen_drivers.html</loc></url>
+<url><loc>caravagnalab.github.io/CNAqc/reference/multisample_init.html</loc></url>
 <url><loc>caravagnalab.github.io/CNAqc/reference/parse_Battenberg.html</loc></url>
 <url><loc>caravagnalab.github.io/CNAqc/reference/pipe.html</loc></url>
 <url><loc>caravagnalab.github.io/CNAqc/reference/plot.cnaqc.html</loc></url>
+<url><loc>caravagnalab.github.io/CNAqc/reference/plot.m_cnaqc.html</loc></url>
 <url><loc>caravagnalab.github.io/CNAqc/reference/plot_CCF.html</loc></url>
 <url><loc>caravagnalab.github.io/CNAqc/reference/plot_SBS.html</loc></url>
 <url><loc>caravagnalab.github.io/CNAqc/reference/plot_arm_fragmentation.html</loc></url>
@@ -63,8 +70,10 @@
 <url><loc>caravagnalab.github.io/CNAqc/reference/plot_qc.html</loc></url>
 <url><loc>caravagnalab.github.io/CNAqc/reference/plot_segment_size_distribution.html</loc></url>
 <url><loc>caravagnalab.github.io/CNAqc/reference/plot_segments.html</loc></url>
+<url><loc>caravagnalab.github.io/CNAqc/reference/plot_segments_multisample.html</loc></url>
 <url><loc>caravagnalab.github.io/CNAqc/reference/plot_smoothing.html</loc></url>
 <url><loc>caravagnalab.github.io/CNAqc/reference/print.cnaqc.html</loc></url>
+<url><loc>caravagnalab.github.io/CNAqc/reference/print.m_cnaqc.html</loc></url>
 <url><loc>caravagnalab.github.io/CNAqc/reference/smooth_segments.html</loc></url>
 <url><loc>caravagnalab.github.io/CNAqc/reference/split_by_chromosome.html</loc></url>
 <url><loc>caravagnalab.github.io/CNAqc/reference/subsample.html</loc></url>

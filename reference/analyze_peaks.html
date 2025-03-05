@@ -95,6 +95,9 @@ inside the input object."><meta property="og:image" content="caravagnalab.github
     <li>
       <a href="../articles/a9_automatic.html">9. Automatic CNA calling</a>
     </li>
+    <li>
+      <a href="../articles/b10_MultiCNAqc.html">10. multiCNAqc</a>
+    </li>
   </ul></li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/caravagnalab/CNAqc/" class="external-link">
@@ -169,7 +172,8 @@ inside the input object.</p>
 <span>  matching_strategy <span class="op">=</span> <span class="st">"closest"</span>,</span>
 <span>  KDE <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  starting_state_subclonal_evolution <span class="op">=</span> <span class="st">"1:1"</span>,</span>
-<span>  cluster_subclonal_CCF <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  cluster_subclonal_CCF <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  min_VAF <span class="op">=</span> <span class="fl">0</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -252,6 +256,12 @@ branching evolutionary models. By default this is an heterozygous diploid `1:1` 
 
 <dt id="arg-cluster-subclonal-ccf">cluster_subclonal_CCF<a class="anchor" aria-label="anchor" href="#arg-cluster-subclonal-ccf"></a></dt>
 <dd><p>For subclonal segments, should the tool try to merge segments with similar CCF and the same copy number alteration?</p></dd>
+
+
+<dt id="arg-min-vaf">min_VAF<a class="anchor" aria-label="anchor" href="#arg-min-vaf"></a></dt>
+<dd><p>Only mutations with VAF higher than the supplied cut-off will be used for the QC, but they will not be removed from the final object.
+If the data are multisample (multi-region or longitudinal data) it is strongly advised to set as 0 (default) to avoid including private mutations of samples
+in the peak detection.</p></dd>
 
 </dl></div>
     <div id="value">
@@ -649,6 +659,7 @@ is usually the one for simple clonal CNAs `x$peaks_analysis$matches`, which repo
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">3:0</span> ~ n = 312   (  8%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> 3 <span style="color: #BBBBBB; background-color: #BB0000;"> FAIL </span> 0</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">3:2</span> ~ n = 1625  ( 42%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> 3 <span style="color: #BBBBBB; background-color: #BB0000;"> FAIL </span> 0</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">4:2</span> ~ n = 1893  ( 49%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> 4 <span style="color: #BBBBBB; background-color: #BB0000;"> FAIL </span> 0</span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -663,7 +674,7 @@ is usually the one for simple clonal CNAs `x$peaks_analysis$matches`, which repo
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
       </footer></div>

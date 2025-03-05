@@ -76,6 +76,9 @@ VEP annotations and input mutations are matched by exact genomic coordinates.'><
     <li>
       <a href="../articles/a9_automatic.html">9. Automatic CNA calling</a>
     </li>
+    <li>
+      <a href="../articles/b10_MultiCNAqc.html">10. multiCNAqc</a>
+    </li>
   </ul></li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/caravagnalab/CNAqc/" class="external-link">
@@ -132,10 +135,13 @@ for CNAqc.</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-
-
-
-    </div>
+    <p>It depends on `x`</p><ul><li><p>"[Option 1]"
+ A CNAqc object like `x` where the mutations are associated to the
+ MAF annotations, if `x` is a CNAqc object. In this case the S3 print method for `x` will report the
+presence of MAF annotations.</p></li>
+<li><p>"[Option 2]"
+ If `x` is a dataframe, the same dataframe augmented with MAF annotations.</p></li>
+</ul></div>
     <div id="see-also">
     <h2>See also</h2>
     <div class="dont-index"><p>function <code><a href="as_maftools_cohort.html">as_maftools_cohort</a></code> to convert multiple CNAqc
@@ -177,7 +183,7 @@ utility.</p></div>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
       </footer></div>

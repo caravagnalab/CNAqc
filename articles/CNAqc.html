@@ -84,6 +84,9 @@
     <li>
       <a href="../articles/a9_automatic.html">9. Automatic CNA calling</a>
     </li>
+    <li>
+      <a href="../articles/b10_MultiCNAqc.html">10. multiCNAqc</a>
+    </li>
   </ul>
 </li>
       </ul>
@@ -104,7 +107,7 @@
 
 
 
-      </header><script src="CNAqc_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>CNAqc</h1>
@@ -126,21 +129,31 @@
 </h3>
 <p>CNAqc requires in input</p>
 <ul>
-<li>read counts from somatic mutations such as single-nucleotide variants (SNVs) or insertion-deletions (indels);</li>
-<li>allele-specific copy number segments (CNAs) for clonal segments and, optionally, for subclonal segments;</li>
+<li>read counts from somatic mutations such as single-nucleotide
+variants (SNVs) or insertion-deletions (indels);</li>
+<li>allele-specific copy number segments (CNAs) for clonal segments and,
+optionally, for subclonal segments;</li>
 <li>a tumor purity estimate.</li>
 </ul>
-<p>CNAqc uses chromosome coordinates the to map mutations to segments. The conversion of relative to absolute genome coordinates requires to fix a reference genome build; supported references are GRCh38/hg17 and hg19/GRCh37, but custom references can also be built.</p>
-<p>The tool can elaborate a number of analysis to assess the consistency among mutations, CNAs and tumour purity (see Articles).</p>
+<p>CNAqc uses chromosome coordinates the to map mutations to segments.
+The conversion of relative to absolute genome coordinates requires to
+fix a reference genome build; supported references are GRCh38/hg17 and
+hg19/GRCh37, but custom references can also be built.</p>
+<p>The tool can elaborate a number of analysis to assess the consistency
+among mutations, CNAs and tumour purity (see Articles).</p>
 <p>CNAqc can be used to:</p>
 <ol style="list-style-type: decimal">
 <li>QC concordance across the input mutations, CNAs and purity;</li>
-<li>select among alternative tumour segmentations and purity/ ploidy estimates;</li>
-<li>optimize CNA calling with automatic QC procedures leveraging the Sequenza copy number caller;</li>
-<li>estimate CCF values of the input variants, and estimate their uncertainty;</li>
+<li>select among alternative tumour segmentations and purity/ ploidy
+estimates;</li>
+<li>optimize CNA calling with automatic QC procedures leveraging the
+Sequenza copy number caller;</li>
+<li>estimate CCF values of the input variants, and estimate their
+uncertainty;</li>
 <li>identify patterns of over-fragmentation of chromosome arms;</li>
 <li>smooth and subset segments with various filters;</li>
-<li>annotate putative driver mutations among the input variants, using <a href="https://bioconductor.org/packages/release/bioc/html/VariantAnnotation.html" class="external-link">VariantAnnotation</a>.</li>
+<li>annotate putative driver mutations among the input variants, using
+<a href="https://bioconductor.org/packages/release/bioc/html/VariantAnnotation.html" class="external-link">VariantAnnotation</a>.</li>
 </ol>
 </div>
 <div class="section level3">
@@ -150,18 +163,31 @@
 <div class="section level4">
 <h4 id="vaf-peaks">VAF peaks<a class="anchor" aria-label="anchor" href="#vaf-peaks"></a>
 </h4>
-<p><img src="peaks.png" alt="CNAqc Input/Output" width="650"><br><em>Expected VAF peaks for mutations mapped to diploid heterozygous and triploid clonal CNAs (at purity <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>π</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\pi=1</annotation></semantics></math>).</em></p>
+<p><img src="peaks.png" alt="CNAqc Input/Output" width="650"><br><em>Expected VAF peaks for mutations mapped to diploid heterozygous and
+triploid clonal CNAs (at purity
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>π</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\pi=1</annotation></semantics></math>).</em></p>
 </div>
 <div class="section level4">
 <h4 id="clonal-cnas">Clonal CNAs<a class="anchor" aria-label="anchor" href="#clonal-cnas"></a>
 </h4>
 <p>Consider:</p>
 <ul>
-<li>mutations present in a percentage <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>&lt;</mo><mi>c</mi><mo>&lt;</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">0&lt;c&lt;1</annotation></semantics></math> of tumour cells, sitting on a segment <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mi>A</mi><mo>:</mo><mi>n</mi><mi>B</mi></mrow><annotation encoding="application/x-tex">nA:nB</annotation></semantics></math>;</li>
-<li>tumour purity <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>π</mi><annotation encoding="application/x-tex">\pi</annotation></semantics></math>;</li>
+<li>mutations present in a percentage
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>&lt;</mo><mi>c</mi><mo>&lt;</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">0&lt;c&lt;1</annotation></semantics></math>
+of tumour cells, sitting on a segment
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mi>A</mi><mo>:</mo><mi>n</mi><mi>B</mi></mrow><annotation encoding="application/x-tex">nA:nB</annotation></semantics></math>;</li>
+<li>tumour purity
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>π</mi><annotation encoding="application/x-tex">\pi</annotation></semantics></math>;</li>
 <li>a healthy diploid normal;</li>
 </ul>
-<p>Since the proportion of all reads from the tumour is <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>π</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>n</mi><mi>A</mi></msub><mo>+</mo><msub><mi>n</mi><mi>B</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\pi(n_A+n_B)</annotation></semantics></math>, and from the normal is <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>−</mo><mi>π</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">2(1-\pi)</annotation></semantics></math>. Then, muations present in <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>m</mi><annotation encoding="application/x-tex">m</annotation></semantics></math> copies of the tumour genome should peak at VAF value <math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>v</mi><mi>m</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>c</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mstyle displaystyle="true"><mfrac><mrow><mi>m</mi><mi>π</mi><mi>c</mi></mrow><mrow><mn>2</mn><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>−</mo><mi>π</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>π</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>n</mi><mi>A</mi></msub><mo>+</mo><msub><mi>n</mi><mi>B</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow></mfrac></mstyle><mspace width="0.167em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">
+<p>Since the proportion of all reads from the tumour is
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>π</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>n</mi><mi>A</mi></msub><mo>+</mo><msub><mi>n</mi><mi>B</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\pi(n_A+n_B)</annotation></semantics></math>,
+and from the normal is
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>−</mo><mi>π</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">2(1-\pi)</annotation></semantics></math>.
+Then, muations present in
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>m</mi><annotation encoding="application/x-tex">m</annotation></semantics></math>
+copies of the tumour genome should peak at VAF value
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>v</mi><mi>m</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>c</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mfrac displaystyle="true"><mrow><mi>m</mi><mi>π</mi><mi>c</mi></mrow><mrow><mn>2</mn><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>−</mo><mi>π</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><mi>π</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>n</mi><mi>A</mi></msub><mo>+</mo><msub><mi>n</mi><mi>B</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow></mfrac><mspace width="0.167em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">
 v_m(c) = \dfrac{m \pi c}{
 2 (1 - \pi) + \pi (n_A+n_B)
 } \, .
@@ -170,8 +196,20 @@ v_m(c) = \dfrac{m \pi c}{
 <div class="section level4">
 <h4 id="subclonal-cnas">Subclonal CNAs<a class="anchor" aria-label="anchor" href="#subclonal-cnas"></a>
 </h4>
-<p>Consider a mixture of 2 subclones with segments <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>n</mi><mrow><mi>A</mi><mo>,</mo><mn>1</mn></mrow></msub><mo>:</mo><msub><mi>n</mi><mrow><mi>B</mi><mo>,</mo><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">n_{A,1}:n_{B,1}</annotation></semantics></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>n</mi><mrow><mi>A</mi><mo>,</mo><mn>2</mn></mrow></msub><mo>:</mo><msub><mi>n</mi><mrow><mi>B</mi><mo>,</mo><mn>2</mn></mrow></msub></mrow><annotation encoding="application/x-tex">n_{A,2}:n_{B,2}</annotation></semantics></math>, proportions <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>ρ</mi><mn>1</mn></msub><annotation encoding="application/x-tex">\rho_1</annotation></semantics></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>ρ</mi><mn>2</mn></msub><annotation encoding="application/x-tex">\rho_2</annotation></semantics></math> (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>ρ</mi><mn>1</mn></msub><mo>+</mo><msub><mi>ρ</mi><mn>2</mn></msub><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\rho_1+\rho_2=1</annotation></semantics></math>).</p>
-<p>The expected peak for a shared mutation with multiplicity <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>m</mi><mn>1</mn></msub><annotation encoding="application/x-tex">m_1</annotation></semantics></math>/ <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>m</mi><mn>2</mn></msub><annotation encoding="application/x-tex">m_2</annotation></semantics></math> in the first/ second subclone is <math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>v</mi><mrow><msub><mi>m</mi><mn>1</mn></msub><mo>,</mo><msub><mi>m</mi><mn>2</mn></msub></mrow></msub><mo>=</mo><mstyle displaystyle="true"><mfrac><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>m</mi><mn>1</mn></msub><msub><mi>ρ</mi><mn>1</mn></msub><mo>+</mo><msub><mi>m</mi><mn>2</mn></msub><msub><mi>ρ</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo><mi>π</mi></mrow><mrow><mn>2</mn><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>−</mo><mi>π</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>π</mi><mo stretchy="false" form="prefix">[</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>n</mi><mrow><mi>A</mi><mo>,</mo><mn>1</mn></mrow></msub><mo>+</mo><msub><mi>n</mi><mrow><mi>B</mi><mo>,</mo><mn>1</mn></mrow></msub><mo stretchy="false" form="postfix">)</mo><msub><mi>ρ</mi><mn>1</mn></msub><mo>+</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>n</mi><mrow><mi>A</mi><mo>,</mo><mn>2</mn></mrow></msub><mo>+</mo><msub><mi>n</mi><mrow><mi>B</mi><mo>,</mo><mn>2</mn></mrow></msub><mo stretchy="false" form="postfix">)</mo><msub><mi>ρ</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">]</mo></mrow></mfrac></mstyle><mspace width="0.167em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">
+<p>Consider a mixture of 2 subclones with segments
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>n</mi><mrow><mi>A</mi><mo>,</mo><mn>1</mn></mrow></msub><mo>:</mo><msub><mi>n</mi><mrow><mi>B</mi><mo>,</mo><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">n_{A,1}:n_{B,1}</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>n</mi><mrow><mi>A</mi><mo>,</mo><mn>2</mn></mrow></msub><mo>:</mo><msub><mi>n</mi><mrow><mi>B</mi><mo>,</mo><mn>2</mn></mrow></msub></mrow><annotation encoding="application/x-tex">n_{A,2}:n_{B,2}</annotation></semantics></math>,
+proportions
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>ρ</mi><mn>1</mn></msub><annotation encoding="application/x-tex">\rho_1</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>ρ</mi><mn>2</mn></msub><annotation encoding="application/x-tex">\rho_2</annotation></semantics></math>
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>ρ</mi><mn>1</mn></msub><mo>+</mo><msub><mi>ρ</mi><mn>2</mn></msub><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\rho_1+\rho_2=1</annotation></semantics></math>).</p>
+<p>The expected peak for a shared mutation with multiplicity
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>m</mi><mn>1</mn></msub><annotation encoding="application/x-tex">m_1</annotation></semantics></math>/
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>m</mi><mn>2</mn></msub><annotation encoding="application/x-tex">m_2</annotation></semantics></math>
+in the first/ second subclone is
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>v</mi><mrow><msub><mi>m</mi><mn>1</mn></msub><mo>,</mo><msub><mi>m</mi><mn>2</mn></msub></mrow></msub><mo>=</mo><mfrac displaystyle="true"><mrow><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>m</mi><mn>1</mn></msub><msub><mi>ρ</mi><mn>1</mn></msub><mo>+</mo><msub><mi>m</mi><mn>2</mn></msub><msub><mi>ρ</mi><mn>2</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow><mi>π</mi></mrow><mrow><mn>2</mn><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>−</mo><mi>π</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><mi>π</mi><mrow><mo stretchy="true" form="prefix">[</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>n</mi><mrow><mi>A</mi><mo>,</mo><mn>1</mn></mrow></msub><mo>+</mo><msub><mi>n</mi><mrow><mi>B</mi><mo>,</mo><mn>1</mn></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow><msub><mi>ρ</mi><mn>1</mn></msub><mo>+</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>n</mi><mrow><mi>A</mi><mo>,</mo><mn>2</mn></mrow></msub><mo>+</mo><msub><mi>n</mi><mrow><mi>B</mi><mo>,</mo><mn>2</mn></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow><msub><mi>ρ</mi><mn>2</mn></msub><mo stretchy="true" form="postfix">]</mo></mrow></mrow></mfrac><mspace width="0.167em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">
 v_{m_1,m_2} = \dfrac{
 (m_1\rho_1 + m_2\rho_2) \pi
 }
@@ -179,7 +217,12 @@ v_{m_1,m_2} = \dfrac{
 2 (1 - \pi) + \pi [(n_{A,1}+n_{B,1})\rho_1 + (n_{A,2}+n_{B,2})\rho_2]
 } \, .
 </annotation></semantics></math></p>
-<p>The expected peak for a private mutation with multiplicity <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>m</mi><annotation encoding="application/x-tex">m</annotation></semantics></math> in subclone <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math> is <math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>v</mi><msub><mi>m</mi><mi>i</mi></msub></msub><mo>=</mo><mstyle displaystyle="true"><mfrac><mrow><mi>m</mi><msub><mi>ρ</mi><mi>i</mi></msub><mi>π</mi></mrow><mrow><mn>2</mn><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>−</mo><mi>π</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>π</mi><mo stretchy="false" form="prefix">[</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>n</mi><mrow><mi>A</mi><mo>,</mo><mn>1</mn></mrow></msub><mo>+</mo><msub><mi>n</mi><mrow><mi>B</mi><mo>,</mo><mn>1</mn></mrow></msub><mo stretchy="false" form="postfix">)</mo><msub><mi>ρ</mi><mn>1</mn></msub><mo>+</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>n</mi><mrow><mi>A</mi><mo>,</mo><mn>2</mn></mrow></msub><mo>+</mo><msub><mi>n</mi><mrow><mi>B</mi><mo>,</mo><mn>2</mn></mrow></msub><mo stretchy="false" form="postfix">)</mo><msub><mi>ρ</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">]</mo></mrow></mfrac></mstyle><mspace width="0.167em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">
+<p>The expected peak for a private mutation with multiplicity
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>m</mi><annotation encoding="application/x-tex">m</annotation></semantics></math>
+in subclone
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
+is
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>v</mi><msub><mi>m</mi><mi>i</mi></msub></msub><mo>=</mo><mfrac displaystyle="true"><mrow><mi>m</mi><msub><mi>ρ</mi><mi>i</mi></msub><mi>π</mi></mrow><mrow><mn>2</mn><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>−</mo><mi>π</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><mi>π</mi><mrow><mo stretchy="true" form="prefix">[</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>n</mi><mrow><mi>A</mi><mo>,</mo><mn>1</mn></mrow></msub><mo>+</mo><msub><mi>n</mi><mrow><mi>B</mi><mo>,</mo><mn>1</mn></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow><msub><mi>ρ</mi><mn>1</mn></msub><mo>+</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>n</mi><mrow><mi>A</mi><mo>,</mo><mn>2</mn></mrow></msub><mo>+</mo><msub><mi>n</mi><mrow><mi>B</mi><mo>,</mo><mn>2</mn></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow><msub><mi>ρ</mi><mn>2</mn></msub><mo stretchy="true" form="postfix">]</mo></mrow></mrow></mfrac><mspace width="0.167em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">
 v_{m_i} = \dfrac{
 m\rho_i \pi
 }
@@ -192,7 +235,7 @@ m\rho_i \pi
 <h4 id="cancer-cell-fractions-ccfs">Cancer Cell Fractions (CCFs)<a class="anchor" aria-label="anchor" href="#cancer-cell-fractions-ccfs"></a>
 </h4>
 <p>Given VAF, tumour purity and CNAs, CCF values can be computed as</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo>=</mo><mstyle displaystyle="true"><mfrac><mrow><mi>v</mi><mo stretchy="false" form="prefix">[</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>n</mi><mi>a</mi></msub><mo>+</mo><msub><mi>n</mi><mi>B</mi></msub><mo>−</mo><mn>2</mn><mo stretchy="false" form="postfix">)</mo><mi>π</mi><mo>+</mo><mn>2</mn><mo stretchy="false" form="postfix">]</mo></mrow><mrow><mi>m</mi><mi>π</mi></mrow></mfrac></mstyle></mrow><annotation encoding="application/x-tex">
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo>=</mo><mfrac displaystyle="true"><mrow><mi>v</mi><mrow><mo stretchy="true" form="prefix">[</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>n</mi><mi>a</mi></msub><mo>+</mo><msub><mi>n</mi><mi>B</mi></msub><mo>−</mo><mn>2</mn><mo stretchy="true" form="postfix">)</mo></mrow><mi>π</mi><mo>+</mo><mn>2</mn><mo stretchy="true" form="postfix">]</mo></mrow></mrow><mrow><mi>m</mi><mi>π</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">
 c = 
 \dfrac{
 v[
@@ -203,7 +246,10 @@ v[
 m \pi
 }
 </annotation></semantics></math></p>
-<p>Therefore the problem of computing CCFs is essentially linked to computing <code>m</code>, mutation multiplicity. This type of computation can be done by “phasing” the VAFs against the multiplicity.</p>
+<p>Therefore the problem of computing CCFs is essentially linked to
+computing <code>m</code>, mutation multiplicity. This type of
+computation can be done by “phasing” the VAFs against the
+multiplicity.</p>
 </div>
 </div>
 </div>
@@ -224,7 +270,7 @@ m \pi
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
       </footer>
