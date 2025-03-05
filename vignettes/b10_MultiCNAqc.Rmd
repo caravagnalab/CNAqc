@@ -154,7 +154,7 @@ All the samples are characterized by different segments among the genome, as can
 ```{r, echo=FALSE, dpi=300, fig.align='center', out.width = "100%", fig.dim = c(8,5), warning=FALSE}
 seg_plot = lapply(CNAqc_samples, function(x) {
   CNAqc::plot_segments(x, chromosomes = paste0("chr", 1:3), max_Y_height = 3) +
-    theme(axis.title.y = element_text(size = 7))
+    ggplot2::theme(axis.title.y = element_text(size = 7))
   }) # +
     # theme(axis.title = element_text(size = 4),
     #     axis.text = element_text(size = 4), strip.text = element_text(size = 4),
@@ -167,8 +167,8 @@ design <- "
 3
 "    
 patchwork::wrap_plots(seg_plot) +
-  guide_area() +
-  plot_layout(design = design, guides = "collect") & theme(legend.position = 'top')
+  patchwork::guide_area() +
+  patchwork::plot_layout(design = design, guides = "collect") & ggplot2::theme(legend.position = 'top')
 
 ```
 
@@ -194,7 +194,7 @@ print(example_multisample)
 The function `plot_segments_multisample` allows visualization of the effect of the new segmentation across all the samples included in the mCNAqc object.
 
 ```{r, fig.align='center', fig.dim=c(8,4), out.width="100%", dpi=300}
-plot_segments_multisample(example_multisample, which = "shared", chromosomes = paste0("chr", 1:3)) + ggtitle("New segmentation")
+CNAqc::plot_segments_multisample(example_multisample, which = "shared", chromosomes = paste0("chr", 1:3)) + ggplot2::ggtitle("New segmentation")
 ```
 
 ## Accessing elements inside the `mCNAqc` object
@@ -202,13 +202,13 @@ plot_segments_multisample(example_multisample, which = "shared", chromosomes = p
 Sample names can be retrieved using the `get_sample_name` function, which can also be applied on classical `CNAqc` objects.
 
 ```{r}
-get_sample_name(example_multisample)
+CNAqc::get_sample_name(example_multisample)
 ```
 
 Elements inside the `mCNAqc` object (for desired samples) can be accessed through the `get_sample` function. It returns a list of CNAqc objects. In this way, it is possible to obtain a joint table with all the mutations across samples:
 
 ```{r}
-res = get_sample(example_multisample, 
+res = CNAqc::get_sample(example_multisample, 
            sample = get_sample_name(example_multisample), 
            which_obj = "shared")
 
