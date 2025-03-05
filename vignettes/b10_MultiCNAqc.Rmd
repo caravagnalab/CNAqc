@@ -113,6 +113,7 @@ purity = lapply(Sequenza_good_calls, function(x) {x$purity})
 require(tidyverse)
 require(CNAqc)
 require(cli)
+install.packages("devtools")
 devtools::install_github("thomasp85/patchwork")
 require(patchwork)
 
