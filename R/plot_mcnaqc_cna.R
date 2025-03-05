@@ -73,15 +73,15 @@ plot_segments_multisample <- function(x,
       chromosomes = chromosomes,
       label_chr = NA
     ) +
-      theme(axis.title.y = element_text(margin = margin(r = 20)), 
-            axis.title.x = element_text(margin = margin(t = 15)))
+      theme(axis.title.y = ggplot2::element_text(ggplot2::margin = margin(r = 20)), 
+            axis.title.x = ggplot2::element_text(ggplot2::margin = margin(t = 15)))
   )
   
   cna_multisample = bl_genome +
-    geom_linerange(data = calls_flat, 
-                   aes(xmin = from, 
-                       xmax = to, 
-                       colour = label), size = 5) +
+    ggplot2::geom_linerange(data = calls_flat, 
+                            ggplot2::aes(xmin = from, 
+                                         xmax = to, 
+                                         colour = label), size = 5) +
     ggplot2::scale_color_manual(values = KARYO_colors) +
     ggplot2::ggtitle("Comparative CNA")
     
