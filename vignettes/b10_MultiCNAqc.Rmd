@@ -43,7 +43,7 @@ fix_tidy = set6@fix %>%
 
 # Genotypes
 geno_tidy = vcfR::extract_gt_tidy(set6) %>%
-  group_split(Indiv)
+  dplyr::group_split(Indiv)
 
 # Sample mutations in the CNAqc format
 sample_mutations = lapply(geno_tidy, function(x) {
@@ -113,7 +113,9 @@ purity = lapply(Sequenza_good_calls, function(x) {x$purity})
 require(tidyverse)
 require(CNAqc)
 require(cli)
+devtools::install_github("thomasp85/patchwork")
 require(patchwork)
+
 ```
 
 # Create a multisample CNAqc object
