@@ -27,7 +27,7 @@ data.
 
 #### Citation
 
-[![](https://img.shields.io/badge/doi-10.1101/2021.02.13.429885-red.svg)](https://doi.org/10.1101/2021.02.13.429885)
+[![](https://img.shields.io/badge/doi-10.1101/2021.02.13.429885-red.svg)](https://doi.org/10.1186/s13059-024-03170-5)
 
 If you use `CNAqc`, please cite:
 
@@ -35,7 +35,7 @@ If you use `CNAqc`, please cite:
     from bulk tumor sequencing using CNAqc.* Alice Antonello, Riccardo Bergamin,
     Nicola Calonaci, Jacob Househam, Salvatore Milite, Marc J Williams, Fabio Anselmi,
     Alberto d’Onofrio, Vasavi Sundaram, Alona Sosinsky, William CH Cross,
-    Giulio Caravagna. [Genome Biol, 2024]([https://www.biorxiv.org/content/10.1101/2021.02.13.429885v3](https://doi.org/10.1186/s13059-024-03170-5)).
+    Giulio Caravagna. [Genome Biol, 2024](https://doi.org/10.1186/s13059-024-03170-5).
 
 #### Help and support
 
