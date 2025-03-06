@@ -31,12 +31,11 @@ data.
 
 If you use `CNAqc`, please cite:
 
--   *Integrated quality control of allele-specific copy numbers,
-    mutations and tumour purity from cancer whole genome sequencing
-    assays* Jacob Househam, Riccardo Bergamin, Salvatore Milite, Nicola
-    Calonaci, Alice Antonello, Marc J Williams, William CH Cross, Giulio
-    Caravagna. [biorXiv
-    2022](https://www.biorxiv.org/content/10.1101/2021.02.13.429885v3).
+-   *Computational validation of clonal and subclonal copy number alterations
+    from bulk tumor sequencing using CNAqc.* Alice Antonello, Riccardo Bergamin,
+    Nicola Calonaci, Jacob Househam, Salvatore Milite, Marc J Williams, Fabio Anselmi,
+    Alberto d’Onofrio, Vasavi Sundaram, Alona Sosinsky, William CH Cross,
+    Giulio Caravagna. [Genome Biol, 2024]([https://www.biorxiv.org/content/10.1101/2021.02.13.429885v3](https://doi.org/10.1186/s13059-024-03170-5)).
 
 #### Help and support
 
