@@ -6,12 +6,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>8. Drivers annotation • CNAqc</title>
-<!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
-<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
-<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png">
-<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
-<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
+<!-- favicons --><link rel="icon" type="image/png" sizes="48x48" href="../favicon-48x48.png">
+<link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+<link rel="icon" sizes="any" href="../favicon.ico">
+<link rel="manifest" href="../site.webmanifest">
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
@@ -240,7 +239,7 @@ first time the annotation is run.</p>
 <span>    <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, repos<span class="op">=</span><span class="st">"http://cran.us.r-project.org"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; The downloaded binary packages are in</span></span>
-<span><span class="co">#&gt;  /var/folders/2s/h6hvv9ps03xgz_krkkstvq_r0000gn/T//RtmpdmM79Q/downloaded_packages</span></span>
+<span><span class="co">#&gt;  /var/folders/hn/k7g0_sh57112t0xtjxcjcm5r0000gn/T//Rtmpr1dLfe/downloaded_packages</span></span>
 <span></span>
 <span><span class="co"># We have to install the corresponding txdb package for transcript annotations</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"TxDb.Hsapiens.UCSC."</span>,<span class="va">reference_genome</span>, <span class="st">".knownGene"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://bioconductor.github.io/BiocManager/reference/install.html" class="external-link">install</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -730,22 +729,20 @@ database and the information regarding the input cancer type.</p>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Preparing mutations ... done</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Locating variants with <span style="color: #BBBB00;">VariantAnnotation</span></span></span>
-<span><span class="co">#&gt; Warning in valid.GenomicRanges.seqinfo(x, suggest.trim = TRUE): GRanges object contains 364 out-of-bound ranges located on sequences</span></span>
-<span><span class="co">#&gt;   4529, 4631, 4632, 1653, 1654, 1655, 1656, 12192, 12362, 12363, 12364,</span></span>
-<span><span class="co">#&gt;   12365, 12366, 12367, 12517, 12518, 12519, 12520, 13123, 13124, 13974,</span></span>
-<span><span class="co">#&gt;   13975, 13976, 13994, 13995, 17007, 17008, 17009, 17010, 17011, 17012,</span></span>
-<span><span class="co">#&gt;   17014, 17015, 17016, 17793, 18007, 20532, 22527, 22954, 22955, 22956,</span></span>
-<span><span class="co">#&gt;   23347, 27275, 27276, 28075, 28085, 28893, 29046, 29047, 29242, 31362,</span></span>
-<span><span class="co">#&gt;   32048, 32050, 33339, 33714, 33715, 32912, 32913, 40960, 40961, 44219,</span></span>
-<span><span class="co">#&gt;   44220, 44242, 44262, 44263, 44356, 46050, 46054, 46062, 46063, 46064,</span></span>
-<span><span class="co">#&gt;   46065, 46066, 53476, 53477, 53497, 53498, 59180, 57764, 57766, 61092,</span></span>
-<span><span class="co">#&gt;   69815, 69930, 70330, 70331, 70332, 77129, 77130, 76239, 76240, 76241,</span></span>
-<span><span class="co">#&gt;   77987, and 77988. Note that ranges located on a sequence whose length</span></span>
-<span><span class="co">#&gt;   is unknown (NA) or on a circular sequence are not considered</span></span>
-<span><span class="co">#&gt;   out-of-bound (use seqlengths() and isCircular() to get the lengths and</span></span>
-<span><span class="co">#&gt;   circularity flags of the underlying sequences). You can use trim() to</span></span>
-<span><span class="co">#&gt;   trim these ranges. See ?`trim,GenomicRanges-method` for more</span></span>
-<span><span class="co">#&gt;   information.</span></span>
+<span><span class="co">#&gt; Warning in valid.GenomicRanges.seqinfo(x, suggest.trim = TRUE): GRanges object contains 364 out-of-bound ranges located on sequences 4529,</span></span>
+<span><span class="co">#&gt;   4631, 4632, 1653, 1654, 1655, 1656, 12192, 12362, 12363, 12364, 12365, 12366,</span></span>
+<span><span class="co">#&gt;   12367, 12517, 12518, 12519, 12520, 13123, 13124, 13974, 13975, 13976, 13994,</span></span>
+<span><span class="co">#&gt;   13995, 17007, 17008, 17009, 17010, 17011, 17012, 17014, 17015, 17016, 17793,</span></span>
+<span><span class="co">#&gt;   18007, 20532, 22527, 22954, 22955, 22956, 23347, 27275, 27276, 28075, 28085,</span></span>
+<span><span class="co">#&gt;   28893, 29046, 29047, 29242, 31362, 32048, 32050, 33339, 33714, 33715, 32912,</span></span>
+<span><span class="co">#&gt;   32913, 40960, 40961, 44219, 44220, 44242, 44262, 44263, 44356, 46050, 46054,</span></span>
+<span><span class="co">#&gt;   46062, 46063, 46064, 46065, 46066, 53476, 53477, 53497, 53498, 59180, 57764,</span></span>
+<span><span class="co">#&gt;   57766, 61092, 69815, 69930, 70330, 70331, 70332, 77129, 77130, 76239, 76240,</span></span>
+<span><span class="co">#&gt;   76241, 77987, and 77988. Note that ranges located on a sequence whose length</span></span>
+<span><span class="co">#&gt;   is unknown (NA) or on a circular sequence are not considered out-of-bound</span></span>
+<span><span class="co">#&gt;   (use seqlengths() and isCircular() to get the lengths and circularity flags</span></span>
+<span><span class="co">#&gt;   of the underlying sequences). You can use trim() to trim these ranges. See</span></span>
+<span><span class="co">#&gt;   ?`trim,GenomicRanges-method` for more information.</span></span>
 <span><span class="co">#&gt; 'select()' returned many:1 mapping between keys and columns</span></span>
 <span><span class="co">#&gt; 'select()' returned many:1 mapping between keys and columns</span></span>
 <span><span class="co">#&gt; 'select()' returned 1:1 mapping between keys and columns</span></span>
@@ -761,21 +758,19 @@ database and the information regarding the input cancer type.</p>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Transforming data ... done</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Predicting coding</span></span>
-<span><span class="co">#&gt; Warning in valid.GenomicRanges.seqinfo(x, suggest.trim = TRUE): GRanges object contains 315 out-of-bound ranges located on sequences</span></span>
-<span><span class="co">#&gt;   4529, 4631, 4632, 1653, 1654, 1655, 1656, 12192, 12362, 12363, 12364,</span></span>
-<span><span class="co">#&gt;   12365, 12366, 12367, 12517, 12518, 12519, 12520, 13123, 13124, 13974,</span></span>
-<span><span class="co">#&gt;   13975, 13976, 13994, 13995, 17007, 17008, 17009, 17010, 17011, 17012,</span></span>
-<span><span class="co">#&gt;   17014, 17015, 17016, 17793, 18007, 20532, 22527, 22954, 22955, 22956,</span></span>
-<span><span class="co">#&gt;   23347, 27275, 27276, 28075, 28085, 28893, 29046, 29047, 29242, 31362,</span></span>
-<span><span class="co">#&gt;   32048, 32050, 33339, 33714, 33715, 32912, 32913, 40960, 40961, 44219,</span></span>
-<span><span class="co">#&gt;   44220, 44242, 44262, 44263, 44356, 53476, 53477, 53497, 53498, 59180,</span></span>
-<span><span class="co">#&gt;   57764, 57766, 61092, 69815, 69930, 70330, 70331, 70332, 77129, 77130,</span></span>
-<span><span class="co">#&gt;   76239, 76240, 76241, 77987, and 77988. Note that ranges located on a</span></span>
-<span><span class="co">#&gt;   sequence whose length is unknown (NA) or on a circular sequence are not</span></span>
-<span><span class="co">#&gt;   considered out-of-bound (use seqlengths() and isCircular() to get the</span></span>
-<span><span class="co">#&gt;   lengths and circularity flags of the underlying sequences). You can use</span></span>
-<span><span class="co">#&gt;   trim() to trim these ranges. See ?`trim,GenomicRanges-method` for more</span></span>
-<span><span class="co">#&gt;   information.</span></span>
+<span><span class="co">#&gt; Warning in valid.GenomicRanges.seqinfo(x, suggest.trim = TRUE): GRanges object contains 315 out-of-bound ranges located on sequences 4529,</span></span>
+<span><span class="co">#&gt;   4631, 4632, 1653, 1654, 1655, 1656, 12192, 12362, 12363, 12364, 12365, 12366,</span></span>
+<span><span class="co">#&gt;   12367, 12517, 12518, 12519, 12520, 13123, 13124, 13974, 13975, 13976, 13994,</span></span>
+<span><span class="co">#&gt;   13995, 17007, 17008, 17009, 17010, 17011, 17012, 17014, 17015, 17016, 17793,</span></span>
+<span><span class="co">#&gt;   18007, 20532, 22527, 22954, 22955, 22956, 23347, 27275, 27276, 28075, 28085,</span></span>
+<span><span class="co">#&gt;   28893, 29046, 29047, 29242, 31362, 32048, 32050, 33339, 33714, 33715, 32912,</span></span>
+<span><span class="co">#&gt;   32913, 40960, 40961, 44219, 44220, 44242, 44262, 44263, 44356, 53476, 53477,</span></span>
+<span><span class="co">#&gt;   53497, 53498, 59180, 57764, 57766, 61092, 69815, 69930, 70330, 70331, 70332,</span></span>
+<span><span class="co">#&gt;   77129, 77130, 76239, 76240, 76241, 77987, and 77988. Note that ranges located</span></span>
+<span><span class="co">#&gt;   on a sequence whose length is unknown (NA) or on a circular sequence are not</span></span>
+<span><span class="co">#&gt;   considered out-of-bound (use seqlengths() and isCircular() to get the lengths</span></span>
+<span><span class="co">#&gt;   and circularity flags of the underlying sequences). You can use trim() to</span></span>
+<span><span class="co">#&gt;   trim these ranges. See ?`trim,GenomicRanges-method` for more information.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Predicting coding── Coding substitutions found </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Predicting coding</span></span>
@@ -1016,7 +1011,7 @@ database and the information regarding the input cancer type.</p>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.2.</p>
 </div>
 
       </footer>
