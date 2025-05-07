@@ -201,19 +201,7 @@ multisample_init <- function(cnaqc_objs,
   
   cli::cli_h2("Creating mCNAqc stats")
   
-  n_new_mut <- sapply(m_cnaqc_res$cnaqc_obj_new_segmentation, function(x) {x$n_mutations})
-  n_or_mut <- sapply(cnaqc_objs, function(x) {x$n_mutations})
-  n_new_cna <- sapply(m_cnaqc_res$cnaqc_obj_new_segmentation, function(x) {x$n_cna})
-  n_or_cna <- sapply(cnaqc_objs, function(x) {x$n_cna})
-  
-  stats_mcnaqc <- data.frame(
-    n_mutations_original_segmentation = n_or_mut,
-    n_mutations_new_segmentation = n_new_mut, 
-    n_cna_original_segmentation = n_or_cna, 
-    n_cna_new_segmentation = n_new_cna
-  )
-  
-  m_cnaqc_res$m_cnaqc_stats <- stats_mcnaqc
+  m_cnaqc_res = generate_mcnaqc_stats(m_cnaqc_res, cnaqc_objs)
   
   if(exists("m_cnaqc_res", inherits = F) & length(m_cnaqc_res$cnaqc_obj_new_segmentation) == length(cnaqc_objs)) {
     cli::cli_h1("Ended")
@@ -283,7 +271,15 @@ join_segments = function(cnaqc_objs,
   if(QC_filter == TRUE) {
     x = x %>% 
       filter(QC_PASS == TRUE)
+    qc_filter_samples = x$sample_id %>% unique
+    
+    if (length(qc_filter_samples) != length(cnaqc_objs %>% names()))  {
+      cli::cli_alert_warning(paste(length(setdiff(names(cnaqc_objs), qc_filter_samples)), 
+                           'sample(s) did not have any segment passing the QC, excluding it from the creation of the {.cls mCNAqc} object'))
+      cat("\n")
+    }
   } 
+  
   
   out = lapply(x$chr %>% unique(), function(chr) {
     
@@ -513,3 +509,45 @@ set_elements <- function(cnaqc_obj,
   
   return(remapped_mut)
 }
+
+generate_mcnaqc_stats = function(m_cnaqc_res, cnaqc_objs) {
+  
+  # extract statics 
+  n_new_mut <- sapply(m_cnaqc_res$cnaqc_obj_new_segmentation, function(x) {
+    x$n_mutations
+  })
+  
+  n_or_mut <- sapply(cnaqc_objs, function(x) {
+    x$n_mutations
+  })
+  
+  n_new_cna <- sapply(m_cnaqc_res$cnaqc_obj_new_segmentation, function(x) {
+    x$n_cna
+  })
+  
+  n_or_cna <- sapply(cnaqc_objs, function(x) {
+    x$n_cna
+  })
+  
+  if (length(n_new_mut) != length(n_or_mut)) {
+    missing_samples = setdiff(names(n_or_mut), names(n_new_mut))
+    n_new_mut = c(n_new_mut, setNames(NA, missing_samples))
+    n_new_cna = c(n_new_cna, setNames(NA, missing_samples))
+    all_samples_used_mcnaqc = FALSE
+  } else {
+    all_samples_used_mcnaqc = TRUE
+  }
+  
+  stats_mcnaqc <- data.frame(
+    n_mutations_original_segmentation = n_or_mut,
+    n_mutations_new_segmentation = n_new_mut,
+    n_cna_original_segmentation = n_or_cna,
+    n_cna_new_segmentation = n_new_cna
+  )
+  
+  m_cnaqc_res$m_cnaqc_stats <- stats_mcnaqc
+  m_cnaqc_res$all_samples_used_mcnaqc = all_samples_used_mcnaqc
+  
+  return(m_cnaqc_res)
+}
+

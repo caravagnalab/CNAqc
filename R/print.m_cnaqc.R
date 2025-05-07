@@ -25,8 +25,8 @@
 print.m_cnaqc <- function(x, ...) {
   stopifnot(inherits(x, "m_cnaqc"))
   
-  n_segments_total = x$m_cnaqc_stats$n_cna_new_segmentation %>% unique
-  n_mutations_total = x$m_cnaqc_stats$n_mutations_new_segmentation %>% unique
+  n_segments_total = na.omit(x$m_cnaqc_stats$n_cna_new_segmentation) %>% unique
+  n_mutations_total = na.omit(x$m_cnaqc_stats$n_mutations_new_segmentation) %>% unique
   
   # n_segments_clonal = lapply(x, function(y) y$mutations_on_shared$cna %>% nrow) %>% unlist %>% unique()
   # n_segments_subclonal = lapply(x, function(y) y$mutations_on_shared$cna_subclonal %>% nrow) %>% unlist %>% unique()
@@ -43,13 +43,25 @@ print.m_cnaqc <- function(x, ...) {
   cli::cli_ul(
     c(
       "Rerefence genome: {.field {ref_gen}}",
-      "Samples: {.field {samples} }",
+      "Samples used: {.field {samples} }",
       "{.field {n_segments_total}} total shared segments across samples",
-      "{.field {n_mutations_total}} mutations on shared positions across samples"
+      "{.field {n_mutations_total}} mutations on shared segments across samples"
       
     )
   )
   
+  if (x$all_samples_used_mcnaqc == FALSE) {
+    missing_samples = setdiff(names(x$original_cnaqc_objc), names(x$cnaqc_obj_new_segmentation))
+    
+    cat("\n")
+    cli::cli_alert_warning(paste0('Some samples ({.field {missing_samples}}) were excluded during the cration of the new segmentation due to low quality'))
+    
+    samples = names(x$original_cnaqc_objc)
+  } else {
+    
+    cli::cli_alert_info('All samples had good quality and were used to create the new segmentation')
+    
+  }
   
   # cli::cli_ul(paste(names(old_segments), old_segments, sep = " = "))
   

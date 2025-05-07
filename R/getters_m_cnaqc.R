@@ -92,10 +92,15 @@ get_sample <- function(m_cnaqc_obj,
     
     cli::cli_h1("Retrieving {.cls CNAqc} objects with the new segmentation")
     
-    cnaqc_samples = m_cnaqc_obj[[type]][sample]
+    # this to avoid looking for samples that are not present anymore in the new segmentation object
+    sample_to_take = intersect(sample, get_sample_name(m_cnaqc_obj))  
+    
+    cnaqc_samples = m_cnaqc_obj[[type]][sample_to_take]
+    
   }
   
   return(cnaqc_samples)
+  
 }
 
 #' Get mCNAqc statistics
