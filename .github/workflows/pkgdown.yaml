@@ -11,7 +11,7 @@ jobs:
     runs-on: macOS-latest
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-      R_BIOC_VERSION: "3.19"
+      R_BIOC_VERSION: "3.21"
       
     steps:
       - uses: actions/checkout@v3
