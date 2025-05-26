@@ -94,7 +94,6 @@ reference:
 - title: Pipelines and parsers
   desc:  Pipelines and parsers implemented with CNAqc.
   contents:
-  - Sequenza_CNAqc
   - parse_Battenberg
 
 - title: Variants annotation detection

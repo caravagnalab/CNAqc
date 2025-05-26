@@ -1,8 +1,8 @@
 ---
-title: "10. multiCNAqc"
+title: "09. multiCNAqc"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{10. multiCNAqc}
+  %\VignetteIndexEntry{09. multiCNAqc}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
