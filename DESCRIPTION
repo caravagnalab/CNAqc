@@ -1,7 +1,7 @@
 Package: CNAqc
 Type: Package
 Title: CNAqc - Copy Number Analysis quality check
-Version: 1.1.1
+Version: 1.1.2
 Author: Giulio Caravagna
 Maintainer: Giulio Caravagna <gcaravagn@gmail.com>
 Authors@R: c(
@@ -21,8 +21,7 @@ Description: CNAqc is a package to provide a set of metrics to quality control (
   peak matching procedures for VAFs can be used to QC clonal and subclonal copy numbers.
   Quantitative metrics and plots for data exploration are also available, allowing for an intuitive 
   assessment of the goodness of somatic calls. QC metrics computed by CNAqc can also be used to 
-  re-parametrize a copy number caller and increase the quality of the somatic calls; the Sequenza
-  tool is supported by the CNAqc with an automatica calling-QC pipeline. The tools is general and can
+  re-parametrize a copy number caller and increase the quality of the somatic calls. The tools is general and can
   be applied downstream of any bioinformatics pipeline. Routines to determine Cancer Cell Franctions (CCFs)
   for each mutation are also available, along with a model of CCF uncertainty that can be used to identify
   high-quality CCF calls for downstream analyses. 
@@ -71,8 +70,7 @@ Remotes:
     caravagn/pio,
     caravagnalab/BMix,
     caravagn/easypar,
-    cran/peakPick,
-    cran/sequenza
+    cran/peakPick
 RoxygenNote: 7.3.2
 Suggests: 
     knitr,
