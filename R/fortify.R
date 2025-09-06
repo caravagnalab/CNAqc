@@ -173,12 +173,12 @@ fortify_mutation_calls = function(x)
     )
   }
 
-  if(x[, required_columns] %>% is.na() %>% any()){
+  if(x[, ..required_columns] %>% is.na() %>% any()){
     cli::cli_alert_danger(
       "NA values in some of the required mutation columns, these will be removed."
     )
 
-    x = x[complete.cases(x[, required_columns]), ]
+    x = x[complete.cases(x[, ..required_columns]), ]
 
     if(nrow(x) == 0) stop("No more mutations to work with?")
   }
