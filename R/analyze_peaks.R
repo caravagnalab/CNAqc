@@ -149,6 +149,29 @@ analyze_peaks = function(x,
   cli::cli_h1("Peak analysis: simple CNAs")
   cat("\n")
   
+  # filter the mutations using min_VAF and recompute the number of muts per karyotype 
+  # and other statistics --> in this way the peak analysis is more precise
+  
+  # save the mutations with VAF < min_VAF -- they might be uselful after the peak analysis!
+  
+  min_vaf_muts = x$mutations %>%
+    dplyr::filter(VAF <= min_VAF)
+  
+  x$mutations = x$mutations %>%
+    dplyr::filter(VAF > min_VAF)
+  
+  # recompute the number of mutations mapping on each karyotype
+  n_karyo = x$mutations %>% 
+    dplyr::group_by(karyotype) %>% 
+    dplyr::summarize( n = dplyr::n())
+  
+  # change the values of the class
+  x$n_karyotype = setNames(nm = n_karyo$karyotype, object = n_karyo$n)
+  
+  x$most_mutations_karyotype = n_karyo %>% 
+    dplyr::slice_max(n) %>% 
+    dplyr::pull(karyotype)
+
   x = x %>% analyze_peaks_common(
     karyotypes = karyotypes,
     min_karyotype_size = min_karyotype_size,
@@ -157,8 +180,8 @@ analyze_peaks = function(x,
     purity_error = purity_error,
     VAF_tolerance = VAF_tolerance,
     n_bootstrap = n_bootstrap,
-    kernel_adjust = kernel_adjust, 
-    min_VAF = min_VAF
+    kernel_adjust = kernel_adjust
+    # min_VAF = min_VAF
   )
   
   x$cna <- dplyr::left_join(x$cna,CNAqc:::compute_QC_table(x)$QC_table %>% filter(type == "Peaks") %>% 
@@ -188,8 +211,8 @@ analyze_peaks = function(x,
       n_min = min_absolute_karyotype_mutations,
       epsilon = purity_error,
       kernel_adjust = kernel_adjust,
-      n_bootstrap = n_bootstrap, 
-      min_VAF = min_VAF
+      n_bootstrap = n_bootstrap 
+      # min_VAF = min_VAF
     )
     
     x$peaks_analysis$general$summary %>%
@@ -213,8 +236,7 @@ analyze_peaks = function(x,
   cat("\n")
   
   # Subclonal CNAs peak analysis
-  if(x$n_cna_subclonal > 0)
-  {
+  if(x$n_cna_subclonal > 0) {
     x = x %>% analyze_peaks_subclonal(
       n_min = min_absolute_karyotype_mutations,
       epsilon = purity_error,
@@ -224,14 +246,16 @@ analyze_peaks = function(x,
       cluster_subclonal_CCF = cluster_subclonal_CCF
     )
     
-    if(!is.null(x$peaks_analysis$subclonal))
+    if(!is.null(x$peaks_analysis$subclonal)) {
       x$peaks_analysis$subclonal$summary %>% print()
-    else
+    } else {
       cli::cli_alert_info("Subclonal CNAs not analysed with the current parameters.")
-    
-  }
-  else
+      }
+  } else {
     cli::cli_alert_info("No subclonal CNAs in this sample.")
+    }
+  
+  x$mutations = bind_rows(x$mutations, min_vaf_muts)
   
   return(x)
 }
