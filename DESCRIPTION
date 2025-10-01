@@ -1,7 +1,7 @@
 Package: CNAqc
 Type: Package
 Title: CNAqc - Copy Number Analysis quality check
-Version: 1.1.2
+Version: 1.1.3
 Author: Giulio Caravagna
 Maintainer: Giulio Caravagna <gcaravagn@gmail.com>
 Authors@R: c(
