@@ -81,7 +81,7 @@
       <a href="../articles/a8_annotate_variants.html">8. Drivers annotation</a>
     </li>
     <li>
-      <a href="../articles/b10_MultiCNAqc.html">09. multiCNAqc</a>
+      <a href="../articles/b10_MultiCNAqc.html">9. multiCNAqc</a>
     </li>
   </ul>
 </li>
@@ -143,7 +143,14 @@ the arm. This analysis works only at the level of clonal segments</p>
 <span><span class="co">#&gt;        chr17   7577106   7577107   G   C  84 78 0.9285714         TP53      TRUE</span></span></code></pre>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># A histogram of segments' lenght</span></span>
-<span><span class="fu"><a href="../reference/plot_segment_size_distribution.html">plot_segment_size_distribution</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="../reference/plot_segment_size_distribution.html">plot_segment_size_distribution</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Please use `linewidth` instead.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> The deprecated feature was likely used in the <span style="color: #0000BB;">CNAqc</span> package.</span></span>
+<span><span class="co">#&gt;   Please report the issue at <span style="color: #0000BB; font-style: italic;">&lt;https://github.com/caravagnalab/CNAqc/issues&gt;</span>.</span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">This warning is displayed once every 8 hours.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">Call `lifecycle::last_lifecycle_warnings()` to see where this warning was</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">generated.</span></span></span></code></pre></div>
 <p><img src="a6_fragmentation_files/figure-html/unnamed-chunk-3-1.png" width="288"></p>
 <p><code>CNAqc</code> counts, for every arm with lenght
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>L</mi><annotation encoding="application/x-tex">L</annotation></semantics></math>
@@ -180,7 +187,7 @@ hyoptheses (Bonferroni).</p>
 <span><span class="va">x</span> <span class="op">=</span> <span class="fu"><a href="../reference/detect_arm_overfragmentation.html">detect_arm_overfragmentation</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> One-tailed Binomial test: 8 tests, alpha 0.01. Short segments: 0.2% of the reference arm.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #00BB00;">chr7p</span>,  p = 1.7179869184e-24 ~ 34 segments, 34 short.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #00BB00;">chr1p</span>,  p = 1.62738995200002e-15 ~ 24 segments, 23 short.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #00BB00;">chr1p</span>,  p = 1.627389952e-15 ~ 24 segments, 23 short.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #00BB00;">chr1q</span>,  p = 4.34176000000001e-08 ~ 13 segments, 12 short.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #00BB00;">chr11q</span>,  p = 1.0657792e-06 ~ 13 segments, 11 short.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #00BB00;">chr12q</span>,  p = 2.00704e-07 ~ 12 segments, 11 short.</span></span>

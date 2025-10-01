@@ -81,7 +81,7 @@
       <a href="../articles/a8_annotate_variants.html">8. Drivers annotation</a>
     </li>
     <li>
-      <a href="../articles/b10_MultiCNAqc.html">09. multiCNAqc</a>
+      <a href="../articles/b10_MultiCNAqc.html">9. multiCNAqc</a>
     </li>
   </ul>
 </li>
@@ -542,7 +542,14 @@ segments are mapped to the same reference.</p>
 <p>You can use a hidden function to plot a reference</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">CNAqc</span><span class="fu">:::</span><span class="fu">blank_genome</span><span class="op">(</span>ref <span class="op">=</span> <span class="st">'hg19'</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"HG19 genome reference"</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"HG19 genome reference"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Please use `linewidth` instead.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> The deprecated feature was likely used in the <span style="color: #0000BB;">CNAqc</span> package.</span></span>
+<span><span class="co">#&gt;   Please report the issue at <span style="color: #0000BB; font-style: italic;">&lt;https://github.com/caravagnalab/CNAqc/issues&gt;</span>.</span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">This warning is displayed once every 8 hours.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">Call `lifecycle::last_lifecycle_warnings()` to see where this warning was</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">generated.</span></span></span></code></pre></div>
 <p><img src="a1_Introduction_files/figure-html/unnamed-chunk-12-1.png" width="912"></p>
 </div>
 <div class="section level3">

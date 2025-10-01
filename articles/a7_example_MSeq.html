@@ -81,7 +81,7 @@
       <a href="../articles/a8_annotate_variants.html">8. Drivers annotation</a>
     </li>
     <li>
-      <a href="../articles/b10_MultiCNAqc.html">09. multiCNAqc</a>
+      <a href="../articles/b10_MultiCNAqc.html">9. multiCNAqc</a>
     </li>
   </ul>
 </li>
@@ -507,7 +507,7 @@ we begin with our final, good solution.</p>
 <span><span class="va">x</span> <span class="op">=</span> <span class="fu">CNAqc</span><span class="fu">::</span><span class="fu"><a href="../reference/analyze_peaks.html">analyze_peaks</a></span><span class="op">(</span><span class="va">x</span>, matching_strategy <span class="op">=</span> <span class="st">'closest'</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Peak analysis: simple CNAs</span> <span style="color: #00BBBB;">──────────────────────────────────────────────────</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Analysing <span style="color: #00BB00;">17283</span> mutations mapping to karyotype(s) <span style="color: #00BB00;">1:1</span>, <span style="color: #00BB00;">2:0</span>, <span style="color: #00BB00;">1:0</span>, and <span style="color: #00BB00;">2:1</span>.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Analysing <span style="color: #00BB00;">17283</span> mutations mapping to karyotype(s) <span style="color: #00BB00;">1:0</span>, <span style="color: #00BB00;">1:1</span>, <span style="color: #00BB00;">2:0</span>, and <span style="color: #00BB00;">2:1</span>.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Mixed type peak detection for karyotype <span style="color: #00BB00;">1:0</span> (<span style="color: #00BB00;">898</span> mutations)</span></span>
 <span><span class="co">#&gt; Warning: replacing previous import 'cli::num_ansi_colors' by</span></span>
 <span><span class="co">#&gt; 'crayon::num_ansi_colors' when loading 'BMix'</span></span>
@@ -523,16 +523,16 @@ we begin with our final, good solution.</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># Rowwise: </span></span></span>
 <span><span class="co">#&gt;   mutation_multiplicity karyotype  peak delta_vaf     x     y counts_per_bin</span></span>
 <span><span class="co">#&gt;                   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>                     1 1:1       0.345    0.025  0.347 3.66             604</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>                     1 2:0       0.345    0.025  0.343 1.42              19</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>                     2 2:0       0.69     0.05   0.678 0.532              8</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>                     1 1:0       0.527    0.058<span style="text-decoration: underline;">3</span> 0.54  1.26              13</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>                     1 1:0       0.527    0.058<span style="text-decoration: underline;">3</span> 0.54  1.26              13</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>                     1 1:1       0.345    0.025  0.347 3.66             604</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>                     1 2:0       0.345    0.025  0.343 1.42              19</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>                     2 2:0       0.69     0.05   0.678 0.532              8</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>                     1 2:1       0.257    0.013<span style="text-decoration: underline;">8</span> 0.288 1.47               7</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>                     2 2:1       0.513    0.027<span style="text-decoration: underline;">6</span> 0.527 0.619              5</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 9 more variables: discarded &lt;lgl&gt;, from &lt;chr&gt;, offset_VAF &lt;dbl&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   offset &lt;dbl&gt;, weight &lt;dbl&gt;, epsilon &lt;dbl&gt;, VAF_tolerance &lt;dbl&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   matched &lt;lgl&gt;, QC &lt;chr&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Peak detection <span style="color: #00BB00;">PASS</span> with <span style="color: #00BB00;">r = -0.00516811972673067</span> - maximum purity error ε = <span style="color: #00BB00;">0.05</span>.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Peak detection <span style="color: #00BB00;">PASS</span> with <span style="color: #00BB00;">r = -0.00516811972673077</span> - maximum purity error ε = <span style="color: #00BB00;">0.05</span>.</span></span>
 <span><span class="co">#&gt; Joining with `by = join_by(Major, minor)`</span></span>
 <span><span class="co">#&gt; Joining with `by = join_by(karyotype)`</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -555,9 +555,9 @@ we begin with our final, good solution.</p>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample Purity: 69% ~ Ploidy: 2.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="color: #000000; background-color: #00BB00; font-weight: bold;"> PASS </span><span style="font-weight: bold;"> Peaks QC closest: </span><span style="color: #00BB00; font-weight: bold;">107%</span><span style="font-weight: bold;">, </span><span style="color: #00BB00; font-weight: bold;">λ = -0.0052</span><span style="font-weight: bold;">. Purity correction: -1%.</span> <span style="color: #00BBBB;">─────────</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">1:0</span> ~ n = 898   (  5%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.011 </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">1:1</span> ~ n = 14488 ( 84%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.004 </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">2:0</span> ~ n = 1552  (  9%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> 0.004   <span style="color: #000000; background-color: #00BB00;"> PASS </span> 0.012  </span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">1:0</span> ~ n = 898   (  5%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.011 </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">2:1</span> ~ n = 345   (  2%) → <span style="color: #BBBBBB; background-color: #BB0000;"> FAIL </span> -0.123  <span style="color: #BBBBBB; background-color: #BB0000;"> FAIL </span> -0.026</span></span></code></pre></div>
 <p>For this sample these calls are passed by CNAqc.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
@@ -606,9 +606,9 @@ method.</p>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample Purity: 69% ~ Ploidy: 2.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="color: #000000; background-color: #00BB00; font-weight: bold;"> PASS </span><span style="font-weight: bold;"> Peaks QC closest: </span><span style="color: #00BB00; font-weight: bold;">107%</span><span style="font-weight: bold;">, </span><span style="color: #00BB00; font-weight: bold;">λ = -0.0052</span><span style="font-weight: bold;">. Purity correction: -1%.</span> <span style="color: #00BBBB;">─────────</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">1:0</span> ~ n = 898   (  5%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.011</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">1:1</span> ~ n = 14488 ( 84%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.004</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">2:0</span> ~ n = 1552  (  9%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> 0.004   <span style="color: #000000; background-color: #00BB00;"> PASS </span> 0.012</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">1:0</span> ~ n = 898   (  5%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.011</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">2:1</span> ~ n = 345   (  2%) → <span style="color: #BBBBBB; background-color: #BB0000;"> FAIL </span> -0.123  <span style="color: #BBBBBB; background-color: #BB0000;"> FAIL </span> -0.026</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Cancer Cell Fraction (CCF) data available for karyotypes:1:0, 1:1, 2:0, and 2:1.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #BBBBBB; background-color: #00BB00;"> PASS </span> CCF via <span style="font-weight: bold;">ENTROPY</span>.</span></span>
@@ -736,17 +736,17 @@ correct.</p>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #00BB00;">17283</span> mutations mapped to clonal CNAs.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Peak analysis: simple CNAs</span> <span style="color: #00BBBB;">──────────────────────────────────────────────────</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Analysing <span style="color: #00BB00;">15166</span> mutations mapping to karyotype(s) <span style="color: #00BB00;">2:2</span> and <span style="color: #00BB00;">2:0</span>.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Analysing <span style="color: #00BB00;">15166</span> mutations mapping to karyotype(s) <span style="color: #00BB00;">2:0</span> and <span style="color: #00BB00;">2:2</span>.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Mixed type peak detection for karyotype <span style="color: #00BB00;">2:0</span> (<span style="color: #00BB00;">898</span> mutations)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Mixed type peak detection for karyotype <span style="color: #00BB00;">2:2</span> (<span style="color: #00BB00;">14268</span> mutations)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 4 × 16</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># Rowwise: </span></span></span>
 <span><span class="co">#&gt;   mutation_multiplicity karyotype  peak delta_vaf      x     y counts_per_bin</span></span>
 <span><span class="co">#&gt;                   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>                     1 2:2       0.177    0.010<span style="text-decoration: underline;">4</span> 0.097<span style="text-decoration: underline;">6</span> 3.72             594</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>                     2 2:2       0.355    0.020<span style="text-decoration: underline;">8</span> 0.345  3.72             499</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>                     1 2:0       0.275    0.025  0.263  0.437              2</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>                     2 2:0       0.55     0.05   0.54   1.26              13</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>                     1 2:0       0.275    0.025  0.263  0.437              2</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>                     2 2:0       0.55     0.05   0.54   1.26              13</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>                     1 2:2       0.177    0.010<span style="text-decoration: underline;">4</span> 0.097<span style="text-decoration: underline;">6</span> 3.72             594</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>                     2 2:2       0.355    0.020<span style="text-decoration: underline;">8</span> 0.345  3.72             499</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 9 more variables: discarded &lt;lgl&gt;, from &lt;chr&gt;, offset_VAF &lt;dbl&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   offset &lt;dbl&gt;, weight &lt;dbl&gt;, epsilon &lt;dbl&gt;, VAF_tolerance &lt;dbl&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   matched &lt;lgl&gt;, QC &lt;chr&gt;</span></span></span>
@@ -759,11 +759,11 @@ correct.</p>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Karyotypes <span style="color: #00BB00;">3:1</span>, <span style="color: #00BB00;">4:0</span>, and <span style="color: #00BB00;">4:2</span> with &gt;<span style="color: #00BB00;">100</span> mutation(s). Using epsilon = <span style="color: #00BB00;">0.05</span>.</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 5</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># Groups:   karyotype, matched [3]</span></span></span>
-<span><span class="co">#&gt;   karyotype n           mismatched matched  prop</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;table[1d]&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 4:2        169                 1       3  0.75</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 4:0        617                 2       2  0.5 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 3:1       1331                 3       0  0</span></span>
+<span><span class="co">#&gt;   karyotype     n mismatched matched  prop</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 4:2         169          1       3  0.75</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 4:0         617          2       2  0.5 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> 3:1        <span style="text-decoration: underline;">1</span>331          3       0  0</span></span>
 <span><span class="co">#&gt; Adding missing grouping variables: `matched`</span></span>
 <span><span class="co">#&gt; Joining with `by = join_by(Major, minor, QC_PASS)`</span></span>
 <span><span class="co">#&gt; Adding missing grouping variables: `matched`</span></span>
@@ -786,8 +786,8 @@ correct.</p>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample Purity: 55% ~ Ploidy: 4.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="color: #BBBBBB; background-color: #BB0000; font-weight: bold;"> FAIL </span><span style="font-weight: bold;"> Peaks QC closest: </span><span style="color: #BB0000; font-weight: bold;">188%</span><span style="font-weight: bold;">, </span><span style="color: #BB0000; font-weight: bold;">λ = 0.2554</span><span style="font-weight: bold;">. Purity correction: 26%.</span> <span style="color: #00BBBB;">──────────</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">2:2</span> ~ n = 14268 ( 94%) → <span style="color: #BBBBBB; background-color: #BB0000;"> FAIL </span> 0.246   <span style="color: #BBBBBB; background-color: #BB0000;"> FAIL </span> 0.023  </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">2:0</span> ~ n = 898   (  6%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> 0.024   <span style="color: #000000; background-color: #00BB00;"> PASS </span> 0.01   </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">2:2</span> ~ n = 14268 ( 94%) → <span style="color: #BBBBBB; background-color: #BB0000;"> FAIL </span> 0.246   <span style="color: #BBBBBB; background-color: #BB0000;"> FAIL </span> 0.023  </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">General peak QC (</span><span style="color: #00BB00; font-weight: bold;">2117</span><span style="font-weight: bold;"> mutations): </span><span style="color: #000000; background-color: #00BB00; font-weight: bold;"> PASS </span><span style="font-weight: bold;"> 5 </span><span style="color: #BBBBBB; background-color: #BB0000; font-weight: bold;"> FAIL </span><span style="font-weight: bold;"> 6 - epsilon = 0.05.</span> <span style="color: #00BBBB;">───────</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">4:2</span> ~ n = 169   (  8%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> 3 <span style="color: #BBBBBB; background-color: #BB0000;"> FAIL </span> 1</span></span>
@@ -833,7 +833,7 @@ expected 2-peaks VAF spectrum for tetraploid SNVs.</p>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #00BB00;">17283</span> mutations mapped to clonal CNAs.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Peak analysis: simple CNAs</span> <span style="color: #00BBBB;">──────────────────────────────────────────────────</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Analysing <span style="color: #00BB00;">17283</span> mutations mapping to karyotype(s) <span style="color: #00BB00;">1:1</span>, <span style="color: #00BB00;">2:0</span>, <span style="color: #00BB00;">1:0</span>, and <span style="color: #00BB00;">2:1</span>.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Analysing <span style="color: #00BB00;">17283</span> mutations mapping to karyotype(s) <span style="color: #00BB00;">1:0</span>, <span style="color: #00BB00;">1:1</span>, <span style="color: #00BB00;">2:0</span>, and <span style="color: #00BB00;">2:1</span>.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Mixed type peak detection for karyotype <span style="color: #00BB00;">1:0</span> (<span style="color: #00BB00;">898</span> mutations)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Mixed type peak detection for karyotype <span style="color: #00BB00;">1:1</span> (<span style="color: #00BB00;">14268</span> mutations)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Mixed type peak detection for karyotype <span style="color: #00BB00;">2:0</span> (<span style="color: #00BB00;">1772</span> mutations)</span></span>
@@ -842,10 +842,10 @@ expected 2-peaks VAF spectrum for tetraploid SNVs.</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># Rowwise: </span></span></span>
 <span><span class="co">#&gt;   mutation_multiplicity karyotype  peak delta_vaf     x     y counts_per_bin</span></span>
 <span><span class="co">#&gt;                   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>                     1 1:1       0.3      0.025  0.34  3.73             499</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>                     1 2:0       0.3      0.025  0.333 1.30              23</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>                     2 2:0       0.6      0.05   0.645 0.497             15</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>                     1 1:0       0.429    0.051<span style="text-decoration: underline;">0</span> 0.54  1.26              13</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>                     1 1:0       0.429    0.051<span style="text-decoration: underline;">0</span> 0.54  1.26              13</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>                     1 1:1       0.3      0.025  0.34  3.73             499</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>                     1 2:0       0.3      0.025  0.333 1.30              23</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>                     2 2:0       0.6      0.05   0.645 0.497             15</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>                     1 2:1       0.231    0.014<span style="text-decoration: underline;">8</span> 0.277 1.56               5</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>                     2 2:1       0.462    0.029<span style="text-decoration: underline;">6</span> 0.513 0.602              2</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 9 more variables: discarded &lt;lgl&gt;, from &lt;chr&gt;, offset_VAF &lt;dbl&gt;,</span></span></span>
@@ -874,9 +874,9 @@ expected 2-peaks VAF spectrum for tetraploid SNVs.</p>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample Purity: 60% ~ Ploidy: 2.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="color: #000000; background-color: #00BB00; font-weight: bold;"> PASS </span><span style="font-weight: bold;"> Peaks QC closest: </span><span style="color: #00BB00; font-weight: bold;">103%</span><span style="font-weight: bold;">, </span><span style="color: #00BB00; font-weight: bold;">λ = -0.0877</span><span style="font-weight: bold;">. Purity correction: -9%.</span> <span style="color: #00BBBB;">─────────</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">1:0</span> ~ n = 898   (  5%) → <span style="color: #BBBBBB; background-color: #BB0000;"> FAIL </span> -0.094 </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">1:1</span> ~ n = 14268 ( 83%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.08  </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">2:0</span> ~ n = 1772  ( 10%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.066  <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.045 </span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">1:0</span> ~ n = 898   (  5%) → <span style="color: #BBBBBB; background-color: #BB0000;"> FAIL </span> -0.094 </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">2:1</span> ~ n = 345   (  2%) → <span style="color: #BBBBBB; background-color: #BB0000;"> FAIL </span> -0.178  <span style="color: #BBBBBB; background-color: #BB0000;"> FAIL </span> -0.093</span></span></code></pre></div>
 <p>For this sample these calls are flagged by CNAqc because the purity
 is off by a <code>~10%</code> factor.</p>

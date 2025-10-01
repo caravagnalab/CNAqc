@@ -81,7 +81,7 @@
       <a href="../articles/a8_annotate_variants.html">8. Drivers annotation</a>
     </li>
     <li>
-      <a href="../articles/b10_MultiCNAqc.html">09. multiCNAqc</a>
+      <a href="../articles/b10_MultiCNAqc.html">9. multiCNAqc</a>
     </li>
   </ul>
 </li>
@@ -210,7 +210,7 @@ function <code>analyze_peaks</code>.</p>
 <code class="sourceCode R"><span><span class="va">x</span> <span class="op">=</span> <span class="fu"><a href="../reference/analyze_peaks.html">analyze_peaks</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Peak analysis: simple CNAs</span> <span style="color: #00BBBB;">──────────────────────────────────────────────────</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Analysing <span style="color: #00BB00;">120065</span> mutations mapping to karyotype(s) <span style="color: #00BB00;">2:1</span>, <span style="color: #00BB00;">2:2</span>, <span style="color: #00BB00;">2:0</span>, <span style="color: #00BB00;">1:1</span>, and <span style="color: #00BB00;">1:0</span>.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Analysing <span style="color: #00BB00;">120065</span> mutations mapping to karyotype(s) <span style="color: #00BB00;">1:0</span>, <span style="color: #00BB00;">1:1</span>, <span style="color: #00BB00;">2:0</span>, <span style="color: #00BB00;">2:1</span>, and <span style="color: #00BB00;">2:2</span>.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Mixed type peak detection for karyotype <span style="color: #00BB00;">1:0</span> (<span style="color: #00BB00;">124</span> mutations)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Loading <span style="color: #00BB00;">BMix</span>, <span style="font-style: italic;">'Binomial and Beta-Binomial univariate mixtures'</span>. Support : <span style="color: #0000BB; font-style: italic;">&lt;https://caravagnalab.github.io/BMix/&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Mixed type peak detection for karyotype <span style="color: #00BB00;">1:1</span> (<span style="color: #00BB00;">855</span> mutations)</span></span>
@@ -221,38 +221,38 @@ function <code>analyze_peaks</code>.</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># Rowwise: </span></span></span>
 <span><span class="co">#&gt;   mutation_multiplicity karyotype  peak delta_vaf     x     y counts_per_bin</span></span>
 <span><span class="co">#&gt;                   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>                     1 2:1       0.268   0.013<span style="text-decoration: underline;">4</span>  0.264 4.13            <span style="text-decoration: underline;">3</span>138</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>                     2 2:1       0.537   0.026<span style="text-decoration: underline;">8</span>  0.54  2.99            <span style="text-decoration: underline;">2</span>729</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>                     1 2:2       0.212   0.008<span style="text-decoration: underline;">31</span> 0.21  0.93             198</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>                     2 2:2       0.423   0.016<span style="text-decoration: underline;">6</span>  0.423 6.84            <span style="text-decoration: underline;">1</span>732</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>                     1 2:0       0.367   0.025   0.359 0.864             50</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>                     2 2:0       0.734   0.05    0.735 5.43             265</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span>                     1 1:1       0.367   0.025   0.366 2.42              15</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">8</span>                     1 1:0       0.580   0.062<span style="text-decoration: underline;">4</span>  0.570 4.16               7</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>                     1 1:0       0.580   0.062<span style="text-decoration: underline;">4</span>  0.570 4.16               7</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>                     1 1:1       0.367   0.025   0.366 2.42              15</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>                     1 2:0       0.367   0.025   0.359 0.864             50</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>                     2 2:0       0.734   0.05    0.735 5.43             265</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>                     1 2:1       0.268   0.013<span style="text-decoration: underline;">4</span>  0.264 4.13            <span style="text-decoration: underline;">3</span>138</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>                     2 2:1       0.537   0.026<span style="text-decoration: underline;">8</span>  0.54  2.99            <span style="text-decoration: underline;">2</span>729</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span>                     1 2:2       0.212   0.008<span style="text-decoration: underline;">31</span> 0.21  0.93             198</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">8</span>                     2 2:2       0.423   0.016<span style="text-decoration: underline;">6</span>  0.423 6.84            <span style="text-decoration: underline;">1</span>732</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 9 more variables: discarded &lt;lgl&gt;, from &lt;chr&gt;, offset_VAF &lt;dbl&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   offset &lt;dbl&gt;, weight &lt;dbl&gt;, epsilon &lt;dbl&gt;, VAF_tolerance &lt;dbl&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   matched &lt;lgl&gt;, QC &lt;chr&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Peak detection <span style="color: #00BB00;">PASS</span> with <span style="color: #00BB00;">r = 0.0111491116404974</span> - maximum purity error ε = <span style="color: #00BB00;">0.05</span>.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Peak detection <span style="color: #00BB00;">PASS</span> with <span style="color: #00BB00;">r = 0.0111491116404975</span> - maximum purity error ε = <span style="color: #00BB00;">0.05</span>.</span></span>
 <span><span class="co">#&gt; Joining with `by = join_by(Major, minor, QC_PASS)`</span></span>
 <span><span class="co">#&gt; Joining with `by = join_by(karyotype, QC_PASS)`</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Peak analysis: complex CNAs</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">─────────────────────────────────────────────────</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Karyotypes <span style="color: #00BB00;">3:2</span>, <span style="color: #00BB00;">3:1</span>, <span style="color: #00BB00;">3:0</span>, <span style="color: #00BB00;">3:3</span>, <span style="color: #00BB00;">4:0</span>, <span style="color: #00BB00;">4:2</span>, <span style="color: #00BB00;">4:3</span>, <span style="color: #00BB00;">5:2</span>, <span style="color: #00BB00;">5:3</span>, and <span style="color: #00BB00;">6:3</span> with &gt;<span style="color: #00BB00;">100</span> mutation(s). Using epsilon = <span style="color: #00BB00;">0.05</span>.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Karyotypes <span style="color: #00BB00;">3:0</span>, <span style="color: #00BB00;">3:1</span>, <span style="color: #00BB00;">3:2</span>, <span style="color: #00BB00;">3:3</span>, <span style="color: #00BB00;">4:0</span>, <span style="color: #00BB00;">4:2</span>, <span style="color: #00BB00;">4:3</span>, <span style="color: #00BB00;">5:2</span>, <span style="color: #00BB00;">5:3</span>, and <span style="color: #00BB00;">6:3</span> with &gt;<span style="color: #00BB00;">100</span> mutation(s). Using epsilon = <span style="color: #00BB00;">0.05</span>.</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 10 × 5</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># Groups:   karyotype, matched [10]</span></span></span>
-<span><span class="co">#&gt;    karyotype n           matched mismatched  prop</span></span>
-<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;table[1d]&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> 3:0       26622             3          0 1    </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> 3:1       48704             3          0 1    </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> 3:2       58384             3          0 1    </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> 3:3       16790             3          0 1    </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> 4:0        1752             3          1 0.75 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> 4:2        1441             3          1 0.75 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> 4:3         359             3          1 0.75 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> 5:3         132             3          2 0.6  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> 5:2         132             2          3 0.4  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> 6:3         114             2          4 0.333</span></span>
+<span><span class="co">#&gt;    karyotype     n matched mismatched  prop</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> 3:0       <span style="text-decoration: underline;">26</span>622       3          0 1    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> 3:1       <span style="text-decoration: underline;">48</span>704       3          0 1    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> 3:2       <span style="text-decoration: underline;">58</span>384       3          0 1    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> 3:3       <span style="text-decoration: underline;">16</span>790       3          0 1    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> 4:0        <span style="text-decoration: underline;">1</span>752       3          1 0.75 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> 4:2        <span style="text-decoration: underline;">1</span>441       3          1 0.75 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> 4:3         359       3          1 0.75 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> 5:3         132       3          2 0.6  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> 5:2         132       2          3 0.4  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> 6:3         114       2          4 0.333</span></span>
 <span><span class="co">#&gt; Adding missing grouping variables: `matched`</span></span>
 <span><span class="co">#&gt; Joining with `by = join_by(Major, minor, QC_PASS, matched)`</span></span>
 <span><span class="co">#&gt; Adding missing grouping variables: `matched`</span></span>
@@ -313,11 +313,11 @@ function <code>analyze_peaks</code>.</p>
 <span><span class="co">#&gt;         chr9  21971120  21971120   G   A 23 14 0.6086957       CDKN2A      TRUE</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="color: #000000; background-color: #00BB00; font-weight: bold;"> PASS </span><span style="font-weight: bold;"> Peaks QC closest: </span><span style="color: #00BB00; font-weight: bold;">199%</span><span style="font-weight: bold;">, </span><span style="color: #00BB00; font-weight: bold;">λ = 0.0111</span><span style="font-weight: bold;">. Purity correction: 1%.</span> <span style="color: #00BBBB;">───────────</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">1:0</span> ~ n = 124   (0.1%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> 0.008  </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">1:1</span> ~ n = 855   (0.7%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> 0.002  </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">2:0</span> ~ n = 5374  (  4%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> 0.015   <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.001 </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">2:1</span> ~ n = 88422 ( 74%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> 0.017   <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.006 </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">2:2</span> ~ n = 25290 ( 21%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> 0.01    <span style="color: #000000; background-color: #00BB00;"> PASS </span> 0.002  </span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">2:0</span> ~ n = 5374  (  4%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> 0.015   <span style="color: #000000; background-color: #00BB00;"> PASS </span> -0.001 </span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">1:1</span> ~ n = 855   (0.7%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> 0.002  </span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">1:0</span> ~ n = 124   (0.1%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> 0.008  </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">General peak QC (</span><span style="color: #00BB00; font-weight: bold;">154430</span><span style="font-weight: bold;"> mutations): </span><span style="color: #000000; background-color: #00BB00; font-weight: bold;"> PASS </span><span style="font-weight: bold;"> 28 </span><span style="color: #BBBBBB; background-color: #BB0000; font-weight: bold;"> FAIL </span><span style="font-weight: bold;"> 12 - epsilon = 0.05.</span> <span style="color: #00BBBB;">───</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #0000BB;">3:0</span> ~ n = 26622 ( 17%) → <span style="color: #000000; background-color: #00BB00;"> PASS </span> 3 <span style="color: #BBBBBB; background-color: #BB0000;"> FAIL </span> 0</span></span>
@@ -451,14 +451,14 @@ available in <code>x$peaks_analysis</code>.</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># Rowwise: </span></span></span>
 <span><span class="co">#&gt;   mutation_multiplicity karyotype  peak delta_vaf     x     y counts_per_bin</span></span>
 <span><span class="co">#&gt;                   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>                     1 2:1       0.268   0.013<span style="text-decoration: underline;">4</span>  0.264 4.13            <span style="text-decoration: underline;">3</span>138</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>                     2 2:1       0.537   0.026<span style="text-decoration: underline;">8</span>  0.54  2.99            <span style="text-decoration: underline;">2</span>729</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>                     1 2:2       0.212   0.008<span style="text-decoration: underline;">31</span> 0.21  0.93             198</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>                     2 2:2       0.423   0.016<span style="text-decoration: underline;">6</span>  0.423 6.84            <span style="text-decoration: underline;">1</span>732</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>                     1 2:0       0.367   0.025   0.359 0.864             50</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>                     2 2:0       0.734   0.05    0.735 5.43             265</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span>                     1 1:1       0.367   0.025   0.366 2.42              15</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">8</span>                     1 1:0       0.580   0.062<span style="text-decoration: underline;">4</span>  0.570 4.16               7</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>                     1 1:0       0.580   0.062<span style="text-decoration: underline;">4</span>  0.570 4.16               7</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>                     1 1:1       0.367   0.025   0.366 2.42              15</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>                     1 2:0       0.367   0.025   0.359 0.864             50</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>                     2 2:0       0.734   0.05    0.735 5.43             265</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>                     1 2:1       0.268   0.013<span style="text-decoration: underline;">4</span>  0.264 4.13            <span style="text-decoration: underline;">3</span>138</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>                     2 2:1       0.537   0.026<span style="text-decoration: underline;">8</span>  0.54  2.99            <span style="text-decoration: underline;">2</span>729</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span>                     1 2:2       0.212   0.008<span style="text-decoration: underline;">31</span> 0.21  0.93             198</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">8</span>                     2 2:2       0.423   0.016<span style="text-decoration: underline;">6</span>  0.423 6.84            <span style="text-decoration: underline;">1</span>732</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 9 more variables: discarded &lt;lgl&gt;, from &lt;chr&gt;, offset_VAF &lt;dbl&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   offset &lt;dbl&gt;, weight &lt;dbl&gt;, epsilon &lt;dbl&gt;, VAF_tolerance &lt;dbl&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   matched &lt;lgl&gt;, QC &lt;chr&gt;</span></span></span>
@@ -466,18 +466,18 @@ available in <code>x$peaks_analysis</code>.</p>
 <span><span class="co"># Complex clonal CNAs</span></span>
 <span><span class="va">x</span><span class="op">$</span><span class="va">peaks_analysis</span><span class="op">$</span><span class="va">general</span><span class="op">$</span><span class="va">expected_peaks</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 40 × 9</span></span></span>
-<span><span class="co">#&gt;    minor Major ploidy multiplicity purity  peak karyotype matched n          </span></span>
-<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;table[1d]&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>     2     4      6            1  0.734 0.149 4:2       TRUE    1441       </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>     2     4      6            2  0.734 0.297 4:2       TRUE    1441       </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>     2     4      6            3  0.734 0.446 4:2       FALSE   1441       </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>     2     4      6            4  0.734 0.595 4:2       TRUE    1441       </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>     2     5      7            1  0.734 0.129 5:2       FALSE    132       </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>     2     5      7            2  0.734 0.259 5:2       TRUE     132       </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>     2     5      7            3  0.734 0.388 5:2       FALSE    132       </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>     2     5      7            4  0.734 0.518 5:2       FALSE    132       </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>     2     5      7            5  0.734 0.647 5:2       TRUE     132       </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>     0     4      4            1  0.734 0.212 4:0       TRUE    1752       </span></span>
+<span><span class="co">#&gt;    minor Major ploidy multiplicity purity  peak karyotype matched     n</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>     2     4      6            1  0.734 0.149 4:2       TRUE     <span style="text-decoration: underline;">1</span>441</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>     2     4      6            2  0.734 0.297 4:2       TRUE     <span style="text-decoration: underline;">1</span>441</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>     2     4      6            3  0.734 0.446 4:2       FALSE    <span style="text-decoration: underline;">1</span>441</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>     2     4      6            4  0.734 0.595 4:2       TRUE     <span style="text-decoration: underline;">1</span>441</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>     2     5      7            1  0.734 0.129 5:2       FALSE     132</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>     2     5      7            2  0.734 0.259 5:2       TRUE      132</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>     2     5      7            3  0.734 0.388 5:2       FALSE     132</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>     2     5      7            4  0.734 0.518 5:2       FALSE     132</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>     2     5      7            5  0.734 0.647 5:2       TRUE      132</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>     0     4      4            1  0.734 0.212 4:0       TRUE     <span style="text-decoration: underline;">1</span>752</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 30 more rows</span></span></span>
 <span></span>
 <span><span class="co"># Subclonal CNAs</span></span>
