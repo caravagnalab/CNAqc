@@ -303,13 +303,24 @@ as_maftools_obj = function(x,
 
     # CNA mapping
     genes_map = CNA_gene(x, genes = CNA_genes)
-
+    
+    if ("phasing" %in% names(x)) {
+      phasing_data = x$phasing  %>% filter(is_driver) %>%
+                          dplyr::select(chr,gene,karyotype,multiplicity,ref,alt) 
+      
+      genes_map = full_join(genes_map,
+                phasing_data,
+                by = c("chr","gene","karyotype")) 
+      
+    }
+    
     genes_map = genes_map %>%
       dplyr::rename(Gene = gene,
                     CN = karyotype) %>%
       dplyr::mutate(Sample_name = x$sample) %>%
       dplyr::select(-chr, -from, -to, -Major, -minor) %>%
-      dplyr::select(Gene, Sample_name, CN)
+      dplyr::select(Gene, Sample_name, CN, multiplicity)
+  
 
     if (assembly)
     {
@@ -423,7 +434,13 @@ as_maftools_cohort = function(x,
   pooled_CNA = lapply(inputs, function(x) x[[2]]) %>% Reduce(f = dplyr::bind_rows)
 
   # pooled_CNA = pooled_CNA %>% mutate(CN = ifelse(CN %in% c("1:0", "2:0", "2:1", "2:2"), CN, 'Other'))
-  pooled_CNA$CN = sapply(pooled_CNA$CN, CNA_map_function)
+  # pooled_CNA$CN = sapply(pooled_CNA, CNA_map_function)
+  pooled_CNA$CN<- mapply(
+    CNA_map_function,
+    pooled_CNA$CN,
+    pooled_CNA$multiplicity
+  )
+  
 
   tab_gene = pooled_CNA %>%
     dplyr::group_by(Gene, CN) %>%
@@ -461,9 +478,9 @@ as_maftools_cohort = function(x,
   if(!is.null(pooled_CNA) & nrow(pooled_CNA) > 0)
   {
     return(maftools::read.maf(pooled_mutations,
-                              clinicalData = Variant_classification,
+                              clinicalData = clinicalData,
                               cnTable = pooled_CNA,
-                              vc_nonSyn = NULL,
+                              vc_nonSyn = Variant_classification,
                               verbose = TRUE))
   }
 
