@@ -11,7 +11,8 @@ init(
   purity,
   sample = "MySample",
   ref = "GRCh38",
-  genome_coords = NULL
+  genome_coords = NULL,
+  blacklist_indels = FALSE
 )
 }
 \arguments{
@@ -66,6 +67,12 @@ or `CNAqc::chr_coordinates_GRCh38`. The default reference is `GRCh38`.}
 \item{genome_coords}{A dataframe including the genomic absolute coordinates of 
 a custom reference genome, in the same format as `CNAqc::chr_coordinates_hg19`
 or `CNAqc::chr_coordinates_GRCh38`. Default is NULL}
+
+\item{blacklist_indels}{It might be often hard to perform variant calling 
+on indels, leading to the accumulation of errors. This could potentially reduce the performances 
+of the subsequent analyses. When setting to \TRUE, mutations classified as indels will be
+blacklisted, so that they will not be lost, but will not be used in the peak analysis 
+and for the CCF estimation. Default if \FALSE.}
 }
 \value{
 A CNAqc object of class `cnaqc`, with S3 methods for printing,

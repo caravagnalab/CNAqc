@@ -9,7 +9,8 @@ compute_CCF(
   karyotypes = c("1:0", "1:1", "2:0", "2:1", "2:2"),
   muts_per_karyotype = 25,
   cutoff_QC_PASS = 0.1,
-  method = "ENTROPY"
+  method = "ENTROPY",
+  min_VAF = 0
 )
 }
 \arguments{
@@ -27,6 +28,10 @@ is failed for the karyotype.}
 
 \item{method}{Either \code{"ENTROPY"} (default) or \code{"ROUGH"}, to reflect the two different algorithms
 to compute CCF.}
+
+\item{min_VAF}{Only mutations with VAF higher than the supplied cut-off will be used for the CCF inference. 
+If the data are multisample (multi-region or longitudinal data) it is strongly advised to set as 0 (default) 
+to avoid including private mutations of samples.}
 }
 \value{
 A CNAqc object with CCF values.

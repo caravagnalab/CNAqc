@@ -37,6 +37,9 @@
 #' in order to compute CCF values (default 25).
 #' @param method Either \code{"ENTROPY"} (default) or \code{"ROUGH"}, to reflect the two different algorithms
 #' to compute CCF.
+#' @param min_VAF Only mutations with VAF higher than the supplied cut-off will be used for the CCF inference. 
+#' If the data are multisample (multi-region or longitudinal data) it is strongly advised to set as 0 (default) 
+#' to avoid including private mutations of samples. 
 #'
 #' @seealso Getters function \code{CCF} and \code{plot_CCF}.
 #' @return A CNAqc object with CCF values.
@@ -56,7 +59,8 @@ compute_CCF = function(x,
                        karyotypes = c('1:0', '1:1', '2:0', '2:1', '2:2'),
                        muts_per_karyotype = 25,
                        cutoff_QC_PASS = 0.1,
-                       method = 'ENTROPY')
+                       method = 'ENTROPY', 
+                       min_VAF = 0)
 {
   stopifnot(inherits(x, 'cnaqc'))
   stopifnot(method %in% c('ENTROPY', "ROUGH"))
@@ -75,12 +79,12 @@ compute_CCF = function(x,
     function(k)
     {
       if(k %in% c('1:0', '1:1'))
-        return(suppressWarnings(CNAqc:::mutmult_single_copy(x, k)))
+        return(suppressWarnings(CNAqc:::mutmult_single_copy(x, k, min_VAF)))
 
       if(method == "ENTROPY")
-        return(suppressWarnings(CNAqc:::mutmult_two_copies_entropy(x, k)))
+        return(suppressWarnings(CNAqc:::mutmult_two_copies_entropy(x, k, min_VAF)))
       else
-        return(suppressWarnings(CNAqc:::mutmult_two_copies_rough(x, k)))
+        return(suppressWarnings(CNAqc:::mutmult_two_copies_rough(x, k, min_VAF)))
     })
   names(x$CCF_estimates) = karyotypes
 

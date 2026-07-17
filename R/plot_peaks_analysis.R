@@ -156,7 +156,8 @@ plot_peaks_fit = function(x, k)
   # Required input values
   mutations = x$mutations %>%
     dplyr::filter(karyotype == k) %>%
-    dplyr::mutate(karyotype = paste0(karyotype, " (", matching, ")"))
+    dplyr::mutate(karyotype = paste0(karyotype, " (", matching, ")")) %>% 
+    dplyr::filter(!is.na(QC_PASS))
 
   den = x$peaks_analysis$fits[[k]]$density
   expectation = x$peaks_analysis$fits[[k]]$matching %>%
@@ -327,6 +328,7 @@ plot_peaks_fit_general = function(x)
 
   # plotting
   x$mutations %>%
+    dplyr::filter(!is.na(QC_PASS)) %>% 
     filter(karyotype %in% analysis) %>%
     add_counts() %>%
     ggplot2::ggplot(aes(VAF)) +
@@ -412,6 +414,7 @@ plot_peaks_fit_subclonal = function(x)
 
     rep_muts = lapply(this_model_ids, function(x) {
       subclonal_mutations %>%
+        # dplyr::filter(!is.na(QC_PASS)) %>% 
         filter(segment_id == !!segment_id) %>%
         mutate(model_id = x,
                model = ifelse(grepl('->', x), "linear", 'branching'))

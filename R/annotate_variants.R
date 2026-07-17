@@ -246,16 +246,28 @@ annotate_variants <- function(x,
     by = c("chr", "from", "to")
   ) %>%
     dplyr::arrange(-is_driver)
-
+  
   if(make_0_span)  final_table <- final_table %>% dplyr::mutate(to = to + 1)
-
-  x_new = CNAqc::init(
-    mutations = final_table,
-    cna = x %>% CNA(),
-    purity = x$purity,
-    ref = x$reference_genome
-  )
-
+  
+  if(!is.null(x$genome_coords) & !x$reference_genome %in% c("hg19", "GRCh37", "hg38", "GRCh38", "mm10", "GRCm38")) {
+    x_new = init(
+      mutations = final_table,
+      cna = x %>% CNA(),
+      purity = x$purity,
+      ref = x$reference_genome,
+      genome_coords = x$genomic_coordinates, 
+      blacklist_indels = x$blacklist_indels
+    )
+  } else { 
+    x_new = CNAqc::init(
+      mutations = final_table,
+      cna = x %>% CNA(),
+      purity = x$purity,
+      ref = x$reference_genome, 
+      blacklist_indels = x$blacklist_indels
+    )
+  }
+  
   return(x_new)
 }
 

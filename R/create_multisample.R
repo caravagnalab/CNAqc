@@ -149,12 +149,24 @@ multisample_init <- function(cnaqc_objs,
   
   new_segmentation_cnaqc <- lapply(names(multi_cna), function(x) {
     #print(x)
-    CNAqc::init(
-      mutations = multi_mutations[[x]],
-      cna = multi_cna[[x]]$shared,
-      purity = cnaqc_objs[[x]]$purity,
-      sample = x
-    )})
+    if(!is.null(x$genome_coords) & !x$reference_genome %in% c("hg19", "GRCh37", "hg38", "GRCh38", "mm10", "GRCm38")) {
+      init(
+        mutations = multi_mutations[[x]],
+        cna = multi_cna[[x]]$shared,
+        purity = cnaqc_objs[[x]]$purity,
+        sample = x, 
+        blacklist_indels = cnaqc_objs[[x]]$blacklist_indels,
+        genome_coords = cnaqc_objs[[x]]$genomic_coordinates
+      )
+    } else { 
+      
+      init(
+        mutations = multi_mutations[[x]],
+        cna = multi_cna[[x]]$shared,
+        purity = cnaqc_objs[[x]]$purity,
+        sample = x, 
+        blacklist_indels = cnaqc_objs[[x]]$blacklist_indels
+      )}})
   
   names(new_segmentation_cnaqc) <- sapply(new_segmentation_cnaqc, function(x) {x$sample})
   
@@ -475,7 +487,7 @@ set_elements <- function(cnaqc_obj,
   cat("\n")
   
   cli::cli_rule("Mapping mutations on shared segments")
-  mutations_shared_segments = CNAqc:::prepare_input_data(mutations = initial_mutations, cna = new_cna_list$shared, tumour_purity = cnaqc_obj$purity)
+  mutations_shared_segments = CNAqc:::prepare_input_data(mutations = initial_mutations, cna = new_cna_list$shared, tumour_purity = cnaqc_obj$purity, blacklist_indels = cnaqc_obj$blacklist_indels)
   remapped_mut = mutations_shared_segments$mutations
   
   # if (keep_original == TRUE) {

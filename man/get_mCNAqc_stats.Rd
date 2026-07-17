@@ -7,7 +7,7 @@
 get_mCNAqc_stats(m_cnaqc_obj)
 }
 \arguments{
-\item{m_cnaqc_obj}{}
+\item{m_cnaqc_obj}{a mCNAqc object}
 }
 \value{
 a tibble

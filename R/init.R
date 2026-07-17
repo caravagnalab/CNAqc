@@ -65,7 +65,11 @@
 #' @param genome_coords A dataframe including the genomic absolute coordinates of 
 #' a custom reference genome, in the same format as `CNAqc::chr_coordinates_hg19`
 #' or `CNAqc::chr_coordinates_GRCh38`. Default is NULL 
-#'
+#' @param blacklist_indels It might be often hard to perform variant calling 
+#' on indels, leading to the accumulation of errors. This could potentially reduce the performances 
+#' of the subsequent analyses. When setting to \TRUE, mutations classified as indels will be
+#' blacklisted, so that they will not be lost, but will not be used in the peak analysis 
+#' and for the CCF estimation. Default if \FALSE.
 #' @return A CNAqc object of class `cnaqc`, with S3 methods for printing,
 #' plotting and analyzing data.
 #'
@@ -81,7 +85,7 @@
 #'
 #' # An S3 method can be used to report to screen what is in the object
 #' print(x)
-init = function(mutations, snvs = NULL, cna, purity, sample = "MySample", ref = "GRCh38", genome_coords = NULL)
+init = function(mutations, snvs = NULL, cna, purity, sample = "MySample", ref = "GRCh38", genome_coords = NULL, blacklist_indels = FALSE)
 {
   cli::cli_h1("CNAqc - CNA Quality Check")
   cat('\n')
@@ -123,7 +127,7 @@ init = function(mutations, snvs = NULL, cna, purity, sample = "MySample", ref = 
   }
   
   # Parse input
-  input = prepare_input_data(mutations, cna, purity)
+  input = prepare_input_data(mutations, cna, purity, blacklist_indels = blacklist_indels)
 
   # Remove CNA segments with NA Major/minor
   # na_allele_Major = sapply(input$cna_clonal$Major, is.na)
@@ -180,7 +184,9 @@ init = function(mutations, snvs = NULL, cna, purity, sample = "MySample", ref = 
   fit$basepairs_by_karyotype = tab_ploidy
 
   fit$most_mutations_karyotype = names(fit$n_karyotype)[1]
-
+  
+  fit$blacklist_indels = blacklist_indels
+  
   fit
 }
 

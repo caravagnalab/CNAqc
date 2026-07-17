@@ -15,7 +15,7 @@ plot_segments_multisample(
 
 \item{which}{either "original" or "shared"}
 
-\item{chromosomes}{}
+\item{chromosomes}{chromosomes to plot, default all}
 }
 \value{
 a plot

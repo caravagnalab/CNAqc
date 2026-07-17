@@ -19,6 +19,11 @@ Useful links:
 \author{
 \strong{Maintainer}: Giulio Caravagna \email{gcaravagn@gmail.com} (\href{https://orcid.org/0000-0003-4240-3265}{ORCID})
 
+Authors:
+\itemize{
+  \item Giulio Caravagna \email{gcaravagn@gmail.com} (\href{https://orcid.org/0000-0003-4240-3265}{ORCID})
+}
+
 Other contributors:
 \itemize{
   \item Riccardo Bergamin \email{ric.b.91@gmail.com} [contributor]

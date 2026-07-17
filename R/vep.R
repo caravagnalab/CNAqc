@@ -206,14 +206,24 @@ augment_with_vep = function(x,
   if(inherits(x, 'cnaqc'))
   {
     cli::cli_alert_info("Assemblying and returning a new CNAqc object")
-
-    new_objs = init(
-      mutations = mutations_table,
-      cna = x %>% CNA(),
-      purity = x$purity,
-      ref = x$reference_genome,
-      sample = x$sample
-    )
+    if(!is.null(x$genome_coords) & !x$reference_genome %in% c("hg19", "GRCh37", "hg38", "GRCh38", "mm10", "GRCm38")) {
+      new_objs = init(
+        mutations = mutations_table,
+        cna = x %>% CNA(),
+        purity = x$purity,
+        ref = x$reference_genome,
+        genome_coords = x$genomic_coordinates, 
+        blacklist_indels = x$blacklist_indels
+      )
+    } else { 
+      new_objs = init(
+        mutations = mutations_table,
+        cna = x %>% CNA(),
+        purity = x$purity,
+        ref = x$reference_genome,
+        sample = x$sample, 
+        blacklist_indels = x$blacklist_indels
+      )}
 
     return(new_objs)
   }

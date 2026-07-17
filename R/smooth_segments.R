@@ -147,20 +147,23 @@ smooth_segments = function(x, maximum_distance = 1e6)
       purity = x$purity,
       ref = x$reference_genome,
       sample = x$sample, 
-      genome_coords = x$genomic_coordinates
+      genome_coords = x$genomic_coordinates, 
+      blacklist_indels = x$blacklist_indels
     )
     
-    x_new$before_smoothing = x } else {
-      x_new = init(
-        mutations = x %>% Mutations(),
-        cna = smoothed_segments,
-        purity = x$purity,
-        ref = x$reference_genome,
-        sample = x$sample)
-      
-      x_new$before_smoothing = x
-      
-    }
+    x_new$before_smoothing = x 
+  } else {
+    x_new = init(
+      mutations = x %>% Mutations(),
+      cna = smoothed_segments,
+      purity = x$purity,
+      ref = x$reference_genome,
+      sample = x$sample, 
+      blacklist_indels = x$blacklist_indels)
+    
+    x_new$before_smoothing = x
+    
+  }
 
   return(x_new)
 }

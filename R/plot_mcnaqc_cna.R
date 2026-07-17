@@ -2,7 +2,7 @@
 #'
 #' @param x A m_cnaqc object 
 #' @param which either "original" or "shared"
-#' @param chromosomes 
+#' @param chromosomes chromosomes to plot, default all
 #'
 #' @return a plot
 #' @export

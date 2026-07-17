@@ -154,11 +154,12 @@ analyze_peaks = function(x,
   
   # save the mutations with VAF < min_VAF -- they might be uselful after the peak analysis!
   
-  min_vaf_muts = x$mutations %>%
-    dplyr::filter(VAF <= min_VAF)
+  blacklisted_muts = x$mutations %>%
+    dplyr::filter(VAF <= min_VAF | blacklisted)
   
   x$mutations = x$mutations %>%
-    dplyr::filter(VAF > min_VAF)
+    dplyr::filter(VAF > min_VAF) %>% 
+    dplyr::filter(blacklisted == FALSE)
   
   # recompute the number of mutations mapping on each karyotype
   n_karyo = x$mutations %>% 
@@ -255,7 +256,7 @@ analyze_peaks = function(x,
     cli::cli_alert_info("No subclonal CNAs in this sample.")
     }
   
-  x$mutations = bind_rows(x$mutations, min_vaf_muts)
+  x$mutations = bind_rows(x$mutations, blacklisted_muts)
   
   return(x)
 }

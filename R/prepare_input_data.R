@@ -1,4 +1,4 @@
-prepare_input_data = function(mutations, cna, tumour_purity)
+prepare_input_data = function(mutations, cna, tumour_purity, blacklist_indels)
 {
   # Input data types and fortification
   stopifnot(is_tibble(mutations) | is.data.frame(mutations))
@@ -18,6 +18,18 @@ prepare_input_data = function(mutations, cna, tumour_purity)
         'indel'
       )
     )
+  
+  if(blacklist_indels) {
+    mutations = mutations %>% 
+      mutate(blacklisted = case_when(
+        type == 'SNV' ~ FALSE, 
+        type == 'indel' ~ TRUE))
+        # (type == 'indel' &  (nchar(alt) >= indels_lenght | nchar(ref) >= indels_lenght)) ~ TRUE, 
+        # (type == 'indel' &  (nchar(alt) < indels_lenght | nchar(ref) < indels_lenght)) ~ FALSE))
+  } else {
+    mutations = mutations %>% 
+      mutate(blacklisted = FALSE)
+  }
 
   all_mutations = mutations
 
@@ -71,7 +83,7 @@ prepare_input_data = function(mutations, cna, tumour_purity)
 
   # Mapping mutations to clonal segments
   mutations = map_mutations_to_clonal_segments(mutations, cna_clonal)
-
+  
   # Notify NA (not mapped)
   not_mappable = sum(is.na(mutations$karyotype))
 

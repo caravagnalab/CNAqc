@@ -1,4 +1,4 @@
-mutmult_single_copy = function(x, karyotype)
+mutmult_single_copy = function(x, karyotype, min_VAF)
 {
   cli::cli_rule("Computing mutation multiplicity for single-copy karyotype {.field {karyotype}}")
 
@@ -11,10 +11,12 @@ mutmult_single_copy = function(x, karyotype)
     dplyr::pull(segment_id)
 
   mutations_k = x$mutations %>%
+    dplyr::filter(VAF > min_VAF) %>%
+    filter(blacklisted == FALSE) %>%
     dplyr::filter(karyotype == !!karyotype, segment_id %in% cl_seg) %>%
     dplyr::mutate(
       mutation_multiplicity = 1,
-      CCF = ccf_adjustment_fun(VAF, B, A, x$purity, mutation_multiplicity)
+      CCF = CNAqc:::ccf_adjustment_fun(VAF, B, A, x$purity, mutation_multiplicity)
     )
 
   return(list(mutations = mutations_k, params = NULL))
@@ -297,7 +299,7 @@ mutmult_single_copy = function(x, karyotype)
 #
 # }
 
-mutmult_two_copies_entropy = function(x, karyotype)
+mutmult_two_copies_entropy = function(x, karyotype, min_VAF)
 {
   cli::cli_rule(
     "Computing mutation multiplicity for karyotype {.field {karyotype}} using the entropy method."
@@ -312,6 +314,8 @@ mutmult_two_copies_entropy = function(x, karyotype)
     dplyr::pull(segment_id)
 
   mutations_k = x$mutations %>%
+    dplyr::filter(VAF > min_VAF) %>%
+    filter(blacklisted == FALSE) %>%
     dplyr::filter(karyotype == !!karyotype, segment_id %in% cl_seg)
 
   # Expected VAF for 1 and 2 copies of the mutation
@@ -488,7 +492,7 @@ mutmult_two_copies_entropy = function(x, karyotype)
   ))
 }
 
-mutmult_two_copies_rough = function(x, karyotype)
+mutmult_two_copies_rough = function(x, karyotype, min_VAF)
 {
   cli::cli_rule(
     "Computing mutation multiplicity for karyotype {.field {karyotype}} using raw VAF cuts."
@@ -503,6 +507,8 @@ mutmult_two_copies_rough = function(x, karyotype)
     dplyr::pull(segment_id)
 
   mutations_k = x$mutations %>%
+    dplyr::filter(VAF > min_VAF) %>%
+    filter(blacklisted == FALSE) %>%
     dplyr::filter(karyotype == !!karyotype, segment_id %in% cl_seg)
 
   # Expected VAF for 1 and 2 copies of the mutation as for the entropy case

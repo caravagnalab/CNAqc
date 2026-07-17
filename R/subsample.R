@@ -38,7 +38,8 @@ subsample = function(x, N = 15000, keep_drivers = TRUE)
       purity = x$purity,
       sample = x$sample, 
       ref = x$reference_genome, 
-      genome_coords = x$genomic_coordinates
+      genome_coords = x$genomic_coordinates, 
+      blacklist_indels = x$blacklist_indels
     )
   } else {
     init(
@@ -46,7 +47,8 @@ subsample = function(x, N = 15000, keep_drivers = TRUE)
       cna = x$cna %>% dplyr::select(-segment_id,-n,-CCF),
       purity = x$purity,
       sample = x$sample, 
-      ref = x$reference_genome
+      ref = x$reference_genome, 
+      blacklist_indels = x$blacklist_indels
     )
   }}
 
@@ -93,7 +95,8 @@ subset_by_segment_karyotype = function(x, karyotypes)
         purity = x$purity,
         sample = x$sample, 
         ref = x$reference_genome, 
-        genome_coords = x$genomic_coordinates
+        genome_coords = x$genomic_coordinates,
+        blacklist_indels = x$blacklist_indels
       )
     } else {
       
@@ -102,7 +105,8 @@ subset_by_segment_karyotype = function(x, karyotypes)
         cna = cna_calls %>% dplyr::select(-to_remove),
         purity = x$purity,
         ref = x$reference_genome,
-        sample = x$sample
+        sample = x$sample, 
+        blacklist_indels = x$blacklist_indels
       )}
   )
 }
@@ -147,7 +151,8 @@ subset_by_segment_totalcn = function(x, totalcn)
         purity = x$purity,
         sample = x$sample, 
         ref = x$reference_genome, 
-        genome_coords = x$genomic_coordinates
+        genome_coords = x$genomic_coordinates, 
+        blacklist_indels = x$blacklist_indels
       )
     } else {
       init(
@@ -155,7 +160,8 @@ subset_by_segment_totalcn = function(x, totalcn)
         cna = cna_calls,
         purity = x$purity,
         ref = x$reference_genome,
-        sample = x$sample
+        sample = x$sample, 
+        blacklist_indels = x$blacklist_indels
       )
     }
   )
@@ -213,7 +219,8 @@ subset_by_segment_minmutations = function(x, n = 50)
           purity = x$purity,
           sample = x$sample, 
           ref = x$reference_genome, 
-          genome_coords = x$genomic_coordinates
+          genome_coords = x$genomic_coordinates,
+          blacklist_indels = x$blacklist_indels
         )
       } else {
         init(
@@ -221,7 +228,8 @@ subset_by_segment_minmutations = function(x, n = 50)
           cna = retained_calls,
           purity = x$purity,
           ref = x$reference_genome,
-          sample = x$sample
+          sample = x$sample, 
+          blacklist_indels = x$blacklist_indels
         )}
     )
   }
@@ -318,7 +326,8 @@ subset_by_minimum_CCF = function(x, min_target_CCF = 0.1)
       purity = x$purity,
       sample = x$sample, 
       ref = x$reference_genome, 
-      genome_coords = x$genomic_coordinates
+      genome_coords = x$genomic_coordinates, 
+      blacklist_indels = x$blacklist_indels
     )
   } else {
     init(
@@ -326,7 +335,8 @@ subset_by_minimum_CCF = function(x, min_target_CCF = 0.1)
       cna = x$cna %>% dplyr::select(-segment_id,-n,-CCF),
       purity = x$purity,
       ref = x$reference_genome,
-      sample = x$sample
+      sample = x$sample, 
+      blacklist_indels = x$blacklist_indels
     )}
 }
 
@@ -371,7 +381,8 @@ subset_snvs = function(x,
         purity = x$purity,
         sample = x$sample, 
         ref = x$reference_genome, 
-        genome_coords = x$genomic_coordinates
+        genome_coords = x$genomic_coordinates, 
+        blacklist_indels = x$blacklist_indels
       )
     } else {
       x = init(
@@ -379,7 +390,8 @@ subset_snvs = function(x,
         cna = x$cna %>% dplyr::select(-segment_id,-n,-CCF),
         purity = x$purity,
         ref = x$reference_genome,
-        sample = x$sample
+        sample = x$sample, 
+        blacklist_indels = x$blacklist_indels
       )}
   }
 
@@ -453,14 +465,16 @@ split_by_chromosome = function(x,
         cna = cnas,
         purity = x$purity,
         ref = x$reference_genome,
-        genome_coords = x$genomic_coordinates
+        genome_coords = x$genomic_coordinates, 
+        blacklist_indels = x$blacklist_indels
       )
     } else { 
       cnaqc_obj = init(
         clonal_mutations %>% bind_rows(subclonal_mutations),
         cna = cnas,
         purity = x$purity,
-        ref = x$reference_genome
+        ref = x$reference_genome, 
+        blacklist_indels = x$blacklist_indels
       )}
 
     objs = append(objs, list(cnaqc_obj))
