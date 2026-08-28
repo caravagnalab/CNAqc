@@ -149,7 +149,7 @@ multisample_init <- function(cnaqc_objs,
   
   new_segmentation_cnaqc <- lapply(names(multi_cna), function(x) {
     #print(x)
-    if(!is.null(x$genome_coords) & !x$reference_genome %in% c("hg19", "GRCh37", "hg38", "GRCh38", "mm10", "GRCm38")) {
+    if(!is.null(cnaqc_objs[[x]]$genome_coords) & !cnaqc_objs[[x]]$reference_genome %in% c("hg19", "GRCh37", "hg38", "GRCh38", "mm10", "GRCm38")) {
       init(
         mutations = multi_mutations[[x]],
         cna = multi_cna[[x]]$shared,
