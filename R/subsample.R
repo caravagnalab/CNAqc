@@ -428,10 +428,12 @@ subset_snvs = function(x,
 #'
 #' @examples
 #'
+#' \donotrun{
 #' data("example_PCAWG", package = 'CNAqc')
 #'
 #' # Split of tje PCAWG object, for instance
 #' split_by_chromosome(example_PCAWG)
+#' }
 split_by_chromosome = function(x,
                                chromosomes = paste0('chr', c(1:22, 'X', 'Y'))
                                )

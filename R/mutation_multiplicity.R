@@ -1053,12 +1053,12 @@ plot_mutation_multiplicity_rough = function(x, karyotype)
 
     oneplot = oneplot +
       ggplot2::geom_vline(
-        data = data.frame(x = expectation) %>% mutate(var = rev(join_ln$var)[1]),
+        data = data.frame(expectation = expectation) %>% mutate(var = rev(join_ln$var)[1]),
         ggplot2::aes(xintercept = expectation),
         size = .5,
         linetype = 'dashed',
-        color = 'black',
-        inherit.aes = T
+        color = 'black'#,
+        # inherit.aes = T
       ) +
       ggplot2::geom_vline(
         data = computation$params$expectation %>% mutate(var = rev(join_ln$var)[1]),
